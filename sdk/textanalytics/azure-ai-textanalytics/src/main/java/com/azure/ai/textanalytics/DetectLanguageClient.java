@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServi
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLanguageDetectionInput;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageDetectionAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageDetectionTaskParameters;
@@ -15,6 +16,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -29,9 +31,10 @@ import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
-import static com.azure.ai.textanalytics.implementation.Utility.toDetectLanguageResultCollectionResponse;
-import static com.azure.ai.textanalytics.implementation.Utility.toDetectLanguageResultCollectionResponse2;
+import static com.azure.ai.textanalytics.implementation.Utility.toDetectLanguageResultCollectionLanguageApi;
+import static com.azure.ai.textanalytics.implementation.Utility.toDetectLanguageResultCollectionLegacyApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -40,20 +43,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing detect language endpoint.
  */
-class DetectLanguageAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(DetectLanguageAsyncClient.class);
+class DetectLanguageClient {
+    private static final ClientLogger LOGGER = new ClientLogger(DetectLanguageClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    DetectLanguageAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    DetectLanguageClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    DetectLanguageAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    DetectLanguageClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
@@ -111,7 +114,7 @@ class DetectLanguageAsyncClient {
                 .doOnSuccess(response -> LOGGER.info("Detected languages for a batch of documents - {}",
                     response.getValue()))
                 .doOnError(error -> LOGGER.warning("Failed to detect language - {}", error))
-                .map(Utility::toDetectLanguageResultCollectionResponse2)
+                .map(Utility::toDetectLanguageResultCollectionLanguageApi)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
@@ -126,7 +129,7 @@ class DetectLanguageAsyncClient {
             .doOnSuccess(response -> LOGGER.info("Detected languages for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> LOGGER.warning("Failed to detect language - {}", error))
-            .map(Utility::toDetectLanguageResultCollectionResponse)
+            .map(Utility::toDetectLanguageResultCollectionLegacyApi)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
@@ -147,24 +150,29 @@ class DetectLanguageAsyncClient {
         context = enableSyncRestProxy(getNotNullContext(context)
             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE));
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        return (service != null)
-            ? toDetectLanguageResultCollectionResponse2(service.analyzeTextWithResponse(
-                new AnalyzeTextLanguageDetectionInput()
-                    .setParameters(
-                        new LanguageDetectionTaskParameters()
-                            .setModelVersion(options.getModelVersion())
-                            .setLoggingOptOut(
-                                options.isServiceLogsDisabled()))
-                    .setAnalysisInput(new LanguageDetectionAnalysisInput()
-                        .setDocuments(toLanguageInput(documents))),
-                options.isIncludeStatistics(),
-                context))
-            : toDetectLanguageResultCollectionResponse(legacyService.languagesWithResponseSync(
-                new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-                options.getModelVersion(),
-                options.isIncludeStatistics(),
-                options.isServiceLogsDisabled(),
-                context));
+
+        try {
+            return (service != null)
+                ? toDetectLanguageResultCollectionLanguageApi(service.analyzeTextWithResponse(
+                    new AnalyzeTextLanguageDetectionInput()
+                        .setParameters(
+                            new LanguageDetectionTaskParameters()
+                                .setModelVersion(options.getModelVersion())
+                                .setLoggingOptOut(
+                                    options.isServiceLogsDisabled()))
+                        .setAnalysisInput(new LanguageDetectionAnalysisInput()
+                            .setDocuments(toLanguageInput(documents))),
+                    options.isIncludeStatistics(),
+                    context))
+                : toDetectLanguageResultCollectionLegacyApi(legacyService.languagesWithResponseSync(
+                    new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
+                    options.getModelVersion(),
+                    options.isIncludeStatistics(),
+                    options.isServiceLogsDisabled(),
+                    context));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+        }
     }
 
     private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {

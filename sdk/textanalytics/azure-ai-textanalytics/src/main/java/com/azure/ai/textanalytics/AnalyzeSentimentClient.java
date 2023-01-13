@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServi
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextSentimentAnalysisInput;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskParameters;
@@ -15,6 +16,7 @@ import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -40,20 +42,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing sentiment analysis endpoint.
  */
-class AnalyzeSentimentAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeSentimentAsyncClient.class);
+class AnalyzeSentimentClient {
+    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeSentimentClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    AnalyzeSentimentClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    AnalyzeSentimentClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
                                 TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
@@ -100,27 +102,26 @@ class AnalyzeSentimentAsyncClient {
         options = options == null ? new AnalyzeSentimentOptions() : options;
 
         if (service != null) {
-            return service
-                       .analyzeTextWithResponseAsync(
-                           new AnalyzeTextSentimentAnalysisInput()
-                               .setParameters(
-                                   new SentimentAnalysisTaskParameters()
-                                       .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                       .setOpinionMining(options.isIncludeOpinionMining())
-                                       .setModelVersion(options.getModelVersion())
-                                       .setLoggingOptOut(options.isServiceLogsDisabled()))
-                               .setAnalysisInput(
-                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                           options.isIncludeStatistics(),
-                           getNotNullContext(context)
-                               .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-                       .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                           getDocumentCount(documents)))
-                       .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}",
-                           response))
-                       .doOnError(error -> LOGGER.warning("Failed to analyze sentiment - {}", error))
-                       .map(Utility::toAnalyzeSentimentResultCollectionResponseLanguageApi)
-                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+            return service.analyzeTextWithResponseAsync(
+                new AnalyzeTextSentimentAnalysisInput()
+                    .setParameters(
+                        new SentimentAnalysisTaskParameters()
+                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                            .setOpinionMining(options.isIncludeOpinionMining())
+                            .setModelVersion(options.getModelVersion())
+                            .setLoggingOptOut(options.isServiceLogsDisabled()))
+                    .setAnalysisInput(
+                        new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                options.isIncludeStatistics(),
+                getNotNullContext(context)
+                    .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
+                    getDocumentCount(documents)))
+                .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}",
+                    response))
+                .doOnError(error -> LOGGER.warning("Failed to analyze sentiment - {}", error))
+                .map(Utility::toAnalyzeSentimentResultCollectionResponseLanguageApi)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
         return legacyService.sentimentWithResponseAsync(
@@ -179,8 +180,8 @@ class AnalyzeSentimentAsyncClient {
                     options.isIncludeOpinionMining(),
                     StringIndexType.UTF16CODE_UNIT,
                     context));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 

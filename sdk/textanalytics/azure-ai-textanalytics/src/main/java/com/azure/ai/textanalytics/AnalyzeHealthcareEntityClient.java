@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHea
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.CancelHealthJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthHeaders;
 import com.azure.ai.textanalytics.implementation.models.HealthcareDocumentType;
@@ -38,6 +39,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -81,21 +83,21 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class AnalyzeHealthcareEntityAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeHealthcareEntityAsyncClient.class);
+class AnalyzeHealthcareEntityClient {
+    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeHealthcareEntityClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl legacyService,
+    AnalyzeHealthcareEntityClient(TextAnalyticsClientImpl legacyService,
                                        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeHealthcareEntityAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
+    AnalyzeHealthcareEntityClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
         this.serviceVersion = serviceVersion;
@@ -246,8 +248,8 @@ class AnalyzeHealthcareEntityAsyncClient {
                     operationId -> getHealthcareEntitiesPagedIterable(operationId, null, null,
                         finalIncludeStatistics, finalContext))
             );
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 
@@ -301,21 +303,17 @@ class AnalyzeHealthcareEntityAsyncClient {
 
     PagedResponse<AnalyzeHealthcareEntitiesResultCollection> getPagedResultSync(String continuationToken,
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        try {
-            if (continuationToken != null) {
-                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-                top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-                skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-                showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-            }
-            return service != null
-                ? toHealthcarePagedResponse(service.jobStatusWithResponse(
-                operationId, showStats, top, skip, context))
-                : toTextAnalyticsPagedResponse(legacyService.healthStatusWithResponseSync(
-                operationId, top, skip, showStats, context));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(mapToHttpResponseExceptionIfExists(ex)));
+        if (continuationToken != null) {
+            final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
+            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
         }
+        return service != null
+            ? toHealthcarePagedResponse(service.jobStatusWithResponse(
+            operationId, showStats, top, skip, context))
+            : toTextAnalyticsPagedResponse(legacyService.healthStatusWithResponseSync(
+            operationId, top, skip, showStats, context));
     }
 
     private PagedResponse<AnalyzeHealthcareEntitiesResultCollection> toTextAnalyticsPagedResponse(
@@ -441,21 +439,17 @@ class AnalyzeHealthcareEntityAsyncClient {
         Iterable<TextDocumentInput> documents, String modelVersion, StringIndexType stringIndexType,
         boolean loggingOptOut, Context context) {
         return pollingContext -> {
-            try {
-                final ResponseBase<HealthHeaders, Void> analyzeResponse = legacyService.healthWithResponseSync(
-                    new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                    modelVersion,
-                    stringIndexType,
-                    loggingOptOut,
-                    context);
-                final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
-                    new AnalyzeHealthcareEntitiesOperationDetail();
-                AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationDetail;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError(ex);
-            }
+            final ResponseBase<HealthHeaders, Void> analyzeResponse = legacyService.healthWithResponseSync(
+                new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                modelVersion,
+                stringIndexType,
+                loggingOptOut,
+                context);
+            final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
+                new AnalyzeHealthcareEntitiesOperationDetail();
+            AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationDetail;
         };
     }
 
@@ -516,15 +510,11 @@ class AnalyzeHealthcareEntityAsyncClient {
         PollResponse<AnalyzeHealthcareEntitiesOperationDetail>> pollingOperationLegacyApiSync(
         Function<UUID, Response<HealthcareJobState>> pollingFunction) {
         return pollingContext -> {
-            try {
-                final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
-                final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
-                return processHealthcareJobResponseLegacyApi(pollingFunction.apply(operationId),
-                    operationResultPollResponse);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse =
+                pollingContext.getLatestResponse();
+            final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+            return processHealthcareJobResponseLegacyApi(pollingFunction.apply(operationId),
+                operationResultPollResponse);
         };
     }
 
@@ -603,17 +593,13 @@ class AnalyzeHealthcareEntityAsyncClient {
         cancelOperationLegacyApiSync(Function<UUID, ResponseBase<CancelHealthJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
-            try {
-                final ResponseBase<CancelHealthJobHeaders, Void> cancelResponse =
-                    cancelFunction.apply(resultUuid);
-                final AnalyzeHealthcareEntitiesOperationDetail operationResult =
-                            new AnalyzeHealthcareEntitiesOperationDetail();
-                AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
-                    parseOperationId(cancelResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationResult;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final ResponseBase<CancelHealthJobHeaders, Void> cancelResponse =
+                cancelFunction.apply(resultUuid);
+            final AnalyzeHealthcareEntitiesOperationDetail operationResult =
+                new AnalyzeHealthcareEntitiesOperationDetail();
+            AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
+                parseOperationId(cancelResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationResult;
         };
     }
 
@@ -643,12 +629,8 @@ class AnalyzeHealthcareEntityAsyncClient {
         AnalyzeHealthcareEntitiesPagedIterable> fetchingOperationIterable(
             final Function<UUID, AnalyzeHealthcareEntitiesPagedIterable> fetchingFunction) {
         return pollingContext -> {
-            try {
-                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
-                return fetchingFunction.apply(resultUuid);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
+            return fetchingFunction.apply(resultUuid);
         };
     }
 

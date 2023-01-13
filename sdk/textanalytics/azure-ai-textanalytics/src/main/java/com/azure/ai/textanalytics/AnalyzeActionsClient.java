@@ -57,6 +57,7 @@ import com.azure.ai.textanalytics.implementation.models.EntityLinkingTask;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.EntityRecognitionLROResult;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROTask;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
@@ -129,6 +130,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -181,7 +183,7 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class AnalyzeActionsAsyncClient {
+class AnalyzeActionsClient {
     // Legacy Tasks
     private static final String ENTITY_RECOGNITION_TASKS = "entityRecognitionTasks";
     private static final String ENTITY_RECOGNITION_PII_TASKS = "entityRecognitionPiiTasks";
@@ -219,7 +221,7 @@ class AnalyzeActionsAsyncClient {
             CUSTOM_ENTITY_RECOGNITION, CUSTOM_SINGLE_LABEL_CLASSIFICATION, CUSTOM_MULTI_LABEL_CLASSIFICATION);
 
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeActionsAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeActionsClient.class);
 
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
@@ -233,13 +235,13 @@ class AnalyzeActionsAsyncClient {
         PATTERN_LANGUAGE_API = Pattern.compile(REGEX_ACTION_ERROR_TARGET_LANGUAGE_API, Pattern.MULTILINE);
     }
 
-    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    AnalyzeActionsClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeActionsAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
+    AnalyzeActionsClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
         this.serviceVersion = serviceVersion;
@@ -366,8 +368,8 @@ class AnalyzeActionsAsyncClient {
                 fetchingOperationIterable(
                     operationId -> getAnalyzeOperationPageIterable(
                         operationId, null, null, finalIncludeStatistics, finalContext)));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 
@@ -812,22 +814,18 @@ class AnalyzeActionsAsyncClient {
         activationOperationLanguageApiSync(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
             Context context) {
         return pollingContext -> {
-            try {
-                final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                    service.submitJobWithResponse(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(actions.getDisplayName())
-                            .setAnalysisInput(new MultiLanguageAnalysisInput()
-                                .setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(getAnalyzeTextLROTasks(actions)),
-                        context);
-                final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
-                AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationDetail;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError(ex);
-            }
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
+                service.submitJobWithResponse(
+                    new AnalyzeTextJobsInput()
+                        .setDisplayName(actions.getDisplayName())
+                        .setAnalysisInput(new MultiLanguageAnalysisInput()
+                            .setDocuments(toMultiLanguageInput(documents)))
+                        .setTasks(getAnalyzeTextLROTasks(actions)),
+                    context);
+            final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
+            AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationDetail;
         };
     }
 
@@ -835,21 +833,17 @@ class AnalyzeActionsAsyncClient {
         activationOperationLegacyApiSync(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
             Context context) {
         return pollingContext -> {
-            try {
-                final AnalyzeBatchInput analyzeBatchInput =
-                    new AnalyzeBatchInput()
-                        .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                        .setTasks(getJobManifestTasks(actions));
-                analyzeBatchInput.setDisplayName(actions.getDisplayName());
-                final ResponseBase<AnalyzeHeaders, Void> analyzeResponse =
-                    legacyService.analyzeWithResponseSync(analyzeBatchInput, context);
-                final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
-                AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationDetail;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError(ex);
-            }
+            final AnalyzeBatchInput analyzeBatchInput =
+                new AnalyzeBatchInput()
+                    .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(getJobManifestTasks(actions));
+            analyzeBatchInput.setDisplayName(actions.getDisplayName());
+            final ResponseBase<AnalyzeHeaders, Void> analyzeResponse =
+                legacyService.analyzeWithResponseSync(analyzeBatchInput, context);
+            final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
+            AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationDetail;
         };
     }
 
@@ -890,30 +884,22 @@ class AnalyzeActionsAsyncClient {
     private Function<PollingContext<AnalyzeActionsOperationDetail>, PollResponse<AnalyzeActionsOperationDetail>>
         pollingOperationLanguageApiSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            try {
-                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
-                final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
-                return processAnalyzedModelResponseLanguageApi(pollingFunction.apply(operationId),
-                    operationResultPollResponse);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
+                pollingContext.getLatestResponse();
+            final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+            return processAnalyzedModelResponseLanguageApi(pollingFunction.apply(operationId),
+                operationResultPollResponse);
         };
     }
 
     private Function<PollingContext<AnalyzeActionsOperationDetail>, PollResponse<AnalyzeActionsOperationDetail>>
         pollingOperationLegacyApiSync(Function<UUID, Response<AnalyzeJobState>> pollingFunction) {
         return pollingContext -> {
-            try {
-                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
-                final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
-                return processAnalyzedModelResponse(pollingFunction.apply(operationId),
-                    operationResultPollResponse);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
+                pollingContext.getLatestResponse();
+            final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+            return processAnalyzedModelResponse(pollingFunction.apply(operationId),
+                operationResultPollResponse);
         };
     }
 
@@ -932,12 +918,8 @@ class AnalyzeActionsAsyncClient {
     private Function<PollingContext<AnalyzeActionsOperationDetail>, AnalyzeActionsResultPagedIterable>
         fetchingOperationIterable(Function<UUID, AnalyzeActionsResultPagedIterable> fetchingFunction) {
         return pollingContext -> {
-            try {
-                final UUID operationId = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
-                return fetchingFunction.apply(operationId);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final UUID operationId = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
+            return fetchingFunction.apply(operationId);
         };
     }
 
@@ -957,21 +939,17 @@ class AnalyzeActionsAsyncClient {
 
     PagedResponse<AnalyzeActionsResult> getPageSync(String continuationToken, UUID operationId, Integer top,
         Integer skip, boolean showStats, Context context) {
-        try {
-            if (continuationToken != null) {
-                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-                top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-                skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-                showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-            }
-            return service != null
-                ? toAnalyzeActionsResultPagedResponseLanguageApi(service.jobStatusWithResponse(
-                operationId, showStats, top, skip, context))
-                : toAnalyzeActionsResultPagedResponseLegacyApi(legacyService.analyzeStatusWithResponseSync(
-                operationId.toString(), showStats, top, skip, context));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(mapToHttpResponseExceptionIfExists(ex)));
+        if (continuationToken != null) {
+            final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
+            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
         }
+        return service != null
+            ? toAnalyzeActionsResultPagedResponseLanguageApi(service.jobStatusWithResponse(
+            operationId, showStats, top, skip, context))
+            : toAnalyzeActionsResultPagedResponseLegacyApi(legacyService.analyzeStatusWithResponseSync(
+            operationId.toString(), showStats, top, skip, context));
     }
 
     Mono<PagedResponse<AnalyzeActionsResult>> getPage(String continuationToken, UUID operationId, Integer top,

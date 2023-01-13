@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextEntityLinkingInput;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
@@ -17,6 +18,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -46,21 +48,21 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing recognize linked entity endpoint.
  */
-class RecognizeLinkedEntityAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RecognizeLinkedEntityAsyncClient.class);
+class RecognizeLinkedEntityClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RecognizeLinkedEntityClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl legacyService,
+    RecognizeLinkedEntityClient(TextAnalyticsClientImpl legacyService,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    RecognizeLinkedEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    RecognizeLinkedEntityClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
@@ -215,8 +217,8 @@ class RecognizeLinkedEntityAsyncClient {
                         finalLoggingOptOut,
                         finalStringIndexType,
                         finalContext));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 

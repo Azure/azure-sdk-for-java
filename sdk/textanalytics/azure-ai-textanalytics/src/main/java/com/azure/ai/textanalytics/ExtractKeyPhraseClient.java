@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServi
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextKeyPhraseExtractionInput;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
@@ -16,6 +17,7 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -34,9 +36,9 @@ import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedSe
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
-import static com.azure.ai.textanalytics.implementation.Utility.toResultCollectionResponseLegacyApi;
-import static com.azure.ai.textanalytics.implementation.Utility.toResultCollectionResponseLanguageApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toResultCollectionResponseLanguageApi;
+import static com.azure.ai.textanalytics.implementation.Utility.toResultCollectionResponseLegacyApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -45,20 +47,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing extract key phrase endpoint.
  */
-class ExtractKeyPhraseAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
+class ExtractKeyPhraseClient {
+    private static final ClientLogger LOGGER = new ClientLogger(ExtractKeyPhraseClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    ExtractKeyPhraseClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    ExtractKeyPhraseAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    ExtractKeyPhraseClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
@@ -197,8 +199,8 @@ class ExtractKeyPhraseAsyncClient {
                     options.isIncludeStatistics(),
                     options.isServiceLogsDisabled(),
                     getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 

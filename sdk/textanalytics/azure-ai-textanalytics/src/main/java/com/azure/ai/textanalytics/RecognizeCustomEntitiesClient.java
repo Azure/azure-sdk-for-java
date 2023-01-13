@@ -20,6 +20,7 @@ import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.CustomEntityRecognitionLROResult;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.State;
@@ -32,6 +33,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -74,15 +76,14 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class RecognizeCustomEntitiesAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RecognizeCustomEntitiesAsyncClient.class);
+class RecognizeCustomEntitiesClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RecognizeCustomEntitiesClient.class);
 
     private final AnalyzeTextsImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    RecognizeCustomEntitiesAsyncClient(AnalyzeTextsImpl service,
-                                       TextAnalyticsServiceVersion serviceVersion) {
+    RecognizeCustomEntitiesClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
@@ -176,8 +177,8 @@ class RecognizeCustomEntitiesAsyncClient {
                 fetchingOperationSync(
                     operationId -> getRecognizeCustomEntitiesPagedIterable(operationId, null, null,
                         finalIncludeStatistics, finalContext)));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 
@@ -220,17 +221,13 @@ class RecognizeCustomEntitiesAsyncClient {
 
     PagedResponse<RecognizeCustomEntitiesResultCollection> getPagedResultSync(String continuationToken,
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        try {
-            if (continuationToken != null) {
-                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-                top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-                skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-                showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-            }
-            return toCustomEntitiesPagedResponse(service.jobStatusWithResponse(operationId, showStats, top, skip, context));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(mapToHttpResponseExceptionIfExists(ex)));
+        if (continuationToken != null) {
+            final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
+            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
         }
+        return toCustomEntitiesPagedResponse(service.jobStatusWithResponse(operationId, showStats, top, skip, context));
     }
 
     private PagedResponse<RecognizeCustomEntitiesResultCollection> toCustomEntitiesPagedResponse(
@@ -290,23 +287,19 @@ class RecognizeCustomEntitiesAsyncClient {
         activationOperationSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
             Context context) {
         return pollingContext -> {
-            try {
-                final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                    service.submitJobWithResponse(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(new MultiLanguageAnalysisInput()
-                                .setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(task)),
-                        context);
-                final RecognizeCustomEntitiesOperationDetail operationDetail =
-                    new RecognizeCustomEntitiesOperationDetail();
-                RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationDetail;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError(ex);
-            }
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
+                service.submitJobWithResponse(
+                    new AnalyzeTextJobsInput()
+                        .setDisplayName(displayName)
+                        .setAnalysisInput(new MultiLanguageAnalysisInput()
+                            .setDocuments(toMultiLanguageInput(documents)))
+                        .setTasks(Arrays.asList(task)),
+                    context);
+            final RecognizeCustomEntitiesOperationDetail operationDetail =
+                new RecognizeCustomEntitiesOperationDetail();
+            RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationDetail;
         };
     }
 
@@ -333,14 +326,10 @@ class RecognizeCustomEntitiesAsyncClient {
         PollResponse<RecognizeCustomEntitiesOperationDetail>> pollingOperationTextJobSync(
         Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            try {
-                final PollResponse<RecognizeCustomEntitiesOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
-                final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
-                return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final PollResponse<RecognizeCustomEntitiesOperationDetail> operationResultPollResponse =
+                pollingContext.getLatestResponse();
+            final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+            return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
     }
 
@@ -362,12 +351,8 @@ class RecognizeCustomEntitiesAsyncClient {
         RecognizeCustomEntitiesPagedIterable> fetchingOperationSync(
         final Function<UUID, RecognizeCustomEntitiesPagedIterable> fetchingFunction) {
         return pollingContext -> {
-            try {
-                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
-                return fetchingFunction.apply(resultUuid);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
+            return fetchingFunction.apply(resultUuid);
         };
     }
 
@@ -398,16 +383,12 @@ class RecognizeCustomEntitiesAsyncClient {
         cancelOperationTextJobSync(Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
-            try {
-                ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
-                final RecognizeCustomEntitiesOperationDetail operationResult =
-                    new RecognizeCustomEntitiesOperationDetail();
-                RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
-                    parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationResult;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
+            final RecognizeCustomEntitiesOperationDetail operationResult =
+                new RecognizeCustomEntitiesOperationDetail();
+            RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
+                parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationResult;
         };
     }
 

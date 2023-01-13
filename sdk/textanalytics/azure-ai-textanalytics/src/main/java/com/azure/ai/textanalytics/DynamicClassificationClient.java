@@ -8,10 +8,12 @@ import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextDynamicClassificationInput;
 import com.azure.ai.textanalytics.implementation.models.ClassificationType;
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -38,14 +40,14 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing dynamic classification endpoints.
  */
-class DynamicClassificationAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(DynamicClassificationAsyncClient.class);
+class DynamicClassificationClient {
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicClassificationClient.class);
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    DynamicClassificationAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
-                                     TextAnalyticsServiceVersion serviceVersion) {
+    DynamicClassificationClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
@@ -122,8 +124,8 @@ class DynamicClassificationAsyncClient {
                     .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
                 getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(mapToHttpResponseExceptionIfExists(ex)));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 

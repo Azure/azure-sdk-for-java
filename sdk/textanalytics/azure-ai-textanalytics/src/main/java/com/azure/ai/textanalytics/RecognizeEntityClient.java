@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextEntityRecognitionInput;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
@@ -17,6 +18,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -36,7 +38,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsVa
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
+import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponseLegacyApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponseLanguageApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -46,20 +48,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing recognize entity endpoint.
  */
-class RecognizeEntityAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RecognizeEntityAsyncClient.class);
+class RecognizeEntityClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RecognizeEntityClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    RecognizeEntityAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    RecognizeEntityClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    RecognizeEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    RecognizeEntityClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
@@ -170,7 +172,7 @@ class RecognizeEntityAsyncClient {
             .doOnSuccess(response -> LOGGER.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> LOGGER.warning("Failed to recognize entities - {}", error))
-            .map(Utility::toRecognizeEntitiesResultCollectionResponse)
+            .map(Utility::toRecognizeEntitiesResultCollectionResponseLegacyApi)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
@@ -209,15 +211,15 @@ class RecognizeEntityAsyncClient {
                             .setDocuments(toMultiLanguageInput(documents))),
                     finalIncludeStatistics,
                     finalContext))
-                : toRecognizeEntitiesResultCollectionResponse(legacyService.entitiesRecognitionGeneralWithResponseSync(
+                : toRecognizeEntitiesResultCollectionResponseLegacyApi(legacyService.entitiesRecognitionGeneralWithResponseSync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                     finalModelVersion,
                     finalIncludeStatistics,
                     finalLoggingOptOut,
                     finalStringIndexType,
                     finalContext));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 

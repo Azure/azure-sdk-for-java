@@ -22,6 +22,7 @@ import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassif
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationLROTask;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.State;
@@ -35,6 +36,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -77,13 +79,13 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class LabelClassifyAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(LabelClassifyAsyncClient.class);
+class LabelClassifyClient {
+    private static final ClientLogger LOGGER = new ClientLogger(LabelClassifyClient.class);
     private final AnalyzeTextsImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    LabelClassifyAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
+    LabelClassifyClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
@@ -174,8 +176,8 @@ class LabelClassifyAsyncClient {
                     operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
                         finalIncludeStatistics, finalContext))
             );
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 
@@ -264,8 +266,8 @@ class LabelClassifyAsyncClient {
                 fetchingOperationSync(
                     operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
                         finalIncludeStatistics, finalContext)));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 
@@ -307,18 +309,14 @@ class LabelClassifyAsyncClient {
 
     PagedResponse<ClassifyDocumentResultCollection> getPagedResultSync(String continuationToken,
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        try {
-            if (continuationToken != null) {
-                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-                top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-                skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-                showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-            }
-            return toClassifyDocumentResultCollectionPagedResponse(service.jobStatusWithResponse(
-                operationId, showStats, top, skip, context));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(mapToHttpResponseExceptionIfExists(ex)));
+        if (continuationToken != null) {
+            final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
+            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
         }
+        return toClassifyDocumentResultCollectionPagedResponse(service.jobStatusWithResponse(
+            operationId, showStats, top, skip, context));
     }
 
     private PagedResponse<ClassifyDocumentResultCollection> toClassifyDocumentResultCollectionPagedResponse(
@@ -390,23 +388,18 @@ class LabelClassifyAsyncClient {
         activationOperationSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
             Context context) {
         return pollingContext -> {
-            try {
-                final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                    service.submitJobWithResponse(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(new MultiLanguageAnalysisInput()
-                                .setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(task)),
-                        context);
-                final ClassifyDocumentOperationDetail operationDetail =
-                    new ClassifyDocumentOperationDetail();
-                ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationDetail;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError(ex);
-            }
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
+                service.submitJobWithResponse(
+                    new AnalyzeTextJobsInput()
+                        .setDisplayName(displayName)
+                        .setAnalysisInput(new MultiLanguageAnalysisInput()
+                            .setDocuments(toMultiLanguageInput(documents)))
+                        .setTasks(Arrays.asList(task)),
+                    context);
+            final ClassifyDocumentOperationDetail operationDetail = new ClassifyDocumentOperationDetail();
+            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationDetail;
         };
     }
 
@@ -433,14 +426,10 @@ class LabelClassifyAsyncClient {
         PollResponse<ClassifyDocumentOperationDetail>> pollingOperationTextJobSync(
         Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            try {
-                final PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
-                final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
-                return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse =
+                pollingContext.getLatestResponse();
+            final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+            return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
     }
 
@@ -462,12 +451,8 @@ class LabelClassifyAsyncClient {
         ClassifyDocumentPagedIterable> fetchingOperationSync(
         final Function<UUID, ClassifyDocumentPagedIterable> fetchingFunction) {
         return pollingContext -> {
-            try {
-                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
-                return fetchingFunction.apply(resultUuid);
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
+            return fetchingFunction.apply(resultUuid);
         };
     }
 
@@ -498,15 +483,11 @@ class LabelClassifyAsyncClient {
         Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
-            try {
-                ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
-                final ClassifyDocumentOperationDetail operationResult = new ClassifyDocumentOperationDetail();
-                ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationResult,
-                    parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
-                return operationResult;
-            } catch (RuntimeException ex) {
-                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
-            }
+            ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
+            final ClassifyDocumentOperationDetail operationResult = new ClassifyDocumentOperationDetail();
+            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationResult,
+                parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationResult;
         };
     }
 

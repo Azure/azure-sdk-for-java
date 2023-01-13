@@ -431,7 +431,7 @@ public final class Utility {
     }
 
     // Detect Language
-    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse(
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionLegacyApi(
         Response<LanguageResult> response) {
         final LanguageResult languageResult = response.getValue();
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
@@ -465,7 +465,7 @@ public final class Utility {
                 languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
     }
 
-    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionResponse2(
+    public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionLanguageApi(
         Response<AnalyzeTextTaskResult> response) {
         final LanguageDetectionResult languageResult =
             ((LanguageDetectionTaskResult) response.getValue()).getResults();
@@ -630,7 +630,7 @@ public final class Utility {
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
     }
 
-    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponse(
+    public static Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponseLegacyApi(
         final Response<EntitiesResult> response) {
         EntitiesResult entitiesResult = response.getValue();
         return new SimpleResponse<>(response,
