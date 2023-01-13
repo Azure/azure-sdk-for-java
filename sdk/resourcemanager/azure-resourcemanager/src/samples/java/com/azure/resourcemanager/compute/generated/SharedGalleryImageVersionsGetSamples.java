@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SharedGalleryImageVersions Get. */
 public final class SharedGalleryImageVersionsGetSamples {
     /*
@@ -23,6 +21,10 @@ public final class SharedGalleryImageVersionsGetSamples {
             .serviceClient()
             .getSharedGalleryImageVersions()
             .getWithResponse(
-                "myLocation", "galleryUniqueName", "myGalleryImageName", "myGalleryImageVersionName", Context.NONE);
+                "myLocation",
+                "galleryUniqueName",
+                "myGalleryImageName",
+                "myGalleryImageVersionName",
+                com.azure.core.util.Context.NONE);
     }
 }

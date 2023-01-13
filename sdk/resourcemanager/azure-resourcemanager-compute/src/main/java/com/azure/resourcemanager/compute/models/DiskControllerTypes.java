@@ -24,6 +24,15 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
     public static final DiskControllerTypes NVME = fromString("NVMe");
 
     /**
+     * Creates a new instance of DiskControllerTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskControllerTypes() {
+    }
+
+    /**
      * Creates or finds a DiskControllerTypes from its string representation.
      *
      * @param name a name to look for.

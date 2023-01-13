@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Galleries Delete. */
 public final class GalleriesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class GalleriesDeleteSamples {
             .manager()
             .serviceClient()
             .getGalleries()
-            .delete("myResourceGroup", "myGalleryName", Context.NONE);
+            .delete("myResourceGroup", "myGalleryName", com.azure.core.util.Context.NONE);
     }
 }

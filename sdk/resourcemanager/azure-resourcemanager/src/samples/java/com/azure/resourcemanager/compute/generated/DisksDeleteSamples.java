@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Disks Delete. */
 public final class DisksDeleteSamples {
     /*
@@ -17,6 +15,11 @@ public final class DisksDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAManagedDisk(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().delete("myResourceGroup", "myDisk", Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .delete("myResourceGroup", "myDisk", com.azure.core.util.Context.NONE);
     }
 }

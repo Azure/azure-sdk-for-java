@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.databox.fluent.models.UpdateJobProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The JobResourceUpdateParameter. */
-@JsonFlatten
 @Fluent
-public class JobResourceUpdateParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobResourceUpdateParameter.class);
+public final class JobResourceUpdateParameter {
+    /*
+     * Properties of a job to be updated.
+     */
+    @JsonProperty(value = "properties")
+    private UpdateJobProperties innerProperties;
 
     /*
-     * The list of key value pairs that describe the resource. These tags can
-     * be used in viewing and grouping this resource (across resource groups).
+     * The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
+     * resource (across resource groups).
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -30,11 +33,18 @@ public class JobResourceUpdateParameter {
     @JsonProperty(value = "identity")
     private ResourceIdentity identity;
 
-    /*
-     * Details of a job to be updated.
+    /** Creates an instance of JobResourceUpdateParameter class. */
+    public JobResourceUpdateParameter() {
+    }
+
+    /**
+     * Get the innerProperties property: Properties of a job to be updated.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.details")
-    private UpdateJobDetails details;
+    private UpdateJobProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: The list of key value pairs that describe the resource. These tags can be used in viewing
@@ -84,7 +94,7 @@ public class JobResourceUpdateParameter {
      * @return the details value.
      */
     public UpdateJobDetails details() {
-        return this.details;
+        return this.innerProperties() == null ? null : this.innerProperties().details();
     }
 
     /**
@@ -94,7 +104,10 @@ public class JobResourceUpdateParameter {
      * @return the JobResourceUpdateParameter object itself.
      */
     public JobResourceUpdateParameter withDetails(UpdateJobDetails details) {
-        this.details = details;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateJobProperties();
+        }
+        this.innerProperties().withDetails(details);
         return this;
     }
 
@@ -104,11 +117,11 @@ public class JobResourceUpdateParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (details() != null) {
-            details().validate();
         }
     }
 }

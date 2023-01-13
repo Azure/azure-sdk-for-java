@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskAccesses GetPrivateLinkResources. */
 public final class DiskAccessesGetPrivateLinkResourcesSamples {
     /*
@@ -23,6 +21,6 @@ public final class DiskAccessesGetPrivateLinkResourcesSamples {
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .getPrivateLinkResourcesWithResponse("myResourceGroup", "myDiskAccess", Context.NONE);
+            .getPrivateLinkResourcesWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

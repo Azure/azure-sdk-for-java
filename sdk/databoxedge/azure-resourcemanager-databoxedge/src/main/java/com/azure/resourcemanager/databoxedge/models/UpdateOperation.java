@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpdateOperation. */
+/** The current update operation. */
 public final class UpdateOperation extends ExpandableStringEnum<UpdateOperation> {
     /** Static value None for UpdateOperation. */
     public static final UpdateOperation NONE = fromString("None");
@@ -23,6 +23,15 @@ public final class UpdateOperation extends ExpandableStringEnum<UpdateOperation>
     public static final UpdateOperation INSTALL = fromString("Install");
 
     /**
+     * Creates a new instance of UpdateOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpdateOperation() {
+    }
+
+    /**
      * Creates or finds a UpdateOperation from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class UpdateOperation extends ExpandableStringEnum<UpdateOperation>
         return fromString(name, UpdateOperation.class);
     }
 
-    /** @return known UpdateOperation values. */
+    /**
+     * Gets known UpdateOperation values.
+     *
+     * @return known UpdateOperation values.
+     */
     public static Collection<UpdateOperation> values() {
         return values(UpdateOperation.class);
     }

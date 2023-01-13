@@ -16,12 +16,14 @@ public interface Kpis {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KPI in the hub.
+     * @return a KPI in the hub along with {@link Response}.
      */
-    KpiResourceFormat get(String resourceGroupName, String hubName, String kpiName);
+    Response<KpiResourceFormat> getWithResponse(
+        String resourceGroupName, String hubName, String kpiName, Context context);
 
     /**
      * Gets a KPI in the hub.
@@ -29,14 +31,12 @@ public interface Kpis {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KPI in the hub.
      */
-    Response<KpiResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String kpiName, Context context);
+    KpiResourceFormat get(String resourceGroupName, String hubName, String kpiName);
 
     /**
      * Deletes a KPI in the hub.
@@ -69,11 +69,13 @@ public interface Kpis {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
-    void reprocess(String resourceGroupName, String hubName, String kpiName);
+    Response<Void> reprocessWithResponse(String resourceGroupName, String hubName, String kpiName, Context context);
 
     /**
      * Reprocesses the Kpi values of the specified KPI.
@@ -81,13 +83,11 @@ public interface Kpis {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> reprocessWithResponse(String resourceGroupName, String hubName, String kpiName, Context context);
+    void reprocess(String resourceGroupName, String hubName, String kpiName);
 
     /**
      * Gets all the KPIs in the specified hub.
@@ -97,7 +97,7 @@ public interface Kpis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the KPIs in the specified hub.
+     * @return all the KPIs in the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KpiResourceFormat> listByHub(String resourceGroupName, String hubName);
 
@@ -110,7 +110,7 @@ public interface Kpis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the KPIs in the specified hub.
+     * @return all the KPIs in the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KpiResourceFormat> listByHub(String resourceGroupName, String hubName, Context context);
 
@@ -121,7 +121,7 @@ public interface Kpis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KPI in the hub.
+     * @return a KPI in the hub along with {@link Response}.
      */
     KpiResourceFormat getById(String id);
 
@@ -133,7 +133,7 @@ public interface Kpis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KPI in the hub.
+     * @return a KPI in the hub along with {@link Response}.
      */
     Response<KpiResourceFormat> getByIdWithResponse(String id, Context context);
 

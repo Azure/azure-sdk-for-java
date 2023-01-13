@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServices GetByResourceGroup. */
 public final class CloudServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Get_WithMultiRoleAndRDP.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_Get_WithMultiRoleAndRDP.json
      */
     /**
      * Sample code: Get Cloud Service with Multiple Roles and RDP Extension.
@@ -23,6 +21,6 @@ public final class CloudServicesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getCloudServices()
-            .getByResourceGroupWithResponse("ConstosoRG", "{cs-name}", Context.NONE);
+            .getByResourceGroupWithResponse("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

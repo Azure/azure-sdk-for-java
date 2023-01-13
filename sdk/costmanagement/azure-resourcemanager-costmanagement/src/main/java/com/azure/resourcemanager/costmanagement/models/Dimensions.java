@@ -29,7 +29,7 @@ public interface Dimensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Dimension> list(String scope);
 
@@ -62,7 +62,7 @@ public interface Dimensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Dimension> list(
         String scope, String filter, String expand, String skiptoken, Integer top, Context context);
@@ -78,7 +78,7 @@ public interface Dimensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Dimension> byExternalCloudProviderType(
         ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId);
@@ -103,7 +103,7 @@ public interface Dimensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing dimensions.
+     * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Dimension> byExternalCloudProviderType(
         ExternalCloudProviderType externalCloudProviderType,

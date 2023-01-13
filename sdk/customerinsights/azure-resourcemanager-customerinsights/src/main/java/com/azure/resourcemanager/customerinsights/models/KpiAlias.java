@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KPI alias. */
 @Fluent
 public final class KpiAlias {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiAlias.class);
-
     /*
      * KPI alias name.
      */
@@ -25,6 +22,10 @@ public final class KpiAlias {
      */
     @JsonProperty(value = "expression", required = true)
     private String expression;
+
+    /** Creates an instance of KpiAlias class. */
+    public KpiAlias() {
+    }
 
     /**
      * Get the aliasName property: KPI alias name.
@@ -73,14 +74,16 @@ public final class KpiAlias {
      */
     public void validate() {
         if (aliasName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property aliasName in model KpiAlias"));
         }
         if (expression() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property expression in model KpiAlias"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KpiAlias.class);
 }

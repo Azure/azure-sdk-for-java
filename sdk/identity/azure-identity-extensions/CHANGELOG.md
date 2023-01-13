@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2023-01-11)
+
+This is the 1.1.0 GA version of Azure identity extensions library for Java.
+
+### Dependency Updates
+
+- Upgrade Azure Identity to 1.7.3.
 
 ## 1.0.0 (2022-12-05)
 

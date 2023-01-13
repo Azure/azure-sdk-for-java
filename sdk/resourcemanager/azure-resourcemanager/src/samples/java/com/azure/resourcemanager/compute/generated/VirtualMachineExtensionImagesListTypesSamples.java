@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineExtensionImages ListTypes. */
 public final class VirtualMachineExtensionImagesListTypesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExtensionImageExamples/VirtualMachineExtensionImages_ListTypes_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExtensionImageExamples/VirtualMachineExtensionImages_ListTypes_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensionImages_ListTypes_MaximumSet_Gen.
@@ -23,11 +21,12 @@ public final class VirtualMachineExtensionImagesListTypesSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineExtensionImages()
-            .listTypesWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .listTypesWithResponse(
+                "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExtensionImageExamples/VirtualMachineExtensionImages_ListTypes_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExtensionImageExamples/VirtualMachineExtensionImages_ListTypes_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensionImages_ListTypes_MinimumSet_Gen.
@@ -41,6 +40,6 @@ public final class VirtualMachineExtensionImagesListTypesSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineExtensionImages()
-            .listTypesWithResponse("aaaa", "aa", Context.NONE);
+            .listTypesWithResponse("aaaa", "aa", com.azure.core.util.Context.NONE);
     }
 }

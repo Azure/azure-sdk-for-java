@@ -23,6 +23,15 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
     public static final LinuxVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
+     * Creates a new instance of LinuxVMGuestPatchMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinuxVMGuestPatchMode() {
+    }
+
+    /**
      * Creates or finds a LinuxVMGuestPatchMode from its string representation.
      *
      * @param name a name to look for.

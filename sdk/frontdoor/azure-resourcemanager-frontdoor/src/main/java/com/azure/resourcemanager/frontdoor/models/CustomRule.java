@@ -6,15 +6,12 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines contents of a web application rule. */
 @Fluent
 public final class CustomRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomRule.class);
-
     /*
      * Describes the name of the rule.
      */
@@ -22,15 +19,13 @@ public final class CustomRule {
     private String name;
 
     /*
-     * Describes priority of the rule. Rules with a lower value will be
-     * evaluated before rules with a higher value.
+     * Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
      */
     @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
-     * Describes if the custom rule is in enabled or disabled state. Defaults
-     * to Enabled if not specified.
+     * Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
      */
     @JsonProperty(value = "enabledState")
     private CustomRuleEnabledState enabledState;
@@ -64,6 +59,10 @@ public final class CustomRule {
      */
     @JsonProperty(value = "action", required = true)
     private ActionType action;
+
+    /** Creates an instance of CustomRule class. */
+    public CustomRule() {
+    }
 
     /**
      * Get the name property: Describes the name of the rule.
@@ -236,21 +235,23 @@ public final class CustomRule {
      */
     public void validate() {
         if (ruleType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ruleType in model CustomRule"));
         }
         if (matchConditions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property matchConditions in model CustomRule"));
         } else {
             matchConditions().forEach(e -> e.validate());
         }
         if (action() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property action in model CustomRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomRule.class);
 }

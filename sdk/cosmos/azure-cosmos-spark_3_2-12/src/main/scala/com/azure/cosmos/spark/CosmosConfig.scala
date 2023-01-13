@@ -624,7 +624,8 @@ private object CosmosPatchOperationTypes extends Enumeration {
 
 private case class CosmosPatchColumnConfig(columnName: String,
                                            operationType: CosmosPatchOperationTypes,
-                                           mappingPath: String)
+                                           mappingPath: String,
+                                           isRawJson: Boolean)
 
 private case class CosmosPatchConfigs(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                                       filter: Option[String] = None)
@@ -744,9 +745,10 @@ private object CosmosWriteConfig {
              // col[(](.*?)[)]: column name match
              // ([.]path[(](.*)[)])*: mapping path match, it is optional
              // [.]op[(](.*)[)]: patch operation mapping
-             val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)]$""".r
+             // (.rawJson$|$): optional .rawJson suffix to indicate that the col(column) contains raw json
+             val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)](.rawJson$|$)""".r
              columnConfigString match {
-               case operationConfigaRegx(columnName, _, path, operationTypeString) =>
+               case operationConfigaRegx(columnName, _, path, operationTypeString, rawJsonSuffix) =>
                  assertNotNullOrEmpty(columnName, "columnName")
                  assertNotNullOrEmpty(operationTypeString, "operationTypeString")
 
@@ -757,11 +759,14 @@ private object CosmosWriteConfig {
                    mappingPath = s"/$columnName"
                  }
 
+                 val isRawJson = !rawJsonSuffix.isEmpty
                  val columnConfig =
                    CosmosPatchColumnConfig(
                      columnName = columnName,
                      operationType = CosmosConfigEntry.parseEnumeration(operationTypeString, CosmosPatchOperationTypes),
-                     mappingPath = mappingPath)
+                     mappingPath = mappingPath,
+                     isRawJson
+                   )
 
                  columnConfigMap += (columnConfigMap.get(columnName) match {
                    case Some(_: CosmosPatchColumnConfig) => throw new IllegalStateException(s"Duplicate config for the same column $columnName")
@@ -823,7 +828,7 @@ private object CosmosWriteConfig {
           userDefinedPatchColumnConfigMap.remove(schemaField.name)
         case None =>
           // There is no customer specified column config, create one based on the default config
-          val newColumnConfig = CosmosPatchColumnConfig(schemaField.name, defaultPatchOperationType.get, s"/${schemaField.name}")
+          val newColumnConfig = CosmosPatchColumnConfig(schemaField.name, defaultPatchOperationType.get, s"/${schemaField.name}", false)
           aggregatedPatchColumnConfigMap += schemaField.name -> validatePatchColumnConfig(newColumnConfig, schemaField.dataType)
       }
     })

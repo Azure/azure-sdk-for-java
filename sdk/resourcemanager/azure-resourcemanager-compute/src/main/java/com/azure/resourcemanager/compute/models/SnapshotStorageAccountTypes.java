@@ -20,6 +20,15 @@ public final class SnapshotStorageAccountTypes extends ExpandableStringEnum<Snap
     public static final SnapshotStorageAccountTypes STANDARD_ZRS = fromString("Standard_ZRS");
 
     /**
+     * Creates a new instance of SnapshotStorageAccountTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SnapshotStorageAccountTypes() {
+    }
+
+    /**
      * Creates or finds a SnapshotStorageAccountTypes from its string representation.
      *
      * @param name a name to look for.

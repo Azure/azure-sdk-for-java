@@ -11,10 +11,9 @@ import com.azure.resourcemanager.frontdoor.fluent.PreconfiguredEndpointsClient;
 import com.azure.resourcemanager.frontdoor.fluent.models.PreconfiguredEndpointInner;
 import com.azure.resourcemanager.frontdoor.models.PreconfiguredEndpoint;
 import com.azure.resourcemanager.frontdoor.models.PreconfiguredEndpoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PreconfiguredEndpointsImpl implements PreconfiguredEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreconfiguredEndpointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PreconfiguredEndpointsImpl.class);
 
     private final PreconfiguredEndpointsClient innerClient;
 

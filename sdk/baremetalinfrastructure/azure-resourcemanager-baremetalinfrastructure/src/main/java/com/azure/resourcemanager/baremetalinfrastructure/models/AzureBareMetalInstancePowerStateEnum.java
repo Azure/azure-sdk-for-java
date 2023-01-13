@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureBareMetalInstancePowerStateEnum. */
+/** Resource power state. */
 public final class AzureBareMetalInstancePowerStateEnum
     extends ExpandableStringEnum<AzureBareMetalInstancePowerStateEnum> {
     /** Static value starting for AzureBareMetalInstancePowerStateEnum. */
@@ -30,6 +30,15 @@ public final class AzureBareMetalInstancePowerStateEnum
     public static final AzureBareMetalInstancePowerStateEnum UNKNOWN = fromString("unknown");
 
     /**
+     * Creates a new instance of AzureBareMetalInstancePowerStateEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureBareMetalInstancePowerStateEnum() {
+    }
+
+    /**
      * Creates or finds a AzureBareMetalInstancePowerStateEnum from its string representation.
      *
      * @param name a name to look for.
@@ -40,7 +49,11 @@ public final class AzureBareMetalInstancePowerStateEnum
         return fromString(name, AzureBareMetalInstancePowerStateEnum.class);
     }
 
-    /** @return known AzureBareMetalInstancePowerStateEnum values. */
+    /**
+     * Gets known AzureBareMetalInstancePowerStateEnum values.
+     *
+     * @return known AzureBareMetalInstancePowerStateEnum values.
+     */
     public static Collection<AzureBareMetalInstancePowerStateEnum> values() {
         return values(AzureBareMetalInstancePowerStateEnum.class);
     }

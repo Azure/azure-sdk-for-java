@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Category. */
+/** Identity system of the device. */
 public final class Category extends ExpandableStringEnum<Category> {
     /** Static value AzureAD for Category. */
     public static final Category AZURE_AD = fromString("AzureAD");
 
     /** Static value ADFS for Category. */
     public static final Category ADFS = fromString("ADFS");
+
+    /**
+     * Creates a new instance of Category value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Category() {
+    }
 
     /**
      * Creates or finds a Category from its string representation.
@@ -27,7 +36,11 @@ public final class Category extends ExpandableStringEnum<Category> {
         return fromString(name, Category.class);
     }
 
-    /** @return known Category values. */
+    /**
+     * Gets known Category values.
+     *
+     * @return known Category values.
+     */
     public static Collection<Category> values() {
         return values(Category.class);
     }

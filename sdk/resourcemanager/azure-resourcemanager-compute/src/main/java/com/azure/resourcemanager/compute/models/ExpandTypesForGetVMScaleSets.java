@@ -14,6 +14,15 @@ public final class ExpandTypesForGetVMScaleSets extends ExpandableStringEnum<Exp
     public static final ExpandTypesForGetVMScaleSets USER_DATA = fromString("userData");
 
     /**
+     * Creates a new instance of ExpandTypesForGetVMScaleSets value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpandTypesForGetVMScaleSets() {
+    }
+
+    /**
      * Creates or finds a ExpandTypesForGetVMScaleSets from its string representation.
      *
      * @param name a name to look for.

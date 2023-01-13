@@ -17,6 +17,15 @@ public final class VmDiskTypes extends ExpandableStringEnum<VmDiskTypes> {
     public static final VmDiskTypes UNMANAGED = fromString("Unmanaged");
 
     /**
+     * Creates a new instance of VmDiskTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VmDiskTypes() {
+    }
+
+    /**
      * Creates or finds a VmDiskTypes from its string representation.
      *
      * @param name a name to look for.

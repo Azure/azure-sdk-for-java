@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.models.ValidateAddressResponseIn
 import com.azure.resourcemanager.billing.models.Address;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.ValidateAddressResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AddressImpl implements Address {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AddressImpl.class);
 
     private final AddressClient innerClient;
 
@@ -27,15 +26,6 @@ public final class AddressImpl implements Address {
         this.serviceManager = serviceManager;
     }
 
-    public ValidateAddressResponse validate(AddressDetails address) {
-        ValidateAddressResponseInner inner = this.serviceClient().validate(address);
-        if (inner != null) {
-            return new ValidateAddressResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ValidateAddressResponse> validateWithResponse(AddressDetails address, Context context) {
         Response<ValidateAddressResponseInner> inner = this.serviceClient().validateWithResponse(address, context);
         if (inner != null) {
@@ -44,6 +34,15 @@ public final class AddressImpl implements Address {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ValidateAddressResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateAddressResponse validate(AddressDetails address) {
+        ValidateAddressResponseInner inner = this.serviceClient().validate(address);
+        if (inner != null) {
+            return new ValidateAddressResponseImpl(inner, this.manager());
         } else {
             return null;
         }

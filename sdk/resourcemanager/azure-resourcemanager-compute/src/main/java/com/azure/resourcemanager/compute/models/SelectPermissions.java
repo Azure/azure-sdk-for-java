@@ -14,6 +14,15 @@ public final class SelectPermissions extends ExpandableStringEnum<SelectPermissi
     public static final SelectPermissions PERMISSIONS = fromString("Permissions");
 
     /**
+     * Creates a new instance of SelectPermissions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SelectPermissions() {
+    }
+
+    /**
      * Creates or finds a SelectPermissions from its string representation.
      *
      * @param name a name to look for.

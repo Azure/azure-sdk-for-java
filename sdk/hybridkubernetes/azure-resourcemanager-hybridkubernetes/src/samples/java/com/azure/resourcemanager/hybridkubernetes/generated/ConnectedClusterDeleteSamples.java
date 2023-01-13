@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.hybridkubernetes.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConnectedCluster Delete. */
 public final class ConnectedClusterDeleteSamples {
     /*
@@ -18,6 +16,6 @@ public final class ConnectedClusterDeleteSamples {
      */
     public static void deleteClusterExample(
         com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager.connectedClusters().delete("k8sc-rg", "testCluster", Context.NONE);
+        manager.connectedClusters().delete("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE);
     }
 }

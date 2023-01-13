@@ -5,25 +5,18 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Describes Forwarding Route. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration")
-@JsonFlatten
 @Fluent
-public class ForwardingConfiguration extends RouteConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardingConfiguration.class);
-
+public final class ForwardingConfiguration extends RouteConfiguration {
     /*
-     * A custom path used to rewrite resource paths matched by this rule. Leave
-     * empty to use incoming path.
+     * A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
      */
     @JsonProperty(value = "customForwardingPath")
     private String customForwardingPath;
@@ -45,6 +38,10 @@ public class ForwardingConfiguration extends RouteConfiguration {
      */
     @JsonProperty(value = "backendPool")
     private SubResource backendPool;
+
+    /** Creates an instance of ForwardingConfiguration class. */
+    public ForwardingConfiguration() {
+    }
 
     /**
      * Get the customForwardingPath property: A custom path used to rewrite resource paths matched by this rule. Leave

@@ -10,8 +10,8 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
  */
 public class ProcessorProperties extends ConsumerProperties implements ServiceBusProcessorClientProperties {
 
-    private Integer maxConcurrentCalls = 1;
-    private Integer maxConcurrentSessions = null;
+    private Integer maxConcurrentCalls;
+    private Integer maxConcurrentSessions;
 
     @Override
     public Integer getMaxConcurrentCalls() {

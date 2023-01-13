@@ -27,6 +27,15 @@ public final class CloudServiceUpgradeMode extends ExpandableStringEnum<CloudSer
     public static final CloudServiceUpgradeMode SIMULTANEOUS = fromString("Simultaneous");
 
     /**
+     * Creates a new instance of CloudServiceUpgradeMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CloudServiceUpgradeMode() {
+    }
+
+    /**
      * Creates or finds a CloudServiceUpgradeMode from its string representation.
      *
      * @param name a name to look for.

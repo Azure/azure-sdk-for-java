@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The restrictions because of which SKU cannot be used. */
 @Immutable
 public final class SkuRestriction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuRestriction.class);
-
     /*
      * The type of the restriction.
      */
@@ -38,6 +34,10 @@ public final class SkuRestriction {
      */
     @JsonProperty(value = "restrictionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private SkuRestrictionInfo restrictionInfo;
+
+    /** Creates an instance of SkuRestriction class. */
+    public SkuRestriction() {
+    }
 
     /**
      * Get the type property: The type of the restriction.

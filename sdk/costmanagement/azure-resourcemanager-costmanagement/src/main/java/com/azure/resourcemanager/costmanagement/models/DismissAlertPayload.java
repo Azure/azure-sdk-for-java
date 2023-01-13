@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload to update an alert. */
 @Fluent
 public final class DismissAlertPayload {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DismissAlertPayload.class);
-
     /*
      * The properties property.
      */
     @JsonProperty(value = "properties")
     private AlertProperties innerProperties;
+
+    /** Creates an instance of DismissAlertPayload class. */
+    public DismissAlertPayload() {
+    }
 
     /**
      * Get the innerProperties property: The properties property.

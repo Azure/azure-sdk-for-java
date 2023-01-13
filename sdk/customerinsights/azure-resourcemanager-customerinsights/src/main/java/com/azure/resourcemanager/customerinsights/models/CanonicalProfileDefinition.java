@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Definition of canonical profile. */
 @Fluent
 public final class CanonicalProfileDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CanonicalProfileDefinition.class);
-
     /*
      * Canonical profile ID.
      */
@@ -26,6 +22,10 @@ public final class CanonicalProfileDefinition {
      */
     @JsonProperty(value = "properties")
     private List<CanonicalProfileDefinitionPropertiesItem> properties;
+
+    /** Creates an instance of CanonicalProfileDefinition class. */
+    public CanonicalProfileDefinition() {
+    }
 
     /**
      * Get the canonicalProfileId property: Canonical profile ID.

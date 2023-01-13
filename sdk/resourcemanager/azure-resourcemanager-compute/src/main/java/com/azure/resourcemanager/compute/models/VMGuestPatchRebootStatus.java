@@ -29,6 +29,15 @@ public final class VMGuestPatchRebootStatus extends ExpandableStringEnum<VMGuest
     public static final VMGuestPatchRebootStatus COMPLETED = fromString("Completed");
 
     /**
+     * Creates a new instance of VMGuestPatchRebootStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMGuestPatchRebootStatus() {
+    }
+
+    /**
      * Creates or finds a VMGuestPatchRebootStatus from its string representation.
      *
      * @param name a name to look for.

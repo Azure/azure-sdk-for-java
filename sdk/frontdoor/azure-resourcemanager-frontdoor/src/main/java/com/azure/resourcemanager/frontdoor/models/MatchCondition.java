@@ -6,15 +6,12 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Define a match condition. */
 @Fluent
 public final class MatchCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchCondition.class);
-
     /*
      * Request variable to compare with.
      */
@@ -22,8 +19,8 @@ public final class MatchCondition {
     private MatchVariable matchVariable;
 
     /*
-     * Match against a specific key from the QueryString, PostArgs,
-     * RequestHeader or Cookies variables. Default is null.
+     * Match against a specific key from the QueryString, PostArgs, RequestHeader or Cookies variables. Default is
+     * null.
      */
     @JsonProperty(value = "selector")
     private String selector;
@@ -51,6 +48,10 @@ public final class MatchCondition {
      */
     @JsonProperty(value = "transforms")
     private List<TransformType> transforms;
+
+    /** Creates an instance of MatchCondition class. */
+    public MatchCondition() {
+    }
 
     /**
      * Get the matchVariable property: Request variable to compare with.
@@ -181,19 +182,21 @@ public final class MatchCondition {
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property matchVariable in model MatchCondition"));
         }
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model MatchCondition"));
         }
         if (matchValue() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property matchValue in model MatchCondition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MatchCondition.class);
 }

@@ -17,6 +17,20 @@ public interface FirewallRule {
     String id();
 
     /**
+     * Gets the name property: The resource name.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: The resource type.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * Gets the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
      *
@@ -33,18 +47,11 @@ public interface FirewallRule {
     String endIpAddress();
 
     /**
-     * Gets the name property: The resource name.
+     * Gets the name of the resource group.
      *
-     * @return the name value.
+     * @return the name of the resource group.
      */
-    String name();
-
-    /**
-     * Gets the type property: The resource type.
-     *
-     * @return the type value.
-     */
-    String type();
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakeanalytics.fluent.models.FirewallRuleInner object.

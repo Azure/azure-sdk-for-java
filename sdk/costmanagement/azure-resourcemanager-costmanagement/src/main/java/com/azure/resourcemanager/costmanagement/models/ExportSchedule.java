@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The schedule associated with a export. */
+/** The schedule associated with the export. */
 @Fluent
 public final class ExportSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportSchedule.class);
-
     /*
-     * The status of the schedule. Whether active or not. If inactive, the
-     * export's scheduled execution is paused.
+     * The status of the export's schedule. If 'Inactive', the export's schedule is paused.
      */
     @JsonProperty(value = "status")
     private StatusType status;
@@ -24,19 +19,22 @@ public final class ExportSchedule {
     /*
      * The schedule recurrence.
      */
-    @JsonProperty(value = "recurrence", required = true)
+    @JsonProperty(value = "recurrence")
     private RecurrenceType recurrence;
 
     /*
-     * Has start and end date of the recurrence. The start date must be in
-     * future. If present, the end date must be greater than start date.
+     * Has start and end date of the recurrence. The start date must be in future. If present, the end date must be
+     * greater than start date.
      */
     @JsonProperty(value = "recurrencePeriod")
     private ExportRecurrencePeriod recurrencePeriod;
 
+    /** Creates an instance of ExportSchedule class. */
+    public ExportSchedule() {
+    }
+
     /**
-     * Get the status property: The status of the schedule. Whether active or not. If inactive, the export's scheduled
-     * execution is paused.
+     * Get the status property: The status of the export's schedule. If 'Inactive', the export's schedule is paused.
      *
      * @return the status value.
      */
@@ -45,8 +43,7 @@ public final class ExportSchedule {
     }
 
     /**
-     * Set the status property: The status of the schedule. Whether active or not. If inactive, the export's scheduled
-     * execution is paused.
+     * Set the status property: The status of the export's schedule. If 'Inactive', the export's schedule is paused.
      *
      * @param status the status value to set.
      * @return the ExportSchedule object itself.
@@ -104,11 +101,6 @@ public final class ExportSchedule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (recurrence() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property recurrence in model ExportSchedule"));
-        }
         if (recurrencePeriod() != null) {
             recurrencePeriod().validate();
         }
