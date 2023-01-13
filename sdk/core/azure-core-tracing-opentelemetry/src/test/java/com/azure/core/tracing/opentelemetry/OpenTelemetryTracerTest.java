@@ -95,7 +95,7 @@ public class OpenTelemetryTracerTest {
     private SdkTracerProvider tracerProvider;
     private final HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
         {
-            put("messaging.destination", ENTITY_PATH_VALUE);
+            put("messaging.destination.name", ENTITY_PATH_VALUE);
             put("net.peer.name", HOSTNAME_VALUE);
             put("az.namespace", AZ_NAMESPACE_VALUE);
         }
@@ -1278,9 +1278,8 @@ public class OpenTelemetryTracerTest {
     private static void verifySpanAttributes(Map<String, Object> expectedMap, Attributes actualAttributeMap) {
         assertEquals(expectedMap.size(), actualAttributeMap.size());
 
-        actualAttributeMap.forEach((attributeKey, attributeValue) -> {
-            assertEquals(expectedMap.get(attributeKey.getKey()), attributeValue);
-        });
+        actualAttributeMap.forEach((attributeKey, attributeValue) ->
+            assertEquals(expectedMap.get(attributeKey.getKey()), attributeValue));
     }
 
     private static void verifySpanAttributes(Attributes expected, Attributes actual) {

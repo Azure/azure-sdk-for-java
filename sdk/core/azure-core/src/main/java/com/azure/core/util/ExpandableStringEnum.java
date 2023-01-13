@@ -4,8 +4,10 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,9 +23,11 @@ import static java.lang.invoke.MethodType.methodType;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
+    private static final Map<Class<?>, MethodHandle> CONSTRUCTORS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
         = new ConcurrentHashMap<>();
 
+    private static final ClientLogger LOGGER = new ClientLogger(ExpandableStringEnum.class);
     private String name;
     private Class<T> clazz;
 
@@ -61,16 +65,35 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         if (value != null) {
             return value;
         } else {
-            try {
-                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
-                value = (T) lookup.findConstructor(clazz, methodType(void.class)).invoke();
-                return value.nameAndAddValue(name, value, clazz);
-            } catch (NoSuchMethodException | IllegalAccessException e) {
+            MethodHandle ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
+
+            if (ctor == null) {
+                // logged in ExpandableStringEnum::getDefaultConstructor
                 return null;
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
             }
+
+            try {
+                value = (T) ctor.invoke();
+            } catch (Throwable e) {
+                LOGGER.warning("Failed to create {}, default constructor threw exception", clazz.getName(), e);
+                return null;
+            }
+
+            return value.nameAndAddValue(name, value, clazz);
         }
+    }
+
+    private static <T> MethodHandle getDefaultConstructor(Class<T> clazz) {
+        try {
+            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
+            return lookup.findConstructor(clazz, methodType(void.class));
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            LOGGER.verbose("Can't find or access default constructor for {}, make sure corresponding package is open to azure-core", clazz.getName(), e);
+        } catch (Exception e) {
+            LOGGER.verbose("Failed to get lookup for {}", clazz.getName(), e);
+        }
+
+        return null;
     }
 
     @SuppressWarnings("unchecked")

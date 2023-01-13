@@ -143,7 +143,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
             String tracingNamespace = getAzNamespace(context);
             if (tracingNamespace != null) {
-                OpenTelemetryUtils.setAttribute(span, AZ_TRACING_NAMESPACE_KEY, tracingNamespace, schemaVersion);
+                OpenTelemetryUtils.addAttribute(span, AZ_TRACING_NAMESPACE_KEY, tracingNamespace, schemaVersion);
             }
         }
 
@@ -231,7 +231,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            OpenTelemetryUtils.setAttribute(span, key, value, schemaVersion);
+            OpenTelemetryUtils.addAttribute(span, key, value, schemaVersion);
         }
     }
 
@@ -257,7 +257,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            OpenTelemetryUtils.setAttribute(span, key, value, schemaVersion);
+            OpenTelemetryUtils.addAttribute(span, key, value, schemaVersion);
         }
     }
 

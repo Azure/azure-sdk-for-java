@@ -21,14 +21,14 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
-    private static final Map<String, String> ATTRIBUTE_MAPPING_V1_12_0 = getMappingsV1200();
+    private static final Map<String, String> ATTRIBUTE_MAPPING_V1_17_0 = getMappingsV1200();
     static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
 
     private static Map<String, String> getMappingsV1200() {
-        Map<String, String> mappings = new HashMap<>(4);
+        Map<String, String> mappings = new HashMap<>(8);
         // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
-        mappings.put(ENTITY_PATH_KEY, "messaging.destination");
+        mappings.put(ENTITY_PATH_KEY, "messaging.destination.name");
         mappings.put(HOST_NAME_KEY, "net.peer.name");
         mappings.put(CLIENT_REQUEST_ID_ATTRIBUTE, "az.client_request_id");
         mappings.put(SERVICE_REQUEST_ID_ATTRIBUTE, "az.service_request_id");
@@ -45,36 +45,23 @@ class OpenTelemetryUtils {
 
         AttributesBuilder builder = Attributes.builder();
         for (Map.Entry<String, Object> kvp : attributeMap.entrySet()) {
-            Objects.requireNonNull(kvp.getKey(), "'key' cannot be null.");
             if (kvp.getValue() == null) {
                 continue;
             }
-            OpenTelemetryUtils.addAttribute(builder, map(kvp.getKey(), mappings), kvp.getValue());
+
+            addAttribute(builder, mappings.getOrDefault(kvp.getKey(), kvp.getKey()), kvp.getValue());
         }
 
         return builder.build();
     }
 
-    static void setAttribute(Span span, String key, Object value, OpenTelemetrySchemaVersion schemaVersion) {
-        OpenTelemetryUtils.addAttribute(span, map(key, getMappingsForVersion(schemaVersion)), value);
-    }
-
     private static Map<String, String> getMappingsForVersion(OpenTelemetrySchemaVersion version) {
-        if (version == OpenTelemetrySchemaVersion.V1_12_0) {
-            return ATTRIBUTE_MAPPING_V1_12_0;
+        if (version == OpenTelemetrySchemaVersion.V1_17_0) {
+            return ATTRIBUTE_MAPPING_V1_17_0;
         }
 
-        LOGGER.warning("Unknown OpenTelemetry Semantic Conventions version: {}, using latest instead: {}", version, OpenTelemetrySchemaVersion.getLatest());
+        LOGGER.verbose("Unknown OpenTelemetry Semantic Conventions version: {}, using latest instead: {}", version, OpenTelemetrySchemaVersion.getLatest());
         return getMappingsForVersion(OpenTelemetrySchemaVersion.getLatest());
-    }
-
-    private static String map(String propertyName, Map<String, String> mappings) {
-        if (propertyName.startsWith("http.") || propertyName.startsWith("az.")) {
-            return propertyName;
-        }
-
-        String otelKey = mappings.getOrDefault(propertyName, null);
-        return otelKey != null ? otelKey : propertyName;
     }
 
     /**
@@ -85,7 +72,8 @@ class OpenTelemetryUtils {
      * @param key key of the attribute to be added
      * @param value value of the attribute to be added
      */
-    static void addAttribute(AttributesBuilder attributesBuilder, String key, Object value) {
+    private static void addAttribute(AttributesBuilder attributesBuilder, String key, Object value) {
+        Objects.requireNonNull(key, "OpenTelemetry attribute name cannot be null.");
         if (value instanceof String) {
             attributesBuilder.put(AttributeKey.stringKey(key), (String) value);
         } else if (value instanceof Long) {
@@ -107,7 +95,19 @@ class OpenTelemetryUtils {
         }
     }
 
-    static void addAttribute(Span span, String key, Object value) {
+    /**
+     * Adds attribute key-value pair to OpenTelemetry {@link Span}, if value type is not supported by
+     * OpenTelemetry, drops the attribute.
+     *
+     * @param span {@link Span} instance
+     * @param key key of the attribute to be added
+     * @param value value of the attribute to be added
+     * @param schemaVersion version of OpenTelemetry semantic conventions to map attribute names with.
+     */
+    static void addAttribute(Span span, String key, Object value, OpenTelemetrySchemaVersion schemaVersion) {
+        Objects.requireNonNull(key, "OpenTelemetry attribute name cannot be null.");
+
+        key = getMappingsForVersion(schemaVersion).getOrDefault(key, key);
         if (value instanceof String) {
             span.setAttribute(AttributeKey.stringKey(key), (String) value);
         } else if (value instanceof Long) {
