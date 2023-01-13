@@ -79,7 +79,7 @@ class SparkE2EChangeFeedSplitITest
    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
 
    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
-    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual false
+   hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual false
 
    val separateClient = new CosmosClientBuilder()
     .endpoint(cosmosEndpoint)

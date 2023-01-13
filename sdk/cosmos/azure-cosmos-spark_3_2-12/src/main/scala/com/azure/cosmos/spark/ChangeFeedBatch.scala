@@ -88,8 +88,8 @@ private class ChangeFeedBatch
           } else {
             val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
               container, changeFeedConfig, partitioningConfig, None)
-            log.logDebug(s"Invalid Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
-              s"-> New offset retrieved from service: '$newOffsetJson'.")
+            log.logWarning(s"Invalid Start offset retrieved from file location '$startOffsetLocation' " +
+              s"for batchId: $batchId -> New offset retrieved from service: '$newOffsetJson'.")
 
             newOffsetJson
           }
