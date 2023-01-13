@@ -278,7 +278,8 @@ public class IndexManagementTests extends SearchTestBase {
         // Create the resource in the search service
         SearchIndex originalIndex = asyncClient.createOrUpdateIndexWithResponse(indexToCreate, false, false)
             .map(Response::getValue)
-            .block();
+            .blockOptional()
+            .orElseThrow(NoSuchElementException::new);
 
         // Update the resource, the eTag will be changed
         SearchIndex updatedIndex = asyncClient.createOrUpdateIndexWithResponse(
@@ -626,8 +627,10 @@ public class IndexManagementTests extends SearchTestBase {
             .setScoringProfiles(Collections.emptyList())
             .setDefaultScoringProfile(null));
 
-        SearchIndex index = asyncClient.createIndex(initialIndex).block();
-        indexesToDelete.add(index.getName());
+        SearchIndex index = asyncClient.createIndex(initialIndex)
+            .doOnNext(ix -> indexesToDelete.add(ix.getName()))
+            .blockOptional()
+            .orElseThrow(NoSuchElementException::new);
 
         // Now update the index.
         List<String> allowedOrigins = fullFeaturedIndex.getCorsOptions().getAllowedOrigins();
@@ -641,10 +644,14 @@ public class IndexManagementTests extends SearchTestBase {
             .verifyComplete();
 
         // Modify the fields on an existing index
-        SearchIndex existingIndex = asyncClient.getIndex(fullFeaturedIndex.getName()).block();
+        SearchIndex existingIndex = asyncClient.getIndex(fullFeaturedIndex.getName())
+            .blockOptional()
+            .orElseThrow(NoSuchElementException::new);
 
         SynonymMap synonymMap = asyncClient.createSynonymMap(new SynonymMap(testResourceNamer.randomName("names", 32))
-            .setSynonyms("hotel,motel")).block();
+            .setSynonyms("hotel,motel"))
+            .blockOptional()
+            .orElseThrow(NoSuchElementException::new);
         synonymMapsToDelete.add(synonymMap.getName());
 
         SearchField tagsField = getFieldByName(existingIndex, "Description_Custom");

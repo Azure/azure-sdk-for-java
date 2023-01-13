@@ -931,7 +931,6 @@ public class SearchTests extends SearchTestBase {
         StepVerifier.create(asyncClient.search("*", new SearchOptions().setIncludeTotalCount(true)).byPage())
             .assertNext(response -> assertEquals(hotels.size(), SearchPagedResponseAccessHelper.getCount(response)))
             .verifyComplete();
-        ;
     }
 
     @Test
@@ -1422,7 +1421,7 @@ public class SearchTests extends SearchTestBase {
             .collect(Collectors.toList());
     }
 
-    static private List<FacetResult> getFacetsForField(Map<String, List<FacetResult>> facets, String expectedField,
+    private static List<FacetResult> getFacetsForField(Map<String, List<FacetResult>> facets, String expectedField,
         int expectedCount) {
         assertTrue(facets.containsKey(expectedField));
         List<FacetResult> results = facets.get(expectedField);

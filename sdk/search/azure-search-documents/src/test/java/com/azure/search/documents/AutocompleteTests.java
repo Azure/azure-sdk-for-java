@@ -74,7 +74,7 @@ public class AutocompleteTests extends SearchTestBase {
             "Invalid suggester", params, Context.NONE);
 
         HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> results.iterableByPage().iterator().hasNext());
+            () -> results.iterableByPage().iterator().next());
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 
@@ -231,7 +231,7 @@ public class AutocompleteTests extends SearchTestBase {
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very po", "");
 
         HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> results.iterableByPage().iterator().hasNext());
+            () -> results.iterableByPage().iterator().next());
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 

@@ -150,7 +150,7 @@ public class LookupTests extends SearchTestBase {
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(asyncClient, expected);
 
-        getAndValidateDocumentAsync(asyncClient, expected.key(),ModelWithPrimitiveCollections.class, expected,
+        getAndValidateDocumentAsync(asyncClient, expected.key(), ModelWithPrimitiveCollections.class, expected,
             (ignored, actual) -> assertObjectEquals(expected, actual, true, "boundingBox"));
     }
 

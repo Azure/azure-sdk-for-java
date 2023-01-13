@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -1199,7 +1200,10 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canCreateIndexerWithSkillsetAsync() {
-        SearchIndexerSkillset skillset = searchIndexerAsyncClient.createSkillset(createSkillsetObject()).block();
+        SearchIndexerSkillset skillset = searchIndexerAsyncClient.createSkillset(createSkillsetObject())
+            .blockOptional()
+            .orElseThrow(NoSuchElementException::new);
+
         skillsetsToDelete.add(skillset.getName());
 
         SearchIndexer indexer = createBaseTestIndexerObject(createIndexSync(), createDataSourceSync())

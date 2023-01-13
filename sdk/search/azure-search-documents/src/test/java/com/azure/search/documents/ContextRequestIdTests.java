@@ -159,8 +159,13 @@ public class ContextRequestIdTests extends SearchTestBase {
     private static String extractFromThrowable(Throwable throwable) {
         if (throwable instanceof HttpResponseException) {
             return ((HttpResponseException) throwable).getResponse().getHeaderValue(REQUEST_ID_HEADER);
-        } else if (throwable instanceof RuntimeException && throwable.getCause() instanceof HttpResponseException) {
-            return ((HttpResponseException) throwable.getCause()).getResponse().getHeaderValue(REQUEST_ID_HEADER);
+        } else if (throwable instanceof RuntimeException) {
+            Throwable cause = throwable.getCause();
+            if (cause instanceof HttpResponseException) {
+                return ((HttpResponseException) cause).getResponse().getHeaderValue(REQUEST_ID_HEADER);
+            }
+
+            return null;
         } else {
             return null;
         }
