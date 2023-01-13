@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryArtifactVersionFullSource;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
@@ -52,7 +51,7 @@ public final class GalleryImageVersionsUpdateSamples {
                                 new GalleryArtifactVersionFullSource()
                                     .withId(
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -87,6 +86,6 @@ public final class GalleryImageVersionsUpdateSamples {
                                             .withRegionalReplicaCount(2)
                                             .withStorageAccountType(StorageAccountType.STANDARD_ZRS))))
                     .withStorageProfile(new GalleryImageVersionStorageProfile()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

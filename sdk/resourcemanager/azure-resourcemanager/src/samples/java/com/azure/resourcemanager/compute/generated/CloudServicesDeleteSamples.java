@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServices Delete. */
 public final class CloudServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_Delete.json
      */
     /**
      * Sample code: Delete Cloud Service.
@@ -22,6 +20,6 @@ public final class CloudServicesDeleteSamples {
             .manager()
             .serviceClient()
             .getCloudServices()
-            .delete("ConstosoRG", "{cs-name}", Context.NONE);
+            .delete("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

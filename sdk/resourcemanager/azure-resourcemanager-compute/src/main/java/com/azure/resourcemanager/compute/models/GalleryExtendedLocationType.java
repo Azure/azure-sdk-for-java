@@ -17,6 +17,15 @@ public final class GalleryExtendedLocationType extends ExpandableStringEnum<Gall
     public static final GalleryExtendedLocationType UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of GalleryExtendedLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GalleryExtendedLocationType() {
+    }
+
+    /**
      * Creates or finds a GalleryExtendedLocationType from its string representation.
      *
      * @param name a name to look for.

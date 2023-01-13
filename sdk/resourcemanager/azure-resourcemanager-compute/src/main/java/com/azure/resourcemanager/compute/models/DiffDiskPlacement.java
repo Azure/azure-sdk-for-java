@@ -23,6 +23,15 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
     public static final DiffDiskPlacement RESOURCE_DISK = fromString("ResourceDisk");
 
     /**
+     * Creates a new instance of DiffDiskPlacement value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiffDiskPlacement() {
+    }
+
+    /**
      * Creates or finds a DiffDiskPlacement from its string representation.
      *
      * @param name a name to look for.

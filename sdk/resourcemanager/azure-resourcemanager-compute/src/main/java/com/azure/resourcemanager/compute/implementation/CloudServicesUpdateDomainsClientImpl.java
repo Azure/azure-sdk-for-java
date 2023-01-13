@@ -163,7 +163,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -226,7 +226,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -335,7 +335,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     public SyncPoller<PollResult<Void>, Void> beginWalkUpdateDomain(
         String resourceGroupName, String cloudServiceName, int updateDomain) {
         final UpdateDomainInner parameters = null;
-        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters)
+        return this
+            .beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters)
             .getSyncPoller();
     }
 
@@ -360,7 +361,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         int updateDomain,
         UpdateDomainInner parameters,
         Context context) {
-        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters, context)
+        return this
+            .beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters, context)
             .getSyncPoller();
     }
 
@@ -508,7 +510,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -564,7 +566,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -671,7 +673,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -732,7 +734,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
