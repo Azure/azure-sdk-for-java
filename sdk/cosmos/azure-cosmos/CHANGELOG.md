@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Added improvement in handling for idle connection being closed unexpectedly - See [PR 32936](https://github.com/Azure/azure-sdk-for-java/pull/32936)
 
 #### Other Changes
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
