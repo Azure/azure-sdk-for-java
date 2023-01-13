@@ -13,12 +13,10 @@ import com.azure.resourcemanager.frontdoor.fluent.models.CheckNameAvailabilityOu
 import com.azure.resourcemanager.frontdoor.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.frontdoor.models.CheckNameAvailabilityOutput;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorNameAvailabilityWithSubscriptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class FrontDoorNameAvailabilityWithSubscriptionsImpl
     implements FrontDoorNameAvailabilityWithSubscriptions {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FrontDoorNameAvailabilityWithSubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FrontDoorNameAvailabilityWithSubscriptionsImpl.class);
 
     private final FrontDoorNameAvailabilityWithSubscriptionsClient innerClient;
 
@@ -31,15 +29,6 @@ public final class FrontDoorNameAvailabilityWithSubscriptionsImpl
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameAvailabilityOutput check(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput) {
-        CheckNameAvailabilityOutputInner inner = this.serviceClient().check(checkFrontDoorNameAvailabilityInput);
-        if (inner != null) {
-            return new CheckNameAvailabilityOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameAvailabilityOutput> checkWithResponse(
         CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context) {
         Response<CheckNameAvailabilityOutputInner> inner =
@@ -50,6 +39,15 @@ public final class FrontDoorNameAvailabilityWithSubscriptionsImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckNameAvailabilityOutputImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameAvailabilityOutput check(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput) {
+        CheckNameAvailabilityOutputInner inner = this.serviceClient().check(checkFrontDoorNameAvailabilityInput);
+        if (inner != null) {
+            return new CheckNameAvailabilityOutputImpl(inner, this.manager());
         } else {
             return null;
         }

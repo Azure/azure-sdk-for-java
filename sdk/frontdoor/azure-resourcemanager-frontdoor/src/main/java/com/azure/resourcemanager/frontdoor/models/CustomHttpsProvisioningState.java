@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomHttpsProvisioningState. */
+/** Provisioning status of Custom Https of the frontendEndpoint. */
 public final class CustomHttpsProvisioningState extends ExpandableStringEnum<CustomHttpsProvisioningState> {
     /** Static value Enabling for CustomHttpsProvisioningState. */
     public static final CustomHttpsProvisioningState ENABLING = fromString("Enabling");
@@ -26,6 +26,15 @@ public final class CustomHttpsProvisioningState extends ExpandableStringEnum<Cus
     public static final CustomHttpsProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of CustomHttpsProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomHttpsProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CustomHttpsProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class CustomHttpsProvisioningState extends ExpandableStringEnum<Cus
         return fromString(name, CustomHttpsProvisioningState.class);
     }
 
-    /** @return known CustomHttpsProvisioningState values. */
+    /**
+     * Gets known CustomHttpsProvisioningState values.
+     *
+     * @return known CustomHttpsProvisioningState values.
+     */
     public static Collection<CustomHttpsProvisioningState> values() {
         return values(CustomHttpsProvisioningState.class);
     }

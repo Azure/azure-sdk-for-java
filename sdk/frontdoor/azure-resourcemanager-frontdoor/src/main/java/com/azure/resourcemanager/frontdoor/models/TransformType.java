@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TransformType. */
+/** Describes what transforms applied before matching. */
 public final class TransformType extends ExpandableStringEnum<TransformType> {
     /** Static value Lowercase for TransformType. */
     public static final TransformType LOWERCASE = fromString("Lowercase");
@@ -29,6 +29,15 @@ public final class TransformType extends ExpandableStringEnum<TransformType> {
     public static final TransformType REMOVE_NULLS = fromString("RemoveNulls");
 
     /**
+     * Creates a new instance of TransformType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TransformType() {
+    }
+
+    /**
      * Creates or finds a TransformType from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class TransformType extends ExpandableStringEnum<TransformType> {
         return fromString(name, TransformType.class);
     }
 
-    /** @return known TransformType values. */
+    /**
+     * Gets known TransformType values.
+     *
+     * @return known TransformType values.
+     */
     public static Collection<TransformType> values() {
         return values(TransformType.class);
     }
