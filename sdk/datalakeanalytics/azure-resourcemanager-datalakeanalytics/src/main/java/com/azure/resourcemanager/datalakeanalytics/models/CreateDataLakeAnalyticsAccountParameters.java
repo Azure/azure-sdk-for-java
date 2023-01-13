@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.CreateDataLakeAnalyticsAccountProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The parameters to use for creating a Data Lake Analytics account. */
-@JsonFlatten
 @Fluent
-public class CreateDataLakeAnalyticsAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateDataLakeAnalyticsAccountParameters.class);
-
+public final class CreateDataLakeAnalyticsAccountParameters {
     /*
      * The resource location.
      */
@@ -28,87 +25,18 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * The resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The default Data Lake Store account associated with this account.
+     * The Data Lake Analytics account properties to use for creating.
      */
-    @JsonProperty(value = "properties.defaultDataLakeStoreAccount", required = true)
-    private String defaultDataLakeStoreAccount;
+    @JsonProperty(value = "properties", required = true)
+    private CreateDataLakeAnalyticsAccountProperties innerProperties = new CreateDataLakeAnalyticsAccountProperties();
 
-    /*
-     * The list of Data Lake Store accounts associated with this account.
-     */
-    @JsonProperty(value = "properties.dataLakeStoreAccounts", required = true)
-    private List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts;
-
-    /*
-     * The list of Azure Blob Storage accounts associated with this account.
-     */
-    @JsonProperty(value = "properties.storageAccounts")
-    private List<AddStorageAccountWithAccountParameters> storageAccounts;
-
-    /*
-     * The list of compute policies associated with this account.
-     */
-    @JsonProperty(value = "properties.computePolicies")
-    private List<CreateComputePolicyWithAccountParameters> computePolicies;
-
-    /*
-     * The list of firewall rules associated with this account.
-     */
-    @JsonProperty(value = "properties.firewallRules")
-    private List<CreateFirewallRuleWithAccountParameters> firewallRules;
-
-    /*
-     * The current state of the IP address firewall for this account.
-     */
-    @JsonProperty(value = "properties.firewallState")
-    private FirewallState firewallState;
-
-    /*
-     * The current state of allowing or disallowing IPs originating within
-     * Azure through the firewall. If the firewall is disabled, this is not
-     * enforced.
-     */
-    @JsonProperty(value = "properties.firewallAllowAzureIps")
-    private FirewallAllowAzureIpsState firewallAllowAzureIps;
-
-    /*
-     * The commitment tier for the next month.
-     */
-    @JsonProperty(value = "properties.newTier")
-    private TierType newTier;
-
-    /*
-     * The maximum supported jobs running under the account at the same time.
-     */
-    @JsonProperty(value = "properties.maxJobCount")
-    private Integer maxJobCount;
-
-    /*
-     * The maximum supported degree of parallelism for this account.
-     */
-    @JsonProperty(value = "properties.maxDegreeOfParallelism")
-    private Integer maxDegreeOfParallelism;
-
-    /*
-     * The maximum supported degree of parallelism per job for this account.
-     */
-    @JsonProperty(value = "properties.maxDegreeOfParallelismPerJob")
-    private Integer maxDegreeOfParallelismPerJob;
-
-    /*
-     * The minimum supported priority per job for this account.
-     */
-    @JsonProperty(value = "properties.minPriorityPerJob")
-    private Integer minPriorityPerJob;
-
-    /*
-     * The number of days that job metadata is retained.
-     */
-    @JsonProperty(value = "properties.queryStoreRetention")
-    private Integer queryStoreRetention;
+    /** Creates an instance of CreateDataLakeAnalyticsAccountParameters class. */
+    public CreateDataLakeAnalyticsAccountParameters() {
+    }
 
     /**
      * Get the location property: The resource location.
@@ -151,12 +79,21 @@ public class CreateDataLakeAnalyticsAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The Data Lake Analytics account properties to use for creating.
+     *
+     * @return the innerProperties value.
+     */
+    private CreateDataLakeAnalyticsAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the defaultDataLakeStoreAccount property: The default Data Lake Store account associated with this account.
      *
      * @return the defaultDataLakeStoreAccount value.
      */
     public String defaultDataLakeStoreAccount() {
-        return this.defaultDataLakeStoreAccount;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultDataLakeStoreAccount();
     }
 
     /**
@@ -167,7 +104,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public CreateDataLakeAnalyticsAccountParameters withDefaultDataLakeStoreAccount(
         String defaultDataLakeStoreAccount) {
-        this.defaultDataLakeStoreAccount = defaultDataLakeStoreAccount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withDefaultDataLakeStoreAccount(defaultDataLakeStoreAccount);
         return this;
     }
 
@@ -177,7 +117,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the dataLakeStoreAccounts value.
      */
     public List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts() {
-        return this.dataLakeStoreAccounts;
+        return this.innerProperties() == null ? null : this.innerProperties().dataLakeStoreAccounts();
     }
 
     /**
@@ -188,7 +128,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public CreateDataLakeAnalyticsAccountParameters withDataLakeStoreAccounts(
         List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
-        this.dataLakeStoreAccounts = dataLakeStoreAccounts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withDataLakeStoreAccounts(dataLakeStoreAccounts);
         return this;
     }
 
@@ -198,7 +141,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the storageAccounts value.
      */
     public List<AddStorageAccountWithAccountParameters> storageAccounts() {
-        return this.storageAccounts;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccounts();
     }
 
     /**
@@ -209,7 +152,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public CreateDataLakeAnalyticsAccountParameters withStorageAccounts(
         List<AddStorageAccountWithAccountParameters> storageAccounts) {
-        this.storageAccounts = storageAccounts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withStorageAccounts(storageAccounts);
         return this;
     }
 
@@ -219,7 +165,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the computePolicies value.
      */
     public List<CreateComputePolicyWithAccountParameters> computePolicies() {
-        return this.computePolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().computePolicies();
     }
 
     /**
@@ -230,7 +176,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public CreateDataLakeAnalyticsAccountParameters withComputePolicies(
         List<CreateComputePolicyWithAccountParameters> computePolicies) {
-        this.computePolicies = computePolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withComputePolicies(computePolicies);
         return this;
     }
 
@@ -240,7 +189,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the firewallRules value.
      */
     public List<CreateFirewallRuleWithAccountParameters> firewallRules() {
-        return this.firewallRules;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallRules();
     }
 
     /**
@@ -251,7 +200,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public CreateDataLakeAnalyticsAccountParameters withFirewallRules(
         List<CreateFirewallRuleWithAccountParameters> firewallRules) {
-        this.firewallRules = firewallRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withFirewallRules(firewallRules);
         return this;
     }
 
@@ -261,7 +213,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the firewallState value.
      */
     public FirewallState firewallState() {
-        return this.firewallState;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallState();
     }
 
     /**
@@ -271,7 +223,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the CreateDataLakeAnalyticsAccountParameters object itself.
      */
     public CreateDataLakeAnalyticsAccountParameters withFirewallState(FirewallState firewallState) {
-        this.firewallState = firewallState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withFirewallState(firewallState);
         return this;
     }
 
@@ -282,7 +237,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the firewallAllowAzureIps value.
      */
     public FirewallAllowAzureIpsState firewallAllowAzureIps() {
-        return this.firewallAllowAzureIps;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallAllowAzureIps();
     }
 
     /**
@@ -294,7 +249,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public CreateDataLakeAnalyticsAccountParameters withFirewallAllowAzureIps(
         FirewallAllowAzureIpsState firewallAllowAzureIps) {
-        this.firewallAllowAzureIps = firewallAllowAzureIps;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withFirewallAllowAzureIps(firewallAllowAzureIps);
         return this;
     }
 
@@ -304,7 +262,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the newTier value.
      */
     public TierType newTier() {
-        return this.newTier;
+        return this.innerProperties() == null ? null : this.innerProperties().newTier();
     }
 
     /**
@@ -314,7 +272,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the CreateDataLakeAnalyticsAccountParameters object itself.
      */
     public CreateDataLakeAnalyticsAccountParameters withNewTier(TierType newTier) {
-        this.newTier = newTier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withNewTier(newTier);
         return this;
     }
 
@@ -324,7 +285,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the maxJobCount value.
      */
     public Integer maxJobCount() {
-        return this.maxJobCount;
+        return this.innerProperties() == null ? null : this.innerProperties().maxJobCount();
     }
 
     /**
@@ -334,7 +295,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the CreateDataLakeAnalyticsAccountParameters object itself.
      */
     public CreateDataLakeAnalyticsAccountParameters withMaxJobCount(Integer maxJobCount) {
-        this.maxJobCount = maxJobCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withMaxJobCount(maxJobCount);
         return this;
     }
 
@@ -344,7 +308,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the maxDegreeOfParallelism value.
      */
     public Integer maxDegreeOfParallelism() {
-        return this.maxDegreeOfParallelism;
+        return this.innerProperties() == null ? null : this.innerProperties().maxDegreeOfParallelism();
     }
 
     /**
@@ -354,7 +318,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the CreateDataLakeAnalyticsAccountParameters object itself.
      */
     public CreateDataLakeAnalyticsAccountParameters withMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
-        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withMaxDegreeOfParallelism(maxDegreeOfParallelism);
         return this;
     }
 
@@ -365,7 +332,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
-        return this.maxDegreeOfParallelismPerJob;
+        return this.innerProperties() == null ? null : this.innerProperties().maxDegreeOfParallelismPerJob();
     }
 
     /**
@@ -377,7 +344,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public CreateDataLakeAnalyticsAccountParameters withMaxDegreeOfParallelismPerJob(
         Integer maxDegreeOfParallelismPerJob) {
-        this.maxDegreeOfParallelismPerJob = maxDegreeOfParallelismPerJob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withMaxDegreeOfParallelismPerJob(maxDegreeOfParallelismPerJob);
         return this;
     }
 
@@ -387,7 +357,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
-        return this.minPriorityPerJob;
+        return this.innerProperties() == null ? null : this.innerProperties().minPriorityPerJob();
     }
 
     /**
@@ -397,7 +367,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the CreateDataLakeAnalyticsAccountParameters object itself.
      */
     public CreateDataLakeAnalyticsAccountParameters withMinPriorityPerJob(Integer minPriorityPerJob) {
-        this.minPriorityPerJob = minPriorityPerJob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withMinPriorityPerJob(minPriorityPerJob);
         return this;
     }
 
@@ -407,7 +380,7 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the queryStoreRetention value.
      */
     public Integer queryStoreRetention() {
-        return this.queryStoreRetention;
+        return this.innerProperties() == null ? null : this.innerProperties().queryStoreRetention();
     }
 
     /**
@@ -417,7 +390,10 @@ public class CreateDataLakeAnalyticsAccountParameters {
      * @return the CreateDataLakeAnalyticsAccountParameters object itself.
      */
     public CreateDataLakeAnalyticsAccountParameters withQueryStoreRetention(Integer queryStoreRetention) {
-        this.queryStoreRetention = queryStoreRetention;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateDataLakeAnalyticsAccountProperties();
+        }
+        this.innerProperties().withQueryStoreRetention(queryStoreRetention);
         return this;
     }
 
@@ -428,35 +404,20 @@ public class CreateDataLakeAnalyticsAccountParameters {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model CreateDataLakeAnalyticsAccountParameters"));
         }
-        if (defaultDataLakeStoreAccount() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property defaultDataLakeStoreAccount in model"
-                            + " CreateDataLakeAnalyticsAccountParameters"));
-        }
-        if (dataLakeStoreAccounts() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataLakeStoreAccounts in model"
-                            + " CreateDataLakeAnalyticsAccountParameters"));
+                        "Missing required property innerProperties in model CreateDataLakeAnalyticsAccountParameters"));
         } else {
-            dataLakeStoreAccounts().forEach(e -> e.validate());
-        }
-        if (storageAccounts() != null) {
-            storageAccounts().forEach(e -> e.validate());
-        }
-        if (computePolicies() != null) {
-            computePolicies().forEach(e -> e.validate());
-        }
-        if (firewallRules() != null) {
-            firewallRules().forEach(e -> e.validate());
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateDataLakeAnalyticsAccountParameters.class);
 }
