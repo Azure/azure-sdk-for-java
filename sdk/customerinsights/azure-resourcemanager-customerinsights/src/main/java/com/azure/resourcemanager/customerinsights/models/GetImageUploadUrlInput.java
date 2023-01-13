@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input type for getting image upload url. */
 @Fluent
 public final class GetImageUploadUrlInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetImageUploadUrlInput.class);
-
     /*
      * Type of entity. Can be Profile or Interaction.
      */
@@ -31,6 +27,10 @@ public final class GetImageUploadUrlInput {
      */
     @JsonProperty(value = "relativePath")
     private String relativePath;
+
+    /** Creates an instance of GetImageUploadUrlInput class. */
+    public GetImageUploadUrlInput() {
+    }
 
     /**
      * Get the entityType property: Type of entity. Can be Profile or Interaction.

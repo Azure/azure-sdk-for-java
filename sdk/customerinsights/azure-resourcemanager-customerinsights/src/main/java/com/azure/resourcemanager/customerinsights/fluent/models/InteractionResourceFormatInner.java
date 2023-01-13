@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.DataSourcePrecedence;
 import com.azure.resourcemanager.customerinsights.models.DataSourceType;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
@@ -15,500 +13,31 @@ import com.azure.resourcemanager.customerinsights.models.Participant;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** The interaction resource format. */
-@JsonFlatten
 @Fluent
-public class InteractionResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InteractionResourceFormatInner.class);
-
+public final class InteractionResourceFormatInner extends ProxyResource {
     /*
-     * The attributes for the Type.
+     * The Interaction Type Definition
      */
-    @JsonProperty(value = "properties.attributes")
-    private Map<String, List<String>> attributes;
+    @JsonProperty(value = "properties")
+    private InteractionTypeDefinition innerProperties;
 
-    /*
-     * Localized descriptions for the property.
-     */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
-
-    /*
-     * Localized display names for the property.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
-
-    /*
-     * Any custom localized attributes for the Type.
-     */
-    @JsonProperty(value = "properties.localizedAttributes")
-    private Map<String, Map<String, String>> localizedAttributes;
-
-    /*
-     * Small Image associated with the Property or EntityType.
-     */
-    @JsonProperty(value = "properties.smallImage")
-    private String smallImage;
-
-    /*
-     * Medium Image associated with the Property or EntityType.
-     */
-    @JsonProperty(value = "properties.mediumImage")
-    private String mediumImage;
-
-    /*
-     * Large Image associated with the Property or EntityType.
-     */
-    @JsonProperty(value = "properties.largeImage")
-    private String largeImage;
-
-    /*
-     * The api entity set name. This becomes the odata entity set name for the
-     * entity Type being referred in this object.
-     */
-    @JsonProperty(value = "properties.apiEntitySetName")
-    private String apiEntitySetName;
-
-    /*
-     * Type of entity.
-     */
-    @JsonProperty(value = "properties.entityType")
-    private EntityTypes entityType;
-
-    /*
-     * The properties of the Profile.
-     */
-    @JsonProperty(value = "properties.fields")
-    private List<PropertyDefinition> fields;
-
-    /*
-     * The instance count.
-     */
-    @JsonProperty(value = "properties.instancesCount")
-    private Integer instancesCount;
-
-    /*
-     * The last changed time for the type definition.
-     */
-    @JsonProperty(value = "properties.lastChangedUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastChangedUtc;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * The schema org link. This helps ACI identify and suggest semantic
-     * models.
-     */
-    @JsonProperty(value = "properties.schemaItemTypeLink")
-    private String schemaItemTypeLink;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * The timestamp property name. Represents the time when the interaction or
-     * profile update happened.
-     */
-    @JsonProperty(value = "properties.timestampFieldName")
-    private String timestampFieldName;
-
-    /*
-     * The name of the entity.
-     */
-    @JsonProperty(value = "properties.typeName")
-    private String typeName;
-
-    /*
-     * The id property names. Properties which uniquely identify an interaction
-     * instance.
-     */
-    @JsonProperty(value = "properties.idPropertyNames")
-    private List<String> idPropertyNames;
-
-    /*
-     * Profiles that participated in the interaction.
-     */
-    @JsonProperty(value = "properties.participantProfiles")
-    private List<Participant> participantProfiles;
-
-    /*
-     * The primary participant property name for an interaction ,This is used
-     * to logically represent the agent of the interaction, Specify the
-     * participant name here from ParticipantName.
-     */
-    @JsonProperty(value = "properties.primaryParticipantProfilePropertyName")
-    private String primaryParticipantProfilePropertyName;
-
-    /*
-     * This is specific to interactions modeled as activities. Data sources are
-     * used to determine where data is stored and also in precedence rules.
-     */
-    @JsonProperty(value = "properties.dataSourcePrecedenceRules", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DataSourcePrecedence> dataSourcePrecedenceRules;
-
-    /*
-     * An interaction can be tagged as an activity only during create. This
-     * enables the interaction to be editable and can enable merging of
-     * properties from multiple data sources based on precedence, which is
-     * defined at a link level.
-     */
-    @JsonProperty(value = "properties.isActivity")
-    private Boolean isActivity;
-
-    /*
-     * The data source name
-     */
-    @JsonProperty(value = "properties.defaultDataSource.name", access = JsonProperty.Access.WRITE_ONLY)
-    private String namePropertiesDefaultDataSourceName;
-
-    /*
-     * The data source type.
-     */
-    @JsonProperty(value = "properties.defaultDataSource.dataSourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private DataSourceType dataSourceType;
-
-    /*
-     * The data source status.
-     */
-    @JsonProperty(value = "properties.defaultDataSource.status", access = JsonProperty.Access.WRITE_ONLY)
-    private Status status;
-
-    /*
-     * The data source ID.
-     */
-    @JsonProperty(value = "properties.defaultDataSource.id", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer idPropertiesDefaultDataSourceId;
-
-    /*
-     * The data source reference id.
-     */
-    @JsonProperty(value = "properties.defaultDataSource.dataSourceReferenceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String dataSourceReferenceId;
-
-    /**
-     * Get the attributes property: The attributes for the Type.
-     *
-     * @return the attributes value.
-     */
-    public Map<String, List<String>> attributes() {
-        return this.attributes;
+    /** Creates an instance of InteractionResourceFormatInner class. */
+    public InteractionResourceFormatInner() {
     }
 
     /**
-     * Set the attributes property: The attributes for the Type.
+     * Get the innerProperties property: The Interaction Type Definition.
      *
-     * @param attributes the attributes value to set.
-     * @return the InteractionResourceFormatInner object itself.
+     * @return the innerProperties value.
      */
-    public InteractionResourceFormatInner withAttributes(Map<String, List<String>> attributes) {
-        this.attributes = attributes;
-        return this;
-    }
-
-    /**
-     * Get the description property: Localized descriptions for the property.
-     *
-     * @return the description value.
-     */
-    public Map<String, String> description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Localized descriptions for the property.
-     *
-     * @param description the description value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the displayName property: Localized display names for the property.
-     *
-     * @return the displayName value.
-     */
-    public Map<String, String> displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: Localized display names for the property.
-     *
-     * @param displayName the displayName value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
-     * Get the localizedAttributes property: Any custom localized attributes for the Type.
-     *
-     * @return the localizedAttributes value.
-     */
-    public Map<String, Map<String, String>> localizedAttributes() {
-        return this.localizedAttributes;
-    }
-
-    /**
-     * Set the localizedAttributes property: Any custom localized attributes for the Type.
-     *
-     * @param localizedAttributes the localizedAttributes value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withLocalizedAttributes(
-        Map<String, Map<String, String>> localizedAttributes) {
-        this.localizedAttributes = localizedAttributes;
-        return this;
-    }
-
-    /**
-     * Get the smallImage property: Small Image associated with the Property or EntityType.
-     *
-     * @return the smallImage value.
-     */
-    public String smallImage() {
-        return this.smallImage;
-    }
-
-    /**
-     * Set the smallImage property: Small Image associated with the Property or EntityType.
-     *
-     * @param smallImage the smallImage value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withSmallImage(String smallImage) {
-        this.smallImage = smallImage;
-        return this;
-    }
-
-    /**
-     * Get the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
-     * @return the mediumImage value.
-     */
-    public String mediumImage() {
-        return this.mediumImage;
-    }
-
-    /**
-     * Set the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
-     * @param mediumImage the mediumImage value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withMediumImage(String mediumImage) {
-        this.mediumImage = mediumImage;
-        return this;
-    }
-
-    /**
-     * Get the largeImage property: Large Image associated with the Property or EntityType.
-     *
-     * @return the largeImage value.
-     */
-    public String largeImage() {
-        return this.largeImage;
-    }
-
-    /**
-     * Set the largeImage property: Large Image associated with the Property or EntityType.
-     *
-     * @param largeImage the largeImage value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withLargeImage(String largeImage) {
-        this.largeImage = largeImage;
-        return this;
-    }
-
-    /**
-     * Get the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
-     * Type being referred in this object.
-     *
-     * @return the apiEntitySetName value.
-     */
-    public String apiEntitySetName() {
-        return this.apiEntitySetName;
-    }
-
-    /**
-     * Set the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
-     * Type being referred in this object.
-     *
-     * @param apiEntitySetName the apiEntitySetName value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withApiEntitySetName(String apiEntitySetName) {
-        this.apiEntitySetName = apiEntitySetName;
-        return this;
-    }
-
-    /**
-     * Get the entityType property: Type of entity.
-     *
-     * @return the entityType value.
-     */
-    public EntityTypes entityType() {
-        return this.entityType;
-    }
-
-    /**
-     * Set the entityType property: Type of entity.
-     *
-     * @param entityType the entityType value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withEntityType(EntityTypes entityType) {
-        this.entityType = entityType;
-        return this;
-    }
-
-    /**
-     * Get the fields property: The properties of the Profile.
-     *
-     * @return the fields value.
-     */
-    public List<PropertyDefinition> fields() {
-        return this.fields;
-    }
-
-    /**
-     * Set the fields property: The properties of the Profile.
-     *
-     * @param fields the fields value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withFields(List<PropertyDefinition> fields) {
-        this.fields = fields;
-        return this;
-    }
-
-    /**
-     * Get the instancesCount property: The instance count.
-     *
-     * @return the instancesCount value.
-     */
-    public Integer instancesCount() {
-        return this.instancesCount;
-    }
-
-    /**
-     * Set the instancesCount property: The instance count.
-     *
-     * @param instancesCount the instancesCount value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withInstancesCount(Integer instancesCount) {
-        this.instancesCount = instancesCount;
-        return this;
-    }
-
-    /**
-     * Get the lastChangedUtc property: The last changed time for the type definition.
-     *
-     * @return the lastChangedUtc value.
-     */
-    public OffsetDateTime lastChangedUtc() {
-        return this.lastChangedUtc;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningStates provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
-     *
-     * @return the schemaItemTypeLink value.
-     */
-    public String schemaItemTypeLink() {
-        return this.schemaItemTypeLink;
-    }
-
-    /**
-     * Set the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
-     *
-     * @param schemaItemTypeLink the schemaItemTypeLink value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withSchemaItemTypeLink(String schemaItemTypeLink) {
-        this.schemaItemTypeLink = schemaItemTypeLink;
-        return this;
-    }
-
-    /**
-     * Get the tenantId property: The hub name.
-     *
-     * @return the tenantId value.
-     */
-    public String tenantId() {
-        return this.tenantId;
-    }
-
-    /**
-     * Get the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
-     * profile update happened.
-     *
-     * @return the timestampFieldName value.
-     */
-    public String timestampFieldName() {
-        return this.timestampFieldName;
-    }
-
-    /**
-     * Set the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
-     * profile update happened.
-     *
-     * @param timestampFieldName the timestampFieldName value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withTimestampFieldName(String timestampFieldName) {
-        this.timestampFieldName = timestampFieldName;
-        return this;
-    }
-
-    /**
-     * Get the typeName property: The name of the entity.
-     *
-     * @return the typeName value.
-     */
-    public String typeName() {
-        return this.typeName;
-    }
-
-    /**
-     * Set the typeName property: The name of the entity.
-     *
-     * @param typeName the typeName value to set.
-     * @return the InteractionResourceFormatInner object itself.
-     */
-    public InteractionResourceFormatInner withTypeName(String typeName) {
-        this.typeName = typeName;
-        return this;
+    private InteractionTypeDefinition innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -518,7 +47,7 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the idPropertyNames value.
      */
     public List<String> idPropertyNames() {
-        return this.idPropertyNames;
+        return this.innerProperties() == null ? null : this.innerProperties().idPropertyNames();
     }
 
     /**
@@ -529,7 +58,10 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the InteractionResourceFormatInner object itself.
      */
     public InteractionResourceFormatInner withIdPropertyNames(List<String> idPropertyNames) {
-        this.idPropertyNames = idPropertyNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withIdPropertyNames(idPropertyNames);
         return this;
     }
 
@@ -539,7 +71,7 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the participantProfiles value.
      */
     public List<Participant> participantProfiles() {
-        return this.participantProfiles;
+        return this.innerProperties() == null ? null : this.innerProperties().participantProfiles();
     }
 
     /**
@@ -549,7 +81,10 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the InteractionResourceFormatInner object itself.
      */
     public InteractionResourceFormatInner withParticipantProfiles(List<Participant> participantProfiles) {
-        this.participantProfiles = participantProfiles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withParticipantProfiles(participantProfiles);
         return this;
     }
 
@@ -561,7 +96,7 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the primaryParticipantProfilePropertyName value.
      */
     public String primaryParticipantProfilePropertyName() {
-        return this.primaryParticipantProfilePropertyName;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryParticipantProfilePropertyName();
     }
 
     /**
@@ -574,7 +109,10 @@ public class InteractionResourceFormatInner extends ProxyResource {
      */
     public InteractionResourceFormatInner withPrimaryParticipantProfilePropertyName(
         String primaryParticipantProfilePropertyName) {
-        this.primaryParticipantProfilePropertyName = primaryParticipantProfilePropertyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withPrimaryParticipantProfilePropertyName(primaryParticipantProfilePropertyName);
         return this;
     }
 
@@ -585,7 +123,7 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the dataSourcePrecedenceRules value.
      */
     public List<DataSourcePrecedence> dataSourcePrecedenceRules() {
-        return this.dataSourcePrecedenceRules;
+        return this.innerProperties() == null ? null : this.innerProperties().dataSourcePrecedenceRules();
     }
 
     /**
@@ -596,7 +134,7 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the isActivity value.
      */
     public Boolean isActivity() {
-        return this.isActivity;
+        return this.innerProperties() == null ? null : this.innerProperties().isActivity();
     }
 
     /**
@@ -608,17 +146,20 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the InteractionResourceFormatInner object itself.
      */
     public InteractionResourceFormatInner withIsActivity(Boolean isActivity) {
-        this.isActivity = isActivity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withIsActivity(isActivity);
         return this;
     }
 
     /**
-     * Get the namePropertiesDefaultDataSourceName property: The data source name.
+     * Get the name property: The data source name.
      *
-     * @return the namePropertiesDefaultDataSourceName value.
+     * @return the name value.
      */
-    public String namePropertiesDefaultDataSourceName() {
-        return this.namePropertiesDefaultDataSourceName;
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
@@ -627,7 +168,7 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the dataSourceType value.
      */
     public DataSourceType dataSourceType() {
-        return this.dataSourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().dataSourceType();
     }
 
     /**
@@ -636,16 +177,16 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the status value.
      */
     public Status status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
-     * Get the idPropertiesDefaultDataSourceId property: The data source ID.
+     * Get the id property: The data source ID.
      *
-     * @return the idPropertiesDefaultDataSourceId value.
+     * @return the id value.
      */
-    public Integer idPropertiesDefaultDataSourceId() {
-        return this.idPropertiesDefaultDataSourceId;
+    public Integer idPropertiesId() {
+        return this.innerProperties() == null ? null : this.innerProperties().id();
     }
 
     /**
@@ -654,7 +195,361 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @return the dataSourceReferenceId value.
      */
     public String dataSourceReferenceId() {
-        return this.dataSourceReferenceId;
+        return this.innerProperties() == null ? null : this.innerProperties().dataSourceReferenceId();
+    }
+
+    /**
+     * Get the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
+     * Type being referred in this object.
+     *
+     * @return the apiEntitySetName value.
+     */
+    public String apiEntitySetName() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiEntitySetName();
+    }
+
+    /**
+     * Set the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity
+     * Type being referred in this object.
+     *
+     * @param apiEntitySetName the apiEntitySetName value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withApiEntitySetName(String apiEntitySetName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withApiEntitySetName(apiEntitySetName);
+        return this;
+    }
+
+    /**
+     * Get the entityType property: Type of entity.
+     *
+     * @return the entityType value.
+     */
+    public EntityTypes entityType() {
+        return this.innerProperties() == null ? null : this.innerProperties().entityType();
+    }
+
+    /**
+     * Set the entityType property: Type of entity.
+     *
+     * @param entityType the entityType value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withEntityType(EntityTypes entityType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withEntityType(entityType);
+        return this;
+    }
+
+    /**
+     * Get the fields property: The properties of the Profile.
+     *
+     * @return the fields value.
+     */
+    public List<PropertyDefinition> fields() {
+        return this.innerProperties() == null ? null : this.innerProperties().fields();
+    }
+
+    /**
+     * Set the fields property: The properties of the Profile.
+     *
+     * @param fields the fields value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withFields(List<PropertyDefinition> fields) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withFields(fields);
+        return this;
+    }
+
+    /**
+     * Get the instancesCount property: The instance count.
+     *
+     * @return the instancesCount value.
+     */
+    public Integer instancesCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().instancesCount();
+    }
+
+    /**
+     * Set the instancesCount property: The instance count.
+     *
+     * @param instancesCount the instancesCount value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withInstancesCount(Integer instancesCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withInstancesCount(instancesCount);
+        return this;
+    }
+
+    /**
+     * Get the lastChangedUtc property: The last changed time for the type definition.
+     *
+     * @return the lastChangedUtc value.
+     */
+    public OffsetDateTime lastChangedUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastChangedUtc();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningStates provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
+     *
+     * @return the schemaItemTypeLink value.
+     */
+    public String schemaItemTypeLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().schemaItemTypeLink();
+    }
+
+    /**
+     * Set the schemaItemTypeLink property: The schema org link. This helps ACI identify and suggest semantic models.
+     *
+     * @param schemaItemTypeLink the schemaItemTypeLink value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withSchemaItemTypeLink(String schemaItemTypeLink) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withSchemaItemTypeLink(schemaItemTypeLink);
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The hub name.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Get the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
+     * profile update happened.
+     *
+     * @return the timestampFieldName value.
+     */
+    public String timestampFieldName() {
+        return this.innerProperties() == null ? null : this.innerProperties().timestampFieldName();
+    }
+
+    /**
+     * Set the timestampFieldName property: The timestamp property name. Represents the time when the interaction or
+     * profile update happened.
+     *
+     * @param timestampFieldName the timestampFieldName value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withTimestampFieldName(String timestampFieldName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withTimestampFieldName(timestampFieldName);
+        return this;
+    }
+
+    /**
+     * Get the typeName property: The name of the entity.
+     *
+     * @return the typeName value.
+     */
+    public String typeName() {
+        return this.innerProperties() == null ? null : this.innerProperties().typeName();
+    }
+
+    /**
+     * Set the typeName property: The name of the entity.
+     *
+     * @param typeName the typeName value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withTypeName(String typeName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withTypeName(typeName);
+        return this;
+    }
+
+    /**
+     * Get the attributes property: The attributes for the Type.
+     *
+     * @return the attributes value.
+     */
+    public Map<String, List<String>> attributes() {
+        return this.innerProperties() == null ? null : this.innerProperties().attributes();
+    }
+
+    /**
+     * Set the attributes property: The attributes for the Type.
+     *
+     * @param attributes the attributes value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withAttributes(Map<String, List<String>> attributes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withAttributes(attributes);
+        return this;
+    }
+
+    /**
+     * Get the description property: Localized descriptions for the property.
+     *
+     * @return the description value.
+     */
+    public Map<String, String> description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Localized descriptions for the property.
+     *
+     * @param description the description value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withDescription(Map<String, String> description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the displayName property: Localized display names for the property.
+     *
+     * @return the displayName value.
+     */
+    public Map<String, String> displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: Localized display names for the property.
+     *
+     * @param displayName the displayName value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withDisplayName(Map<String, String> displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the localizedAttributes property: Any custom localized attributes for the Type.
+     *
+     * @return the localizedAttributes value.
+     */
+    public Map<String, Map<String, String>> localizedAttributes() {
+        return this.innerProperties() == null ? null : this.innerProperties().localizedAttributes();
+    }
+
+    /**
+     * Set the localizedAttributes property: Any custom localized attributes for the Type.
+     *
+     * @param localizedAttributes the localizedAttributes value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withLocalizedAttributes(
+        Map<String, Map<String, String>> localizedAttributes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withLocalizedAttributes(localizedAttributes);
+        return this;
+    }
+
+    /**
+     * Get the smallImage property: Small Image associated with the Property or EntityType.
+     *
+     * @return the smallImage value.
+     */
+    public String smallImage() {
+        return this.innerProperties() == null ? null : this.innerProperties().smallImage();
+    }
+
+    /**
+     * Set the smallImage property: Small Image associated with the Property or EntityType.
+     *
+     * @param smallImage the smallImage value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withSmallImage(String smallImage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withSmallImage(smallImage);
+        return this;
+    }
+
+    /**
+     * Get the mediumImage property: Medium Image associated with the Property or EntityType.
+     *
+     * @return the mediumImage value.
+     */
+    public String mediumImage() {
+        return this.innerProperties() == null ? null : this.innerProperties().mediumImage();
+    }
+
+    /**
+     * Set the mediumImage property: Medium Image associated with the Property or EntityType.
+     *
+     * @param mediumImage the mediumImage value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withMediumImage(String mediumImage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withMediumImage(mediumImage);
+        return this;
+    }
+
+    /**
+     * Get the largeImage property: Large Image associated with the Property or EntityType.
+     *
+     * @return the largeImage value.
+     */
+    public String largeImage() {
+        return this.innerProperties() == null ? null : this.innerProperties().largeImage();
+    }
+
+    /**
+     * Set the largeImage property: Large Image associated with the Property or EntityType.
+     *
+     * @param largeImage the largeImage value to set.
+     * @return the InteractionResourceFormatInner object itself.
+     */
+    public InteractionResourceFormatInner withLargeImage(String largeImage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InteractionTypeDefinition();
+        }
+        this.innerProperties().withLargeImage(largeImage);
+        return this;
     }
 
     /**
@@ -663,14 +558,8 @@ public class InteractionResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (fields() != null) {
-            fields().forEach(e -> e.validate());
-        }
-        if (participantProfiles() != null) {
-            participantProfiles().forEach(e -> e.validate());
-        }
-        if (dataSourcePrecedenceRules() != null) {
-            dataSourcePrecedenceRules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

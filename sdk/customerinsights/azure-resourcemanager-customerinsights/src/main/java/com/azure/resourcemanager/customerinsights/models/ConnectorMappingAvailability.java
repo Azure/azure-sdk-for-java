@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connector mapping property availability. */
 @Fluent
 public final class ConnectorMappingAvailability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingAvailability.class);
-
     /*
      * The frequency to update.
      */
@@ -25,6 +21,10 @@ public final class ConnectorMappingAvailability {
      */
     @JsonProperty(value = "interval", required = true)
     private int interval;
+
+    /** Creates an instance of ConnectorMappingAvailability class. */
+    public ConnectorMappingAvailability() {
+    }
 
     /**
      * Get the frequency property: The frequency to update.

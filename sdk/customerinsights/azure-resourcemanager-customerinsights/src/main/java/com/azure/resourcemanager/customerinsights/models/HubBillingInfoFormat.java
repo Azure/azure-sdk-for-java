@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hub billing info. */
 @Fluent
 public final class HubBillingInfoFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubBillingInfoFormat.class);
-
     /*
      * The sku name.
      */
@@ -21,18 +17,20 @@ public final class HubBillingInfoFormat {
     private String skuName;
 
     /*
-     * The minimum number of units will be billed. One unit is 10,000 Profiles
-     * and 100,000 Interactions.
+     * The minimum number of units will be billed. One unit is 10,000 Profiles and 100,000 Interactions.
      */
     @JsonProperty(value = "minUnits")
     private Integer minUnits;
 
     /*
-     * The maximum number of units can be used.  One unit is 10,000 Profiles
-     * and 100,000 Interactions.
+     * The maximum number of units can be used.  One unit is 10,000 Profiles and 100,000 Interactions.
      */
     @JsonProperty(value = "maxUnits")
     private Integer maxUnits;
+
+    /** Creates an instance of HubBillingInfoFormat class. */
+    public HubBillingInfoFormat() {
+    }
 
     /**
      * Get the skuName property: The sku name.

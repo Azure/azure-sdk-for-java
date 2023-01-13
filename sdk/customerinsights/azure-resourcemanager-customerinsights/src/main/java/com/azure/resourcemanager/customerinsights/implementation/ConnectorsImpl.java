@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.ConnectorsClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.ConnectorResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.ConnectorResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Connectors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectorsImpl implements Connectors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorsImpl.class);
 
     private final ConnectorsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class ConnectorsImpl implements Connectors {
         this.serviceManager = serviceManager;
     }
 
-    public ConnectorResourceFormat get(String resourceGroupName, String hubName, String connectorName) {
-        ConnectorResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, connectorName);
-        if (inner != null) {
-            return new ConnectorResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ConnectorResourceFormat> getWithResponse(
         String resourceGroupName, String hubName, String connectorName, Context context) {
         Response<ConnectorResourceFormatInner> inner =
@@ -48,6 +38,15 @@ public final class ConnectorsImpl implements Connectors {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConnectorResourceFormatImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConnectorResourceFormat get(String resourceGroupName, String hubName, String connectorName) {
+        ConnectorResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, connectorName);
+        if (inner != null) {
+            return new ConnectorResourceFormatImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -75,7 +74,7 @@ public final class ConnectorsImpl implements Connectors {
     public ConnectorResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -83,14 +82,14 @@ public final class ConnectorsImpl implements Connectors {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -101,7 +100,7 @@ public final class ConnectorsImpl implements Connectors {
     public Response<ConnectorResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,14 +108,14 @@ public final class ConnectorsImpl implements Connectors {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -127,7 +126,7 @@ public final class ConnectorsImpl implements Connectors {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,14 +134,14 @@ public final class ConnectorsImpl implements Connectors {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -153,7 +152,7 @@ public final class ConnectorsImpl implements Connectors {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,14 +160,14 @@ public final class ConnectorsImpl implements Connectors {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));

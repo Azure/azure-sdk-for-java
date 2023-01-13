@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ConnectorMappingStates. */
+/** State of connector mapping. */
 public enum ConnectorMappingStates {
     /** Enum value Creating. */
     CREATING("Creating"),
@@ -45,6 +45,9 @@ public enum ConnectorMappingStates {
      */
     @JsonCreator
     public static ConnectorMappingStates fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ConnectorMappingStates[] items = ConnectorMappingStates.values();
         for (ConnectorMappingStates item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,6 +57,7 @@ public enum ConnectorMappingStates {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

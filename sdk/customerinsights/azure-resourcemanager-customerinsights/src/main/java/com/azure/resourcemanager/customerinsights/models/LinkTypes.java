@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for LinkTypes. */
+/** Link type. */
 public enum LinkTypes {
     /** Enum value UpdateAlways. */
     UPDATE_ALWAYS("UpdateAlways"),
@@ -30,6 +30,9 @@ public enum LinkTypes {
      */
     @JsonCreator
     public static LinkTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LinkTypes[] items = LinkTypes.values();
         for (LinkTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum LinkTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
