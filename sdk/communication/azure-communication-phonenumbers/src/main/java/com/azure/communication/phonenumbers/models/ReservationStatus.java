@@ -8,10 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * @deprecated Defines values for ReservationStatus. 
- */
-@Deprecated
+/** Defines values for ReservationStatus. */
 public final class ReservationStatus extends ExpandableStringEnum<ReservationStatus> {
     /** Static value Pending for ReservationStatus. */
     public static final ReservationStatus PENDING = fromString("Pending");

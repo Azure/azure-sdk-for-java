@@ -30,7 +30,7 @@ public final class PurchasedPhoneNumber {
     private String countryCode;
 
     /*
-     * The phone number's type, e.g. geographic, tollFree.
+     * The phone number's type, e.g. Geographic, TollFree.
      */
     @JsonProperty(value = "phoneNumberType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
@@ -88,7 +88,7 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree.
+     * Get the phoneNumberType property: The phone number's type, e.g. Geographic, TollFree.
      *
      * @return the phoneNumberType value.
      */
