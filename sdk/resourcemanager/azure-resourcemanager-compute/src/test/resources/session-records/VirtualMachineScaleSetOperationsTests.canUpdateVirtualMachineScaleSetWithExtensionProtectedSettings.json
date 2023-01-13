@@ -132,7 +132,7 @@
       "Expires" : "-1",
       "Content-Length" : "380",
       "x-ms-request-id" : "19992ae2-ed92-4a86-8464-01d59bd92146",
-      "Body" : "{\"keys\":[{\"creationTime\":\"2023-01-13T02:23:20.5390306Z\",\"keyName\":\"key1\",\"value\":\"/TgmhVGgvVzLNII7y8SXozPCLx12A0jfFHldS0FR371Q/n4krHoy/ObYeKCgLoHk1VxvYQvpwB8g+AStO9ttxA==\",\"permissions\":\"FULL\"},{\"creationTime\":\"2023-01-13T02:23:20.5390306Z\",\"keyName\":\"key2\",\"value\":\"tO4cD6Gg6A2SGq5fblojF07VcXh7DN23PZSbgTK2XdVHKH8JgovRwnp1+fHu2pk9Umy5Rcq7KrCe+AStJzciUg==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"creationTime\":\"2023-01-13T02:23:20.5390306Z\",\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"creationTime\":\"2023-01-13T02:23:20.5390306Z\",\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "d2fb1aff-6ce9-4f02-9ee9-c10f41cd4a64",
       "Content-Type" : "application/json"
     },

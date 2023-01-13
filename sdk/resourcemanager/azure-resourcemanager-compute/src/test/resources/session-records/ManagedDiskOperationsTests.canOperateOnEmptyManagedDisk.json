@@ -319,7 +319,7 @@
       "Expires" : "-1",
       "Content-Length" : "430",
       "x-ms-request-id" : "aea0aa7b-6b00-4111-9187-6959e13969dd",
-      "Body" : "{\r\n  \"startTime\": \"2023-01-13T02:21:15.2004918+00:00\",\r\n  \"endTime\": \"2023-01-13T02:21:15.4348666+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"https://md-hdd-5c1wvmc5tgh4.z12.blob.storage.azure.net/mbxvk1dzrv0t/abcd?sv=2018-03-28&sr=b&si=9d808b18-348f-4d6a-bd74-928b5c68a2a7&sig=ZRQ9I3wc0iORl3ina59pXKeqvbrRKI3Sce6F4N98tM0%3D\"\r\n}\r\n  },\r\n  \"name\": \"9bd89c90-36dc-4c27-b455-6610dd3a5d5e\"\r\n}",
+      "Body" : "{\r\n  \"startTime\": \"2023-01-13T02:21:15.2004918+00:00\",\r\n  \"endTime\": \"2023-01-13T02:21:15.4348666+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"properties\": {\r\n    \"output\": {\r\n  \"accessSAS\": \"***REMOVED***\"\r\n}\r\n  },\r\n  \"name\": \"9bd89c90-36dc-4c27-b455-6610dd3a5d5e\"\r\n}",
       "x-ms-client-request-id" : "71c99e77-4f5f-4d26-bec7-c2c5dcdd5d60",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -348,7 +348,7 @@
       "Expires" : "-1",
       "Content-Length" : "205",
       "x-ms-request-id" : "2b313586-d19c-4dff-afef-16ca22d045b7",
-      "Body" : "{\r\n  \"accessSAS\": \"https://md-hdd-5c1wvmc5tgh4.z12.blob.storage.azure.net/mbxvk1dzrv0t/abcd?sv=2018-03-28&sr=b&si=9d808b18-348f-4d6a-bd74-928b5c68a2a7&sig=ZRQ9I3wc0iORl3ina59pXKeqvbrRKI3Sce6F4N98tM0%3D\"\r\n}",
+      "Body" : "{\r\n  \"accessSAS\": \"***REMOVED***\"\r\n}",
       "x-ms-client-request-id" : "c4bebebc-b329-4b6f-8649-12aa7fe04334",
       "Content-Type" : "application/json; charset=utf-8"
     },
