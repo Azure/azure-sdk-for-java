@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -30,10 +31,9 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
-
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,14 +60,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     private CosmosDatabase gatewayCosmosDatabase;
     private CosmosContainer gatewayCosmosContainer;
 
-    private CosmosClient directCosmosClientWithOpenConnections;
-    private CosmosAsyncClient directCosmosAsyncClientWithOpenConnections;
-
-    private CosmosContainer containerWithOpenConnections1;
-    private CosmosContainer containerWithOpenConnections2;
     private final static String CONTAINER_ID = "InitializedTestContainer";
-    private final static String CONTAINER_ID_1 = "TestContainer1";
-    private final static String CONTAINER_ID_2 = "TestContainer2";
 
     @BeforeClass(groups = {"simple"})
     public void beforeClass() {
@@ -75,8 +68,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
-                .endpointDiscoveryEnabled(true)
-                .preferredRegions(Arrays.asList("East US", "West US"))
                 .directMode()
                 .buildAsyncClient();
         directCosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
@@ -108,7 +99,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .contentResponseOnWriteEnabled(true)
                 .gatewayMode()
                 .buildClient();
-
         gatewayCosmosDatabase = gatewayCosmosClient.getDatabase(directCosmosAsyncDatabase.getId());
         gatewayCosmosContainer = gatewayCosmosDatabase.getContainer(directCosmosAsyncContainer.getId());
     }
@@ -119,19 +109,10 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
             this.directCosmosAsyncContainer.delete().block();
         }
 
-        if (this.containerWithOpenConnections1 != null) {
-            this.containerWithOpenConnections1.delete();
-        }
-
-        if (this.containerWithOpenConnections2 != null) {
-            this.containerWithOpenConnections2.delete();
-        }
-
         safeCloseAsync(directCosmosAsyncClient);
         safeCloseAsync(gatewayCosmosAsyncClient);
         safeCloseSyncClient(directCosmosClient);
         safeCloseSyncClient(gatewayCosmosClient);
-        safeCloseAsync(directCosmosAsyncClientWithOpenConnections);
     }
 
     @DataProvider(name = "useAsyncParameterProvider")
@@ -143,8 +124,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         };
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void openConnectionThroughClientBuilder() {
         directCosmosAsyncDatabase.createContainerIfNotExists("id1", "/mypk").block();
         directCosmosAsyncDatabase.createContainerIfNotExists("id2", "/mypk").block();
@@ -154,14 +134,13 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         List<String> regions = new ArrayList<>();
         regions.add("East US");
-        regions.add("West US");
 
         List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
         cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer1.getDatabase().getId(), cosmosContainer1.getId()));
         cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer2.getDatabase().getId(), cosmosContainer2.getId()));
 
         ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
-                .setProactiveConnectionRegions(2)
+                .setProactiveConnectionRegions(1)
                 .build();
 
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
@@ -169,7 +148,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .key(TestConfigurations.MASTER_KEY)
                 .openConnectionsAndInitCaches(proactiveContainerInitConfig)
                 .contentResponseOnWriteEnabled(true)
-                .preferredRegions(Arrays.asList("East US", "West US"))
+                .preferredRegions(Arrays.asList("East US"))
                 .endpointDiscoveryEnabled(true)
                 .directMode()
                 .buildAsyncClient();
@@ -178,10 +157,13 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) cosmosAsyncClient.getDocClientWrapper();
         RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
         GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
 
         ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
         ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
         Set<String> endpoints = ConcurrentHashMap.newKeySet();
+        int count = provider.count();
+        List<URI> proactiveConnectionEndpoints = globalEndpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions());
 
         Flux<CosmosAsyncContainer> containerFlux = Flux.fromArray(new CosmosAsyncContainer[]{cosmosContainer1, cosmosContainer2});
         Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux = Flux.fromArray(new CosmosAsyncContainer[]{cosmosContainer1, cosmosContainer2})
@@ -197,32 +179,40 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                                             null);
                         });
 
-        Flux.zip(containerFlux, partitionKeyRangeFlux)
-                .flatMapIterable(containerToPartitionKeyRanges -> {
-                    List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
-                    for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
-                        pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
-                    }
-                    return pkrToContainer;
-                })
-                .flatMap(partitionKeyRangeToContainer -> {
-                    RxDocumentServiceRequest dummyRequest = RxDocumentServiceRequest.createFromName(
-                            mockDiagnosticsClientContext(),
-                            OperationType.Read,
-                            partitionKeyRangeToContainer.getRight().getLink() + "/docId",
-                            ResourceType.Document);
-                    dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
-                    // TODO: resolves addresses for only a single region
-                    return globalAddressResolver.resolveAsync(dummyRequest, false);
-                })
-                .doOnNext(addressInformations -> {
-                    for (AddressInformation address : addressInformations) {
-                        endpoints.add(address.getPhysicalUri().getURI().getAuthority());
-                    }
-                })
-                .blockLast();
+        // 1. Extract all preferred read regions to proactively connect to
+        // 2. Resolve partition addresses for one read region, then mark read region as unavailable
+        // 3. This will force resolveAsync to use the next preferred read region
+        // 4. This way we can verify that connections have been opened to all replicas across all proactive
+        // connection regions
+        for (URI readEndpoint : proactiveConnectionEndpoints) {
+            Flux.zip(containerFlux, partitionKeyRangeFlux)
+                    .flatMapIterable(containerToPartitionKeyRanges -> {
+                        List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
+                        for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
+                            pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
+                        }
+                        return pkrToContainer;
+                    })
+                    .flatMap(partitionKeyRangeToContainer -> {
+                        RxDocumentServiceRequest dummyRequest = RxDocumentServiceRequest.createFromName(
+                                mockDiagnosticsClientContext(),
+                                OperationType.Read,
+                                partitionKeyRangeToContainer.getRight().getLink() + "/docId",
+                                ResourceType.Document);
+                        dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
+                        return globalAddressResolver.resolveAsync(dummyRequest, false);
+                    })
+                    .doOnNext(addressInformations -> {
+                        for (AddressInformation address : addressInformations) {
+                            endpoints.add(address.getPhysicalUri().getURI().getAuthority());
+                        }
+                    })
+                    .blockLast();
 
-        assertThat(provider.count()).isEqualTo(proactiveContainerInitConfig.getNumProactiveConnectionRegions() * endpoints.size());
+            globalEndpointManager.markEndpointUnavailableForRead(readEndpoint);
+        }
+
+        assertThat(provider.count()).isEqualTo(endpoints.size());
         assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
         assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
 
