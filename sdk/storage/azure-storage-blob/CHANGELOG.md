@@ -22,7 +22,7 @@
 - Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
 - Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 - Upgraded `azure-storage-common` from `12.19.1` to version `12.19.2`.
-- Upgraded `azure-storage-internal-avro` from `12.5.1` to version `12.6.0-beta.1`.
+- Upgraded `azure-storage-internal-avro` from `12.5.1` to version `12.5.2`.
 
 ## 12.20.1 (2022-11-15)
 
