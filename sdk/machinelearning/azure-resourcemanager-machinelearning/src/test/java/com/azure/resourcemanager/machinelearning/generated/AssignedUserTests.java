@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AssignedUser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssignedUserTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssignedUser model =
             BinaryData
                 .fromString("{\"objectId\":\"mykyujxsglhs\",\"tenantId\":\"rryejylmbkzudnig\"}")
@@ -20,8 +19,8 @@ public final class AssignedUserTests {
         Assertions.assertEquals("rryejylmbkzudnig", model.tenantId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssignedUser model = new AssignedUser().withObjectId("mykyujxsglhs").withTenantId("rryejylmbkzudnig");
         model = BinaryData.fromObject(model).toObject(AssignedUser.class);
         Assertions.assertEquals("mykyujxsglhs", model.objectId());

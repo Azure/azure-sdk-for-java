@@ -17,6 +17,15 @@ public final class HyperVGenerationType extends ExpandableStringEnum<HyperVGener
     public static final HyperVGenerationType V2 = fromString("V2");
 
     /**
+     * Creates a new instance of HyperVGenerationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HyperVGenerationType() {
+    }
+
+    /**
      * Creates or finds a HyperVGenerationType from its string representation.
      *
      * @param name a name to look for.

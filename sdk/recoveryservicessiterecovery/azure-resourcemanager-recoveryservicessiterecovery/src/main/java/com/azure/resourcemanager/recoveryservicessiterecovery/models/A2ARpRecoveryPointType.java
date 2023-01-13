@@ -24,6 +24,15 @@ public final class A2ARpRecoveryPointType extends ExpandableStringEnum<A2ARpReco
     public static final A2ARpRecoveryPointType LATEST_PROCESSED = fromString("LatestProcessed");
 
     /**
+     * Creates a new instance of A2ARpRecoveryPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public A2ARpRecoveryPointType() {
+    }
+
+    /**
      * Creates or finds a A2ARpRecoveryPointType from its string representation.
      *
      * @param name a name to look for.

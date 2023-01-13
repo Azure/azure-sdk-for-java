@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Capacity of the sku. */
 @Immutable
 public final class SkuCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapacity.class);
-
     /*
      * Usable capacity in TB.
      */
@@ -25,6 +21,10 @@ public final class SkuCapacity {
      */
     @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private String maximum;
+
+    /** Creates an instance of SkuCapacity class. */
+    public SkuCapacity() {
+    }
 
     /**
      * Get the usable property: Usable capacity in TB.

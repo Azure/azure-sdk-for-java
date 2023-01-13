@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Transactions ListByInvoice. */
 public final class TransactionsListByInvoiceSamples {
     /*
@@ -17,6 +15,6 @@ public final class TransactionsListByInvoiceSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void transactionsListByInvoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.transactions().listByInvoice("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.transactions().listByInvoice("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 }

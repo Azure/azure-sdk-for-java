@@ -17,6 +17,15 @@ public final class TargetLagsMode extends ExpandableStringEnum<TargetLagsMode> {
     public static final TargetLagsMode CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of TargetLagsMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetLagsMode() {
+    }
+
+    /**
      * Creates or finds a TargetLagsMode from its string representation.
      *
      * @param name a name to look for.

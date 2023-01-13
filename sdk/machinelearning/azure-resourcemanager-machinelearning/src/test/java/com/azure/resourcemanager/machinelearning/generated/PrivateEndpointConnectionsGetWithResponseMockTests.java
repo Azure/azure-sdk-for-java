@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.machinelearning.models.PrivateEndpointConnection;
@@ -35,7 +34,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wzlzklasl\",\"subnetArmId\":\"ciz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Timeout\",\"description\":\"arwp\",\"actionsRequired\":\"saudoejtighsx\"},\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"4ba77a54-e917-423f-a2bd-641a94300ebc\",\"tenantId\":\"5e2f912a-4793-407c-8196-e3aa06c54504\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"ahovuuw\",\"tags\":{\"jnhj\":\"e\",\"fbbcngkegxcypxbb\":\"oti\",\"qlf\":\"etwilyrzoxpd\"},\"sku\":{\"name\":\"lqownkiua\",\"tier\":\"Free\",\"size\":\"ahwkxjjm\",\"family\":\"nlmsoo\",\"capacity\":1046371938},\"id\":\"ecdh\",\"name\":\"yswcrptveajczx\",\"type\":\"lgsrgkrfizrpywlp\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wzlzklasl\",\"subnetArmId\":\"ciz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Timeout\",\"description\":\"arwp\",\"actionsRequired\":\"saudoejtighsx\"},\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"77a4ccdb-fb26-4f04-884f-577353706d15\",\"tenantId\":\"82e5dd6c-ed00-424d-b9d3-56306a3b5e26\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"ahovuuw\",\"tags\":{\"jnhj\":\"e\",\"fbbcngkegxcypxbb\":\"oti\",\"qlf\":\"etwilyrzoxpd\"},\"sku\":{\"name\":\"lqownkiua\",\"tier\":\"Free\",\"size\":\"ahwkxjjm\",\"family\":\"nlmsoo\",\"capacity\":1046371938},\"id\":\"ecdh\",\"name\":\"yswcrptveajczx\",\"type\":\"lgsrgkrfizrpywlp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,7 +65,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("bkbdhlltqstqkqs", "gxiynecovagzk", "eubanlxunpqcc", Context.NONE)
+                .getWithResponse("bkbdhlltqstqkqs", "gxiynecovagzk", "eubanlxunpqcc", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());

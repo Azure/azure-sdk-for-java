@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments ListByBillingAccount. */
 public final class BillingRoleAssignmentsListByBillingAccountSamples {
     /*
@@ -17,6 +15,6 @@ public final class BillingRoleAssignmentsListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountRoleAssignmentList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingRoleAssignments().listByBillingAccount("{billingAccountName}", Context.NONE);
+        manager.billingRoleAssignments().listByBillingAccount("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }

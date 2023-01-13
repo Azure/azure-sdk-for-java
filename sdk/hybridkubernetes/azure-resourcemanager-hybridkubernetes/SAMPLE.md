@@ -63,8 +63,6 @@ public final class ConnectedClusterCreateSamples {
 ### ConnectedCluster_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ConnectedCluster Delete. */
 public final class ConnectedClusterDeleteSamples {
     /*
@@ -77,7 +75,7 @@ public final class ConnectedClusterDeleteSamples {
      */
     public static void deleteClusterExample(
         com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager.connectedClusters().delete("k8sc-rg", "testCluster", Context.NONE);
+        manager.connectedClusters().delete("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -85,8 +83,6 @@ public final class ConnectedClusterDeleteSamples {
 ### ConnectedCluster_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ConnectedCluster GetByResourceGroup. */
 public final class ConnectedClusterGetByResourceGroupSamples {
     /*
@@ -98,7 +94,9 @@ public final class ConnectedClusterGetByResourceGroupSamples {
      * @param manager Entry point to HybridKubernetesManager.
      */
     public static void getClusterExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager.connectedClusters().getByResourceGroupWithResponse("k8sc-rg", "testCluster", Context.NONE);
+        manager
+            .connectedClusters()
+            .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -106,8 +104,6 @@ public final class ConnectedClusterGetByResourceGroupSamples {
 ### ConnectedCluster_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ConnectedCluster List. */
 public final class ConnectedClusterListSamples {
     /*
@@ -119,7 +115,7 @@ public final class ConnectedClusterListSamples {
      * @param manager Entry point to HybridKubernetesManager.
      */
     public static void getClustersExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager.connectedClusters().list(Context.NONE);
+        manager.connectedClusters().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -127,8 +123,6 @@ public final class ConnectedClusterListSamples {
 ### ConnectedCluster_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ConnectedCluster ListByResourceGroup. */
 public final class ConnectedClusterListByResourceGroupSamples {
     /*
@@ -140,7 +134,7 @@ public final class ConnectedClusterListByResourceGroupSamples {
      * @param manager Entry point to HybridKubernetesManager.
      */
     public static void getClustersExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager.connectedClusters().listByResourceGroup("k8sc-rg", Context.NONE);
+        manager.connectedClusters().listByResourceGroup("k8sc-rg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -148,7 +142,6 @@ public final class ConnectedClusterListByResourceGroupSamples {
 ### ConnectedCluster_ListClusterUserCredential
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridkubernetes.models.AuthenticationMethod;
 import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
 
@@ -172,7 +165,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.AAD)
                     .withClientProxy(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -193,7 +186,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.AAD)
                     .withClientProxy(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -214,7 +207,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.TOKEN)
                     .withClientProxy(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -235,7 +228,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.TOKEN)
                     .withClientProxy(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -243,7 +236,6 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
 ### ConnectedCluster_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import java.util.HashMap;
 import java.util.Map;
@@ -263,7 +255,7 @@ public final class ConnectedClusterUpdateSamples {
         ConnectedCluster resource =
             manager
                 .connectedClusters()
-                .getByResourceGroupWithResponse("k8sc-rg", "testCluster", Context.NONE)
+                .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
@@ -284,8 +276,6 @@ public final class ConnectedClusterUpdateSamples {
 ### Operations_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations Get. */
 public final class OperationsGetSamples {
     /*
@@ -298,7 +288,7 @@ public final class OperationsGetSamples {
      */
     public static void listConnectedClusterOperationsExample(
         com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager.operations().get(Context.NONE);
+        manager.operations().get(com.azure.core.util.Context.NONE);
     }
 }
 ```

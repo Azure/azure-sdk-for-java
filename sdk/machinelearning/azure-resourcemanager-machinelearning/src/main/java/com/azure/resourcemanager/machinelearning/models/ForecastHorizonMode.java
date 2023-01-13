@@ -17,6 +17,15 @@ public final class ForecastHorizonMode extends ExpandableStringEnum<ForecastHori
     public static final ForecastHorizonMode CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of ForecastHorizonMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForecastHorizonMode() {
+    }
+
+    /**
      * Creates or finds a ForecastHorizonMode from its string representation.
      *
      * @param name a name to look for.

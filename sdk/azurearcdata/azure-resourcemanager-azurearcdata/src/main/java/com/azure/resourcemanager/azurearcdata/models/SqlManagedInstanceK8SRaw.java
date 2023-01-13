@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The raw kubernetes information. */
 @Fluent
 public final class SqlManagedInstanceK8SRaw {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceK8SRaw.class);
-
     /*
      * The kubernetes spec information.
      */
@@ -28,6 +25,10 @@ public final class SqlManagedInstanceK8SRaw {
      * The raw kubernetes information.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of SqlManagedInstanceK8SRaw class. */
+    public SqlManagedInstanceK8SRaw() {
+    }
 
     /**
      * Get the spec property: The kubernetes spec information.

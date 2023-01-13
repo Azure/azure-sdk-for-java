@@ -24,6 +24,15 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 
     /**
+     * Creates a new instance of WindowsVMGuestPatchAutomaticByPlatformRebootSetting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WindowsVMGuestPatchAutomaticByPlatformRebootSetting() {
+    }
+
+    /**
      * Creates or finds a WindowsVMGuestPatchAutomaticByPlatformRebootSetting from its string representation.
      *
      * @param name a name to look for.

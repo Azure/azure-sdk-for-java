@@ -19,6 +19,15 @@ public final class AutomationAccountAuthenticationType
         fromString("SystemAssignedIdentity");
 
     /**
+     * Creates a new instance of AutomationAccountAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutomationAccountAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a AutomationAccountAuthenticationType from its string representation.
      *
      * @param name a name to look for.

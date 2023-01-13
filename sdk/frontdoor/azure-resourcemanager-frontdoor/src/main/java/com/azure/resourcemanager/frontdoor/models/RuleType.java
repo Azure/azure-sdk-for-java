@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RuleType. */
+/** Describes type of rule. */
 public final class RuleType extends ExpandableStringEnum<RuleType> {
     /** Static value MatchRule for RuleType. */
     public static final RuleType MATCH_RULE = fromString("MatchRule");
 
     /** Static value RateLimitRule for RuleType. */
     public static final RuleType RATE_LIMIT_RULE = fromString("RateLimitRule");
+
+    /**
+     * Creates a new instance of RuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleType() {
+    }
 
     /**
      * Creates or finds a RuleType from its string representation.
@@ -27,7 +36,11 @@ public final class RuleType extends ExpandableStringEnum<RuleType> {
         return fromString(name, RuleType.class);
     }
 
-    /** @return known RuleType values. */
+    /**
+     * Gets known RuleType values.
+     *
+     * @return known RuleType values.
+     */
     public static Collection<RuleType> values() {
         return values(RuleType.class);
     }

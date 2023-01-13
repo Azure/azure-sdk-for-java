@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.models.Display;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the supported REST operation. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * The name of the operation being performed on this particular object.
      */
@@ -22,8 +18,7 @@ public final class OperationInner {
     private String name;
 
     /*
-     * Contains the localized display information for this particular operation
-     * or action.
+     * Contains the localized display information for this particular operation or action.
      */
     @JsonProperty(value = "display")
     private Display display;
@@ -33,6 +28,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "origin")
     private String origin;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object.

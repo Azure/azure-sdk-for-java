@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentVersions Delete. */
 public final class EnvironmentVersionsDeleteSamples {
     /*
@@ -20,6 +18,6 @@ public final class EnvironmentVersionsDeleteSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentVersions()
-            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }

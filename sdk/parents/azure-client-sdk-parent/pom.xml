@@ -218,6 +218,14 @@
 
     <!-- Used by Java 18 and later to allow the security manager to be set while testing and linting. -->
     <java.security.manager.configuration></java.security.manager.configuration>
+
+    <!-- JavaDoc properties -->
+
+    <!-- Azure core source path is included here and it's packages are excluded as almost all client libraries
+    need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
+    by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
+    <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
   </properties>
 
   <build>
@@ -683,8 +691,9 @@
               for more Java documentation, including quick starts, tutorials, and code samples.
             </bottom>
             <linksource>false</linksource>
-            <excludePackageNames>
+            <excludePackageNames combine.children="append">
               *.impl*:
+              *.implementation:
               *.implementation*:
               *.samples:
               com.azure.tools.checkstyle*:
@@ -692,7 +701,8 @@
               com.azure.endtoend*:
               com.azure.perf*:
               com.azure.storage.internal.avro*:
-              com.azure.cosmos.encryption.implementation.mdesrc*
+              com.azure.cosmos.encryption.implementation.mdesrc*:
+              ${javadoc.excludePackageNames}
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -703,6 +713,9 @@
               <sourceFileExclude>com/azure/cosmos/encryption/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
+            <sourcepath>
+              ${javadoc.sourcepath}
+            </sourcepath>
             <links combine.children="append">
               <!-- JDK APIs -->
               <link>https://docs.oracle.com/javase/8/docs/api/</link>

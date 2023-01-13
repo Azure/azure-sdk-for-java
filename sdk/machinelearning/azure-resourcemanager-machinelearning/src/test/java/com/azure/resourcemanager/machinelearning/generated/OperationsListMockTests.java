@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.AmlOperation;
 import java.nio.ByteBuffer;
@@ -61,7 +60,7 @@ public final class OperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AmlOperation> response = manager.operations().list(Context.NONE);
+        PagedIterable<AmlOperation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("injdllwktlepo", response.iterator().next().name());
         Assertions.assertEquals("vqxuajgcqw", response.iterator().next().display().provider());

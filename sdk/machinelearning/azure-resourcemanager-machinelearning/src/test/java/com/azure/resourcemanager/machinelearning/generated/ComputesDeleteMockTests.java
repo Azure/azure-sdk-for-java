@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.UnderlyingResourceAction;
 import java.nio.ByteBuffer;
@@ -58,6 +57,9 @@ public final class ComputesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.computes().delete("tlqh", "pxouvmr", "iflikyypzkgxfx", UnderlyingResourceAction.DETACH, Context.NONE);
+        manager
+            .computes()
+            .delete(
+                "tlqh", "pxouvmr", "iflikyypzkgxfx", UnderlyingResourceAction.DETACH, com.azure.core.util.Context.NONE);
     }
 }

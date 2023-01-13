@@ -6,15 +6,12 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Property definition. */
 @Fluent
 public final class PropertyDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PropertyDefinition.class);
-
     /*
      * Array value separator for properties with isArray set.
      */
@@ -40,8 +37,7 @@ public final class PropertyDefinition {
     private String fieldType;
 
     /*
-     * Indicates if the property is actually an array of the fieldType above on
-     * the data api.
+     * Indicates if the property is actually an array of the fieldType above on the data api.
      */
     @JsonProperty(value = "isArray")
     private Boolean isArray;
@@ -77,8 +73,8 @@ public final class PropertyDefinition {
     private Boolean isName;
 
     /*
-     * Whether property value is required on instances, IsRequired field only
-     * for Interaction. Profile Instance will not check for required field.
+     * Whether property value is required on instances, IsRequired field only for Interaction. Profile Instance will
+     * not check for required field.
      */
     @JsonProperty(value = "isRequired")
     private Boolean isRequired;
@@ -108,11 +104,15 @@ public final class PropertyDefinition {
     private Boolean isAvailableInGraph;
 
     /*
-     * This is specific to interactions modeled as activities. Data sources are
-     * used to determine where data is stored and also in precedence rules.
+     * This is specific to interactions modeled as activities. Data sources are used to determine where data is stored
+     * and also in precedence rules.
      */
     @JsonProperty(value = "dataSourcePrecedenceRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataSourcePrecedence> dataSourcePrecedenceRules;
+
+    /** Creates an instance of PropertyDefinition class. */
+    public PropertyDefinition() {
+    }
 
     /**
      * Get the arrayValueSeparator property: Array value separator for properties with isArray set.
@@ -436,12 +436,12 @@ public final class PropertyDefinition {
             enumValidValues().forEach(e -> e.validate());
         }
         if (fieldName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property fieldName in model PropertyDefinition"));
         }
         if (fieldType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property fieldType in model PropertyDefinition"));
         }
@@ -449,4 +449,6 @@ public final class PropertyDefinition {
             dataSourcePrecedenceRules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PropertyDefinition.class);
 }

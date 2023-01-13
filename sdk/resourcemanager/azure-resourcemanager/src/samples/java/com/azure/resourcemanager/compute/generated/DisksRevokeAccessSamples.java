@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Disks RevokeAccess. */
 public final class DisksRevokeAccessSamples {
     /*
@@ -22,6 +20,6 @@ public final class DisksRevokeAccessSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .revokeAccess("myResourceGroup", "myDisk", Context.NONE);
+            .revokeAccess("myResourceGroup", "myDisk", com.azure.core.util.Context.NONE);
     }
 }

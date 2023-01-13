@@ -27,9 +27,9 @@ public interface ProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the profile resource format.
+     * @return the {@link SyncPoller} for polling of the profile resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileResourceFormatInner>, ProfileResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String profileName, ProfileResourceFormatInner parameters);
 
@@ -44,9 +44,9 @@ public interface ProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the profile resource format.
+     * @return the {@link SyncPoller} for polling of the profile resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileResourceFormatInner>, ProfileResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
@@ -90,6 +90,23 @@ public interface ProfilesClient {
         String profileName,
         ProfileResourceFormatInner parameters,
         Context context);
+
+    /**
+     * Gets information about the specified profile.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param profileName The name of the profile.
+     * @param localeCode Locale of profile to retrieve, default is en-us.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProfileResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String profileName, String localeCode, Context context);
 
     /**
      * Gets information about the specified profile.
@@ -106,37 +123,18 @@ public interface ProfilesClient {
     ProfileResourceFormatInner get(String resourceGroupName, String hubName, String profileName);
 
     /**
-     * Gets information about the specified profile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param profileName The name of the profile.
-     * @param localeCode Locale of profile to retrieve, default is en-us.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProfileResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String profileName, String localeCode, Context context);
-
-    /**
      * Deletes a profile within a hub.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param profileName The name of the profile.
-     * @param localeCode Locale of profile to retrieve, default is en-us.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String profileName, String localeCode);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String profileName);
 
     /**
      * Deletes a profile within a hub.
@@ -149,25 +147,11 @@ public interface ProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String profileName, String localeCode, Context context);
-
-    /**
-     * Deletes a profile within a hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param profileName The name of the profile.
-     * @param localeCode Locale of profile to retrieve, default is en-us.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String hubName, String profileName, String localeCode);
 
     /**
      * Deletes a profile within a hub.
@@ -205,7 +189,7 @@ public interface ProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all profile in the hub.
+     * @return all profile in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileResourceFormatInner> listByHub(String resourceGroupName, String hubName);
@@ -220,11 +204,28 @@ public interface ProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all profile in the hub.
+     * @return all profile in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileResourceFormatInner> listByHub(
         String resourceGroupName, String hubName, String localeCode, Context context);
+
+    /**
+     * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
+     * participants of the Interaction on an Interaction KPI and through Relationships for Profile KPIs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param profileName The name of the profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the KPIs that enrich the profile Type identified by the supplied name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<KpiDefinitionInner>> getEnrichingKpisWithResponse(
+        String resourceGroupName, String hubName, String profileName, Context context);
 
     /**
      * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
@@ -240,21 +241,4 @@ public interface ProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     List<KpiDefinitionInner> getEnrichingKpis(String resourceGroupName, String hubName, String profileName);
-
-    /**
-     * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
-     * participants of the Interaction on an Interaction KPI and through Relationships for Profile KPIs.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param profileName The name of the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the KPIs that enrich the profile Type identified by the supplied name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<KpiDefinitionInner>> getEnrichingKpisWithResponse(
-        String resourceGroupName, String hubName, String profileName, Context context);
 }

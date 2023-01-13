@@ -16,6 +16,20 @@ public interface LocationsClient {
      * Gets subscription-level properties and limits for Data Lake Analytics specified by resource location.
      *
      * @param location The resource location without whitespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription-level properties and limits for Data Lake Analytics specified by resource location along
+     *     with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CapabilityInformationInner> getCapabilityWithResponse(String location, Context context);
+
+    /**
+     * Gets subscription-level properties and limits for Data Lake Analytics specified by resource location.
+     *
+     * @param location The resource location without whitespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,17 +37,4 @@ public interface LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CapabilityInformationInner getCapability(String location);
-
-    /**
-     * Gets subscription-level properties and limits for Data Lake Analytics specified by resource location.
-     *
-     * @param location The resource location without whitespace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription-level properties and limits for Data Lake Analytics specified by resource location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CapabilityInformationInner> getCapabilityWithResponse(String location, Context context);
 }

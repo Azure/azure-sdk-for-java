@@ -20,6 +20,15 @@ public final class VmEncryptionType extends ExpandableStringEnum<VmEncryptionTyp
     public static final VmEncryptionType TWO_PASS_ENCRYPTED = fromString("TwoPassEncrypted");
 
     /**
+     * Creates a new instance of VmEncryptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VmEncryptionType() {
+    }
+
+    /**
      * Creates or finds a VmEncryptionType from its string representation.
      *
      * @param name a name to look for.

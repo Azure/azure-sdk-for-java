@@ -46,7 +46,7 @@ public class ConnectionStateListenerTest {
             // isTcpConnectionEndpointRediscoveryEnabled, serverResponseType, replicaStatusUpdated, replicaStatusUpdated when server shutdown
             {true, RequestResponseType.CHANNEL_FIN, true, false},
             {false, RequestResponseType.CHANNEL_FIN, false, false},
-            {true, RequestResponseType.CHANNEL_RST, false, false},
+            {true, RequestResponseType.CHANNEL_RST, true, false},
             {false, RequestResponseType.CHANNEL_RST, false, false},
             {true, RequestResponseType.NONE, false, true}, // the request will be timed out, but the connection will be active. When tcp server shutdown, the connection will be closed gracefully
             {false, RequestResponseType.NONE, false, false},

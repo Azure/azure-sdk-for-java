@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.ProductInner;
 import com.azure.resourcemanager.billing.models.AutoRenew;
 
@@ -22,6 +21,9 @@ public final class ProductsUpdateSamples {
         manager
             .products()
             .updateWithResponse(
-                "{billingAccountName}", "{productName}", new ProductInner().withAutoRenew(AutoRenew.OFF), Context.NONE);
+                "{billingAccountName}",
+                "{productName}",
+                new ProductInner().withAutoRenew(AutoRenew.OFF),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PossibleOperationsDirections;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanHyperVReplicaAzureFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanPlannedFailoverInput;
@@ -35,6 +34,6 @@ public final class ReplicationRecoveryPlansPlannedFailoverSamples {
                             .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
                             .withProviderSpecificDetails(
                                 Arrays.asList(new RecoveryPlanHyperVReplicaAzureFailoverInput()))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

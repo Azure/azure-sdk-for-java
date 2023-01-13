@@ -25,6 +25,15 @@ public final class ForecastingPrimaryMetrics extends ExpandableStringEnum<Foreca
         fromString("NormalizedMeanAbsoluteError");
 
     /**
+     * Creates a new instance of ForecastingPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForecastingPrimaryMetrics() {
+    }
+
+    /**
      * Creates or finds a ForecastingPrimaryMetrics from its string representation.
      *
      * @param name a name to look for.

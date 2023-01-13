@@ -17,7 +17,8 @@ public interface ManagedRuleSetsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedRuleSetDefinitionInner> list();
@@ -29,7 +30,8 @@ public interface ManagedRuleSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedRuleSetDefinitionInner> list(Context context);

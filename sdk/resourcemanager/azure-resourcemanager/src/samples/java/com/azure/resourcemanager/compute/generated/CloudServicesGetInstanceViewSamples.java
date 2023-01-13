@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServices GetInstanceView. */
 public final class CloudServicesGetInstanceViewSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Get_InstanceViewWithMultiRole.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_Get_InstanceViewWithMultiRole.json
      */
     /**
      * Sample code: Get Cloud Service Instance View with Multiple Roles.
@@ -23,6 +21,6 @@ public final class CloudServicesGetInstanceViewSamples {
             .manager()
             .serviceClient()
             .getCloudServices()
-            .getInstanceViewWithResponse("ConstosoRG", "{cs-name}", Context.NONE);
+            .getInstanceViewWithResponse("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

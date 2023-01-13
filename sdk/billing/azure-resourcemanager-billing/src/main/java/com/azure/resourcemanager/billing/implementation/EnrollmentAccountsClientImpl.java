@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.EnrollmentAccountsClient;
 import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountSummaryInner;
 import com.azure.resourcemanager.billing.models.EnrollmentAccountListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EnrollmentAccountsClient. */
 public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsClient {
-    private final ClientLogger logger = new ClientLogger(EnrollmentAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EnrollmentAccountsService service;
 
@@ -58,7 +55,7 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface EnrollmentAccountsService {
+    public interface EnrollmentAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Billing/enrollmentAccounts")
         @ExpectedResponses({200})
@@ -96,7 +93,8 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnrollmentAccountSummaryInner>> listSinglePageAsync() {
@@ -129,7 +127,8 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnrollmentAccountSummaryInner>> listSinglePageAsync(Context context) {
@@ -160,7 +159,7 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EnrollmentAccountSummaryInner> listAsync() {
@@ -174,7 +173,7 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EnrollmentAccountSummaryInner> listAsync(Context context) {
@@ -187,7 +186,7 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrollmentAccountSummaryInner> list() {
@@ -201,7 +200,7 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrollmentAccountSummaryInner> list(Context context) {
@@ -215,7 +214,7 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a enrollment account by name.
+     * @return a enrollment account by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnrollmentAccountSummaryInner>> getWithResponseAsync(String name) {
@@ -243,7 +242,7 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a enrollment account by name.
+     * @return a enrollment account by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnrollmentAccountSummaryInner>> getWithResponseAsync(String name, Context context) {
@@ -269,19 +268,26 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a enrollment account by name.
+     * @return a enrollment account by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnrollmentAccountSummaryInner> getAsync(String name) {
-        return getWithResponseAsync(name)
-            .flatMap(
-                (Response<EnrollmentAccountSummaryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a enrollment account by name.
+     *
+     * @param name Enrollment Account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a enrollment account by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EnrollmentAccountSummaryInner> getWithResponse(String name, Context context) {
+        return getWithResponseAsync(name, context).block();
     }
 
     /**
@@ -295,32 +301,19 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnrollmentAccountSummaryInner get(String name) {
-        return getAsync(name).block();
-    }
-
-    /**
-     * Gets a enrollment account by name.
-     *
-     * @param name Enrollment Account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a enrollment account by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnrollmentAccountSummaryInner> getWithResponse(String name, Context context) {
-        return getWithResponseAsync(name, context).block();
+        return getWithResponse(name, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnrollmentAccountSummaryInner>> listNextSinglePageAsync(String nextLink) {
@@ -351,12 +344,14 @@ public final class EnrollmentAccountsClientImpl implements EnrollmentAccountsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnrollmentAccountSummaryInner>> listNextSinglePageAsync(

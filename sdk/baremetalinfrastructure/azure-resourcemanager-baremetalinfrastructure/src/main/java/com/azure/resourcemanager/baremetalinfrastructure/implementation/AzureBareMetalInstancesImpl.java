@@ -14,10 +14,9 @@ import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.AzureBare
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstance;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstances;
 import com.azure.resourcemanager.baremetalinfrastructure.models.Tags;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AzureBareMetalInstancesImpl implements AzureBareMetalInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBareMetalInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBareMetalInstancesImpl.class);
 
     private final AzureBareMetalInstancesClient innerClient;
 
@@ -51,16 +50,6 @@ public final class AzureBareMetalInstancesImpl implements AzureBareMetalInstance
         return Utils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
     }
 
-    public AzureBareMetalInstance getByResourceGroup(String resourceGroupName, String azureBareMetalInstanceName) {
-        AzureBareMetalInstanceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, azureBareMetalInstanceName);
-        if (inner != null) {
-            return new AzureBareMetalInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AzureBareMetalInstance> getByResourceGroupWithResponse(
         String resourceGroupName, String azureBareMetalInstanceName, Context context) {
         Response<AzureBareMetalInstanceInner> inner =
@@ -76,10 +65,9 @@ public final class AzureBareMetalInstancesImpl implements AzureBareMetalInstance
         }
     }
 
-    public AzureBareMetalInstance update(
-        String resourceGroupName, String azureBareMetalInstanceName, Tags tagsParameter) {
+    public AzureBareMetalInstance getByResourceGroup(String resourceGroupName, String azureBareMetalInstanceName) {
         AzureBareMetalInstanceInner inner =
-            this.serviceClient().update(resourceGroupName, azureBareMetalInstanceName, tagsParameter);
+            this.serviceClient().getByResourceGroup(resourceGroupName, azureBareMetalInstanceName);
         if (inner != null) {
             return new AzureBareMetalInstanceImpl(inner, this.manager());
         } else {
@@ -99,6 +87,17 @@ public final class AzureBareMetalInstancesImpl implements AzureBareMetalInstance
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AzureBareMetalInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AzureBareMetalInstance update(
+        String resourceGroupName, String azureBareMetalInstanceName, Tags tagsParameter) {
+        AzureBareMetalInstanceInner inner =
+            this.serviceClient().update(resourceGroupName, azureBareMetalInstanceName, tagsParameter);
+        if (inner != null) {
+            return new AzureBareMetalInstanceImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.models.Availability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Output of check name availability API. */
 @Immutable
 public final class CheckNameAvailabilityOutputInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityOutputInner.class);
-
     /*
      * Indicates whether the name is available.
      */
@@ -32,6 +28,10 @@ public final class CheckNameAvailabilityOutputInner {
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of CheckNameAvailabilityOutputInner class. */
+    public CheckNameAvailabilityOutputInner() {
+    }
 
     /**
      * Get the nameAvailability property: Indicates whether the name is available.

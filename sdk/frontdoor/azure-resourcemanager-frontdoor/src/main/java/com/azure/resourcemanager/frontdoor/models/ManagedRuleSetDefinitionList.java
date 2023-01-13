@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.fluent.models.ManagedRuleSetDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of managed rule set definitions available for use in a policy. */
 @Fluent
 public final class ManagedRuleSetDefinitionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleSetDefinitionList.class);
-
     /*
      * List of managed rule set definitions.
      */
@@ -27,6 +23,10 @@ public final class ManagedRuleSetDefinitionList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ManagedRuleSetDefinitionList class. */
+    public ManagedRuleSetDefinitionList() {
+    }
 
     /**
      * Get the value property: List of managed rule set definitions.

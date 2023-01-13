@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Log analytics workspace id and primary key. */
 @Fluent
 public final class LogAnalyticsWorkspaceConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsWorkspaceConfig.class);
-
     /*
      * Azure Log Analytics workspace ID
      */
@@ -26,6 +22,10 @@ public final class LogAnalyticsWorkspaceConfig {
      */
     @JsonProperty(value = "primaryKey")
     private String primaryKey;
+
+    /** Creates an instance of LogAnalyticsWorkspaceConfig class. */
+    public LogAnalyticsWorkspaceConfig() {
+    }
 
     /**
      * Get the workspaceId property: Azure Log Analytics workspace ID.

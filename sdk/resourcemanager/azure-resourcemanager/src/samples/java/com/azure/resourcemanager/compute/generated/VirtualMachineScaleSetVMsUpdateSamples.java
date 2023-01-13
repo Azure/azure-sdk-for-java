@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AdditionalUnattendContent;
@@ -86,7 +85,7 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSetVMs Update. */
 public final class VirtualMachineScaleSetVMsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.
@@ -105,11 +104,11 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                 "aaaaaaaaaaaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaaa",
                 new VirtualMachineScaleSetVMInner().withLocation("westus"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.
@@ -463,7 +462,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             .withProtectFromScaleIn(true)
                             .withProtectFromScaleSetActions(true))
                     .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -17,6 +17,15 @@ public final class InMageRcmFailbackRecoveryPointType extends ExpandableStringEn
     public static final InMageRcmFailbackRecoveryPointType CRASH_CONSISTENT = fromString("CrashConsistent");
 
     /**
+     * Creates a new instance of InMageRcmFailbackRecoveryPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InMageRcmFailbackRecoveryPointType() {
+    }
+
+    /**
      * Creates or finds a InMageRcmFailbackRecoveryPointType from its string representation.
      *
      * @param name a name to look for.

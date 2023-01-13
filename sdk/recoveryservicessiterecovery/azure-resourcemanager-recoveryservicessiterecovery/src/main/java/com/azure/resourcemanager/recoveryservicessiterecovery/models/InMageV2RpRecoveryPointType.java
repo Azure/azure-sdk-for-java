@@ -24,6 +24,15 @@ public final class InMageV2RpRecoveryPointType extends ExpandableStringEnum<InMa
     public static final InMageV2RpRecoveryPointType LATEST_PROCESSED = fromString("LatestProcessed");
 
     /**
+     * Creates a new instance of InMageV2RpRecoveryPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InMageV2RpRecoveryPointType() {
+    }
+
+    /**
      * Creates or finds a InMageV2RpRecoveryPointType from its string representation.
      *
      * @param name a name to look for.

@@ -18,6 +18,15 @@ public final class BillingCurrency extends ExpandableStringEnum<BillingCurrency>
     public static final BillingCurrency USD = fromString("USD");
 
     /**
+     * Creates a new instance of BillingCurrency value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingCurrency() {
+    }
+
+    /**
      * Creates or finds a BillingCurrency from its string representation.
      *
      * @param name a name to look for.

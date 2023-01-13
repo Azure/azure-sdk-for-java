@@ -41,6 +41,15 @@ public final class ComputeType extends ExpandableStringEnum<ComputeType> {
     public static final ComputeType SYNAPSE_SPARK = fromString("SynapseSpark");
 
     /**
+     * Creates a new instance of ComputeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeType() {
+    }
+
+    /**
      * Creates or finds a ComputeType from its string representation.
      *
      * @param name a name to look for.

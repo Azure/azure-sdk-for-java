@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ProductsMoveHeaders model. */
 @Fluent
 public final class ProductsMoveHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductsMoveHeaders.class);
-
     /*
      * The Retry-After property.
      */
@@ -25,6 +23,20 @@ public final class ProductsMoveHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ProductsMoveHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ProductsMoveHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the retryAfter property: The Retry-After property.

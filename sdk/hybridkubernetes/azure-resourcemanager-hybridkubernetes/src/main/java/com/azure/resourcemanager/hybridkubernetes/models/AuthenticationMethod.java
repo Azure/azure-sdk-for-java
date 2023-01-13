@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationMethod. */
+/** The mode of client authentication. */
 public final class AuthenticationMethod extends ExpandableStringEnum<AuthenticationMethod> {
     /** Static value Token for AuthenticationMethod. */
     public static final AuthenticationMethod TOKEN = fromString("Token");
 
     /** Static value AAD for AuthenticationMethod. */
     public static final AuthenticationMethod AAD = fromString("AAD");
+
+    /**
+     * Creates a new instance of AuthenticationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationMethod() {
+    }
 
     /**
      * Creates or finds a AuthenticationMethod from its string representation.
@@ -27,7 +36,11 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
         return fromString(name, AuthenticationMethod.class);
     }
 
-    /** @return known AuthenticationMethod values. */
+    /**
+     * Gets known AuthenticationMethod values.
+     *
+     * @return known AuthenticationMethod values.
+     */
     public static Collection<AuthenticationMethod> values() {
         return values(AuthenticationMethod.class);
     }

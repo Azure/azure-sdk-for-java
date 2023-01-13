@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.RoleAssignmentResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.RoleAssignmentResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.RoleAssignments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RoleAssignmentsImpl implements RoleAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentsImpl.class);
 
     private final RoleAssignmentsClient innerClient;
 
@@ -42,15 +41,6 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         return Utils.mapPage(inner, inner1 -> new RoleAssignmentResourceFormatImpl(inner1, this.manager()));
     }
 
-    public RoleAssignmentResourceFormat get(String resourceGroupName, String hubName, String assignmentName) {
-        RoleAssignmentResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, assignmentName);
-        if (inner != null) {
-            return new RoleAssignmentResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RoleAssignmentResourceFormat> getWithResponse(
         String resourceGroupName, String hubName, String assignmentName, Context context) {
         Response<RoleAssignmentResourceFormatInner> inner =
@@ -66,8 +56,13 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         }
     }
 
-    public void delete(String resourceGroupName, String hubName, String assignmentName) {
-        this.serviceClient().delete(resourceGroupName, hubName, assignmentName);
+    public RoleAssignmentResourceFormat get(String resourceGroupName, String hubName, String assignmentName) {
+        RoleAssignmentResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, assignmentName);
+        if (inner != null) {
+            return new RoleAssignmentResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -75,10 +70,14 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         return this.serviceClient().deleteWithResponse(resourceGroupName, hubName, assignmentName, context);
     }
 
+    public void delete(String resourceGroupName, String hubName, String assignmentName) {
+        this.serviceClient().delete(resourceGroupName, hubName, assignmentName);
+    }
+
     public RoleAssignmentResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,14 +85,14 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,7 +104,7 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
     public Response<RoleAssignmentResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,14 +112,14 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +131,7 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,26 +139,26 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,14 +166,14 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

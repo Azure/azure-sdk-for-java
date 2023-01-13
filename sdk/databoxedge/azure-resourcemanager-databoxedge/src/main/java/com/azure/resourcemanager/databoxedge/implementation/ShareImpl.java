@@ -91,6 +91,10 @@ public final class ShareImpl implements Share, Share.Definition, Share.Update {
         return this.innerModel().dataPolicy();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ShareInner innerModel() {
         return this.innerObject;
     }

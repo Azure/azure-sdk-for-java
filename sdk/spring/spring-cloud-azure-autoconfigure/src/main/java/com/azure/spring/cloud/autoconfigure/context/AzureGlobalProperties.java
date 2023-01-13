@@ -402,7 +402,7 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
         /**
          * Transport type for AMQP-based client.
          */
-        private AmqpTransportType transportType = AmqpTransportType.AMQP;
+        private AmqpTransportType transportType;
 
         /**
          * Gets the AMQP transport type.

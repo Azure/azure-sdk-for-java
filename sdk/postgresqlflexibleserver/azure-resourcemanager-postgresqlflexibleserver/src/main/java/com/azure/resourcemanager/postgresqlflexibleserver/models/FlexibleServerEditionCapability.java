@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Flexible server edition capabilities. */
 @Immutable
 public final class FlexibleServerEditionCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlexibleServerEditionCapability.class);
-
     /*
      * Server edition name
      */
@@ -38,6 +34,10 @@ public final class FlexibleServerEditionCapability {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
+
+    /** Creates an instance of FlexibleServerEditionCapability class. */
+    public FlexibleServerEditionCapability() {
+    }
 
     /**
      * Get the name property: Server edition name.

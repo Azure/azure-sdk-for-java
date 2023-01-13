@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OperationMetaServiceSpecification model. */
 @Fluent
 public final class OperationMetaServiceSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaServiceSpecification.class);
-
     /*
      * The metricSpecifications for OperationMetaServiceSpecification.
      */
@@ -26,6 +22,10 @@ public final class OperationMetaServiceSpecification {
      */
     @JsonProperty(value = "logSpecifications")
     private List<OperationMetaLogSpecification> logSpecifications;
+
+    /** Creates an instance of OperationMetaServiceSpecification class. */
+    public OperationMetaServiceSpecification() {
+    }
 
     /**
      * Get the metricSpecifications property: The metricSpecifications for OperationMetaServiceSpecification.

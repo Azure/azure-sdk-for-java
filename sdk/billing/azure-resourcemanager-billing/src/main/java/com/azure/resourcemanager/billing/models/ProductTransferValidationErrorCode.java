@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProductTransferValidationErrorCode. */
+/** Error code of the transfer validation response. */
 public final class ProductTransferValidationErrorCode extends ExpandableStringEnum<ProductTransferValidationErrorCode> {
     /** Static value InvalidSource for ProductTransferValidationErrorCode. */
     public static final ProductTransferValidationErrorCode INVALID_SOURCE = fromString("InvalidSource");
@@ -45,6 +45,15 @@ public final class ProductTransferValidationErrorCode extends ExpandableStringEn
         fromString("OneTimePurchaseProductTransferNotAllowed");
 
     /**
+     * Creates a new instance of ProductTransferValidationErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProductTransferValidationErrorCode() {
+    }
+
+    /**
      * Creates or finds a ProductTransferValidationErrorCode from its string representation.
      *
      * @param name a name to look for.
@@ -55,7 +64,11 @@ public final class ProductTransferValidationErrorCode extends ExpandableStringEn
         return fromString(name, ProductTransferValidationErrorCode.class);
     }
 
-    /** @return known ProductTransferValidationErrorCode values. */
+    /**
+     * Gets known ProductTransferValidationErrorCode values.
+     *
+     * @return known ProductTransferValidationErrorCode values.
+     */
     public static Collection<ProductTransferValidationErrorCode> values() {
         return values(ProductTransferValidationErrorCode.class);
     }

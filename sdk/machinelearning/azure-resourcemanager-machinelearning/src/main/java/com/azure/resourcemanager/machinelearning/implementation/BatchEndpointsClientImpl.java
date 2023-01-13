@@ -559,7 +559,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName).getSyncPoller();
     }
 
     /**
@@ -577,7 +577,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, context).getSyncPoller();
     }
 
     /**
@@ -1006,7 +1006,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
         String workspaceName,
         String endpointName,
         PartialMinimalTrackedResourceWithIdentity body) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
     /**
@@ -1029,7 +1029,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
         String endpointName,
         PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
     }
 
     /**
@@ -1309,7 +1309,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
     /**
@@ -1328,7 +1328,9 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context)
+            .getSyncPoller();
     }
 
     /**

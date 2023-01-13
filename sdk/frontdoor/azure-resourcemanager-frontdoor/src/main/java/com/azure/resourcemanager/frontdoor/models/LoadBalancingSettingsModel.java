@@ -5,17 +5,18 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.frontdoor.fluent.models.LoadBalancingSettingsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Load balancing settings for a backend pool. */
-@JsonFlatten
 @Fluent
-public class LoadBalancingSettingsModel extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancingSettingsModel.class);
+public final class LoadBalancingSettingsModel extends SubResource {
+    /*
+     * Properties of the load balancing settings
+     */
+    @JsonProperty(value = "properties")
+    private LoadBalancingSettingsProperties innerProperties;
 
     /*
      * Resource name.
@@ -29,30 +30,18 @@ public class LoadBalancingSettingsModel extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The number of samples to consider for load balancing decisions
-     */
-    @JsonProperty(value = "properties.sampleSize")
-    private Integer sampleSize;
+    /** Creates an instance of LoadBalancingSettingsModel class. */
+    public LoadBalancingSettingsModel() {
+    }
 
-    /*
-     * The number of samples within the sample period that must succeed
+    /**
+     * Get the innerProperties property: Properties of the load balancing settings.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.successfulSamplesRequired")
-    private Integer successfulSamplesRequired;
-
-    /*
-     * The additional latency in milliseconds for probes to fall into the
-     * lowest latency bucket
-     */
-    @JsonProperty(value = "properties.additionalLatencyMilliseconds")
-    private Integer additionalLatencyMilliseconds;
-
-    /*
-     * Resource status.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private FrontDoorResourceState resourceState;
+    private LoadBalancingSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Resource name.
@@ -83,13 +72,31 @@ public class LoadBalancingSettingsModel extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public LoadBalancingSettingsModel withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
+     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
+     *
+     * <p>Resource status.
+     *
+     * @return the resourceState value.
+     */
+    public FrontDoorResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
     /**
      * Get the sampleSize property: The number of samples to consider for load balancing decisions.
      *
      * @return the sampleSize value.
      */
     public Integer sampleSize() {
-        return this.sampleSize;
+        return this.innerProperties() == null ? null : this.innerProperties().sampleSize();
     }
 
     /**
@@ -99,7 +106,10 @@ public class LoadBalancingSettingsModel extends SubResource {
      * @return the LoadBalancingSettingsModel object itself.
      */
     public LoadBalancingSettingsModel withSampleSize(Integer sampleSize) {
-        this.sampleSize = sampleSize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancingSettingsProperties();
+        }
+        this.innerProperties().withSampleSize(sampleSize);
         return this;
     }
 
@@ -109,7 +119,7 @@ public class LoadBalancingSettingsModel extends SubResource {
      * @return the successfulSamplesRequired value.
      */
     public Integer successfulSamplesRequired() {
-        return this.successfulSamplesRequired;
+        return this.innerProperties() == null ? null : this.innerProperties().successfulSamplesRequired();
     }
 
     /**
@@ -119,7 +129,10 @@ public class LoadBalancingSettingsModel extends SubResource {
      * @return the LoadBalancingSettingsModel object itself.
      */
     public LoadBalancingSettingsModel withSuccessfulSamplesRequired(Integer successfulSamplesRequired) {
-        this.successfulSamplesRequired = successfulSamplesRequired;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancingSettingsProperties();
+        }
+        this.innerProperties().withSuccessfulSamplesRequired(successfulSamplesRequired);
         return this;
     }
 
@@ -130,7 +143,7 @@ public class LoadBalancingSettingsModel extends SubResource {
      * @return the additionalLatencyMilliseconds value.
      */
     public Integer additionalLatencyMilliseconds() {
-        return this.additionalLatencyMilliseconds;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalLatencyMilliseconds();
     }
 
     /**
@@ -141,23 +154,10 @@ public class LoadBalancingSettingsModel extends SubResource {
      * @return the LoadBalancingSettingsModel object itself.
      */
     public LoadBalancingSettingsModel withAdditionalLatencyMilliseconds(Integer additionalLatencyMilliseconds) {
-        this.additionalLatencyMilliseconds = additionalLatencyMilliseconds;
-        return this;
-    }
-
-    /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    public FrontDoorResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public LoadBalancingSettingsModel withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancingSettingsProperties();
+        }
+        this.innerProperties().withAdditionalLatencyMilliseconds(additionalLatencyMilliseconds);
         return this;
     }
 
@@ -167,5 +167,8 @@ public class LoadBalancingSettingsModel extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

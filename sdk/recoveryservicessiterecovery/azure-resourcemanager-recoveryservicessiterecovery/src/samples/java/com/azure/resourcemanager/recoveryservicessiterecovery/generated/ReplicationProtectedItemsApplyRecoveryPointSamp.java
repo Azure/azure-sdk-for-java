@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ApplyRecoveryPointInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ApplyRecoveryPointInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureApplyRecoveryPointInput;
@@ -35,6 +34,6 @@ public final class ReplicationProtectedItemsApplyRecoveryPointSamp {
                             .withRecoveryPointId(
                                 "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b/recoveryPoints/e4d05fe9-5dfd-47be-b50b-aad306b2802d")
                             .withProviderSpecificDetails(new HyperVReplicaAzureApplyRecoveryPointInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,9 +4,8 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.Document;
 import com.azure.resourcemanager.billing.models.InvoiceDocumentType;
@@ -14,22 +13,23 @@ import com.azure.resourcemanager.billing.models.InvoiceStatus;
 import com.azure.resourcemanager.billing.models.InvoiceType;
 import com.azure.resourcemanager.billing.models.PaymentProperties;
 import com.azure.resourcemanager.billing.models.RebillDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** An invoice. */
-@Fluent
+@Immutable
 public final class InvoiceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceInner.class);
-
     /*
      * An invoice.
      */
     @JsonProperty(value = "properties")
     private InvoiceProperties innerProperties;
+
+    /** Creates an instance of InvoiceInner class. */
+    public InvoiceInner() {
+    }
 
     /**
      * Get the innerProperties property: An invoice.

@@ -6,16 +6,12 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of backends that can be routed to. */
 @Fluent
 public class BackendPoolUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendPoolUpdateParameters.class);
-
     /*
      * The set of backends for this pool
      */
@@ -33,6 +29,10 @@ public class BackendPoolUpdateParameters {
      */
     @JsonProperty(value = "healthProbeSettings")
     private SubResource healthProbeSettings;
+
+    /** Creates an instance of BackendPoolUpdateParameters class. */
+    public BackendPoolUpdateParameters() {
+    }
 
     /**
      * Get the backends property: The set of backends for this pool.

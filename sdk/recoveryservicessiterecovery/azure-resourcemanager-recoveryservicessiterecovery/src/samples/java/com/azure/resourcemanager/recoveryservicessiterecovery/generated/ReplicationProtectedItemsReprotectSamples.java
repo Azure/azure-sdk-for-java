@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureReprotectInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReverseReplicationInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReverseReplicationInputProperties;
@@ -34,6 +33,6 @@ public final class ReplicationProtectedItemsReprotectSamples {
                         new ReverseReplicationInputProperties()
                             .withFailoverDirection("PrimaryToRecovery")
                             .withProviderSpecificDetails(new HyperVReplicaAzureReprotectInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

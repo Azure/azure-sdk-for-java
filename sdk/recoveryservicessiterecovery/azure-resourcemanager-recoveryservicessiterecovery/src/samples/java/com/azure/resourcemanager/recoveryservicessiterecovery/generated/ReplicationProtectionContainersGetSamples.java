@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainers Get. */
 public final class ReplicationProtectionContainersGetSamples {
     /*
@@ -21,6 +19,10 @@ public final class ReplicationProtectionContainersGetSamples {
         manager
             .replicationProtectionContainers()
             .getWithResponse(
-                "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                com.azure.core.util.Context.NONE);
     }
 }

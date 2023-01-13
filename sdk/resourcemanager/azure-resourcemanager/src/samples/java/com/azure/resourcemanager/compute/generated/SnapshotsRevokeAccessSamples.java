@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots RevokeAccess. */
 public final class SnapshotsRevokeAccessSamples {
     /*
@@ -22,6 +20,6 @@ public final class SnapshotsRevokeAccessSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .revokeAccess("myResourceGroup", "mySnapshot", Context.NONE);
+            .revokeAccess("myResourceGroup", "mySnapshot", com.azure.core.util.Context.NONE);
     }
 }

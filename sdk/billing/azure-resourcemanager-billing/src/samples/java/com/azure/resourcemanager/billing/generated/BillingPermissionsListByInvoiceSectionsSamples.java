@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingPermissions ListByInvoiceSections. */
 public final class BillingPermissionsListByInvoiceSectionsSamples {
     /*
@@ -20,6 +18,9 @@ public final class BillingPermissionsListByInvoiceSectionsSamples {
         manager
             .billingPermissions()
             .listByInvoiceSections(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }

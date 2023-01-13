@@ -116,6 +116,10 @@ public final class WebApplicationFirewallPolicyImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WebApplicationFirewallPolicyInner innerModel() {
         return this.innerObject;
     }

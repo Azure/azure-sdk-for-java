@@ -20,6 +20,15 @@ public final class Autosave extends ExpandableStringEnum<Autosave> {
     public static final Autosave REMOTE = fromString("Remote");
 
     /**
+     * Creates a new instance of Autosave value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Autosave() {
+    }
+
+    /**
      * Creates or finds a Autosave from its string representation.
      *
      * @param name a name to look for.

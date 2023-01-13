@@ -13,7 +13,6 @@ import java.time.Duration;
 import static com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerPropertiesTests.CONNECTION_STRING_PATTERN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,7 +27,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void autoCompleteDefaultTrue() {
-        assertTrue(consumerProperties.getAutoComplete());
+        assertNull(consumerProperties.getAutoComplete());
     }
 
     @Test
@@ -50,7 +49,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void maxConcurrentCallsDefaults() {
-        assertEquals(1, consumerProperties.getMaxConcurrentCalls());
+        assertNull(consumerProperties.getMaxConcurrentCalls());
     }
 
     @Test
@@ -72,7 +71,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void subQueueDefaults() {
-        assertNotNull(consumerProperties.getSubQueue());
+        assertNull(consumerProperties.getSubQueue());
     }
 
     @Test
@@ -83,7 +82,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void receiveModeDefaults() {
-        assertEquals(ServiceBusReceiveMode.PEEK_LOCK, consumerProperties.getReceiveMode());
+        assertNull(consumerProperties.getReceiveMode());
     }
 
     @Test
@@ -94,7 +93,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void maxAutoLockRenewDurationDefaults() {
-        assertEquals(Duration.ofMinutes(5), consumerProperties.getMaxAutoLockRenewDuration());
+        assertNull(consumerProperties.getMaxAutoLockRenewDuration());
     }
 
     @Test

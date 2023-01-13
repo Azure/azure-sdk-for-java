@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CommunityGalleryImages Get. */
 public final class CommunityGalleryImagesGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class CommunityGalleryImagesGetSamples {
             .manager()
             .serviceClient()
             .getCommunityGalleryImages()
-            .getWithResponse("myLocation", "publicGalleryName", "myGalleryImageName", Context.NONE);
+            .getWithResponse("myLocation", "publicGalleryName", "myGalleryImageName", com.azure.core.util.Context.NONE);
     }
 }

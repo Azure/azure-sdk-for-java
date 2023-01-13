@@ -6,14 +6,11 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a query. */
 @Fluent
 public final class QueryDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryDefinition.class);
-
     /*
      * The type of the query.
      */
@@ -21,8 +18,7 @@ public final class QueryDefinition {
     private ExportType type;
 
     /*
-     * The time frame for pulling data for the query. If custom, then a
-     * specific time period must be provided.
+     * The time frame for pulling data for the query. If custom, then a specific time period must be provided.
      */
     @JsonProperty(value = "timeframe", required = true)
     private TimeframeType timeframe;
@@ -38,6 +34,10 @@ public final class QueryDefinition {
      */
     @JsonProperty(value = "dataset", required = true)
     private QueryDataset dataset;
+
+    /** Creates an instance of QueryDefinition class. */
+    public QueryDefinition() {
+    }
 
     /**
      * Get the type property: The type of the query.
@@ -128,12 +128,12 @@ public final class QueryDefinition {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model QueryDefinition"));
         }
         if (timeframe() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timeframe in model QueryDefinition"));
         }
@@ -141,11 +141,13 @@ public final class QueryDefinition {
             timePeriod().validate();
         }
         if (dataset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataset in model QueryDefinition"));
         } else {
             dataset().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueryDefinition.class);
 }

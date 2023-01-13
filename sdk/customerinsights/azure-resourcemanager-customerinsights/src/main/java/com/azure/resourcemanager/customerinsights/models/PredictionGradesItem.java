@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a prediction grade. */
 @Fluent
 public final class PredictionGradesItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionGradesItem.class);
-
     /*
      * Name of the grade.
      */
@@ -31,6 +27,10 @@ public final class PredictionGradesItem {
      */
     @JsonProperty(value = "maxScoreThreshold")
     private Integer maxScoreThreshold;
+
+    /** Creates an instance of PredictionGradesItem class. */
+    public PredictionGradesItem() {
+    }
 
     /**
      * Get the gradeName property: Name of the grade.

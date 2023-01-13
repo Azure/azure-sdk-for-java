@@ -20,6 +20,15 @@ public final class ResyncState extends ExpandableStringEnum<ResyncState> {
     public static final ResyncState STARTED_RESYNCHRONIZATION = fromString("StartedResynchronization");
 
     /**
+     * Creates a new instance of ResyncState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResyncState() {
+    }
+
+    /**
      * Creates or finds a ResyncState from its string representation.
      *
      * @param name a name to look for.

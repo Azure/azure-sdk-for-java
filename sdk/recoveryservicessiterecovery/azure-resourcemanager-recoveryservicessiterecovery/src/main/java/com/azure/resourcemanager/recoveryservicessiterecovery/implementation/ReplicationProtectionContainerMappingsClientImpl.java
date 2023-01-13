@@ -964,7 +964,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String protectionContainerName,
         String mappingName,
         CreateProtectionContainerMappingInput creationInput) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, creationInput)
             .getSyncPoller();
     }
@@ -995,7 +996,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String mappingName,
         CreateProtectionContainerMappingInput creationInput,
         Context context) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -1362,7 +1364,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String fabricName,
         String protectionContainerName,
         String mappingName) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName)
+        return this
+            .beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName)
             .getSyncPoller();
     }
 
@@ -1390,8 +1393,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String protectionContainerName,
         String mappingName,
         Context context) {
-        return beginPurgeAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context)
+        return this
+            .beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context)
             .getSyncPoller();
     }
 
@@ -1766,7 +1769,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String protectionContainerName,
         String mappingName,
         UpdateProtectionContainerMappingInput updateInput) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput)
             .getSyncPoller();
     }
@@ -1797,7 +1801,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String mappingName,
         UpdateProtectionContainerMappingInput updateInput,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput, context)
             .getSyncPoller();
     }
@@ -2175,7 +2180,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String protectionContainerName,
         String mappingName,
         RemoveProtectionContainerMappingInput removalInput) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput)
             .getSyncPoller();
     }
@@ -2206,7 +2212,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         String mappingName,
         RemoveProtectionContainerMappingInput removalInput,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,

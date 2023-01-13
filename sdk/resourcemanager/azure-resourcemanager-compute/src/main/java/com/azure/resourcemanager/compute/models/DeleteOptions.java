@@ -17,6 +17,15 @@ public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
     public static final DeleteOptions DETACH = fromString("Detach");
 
     /**
+     * Creates a new instance of DeleteOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeleteOptions() {
+    }
+
+    /**
      * Creates or finds a DeleteOptions from its string representation.
      *
      * @param name a name to look for.

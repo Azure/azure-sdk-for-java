@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Additional error info. */
 @Fluent
 public final class AdditionalErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalErrorInfo.class);
-
     /*
      * Additional error type.
      */
@@ -25,6 +21,10 @@ public final class AdditionalErrorInfo {
      */
     @JsonProperty(value = "info")
     private Object info;
+
+    /** Creates an instance of AdditionalErrorInfo class. */
+    public AdditionalErrorInfo() {
+    }
 
     /**
      * Get the type property: Additional error type.

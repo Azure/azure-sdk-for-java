@@ -5,20 +5,18 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The KPI GroupBy field metadata. */
 @Fluent
 public final class KpiGroupByMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiGroupByMetadata.class);
-
     /*
      * The display name.
      */
     @JsonProperty(value = "displayName")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
@@ -32,6 +30,10 @@ public final class KpiGroupByMetadata {
      */
     @JsonProperty(value = "fieldType")
     private String fieldType;
+
+    /** Creates an instance of KpiGroupByMetadata class. */
+    public KpiGroupByMetadata() {
+    }
 
     /**
      * Get the displayName property: The display name.

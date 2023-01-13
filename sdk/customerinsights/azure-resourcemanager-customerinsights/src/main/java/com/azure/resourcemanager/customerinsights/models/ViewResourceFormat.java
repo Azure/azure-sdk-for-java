@@ -82,6 +82,13 @@ public interface ViewResourceFormat {
     OffsetDateTime created();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.ViewResourceFormatInner object.
      *
      * @return the inner object.

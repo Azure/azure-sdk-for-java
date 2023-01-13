@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmUpdateApplianceForReplicationProtectedItemInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateApplianceForReplicationProtectedItemInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateApplianceForReplicationProtectedItemInputProperties;
@@ -35,6 +34,6 @@ public final class ReplicationProtectedItemsUpdateApplianceSamples {
                             .withTargetApplianceId("")
                             .withProviderSpecificDetails(
                                 new InMageRcmUpdateApplianceForReplicationProtectedItemInput().withRunAsAccountId(""))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Alert details. */
 @Fluent
 public final class AlertPropertiesDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertPropertiesDetails.class);
-
     /*
      * Type of timegrain cadence
      */
@@ -59,8 +55,7 @@ public final class AlertPropertiesDetails {
     private Object tagFilter;
 
     /*
-     * notification threshold percentage as a decimal which activated this
-     * alert
+     * notification threshold percentage as a decimal which activated this alert
      */
     @JsonProperty(value = "threshold")
     private BigDecimal threshold;
@@ -112,6 +107,10 @@ public final class AlertPropertiesDetails {
      */
     @JsonProperty(value = "overridingAlert")
     private String overridingAlert;
+
+    /** Creates an instance of AlertPropertiesDetails class. */
+    public AlertPropertiesDetails() {
+    }
 
     /**
      * Get the timeGrainType property: Type of timegrain cadence.
