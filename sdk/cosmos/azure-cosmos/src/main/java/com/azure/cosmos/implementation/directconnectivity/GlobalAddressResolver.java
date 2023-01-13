@@ -138,41 +138,22 @@ public class GlobalAddressResolver implements IAddressResolver {
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
             ProactiveContainerInitConfig proactiveContainerInitConfig
-            ) {
-
-        // TODO: Logic yet to be refined/tested
-        List<String> preferredLocations = connectionPolicy.getPreferredRegions().subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions() - 1);
-        List<String> proactiveConnectionRegions = preferredLocations.subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions() - 1);
+    ) {
 
         if (proactiveContainerInitConfig.getNumProactiveConnectionRegions() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
+                    .take(proactiveContainerInitConfig.getNumProactiveConnectionRegions())
                     .flatMap(readEndpoint -> {
-                        // TODO: Logic yet to be refined/tested
                         if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
-                            String endpointRegion = this.endpointManager.getRegionName(readEndpoint, OperationType.Create);
-                            if (proactiveConnectionRegions.contains(endpointRegion)) {
-                                return this.addressCacheByEndpoint.get(readEndpoint)
-                                        .addressCache
-                                        .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
-                            }
+                            return this.addressCacheByEndpoint.get(readEndpoint)
+                                    .addressCache
+                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
                         }
                         return Flux.empty();
                     });
         }
 
-        // Currently, we will only open connections to current read region
-        return Flux.just(this.endpointManager.getReadEndpoints().stream().findFirst())
-                .flatMap(readEndpointOptional -> {
-                    if (readEndpointOptional.isPresent()) {
-                        if (this.addressCacheByEndpoint.containsKey(readEndpointOptional.get())) {
-                            return this.addressCacheByEndpoint.get(readEndpointOptional.get())
-                                    .addressCache
-                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
-                        }
-                    }
-
-                    return Flux.empty();
-                });
+        return Flux.empty();
     }
 
     @Override

@@ -23,7 +23,7 @@ public final class ProactiveContainerInitConfigBuilder {
      * @param cosmosContainerIdentities the container identities - this parameter must be non-empty
      */
     public ProactiveContainerInitConfigBuilder(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-        checkArgument(cosmosContainerIdentities == null || !cosmosContainerIdentities.isEmpty(), "The list of container identities cannot be null or empty.");
+        checkArgument(cosmosContainerIdentities != null && !cosmosContainerIdentities.isEmpty(), "The list of container identities cannot be null or empty.");
         this.cosmosContainerIdentities = cosmosContainerIdentities;
     }
 
@@ -39,7 +39,7 @@ public final class ProactiveContainerInitConfigBuilder {
      * @return Current {@link ProactiveContainerInitConfigBuilder}
      */
     public ProactiveContainerInitConfigBuilder setProactiveConnectionRegions(int numProactiveConnectionRegions) {
-        checkArgument(numProactiveConnectionRegions < 0 || numProactiveConnectionRegions > MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
+        checkArgument(numProactiveConnectionRegions >= 0 && numProactiveConnectionRegions <= MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
                 String.format("The no. of regions to proactively connect to cannot be less than 0 or more than %d.", MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS));
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         return this;
@@ -49,7 +49,7 @@ public final class ProactiveContainerInitConfigBuilder {
      * Builds {@link ProactiveContainerInitConfig} with the provided properties
      * */
     public ProactiveContainerInitConfig build() {
-        checkArgument(numProactiveConnectionRegions < 0 || numProactiveConnectionRegions > MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
+        checkArgument(numProactiveConnectionRegions >= 0 && numProactiveConnectionRegions <= MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
                 String.format("The no. of regions to proactively connect to cannot be less than 0 or more than %d.", MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS));
         return new ProactiveContainerInitConfig(
                 this.cosmosContainerIdentities,
