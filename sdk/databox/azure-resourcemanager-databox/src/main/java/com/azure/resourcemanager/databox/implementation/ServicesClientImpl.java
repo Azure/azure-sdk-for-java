@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.fluent.ServicesClient;
 import com.azure.resourcemanager.databox.fluent.models.AddressValidationOutputInner;
 import com.azure.resourcemanager.databox.fluent.models.RegionConfigurationResponseInner;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServicesClient. */
 public final class ServicesClientImpl implements ServicesClient {
-    private final ClientLogger logger = new ClientLogger(ServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServicesService service;
 
@@ -66,7 +63,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxManagementCli")
-    private interface ServicesService {
+    public interface ServicesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations"
@@ -174,7 +171,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupSinglePageAsync(
@@ -240,7 +238,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupSinglePageAsync(
@@ -302,7 +301,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuInformationInner> listAvailableSkusByResourceGroupAsync(
@@ -322,7 +321,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuInformationInner> listAvailableSkusByResourceGroupAsync(
@@ -343,7 +342,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(
@@ -362,7 +361,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(
@@ -380,7 +379,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api.
+     * @return output of the address validation api along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(
@@ -432,7 +432,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api.
+     * @return output of the address validation api along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(
@@ -480,19 +481,30 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api.
+     * @return output of the address validation api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AddressValidationOutputInner> validateAddressAsync(String location, ValidateAddress validateAddress) {
         return validateAddressWithResponseAsync(location, validateAddress)
-            .flatMap(
-                (Response<AddressValidationOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
+     * provide alternate addresses if any.
+     *
+     * @param location The location of the resource.
+     * @param validateAddress Shipping address of the customer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of the address validation api along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AddressValidationOutputInner> validateAddressWithResponse(
+        String location, ValidateAddress validateAddress, Context context) {
+        return validateAddressWithResponseAsync(location, validateAddress, context).block();
     }
 
     /**
@@ -508,25 +520,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddressValidationOutputInner validateAddress(String location, ValidateAddress validateAddress) {
-        return validateAddressAsync(location, validateAddress).block();
-    }
-
-    /**
-     * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
-     * provide alternate addresses if any.
-     *
-     * @param location The location of the resource.
-     * @param validateAddress Shipping address of the customer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddressValidationOutputInner> validateAddressWithResponse(
-        String location, ValidateAddress validateAddress, Context context) {
-        return validateAddressWithResponseAsync(location, validateAddress, context).block();
+        return validateAddressWithResponse(location, validateAddress, Context.NONE).getValue();
     }
 
     /**
@@ -538,7 +532,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsByResourceGroupWithResponseAsync(
@@ -595,7 +590,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsByResourceGroupWithResponseAsync(
@@ -648,20 +644,32 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidationResponseInner> validateInputsByResourceGroupAsync(
         String resourceGroupName, String location, ValidationRequest validationRequest) {
         return validateInputsByResourceGroupWithResponseAsync(resourceGroupName, location, validationRequest)
-            .flatMap(
-                (Response<ValidationResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This method does all necessary pre-job creation validation under resource group.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param location The location of the resource.
+     * @param validationRequest Inputs of the customer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of pre job creation validations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ValidationResponseInner> validateInputsByResourceGroupWithResponse(
+        String resourceGroupName, String location, ValidationRequest validationRequest, Context context) {
+        return validateInputsByResourceGroupWithResponseAsync(resourceGroupName, location, validationRequest, context)
+            .block();
     }
 
     /**
@@ -678,26 +686,8 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationResponseInner validateInputsByResourceGroup(
         String resourceGroupName, String location, ValidationRequest validationRequest) {
-        return validateInputsByResourceGroupAsync(resourceGroupName, location, validationRequest).block();
-    }
-
-    /**
-     * This method does all necessary pre-job creation validation under resource group.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param location The location of the resource.
-     * @param validationRequest Inputs of the customer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidationResponseInner> validateInputsByResourceGroupWithResponse(
-        String resourceGroupName, String location, ValidationRequest validationRequest, Context context) {
-        return validateInputsByResourceGroupWithResponseAsync(resourceGroupName, location, validationRequest, context)
-            .block();
+        return validateInputsByResourceGroupWithResponse(resourceGroupName, location, validationRequest, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -708,7 +698,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(
@@ -759,7 +750,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(
@@ -806,19 +798,29 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
+     * @return response of pre job creation validations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidationResponseInner> validateInputsAsync(String location, ValidationRequest validationRequest) {
         return validateInputsWithResponseAsync(location, validationRequest)
-            .flatMap(
-                (Response<ValidationResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This method does all necessary pre-job creation validation under subscription.
+     *
+     * @param location The location of the resource.
+     * @param validationRequest Inputs of the customer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of pre job creation validations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ValidationResponseInner> validateInputsWithResponse(
+        String location, ValidationRequest validationRequest, Context context) {
+        return validateInputsWithResponseAsync(location, validationRequest, context).block();
     }
 
     /**
@@ -833,24 +835,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationResponseInner validateInputs(String location, ValidationRequest validationRequest) {
-        return validateInputsAsync(location, validationRequest).block();
-    }
-
-    /**
-     * This method does all necessary pre-job creation validation under subscription.
-     *
-     * @param location The location of the resource.
-     * @param validationRequest Inputs of the customer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidationResponseInner> validateInputsWithResponse(
-        String location, ValidationRequest validationRequest, Context context) {
-        return validateInputsWithResponseAsync(location, validationRequest, context).block();
+        return validateInputsWithResponse(location, validationRequest, Context.NONE).getValue();
     }
 
     /**
@@ -861,7 +846,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(
@@ -914,7 +900,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(
@@ -963,20 +950,30 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RegionConfigurationResponseInner> regionConfigurationAsync(
         String location, RegionConfigurationRequest regionConfigurationRequest) {
         return regionConfigurationWithResponseAsync(location, regionConfigurationRequest)
-            .flatMap(
-                (Response<RegionConfigurationResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This API provides configuration details specific to given region/location at Subscription level.
+     *
+     * @param location The location of the resource.
+     * @param regionConfigurationRequest Request body to get the configuration for the region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration response specific to a region along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RegionConfigurationResponseInner> regionConfigurationWithResponse(
+        String location, RegionConfigurationRequest regionConfigurationRequest, Context context) {
+        return regionConfigurationWithResponseAsync(location, regionConfigurationRequest, context).block();
     }
 
     /**
@@ -992,24 +989,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegionConfigurationResponseInner regionConfiguration(
         String location, RegionConfigurationRequest regionConfigurationRequest) {
-        return regionConfigurationAsync(location, regionConfigurationRequest).block();
-    }
-
-    /**
-     * This API provides configuration details specific to given region/location at Subscription level.
-     *
-     * @param location The location of the resource.
-     * @param regionConfigurationRequest Request body to get the configuration for the region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RegionConfigurationResponseInner> regionConfigurationWithResponse(
-        String location, RegionConfigurationRequest regionConfigurationRequest, Context context) {
-        return regionConfigurationWithResponseAsync(location, regionConfigurationRequest, context).block();
+        return regionConfigurationWithResponse(location, regionConfigurationRequest, Context.NONE).getValue();
     }
 
     /**
@@ -1021,7 +1001,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationByResourceGroupWithResponseAsync(
@@ -1080,7 +1061,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationByResourceGroupWithResponseAsync(
@@ -1138,21 +1120,37 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
+     * @return configuration response specific to a region on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RegionConfigurationResponseInner> regionConfigurationByResourceGroupAsync(
         String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
         return regionConfigurationByResourceGroupWithResponseAsync(
                 resourceGroupName, location, regionConfigurationRequest)
-            .flatMap(
-                (Response<RegionConfigurationResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This API provides configuration details specific to given region/location at Resource group level.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param location The location of the resource.
+     * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration response specific to a region along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RegionConfigurationResponseInner> regionConfigurationByResourceGroupWithResponse(
+        String resourceGroupName,
+        String location,
+        RegionConfigurationRequest regionConfigurationRequest,
+        Context context) {
+        return regionConfigurationByResourceGroupWithResponseAsync(
+                resourceGroupName, location, regionConfigurationRequest, context)
+            .block();
     }
 
     /**
@@ -1169,40 +1167,21 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegionConfigurationResponseInner regionConfigurationByResourceGroup(
         String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
-        return regionConfigurationByResourceGroupAsync(resourceGroupName, location, regionConfigurationRequest).block();
-    }
-
-    /**
-     * This API provides configuration details specific to given region/location at Resource group level.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param location The location of the resource.
-     * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration response specific to a region.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RegionConfigurationResponseInner> regionConfigurationByResourceGroupWithResponse(
-        String resourceGroupName,
-        String location,
-        RegionConfigurationRequest regionConfigurationRequest,
-        Context context) {
-        return regionConfigurationByResourceGroupWithResponseAsync(
-                resourceGroupName, location, regionConfigurationRequest, context)
-            .block();
+        return regionConfigurationByResourceGroupWithResponse(
+                resourceGroupName, location, regionConfigurationRequest, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupNextSinglePageAsync(
@@ -1236,12 +1215,14 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupNextSinglePageAsync(

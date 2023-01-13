@@ -30,6 +30,9 @@ public enum AccessProtocol {
      */
     @JsonCreator
     public static AccessProtocol fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AccessProtocol[] items = AccessProtocol.values();
         for (AccessProtocol item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AccessProtocol {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,13 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class TransferConfigurationTransferAllDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransferConfigurationTransferAllDetails.class);
-
     /*
      * Details to transfer all data.
      */
     @JsonProperty(value = "include")
     private TransferAllDetails include;
+
+    /** Creates an instance of TransferConfigurationTransferAllDetails class. */
+    public TransferConfigurationTransferAllDetails() {
+    }
 
     /**
      * Get the include property: Details to transfer all data.
