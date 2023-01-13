@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicy;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyClearKeyConfiguration;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOpenRestriction;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for ContentKeyPolicies Update. */
 public final class ContentKeyPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-update.json
      */
     /**
      * Sample code: Update a Content Key Policy.
@@ -25,7 +24,11 @@ public final class ContentKeyPoliciesUpdateSamples {
         ContentKeyPolicy resource =
             manager
                 .contentKeyPolicies()
-                .getWithResponse("contoso", "contosomedia", "PolicyWithClearKeyOptionAndTokenRestriction", Context.NONE)
+                .getWithResponse(
+                    "contoso",
+                    "contosomedia",
+                    "PolicyWithClearKeyOptionAndTokenRestriction",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

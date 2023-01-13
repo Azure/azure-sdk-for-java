@@ -23,6 +23,15 @@ public final class EncryptionScheme extends ExpandableStringEnum<EncryptionSchem
     public static final EncryptionScheme COMMON_ENCRYPTION_CBCS = fromString("CommonEncryptionCbcs");
 
     /**
+     * Creates a new instance of EncryptionScheme value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionScheme() {
+    }
+
+    /**
      * Creates or finds a EncryptionScheme from its string representation.
      *
      * @param name a name to look for.

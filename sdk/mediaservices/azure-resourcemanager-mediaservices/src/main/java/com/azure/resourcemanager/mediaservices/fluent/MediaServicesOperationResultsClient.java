@@ -19,21 +19,6 @@ public interface MediaServicesOperationResultsClient {
      *
      * @param locationName Location name.
      * @param operationId Operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media service operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MediaServiceInner get(String locationName, String operationId);
-
-    /**
-     * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
-     * @param locationName Location name.
-     * @param operationId Operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,4 +27,19 @@ public interface MediaServicesOperationResultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MediaServicesOperationResultsGetResponse getWithResponse(String locationName, String operationId, Context context);
+
+    /**
+     * Get operation result.
+     *
+     * <p>Get media service operation result.
+     *
+     * @param locationName Location name.
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return media service operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MediaServiceInner get(String locationName, String operationId);
 }

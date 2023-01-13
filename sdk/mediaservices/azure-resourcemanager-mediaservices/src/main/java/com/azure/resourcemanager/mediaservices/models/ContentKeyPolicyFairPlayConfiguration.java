@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfiguration {
     /*
-     * The key that must be used as FairPlay Application Secret key.
+     * The key that must be used as FairPlay Application Secret key. This needs to be base64 encoded.
      */
     @JsonProperty(value = "ask", required = true)
     private byte[] ask;
@@ -52,8 +52,13 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     @JsonProperty(value = "offlineRentalConfiguration")
     private ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration;
 
+    /** Creates an instance of ContentKeyPolicyFairPlayConfiguration class. */
+    public ContentKeyPolicyFairPlayConfiguration() {
+    }
+
     /**
-     * Get the ask property: The key that must be used as FairPlay Application Secret key.
+     * Get the ask property: The key that must be used as FairPlay Application Secret key. This needs to be base64
+     * encoded.
      *
      * @return the ask value.
      */
@@ -62,7 +67,8 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     }
 
     /**
-     * Set the ask property: The key that must be used as FairPlay Application Secret key.
+     * Set the ask property: The key that must be used as FairPlay Application Secret key. This needs to be base64
+     * encoded.
      *
      * @param ask the ask value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.

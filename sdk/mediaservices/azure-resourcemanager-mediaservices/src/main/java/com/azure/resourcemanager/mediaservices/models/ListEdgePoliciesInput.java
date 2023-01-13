@@ -16,6 +16,10 @@ public final class ListEdgePoliciesInput {
     @JsonProperty(value = "deviceId")
     private String deviceId;
 
+    /** Creates an instance of ListEdgePoliciesInput class. */
+    public ListEdgePoliciesInput() {
+    }
+
     /**
      * Get the deviceId property: Unique identifier of the edge device.
      *

@@ -17,7 +17,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "@odata.type",
     defaultImpl = Audio.class)
 @JsonTypeName("#Microsoft.Media.Audio")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.AacAudio", value = AacAudio.class)})
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "#Microsoft.Media.AacAudio", value = AacAudio.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Media.DDAudio", value = DDAudio.class)
+})
 @Fluent
 public class Audio extends Codec {
     /*
@@ -37,6 +40,10 @@ public class Audio extends Codec {
      */
     @JsonProperty(value = "bitrate")
     private Integer bitrate;
+
+    /** Creates an instance of Audio class. */
+    public Audio() {
+    }
 
     /**
      * Get the channels property: The number of channels in the audio.

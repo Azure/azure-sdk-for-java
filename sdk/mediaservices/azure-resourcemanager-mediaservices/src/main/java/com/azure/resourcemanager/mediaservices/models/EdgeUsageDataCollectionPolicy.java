@@ -34,6 +34,10 @@ public final class EdgeUsageDataCollectionPolicy {
     @JsonProperty(value = "eventHubDetails")
     private EdgeUsageDataEventHub eventHubDetails;
 
+    /** Creates an instance of EdgeUsageDataCollectionPolicy class. */
+    public EdgeUsageDataCollectionPolicy() {
+    }
+
     /**
      * Get the dataCollectionFrequency property: Usage data collection frequency in ISO 8601 duration format e.g. PT10M
      * , PT5H.

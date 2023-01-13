@@ -29,6 +29,15 @@ public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType
         fromString("PersistentLimited");
 
     /**
+     * Creates a new instance of ContentKeyPolicyFairPlayRentalAndLeaseKeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentKeyPolicyFairPlayRentalAndLeaseKeyType() {
+    }
+
+    /**
      * Creates or finds a ContentKeyPolicyFairPlayRentalAndLeaseKeyType from its string representation.
      *
      * @param name a name to look for.

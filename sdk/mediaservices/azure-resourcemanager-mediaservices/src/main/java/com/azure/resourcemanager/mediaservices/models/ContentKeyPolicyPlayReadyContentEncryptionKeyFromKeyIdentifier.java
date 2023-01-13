@@ -23,6 +23,10 @@ public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifie
     @JsonProperty(value = "keyId", required = true)
     private UUID keyId;
 
+    /** Creates an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier class. */
+    public ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier() {
+    }
+
     /**
      * Get the keyId property: The content key ID.
      *

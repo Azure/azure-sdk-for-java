@@ -23,6 +23,15 @@ public final class Complexity extends ExpandableStringEnum<Complexity> {
     public static final Complexity QUALITY = fromString("Quality");
 
     /**
+     * Creates a new instance of Complexity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Complexity() {
+    }
+
+    /**
      * Creates or finds a Complexity from its string representation.
      *
      * @param name a name to look for.

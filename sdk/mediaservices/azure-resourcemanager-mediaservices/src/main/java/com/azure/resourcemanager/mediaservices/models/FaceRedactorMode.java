@@ -27,6 +27,15 @@ public final class FaceRedactorMode extends ExpandableStringEnum<FaceRedactorMod
     public static final FaceRedactorMode COMBINED = fromString("Combined");
 
     /**
+     * Creates a new instance of FaceRedactorMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FaceRedactorMode() {
+    }
+
+    /**
      * Creates or finds a FaceRedactorMode from its string representation.
      *
      * @param name a name to look for.
