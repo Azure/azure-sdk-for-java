@@ -35,6 +35,15 @@ public final class TimeGrain extends ExpandableStringEnum<TimeGrain> {
     public static final TimeGrain PT1D = fromString("PT1D");
 
     /**
+     * Creates a new instance of TimeGrain value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeGrain() {
+    }
+
+    /**
      * Creates or finds a TimeGrain from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class TimeGrain extends ExpandableStringEnum<TimeGrain> {
         return fromString(name, TimeGrain.class);
     }
 
-    /** @return known TimeGrain values. */
+    /**
+     * Gets known TimeGrain values.
+     *
+     * @return known TimeGrain values.
+     */
     public static Collection<TimeGrain> values() {
         return values(TimeGrain.class);
     }

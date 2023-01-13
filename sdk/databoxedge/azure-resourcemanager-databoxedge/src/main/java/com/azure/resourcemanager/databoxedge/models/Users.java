@@ -18,7 +18,8 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the users registered on a Data Box Edge/Data Box Gateway device.
+     * @return all the users registered on a Data Box Edge/Data Box Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<User> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
@@ -32,10 +33,25 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the users registered on a Data Box Edge/Data Box Gateway device.
+     * @return all the users registered on a Data Box Edge/Data Box Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<User> listByDataBoxEdgeDevice(
         String deviceName, String resourceGroupName, String filter, Context context);
+
+    /**
+     * Gets the properties of the specified user.
+     *
+     * @param deviceName The device name.
+     * @param name The user name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified user along with {@link Response}.
+     */
+    Response<User> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
 
     /**
      * Gets the properties of the specified user.
@@ -49,20 +65,6 @@ public interface Users {
      * @return the properties of the specified user.
      */
     User get(String deviceName, String name, String resourceGroupName);
-
-    /**
-     * Gets the properties of the specified user.
-     *
-     * @param deviceName The device name.
-     * @param name The user name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified user.
-     */
-    Response<User> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
 
     /**
      * Deletes the user on a databox edge/gateway device.
@@ -96,7 +98,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified user.
+     * @return the properties of the specified user along with {@link Response}.
      */
     User getById(String id);
 
@@ -108,7 +110,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified user.
+     * @return the properties of the specified user along with {@link Response}.
      */
     Response<User> getByIdWithResponse(String id, Context context);
 

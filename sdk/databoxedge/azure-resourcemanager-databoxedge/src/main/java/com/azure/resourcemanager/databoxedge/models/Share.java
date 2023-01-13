@@ -104,6 +104,13 @@ public interface Share {
     DataPolicy dataPolicy();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.ShareInner object.
      *
      * @return the inner object.
