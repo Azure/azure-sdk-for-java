@@ -6,6 +6,7 @@ Upgrade Spring Boot dependencies version to 3.0.1 and Spring Cloud dependencies 
 ### Breaking Changes
 - Update some classes package path, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32712](https://github.com/Azure/azure-sdk-for-java/pull/32712), [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
 - Remove Spring AOT support [#32742](https://github.com/Azure/azure-sdk-for-java/pull/32742).
+- Decrease the major version of Spring Cloud Azure to 5.0 [#32947](https://github.com/Azure/azure-sdk-for-java/pull/32947).
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
