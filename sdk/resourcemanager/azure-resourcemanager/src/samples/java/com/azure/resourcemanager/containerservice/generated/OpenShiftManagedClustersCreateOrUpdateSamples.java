@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.OpenShiftManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.NetworkProfile;
 import com.azure.resourcemanager.containerservice.models.OSType;
@@ -79,10 +78,10 @@ public final class OpenShiftManagedClustersCreateOrUpdateSamples {
                                             .withProvider(
                                                 new OpenShiftManagedClusterAadIdentityProvider()
                                                     .withClientId("clientId")
-                                                    .withSecret("secret")
+                                                    .withSecret("fakeTokenPlaceholder")
                                                     .withTenantId("tenantId")
                                                     .withCustomerAdminGroupId("customerAdminGroupId"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

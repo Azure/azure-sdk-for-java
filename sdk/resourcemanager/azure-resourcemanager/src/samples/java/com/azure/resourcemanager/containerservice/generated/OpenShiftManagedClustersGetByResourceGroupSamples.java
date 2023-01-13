@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OpenShiftManagedClusters GetByResourceGroup. */
 public final class OpenShiftManagedClustersGetByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class OpenShiftManagedClustersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getOpenShiftManagedClusters()
-            .getByResourceGroupWithResponse("rg1", "clustername1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

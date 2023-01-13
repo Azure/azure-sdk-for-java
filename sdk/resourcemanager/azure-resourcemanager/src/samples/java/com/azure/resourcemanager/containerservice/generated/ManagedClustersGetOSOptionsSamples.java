@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters GetOSOptions. */
 public final class ManagedClustersGetOSOptionsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/ContainerServiceGetOSOptions.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/ContainerServiceGetOSOptions.json
      */
     /**
      * Sample code: Get Container Service OS Options.
@@ -22,6 +20,6 @@ public final class ManagedClustersGetOSOptionsSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .getOSOptionsWithResponse("location1", null, Context.NONE);
+            .getOSOptionsWithResponse("location1", null, com.azure.core.util.Context.NONE);
     }
 }

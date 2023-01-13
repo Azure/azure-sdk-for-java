@@ -17,6 +17,15 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
     public static final WorkloadRuntime WASM_WASI = fromString("WasmWasi");
 
     /**
+     * Creates a new instance of WorkloadRuntime value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadRuntime() {
+    }
+
+    /**
      * Creates or finds a WorkloadRuntime from its string representation.
      *
      * @param name a name to look for.
