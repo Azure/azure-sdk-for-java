@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The shipping address of the customer. */
 @Fluent
 public final class Address {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Address.class);
-
     /*
      * The address line1.
      */
@@ -55,6 +52,10 @@ public final class Address {
      */
     @JsonProperty(value = "country", required = true)
     private String country;
+
+    /** Creates an instance of Address class. */
+    public Address() {
+    }
 
     /**
      * Get the addressLine1 property: The address line1.
@@ -203,27 +204,29 @@ public final class Address {
      */
     public void validate() {
         if (addressLine1() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property addressLine1 in model Address"));
         }
         if (postalCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property postalCode in model Address"));
         }
         if (city() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property city in model Address"));
         }
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property state in model Address"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model Address"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Address.class);
 }
