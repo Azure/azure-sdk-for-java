@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ShareDestinationFormatType. */
+/** Type of the share. */
 public enum ShareDestinationFormatType {
     /** Enum value UnknownType. */
     UNKNOWN_TYPE("UnknownType"),
@@ -42,6 +42,9 @@ public enum ShareDestinationFormatType {
      */
     @JsonCreator
     public static ShareDestinationFormatType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ShareDestinationFormatType[] items = ShareDestinationFormatType.values();
         for (ShareDestinationFormatType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum ShareDestinationFormatType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

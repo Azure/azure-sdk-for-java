@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StageName. */
+/** Name of the stage which is in progress. */
 public enum StageName {
     /** Enum value DeviceOrdered. */
     DEVICE_ORDERED("DeviceOrdered"),
@@ -72,6 +72,9 @@ public enum StageName {
      */
     @JsonCreator
     public static StageName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StageName[] items = StageName.values();
         for (StageName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -81,6 +84,7 @@ public enum StageName {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

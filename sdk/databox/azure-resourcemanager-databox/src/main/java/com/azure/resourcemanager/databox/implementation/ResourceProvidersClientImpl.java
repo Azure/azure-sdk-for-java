@@ -22,15 +22,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.databox.models.MitigateJobRequest;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    private final ClientLogger logger = new ClientLogger(ResourceProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceProvidersService service;
 
@@ -54,7 +51,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxManagementCli")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs"
@@ -82,7 +79,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> mitigateWithResponseAsync(
@@ -140,7 +137,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> mitigateWithResponseAsync(
@@ -194,12 +191,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> mitigateAsync(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest) {
         return mitigateWithResponseAsync(jobName, resourceGroupName, mitigateJobRequest)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Request to mitigate for a given job.
+     *
+     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
+     *     24 characters in length and use any alphanumeric and underscore only.
+     * @param resourceGroupName The Resource Group Name.
+     * @param mitigateJobRequest Mitigation Request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> mitigateWithResponse(
+        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context) {
+        return mitigateWithResponseAsync(jobName, resourceGroupName, mitigateJobRequest, context).block();
     }
 
     /**
@@ -215,25 +231,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void mitigate(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest) {
-        mitigateAsync(jobName, resourceGroupName, mitigateJobRequest).block();
-    }
-
-    /**
-     * Request to mitigate for a given job.
-     *
-     * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The Resource Group Name.
-     * @param mitigateJobRequest Mitigation Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> mitigateWithResponse(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context) {
-        return mitigateWithResponseAsync(jobName, resourceGroupName, mitigateJobRequest, context).block();
+        mitigateWithResponse(jobName, resourceGroupName, mitigateJobRequest, Context.NONE);
     }
 }

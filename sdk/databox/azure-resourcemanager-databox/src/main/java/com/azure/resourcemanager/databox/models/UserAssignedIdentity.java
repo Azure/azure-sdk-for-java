@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class defining User assigned identity details. */
 @Immutable
 public class UserAssignedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentity.class);
-
     /*
      * The principal id of user assigned identity.
      */
@@ -25,6 +21,10 @@ public class UserAssignedIdentity {
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
+
+    /** Creates an instance of UserAssignedIdentity class. */
+    public UserAssignedIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.

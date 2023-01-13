@@ -6,15 +6,12 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contact Details. */
 @Fluent
 public final class ContactDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContactDetails.class);
-
     /*
      * Contact name of the person.
      */
@@ -50,6 +47,10 @@ public final class ContactDetails {
      */
     @JsonProperty(value = "notificationPreference")
     private List<NotificationPreference> notificationPreference;
+
+    /** Creates an instance of ContactDetails class. */
+    public ContactDetails() {
+    }
 
     /**
      * Get the contactName property: Contact name of the person.
@@ -178,17 +179,17 @@ public final class ContactDetails {
      */
     public void validate() {
         if (contactName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactName in model ContactDetails"));
         }
         if (phone() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property phone in model ContactDetails"));
         }
         if (emailList() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property emailList in model ContactDetails"));
         }
@@ -196,4 +197,6 @@ public final class ContactDetails {
             notificationPreference().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContactDetails.class);
 }

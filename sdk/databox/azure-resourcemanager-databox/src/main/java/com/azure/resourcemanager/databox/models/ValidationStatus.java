@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ValidationStatus. */
+/** Create order limit validation status. */
 public enum ValidationStatus {
     /** Enum value Valid. */
     VALID("Valid"),
@@ -33,6 +33,9 @@ public enum ValidationStatus {
      */
     @JsonCreator
     public static ValidationStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ValidationStatus[] items = ValidationStatus.values();
         for (ValidationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ValidationStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

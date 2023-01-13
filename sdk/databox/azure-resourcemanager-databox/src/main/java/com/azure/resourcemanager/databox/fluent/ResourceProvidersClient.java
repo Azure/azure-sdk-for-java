@@ -19,12 +19,15 @@ public interface ResourceProvidersClient {
      *     24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void mitigate(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest);
+    Response<Void> mitigateWithResponse(
+        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context);
 
     /**
      * Request to mitigate for a given job.
@@ -33,13 +36,10 @@ public interface ResourceProvidersClient {
      *     24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> mitigateWithResponse(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context);
+    void mitigate(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest);
 }

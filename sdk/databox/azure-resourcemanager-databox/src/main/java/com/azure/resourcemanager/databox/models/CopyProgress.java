@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Copy progress. */
 @Immutable
 public final class CopyProgress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopyProgress.class);
-
     /*
-     * Name of the storage account. This will be empty for data account types
-     * other than storage account.
+     * Name of the storage account. This will be empty for data account types other than storage account.
      */
     @JsonProperty(value = "storageAccountName", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountName;
@@ -64,22 +59,19 @@ public final class CopyProgress {
     private Long totalFilesToProcess;
 
     /*
-     * Number of files not adhering to azure naming conventions which were
-     * processed by automatic renaming
+     * Number of files not adhering to azure naming conventions which were processed by automatic renaming
      */
     @JsonProperty(value = "invalidFilesProcessed", access = JsonProperty.Access.WRITE_ONLY)
     private Long invalidFilesProcessed;
 
     /*
-     * Total amount of data not adhering to azure naming conventions which were
-     * processed by automatic renaming
+     * Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
      */
     @JsonProperty(value = "invalidFileBytesUploaded", access = JsonProperty.Access.WRITE_ONLY)
     private Long invalidFileBytesUploaded;
 
     /*
-     * Number of folders not adhering to azure naming conventions which were
-     * processed by automatic renaming
+     * Number of folders not adhering to azure naming conventions which were processed by automatic renaming
      */
     @JsonProperty(value = "renamedContainerCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long renamedContainerCount;
@@ -108,6 +100,10 @@ public final class CopyProgress {
      */
     @JsonProperty(value = "isEnumerationInProgress", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEnumerationInProgress;
+
+    /** Creates an instance of CopyProgress class. */
+    public CopyProgress() {
+    }
 
     /**
      * Get the storageAccountName property: Name of the storage account. This will be empty for data account types other
