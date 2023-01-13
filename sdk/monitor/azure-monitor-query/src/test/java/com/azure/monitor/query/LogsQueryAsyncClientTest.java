@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
@@ -6,14 +9,12 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
@@ -43,14 +44,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Unit tests for {@link LogsQueryAsyncClient}.
+ */
 public class LogsQueryAsyncClientTest extends TestBase {
 
     private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
     private LogsQueryAsyncClient client;
-    private static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: " +
-            "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
-            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
+    private static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
+            + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
+            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
             + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
     @BeforeEach
@@ -288,8 +293,8 @@ public class LogsQueryAsyncClientTest extends TestBase {
         long count = 1000000000000L + random.nextInt(10000);
         // this query should take more than 5 seconds usually, but the server may have cached the
         // response and may return before 5 seconds. So, retry with another query (different count value)
-        StepVerifier.create(client.queryWorkspaceWithResponse(WORKSPACE_ID, "range x from 1 to " + count + " " +
-                                        "step 1 | count",
+        StepVerifier.create(client.queryWorkspaceWithResponse(WORKSPACE_ID, "range x from 1 to " + count + " "
+                                        + "step 1 | count",
                                 null,
                                 new LogsQueryOptions()
                                         .setServerTimeout(Duration.ofSeconds(5)),
