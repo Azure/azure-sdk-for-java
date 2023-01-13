@@ -72,8 +72,7 @@ private class ChangeFeedBatch
         if (metadataLog.get(0).isDefined) {
           val offsetJson = metadataLog.get(0).get
 
-          // TODO fabianm-private lower to debug
-          log.logInfo(s"Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+          log.logDebug(s"Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
             s"-> offset: '$offsetJson'.")
 
           val changeFeedStateBase64 = ChangeFeedOffset.fromJson(offsetJson).changeFeedState
@@ -89,24 +88,21 @@ private class ChangeFeedBatch
           } else {
             val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
               container, changeFeedConfig, partitioningConfig, None)
-            // TODO fabianm-private lower to debug
-            log.logInfo(s"Invalid Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+            log.logDebug(s"Invalid Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
               s"-> New offset retrieved from service: '$newOffsetJson'.")
 
             newOffsetJson
           }
         } else {
           val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
-          // TODO fabianm-private lower to debug
-          log.logInfo(s"No Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+          log.logDebug(s"No Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
             s"-> offset retrieved from service: '$newOffsetJson'.")
 
           newOffsetJson
         }
       } else {
         val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
-        // TODO fabianm-private lower to debug
-        log.logInfo(s"No offset file location provided for batchId: $batchId " +
+        log.logDebug(s"No offset file location provided for batchId: $batchId " +
           s"-> offset retrieved from service: '$newOffsetJson'.")
 
         newOffsetJson
@@ -134,8 +130,7 @@ private class ChangeFeedBatch
           assertNotNullOrEmpty(latestOffsetLocation, "latestOffset checkpointLocation"))
 
         val latestOffsetJson = latestOffset.json()
-        // TODO fabianm-private lower to debug
-        log.logInfo(s"Latest offset for batchId: $batchId -> $latestOffsetJson")
+        log.logDebug(s"Latest offset for batchId: $batchId -> $latestOffsetJson")
         if (!metadataLog.add(0, latestOffsetJson)) {
           val existingLatestOffset = metadataLog.get(0).get
 
@@ -146,16 +141,12 @@ private class ChangeFeedBatch
           if (existingLatestOffset != latestOffsetJson) {
             log.logError(msg)
 
-            // TODO fabianm-private remove assert
-            assert(false, msg)
             throw new IllegalStateException(msg)
           } else {
-            // TODO fabianm-private lower to debug
-            log.logInfo(msg)
+            log.logDebug(msg)
           }
         } else {
-          // TODO fabianm-private lower to debug
-          log.logInfo(s"Successfully updated latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
+          log.logDebug(s"Successfully updated latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
             s"-> existing latestOffset: 'n/a', new latestOffset: '$latestOffsetJson'.")
         }
       }
