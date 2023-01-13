@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
 import com.azure.resourcemanager.costmanagement.models.KpiProperties;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +21,6 @@ import java.util.List;
 /** The properties of the view. */
 @Fluent
 public final class ViewProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewProperties.class);
-
     /*
      * User input name of the view. Required.
      */
@@ -32,26 +28,20 @@ public final class ViewProperties {
     private String displayName;
 
     /*
-     * Cost Management scope to save the view on. This includes
-     * 'subscriptions/{subscriptionId}' for subscription scope,
-     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
-     * resourceGroup scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
-     * Billing Account scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
-     * for Department scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
+     * Cost Management scope to save the view on. This includes 'subscriptions/{subscriptionId}' for subscription
+     * scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
+     * scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
      * for EnrollmentAccount scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
-     * for BillingProfile scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}'
-     * for InvoiceSection scope,
-     * 'providers/Microsoft.Management/managementGroups/{managementGroupId}'
-     * for Management Group scope,
-     * '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
-     * for ExternalBillingAccount scope, and
-     * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}'
-     * for ExternalSubscription scope.
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group
+     * scope, '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for
+     * ExternalBillingAccount scope, and
+     * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
+     * scope.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -67,18 +57,6 @@ public final class ViewProperties {
      */
     @JsonProperty(value = "modifiedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime modifiedOn;
-
-    /*
-     * Selected date range for viewing cost in.
-     */
-    @JsonProperty(value = "dateRange", access = JsonProperty.Access.WRITE_ONLY)
-    private String dateRange;
-
-    /*
-     * Selected currency.
-     */
-    @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
-    private String currency;
 
     /*
      * Query body configuration. Required.
@@ -115,6 +93,10 @@ public final class ViewProperties {
      */
     @JsonProperty(value = "pivots")
     private List<PivotProperties> pivots;
+
+    /** Creates an instance of ViewProperties class. */
+    public ViewProperties() {
+    }
 
     /**
      * Get the displayName property: User input name of the view. Required.
@@ -198,24 +180,6 @@ public final class ViewProperties {
      */
     public OffsetDateTime modifiedOn() {
         return this.modifiedOn;
-    }
-
-    /**
-     * Get the dateRange property: Selected date range for viewing cost in.
-     *
-     * @return the dateRange value.
-     */
-    public String dateRange() {
-        return this.dateRange;
-    }
-
-    /**
-     * Get the currency property: Selected currency.
-     *
-     * @return the currency value.
-     */
-    public String currency() {
-        return this.currency;
     }
 
     /**
@@ -403,35 +367,26 @@ public final class ViewProperties {
     }
 
     /**
-     * Get the dataSet property: Has definition for data in this report config.
+     * Get the dataset property: Has definition for data in this report config.
      *
-     * @return the dataSet value.
+     * @return the dataset value.
      */
-    public ReportConfigDataset dataSet() {
-        return this.innerQuery() == null ? null : this.innerQuery().dataSet();
+    public ReportConfigDataset dataset() {
+        return this.innerQuery() == null ? null : this.innerQuery().dataset();
     }
 
     /**
-     * Set the dataSet property: Has definition for data in this report config.
+     * Set the dataset property: Has definition for data in this report config.
      *
-     * @param dataSet the dataSet value to set.
+     * @param dataset the dataset value to set.
      * @return the ViewProperties object itself.
      */
-    public ViewProperties withDataSet(ReportConfigDataset dataSet) {
+    public ViewProperties withDataset(ReportConfigDataset dataset) {
         if (this.innerQuery() == null) {
             this.innerQuery = new ReportConfigDefinition();
         }
-        this.innerQuery().withDataSet(dataSet);
+        this.innerQuery().withDataset(dataset);
         return this;
-    }
-
-    /**
-     * Get the includeMonetaryCommitment property: Include monetary commitment.
-     *
-     * @return the includeMonetaryCommitment value.
-     */
-    public Boolean includeMonetaryCommitment() {
-        return this.innerQuery() == null ? null : this.innerQuery().includeMonetaryCommitment();
     }
 
     /**

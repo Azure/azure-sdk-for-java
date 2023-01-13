@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertCriteria. */
+/** Criteria that triggered alert. */
 public final class AlertCriteria extends ExpandableStringEnum<AlertCriteria> {
     /** Static value CostThresholdExceeded for AlertCriteria. */
     public static final AlertCriteria COST_THRESHOLD_EXCEEDED = fromString("CostThresholdExceeded");
@@ -53,6 +53,15 @@ public final class AlertCriteria extends ExpandableStringEnum<AlertCriteria> {
     public static final AlertCriteria GENERAL_THRESHOLD_ERROR = fromString("GeneralThresholdError");
 
     /**
+     * Creates a new instance of AlertCriteria value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertCriteria() {
+    }
+
+    /**
      * Creates or finds a AlertCriteria from its string representation.
      *
      * @param name a name to look for.
@@ -63,7 +72,11 @@ public final class AlertCriteria extends ExpandableStringEnum<AlertCriteria> {
         return fromString(name, AlertCriteria.class);
     }
 
-    /** @return known AlertCriteria values. */
+    /**
+     * Gets known AlertCriteria values.
+     *
+     * @return known AlertCriteria values.
+     */
     public static Collection<AlertCriteria> values() {
         return values(AlertCriteria.class);
     }

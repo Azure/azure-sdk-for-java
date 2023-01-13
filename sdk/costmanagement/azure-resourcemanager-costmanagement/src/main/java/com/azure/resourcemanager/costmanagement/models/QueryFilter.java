@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The filter expression to be used in the export. */
 @Fluent
 public final class QueryFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryFilter.class);
-
     /*
      * The logical "AND" expression. Must have at least 2 items.
      */
@@ -28,16 +24,26 @@ public final class QueryFilter {
     private List<QueryFilter> or;
 
     /*
+     * The logical "NOT" expression.
+     */
+    @JsonProperty(value = "not")
+    private QueryFilter not;
+
+    /*
      * Has comparison expression for a dimension
      */
-    @JsonProperty(value = "dimensions")
-    private QueryComparisonExpression dimensions;
+    @JsonProperty(value = "dimension")
+    private QueryComparisonExpression dimension;
 
     /*
      * Has comparison expression for a tag
      */
-    @JsonProperty(value = "tags")
-    private QueryComparisonExpression tags;
+    @JsonProperty(value = "tag")
+    private QueryComparisonExpression tag;
+
+    /** Creates an instance of QueryFilter class. */
+    public QueryFilter() {
+    }
 
     /**
      * Get the and property: The logical "AND" expression. Must have at least 2 items.
@@ -80,42 +86,62 @@ public final class QueryFilter {
     }
 
     /**
-     * Get the dimensions property: Has comparison expression for a dimension.
+     * Get the not property: The logical "NOT" expression.
      *
-     * @return the dimensions value.
+     * @return the not value.
      */
-    public QueryComparisonExpression dimensions() {
-        return this.dimensions;
+    public QueryFilter not() {
+        return this.not;
     }
 
     /**
-     * Set the dimensions property: Has comparison expression for a dimension.
+     * Set the not property: The logical "NOT" expression.
      *
-     * @param dimensions the dimensions value to set.
+     * @param not the not value to set.
      * @return the QueryFilter object itself.
      */
-    public QueryFilter withDimensions(QueryComparisonExpression dimensions) {
-        this.dimensions = dimensions;
+    public QueryFilter withNot(QueryFilter not) {
+        this.not = not;
         return this;
     }
 
     /**
-     * Get the tags property: Has comparison expression for a tag.
+     * Get the dimension property: Has comparison expression for a dimension.
      *
-     * @return the tags value.
+     * @return the dimension value.
      */
-    public QueryComparisonExpression tags() {
-        return this.tags;
+    public QueryComparisonExpression dimension() {
+        return this.dimension;
     }
 
     /**
-     * Set the tags property: Has comparison expression for a tag.
+     * Set the dimension property: Has comparison expression for a dimension.
      *
-     * @param tags the tags value to set.
+     * @param dimension the dimension value to set.
      * @return the QueryFilter object itself.
      */
-    public QueryFilter withTags(QueryComparisonExpression tags) {
-        this.tags = tags;
+    public QueryFilter withDimension(QueryComparisonExpression dimension) {
+        this.dimension = dimension;
+        return this;
+    }
+
+    /**
+     * Get the tag property: Has comparison expression for a tag.
+     *
+     * @return the tag value.
+     */
+    public QueryComparisonExpression tag() {
+        return this.tag;
+    }
+
+    /**
+     * Set the tag property: Has comparison expression for a tag.
+     *
+     * @param tag the tag value to set.
+     * @return the QueryFilter object itself.
+     */
+    public QueryFilter withTag(QueryComparisonExpression tag) {
+        this.tag = tag;
         return this;
     }
 
@@ -131,11 +157,14 @@ public final class QueryFilter {
         if (or() != null) {
             or().forEach(e -> e.validate());
         }
-        if (dimensions() != null) {
-            dimensions().validate();
+        if (not() != null) {
+            not().validate();
         }
-        if (tags() != null) {
-            tags().validate();
+        if (dimension() != null) {
+            dimension().validate();
+        }
+        if (tag() != null) {
+            tag().validate();
         }
     }
 }
