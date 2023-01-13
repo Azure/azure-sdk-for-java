@@ -49,6 +49,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.json.gson/com.azure.json.gson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <javadoc.excludePackageNames/>
   </properties>
 
   <developers>

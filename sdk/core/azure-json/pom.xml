@@ -53,6 +53,8 @@
 
     <!-- Ignore shaded code -->
     <checkstyle.excludes>**/jackson/core/**/*.java</checkstyle.excludes>
+
+    <javadoc.excludePackageNames/>
   </properties>
 
   <developers>
