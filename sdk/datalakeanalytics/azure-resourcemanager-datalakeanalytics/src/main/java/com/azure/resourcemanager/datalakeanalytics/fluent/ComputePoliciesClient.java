@@ -24,7 +24,7 @@ public interface ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ComputePolicyInner> listByAccount(String resourceGroupName, String accountName);
@@ -39,10 +39,33 @@ public interface ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ComputePolicyInner> listByAccount(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Creates or updates the specified compute policy. During update, the compute policy with the specified name will
+     * be replaced with this new compute policy. An account supports, at most, 50 policies.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param computePolicyName The name of the compute policy to create or update.
+     * @param parameters Parameters supplied to create or update the compute policy. The max degree of parallelism per
+     *     job property, min priority per job property, or both must be present.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Analytics compute policy information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ComputePolicyInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String computePolicyName,
+        CreateOrUpdateComputePolicyParameters parameters,
+        Context context);
 
     /**
      * Creates or updates the specified compute policy. During update, the compute policy with the specified name will
@@ -66,27 +89,20 @@ public interface ComputePoliciesClient {
         CreateOrUpdateComputePolicyParameters parameters);
 
     /**
-     * Creates or updates the specified compute policy. During update, the compute policy with the specified name will
-     * be replaced with this new compute policy. An account supports, at most, 50 policies.
+     * Gets the specified Data Lake Analytics compute policy.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to create or update.
-     * @param parameters Parameters supplied to create or update the compute policy. The max degree of parallelism per
-     *     job property, min priority per job property, or both must be present.
+     * @param computePolicyName The name of the compute policy to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return the specified Data Lake Analytics compute policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComputePolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String computePolicyName,
-        CreateOrUpdateComputePolicyParameters parameters,
-        Context context);
+    Response<ComputePolicyInner> getWithResponse(
+        String resourceGroupName, String accountName, String computePolicyName, Context context);
 
     /**
      * Gets the specified Data Lake Analytics compute policy.
@@ -103,20 +119,25 @@ public interface ComputePoliciesClient {
     ComputePolicyInner get(String resourceGroupName, String accountName, String computePolicyName);
 
     /**
-     * Gets the specified Data Lake Analytics compute policy.
+     * Updates the specified compute policy.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to retrieve.
+     * @param computePolicyName The name of the compute policy to update.
+     * @param parameters Parameters supplied to update the compute policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
+     * @return data Lake Analytics compute policy information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComputePolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String computePolicyName, Context context);
+    Response<ComputePolicyInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String computePolicyName,
+        UpdateComputePolicyParameters parameters,
+        Context context);
 
     /**
      * Updates the specified compute policy.
@@ -133,25 +154,20 @@ public interface ComputePoliciesClient {
     ComputePolicyInner update(String resourceGroupName, String accountName, String computePolicyName);
 
     /**
-     * Updates the specified compute policy.
+     * Deletes the specified compute policy from the specified Data Lake Analytics account.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to update.
-     * @param parameters Parameters supplied to update the compute policy.
+     * @param computePolicyName The name of the compute policy to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComputePolicyInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String computePolicyName,
-        UpdateComputePolicyParameters parameters,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String computePolicyName, Context context);
 
     /**
      * Deletes the specified compute policy from the specified Data Lake Analytics account.
@@ -165,20 +181,4 @@ public interface ComputePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String accountName, String computePolicyName);
-
-    /**
-     * Deletes the specified compute policy from the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String computePolicyName, Context context);
 }

@@ -5,29 +5,32 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.AddStorageAccountProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to add a new Azure Storage account. */
-@JsonFlatten
 @Fluent
-public class AddStorageAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddStorageAccountParameters.class);
-
+public final class AddStorageAccountParameters {
     /*
-     * The access key associated with this Azure Storage account that will be
-     * used to connect to it.
+     * The Azure Storage account properties to use when adding a new Azure Storage account.
      */
-    @JsonProperty(value = "properties.accessKey", required = true)
-    private String accessKey;
+    @JsonProperty(value = "properties", required = true)
+    private AddStorageAccountProperties innerProperties = new AddStorageAccountProperties();
 
-    /*
-     * The optional suffix for the storage account.
+    /** Creates an instance of AddStorageAccountParameters class. */
+    public AddStorageAccountParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The Azure Storage account properties to use when adding a new Azure Storage
+     * account.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    private AddStorageAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the accessKey property: The access key associated with this Azure Storage account that will be used to
@@ -36,7 +39,7 @@ public class AddStorageAccountParameters {
      * @return the accessKey value.
      */
     public String accessKey() {
-        return this.accessKey;
+        return this.innerProperties() == null ? null : this.innerProperties().accessKey();
     }
 
     /**
@@ -47,7 +50,10 @@ public class AddStorageAccountParameters {
      * @return the AddStorageAccountParameters object itself.
      */
     public AddStorageAccountParameters withAccessKey(String accessKey) {
-        this.accessKey = accessKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AddStorageAccountProperties();
+        }
+        this.innerProperties().withAccessKey(accessKey);
         return this;
     }
 
@@ -57,7 +63,7 @@ public class AddStorageAccountParameters {
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
@@ -67,7 +73,10 @@ public class AddStorageAccountParameters {
      * @return the AddStorageAccountParameters object itself.
      */
     public AddStorageAccountParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AddStorageAccountProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
@@ -77,11 +86,15 @@ public class AddStorageAccountParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (accessKey() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property accessKey in model AddStorageAccountParameters"));
+                        "Missing required property innerProperties in model AddStorageAccountParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AddStorageAccountParameters.class);
 }
