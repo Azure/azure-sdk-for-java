@@ -50,6 +50,8 @@
       --add-opens com.azure.json.gson/com.azure.json.gson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <javadoc.excludePackageNames/>
+    <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
+
   </properties>
 
   <developers>

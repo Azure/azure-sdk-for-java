@@ -52,6 +52,7 @@
     </javaModulesSurefireArgLine>
 
     <javadoc.excludePackageNames/>
+    <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
   </properties>
 
   <developers>
