@@ -5,29 +5,39 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.frontdoor.fluent.models.ProfileUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Defines modifiable attributes of a Profile. */
-@JsonFlatten
 @Fluent
-public class ProfileUpdateModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileUpdateModel.class);
+public final class ProfileUpdateModel {
+    /*
+     * The properties of a Profile
+     */
+    @JsonProperty(value = "properties")
+    private ProfileUpdateProperties innerProperties;
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The enabled state of the Profile
+    /** Creates an instance of ProfileUpdateModel class. */
+    public ProfileUpdateModel() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties of a Profile.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.enabledState")
-    private State enabledState;
+    private ProfileUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -55,7 +65,7 @@ public class ProfileUpdateModel {
      * @return the enabledState value.
      */
     public State enabledState() {
-        return this.enabledState;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
     }
 
     /**
@@ -65,7 +75,10 @@ public class ProfileUpdateModel {
      * @return the ProfileUpdateModel object itself.
      */
     public ProfileUpdateModel withEnabledState(State enabledState) {
-        this.enabledState = enabledState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileUpdateProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
         return this;
     }
 
@@ -75,5 +88,8 @@ public class ProfileUpdateModel {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.frontdoor.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontDoorInner;
@@ -19,6 +20,8 @@ import com.azure.resourcemanager.frontdoor.models.HealthProbeSettingsModel;
 import com.azure.resourcemanager.frontdoor.models.LoadBalancingSettingsModel;
 import com.azure.resourcemanager.frontdoor.models.RoutingRule;
 import com.azure.resourcemanager.frontdoor.models.RulesEngine;
+import com.azure.resourcemanager.frontdoor.models.ValidateCustomDomainInput;
+import com.azure.resourcemanager.frontdoor.models.ValidateCustomDomainOutput;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +54,36 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
             return Collections.unmodifiableMap(inner);
         } else {
             return Collections.emptyMap();
+        }
+    }
+
+    public FrontDoorResourceState resourceState() {
+        return this.innerModel().resourceState();
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String cname() {
+        return this.innerModel().cname();
+    }
+
+    public String frontdoorId() {
+        return this.innerModel().frontdoorId();
+    }
+
+    public List<RulesEngine> rulesEngines() {
+        List<RulesEngineInner> inner = this.innerModel().rulesEngines();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new RulesEngineImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
         }
     }
 
@@ -116,42 +149,16 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
         return this.innerModel().enabledState();
     }
 
-    public FrontDoorResourceState resourceState() {
-        return this.innerModel().resourceState();
-    }
-
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String cname() {
-        return this.innerModel().cname();
-    }
-
-    public String frontdoorId() {
-        return this.innerModel().frontdoorId();
-    }
-
-    public List<RulesEngine> rulesEngines() {
-        List<RulesEngineInner> inner = this.innerModel().rulesEngines();
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new RulesEngineImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public FrontDoorInner innerModel() {
@@ -242,6 +249,19 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
                 .getByResourceGroupWithResponse(resourceGroupName, frontDoorName, context)
                 .getValue();
         return this;
+    }
+
+    public Response<ValidateCustomDomainOutput> validateCustomDomainWithResponse(
+        ValidateCustomDomainInput customDomainProperties, Context context) {
+        return serviceManager
+            .frontDoors()
+            .validateCustomDomainWithResponse(resourceGroupName, frontDoorName, customDomainProperties, context);
+    }
+
+    public ValidateCustomDomainOutput validateCustomDomain(ValidateCustomDomainInput customDomainProperties) {
+        return serviceManager
+            .frontDoors()
+            .validateCustomDomain(resourceGroupName, frontDoorName, customDomainProperties);
     }
 
     public FrontDoorImpl withRegion(Region location) {
