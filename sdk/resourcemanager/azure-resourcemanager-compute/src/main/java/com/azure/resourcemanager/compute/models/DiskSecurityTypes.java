@@ -26,6 +26,15 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
         fromString("ConfidentialVM_DiskEncryptedWithCustomerKey");
 
     /**
+     * Creates a new instance of DiskSecurityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskSecurityTypes() {
+    }
+
+    /**
      * Creates or finds a DiskSecurityTypes from its string representation.
      *
      * @param name a name to look for.

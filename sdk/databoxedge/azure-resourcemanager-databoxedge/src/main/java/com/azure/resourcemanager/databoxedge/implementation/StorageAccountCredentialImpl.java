@@ -61,6 +61,10 @@ public final class StorageAccountCredentialImpl
         return this.innerModel().storageAccountId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public StorageAccountCredentialInner innerModel() {
         return this.innerObject;
     }

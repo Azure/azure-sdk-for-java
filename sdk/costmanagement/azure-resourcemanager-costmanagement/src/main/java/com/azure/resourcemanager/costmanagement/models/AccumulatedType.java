@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccumulatedType. */
+/** Show costs accumulated over time. */
 public final class AccumulatedType extends ExpandableStringEnum<AccumulatedType> {
     /** Static value true for AccumulatedType. */
     public static final AccumulatedType TRUE = fromString("true");
 
     /** Static value false for AccumulatedType. */
     public static final AccumulatedType FALSE = fromString("false");
+
+    /**
+     * Creates a new instance of AccumulatedType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccumulatedType() {
+    }
 
     /**
      * Creates or finds a AccumulatedType from its string representation.
@@ -27,7 +36,11 @@ public final class AccumulatedType extends ExpandableStringEnum<AccumulatedType>
         return fromString(name, AccumulatedType.class);
     }
 
-    /** @return known AccumulatedType values. */
+    /**
+     * Gets known AccumulatedType values.
+     *
+     * @return known AccumulatedType values.
+     */
     public static Collection<AccumulatedType> values() {
         return values(AccumulatedType.class);
     }

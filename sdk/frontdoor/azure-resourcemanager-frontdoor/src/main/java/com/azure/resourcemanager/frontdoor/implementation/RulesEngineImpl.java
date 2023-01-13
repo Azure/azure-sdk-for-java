@@ -29,6 +29,10 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
         return this.innerModel().type();
     }
 
+    public FrontDoorResourceState resourceState() {
+        return this.innerModel().resourceState();
+    }
+
     public List<RulesEngineRule> rules() {
         List<RulesEngineRule> inner = this.innerModel().rules();
         if (inner != null) {
@@ -38,8 +42,8 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
         }
     }
 
-    public FrontDoorResourceState resourceState() {
-        return this.innerModel().resourceState();
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public RulesEngineInner innerModel() {

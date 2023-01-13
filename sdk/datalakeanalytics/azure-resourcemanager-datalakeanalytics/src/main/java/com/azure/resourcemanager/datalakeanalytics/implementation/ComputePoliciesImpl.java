@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.ComputePoliciesClient;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.ComputePolicyInner;
 import com.azure.resourcemanager.datalakeanalytics.models.ComputePolicies;
 import com.azure.resourcemanager.datalakeanalytics.models.ComputePolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ComputePoliciesImpl implements ComputePolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputePoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComputePoliciesImpl.class);
 
     private final ComputePoliciesClient innerClient;
 
@@ -40,15 +39,6 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         return Utils.mapPage(inner, inner1 -> new ComputePolicyImpl(inner1, this.manager()));
     }
 
-    public ComputePolicy get(String resourceGroupName, String accountName, String computePolicyName) {
-        ComputePolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, computePolicyName);
-        if (inner != null) {
-            return new ComputePolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ComputePolicy> getWithResponse(
         String resourceGroupName, String accountName, String computePolicyName, Context context) {
         Response<ComputePolicyInner> inner =
@@ -64,8 +54,13 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String computePolicyName) {
-        this.serviceClient().delete(resourceGroupName, accountName, computePolicyName);
+    public ComputePolicy get(String resourceGroupName, String accountName, String computePolicyName) {
+        ComputePolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, computePolicyName);
+        if (inner != null) {
+            return new ComputePolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -73,10 +68,14 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, computePolicyName, context);
     }
 
+    public void delete(String resourceGroupName, String accountName, String computePolicyName) {
+        this.serviceClient().delete(resourceGroupName, accountName, computePolicyName);
+    }
+
     public ComputePolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,14 +83,14 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +102,7 @@ public final class ComputePoliciesImpl implements ComputePolicies {
     public Response<ComputePolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,14 +110,14 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class ComputePoliciesImpl implements ComputePolicies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,26 +137,26 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,14 +164,14 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

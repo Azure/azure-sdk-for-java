@@ -20,6 +20,20 @@ public interface FrontDoorNameAvailabilityWithSubscriptionsClient {
      * Check the availability of a Front Door subdomain.
      *
      * @param checkFrontDoorNameAvailabilityInput Input to check.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckNameAvailabilityOutputInner> checkWithResponse(
+        CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context);
+
+    /**
+     * Check the availability of a Front Door subdomain.
+     *
+     * @param checkFrontDoorNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,18 +41,4 @@ public interface FrontDoorNameAvailabilityWithSubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CheckNameAvailabilityOutputInner check(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput);
-
-    /**
-     * Check the availability of a Front Door subdomain.
-     *
-     * @param checkFrontDoorNameAvailabilityInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkWithResponse(
-        CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context);
 }

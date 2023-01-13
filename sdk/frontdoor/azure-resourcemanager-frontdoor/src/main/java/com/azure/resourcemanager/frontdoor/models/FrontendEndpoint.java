@@ -30,6 +30,37 @@ public interface FrontendEndpoint {
     String type();
 
     /**
+     * Gets the resourceState property: Resource status of the Front Door or Front Door SubResource.
+     *
+     * <p>Resource status.
+     *
+     * @return the resourceState value.
+     */
+    FrontDoorResourceState resourceState();
+
+    /**
+     * Gets the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
+     *
+     * @return the customHttpsProvisioningState value.
+     */
+    CustomHttpsProvisioningState customHttpsProvisioningState();
+
+    /**
+     * Gets the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
+     * enabling/disabling process step by step.
+     *
+     * @return the customHttpsProvisioningSubstate value.
+     */
+    CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate();
+
+    /**
+     * Gets the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
+     *
+     * @return the customHttpsConfiguration value.
+     */
+    CustomHttpsConfiguration customHttpsConfiguration();
+
+    /**
      * Gets the hostname property: The host name of the frontendEndpoint. Must be a domain name.
      *
      * @return the hostname value.
@@ -59,35 +90,6 @@ public interface FrontendEndpoint {
      * @return the webApplicationFirewallPolicyLink value.
      */
     FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink();
-
-    /**
-     * Gets the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    FrontDoorResourceState resourceState();
-
-    /**
-     * Gets the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
-     *
-     * @return the customHttpsProvisioningState value.
-     */
-    CustomHttpsProvisioningState customHttpsProvisioningState();
-
-    /**
-     * Gets the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
-     * enabling/disabling process step by step.
-     *
-     * @return the customHttpsProvisioningSubstate value.
-     */
-    CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate();
-
-    /**
-     * Gets the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
-     *
-     * @return the customHttpsConfiguration value.
-     */
-    CustomHttpsConfiguration customHttpsConfiguration();
 
     /**
      * Gets the inner com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner object.

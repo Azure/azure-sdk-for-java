@@ -21,6 +21,22 @@ public interface HubsClient {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the Hub.
      * @param parameters Parameters supplied to the CreateOrUpdate Hub operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hub resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HubInner> createOrUpdateWithResponse(
+        String resourceGroupName, String hubName, HubInner parameters, Context context);
+
+    /**
+     * Creates a hub, or updates an existing hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the Hub.
+     * @param parameters Parameters supplied to the CreateOrUpdate Hub operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -30,19 +46,19 @@ public interface HubsClient {
     HubInner createOrUpdate(String resourceGroupName, String hubName, HubInner parameters);
 
     /**
-     * Creates a hub, or updates an existing hub.
+     * Updates a Hub.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the Hub.
-     * @param parameters Parameters supplied to the CreateOrUpdate Hub operation.
+     * @param parameters Parameters supplied to the Update Hub operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
+     * @return hub resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubInner> createOrUpdateWithResponse(
+    Response<HubInner> updateWithResponse(
         String resourceGroupName, String hubName, HubInner parameters, Context context);
 
     /**
@@ -60,22 +76,6 @@ public interface HubsClient {
     HubInner update(String resourceGroupName, String hubName, HubInner parameters);
 
     /**
-     * Updates a Hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the Hub.
-     * @param parameters Parameters supplied to the Update Hub operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hub resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubInner> updateWithResponse(
-        String resourceGroupName, String hubName, HubInner parameters, Context context);
-
-    /**
      * Deletes the specified hub.
      *
      * @param resourceGroupName The name of the resource group.
@@ -83,9 +83,9 @@ public interface HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName);
 
     /**
@@ -97,9 +97,9 @@ public interface HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, Context context);
 
     /**
@@ -132,6 +132,20 @@ public interface HubsClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HubInner> getByResourceGroupWithResponse(String resourceGroupName, String hubName, Context context);
+
+    /**
+     * Gets information about the specified hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -141,27 +155,13 @@ public interface HubsClient {
     HubInner getByResourceGroup(String resourceGroupName, String hubName);
 
     /**
-     * Gets information about the specified hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubInner> getByResourceGroupWithResponse(String resourceGroupName, String hubName, Context context);
-
-    /**
      * Gets all the hubs in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HubInner> listByResourceGroup(String resourceGroupName);
@@ -174,7 +174,7 @@ public interface HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HubInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -184,7 +184,7 @@ public interface HubsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HubInner> list();
@@ -196,7 +196,7 @@ public interface HubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HubInner> list(Context context);

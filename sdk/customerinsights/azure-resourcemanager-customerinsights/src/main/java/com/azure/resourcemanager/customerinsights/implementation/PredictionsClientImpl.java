@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.PredictionsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PredictionsClient. */
 public final class PredictionsClientImpl implements PredictionsClient {
-    private final ClientLogger logger = new ClientLogger(PredictionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PredictionsService service;
 
@@ -69,7 +66,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface PredictionsService {
+    public interface PredictionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -202,7 +199,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the prediction resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -263,7 +260,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the prediction resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -324,9 +321,9 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the {@link PollerFlux} for polling of the prediction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters) {
@@ -339,7 +336,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
                 this.client.getHttpPipeline(),
                 PredictionResourceFormatInner.class,
                 PredictionResourceFormatInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -353,9 +350,9 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the {@link PollerFlux} for polling of the prediction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -386,12 +383,12 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the {@link SyncPoller} for polling of the prediction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, predictionName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, predictionName, parameters).getSyncPoller();
     }
 
     /**
@@ -405,16 +402,17 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the {@link SyncPoller} for polling of the prediction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
         String predictionName,
         PredictionResourceFormatInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, predictionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, hubName, predictionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -428,7 +426,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the prediction resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PredictionResourceFormatInner> createOrUpdateAsync(
@@ -449,7 +447,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
+     * @return the prediction resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PredictionResourceFormatInner> createOrUpdateAsync(
@@ -513,7 +511,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Prediction in the hub.
+     * @return a Prediction in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PredictionResourceFormatInner>> getWithResponseAsync(
@@ -567,7 +565,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Prediction in the hub.
+     * @return a Prediction in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PredictionResourceFormatInner>> getWithResponseAsync(
@@ -617,20 +615,31 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Prediction in the hub.
+     * @return a Prediction in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PredictionResourceFormatInner> getAsync(
         String resourceGroupName, String hubName, String predictionName) {
         return getWithResponseAsync(resourceGroupName, hubName, predictionName)
-            .flatMap(
-                (Response<PredictionResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a Prediction in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Prediction in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PredictionResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String predictionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, predictionName, context).block();
     }
 
     /**
@@ -646,25 +655,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PredictionResourceFormatInner get(String resourceGroupName, String hubName, String predictionName) {
-        return getAsync(resourceGroupName, hubName, predictionName).block();
-    }
-
-    /**
-     * Gets a Prediction in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Prediction in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PredictionResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, predictionName, context).block();
+        return getWithResponse(resourceGroupName, hubName, predictionName, Context.NONE).getValue();
     }
 
     /**
@@ -676,7 +667,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -728,7 +719,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -776,15 +767,16 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hubName, String predictionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hubName, predictionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -797,9 +789,9 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hubName, String predictionName, Context context) {
         context = this.client.mergeContext(context);
@@ -819,12 +811,12 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String predictionName) {
-        return beginDeleteAsync(resourceGroupName, hubName, predictionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hubName, predictionName).getSyncPoller();
     }
 
     /**
@@ -837,12 +829,12 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String predictionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, hubName, predictionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hubName, predictionName, context).getSyncPoller();
     }
 
     /**
@@ -854,7 +846,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String predictionName) {
@@ -873,7 +865,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String predictionName, Context context) {
@@ -922,7 +914,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return training results.
+     * @return training results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PredictionTrainingResultsInner>> getTrainingResultsWithResponseAsync(
@@ -976,7 +968,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return training results.
+     * @return training results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PredictionTrainingResultsInner>> getTrainingResultsWithResponseAsync(
@@ -1026,20 +1018,31 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return training results.
+     * @return training results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PredictionTrainingResultsInner> getTrainingResultsAsync(
         String resourceGroupName, String hubName, String predictionName) {
         return getTrainingResultsWithResponseAsync(resourceGroupName, hubName, predictionName)
-            .flatMap(
-                (Response<PredictionTrainingResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets training results.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return training results along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PredictionTrainingResultsInner> getTrainingResultsWithResponse(
+        String resourceGroupName, String hubName, String predictionName, Context context) {
+        return getTrainingResultsWithResponseAsync(resourceGroupName, hubName, predictionName, context).block();
     }
 
     /**
@@ -1056,25 +1059,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PredictionTrainingResultsInner getTrainingResults(
         String resourceGroupName, String hubName, String predictionName) {
-        return getTrainingResultsAsync(resourceGroupName, hubName, predictionName).block();
-    }
-
-    /**
-     * Gets training results.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return training results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PredictionTrainingResultsInner> getTrainingResultsWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context) {
-        return getTrainingResultsWithResponseAsync(resourceGroupName, hubName, predictionName, context).block();
+        return getTrainingResultsWithResponse(resourceGroupName, hubName, predictionName, Context.NONE).getValue();
     }
 
     /**
@@ -1086,7 +1071,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model status of the prediction.
+     * @return model status of the prediction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PredictionModelStatusInner>> getModelStatusWithResponseAsync(
@@ -1140,7 +1125,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model status of the prediction.
+     * @return model status of the prediction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PredictionModelStatusInner>> getModelStatusWithResponseAsync(
@@ -1190,20 +1175,31 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model status of the prediction.
+     * @return model status of the prediction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PredictionModelStatusInner> getModelStatusAsync(
         String resourceGroupName, String hubName, String predictionName) {
         return getModelStatusWithResponseAsync(resourceGroupName, hubName, predictionName)
-            .flatMap(
-                (Response<PredictionModelStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets model status of the prediction.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return model status of the prediction along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PredictionModelStatusInner> getModelStatusWithResponse(
+        String resourceGroupName, String hubName, String predictionName, Context context) {
+        return getModelStatusWithResponseAsync(resourceGroupName, hubName, predictionName, context).block();
     }
 
     /**
@@ -1219,25 +1215,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PredictionModelStatusInner getModelStatus(String resourceGroupName, String hubName, String predictionName) {
-        return getModelStatusAsync(resourceGroupName, hubName, predictionName).block();
-    }
-
-    /**
-     * Gets model status of the prediction.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model status of the prediction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PredictionModelStatusInner> getModelStatusWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context) {
-        return getModelStatusWithResponseAsync(resourceGroupName, hubName, predictionName, context).block();
+        return getModelStatusWithResponse(resourceGroupName, hubName, predictionName, Context.NONE).getValue();
     }
 
     /**
@@ -1250,7 +1228,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> modelStatusWithResponseAsync(
@@ -1309,7 +1287,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> modelStatusWithResponseAsync(
@@ -1368,13 +1346,36 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> modelStatusAsync(
         String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters) {
         return modelStatusWithResponseAsync(resourceGroupName, hubName, predictionName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Creates or updates the model status of prediction.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param parameters Parameters supplied to the create/update prediction model status operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> modelStatusWithResponse(
+        String resourceGroupName,
+        String hubName,
+        String predictionName,
+        PredictionModelStatusInner parameters,
+        Context context) {
+        return modelStatusWithResponseAsync(resourceGroupName, hubName, predictionName, parameters, context).block();
     }
 
     /**
@@ -1391,30 +1392,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void modelStatus(
         String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters) {
-        modelStatusAsync(resourceGroupName, hubName, predictionName, parameters).block();
-    }
-
-    /**
-     * Creates or updates the model status of prediction.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param parameters Parameters supplied to the create/update prediction model status operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> modelStatusWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionModelStatusInner parameters,
-        Context context) {
-        return modelStatusWithResponseAsync(resourceGroupName, hubName, predictionName, parameters, context).block();
+        modelStatusWithResponse(resourceGroupName, hubName, predictionName, parameters, Context.NONE);
     }
 
     /**
@@ -1425,7 +1403,8 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PredictionResourceFormatInner>> listByHubSinglePageAsync(
@@ -1483,7 +1462,8 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PredictionResourceFormatInner>> listByHubSinglePageAsync(
@@ -1537,7 +1517,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PredictionResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
@@ -1555,7 +1535,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PredictionResourceFormatInner> listByHubAsync(
@@ -1573,7 +1553,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PredictionResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -1589,7 +1569,7 @@ public final class PredictionsClientImpl implements PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PredictionResourceFormatInner> listByHub(
@@ -1600,11 +1580,13 @@ public final class PredictionsClientImpl implements PredictionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list predictions operation.
+     * @return the response of list predictions operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PredictionResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -1635,12 +1617,14 @@ public final class PredictionsClientImpl implements PredictionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list predictions operation.
+     * @return the response of list predictions operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PredictionResourceFormatInner>> listByHubNextSinglePageAsync(

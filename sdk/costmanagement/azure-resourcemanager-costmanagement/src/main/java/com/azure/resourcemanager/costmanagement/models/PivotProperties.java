@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Each pivot must contain a 'type' and 'name'. */
 @Fluent
 public final class PivotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PivotProperties.class);
-
     /*
      * Data type to show in view.
      */
@@ -25,6 +21,10 @@ public final class PivotProperties {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of PivotProperties class. */
+    public PivotProperties() {
+    }
 
     /**
      * Get the type property: Data type to show in view.

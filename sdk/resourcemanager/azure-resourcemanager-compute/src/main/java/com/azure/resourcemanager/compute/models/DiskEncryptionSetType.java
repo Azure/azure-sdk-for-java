@@ -23,6 +23,15 @@ public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryp
         fromString("ConfidentialVmEncryptedWithCustomerKey");
 
     /**
+     * Creates a new instance of DiskEncryptionSetType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskEncryptionSetType() {
+    }
+
+    /**
      * Creates or finds a DiskEncryptionSetType from its string representation.
      *
      * @param name a name to look for.

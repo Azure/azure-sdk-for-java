@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RoleTypes. */
+/** Type of roles. */
 public enum RoleTypes {
     /** Enum value Admin. */
     ADMIN("Admin"),
@@ -42,6 +42,9 @@ public enum RoleTypes {
      */
     @JsonCreator
     public static RoleTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RoleTypes[] items = RoleTypes.values();
         for (RoleTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum RoleTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

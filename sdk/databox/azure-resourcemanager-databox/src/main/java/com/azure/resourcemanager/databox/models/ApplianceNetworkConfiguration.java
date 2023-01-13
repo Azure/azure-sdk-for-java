@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Network Adapter configuration of a DataBox. */
 @Immutable
 public final class ApplianceNetworkConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplianceNetworkConfiguration.class);
-
     /*
      * Name of the network.
      */
@@ -25,6 +21,10 @@ public final class ApplianceNetworkConfiguration {
      */
     @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
+
+    /** Creates an instance of ApplianceNetworkConfiguration class. */
+    public ApplianceNetworkConfiguration() {
+    }
 
     /**
      * Get the name property: Name of the network.

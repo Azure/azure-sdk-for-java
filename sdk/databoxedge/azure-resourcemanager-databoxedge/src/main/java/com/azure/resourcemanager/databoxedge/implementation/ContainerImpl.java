@@ -45,6 +45,10 @@ public final class ContainerImpl implements Container, Container.Definition, Con
         return this.innerModel().createdDateTime();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ContainerInner innerModel() {
         return this.innerObject;
     }

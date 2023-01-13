@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,30 +13,32 @@ import java.util.Map;
 /** The Metadata definition base. */
 @Fluent
 public class MetadataDefinitionBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataDefinitionBase.class);
-
     /*
      * The attributes for the Type.
      */
     @JsonProperty(value = "attributes")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> attributes;
 
     /*
      * Localized descriptions for the property.
      */
     @JsonProperty(value = "description")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * Localized display names for the property.
      */
     @JsonProperty(value = "displayName")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Any custom localized attributes for the Type.
      */
     @JsonProperty(value = "localizedAttributes")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, String>> localizedAttributes;
 
     /*
@@ -57,6 +58,10 @@ public class MetadataDefinitionBase {
      */
     @JsonProperty(value = "largeImage")
     private String largeImage;
+
+    /** Creates an instance of MetadataDefinitionBase class. */
+    public MetadataDefinitionBase() {
+    }
 
     /**
      * Get the attributes property: The attributes for the Type.

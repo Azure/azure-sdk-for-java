@@ -39,6 +39,106 @@ public final class InteractionResourceFormatImpl
         return this.innerModel().type();
     }
 
+    public List<String> idPropertyNames() {
+        List<String> inner = this.innerModel().idPropertyNames();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Participant> participantProfiles() {
+        List<Participant> inner = this.innerModel().participantProfiles();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String primaryParticipantProfilePropertyName() {
+        return this.innerModel().primaryParticipantProfilePropertyName();
+    }
+
+    public List<DataSourcePrecedence> dataSourcePrecedenceRules() {
+        List<DataSourcePrecedence> inner = this.innerModel().dataSourcePrecedenceRules();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Boolean isActivity() {
+        return this.innerModel().isActivity();
+    }
+
+    public String namePropertiesName() {
+        return this.innerModel().namePropertiesName();
+    }
+
+    public DataSourceType dataSourceType() {
+        return this.innerModel().dataSourceType();
+    }
+
+    public Status status() {
+        return this.innerModel().status();
+    }
+
+    public Integer idPropertiesId() {
+        return this.innerModel().idPropertiesId();
+    }
+
+    public String dataSourceReferenceId() {
+        return this.innerModel().dataSourceReferenceId();
+    }
+
+    public String apiEntitySetName() {
+        return this.innerModel().apiEntitySetName();
+    }
+
+    public EntityTypes entityType() {
+        return this.innerModel().entityType();
+    }
+
+    public List<PropertyDefinition> fields() {
+        List<PropertyDefinition> inner = this.innerModel().fields();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Integer instancesCount() {
+        return this.innerModel().instancesCount();
+    }
+
+    public OffsetDateTime lastChangedUtc() {
+        return this.innerModel().lastChangedUtc();
+    }
+
+    public ProvisioningStates provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String schemaItemTypeLink() {
+        return this.innerModel().schemaItemTypeLink();
+    }
+
+    public String tenantId() {
+        return this.innerModel().tenantId();
+    }
+
+    public String timestampFieldName() {
+        return this.innerModel().timestampFieldName();
+    }
+
+    public String typeName() {
+        return this.innerModel().typeName();
+    }
+
     public Map<String, List<String>> attributes() {
         Map<String, List<String>> inner = this.innerModel().attributes();
         if (inner != null) {
@@ -87,104 +187,8 @@ public final class InteractionResourceFormatImpl
         return this.innerModel().largeImage();
     }
 
-    public String apiEntitySetName() {
-        return this.innerModel().apiEntitySetName();
-    }
-
-    public EntityTypes entityType() {
-        return this.innerModel().entityType();
-    }
-
-    public List<PropertyDefinition> fields() {
-        List<PropertyDefinition> inner = this.innerModel().fields();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Integer instancesCount() {
-        return this.innerModel().instancesCount();
-    }
-
-    public OffsetDateTime lastChangedUtc() {
-        return this.innerModel().lastChangedUtc();
-    }
-
-    public ProvisioningStates provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String schemaItemTypeLink() {
-        return this.innerModel().schemaItemTypeLink();
-    }
-
-    public String tenantId() {
-        return this.innerModel().tenantId();
-    }
-
-    public String timestampFieldName() {
-        return this.innerModel().timestampFieldName();
-    }
-
-    public String typeName() {
-        return this.innerModel().typeName();
-    }
-
-    public List<String> idPropertyNames() {
-        List<String> inner = this.innerModel().idPropertyNames();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<Participant> participantProfiles() {
-        List<Participant> inner = this.innerModel().participantProfiles();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public String primaryParticipantProfilePropertyName() {
-        return this.innerModel().primaryParticipantProfilePropertyName();
-    }
-
-    public List<DataSourcePrecedence> dataSourcePrecedenceRules() {
-        List<DataSourcePrecedence> inner = this.innerModel().dataSourcePrecedenceRules();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Boolean isActivity() {
-        return this.innerModel().isActivity();
-    }
-
-    public String namePropertiesDefaultDataSourceName() {
-        return this.innerModel().namePropertiesDefaultDataSourceName();
-    }
-
-    public DataSourceType dataSourceType() {
-        return this.innerModel().dataSourceType();
-    }
-
-    public Status status() {
-        return this.innerModel().status();
-    }
-
-    public Integer idPropertiesDefaultDataSourceId() {
-        return this.innerModel().idPropertiesDefaultDataSourceId();
-    }
-
-    public String dataSourceReferenceId() {
-        return this.innerModel().dataSourceReferenceId();
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public InteractionResourceFormatInner innerModel() {
@@ -286,48 +290,34 @@ public final class InteractionResourceFormatImpl
         return this;
     }
 
-    public SuggestRelationshipLinksResponse suggestRelationshipLinks() {
-        return serviceManager.interactions().suggestRelationshipLinks(resourceGroupName, hubName, interactionName);
-    }
-
     public Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(Context context) {
         return serviceManager
             .interactions()
             .suggestRelationshipLinksWithResponse(resourceGroupName, hubName, interactionName, context);
     }
 
-    public InteractionResourceFormatImpl withAttributes(Map<String, List<String>> attributes) {
-        this.innerModel().withAttributes(attributes);
+    public SuggestRelationshipLinksResponse suggestRelationshipLinks() {
+        return serviceManager.interactions().suggestRelationshipLinks(resourceGroupName, hubName, interactionName);
+    }
+
+    public InteractionResourceFormatImpl withIdPropertyNames(List<String> idPropertyNames) {
+        this.innerModel().withIdPropertyNames(idPropertyNames);
         return this;
     }
 
-    public InteractionResourceFormatImpl withDescription(Map<String, String> description) {
-        this.innerModel().withDescription(description);
+    public InteractionResourceFormatImpl withParticipantProfiles(List<Participant> participantProfiles) {
+        this.innerModel().withParticipantProfiles(participantProfiles);
         return this;
     }
 
-    public InteractionResourceFormatImpl withDisplayName(Map<String, String> displayName) {
-        this.innerModel().withDisplayName(displayName);
+    public InteractionResourceFormatImpl withPrimaryParticipantProfilePropertyName(
+        String primaryParticipantProfilePropertyName) {
+        this.innerModel().withPrimaryParticipantProfilePropertyName(primaryParticipantProfilePropertyName);
         return this;
     }
 
-    public InteractionResourceFormatImpl withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes) {
-        this.innerModel().withLocalizedAttributes(localizedAttributes);
-        return this;
-    }
-
-    public InteractionResourceFormatImpl withSmallImage(String smallImage) {
-        this.innerModel().withSmallImage(smallImage);
-        return this;
-    }
-
-    public InteractionResourceFormatImpl withMediumImage(String mediumImage) {
-        this.innerModel().withMediumImage(mediumImage);
-        return this;
-    }
-
-    public InteractionResourceFormatImpl withLargeImage(String largeImage) {
-        this.innerModel().withLargeImage(largeImage);
+    public InteractionResourceFormatImpl withIsActivity(Boolean isActivity) {
+        this.innerModel().withIsActivity(isActivity);
         return this;
     }
 
@@ -366,24 +356,38 @@ public final class InteractionResourceFormatImpl
         return this;
     }
 
-    public InteractionResourceFormatImpl withIdPropertyNames(List<String> idPropertyNames) {
-        this.innerModel().withIdPropertyNames(idPropertyNames);
+    public InteractionResourceFormatImpl withAttributes(Map<String, List<String>> attributes) {
+        this.innerModel().withAttributes(attributes);
         return this;
     }
 
-    public InteractionResourceFormatImpl withParticipantProfiles(List<Participant> participantProfiles) {
-        this.innerModel().withParticipantProfiles(participantProfiles);
+    public InteractionResourceFormatImpl withDescription(Map<String, String> description) {
+        this.innerModel().withDescription(description);
         return this;
     }
 
-    public InteractionResourceFormatImpl withPrimaryParticipantProfilePropertyName(
-        String primaryParticipantProfilePropertyName) {
-        this.innerModel().withPrimaryParticipantProfilePropertyName(primaryParticipantProfilePropertyName);
+    public InteractionResourceFormatImpl withDisplayName(Map<String, String> displayName) {
+        this.innerModel().withDisplayName(displayName);
         return this;
     }
 
-    public InteractionResourceFormatImpl withIsActivity(Boolean isActivity) {
-        this.innerModel().withIsActivity(isActivity);
+    public InteractionResourceFormatImpl withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes) {
+        this.innerModel().withLocalizedAttributes(localizedAttributes);
+        return this;
+    }
+
+    public InteractionResourceFormatImpl withSmallImage(String smallImage) {
+        this.innerModel().withSmallImage(smallImage);
+        return this;
+    }
+
+    public InteractionResourceFormatImpl withMediumImage(String mediumImage) {
+        this.innerModel().withMediumImage(mediumImage);
+        return this;
+    }
+
+    public InteractionResourceFormatImpl withLargeImage(String largeImage) {
+        this.innerModel().withLargeImage(largeImage);
         return this;
     }
 }

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.customerinsights.models.KpiGroupByMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiParticipantProfilesMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiThresholds;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +23,6 @@ import java.util.Map;
 /** Defines the KPI Threshold limits. */
 @Fluent
 public class KpiDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiDefinitionInner.class);
-
     /*
      * The mapping entity type.
      */
@@ -53,12 +51,14 @@ public class KpiDefinitionInner {
      * Localized display name for the KPI.
      */
     @JsonProperty(value = "displayName")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized description for the KPI.
      */
     @JsonProperty(value = "description")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
@@ -138,6 +138,10 @@ public class KpiDefinitionInner {
      */
     @JsonProperty(value = "extracts")
     private List<KpiExtract> extracts;
+
+    /** Creates an instance of KpiDefinitionInner class. */
+    public KpiDefinitionInner() {
+    }
 
     /**
      * Get the entityType property: The mapping entity type.
@@ -471,29 +475,29 @@ public class KpiDefinitionInner {
      */
     public void validate() {
         if (entityType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property entityType in model KpiDefinitionInner"));
         }
         if (entityTypeName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property entityTypeName in model KpiDefinitionInner"));
         }
         if (calculationWindow() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property calculationWindow in model KpiDefinitionInner"));
         }
         if (function() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property function in model KpiDefinitionInner"));
         }
         if (expression() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property expression in model KpiDefinitionInner"));
         }
@@ -513,4 +517,6 @@ public class KpiDefinitionInner {
             extracts().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KpiDefinitionInner.class);
 }

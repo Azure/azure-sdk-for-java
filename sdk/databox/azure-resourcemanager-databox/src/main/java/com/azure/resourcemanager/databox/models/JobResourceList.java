@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.fluent.models.JobResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Job Resource Collection. */
 @Fluent
 public final class JobResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobResourceList.class);
-
     /*
      * List of job resources.
      */
@@ -27,6 +23,10 @@ public final class JobResourceList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of JobResourceList class. */
+    public JobResourceList() {
+    }
 
     /**
      * Get the value property: List of job resources.

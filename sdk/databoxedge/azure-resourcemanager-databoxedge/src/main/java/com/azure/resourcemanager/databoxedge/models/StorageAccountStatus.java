@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageAccountStatus. */
+/** Current status of the storage account. */
 public final class StorageAccountStatus extends ExpandableStringEnum<StorageAccountStatus> {
     /** Static value OK for StorageAccountStatus. */
     public static final StorageAccountStatus OK = fromString("OK");
@@ -26,6 +26,15 @@ public final class StorageAccountStatus extends ExpandableStringEnum<StorageAcco
     public static final StorageAccountStatus NEEDS_ATTENTION = fromString("NeedsAttention");
 
     /**
+     * Creates a new instance of StorageAccountStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageAccountStatus() {
+    }
+
+    /**
      * Creates or finds a StorageAccountStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class StorageAccountStatus extends ExpandableStringEnum<StorageAcco
         return fromString(name, StorageAccountStatus.class);
     }
 
-    /** @return known StorageAccountStatus values. */
+    /**
+     * Gets known StorageAccountStatus values.
+     *
+     * @return known StorageAccountStatus values.
+     */
     public static Collection<StorageAccountStatus> values() {
         return values(StorageAccountStatus.class);
     }

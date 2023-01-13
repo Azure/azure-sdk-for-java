@@ -137,6 +137,13 @@ public interface ConnectorMappingResourceFormat {
     String tenantId();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.ConnectorMappingResourceFormatInner
      * object.
      *

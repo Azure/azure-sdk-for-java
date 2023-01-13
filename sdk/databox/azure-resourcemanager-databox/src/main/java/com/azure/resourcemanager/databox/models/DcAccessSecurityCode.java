@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dc access security code. */
 @Fluent
 public final class DcAccessSecurityCode {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DcAccessSecurityCode.class);
-
     /*
      * Reverse Dc access security code.
      */
@@ -25,6 +21,10 @@ public final class DcAccessSecurityCode {
      */
     @JsonProperty(value = "forwardDCAccessCode")
     private String forwardDCAccessCode;
+
+    /** Creates an instance of DcAccessSecurityCode class. */
+    public DcAccessSecurityCode() {
+    }
 
     /**
      * Get the reverseDCAccessCode property: Reverse Dc access security code.

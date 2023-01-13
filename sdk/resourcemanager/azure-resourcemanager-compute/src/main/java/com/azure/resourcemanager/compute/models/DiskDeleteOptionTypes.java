@@ -22,6 +22,15 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
     public static final DiskDeleteOptionTypes DETACH = fromString("Detach");
 
     /**
+     * Creates a new instance of DiskDeleteOptionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskDeleteOptionTypes() {
+    }
+
+    /**
      * Creates or finds a DiskDeleteOptionTypes from its string representation.
      *
      * @param name a name to look for.

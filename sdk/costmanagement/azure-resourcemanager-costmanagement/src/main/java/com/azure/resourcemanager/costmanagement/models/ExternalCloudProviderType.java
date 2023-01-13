@@ -17,6 +17,15 @@ public final class ExternalCloudProviderType extends ExpandableStringEnum<Extern
     public static final ExternalCloudProviderType EXTERNAL_BILLING_ACCOUNTS = fromString("externalBillingAccounts");
 
     /**
+     * Creates a new instance of ExternalCloudProviderType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExternalCloudProviderType() {
+    }
+
+    /**
      * Creates or finds a ExternalCloudProviderType from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class ExternalCloudProviderType extends ExpandableStringEnum<Extern
         return fromString(name, ExternalCloudProviderType.class);
     }
 
-    /** @return known ExternalCloudProviderType values. */
+    /**
+     * Gets known ExternalCloudProviderType values.
+     *
+     * @return known ExternalCloudProviderType values.
+     */
     public static Collection<ExternalCloudProviderType> values() {
         return values(ExternalCloudProviderType.class);
     }

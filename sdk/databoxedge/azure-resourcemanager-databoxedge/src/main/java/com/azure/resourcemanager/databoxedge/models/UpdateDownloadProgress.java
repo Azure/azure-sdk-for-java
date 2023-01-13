@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about the download progress of update. */
 @Immutable
 public final class UpdateDownloadProgress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateDownloadProgress.class);
-
     /*
      * The download phase.
      */
@@ -49,6 +45,10 @@ public final class UpdateDownloadProgress {
      */
     @JsonProperty(value = "numberOfUpdatesDownloaded", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfUpdatesDownloaded;
+
+    /** Creates an instance of UpdateDownloadProgress class. */
+    public UpdateDownloadProgress() {
+    }
 
     /**
      * Get the downloadPhase property: The download phase.

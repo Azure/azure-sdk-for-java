@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.SnapshotUpdate;
 import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public final class SnapshotsUpdateSamples {
                     .withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
                     .withDiskSizeGB(20)
                     .withSupportedCapabilities(new SupportedCapabilities().withAcceleratedNetwork(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -56,7 +55,7 @@ public final class SnapshotsUpdateSamples {
                 new SnapshotUpdate()
                     .withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
                     .withDiskSizeGB(20),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

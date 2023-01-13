@@ -6,19 +6,20 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the data to be used for importing data to azure. */
 @Fluent
 public final class DataImportDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataImportDetails.class);
-
     /*
      * Account details of the data to be transferred
      */
     @JsonProperty(value = "accountDetails", required = true)
     private DataAccountDetails accountDetails;
+
+    /** Creates an instance of DataImportDetails class. */
+    public DataImportDetails() {
+    }
 
     /**
      * Get the accountDetails property: Account details of the data to be transferred.
@@ -47,7 +48,7 @@ public final class DataImportDetails {
      */
     public void validate() {
         if (accountDetails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accountDetails in model DataImportDetails"));
@@ -55,4 +56,6 @@ public final class DataImportDetails {
             accountDetails().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataImportDetails.class);
 }

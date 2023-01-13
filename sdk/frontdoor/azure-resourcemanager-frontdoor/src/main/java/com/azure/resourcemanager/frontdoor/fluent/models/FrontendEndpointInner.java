@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsConfiguration;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsProvisioningSubstate;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorResourceState;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink;
 import com.azure.resourcemanager.frontdoor.models.SessionAffinityEnabledState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A frontend endpoint used for routing. */
-@JsonFlatten
 @Fluent
-public class FrontendEndpointInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontendEndpointInner.class);
+public final class FrontendEndpointInner extends SubResource {
+    /*
+     * Properties of the Frontend endpoint
+     */
+    @JsonProperty(value = "properties")
+    private FrontendEndpointProperties innerProperties;
 
     /*
      * Resource name.
@@ -35,57 +35,18 @@ public class FrontendEndpointInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The host name of the frontendEndpoint. Must be a domain name.
-     */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
+    /** Creates an instance of FrontendEndpointInner class. */
+    public FrontendEndpointInner() {
+    }
 
-    /*
-     * Whether to allow session affinity on this host. Valid options are
-     * 'Enabled' or 'Disabled'
+    /**
+     * Get the innerProperties property: Properties of the Frontend endpoint.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sessionAffinityEnabledState")
-    private SessionAffinityEnabledState sessionAffinityEnabledState;
-
-    /*
-     * UNUSED. This field will be ignored. The TTL to use in seconds for
-     * session affinity, if applicable.
-     */
-    @JsonProperty(value = "properties.sessionAffinityTtlSeconds")
-    private Integer sessionAffinityTtlSeconds;
-
-    /*
-     * Defines the Web Application Firewall policy for each host (if
-     * applicable)
-     */
-    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
-    private FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
-
-    /*
-     * Resource status.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private FrontDoorResourceState resourceState;
-
-    /*
-     * Provisioning status of Custom Https of the frontendEndpoint.
-     */
-    @JsonProperty(value = "properties.customHttpsProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private CustomHttpsProvisioningState customHttpsProvisioningState;
-
-    /*
-     * Provisioning substate shows the progress of custom HTTPS
-     * enabling/disabling process step by step.
-     */
-    @JsonProperty(value = "properties.customHttpsProvisioningSubstate", access = JsonProperty.Access.WRITE_ONLY)
-    private CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate;
-
-    /*
-     * The configuration specifying how to enable HTTPS
-     */
-    @JsonProperty(value = "properties.customHttpsConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private CustomHttpsConfiguration customHttpsConfiguration;
+    private FrontendEndpointProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Resource name.
@@ -116,13 +77,59 @@ public class FrontendEndpointInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FrontendEndpointInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
+     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
+     *
+     * <p>Resource status.
+     *
+     * @return the resourceState value.
+     */
+    public FrontDoorResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
+     * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
+     *
+     * @return the customHttpsProvisioningState value.
+     */
+    public CustomHttpsProvisioningState customHttpsProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().customHttpsProvisioningState();
+    }
+
+    /**
+     * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
+     * enabling/disabling process step by step.
+     *
+     * @return the customHttpsProvisioningSubstate value.
+     */
+    public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
+        return this.innerProperties() == null ? null : this.innerProperties().customHttpsProvisioningSubstate();
+    }
+
+    /**
+     * Get the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
+     *
+     * @return the customHttpsConfiguration value.
+     */
+    public CustomHttpsConfiguration customHttpsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().customHttpsConfiguration();
+    }
+
     /**
      * Get the hostname property: The host name of the frontendEndpoint. Must be a domain name.
      *
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -132,7 +139,10 @@ public class FrontendEndpointInner extends SubResource {
      * @return the FrontendEndpointInner object itself.
      */
     public FrontendEndpointInner withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -143,7 +153,7 @@ public class FrontendEndpointInner extends SubResource {
      * @return the sessionAffinityEnabledState value.
      */
     public SessionAffinityEnabledState sessionAffinityEnabledState() {
-        return this.sessionAffinityEnabledState;
+        return this.innerProperties() == null ? null : this.innerProperties().sessionAffinityEnabledState();
     }
 
     /**
@@ -155,7 +165,10 @@ public class FrontendEndpointInner extends SubResource {
      */
     public FrontendEndpointInner withSessionAffinityEnabledState(
         SessionAffinityEnabledState sessionAffinityEnabledState) {
-        this.sessionAffinityEnabledState = sessionAffinityEnabledState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withSessionAffinityEnabledState(sessionAffinityEnabledState);
         return this;
     }
 
@@ -166,7 +179,7 @@ public class FrontendEndpointInner extends SubResource {
      * @return the sessionAffinityTtlSeconds value.
      */
     public Integer sessionAffinityTtlSeconds() {
-        return this.sessionAffinityTtlSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().sessionAffinityTtlSeconds();
     }
 
     /**
@@ -177,7 +190,10 @@ public class FrontendEndpointInner extends SubResource {
      * @return the FrontendEndpointInner object itself.
      */
     public FrontendEndpointInner withSessionAffinityTtlSeconds(Integer sessionAffinityTtlSeconds) {
-        this.sessionAffinityTtlSeconds = sessionAffinityTtlSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withSessionAffinityTtlSeconds(sessionAffinityTtlSeconds);
         return this;
     }
 
@@ -188,7 +204,7 @@ public class FrontendEndpointInner extends SubResource {
      * @return the webApplicationFirewallPolicyLink value.
      */
     public FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
-        return this.webApplicationFirewallPolicyLink;
+        return this.innerProperties() == null ? null : this.innerProperties().webApplicationFirewallPolicyLink();
     }
 
     /**
@@ -200,51 +216,10 @@ public class FrontendEndpointInner extends SubResource {
      */
     public FrontendEndpointInner withWebApplicationFirewallPolicyLink(
         FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
-        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
-        return this;
-    }
-
-    /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    public FrontDoorResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /**
-     * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
-     *
-     * @return the customHttpsProvisioningState value.
-     */
-    public CustomHttpsProvisioningState customHttpsProvisioningState() {
-        return this.customHttpsProvisioningState;
-    }
-
-    /**
-     * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
-     * enabling/disabling process step by step.
-     *
-     * @return the customHttpsProvisioningSubstate value.
-     */
-    public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
-        return this.customHttpsProvisioningSubstate;
-    }
-
-    /**
-     * Get the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
-     *
-     * @return the customHttpsConfiguration value.
-     */
-    public CustomHttpsConfiguration customHttpsConfiguration() {
-        return this.customHttpsConfiguration;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public FrontendEndpointInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withWebApplicationFirewallPolicyLink(webApplicationFirewallPolicyLink);
         return this;
     }
 
@@ -254,11 +229,8 @@ public class FrontendEndpointInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (webApplicationFirewallPolicyLink() != null) {
-            webApplicationFirewallPolicyLink().validate();
-        }
-        if (customHttpsConfiguration() != null) {
-            customHttpsConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

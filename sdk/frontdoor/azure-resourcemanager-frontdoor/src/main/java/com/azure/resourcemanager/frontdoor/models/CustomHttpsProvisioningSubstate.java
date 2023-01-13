@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomHttpsProvisioningSubstate. */
+/** Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. */
 public final class CustomHttpsProvisioningSubstate extends ExpandableStringEnum<CustomHttpsProvisioningSubstate> {
     /** Static value SubmittingDomainControlValidationRequest for CustomHttpsProvisioningSubstate. */
     public static final CustomHttpsProvisioningSubstate SUBMITTING_DOMAIN_CONTROL_VALIDATION_REQUEST =
@@ -46,6 +46,15 @@ public final class CustomHttpsProvisioningSubstate extends ExpandableStringEnum<
     public static final CustomHttpsProvisioningSubstate CERTIFICATE_DELETED = fromString("CertificateDeleted");
 
     /**
+     * Creates a new instance of CustomHttpsProvisioningSubstate value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomHttpsProvisioningSubstate() {
+    }
+
+    /**
      * Creates or finds a CustomHttpsProvisioningSubstate from its string representation.
      *
      * @param name a name to look for.
@@ -56,7 +65,11 @@ public final class CustomHttpsProvisioningSubstate extends ExpandableStringEnum<
         return fromString(name, CustomHttpsProvisioningSubstate.class);
     }
 
-    /** @return known CustomHttpsProvisioningSubstate values. */
+    /**
+     * Gets known CustomHttpsProvisioningSubstate values.
+     *
+     * @return known CustomHttpsProvisioningSubstate values.
+     */
     public static Collection<CustomHttpsProvisioningSubstate> values() {
         return values(CustomHttpsProvisioningSubstate.class);
     }

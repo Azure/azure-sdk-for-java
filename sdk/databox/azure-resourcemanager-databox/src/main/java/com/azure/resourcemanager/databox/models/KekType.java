@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KekType. */
+/** Type of encryption key used for key encryption. */
 public enum KekType {
     /** Enum value MicrosoftManaged. */
     MICROSOFT_MANAGED("MicrosoftManaged"),
@@ -30,6 +30,9 @@ public enum KekType {
      */
     @JsonCreator
     public static KekType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KekType[] items = KekType.values();
         for (KekType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum KekType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

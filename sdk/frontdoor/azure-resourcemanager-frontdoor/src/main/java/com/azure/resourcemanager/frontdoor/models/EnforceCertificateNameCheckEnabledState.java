@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnforceCertificateNameCheckEnabledState. */
+/**
+ * Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS requests.
+ */
 public final class EnforceCertificateNameCheckEnabledState
     extends ExpandableStringEnum<EnforceCertificateNameCheckEnabledState> {
     /** Static value Enabled for EnforceCertificateNameCheckEnabledState. */
@@ -16,6 +18,15 @@ public final class EnforceCertificateNameCheckEnabledState
 
     /** Static value Disabled for EnforceCertificateNameCheckEnabledState. */
     public static final EnforceCertificateNameCheckEnabledState DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of EnforceCertificateNameCheckEnabledState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnforceCertificateNameCheckEnabledState() {
+    }
 
     /**
      * Creates or finds a EnforceCertificateNameCheckEnabledState from its string representation.
@@ -28,7 +39,11 @@ public final class EnforceCertificateNameCheckEnabledState
         return fromString(name, EnforceCertificateNameCheckEnabledState.class);
     }
 
-    /** @return known EnforceCertificateNameCheckEnabledState values. */
+    /**
+     * Gets known EnforceCertificateNameCheckEnabledState values.
+     *
+     * @return known EnforceCertificateNameCheckEnabledState values.
+     */
     public static Collection<EnforceCertificateNameCheckEnabledState> values() {
         return values(EnforceCertificateNameCheckEnabledState.class);
     }

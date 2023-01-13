@@ -6,9 +6,7 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.QueryColumn;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,28 +15,6 @@ import java.util.Map;
 /** Result of query. It contains all columns listed under groupings and aggregation. */
 @Fluent
 public final class QueryResultInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryResultInner.class);
-
-    /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
-     */
-    @JsonProperty(value = "eTag")
-    private String etag;
-
-    /*
-     * Resource location
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
-
-    /*
-     * Resource SKU
-     */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
-    private String sku;
-
     /*
      * The properties property.
      */
@@ -52,44 +28,8 @@ public final class QueryResultInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /**
-     * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @param etag the etag value to set.
-     * @return the QueryResultInner object itself.
-     */
-    public QueryResultInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
-     * Get the location property: Resource location.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Get the sku property: Resource SKU.
-     *
-     * @return the sku value.
-     */
-    public String sku() {
-        return this.sku;
+    /** Creates an instance of QueryResultInner class. */
+    public QueryResultInner() {
     }
 
     /**

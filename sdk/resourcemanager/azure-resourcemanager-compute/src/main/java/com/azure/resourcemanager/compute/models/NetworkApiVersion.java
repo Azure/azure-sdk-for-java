@@ -17,6 +17,15 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
     public static final NetworkApiVersion TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE = fromString("2020-11-01");
 
     /**
+     * Creates a new instance of NetworkApiVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkApiVersion() {
+    }
+
+    /**
      * Creates or finds a NetworkApiVersion from its string representation.
      *
      * @param name a name to look for.

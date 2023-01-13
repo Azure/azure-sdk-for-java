@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Job details for update. */
 @Fluent
 public final class UpdateJobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateJobDetails.class);
-
     /*
      * Contact details for notification and shipping.
      */
@@ -31,6 +27,10 @@ public final class UpdateJobDetails {
      */
     @JsonProperty(value = "keyEncryptionKey")
     private KeyEncryptionKey keyEncryptionKey;
+
+    /** Creates an instance of UpdateJobDetails class. */
+    public UpdateJobDetails() {
+    }
 
     /**
      * Get the contactDetails property: Contact details for notification and shipping.

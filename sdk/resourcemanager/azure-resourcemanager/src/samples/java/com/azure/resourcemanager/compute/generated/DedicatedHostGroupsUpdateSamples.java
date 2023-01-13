@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for DedicatedHostGroups Update. */
 public final class DedicatedHostGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroups_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_Update_MinimumSet_Gen.
@@ -26,11 +25,12 @@ public final class DedicatedHostGroupsUpdateSamples {
             .manager()
             .serviceClient()
             .getDedicatedHostGroups()
-            .updateWithResponse("rgcompute", "aaaaaaaaaaa", new DedicatedHostGroupUpdate(), Context.NONE);
+            .updateWithResponse(
+                "rgcompute", "aaaaaaaaaaa", new DedicatedHostGroupUpdate(), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroups_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_Update_MaximumSet_Gen.
@@ -51,7 +51,7 @@ public final class DedicatedHostGroupsUpdateSamples {
                     .withZones(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
                     .withPlatformFaultDomainCount(3)
                     .withSupportAutomaticPlacement(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")
