@@ -80,6 +80,7 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedMode = "spark.cosmos.changeFeed.mode"
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
   val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
+  val ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid = "spark.cosmos.changeFeed.batchCheckpointLocation.ignoreWhenInvalid"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
   val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
   val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
@@ -148,6 +149,7 @@ private[spark] object CosmosConfigNames {
     ChangeFeedMode,
     ChangeFeedItemCountPerTriggerHint,
     ChangeFeedBatchCheckpointLocation,
+    ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
     ThroughputControlEnabled,
     ThroughputControlAccountEndpoint,
     ThroughputControlAccountKey,
@@ -1127,7 +1129,8 @@ private case class CosmosChangeFeedConfig
   startFrom: ChangeFeedStartFromMode,
   startFromPointInTime: Option[Instant],
   maxItemCountPerTrigger: Option[Long],
-  batchCheckpointLocation: Option[String]
+  batchCheckpointLocation: Option[String],
+  ignoreOffsetWhenInvalid: Boolean
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -1157,6 +1160,7 @@ private case class CosmosChangeFeedConfig
 private object CosmosChangeFeedConfig {
   private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
+  private val DefaultIgnoreOffsetWhenInvalid: Boolean = false
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
     key = CosmosConfigNames.ChangeFeedStartFrom,
@@ -1182,6 +1186,13 @@ private object CosmosChangeFeedConfig {
     defaultValue = Some(ChangeFeedModes.Incremental),
     parseFromStringFunction = changeFeedModeString => CosmosConfigEntry.parseEnumeration(changeFeedModeString, ChangeFeedModes),
     helpMessage = "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)")
+
+  private val ignoreOffsetWhenInvalid = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
+    mandatory = false,
+    parseFromStringFunction = ignoreOffsetWhenInvalidString => ignoreOffsetWhenInvalidString.toBoolean,
+    helpMessage = "Flag that indicates whether invalid offset files (for example for different or " +
+      "recreated container should be silently ignored)")
 
   private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
     key = CosmosConfigNames.ChangeFeedItemCountPerTriggerHint,
@@ -1216,6 +1227,7 @@ private object CosmosChangeFeedConfig {
   def parseCosmosChangeFeedConfig(cfg: Map[String, String]): CosmosChangeFeedConfig = {
     val changeFeedModeParsed = CosmosConfigEntry.parse(cfg, changeFeedMode)
     val startFromModeParsed = CosmosConfigEntry.parse(cfg, startFrom)
+    val ignoreOffsetWhenInvalidParsed =  CosmosConfigEntry.parse(cfg, ignoreOffsetWhenInvalid)
     val maxItemCountPerTriggerHintParsed = CosmosConfigEntry.parse(cfg, maxItemCountPerTriggerHint)
     val startFromPointInTimeParsed = startFromModeParsed match {
       case Some(PointInTime) => CosmosConfigEntry.parse(cfg, startFromPointInTime)
@@ -1228,7 +1240,9 @@ private object CosmosChangeFeedConfig {
       startFromModeParsed.getOrElse(DefaultStartFromMode),
       startFromPointInTimeParsed,
       maxItemCountPerTriggerHintParsed,
-      batchCheckpointLocationParsed)
+      batchCheckpointLocationParsed,
+      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid)
+    )
   }
 }
 
