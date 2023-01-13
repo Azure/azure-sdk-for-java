@@ -628,9 +628,9 @@ public class IndexManagementTests extends SearchTestBase {
             .setDefaultScoringProfile(null));
 
         SearchIndex index = asyncClient.createIndex(initialIndex)
-            .doOnNext(ix -> indexesToDelete.add(ix.getName()))
             .blockOptional()
             .orElseThrow(NoSuchElementException::new);
+        indexesToDelete.add(index.getName());
 
         // Now update the index.
         List<String> allowedOrigins = fullFeaturedIndex.getCorsOptions().getAllowedOrigins();
@@ -854,6 +854,7 @@ public class IndexManagementTests extends SearchTestBase {
                 .flatMap(response -> {
                     SearchIndex original = response.getValue();
                     String originalETag = original.getETag();
+                    indexesToDelete.add(original.getName());
 
                     return asyncClient.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, false)
                         .map(update -> Tuples.of(originalETag, update.getValue().getETag()));
@@ -885,6 +886,7 @@ public class IndexManagementTests extends SearchTestBase {
                 .flatMap(response -> {
                     SearchIndex original = response.getValue();
                     String originalETag = original.getETag();
+                    indexesToDelete.add(original.getName());
 
                     return asyncClient.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, true)
                         .map(update -> Tuples.of(originalETag, update.getValue().getETag()));
@@ -922,6 +924,7 @@ public class IndexManagementTests extends SearchTestBase {
                 .flatMap(response -> {
                     SearchIndex original = response.getValue();
                     String originalETag = original.getETag();
+                    indexesToDelete.add(original.getName());
 
                     return asyncClient.createOrUpdateIndexWithResponse(mutateCorsOptionsInIndex(original), false, true)
                         .map(update -> Tuples.of(originalETag, update.getValue().getETag(), original));

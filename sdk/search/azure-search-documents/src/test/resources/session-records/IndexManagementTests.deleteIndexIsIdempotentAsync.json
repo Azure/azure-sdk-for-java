@@ -1,0 +1,106 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f7583b30-4a97-453b-bedf-0e7aaf97a037"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "f7583b30-4a97-453b-bedf-0e7aaf97a037",
+      "StatusCode" : "404",
+      "Date" : "Fri, 13 Jan 2023 22:31:26 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f7583b30-4a97-453b-bedf-0e7aaf97a037",
+      "elapsed-time" : "16",
+      "Expires" : "-1",
+      "Content-Length" : "268",
+      "Body" : "{\"error\":{\"code\":\"OperationNotAllowed\",\"message\":\"No index with the name 'hotels' was found in a service named 'alzimmer-basic'.\",\"details\":[{\"code\":\"IndexNotFoundInService\",\"message\":\"No index with the name 'hotels' was found in a service named 'alzimmer-basic'.\"}]}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "f7583b30-4a97-453b-bedf-0e7aaf97a037",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "86fb39a0-2836-43f6-800e-a06e75ccfba7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "86fb39a0-2836-43f6-800e-a06e75ccfba7",
+      "StatusCode" : "201",
+      "Date" : "Fri, 13 Jan 2023 22:31:26 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "86fb39a0-2836-43f6-800e-a06e75ccfba7",
+      "ETag" : "W/\"0x8DAF5B5E8DEF2D1\"",
+      "elapsed-time" : "839",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "679",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF5B5E8DEF2D1\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "86fb39a0-2836-43f6-800e-a06e75ccfba7",
+      "Location" : "https://alzimmer-basic.search.windows.net/indexes('hotels')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "27da18c5-5c66-49db-970c-a33388cd3021"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "27da18c5-5c66-49db-970c-a33388cd3021",
+      "elapsed-time" : "176",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "27da18c5-5c66-49db-970c-a33388cd3021",
+      "StatusCode" : "204",
+      "Date" : "Fri, 13 Jan 2023 22:31:27 GMT",
+      "x-ms-client-request-id" : "27da18c5-5c66-49db-970c-a33388cd3021"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "65255f07-8275-42c9-b391-28741170ca60"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "65255f07-8275-42c9-b391-28741170ca60",
+      "StatusCode" : "404",
+      "Date" : "Fri, 13 Jan 2023 22:31:27 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "65255f07-8275-42c9-b391-28741170ca60",
+      "elapsed-time" : "25",
+      "Expires" : "-1",
+      "Content-Length" : "268",
+      "Body" : "{\"error\":{\"code\":\"OperationNotAllowed\",\"message\":\"No index with the name 'hotels' was found in a service named 'alzimmer-basic'.\",\"details\":[{\"code\":\"IndexNotFoundInService\",\"message\":\"No index with the name 'hotels' was found in a service named 'alzimmer-basic'.\"}]}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "65255f07-8275-42c9-b391-28741170ca60",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
