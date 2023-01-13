@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 
 /** Samples for GalleryImageVersions Get. */
@@ -23,7 +22,13 @@ public final class GalleryImageVersionsGetSamples {
             .manager()
             .serviceClient()
             .getGalleryImageVersions()
-            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null, Context.NONE);
+            .getWithResponse(
+                "myResourceGroup",
+                "myGalleryName",
+                "myGalleryImageName",
+                "1.0.0",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,7 +45,13 @@ public final class GalleryImageVersionsGetSamples {
             .manager()
             .serviceClient()
             .getGalleryImageVersions()
-            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null, Context.NONE);
+            .getWithResponse(
+                "myResourceGroup",
+                "myGalleryName",
+                "myGalleryImageName",
+                "1.0.0",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -64,7 +75,7 @@ public final class GalleryImageVersionsGetSamples {
                 "myGalleryImageName",
                 "1.0.0",
                 ReplicationStatusTypes.REPLICATION_STATUS,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -82,6 +93,12 @@ public final class GalleryImageVersionsGetSamples {
             .manager()
             .serviceClient()
             .getGalleryImageVersions()
-            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null, Context.NONE);
+            .getWithResponse(
+                "myResourceGroup",
+                "myGalleryName",
+                "myGalleryImageName",
+                "1.0.0",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

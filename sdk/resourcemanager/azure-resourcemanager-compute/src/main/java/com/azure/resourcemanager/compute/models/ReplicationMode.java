@@ -17,6 +17,15 @@ public final class ReplicationMode extends ExpandableStringEnum<ReplicationMode>
     public static final ReplicationMode SHALLOW = fromString("Shallow");
 
     /**
+     * Creates a new instance of ReplicationMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationMode() {
+    }
+
+    /**
      * Creates or finds a ReplicationMode from its string representation.
      *
      * @param name a name to look for.

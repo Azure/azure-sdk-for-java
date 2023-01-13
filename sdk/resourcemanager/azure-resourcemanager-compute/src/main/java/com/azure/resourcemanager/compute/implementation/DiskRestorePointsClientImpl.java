@@ -809,7 +809,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String vmRestorePointName,
         String diskRestorePointName,
         GrantAccessData grantAccessData) {
-        return beginGrantAccessAsync(
+        return this
+            .beginGrantAccessAsync(
                 resourceGroupName,
                 restorePointCollectionName,
                 vmRestorePointName,
@@ -840,7 +841,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String diskRestorePointName,
         GrantAccessData grantAccessData,
         Context context) {
-        return beginGrantAccessAsync(
+        return this
+            .beginGrantAccessAsync(
                 resourceGroupName,
                 restorePointCollectionName,
                 vmRestorePointName,
@@ -1181,7 +1183,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String restorePointCollectionName,
         String vmRestorePointName,
         String diskRestorePointName) {
-        return beginRevokeAccessAsync(
+        return this
+            .beginRevokeAccessAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
             .getSyncPoller();
     }
@@ -1206,7 +1209,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         String vmRestorePointName,
         String diskRestorePointName,
         Context context) {
-        return beginRevokeAccessAsync(
+        return this
+            .beginRevokeAccessAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
             .getSyncPoller();
     }

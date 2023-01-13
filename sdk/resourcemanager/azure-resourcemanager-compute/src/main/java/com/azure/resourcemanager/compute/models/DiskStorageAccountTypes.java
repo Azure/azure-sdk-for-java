@@ -32,6 +32,15 @@ public final class DiskStorageAccountTypes extends ExpandableStringEnum<DiskStor
     public static final DiskStorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
+     * Creates a new instance of DiskStorageAccountTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskStorageAccountTypes() {
+    }
+
+    /**
      * Creates or finds a DiskStorageAccountTypes from its string representation.
      *
      * @param name a name to look for.

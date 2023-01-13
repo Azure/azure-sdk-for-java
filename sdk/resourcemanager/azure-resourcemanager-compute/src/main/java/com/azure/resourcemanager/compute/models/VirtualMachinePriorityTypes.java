@@ -24,6 +24,15 @@ public final class VirtualMachinePriorityTypes extends ExpandableStringEnum<Virt
     public static final VirtualMachinePriorityTypes SPOT = fromString("Spot");
 
     /**
+     * Creates a new instance of VirtualMachinePriorityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachinePriorityTypes() {
+    }
+
+    /**
      * Creates or finds a VirtualMachinePriorityTypes from its string representation.
      *
      * @param name a name to look for.

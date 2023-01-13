@@ -20,6 +20,20 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMReimageParameters withExactVersion(String exactVersion) {
+        super.withExactVersion(exactVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMReimageParameters withOsProfile(OSProfileProvisioningData osProfile) {
+        super.withOsProfile(osProfile);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

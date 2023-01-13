@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GalleryImageVersions ListByGalleryImage. */
 public final class GalleryImageVersionsListByGalleryImageSamples {
     /*
@@ -23,6 +21,7 @@ public final class GalleryImageVersionsListByGalleryImageSamples {
             .manager()
             .serviceClient()
             .getGalleryImageVersions()
-            .listByGalleryImage("myResourceGroup", "myGalleryName", "myGalleryImageName", Context.NONE);
+            .listByGalleryImage(
+                "myResourceGroup", "myGalleryName", "myGalleryImageName", com.azure.core.util.Context.NONE);
     }
 }

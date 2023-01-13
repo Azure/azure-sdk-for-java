@@ -23,6 +23,15 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
     public static final ReplicationState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of ReplicationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationState() {
+    }
+
+    /**
      * Creates or finds a ReplicationState from its string representation.
      *
      * @param name a name to look for.

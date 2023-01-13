@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DedicatedHosts ListByHostGroup. */
 public final class DedicatedHostsListByHostGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHosts_ListByHostGroup_MaximumSet_Gen.
@@ -23,11 +21,11 @@ public final class DedicatedHostsListByHostGroupSamples {
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .listByHostGroup("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .listByHostGroup("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHosts_ListByHostGroup_MinimumSet_Gen.
@@ -41,6 +39,6 @@ public final class DedicatedHostsListByHostGroupSamples {
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .listByHostGroup("rgcompute", "aaaa", Context.NONE);
+            .listByHostGroup("rgcompute", "aaaa", com.azure.core.util.Context.NONE);
     }
 }

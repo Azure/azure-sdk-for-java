@@ -22,6 +22,15 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
     public static final LinuxPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
+     * Creates a new instance of LinuxPatchAssessmentMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinuxPatchAssessmentMode() {
+    }
+
+    /**
      * Creates or finds a LinuxPatchAssessmentMode from its string representation.
      *
      * @param name a name to look for.

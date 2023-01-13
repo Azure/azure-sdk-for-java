@@ -14,6 +14,15 @@ public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions>
     public static final DiffDiskOptions LOCAL = fromString("Local");
 
     /**
+     * Creates a new instance of DiffDiskOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiffDiskOptions() {
+    }
+
+    /**
      * Creates or finds a DiffDiskOptions from its string representation.
      *
      * @param name a name to look for.

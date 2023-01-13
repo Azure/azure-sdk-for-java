@@ -458,7 +458,7 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskAccessName, diskAccess).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, diskAccessName, diskAccess).getSyncPoller();
     }
 
     /**
@@ -478,7 +478,7 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context).getSyncPoller();
     }
 
     /**
@@ -745,7 +745,7 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
-        return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess).getSyncPoller();
     }
 
     /**
@@ -765,7 +765,7 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
-        return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context).getSyncPoller();
     }
 
     /**
@@ -1162,7 +1162,7 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskAccessName) {
-        return beginDeleteAsync(resourceGroupName, diskAccessName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskAccessName).getSyncPoller();
     }
 
     /**
@@ -1181,7 +1181,7 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskAccessName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskAccessName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskAccessName, context).getSyncPoller();
     }
 
     /**
@@ -1961,7 +1961,8 @@ public final class DiskAccessesClientImpl
             String diskAccessName,
             String privateEndpointConnectionName,
             PrivateEndpointConnectionInner privateEndpointConnection) {
-        return beginUpdateAPrivateEndpointConnectionAsync(
+        return this
+            .beginUpdateAPrivateEndpointConnectionAsync(
                 resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
             .getSyncPoller();
     }
@@ -1991,7 +1992,8 @@ public final class DiskAccessesClientImpl
             String privateEndpointConnectionName,
             PrivateEndpointConnectionInner privateEndpointConnection,
             Context context) {
-        return beginUpdateAPrivateEndpointConnectionAsync(
+        return this
+            .beginUpdateAPrivateEndpointConnectionAsync(
                 resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
             .getSyncPoller();
     }
@@ -2476,7 +2478,8 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
-        return beginDeleteAPrivateEndpointConnectionAsync(
+        return this
+            .beginDeleteAPrivateEndpointConnectionAsync(
                 resourceGroupName, diskAccessName, privateEndpointConnectionName)
             .getSyncPoller();
     }
@@ -2498,7 +2501,8 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAPrivateEndpointConnectionAsync(
+        return this
+            .beginDeleteAPrivateEndpointConnectionAsync(
                 resourceGroupName, diskAccessName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
