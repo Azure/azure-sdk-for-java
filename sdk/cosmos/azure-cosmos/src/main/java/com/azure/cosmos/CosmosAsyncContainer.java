@@ -71,6 +71,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -513,6 +514,18 @@ public class CosmosAsyncContainer {
      * @return Mono of Void.
      */
     public Mono<Void> openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
+
+        List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
+        boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
+
+        checkArgument(numProactiveConnectionRegions >= 1, "no. of proactive connection regions should be greater than 1");
+
+        if (numProactiveConnectionRegions > 1) {
+            checkArgument(endpointDiscoveryEnabled, "endpoint discovery should be enabled when no. " +
+                    "of proactive regions is greater than 1");
+            checkArgument(preferredRegions != null && preferredRegions.size() >= numProactiveConnectionRegions, "no. of proactive connection " +
+                    "regions should be lesser than the no. of preferred regions.");
+        }
 
         if(isInitialized.compareAndSet(false, true)) {
 

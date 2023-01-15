@@ -1033,6 +1033,8 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
             boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
+            List<String> getPreferredRegions(CosmosAsyncClient client);
+            boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
         }
     }
 

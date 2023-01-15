@@ -32,7 +32,7 @@ public final class ProactiveContainerInitConfigBuilder {
      * <p>
      * <br>The no of proactive regions to connect to belong to the preferred list of regions
      * <br>In order to minimize latencies associated with warming up caches and opening connections
-     * the no. of proactive connection regions cannot be more than 2.
+     * the no. of proactive connection regions cannot be more than {@link ProactiveContainerInitConfigBuilder#MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS}.
      * </p>
      *
      * @param numProactiveConnectionRegions the no of proactive connection regions

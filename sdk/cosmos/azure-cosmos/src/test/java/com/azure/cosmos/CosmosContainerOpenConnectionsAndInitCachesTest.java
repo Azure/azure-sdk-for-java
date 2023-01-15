@@ -134,8 +134,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         // Calling it twice to make sure no side effect of second time no-op call
         if (useAsync) {
-            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
-            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+            directCosmosAsyncContainer.openConnectionsAndInitCaches(2).block();
+            directCosmosAsyncContainer.openConnectionsAndInitCaches(2).block();
         } else {
             directCosmosContainer.openConnectionsAndInitCaches();
             directCosmosContainer.openConnectionsAndInitCaches();

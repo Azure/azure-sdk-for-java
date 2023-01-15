@@ -705,6 +705,16 @@ public final class CosmosAsyncClient implements Closeable {
                 public boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client) {
                     return client.isSendClientTelemetryToServiceEnabled;
                 }
+
+                @Override
+                public List<String> getPreferredRegions(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getPreferredRegions();
+                }
+
+                @Override
+                public boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client) {
+                    return client.connectionPolicy.isEndpointDiscoveryEnabled();
+                }
             }
         );
     }
