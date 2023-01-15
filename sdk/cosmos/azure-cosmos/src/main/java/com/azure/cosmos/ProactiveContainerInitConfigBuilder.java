@@ -47,6 +47,8 @@ public final class ProactiveContainerInitConfigBuilder {
 
     /**
      * Builds {@link ProactiveContainerInitConfig} with the provided properties
+     *
+     * @return an instance of {@link ProactiveContainerInitConfig}
      * */
     public ProactiveContainerInitConfig build() {
         checkArgument(numProactiveConnectionRegions >= 0 && numProactiveConnectionRegions <= MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS,
