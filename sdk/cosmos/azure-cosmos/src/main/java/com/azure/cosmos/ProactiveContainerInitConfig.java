@@ -21,6 +21,8 @@ public final class ProactiveContainerInitConfig {
 
     /**
      * Gets the list of container identities
+     *
+     * @return list of {@link CosmosContainerIdentity}
      * */
     public List<CosmosContainerIdentity> getCosmosContainerIdentities() {
         return cosmosContainerIdentities;
@@ -30,17 +32,17 @@ public final class ProactiveContainerInitConfig {
      * Gets the no. of proactive connection regions
      *
      * <p>
-     *     Proactive connection regions constitute those regions whose replicas have connections opened to prior
-     *     to performing any workload on the container. This way the latency associated with opening connections
-     *     does not impact the latency associated with performing workloads on the container. These connections are
-     *     opened synchronously when the {@link CosmosClient}/{@link CosmosAsyncClient} is built.
+     * Proactive connection regions constitute those regions where replicas of container partitions have connections opened to prior
+     * to performing any workload on the container. This way the latency associated with opening connections
+     * does not impact the latency associated with performing workloads on the container. These connections are
+     * opened synchronously when the {@link CosmosClient}/{@link CosmosAsyncClient} is built.
      * </p>
      * <p>
-     *     These proactive connection regions are a subset of the preferred regions configured through the {@link CosmosClientBuilder}. The first
-     *     {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} read regions from preferred regions are picked. In this context a write-region could also be a read-region but not vice-versa.
+     * These proactive connection regions are a subset of the preferred regions configured through the {@link CosmosClientBuilder}. The first
+     * {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} read regions from preferred regions are picked. In this context a write-region could also be a read-region but not vice-versa.
      * </p>
      * <p>
-     *     Consider a multi-master account with client configured with preferred regions - "US West" (write-region) and "US East" (write-region)
+     * Consider a multi-master account with client configured with preferred regions - "US West" (write-region) and "US East" (write-region)
      *     <ul>
      *         <li>
      *              If the no. of proactive regions is set to two, connections to "US West" and "US East" are opened proactively.
@@ -58,7 +60,9 @@ public final class ProactiveContainerInitConfig {
      *         </li>
      *     </ul>
      * </p>
-     * */
+     *
+     * @return no. of proactive connection regions
+     */
     public int getNumProactiveConnectionRegions() {
         return numProactiveConnectionRegions;
     }

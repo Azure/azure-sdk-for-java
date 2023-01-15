@@ -37,6 +37,8 @@ public final class CosmosContainerIdentity {
 
     /**
      * Gets the fully qualified name of the container
+     *
+     * @return the fully qualified name of the container
      * */
     public String getContainerLink() {
         return containerLink;
