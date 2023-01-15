@@ -43,22 +43,16 @@ public final class ProactiveContainerInitConfig {
      * </p>
      * <p>
      * Consider a multi-master account with client configured with preferred regions - "US West" (write-region) and "US East" (write-region)
-     *     <ul>
-     *         <li>
-     *              If the no. of proactive regions is set to two, connections to "US West" and "US East" are opened proactively.
-     *         </li>
-     *         <li>
-     *             If the no. of proactive regions is set to one, connections to "US West" are opened proactively.
-     *         </li>
-     *     </ul>
-     *     Consider a single-master account with client configured with preferred regions - "US West" (read-region), "US East" (read-region) and
-     *     "West Europe" (write-region)
-     *     <ul>
-     *         <li>
-     *              If the no. of proactive regions is set to two, connections to "US West" and "US East" are opened proactively. If your application
-     *              has workloads which are write-heavy it is important to prioritize write regions in the list of preferred regions.
-     *         </li>
-     *     </ul>
+     * <br>
+     * 1. If the no. of proactive regions is set to two, connections to "US West" and "US East" are opened proactively.
+     * <br>
+     * 2. If the no. of proactive regions is set to one, connections to "US West" are opened proactively.
+     * <br><br>
+     * Consider a single-master account with client configured with preferred regions - "US West" (read-region), "US East" (read-region) and
+     * "West Europe" (write-region)
+     * <br>
+     * 1. If the no. of proactive regions is set to two, connections to "US West" and "US East" are opened proactively. If your application
+     * has workloads which are write-heavy it is important to prioritize write regions in the list of preferred regions.
      * </p>
      *
      * @return no. of proactive connection regions
