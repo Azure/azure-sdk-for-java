@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.redis;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis.AzureJedisConnectionFactory;
-import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis.AzureRedisCredentialSupplier;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureJedisConnectionFactory;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureRedisCredentialSupplier;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.springframework.beans.factory.ObjectProvider;
@@ -56,7 +56,7 @@ public class AzureJedisPasswordlessAutoConfiguration {
 
     @Bean(name = AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME)
     @ConditionalOnMissingBean(name = AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME)
-    Supplier<String> azureRedisCredentialSupplier(ObjectProvider<AzureGlobalProperties> azureGlobalProperties, AzureRedisPasswordlessProperties azureRedisPasswordlessProperties) {
+    AzureRedisCredentialSupplier azureRedisCredentialSupplier(ObjectProvider<AzureGlobalProperties> azureGlobalProperties, AzureRedisPasswordlessProperties azureRedisPasswordlessProperties) {
         Properties properties = mergeAzureProperties(azureGlobalProperties.getIfAvailable(), azureRedisPasswordlessProperties).toProperties();
         return new AzureRedisCredentialSupplier(properties);
     }

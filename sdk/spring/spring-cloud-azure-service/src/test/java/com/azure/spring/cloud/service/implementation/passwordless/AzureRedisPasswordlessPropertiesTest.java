@@ -24,6 +24,10 @@ class AzureRedisPasswordlessPropertiesTest {
         AzureProfileProperties profile = new AzureProfileProperties();
 
         AzureRedisPasswordlessProperties properties = new AzureRedisPasswordlessProperties();
+        properties.setScopes("fake-scopes");
+        Assertions.assertEquals("fake-scopes", properties.getScopes());
+
+        properties.setScopes(null);
         String scopes = properties.getScopes();
         Assertions.assertEquals(REDIS_SCOPE_GLOBAL, scopes);
 

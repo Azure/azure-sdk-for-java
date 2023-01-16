@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis;
+package com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 

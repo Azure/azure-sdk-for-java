@@ -3,12 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.redis;
 
-import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis.AzureJedisConnectionFactory;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureJedisConnectionFactory;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.data.redis.JedisClientConfigurationBuilderCustomizer;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.JedisClientConfigurationBuilder;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import redis.clients.jedis.JedisClientConfig;
 
 import java.time.Duration;
@@ -242,30 +240,6 @@ class AzureJedisPasswordlessAutoConfigurationTest {
         @Bean
         JedisClientConfigurationBuilderCustomizer customizer() {
             return JedisClientConfigurationBuilder::useSsl;
-        }
-
-    }
-
-    @Configuration(proxyBeanMethods = false)
-    static class JedisConnectionFactoryCaptorConfiguration {
-
-        @Bean
-        JedisConnectionFactoryCaptor jedisConnectionFactoryCaptor() {
-            return new JedisConnectionFactoryCaptor();
-        }
-
-    }
-
-    static class JedisConnectionFactoryCaptor implements BeanPostProcessor {
-
-        static JedisConnectionFactory connectionFactory;
-
-        @Override
-        public Object postProcessBeforeInitialization(Object bean, String beanName) {
-            if (bean instanceof JedisConnectionFactory) {
-                connectionFactory = (JedisConnectionFactory) bean;
-            }
-            return bean;
         }
 
     }

@@ -29,6 +29,9 @@ final class AzureJedisPasswordlessUtil {
     private static final boolean COMMONS_POOL2_AVAILABLE = ClassUtils.isPresent("org.apache.commons.pool2.ObjectPool",
         AzureJedisPasswordlessAutoConfiguration.class.getClassLoader());
 
+    private AzureJedisPasswordlessUtil() {
+    }
+
     static AzureRedisPasswordlessProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureRedisPasswordlessProperties redisPasswordlessProperties) {
         AzureRedisPasswordlessProperties target = new AzureRedisPasswordlessProperties();
         copyPropertiesIgnoreNull(redisPasswordlessProperties.getScopes(), target.getScopes());
