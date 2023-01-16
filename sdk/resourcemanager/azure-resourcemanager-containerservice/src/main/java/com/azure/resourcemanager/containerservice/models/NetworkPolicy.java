@@ -17,6 +17,15 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
     public static final NetworkPolicy AZURE = fromString("azure");
 
     /**
+     * Creates a new instance of NetworkPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkPolicy() {
+    }
+
+    /**
      * Creates or finds a NetworkPolicy from its string representation.
      *
      * @param name a name to look for.

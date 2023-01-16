@@ -17,6 +17,15 @@ public final class KubeletDiskType extends ExpandableStringEnum<KubeletDiskType>
     public static final KubeletDiskType TEMPORARY = fromString("Temporary");
 
     /**
+     * Creates a new instance of KubeletDiskType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KubeletDiskType() {
+    }
+
+    /**
      * Creates or finds a KubeletDiskType from its string representation.
      *
      * @param name a name to look for.

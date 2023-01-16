@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for Snapshots CreateOrUpdate. */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/SnapshotsCreate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/SnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Snapshot.
@@ -36,7 +35,7 @@ public final class SnapshotsCreateOrUpdateSamples {
                         new CreationData()
                             .withSourceResourceId(
                                 "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

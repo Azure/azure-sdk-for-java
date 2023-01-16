@@ -26,6 +26,15 @@ public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstancePr
     public static final GpuInstanceProfile MIG7G = fromString("MIG7g");
 
     /**
+     * Creates a new instance of GpuInstanceProfile value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GpuInstanceProfile() {
+    }
+
+    /**
      * Creates or finds a GpuInstanceProfile from its string representation.
      *
      * @param name a name to look for.
