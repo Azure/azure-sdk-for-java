@@ -9,8 +9,9 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-      <module>azure-search-documents</module>
-      <module>azure-search-perf</module>
+    <module>azure-resourcemanager-search</module>
+    <module>azure-search-documents</module>
+    <module>azure-search-perf</module>
   </modules>
 
 </project>
