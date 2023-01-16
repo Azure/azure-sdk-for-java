@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Value. */
 @Fluent
 public final class WorkspaceCustomStringParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceCustomStringParameter.class);
-
     /*
      * The type of variable that this is
      */
@@ -25,6 +22,10 @@ public final class WorkspaceCustomStringParameter {
      */
     @JsonProperty(value = "value", required = true)
     private String value;
+
+    /** Creates an instance of WorkspaceCustomStringParameter class. */
+    public WorkspaceCustomStringParameter() {
+    }
 
     /**
      * Get the type property: The type of variable that this is.
@@ -62,10 +63,12 @@ public final class WorkspaceCustomStringParameter {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model WorkspaceCustomStringParameter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceCustomStringParameter.class);
 }

@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,6 +24,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.databricks.fluent.AzureDatabricksManagementClient;
 import com.azure.resourcemanager.databricks.fluent.OperationsClient;
+import com.azure.resourcemanager.databricks.fluent.OutboundNetworkDependenciesEndpointsClient;
 import com.azure.resourcemanager.databricks.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.databricks.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.databricks.fluent.VNetPeeringsClient;
@@ -33,15 +35,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the AzureDatabricksManagementClientImpl type. */
 @ServiceClient(builder = AzureDatabricksManagementClientBuilder.class)
 public final class AzureDatabricksManagementClientImpl implements AzureDatabricksManagementClient {
-    private final ClientLogger logger = new ClientLogger(AzureDatabricksManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -64,6 +63,18 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -150,6 +161,18 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
         return this.privateEndpointConnections;
     }
 
+    /** The OutboundNetworkDependenciesEndpointsClient object to access its operations. */
+    private final OutboundNetworkDependenciesEndpointsClient outboundNetworkDependenciesEndpoints;
+
+    /**
+     * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
+     *
+     * @return the OutboundNetworkDependenciesEndpointsClient object.
+     */
+    public OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints() {
+        return this.outboundNetworkDependenciesEndpoints;
+    }
+
     /** The VNetPeeringsClient object to access its operations. */
     private final VNetPeeringsClient vNetPeerings;
 
@@ -184,10 +207,12 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.apiVersion = "2021-04-01-preview";
         this.workspaces = new WorkspacesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.outboundNetworkDependenciesEndpoints = new OutboundNetworkDependenciesEndpointsClientImpl(this);
         this.vNetPeerings = new VNetPeeringsClientImpl(this);
     }
 
@@ -207,10 +232,7 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -274,7 +296,7 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -333,4 +355,6 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDatabricksManagementClientImpl.class);
 }

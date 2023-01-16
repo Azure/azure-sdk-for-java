@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Encryption entities for databricks workspace resource. */
 @Fluent
 public final class EncryptionEntitiesDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionEntitiesDefinition.class);
-
     /*
      * Encryption properties for the databricks managed services.
      */
     @JsonProperty(value = "managedServices")
     private EncryptionV2 managedServices;
+
+    /** Creates an instance of EncryptionEntitiesDefinition class. */
+    public EncryptionEntitiesDefinition() {
+    }
 
     /**
      * Get the managedServices property: Encryption properties for the databricks managed services.

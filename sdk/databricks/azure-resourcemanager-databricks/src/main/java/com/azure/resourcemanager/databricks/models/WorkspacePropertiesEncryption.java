@@ -6,19 +6,20 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Encryption properties for databricks workspace. */
 @Fluent
 public final class WorkspacePropertiesEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePropertiesEncryption.class);
-
     /*
      * Encryption entities definition for the workspace.
      */
     @JsonProperty(value = "entities", required = true)
     private EncryptionEntitiesDefinition entities;
+
+    /** Creates an instance of WorkspacePropertiesEncryption class. */
+    public WorkspacePropertiesEncryption() {
+    }
 
     /**
      * Get the entities property: Encryption entities definition for the workspace.
@@ -47,7 +48,7 @@ public final class WorkspacePropertiesEncryption {
      */
     public void validate() {
         if (entities() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property entities in model WorkspacePropertiesEncryption"));
@@ -55,4 +56,6 @@ public final class WorkspacePropertiesEncryption {
             entities().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspacePropertiesEncryption.class);
 }

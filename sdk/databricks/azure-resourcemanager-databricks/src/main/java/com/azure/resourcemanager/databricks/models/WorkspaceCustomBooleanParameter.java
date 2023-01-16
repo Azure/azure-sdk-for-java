@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The value which should be used for this field. */
 @Fluent
 public final class WorkspaceCustomBooleanParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceCustomBooleanParameter.class);
-
     /*
      * The type of variable that this is
      */
@@ -25,6 +21,10 @@ public final class WorkspaceCustomBooleanParameter {
      */
     @JsonProperty(value = "value", required = true)
     private boolean value;
+
+    /** Creates an instance of WorkspaceCustomBooleanParameter class. */
+    public WorkspaceCustomBooleanParameter() {
+    }
 
     /**
      * Get the type property: The type of variable that this is.
