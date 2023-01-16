@@ -61,62 +61,11 @@ public interface Orchestrator {
     OrchestratorIdentity identity();
 
     /**
-     * Gets the resourceGuid property: Resource guid.
+     * Gets the properties property: Properties of the provision operation request.
      *
-     * @return the resourceGuid value.
+     * @return the properties value.
      */
-    String resourceGuid();
-
-    /**
-     * Gets the provisioningState property: The current state of orchestratorInstance resource.
-     *
-     * @return the provisioningState value.
-     */
-    OrchestratorInstanceState provisioningState();
-
-    /**
-     * Gets the orchestratorAppId property: AAD ID used with apiserver.
-     *
-     * @return the orchestratorAppId value.
-     */
-    String orchestratorAppId();
-
-    /**
-     * Gets the orchestratorTenantId property: TenantID of server App ID.
-     *
-     * @return the orchestratorTenantId value.
-     */
-    String orchestratorTenantId();
-
-    /**
-     * Gets the clusterRootCA property: RootCA certificate of kubernetes cluster base64 encoded.
-     *
-     * @return the clusterRootCA value.
-     */
-    String clusterRootCA();
-
-    /**
-     * Gets the apiServerEndpoint property: K8s APIServer url. Either one of apiServerEndpoint or privateLinkResourceId
-     * can be specified.
-     *
-     * @return the apiServerEndpoint value.
-     */
-    String apiServerEndpoint();
-
-    /**
-     * Gets the privateLinkResourceId property: private link arm resource id. Either one of apiServerEndpoint or
-     * privateLinkResourceId can be specified.
-     *
-     * @return the privateLinkResourceId value.
-     */
-    String privateLinkResourceId();
-
-    /**
-     * Gets the controllerDetails property: Properties of the controller.
-     *
-     * @return the controllerDetails value.
-     */
-    ControllerDetails controllerDetails();
+    OrchestratorResourceProperties properties();
 
     /**
      * Gets the region of the resource.
@@ -131,6 +80,13 @@ public interface Orchestrator {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.delegatednetwork.fluent.models.OrchestratorInner object.
@@ -195,14 +151,7 @@ public interface Orchestrator {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithOrchestratorAppId,
-                DefinitionStages.WithOrchestratorTenantId,
-                DefinitionStages.WithClusterRootCA,
-                DefinitionStages.WithApiServerEndpoint,
-                DefinitionStages.WithPrivateLinkResourceId,
-                DefinitionStages.WithControllerDetails {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -238,69 +187,15 @@ public interface Orchestrator {
              */
             WithCreate withIdentity(OrchestratorIdentity identity);
         }
-        /** The stage of the Orchestrator definition allowing to specify orchestratorAppId. */
-        interface WithOrchestratorAppId {
+        /** The stage of the Orchestrator definition allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the orchestratorAppId property: AAD ID used with apiserver.
+             * Specifies the properties property: Properties of the provision operation request..
              *
-             * @param orchestratorAppId AAD ID used with apiserver.
+             * @param properties Properties of the provision operation request.
              * @return the next definition stage.
              */
-            WithCreate withOrchestratorAppId(String orchestratorAppId);
-        }
-        /** The stage of the Orchestrator definition allowing to specify orchestratorTenantId. */
-        interface WithOrchestratorTenantId {
-            /**
-             * Specifies the orchestratorTenantId property: TenantID of server App ID.
-             *
-             * @param orchestratorTenantId TenantID of server App ID.
-             * @return the next definition stage.
-             */
-            WithCreate withOrchestratorTenantId(String orchestratorTenantId);
-        }
-        /** The stage of the Orchestrator definition allowing to specify clusterRootCA. */
-        interface WithClusterRootCA {
-            /**
-             * Specifies the clusterRootCA property: RootCA certificate of kubernetes cluster base64 encoded.
-             *
-             * @param clusterRootCA RootCA certificate of kubernetes cluster base64 encoded.
-             * @return the next definition stage.
-             */
-            WithCreate withClusterRootCA(String clusterRootCA);
-        }
-        /** The stage of the Orchestrator definition allowing to specify apiServerEndpoint. */
-        interface WithApiServerEndpoint {
-            /**
-             * Specifies the apiServerEndpoint property: K8s APIServer url. Either one of apiServerEndpoint or
-             * privateLinkResourceId can be specified.
-             *
-             * @param apiServerEndpoint K8s APIServer url. Either one of apiServerEndpoint or privateLinkResourceId can
-             *     be specified.
-             * @return the next definition stage.
-             */
-            WithCreate withApiServerEndpoint(String apiServerEndpoint);
-        }
-        /** The stage of the Orchestrator definition allowing to specify privateLinkResourceId. */
-        interface WithPrivateLinkResourceId {
-            /**
-             * Specifies the privateLinkResourceId property: private link arm resource id. Either one of
-             * apiServerEndpoint or privateLinkResourceId can be specified.
-             *
-             * @param privateLinkResourceId private link arm resource id. Either one of apiServerEndpoint or
-             *     privateLinkResourceId can be specified.
-             * @return the next definition stage.
-             */
-            WithCreate withPrivateLinkResourceId(String privateLinkResourceId);
-        }
-        /** The stage of the Orchestrator definition allowing to specify controllerDetails. */
-        interface WithControllerDetails {
-            /**
-             * Specifies the controllerDetails property: Properties of the controller..
-             *
-             * @param controllerDetails Properties of the controller.
-             * @return the next definition stage.
-             */
-            WithCreate withControllerDetails(ControllerDetails controllerDetails);
+            WithCreate withProperties(OrchestratorResourceProperties properties);
         }
     }
     /**
