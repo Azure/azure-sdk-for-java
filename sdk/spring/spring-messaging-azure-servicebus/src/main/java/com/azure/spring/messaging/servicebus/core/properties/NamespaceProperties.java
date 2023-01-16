@@ -19,7 +19,6 @@ public class NamespaceProperties extends CommonProperties implements ServiceBusN
      * to the Azure global cloud.
      */
     public NamespaceProperties() {
-        this.setDomainName("servicebus.windows.net");
         this.getProfile().setCloudType(CloudType.AZURE);
     }
 
