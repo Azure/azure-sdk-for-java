@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datadog.models.DatadogHostMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DatadogHost model. */
 @Fluent
 public final class DatadogHostInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogHostInner.class);
-
     /*
      * The name of the host.
      */
@@ -39,6 +35,10 @@ public final class DatadogHostInner {
      */
     @JsonProperty(value = "meta")
     private DatadogHostMetadata meta;
+
+    /** Creates an instance of DatadogHostInner class. */
+    public DatadogHostInner() {
+    }
 
     /**
      * Get the name property: The name of the host.
