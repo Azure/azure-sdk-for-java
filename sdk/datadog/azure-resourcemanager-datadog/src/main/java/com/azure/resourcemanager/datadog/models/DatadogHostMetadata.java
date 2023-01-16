@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatadogHostMetadata model. */
 @Fluent
 public final class DatadogHostMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogHostMetadata.class);
-
     /*
      * The agent version.
      */
@@ -31,6 +27,10 @@ public final class DatadogHostMetadata {
      */
     @JsonProperty(value = "logsAgent")
     private DatadogLogsAgent logsAgent;
+
+    /** Creates an instance of DatadogHostMetadata class. */
+    public DatadogHostMetadata() {
+    }
 
     /**
      * Get the agentVersion property: The agent version.
