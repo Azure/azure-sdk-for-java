@@ -4,27 +4,27 @@
 
 package com.azure.resourcemanager.hanaonazure.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the hardware settings for the HANA instance. */
-@Fluent
+@Immutable
 public final class HardwareProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
-
     /*
      * Name of the hardware type (vendor and/or their product name)
      */
-    @JsonProperty(value = "hardwareType")
+    @JsonProperty(value = "hardwareType", access = JsonProperty.Access.WRITE_ONLY)
     private HanaHardwareTypeNamesEnum hardwareType;
 
     /*
      * Specifies the HANA instance SKU.
      */
-    @JsonProperty(value = "hanaInstanceSize")
+    @JsonProperty(value = "hanaInstanceSize", access = JsonProperty.Access.WRITE_ONLY)
     private HanaInstanceSizeNamesEnum hanaInstanceSize;
+
+    /** Creates an instance of HardwareProfile class. */
+    public HardwareProfile() {
+    }
 
     /**
      * Get the hardwareType property: Name of the hardware type (vendor and/or their product name).
@@ -36,34 +36,12 @@ public final class HardwareProfile {
     }
 
     /**
-     * Set the hardwareType property: Name of the hardware type (vendor and/or their product name).
-     *
-     * @param hardwareType the hardwareType value to set.
-     * @return the HardwareProfile object itself.
-     */
-    public HardwareProfile withHardwareType(HanaHardwareTypeNamesEnum hardwareType) {
-        this.hardwareType = hardwareType;
-        return this;
-    }
-
-    /**
      * Get the hanaInstanceSize property: Specifies the HANA instance SKU.
      *
      * @return the hanaInstanceSize value.
      */
     public HanaInstanceSizeNamesEnum hanaInstanceSize() {
         return this.hanaInstanceSize;
-    }
-
-    /**
-     * Set the hanaInstanceSize property: Specifies the HANA instance SKU.
-     *
-     * @param hanaInstanceSize the hanaInstanceSize value to set.
-     * @return the HardwareProfile object itself.
-     */
-    public HardwareProfile withHanaInstanceSize(HanaInstanceSizeNamesEnum hanaInstanceSize) {
-        this.hanaInstanceSize = hanaInstanceSize;
-        return this;
     }
 
     /**

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hanaonazure.fluent.models.HanaInstanceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response from the List HANA Instances operation. */
 @Fluent
 public final class HanaInstancesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HanaInstancesListResult.class);
-
     /*
      * The list of SAP HANA on Azure instances.
      */
@@ -27,6 +23,10 @@ public final class HanaInstancesListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of HanaInstancesListResult class. */
+    public HanaInstancesListResult() {
+    }
 
     /**
      * Get the value property: The list of SAP HANA on Azure instances.

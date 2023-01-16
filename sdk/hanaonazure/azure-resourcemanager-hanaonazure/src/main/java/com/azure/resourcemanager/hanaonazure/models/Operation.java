@@ -24,6 +24,13 @@ public interface Operation {
     Display display();
 
     /**
+     * Gets the isDataAction property: Indicates whether the operation applies to data-plane.
+     *
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hanaonazure.fluent.models.OperationInner object.
      *
      * @return the inner object.
