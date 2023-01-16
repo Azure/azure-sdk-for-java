@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the operating system settings for the HANA instance. */
 @Fluent
 public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
     /*
      * Specifies the host OS name of the HANA instance.
      */
@@ -23,13 +19,13 @@ public final class OSProfile {
     /*
      * This property allows you to specify the type of the OS.
      */
-    @JsonProperty(value = "osType")
+    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
 
     /*
      * Specifies version of operating system.
      */
-    @JsonProperty(value = "version")
+    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
@@ -37,6 +33,10 @@ public final class OSProfile {
      */
     @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
+
+    /** Creates an instance of OSProfile class. */
+    public OSProfile() {
+    }
 
     /**
      * Get the computerName property: Specifies the host OS name of the HANA instance.
@@ -68,34 +68,12 @@ public final class OSProfile {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS.
-     *
-     * @param osType the osType value to set.
-     * @return the OSProfile object itself.
-     */
-    public OSProfile withOsType(String osType) {
-        this.osType = osType;
-        return this;
-    }
-
-    /**
      * Get the version property: Specifies version of operating system.
      *
      * @return the version value.
      */
     public String version() {
         return this.version;
-    }
-
-    /**
-     * Set the version property: Specifies version of operating system.
-     *
-     * @param version the version value to set.
-     * @return the OSProfile object itself.
-     */
-    public OSProfile withVersion(String version) {
-        this.version = version;
-        return this;
     }
 
     /**

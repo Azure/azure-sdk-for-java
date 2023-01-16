@@ -5,56 +5,49 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Detailed HANA operation information. */
 @Immutable
 public final class Display {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Display.class);
-
     /*
-     * The localized friendly form of the resource provider name. This form is
-     * also expected to include the publisher/company responsible. Use Title
-     * Casing. Begin with "Microsoft" for 1st party services.
+     * The localized friendly form of the resource provider name. This form is also expected to include the
+     * publisher/company responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * The localized friendly form of the resource type related to this
-     * action/operation. This form should match the public documentation for
-     * the resource provider. Use Title Casing. For examples, refer to the
-     * “name” section.
+     * The localized friendly form of the resource type related to this action/operation. This form should match the
+     * public documentation for the resource provider. Use Title Casing. For examples, refer to the “name” section.
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * The localized friendly name for the operation as shown to the user. This
-     * name should be concise (to fit in drop downs), but clear
-     * (self-documenting). Use Title Casing and include the entity/resource to
-     * which it applies.
+     * The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop
+     * downs), but clear (self-documenting). Use Title Casing and include the entity/resource to which it applies.
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
-     * The localized friendly description for the operation as shown to the
-     * user. This description should be thorough, yet concise. It will be used
-     * in tool-tips and detailed views.
+     * The localized friendly description for the operation as shown to the user. This description should be thorough,
+     * yet concise. It will be used in tool-tips and detailed views.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
-     * The intended executor of the operation; governs the display of the
-     * operation in the RBAC UX and the audit logs UX. Default value is
-     * 'user,system'
+     * The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
+     * UX. Default value is 'user,system'
      */
     @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
+
+    /** Creates an instance of Display class. */
+    public Display() {
+    }
 
     /**
      * Get the provider property: The localized friendly form of the resource provider name. This form is also expected

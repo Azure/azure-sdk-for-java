@@ -96,6 +96,10 @@ public final class HanaInstanceImpl implements HanaInstance, HanaInstance.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public HanaInstanceInner innerModel() {
         return this.innerObject;
     }
@@ -255,33 +259,8 @@ public final class HanaInstanceImpl implements HanaInstance, HanaInstance.Defini
         return this;
     }
 
-    public HanaInstanceImpl withHanaInstanceId(String hanaInstanceId) {
-        this.innerModel().withHanaInstanceId(hanaInstanceId);
-        return this;
-    }
-
-    public HanaInstanceImpl withPowerState(HanaInstancePowerStateEnum powerState) {
-        this.innerModel().withPowerState(powerState);
-        return this;
-    }
-
-    public HanaInstanceImpl withProximityPlacementGroup(String proximityPlacementGroup) {
-        this.innerModel().withProximityPlacementGroup(proximityPlacementGroup);
-        return this;
-    }
-
-    public HanaInstanceImpl withHwRevision(String hwRevision) {
-        this.innerModel().withHwRevision(hwRevision);
-        return this;
-    }
-
     public HanaInstanceImpl withPartnerNodeId(String partnerNodeId) {
         this.innerModel().withPartnerNodeId(partnerNodeId);
-        return this;
-    }
-
-    public HanaInstanceImpl withProvisioningState(HanaProvisioningStatesEnum provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
         return this;
     }
 
