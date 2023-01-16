@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
