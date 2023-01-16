@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
-import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureRedisCredentialSupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

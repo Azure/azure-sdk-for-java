@@ -127,6 +127,9 @@ the main ServiceBusClientBuilder. -->
 
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="ServiceBusMessageBatch.java"/>
 
+  <!-- Suppress the long package name in autoconfigure.implementation.redis package  -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.redis.*" />
+  
   <!-- Suppress external dependency Checkstyle on Service Bus Stress Test packages as it use spring framework and may directly use external dependencies -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.messaging.servicebus.stress.*\.java"/>

@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis;
 
-import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureJedisConnectionFactory;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.jupiter.api.Assertions;
