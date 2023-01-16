@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakestore.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TrustedIdProviderState. */
+/** The current state of the trusted identity provider feature for this Data Lake Store account. */
 public enum TrustedIdProviderState {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +30,9 @@ public enum TrustedIdProviderState {
      */
     @JsonCreator
     public static TrustedIdProviderState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TrustedIdProviderState[] items = TrustedIdProviderState.values();
         for (TrustedIdProviderState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum TrustedIdProviderState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

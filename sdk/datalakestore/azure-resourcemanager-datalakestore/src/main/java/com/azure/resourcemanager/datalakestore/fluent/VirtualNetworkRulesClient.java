@@ -23,7 +23,7 @@ public interface VirtualNetworkRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store virtual network rule list information.
+     * @return data Lake Store virtual network rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkRuleInner> listByAccount(String resourceGroupName, String accountName);
@@ -37,10 +37,32 @@ public interface VirtualNetworkRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store virtual network rule list information.
+     * @return data Lake Store virtual network rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkRuleInner> listByAccount(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
+     * name will be replaced with this new virtual network rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param virtualNetworkRuleName The name of the virtual network rule to create or update.
+     * @param parameters Parameters supplied to create or update the virtual network rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Store virtual network rule information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualNetworkRuleInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String virtualNetworkRuleName,
+        CreateOrUpdateVirtualNetworkRuleParameters parameters,
+        Context context);
 
     /**
      * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
@@ -63,26 +85,20 @@ public interface VirtualNetworkRulesClient {
         CreateOrUpdateVirtualNetworkRuleParameters parameters);
 
     /**
-     * Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified
-     * name will be replaced with this new virtual network rule.
+     * Gets the specified Data Lake Store virtual network rule.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param virtualNetworkRuleName The name of the virtual network rule to create or update.
-     * @param parameters Parameters supplied to create or update the virtual network rule.
+     * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store virtual network rule information.
+     * @return the specified Data Lake Store virtual network rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        CreateOrUpdateVirtualNetworkRuleParameters parameters,
-        Context context);
+    Response<VirtualNetworkRuleInner> getWithResponse(
+        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context);
 
     /**
      * Gets the specified Data Lake Store virtual network rule.
@@ -99,20 +115,25 @@ public interface VirtualNetworkRulesClient {
     VirtualNetworkRuleInner get(String resourceGroupName, String accountName, String virtualNetworkRuleName);
 
     /**
-     * Gets the specified Data Lake Store virtual network rule.
+     * Updates the specified virtual network rule.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param virtualNetworkRuleName The name of the virtual network rule to retrieve.
+     * @param virtualNetworkRuleName The name of the virtual network rule to update.
+     * @param parameters Parameters supplied to update the virtual network rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store virtual network rule.
+     * @return data Lake Store virtual network rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkRuleInner> getWithResponse(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context);
+    Response<VirtualNetworkRuleInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String virtualNetworkRuleName,
+        UpdateVirtualNetworkRuleParameters parameters,
+        Context context);
 
     /**
      * Updates the specified virtual network rule.
@@ -129,25 +150,20 @@ public interface VirtualNetworkRulesClient {
     VirtualNetworkRuleInner update(String resourceGroupName, String accountName, String virtualNetworkRuleName);
 
     /**
-     * Updates the specified virtual network rule.
+     * Deletes the specified virtual network rule from the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param virtualNetworkRuleName The name of the virtual network rule to update.
-     * @param parameters Parameters supplied to update the virtual network rule.
+     * @param virtualNetworkRuleName The name of the virtual network rule to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store virtual network rule information.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String virtualNetworkRuleName,
-        UpdateVirtualNetworkRuleParameters parameters,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context);
 
     /**
      * Deletes the specified virtual network rule from the specified Data Lake Store account.
@@ -161,20 +177,4 @@ public interface VirtualNetworkRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String accountName, String virtualNetworkRuleName);
-
-    /**
-     * Deletes the specified virtual network rule from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param virtualNetworkRuleName The name of the virtual network rule to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String virtualNetworkRuleName, Context context);
 }
