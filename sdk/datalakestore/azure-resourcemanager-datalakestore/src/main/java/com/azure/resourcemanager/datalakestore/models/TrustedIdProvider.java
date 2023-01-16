@@ -17,13 +17,6 @@ public interface TrustedIdProvider {
     String id();
 
     /**
-     * Gets the idProvider property: The URL of this trusted identity provider.
-     *
-     * @return the idProvider value.
-     */
-    String idProvider();
-
-    /**
      * Gets the name property: The resource name.
      *
      * @return the name value.
@@ -36,6 +29,20 @@ public interface TrustedIdProvider {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the idProvider property: The URL of this trusted identity provider.
+     *
+     * @return the idProvider value.
+     */
+    String idProvider();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakestore.fluent.models.TrustedIdProviderInner object.

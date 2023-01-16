@@ -5,22 +5,32 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateTrustedIdProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to create a new trusted identity provider. */
-@JsonFlatten
 @Fluent
-public class CreateOrUpdateTrustedIdProviderParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateOrUpdateTrustedIdProviderParameters.class);
-
+public final class CreateOrUpdateTrustedIdProviderParameters {
     /*
-     * The URL of this trusted identity provider.
+     * The trusted identity provider properties to use when creating a new trusted identity provider.
      */
-    @JsonProperty(value = "properties.idProvider", required = true)
-    private String idProvider;
+    @JsonProperty(value = "properties", required = true)
+    private CreateOrUpdateTrustedIdProviderProperties innerProperties = new CreateOrUpdateTrustedIdProviderProperties();
+
+    /** Creates an instance of CreateOrUpdateTrustedIdProviderParameters class. */
+    public CreateOrUpdateTrustedIdProviderParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The trusted identity provider properties to use when creating a new trusted
+     * identity provider.
+     *
+     * @return the innerProperties value.
+     */
+    private CreateOrUpdateTrustedIdProviderProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the idProvider property: The URL of this trusted identity provider.
@@ -28,7 +38,7 @@ public class CreateOrUpdateTrustedIdProviderParameters {
      * @return the idProvider value.
      */
     public String idProvider() {
-        return this.idProvider;
+        return this.innerProperties() == null ? null : this.innerProperties().idProvider();
     }
 
     /**
@@ -38,7 +48,10 @@ public class CreateOrUpdateTrustedIdProviderParameters {
      * @return the CreateOrUpdateTrustedIdProviderParameters object itself.
      */
     public CreateOrUpdateTrustedIdProviderParameters withIdProvider(String idProvider) {
-        this.idProvider = idProvider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateTrustedIdProviderProperties();
+        }
+        this.innerProperties().withIdProvider(idProvider);
         return this;
     }
 
@@ -48,11 +61,16 @@ public class CreateOrUpdateTrustedIdProviderParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (idProvider() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property idProvider in model CreateOrUpdateTrustedIdProviderParameters"));
+                        "Missing required property innerProperties in model"
+                            + " CreateOrUpdateTrustedIdProviderParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateTrustedIdProviderParameters.class);
 }

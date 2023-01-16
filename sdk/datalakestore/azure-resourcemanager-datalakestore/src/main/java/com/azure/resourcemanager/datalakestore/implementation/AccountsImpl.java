@@ -18,10 +18,9 @@ import com.azure.resourcemanager.datalakestore.models.CheckNameAvailabilityParam
 import com.azure.resourcemanager.datalakestore.models.DataLakeStoreAccount;
 import com.azure.resourcemanager.datalakestore.models.DataLakeStoreAccountBasic;
 import com.azure.resourcemanager.datalakestore.models.NameAvailabilityInformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsImpl.class);
 
     private final AccountsClient innerClient;
 
@@ -67,15 +66,6 @@ public final class AccountsImpl implements Accounts {
         return Utils.mapPage(inner, inner1 -> new DataLakeStoreAccountBasicImpl(inner1, this.manager()));
     }
 
-    public DataLakeStoreAccount getByResourceGroup(String resourceGroupName, String accountName) {
-        DataLakeStoreAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
-        if (inner != null) {
-            return new DataLakeStoreAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataLakeStoreAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<DataLakeStoreAccountInner> inner =
@@ -91,6 +81,15 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
+    public DataLakeStoreAccount getByResourceGroup(String resourceGroupName, String accountName) {
+        DataLakeStoreAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
+        if (inner != null) {
+            return new DataLakeStoreAccountImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String accountName) {
         this.serviceClient().delete(resourceGroupName, accountName);
     }
@@ -99,22 +98,12 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
-    public void enableKeyVault(String resourceGroupName, String accountName) {
-        this.serviceClient().enableKeyVault(resourceGroupName, accountName);
-    }
-
     public Response<Void> enableKeyVaultWithResponse(String resourceGroupName, String accountName, Context context) {
         return this.serviceClient().enableKeyVaultWithResponse(resourceGroupName, accountName, context);
     }
 
-    public NameAvailabilityInformation checkNameAvailability(
-        String location, CheckNameAvailabilityParameters parameters) {
-        NameAvailabilityInformationInner inner = this.serviceClient().checkNameAvailability(location, parameters);
-        if (inner != null) {
-            return new NameAvailabilityInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void enableKeyVault(String resourceGroupName, String accountName) {
+        this.serviceClient().enableKeyVault(resourceGroupName, accountName);
     }
 
     public Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(
@@ -132,10 +121,20 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
+    public NameAvailabilityInformation checkNameAvailability(
+        String location, CheckNameAvailabilityParameters parameters) {
+        NameAvailabilityInformationInner inner = this.serviceClient().checkNameAvailability(location, parameters);
+        if (inner != null) {
+            return new NameAvailabilityInformationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DataLakeStoreAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -154,7 +153,7 @@ public final class AccountsImpl implements Accounts {
     public Response<DataLakeStoreAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,7 +161,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -173,7 +172,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -192,7 +191,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,7 +199,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
