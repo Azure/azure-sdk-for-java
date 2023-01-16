@@ -53,6 +53,35 @@ public interface Rollout {
     Identity identity();
 
     /**
+     * Gets the status property: The current status of the rollout.
+     *
+     * @return the status value.
+     */
+    String status();
+
+    /**
+     * Gets the totalRetryAttempts property: The cardinal count of total number of retries performed on the rollout at a
+     * given time.
+     *
+     * @return the totalRetryAttempts value.
+     */
+    Integer totalRetryAttempts();
+
+    /**
+     * Gets the operationInfo property: Operational information of the rollout.
+     *
+     * @return the operationInfo value.
+     */
+    RolloutOperationInfo operationInfo();
+
+    /**
+     * Gets the services property: The detailed information on the services being deployed.
+     *
+     * @return the services value.
+     */
+    List<Service> services();
+
+    /**
      * Gets the buildVersion property: The version of the build being deployed.
      *
      * @return the buildVersion value.
@@ -81,35 +110,6 @@ public interface Rollout {
      * @return the stepGroups value.
      */
     List<StepGroup> stepGroups();
-
-    /**
-     * Gets the status property: The current status of the rollout.
-     *
-     * @return the status value.
-     */
-    String status();
-
-    /**
-     * Gets the totalRetryAttempts property: The cardinal count of total number of retries performed on the rollout at a
-     * given time.
-     *
-     * @return the totalRetryAttempts value.
-     */
-    Integer totalRetryAttempts();
-
-    /**
-     * Gets the operationInfo property: Operational information of the rollout.
-     *
-     * @return the operationInfo value.
-     */
-    RolloutOperationInfo operationInfo();
-
-    /**
-     * Gets the services property: The detailed information on the services being deployed.
-     *
-     * @return the services value.
-     */
-    List<Service> services();
 
     /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.RolloutInner object.

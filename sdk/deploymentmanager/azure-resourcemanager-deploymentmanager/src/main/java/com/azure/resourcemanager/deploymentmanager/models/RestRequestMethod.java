@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deploymentmanager.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RestRequestMethod. */
+/** The HTTP method to use for the request. */
 public enum RestRequestMethod {
     /** Enum value GET. */
     GET("GET"),
@@ -30,6 +30,9 @@ public enum RestRequestMethod {
      */
     @JsonCreator
     public static RestRequestMethod fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RestRequestMethod[] items = RestRequestMethod.values();
         for (RestRequestMethod item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RestRequestMethod {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

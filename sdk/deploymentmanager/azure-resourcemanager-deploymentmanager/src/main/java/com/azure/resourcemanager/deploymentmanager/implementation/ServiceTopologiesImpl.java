@@ -12,13 +12,12 @@ import com.azure.resourcemanager.deploymentmanager.fluent.ServiceTopologiesClien
 import com.azure.resourcemanager.deploymentmanager.fluent.models.ServiceTopologyResourceInner;
 import com.azure.resourcemanager.deploymentmanager.models.ServiceTopologies;
 import com.azure.resourcemanager.deploymentmanager.models.ServiceTopologyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ServiceTopologiesImpl implements ServiceTopologies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTopologiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTopologiesImpl.class);
 
     private final ServiceTopologiesClient innerClient;
 
@@ -29,16 +28,6 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ServiceTopologyResource getByResourceGroup(String resourceGroupName, String serviceTopologyName) {
-        ServiceTopologyResourceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, serviceTopologyName);
-        if (inner != null) {
-            return new ServiceTopologyResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ServiceTopologyResource> getByResourceGroupWithResponse(
@@ -56,26 +45,23 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String serviceTopologyName) {
-        this.serviceClient().delete(resourceGroupName, serviceTopologyName);
+    public ServiceTopologyResource getByResourceGroup(String resourceGroupName, String serviceTopologyName) {
+        ServiceTopologyResourceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, serviceTopologyName);
+        if (inner != null) {
+            return new ServiceTopologyResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String serviceTopologyName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceTopologyName, context);
     }
 
-    public List<ServiceTopologyResource> list(String resourceGroupName) {
-        List<ServiceTopologyResourceInner> inner = this.serviceClient().list(resourceGroupName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ServiceTopologyResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
+    public void deleteByResourceGroup(String resourceGroupName, String serviceTopologyName) {
+        this.serviceClient().delete(resourceGroupName, serviceTopologyName);
     }
 
     public Response<List<ServiceTopologyResource>> listWithResponse(String resourceGroupName, Context context) {
@@ -96,10 +82,24 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
     }
 
+    public List<ServiceTopologyResource> list(String resourceGroupName) {
+        List<ServiceTopologyResourceInner> inner = this.serviceClient().list(resourceGroupName);
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new ServiceTopologyResourceImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public ServiceTopologyResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +107,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,7 +120,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
     public Response<ServiceTopologyResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +128,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +141,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,20 +149,20 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, serviceTopologyName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, serviceTopologyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,14 +170,14 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, serviceTopologyName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, serviceTopologyName, context);
     }
 
     private ServiceTopologiesClient serviceClient() {

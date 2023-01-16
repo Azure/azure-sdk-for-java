@@ -5,6 +5,6 @@
 /**
  * Package containing the service clients for AzureDeploymentManager. REST APIs for orchestrating deployments using the
  * Azure Deployment Manager (ADM). See
- * https://docs.microsoft.com/azure/azure-resource-manager/deployment-manager-overview for more information.
+ * https://docs.microsoft.com/en-us/azure-resource-manager/deployment-manager-overview for more information.
  */
 package com.azure.resourcemanager.deploymentmanager.fluent;

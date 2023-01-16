@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The detail about an operation. */
 @Fluent
 public final class OperationDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDetail.class);
-
     /*
      * The name of the provider that supports the operation.
      */
@@ -37,6 +33,10 @@ public final class OperationDetail {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of OperationDetail class. */
+    public OperationDetail() {
+    }
 
     /**
      * Get the provider property: The name of the provider that supports the operation.
