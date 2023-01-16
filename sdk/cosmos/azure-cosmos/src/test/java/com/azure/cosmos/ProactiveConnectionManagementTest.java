@@ -53,7 +53,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     private DatabaseAccount databaseAccount;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
 
-    @BeforeClass(groups = {"multi-master", "multi-region"})
+    @BeforeClass(groups = {"multi-region"})
     public void beforeClass() {
         clientBuilder = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -78,7 +78,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         safeClose(dummyClient);
     }
 
-    @Test(groups = {"multi-master", "multi-region"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
@@ -180,7 +180,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "multi-region"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignore) {
         CosmosAsyncClient asyncClient = null;
 
