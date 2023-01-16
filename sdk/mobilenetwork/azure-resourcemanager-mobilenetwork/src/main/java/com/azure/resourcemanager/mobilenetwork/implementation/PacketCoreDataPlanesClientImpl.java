@@ -336,7 +336,9 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
-        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName)
+            .getSyncPoller();
     }
 
     /**
@@ -354,7 +356,8 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context) {
-        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, context)
             .getSyncPoller();
     }
 
@@ -823,7 +826,8 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
         String packetCoreControlPlaneName,
         String packetCoreDataPlaneName,
         PacketCoreDataPlaneInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, parameters)
             .getSyncPoller();
     }
@@ -849,7 +853,8 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
         String packetCoreDataPlaneName,
         PacketCoreDataPlaneInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, parameters, context)
             .getSyncPoller();
     }

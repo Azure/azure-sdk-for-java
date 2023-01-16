@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SimGroups GetByResourceGroup. */
 public final class SimGroupsGetByResourceGroupSamples {
     /*
@@ -17,6 +15,9 @@ public final class SimGroupsGetByResourceGroupSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.simGroups().getByResourceGroupWithResponse("testResourceGroupName", "testSimGroupName", Context.NONE);
+        manager
+            .simGroups()
+            .getByResourceGroupWithResponse(
+                "testResourceGroupName", "testSimGroupName", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,10 +4,8 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PacketCoreControlPlaneOperation Reinstall. */
-public final class PacketCoreControlPlaneOperationReinstallSamples {
+/** Samples for PacketCoreControlPlanes Reinstall. */
+public final class PacketCoreControlPlanesReinstallSamples {
     /*
      * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneReinstall.json
      */
@@ -18,6 +16,6 @@ public final class PacketCoreControlPlaneOperationReinstallSamples {
      */
     public static void reinstallPacketCoreControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlaneOperations().reinstall("rg1", "TestPacketCoreCP", Context.NONE);
+        manager.packetCoreControlPlanes().reinstall("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }

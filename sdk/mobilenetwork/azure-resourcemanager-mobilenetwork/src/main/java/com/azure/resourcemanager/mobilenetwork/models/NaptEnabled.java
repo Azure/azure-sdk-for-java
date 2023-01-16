@@ -17,6 +17,15 @@ public final class NaptEnabled extends ExpandableStringEnum<NaptEnabled> {
     public static final NaptEnabled DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of NaptEnabled value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NaptEnabled() {
+    }
+
+    /**
      * Creates or finds a NaptEnabled from its string representation.
      *
      * @param name a name to look for.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.models.Slice;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,10 @@ public final class SlicesUpdateTagsSamples {
      */
     public static void updateNetworkSliceTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         Slice resource =
-            manager.slices().getWithResponse("rg1", "testMobileNetwork", "testSlice", Context.NONE).getValue();
+            manager
+                .slices()
+                .getWithResponse("rg1", "testMobileNetwork", "testSlice", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

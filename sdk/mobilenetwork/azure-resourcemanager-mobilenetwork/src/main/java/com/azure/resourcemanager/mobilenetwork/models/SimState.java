@@ -20,6 +20,15 @@ public final class SimState extends ExpandableStringEnum<SimState> {
     public static final SimState INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of SimState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SimState() {
+    }
+
+    /**
      * Creates or finds a SimState from its string representation.
      *
      * @param name a name to look for.

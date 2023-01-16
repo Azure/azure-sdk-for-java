@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,7 @@ public final class PacketCoreDataPlanesUpdateTagsSamples {
         PacketCoreDataPlane resource =
             manager
                 .packetCoreDataPlanes()
-                .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", Context.NONE)
+                .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }

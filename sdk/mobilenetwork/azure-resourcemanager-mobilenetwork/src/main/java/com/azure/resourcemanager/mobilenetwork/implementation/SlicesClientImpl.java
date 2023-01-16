@@ -322,7 +322,7 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String sliceName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName).getSyncPoller();
     }
 
     /**
@@ -340,7 +340,7 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName, context).getSyncPoller();
     }
 
     /**
@@ -754,7 +754,9 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -773,7 +775,8 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
             .getSyncPoller();
     }
 

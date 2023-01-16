@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
+import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
@@ -15,6 +16,7 @@ import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlane;
+import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
@@ -223,6 +225,39 @@ public final class PacketCoreControlPlaneImpl
                 .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, context)
                 .getValue();
         return this;
+    }
+
+    public AsyncOperationStatus rollback() {
+        return serviceManager.packetCoreControlPlanes().rollback(resourceGroupName, packetCoreControlPlaneName);
+    }
+
+    public AsyncOperationStatus rollback(Context context) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .rollback(resourceGroupName, packetCoreControlPlaneName, context);
+    }
+
+    public AsyncOperationStatus reinstall() {
+        return serviceManager.packetCoreControlPlanes().reinstall(resourceGroupName, packetCoreControlPlaneName);
+    }
+
+    public AsyncOperationStatus reinstall(Context context) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .reinstall(resourceGroupName, packetCoreControlPlaneName, context);
+    }
+
+    public AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters);
+    }
+
+    public AsyncOperationStatus collectDiagnosticsPackage(
+        PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context) {
+        return serviceManager
+            .packetCoreControlPlanes()
+            .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters, context);
     }
 
     public PacketCoreControlPlaneImpl withRegion(Region location) {
