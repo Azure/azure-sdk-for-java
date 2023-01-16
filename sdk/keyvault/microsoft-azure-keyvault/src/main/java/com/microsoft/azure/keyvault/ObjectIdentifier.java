@@ -107,7 +107,7 @@ public class ObjectIdentifier {
         try {
             baseUri = new URI(vault);
         } catch (URISyntaxException e) {
-            throw new InvalidParameterException(String.format("Invalid ObjectIdentifier: %s. Not a valid URI", vault));
+            throw new InvalidParameterException(String.format("Invalid ObjectIdentifier: '%s'. Not a valid URI: %s", vault, e));
         }
 
         this.name = name;
