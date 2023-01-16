@@ -33,7 +33,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     implements EventHubsNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net";
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsProperties.class);
 
     /**
@@ -43,10 +42,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
-
-    public AzureEventHubsProperties() {
-        this.setDomainName(DEFAULT_DOMAIN_NAME);
-    }
 
     public Producer buildProducerProperties() {
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
