@@ -4,12 +4,11 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
 import java.util.Arrays;
 
-/** Samples for SimOperation BulkDelete. */
-public final class SimOperationBulkDeleteSamples {
+/** Samples for Sims BulkDelete. */
+public final class SimsBulkDeleteSamples {
     /*
      * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimBulkDelete.json
      */
@@ -21,11 +20,11 @@ public final class SimOperationBulkDeleteSamples {
     public static void bulkDeleteSIMsFromASIMGroup(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager
-            .simOperations()
+            .sims()
             .bulkDelete(
                 "testResourceGroupName",
                 "testSimGroup",
                 new SimDeleteList().withSims(Arrays.asList("testSim", "testSim2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

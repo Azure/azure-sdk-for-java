@@ -319,7 +319,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String simGroupName) {
-        return beginDeleteAsync(resourceGroupName, simGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, simGroupName).getSyncPoller();
     }
 
     /**
@@ -336,7 +336,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String simGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, simGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, simGroupName, context).getSyncPoller();
     }
 
     /**
@@ -717,7 +717,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimGroupInner>, SimGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String simGroupName, SimGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, simGroupName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, simGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -735,7 +735,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimGroupInner>, SimGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String simGroupName, SimGroupInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, simGroupName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, simGroupName, parameters, context).getSyncPoller();
     }
 
     /**

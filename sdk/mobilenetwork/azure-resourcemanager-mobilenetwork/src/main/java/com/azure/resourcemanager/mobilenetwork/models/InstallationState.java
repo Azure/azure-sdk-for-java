@@ -38,6 +38,15 @@ public final class InstallationState extends ExpandableStringEnum<InstallationSt
     public static final InstallationState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of InstallationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InstallationState() {
+    }
+
+    /**
      * Creates or finds a InstallationState from its string representation.
      *
      * @param name a name to look for.

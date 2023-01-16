@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Slices Get. */
 public final class SlicesGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class SlicesGetSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.slices().getWithResponse("rg1", "testMobileNetwork", "testSlice", Context.NONE);
+        manager.slices().getWithResponse("rg1", "testMobileNetwork", "testSlice", com.azure.core.util.Context.NONE);
     }
 }

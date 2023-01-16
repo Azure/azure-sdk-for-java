@@ -29,6 +29,15 @@ public final class SiteProvisioningState extends ExpandableStringEnum<SiteProvis
     public static final SiteProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of SiteProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SiteProvisioningState() {
+    }
+
+    /**
      * Creates or finds a SiteProvisioningState from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,15 @@ public final class RecommendedVersion extends ExpandableStringEnum<RecommendedVe
     public static final RecommendedVersion NOT_RECOMMENDED = fromString("NotRecommended");
 
     /**
+     * Creates a new instance of RecommendedVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendedVersion() {
+    }
+
+    /**
      * Creates or finds a RecommendedVersion from its string representation.
      *
      * @param name a name to look for.

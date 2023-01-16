@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SimPolicies ListByMobileNetwork. */
 public final class SimPoliciesListByMobileNetworkSamples {
     /*
@@ -18,6 +16,8 @@ public final class SimPoliciesListByMobileNetworkSamples {
      */
     public static void listSIMPoliciesInAMobileNetwork(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.simPolicies().listByMobileNetwork("testResourceGroupName", "testMobileNetwork", Context.NONE);
+        manager
+            .simPolicies()
+            .listByMobileNetwork("testResourceGroupName", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
