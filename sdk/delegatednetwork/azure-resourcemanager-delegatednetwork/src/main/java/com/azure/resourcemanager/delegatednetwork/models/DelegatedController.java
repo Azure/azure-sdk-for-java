@@ -47,39 +47,11 @@ public interface DelegatedController {
     Map<String, String> tags();
 
     /**
-     * Gets the resourceGuid property: Resource guid.
+     * Gets the properties property: Properties of the provision operation request.
      *
-     * @return the resourceGuid value.
+     * @return the properties value.
      */
-    String resourceGuid();
-
-    /**
-     * Gets the provisioningState property: The current state of dnc controller resource.
-     *
-     * @return the provisioningState value.
-     */
-    ControllerState provisioningState();
-
-    /**
-     * Gets the dncAppId property: dnc application id should be used by customer to authenticate with dnc gateway.
-     *
-     * @return the dncAppId value.
-     */
-    String dncAppId();
-
-    /**
-     * Gets the dncTenantId property: tenant id of dnc application id.
-     *
-     * @return the dncTenantId value.
-     */
-    String dncTenantId();
-
-    /**
-     * Gets the dncEndpoint property: dnc endpoint url that customers can use to connect to.
-     *
-     * @return the dncEndpoint value.
-     */
-    String dncEndpoint();
+    DelegatedControllerProperties properties();
 
     /**
      * Gets the region of the resource.
@@ -94,6 +66,13 @@ public interface DelegatedController {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedControllerInner object.
