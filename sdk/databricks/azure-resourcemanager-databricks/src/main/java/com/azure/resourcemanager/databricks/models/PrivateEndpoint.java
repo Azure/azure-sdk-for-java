@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private endpoint property of a private endpoint connection. */
 @Immutable
 public final class PrivateEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
-
     /*
      * The resource identifier.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
+
+    /** Creates an instance of PrivateEndpoint class. */
+    public PrivateEndpoint() {
+    }
 
     /**
      * Get the id property: The resource identifier.

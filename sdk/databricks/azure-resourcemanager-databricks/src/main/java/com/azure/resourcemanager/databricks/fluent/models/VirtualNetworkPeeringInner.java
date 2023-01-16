@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databricks.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.models.AddressSpace;
@@ -13,85 +12,29 @@ import com.azure.resourcemanager.databricks.models.PeeringProvisioningState;
 import com.azure.resourcemanager.databricks.models.PeeringState;
 import com.azure.resourcemanager.databricks.models.VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork;
 import com.azure.resourcemanager.databricks.models.VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peerings in a VirtualNetwork resource. */
-@JsonFlatten
 @Fluent
-public class VirtualNetworkPeeringInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringInner.class);
-
+public final class VirtualNetworkPeeringInner extends ProxyResource {
     /*
-     * Whether the VMs in the local virtual network space would be able to
-     * access the VMs in remote virtual network space.
+     * List of properties for vNet Peering
      */
-    @JsonProperty(value = "properties.allowVirtualNetworkAccess")
-    private Boolean allowVirtualNetworkAccess;
+    @JsonProperty(value = "properties", required = true)
+    private VirtualNetworkPeeringPropertiesFormat innerProperties = new VirtualNetworkPeeringPropertiesFormat();
 
-    /*
-     * Whether the forwarded traffic from the VMs in the local virtual network
-     * will be allowed/disallowed in remote virtual network.
-     */
-    @JsonProperty(value = "properties.allowForwardedTraffic")
-    private Boolean allowForwardedTraffic;
+    /** Creates an instance of VirtualNetworkPeeringInner class. */
+    public VirtualNetworkPeeringInner() {
+    }
 
-    /*
-     * If gateway links can be used in remote virtual networking to link to
-     * this virtual network.
+    /**
+     * Get the innerProperties property: List of properties for vNet Peering.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.allowGatewayTransit")
-    private Boolean allowGatewayTransit;
-
-    /*
-     * If remote gateways can be used on this virtual network. If the flag is
-     * set to true, and allowGatewayTransit on remote peering is also true,
-     * virtual network will use gateways of remote virtual network for transit.
-     * Only one peering can have this flag set to true. This flag cannot be set
-     * if virtual network already has a gateway.
-     */
-    @JsonProperty(value = "properties.useRemoteGateways")
-    private Boolean useRemoteGateways;
-
-    /*
-     * The remote virtual network should be in the same region. See here to
-     * learn more
-     * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-     */
-    @JsonProperty(value = "properties.databricksVirtualNetwork")
-    private VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork databricksVirtualNetwork;
-
-    /*
-     * The reference to the databricks virtual network address space.
-     */
-    @JsonProperty(value = "properties.databricksAddressSpace")
-    private AddressSpace databricksAddressSpace;
-
-    /*
-     * The remote virtual network should be in the same region. See here to
-     * learn more
-     * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-     */
-    @JsonProperty(value = "properties.remoteVirtualNetwork", required = true)
-    private VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork;
-
-    /*
-     * The reference to the remote virtual network address space.
-     */
-    @JsonProperty(value = "properties.remoteAddressSpace")
-    private AddressSpace remoteAddressSpace;
-
-    /*
-     * The status of the virtual network peering.
-     */
-    @JsonProperty(value = "properties.peeringState", access = JsonProperty.Access.WRITE_ONLY)
-    private PeeringState peeringState;
-
-    /*
-     * The provisioning state of the virtual network peering resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private PeeringProvisioningState provisioningState;
+    private VirtualNetworkPeeringPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
@@ -100,7 +43,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the allowVirtualNetworkAccess value.
      */
     public Boolean allowVirtualNetworkAccess() {
-        return this.allowVirtualNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().allowVirtualNetworkAccess();
     }
 
     /**
@@ -111,7 +54,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the VirtualNetworkPeeringInner object itself.
      */
     public VirtualNetworkPeeringInner withAllowVirtualNetworkAccess(Boolean allowVirtualNetworkAccess) {
-        this.allowVirtualNetworkAccess = allowVirtualNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withAllowVirtualNetworkAccess(allowVirtualNetworkAccess);
         return this;
     }
 
@@ -122,7 +68,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the allowForwardedTraffic value.
      */
     public Boolean allowForwardedTraffic() {
-        return this.allowForwardedTraffic;
+        return this.innerProperties() == null ? null : this.innerProperties().allowForwardedTraffic();
     }
 
     /**
@@ -133,7 +79,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the VirtualNetworkPeeringInner object itself.
      */
     public VirtualNetworkPeeringInner withAllowForwardedTraffic(Boolean allowForwardedTraffic) {
-        this.allowForwardedTraffic = allowForwardedTraffic;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withAllowForwardedTraffic(allowForwardedTraffic);
         return this;
     }
 
@@ -144,7 +93,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the allowGatewayTransit value.
      */
     public Boolean allowGatewayTransit() {
-        return this.allowGatewayTransit;
+        return this.innerProperties() == null ? null : this.innerProperties().allowGatewayTransit();
     }
 
     /**
@@ -155,7 +104,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the VirtualNetworkPeeringInner object itself.
      */
     public VirtualNetworkPeeringInner withAllowGatewayTransit(Boolean allowGatewayTransit) {
-        this.allowGatewayTransit = allowGatewayTransit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withAllowGatewayTransit(allowGatewayTransit);
         return this;
     }
 
@@ -168,7 +120,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the useRemoteGateways value.
      */
     public Boolean useRemoteGateways() {
-        return this.useRemoteGateways;
+        return this.innerProperties() == null ? null : this.innerProperties().useRemoteGateways();
     }
 
     /**
@@ -181,7 +133,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the VirtualNetworkPeeringInner object itself.
      */
     public VirtualNetworkPeeringInner withUseRemoteGateways(Boolean useRemoteGateways) {
-        this.useRemoteGateways = useRemoteGateways;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withUseRemoteGateways(useRemoteGateways);
         return this;
     }
 
@@ -193,7 +148,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the databricksVirtualNetwork value.
      */
     public VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork databricksVirtualNetwork() {
-        return this.databricksVirtualNetwork;
+        return this.innerProperties() == null ? null : this.innerProperties().databricksVirtualNetwork();
     }
 
     /**
@@ -206,7 +161,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      */
     public VirtualNetworkPeeringInner withDatabricksVirtualNetwork(
         VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork databricksVirtualNetwork) {
-        this.databricksVirtualNetwork = databricksVirtualNetwork;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withDatabricksVirtualNetwork(databricksVirtualNetwork);
         return this;
     }
 
@@ -216,7 +174,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the databricksAddressSpace value.
      */
     public AddressSpace databricksAddressSpace() {
-        return this.databricksAddressSpace;
+        return this.innerProperties() == null ? null : this.innerProperties().databricksAddressSpace();
     }
 
     /**
@@ -226,7 +184,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the VirtualNetworkPeeringInner object itself.
      */
     public VirtualNetworkPeeringInner withDatabricksAddressSpace(AddressSpace databricksAddressSpace) {
-        this.databricksAddressSpace = databricksAddressSpace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withDatabricksAddressSpace(databricksAddressSpace);
         return this;
     }
 
@@ -238,7 +199,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the remoteVirtualNetwork value.
      */
     public VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork() {
-        return this.remoteVirtualNetwork;
+        return this.innerProperties() == null ? null : this.innerProperties().remoteVirtualNetwork();
     }
 
     /**
@@ -251,7 +212,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      */
     public VirtualNetworkPeeringInner withRemoteVirtualNetwork(
         VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
-        this.remoteVirtualNetwork = remoteVirtualNetwork;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withRemoteVirtualNetwork(remoteVirtualNetwork);
         return this;
     }
 
@@ -261,7 +225,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the remoteAddressSpace value.
      */
     public AddressSpace remoteAddressSpace() {
-        return this.remoteAddressSpace;
+        return this.innerProperties() == null ? null : this.innerProperties().remoteAddressSpace();
     }
 
     /**
@@ -271,7 +235,10 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the VirtualNetworkPeeringInner object itself.
      */
     public VirtualNetworkPeeringInner withRemoteAddressSpace(AddressSpace remoteAddressSpace) {
-        this.remoteAddressSpace = remoteAddressSpace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withRemoteAddressSpace(remoteAddressSpace);
         return this;
     }
 
@@ -281,7 +248,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the peeringState value.
      */
     public PeeringState peeringState() {
-        return this.peeringState;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringState();
     }
 
     /**
@@ -290,7 +257,7 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public PeeringProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -299,22 +266,15 @@ public class VirtualNetworkPeeringInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (databricksVirtualNetwork() != null) {
-            databricksVirtualNetwork().validate();
-        }
-        if (databricksAddressSpace() != null) {
-            databricksAddressSpace().validate();
-        }
-        if (remoteVirtualNetwork() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property remoteVirtualNetwork in model VirtualNetworkPeeringInner"));
+                        "Missing required property innerProperties in model VirtualNetworkPeeringInner"));
         } else {
-            remoteVirtualNetwork().validate();
-        }
-        if (remoteAddressSpace() != null) {
-            remoteAddressSpace().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkPeeringInner.class);
 }
