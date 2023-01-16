@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.core.properties.profile;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 /**
@@ -88,44 +89,62 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
     private String azureApplicationInsightsEndpoint;
 
     /**
+     * The domain name for Service Bus.
+     */
+    private String serviceBusDomainName;
+
+    /**
      * Create an {@link AzureEnvironmentProperties} instance with default value.
      */
     public AzureEnvironmentProperties() {
-        this(null);
+        this(null, null);
     }
 
     /**
      * Create an {@link AzureEnvironmentProperties} instance with environment value from {@link com.azure.core.management.AzureEnvironment}.
-     * @param azureEnvironment The {@link com.azure.core.management.AzureEnvironment} instance.
+     * @param management The {@link com.azure.core.management.AzureEnvironment} instance.
      */
-    private AzureEnvironmentProperties(com.azure.core.management.AzureEnvironment azureEnvironment) {
-        if (azureEnvironment == null) {
-            return;
+    private AzureEnvironmentProperties(com.azure.core.management.AzureEnvironment management,
+                                       AzureProfileOptionsProvider.OtherAzureEnvironment others) {
+        if (management != null) {
+            this.portal = management.getPortal();
+            this.publishingProfile = management.getPublishingProfile();
+            this.managementEndpoint = management.getManagementEndpoint();
+            this.resourceManagerEndpoint = management.getResourceManagerEndpoint();
+            this.sqlManagementEndpoint = management.getSqlManagementEndpoint();
+            this.sqlServerHostnameSuffix = management.getSqlServerHostnameSuffix();
+            this.galleryEndpoint = management.getGalleryEndpoint();
+            this.activeDirectoryEndpoint = management.getActiveDirectoryEndpoint();
+            this.activeDirectoryResourceId = management.getActiveDirectoryResourceId();
+            this.activeDirectoryGraphEndpoint = management.getGraphEndpoint();
+            this.activeDirectoryGraphApiVersion = management.getActiveDirectoryGraphApiVersion();
+            this.microsoftGraphEndpoint = management.getMicrosoftGraphEndpoint();
+            this.dataLakeEndpointResourceId = management.getDataLakeEndpointResourceId();
+            this.storageEndpointSuffix = management.getStorageEndpointSuffix();
+            this.keyVaultDnsSuffix = management.getKeyVaultDnsSuffix();
+            this.azureDataLakeStoreFileSystemEndpointSuffix = management.getAzureDataLakeStoreFileSystemEndpointSuffix();
+            this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
+            this.azureLogAnalyticsEndpoint = management.getLogAnalyticsEndpoint();
+            this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
         }
-        this.portal = azureEnvironment.getPortal();
-        this.publishingProfile = azureEnvironment.getPublishingProfile();
-        this.managementEndpoint = azureEnvironment.getManagementEndpoint();
-        this.resourceManagerEndpoint = azureEnvironment.getResourceManagerEndpoint();
-        this.sqlManagementEndpoint = azureEnvironment.getSqlManagementEndpoint();
-        this.sqlServerHostnameSuffix = azureEnvironment.getSqlServerHostnameSuffix();
-        this.galleryEndpoint = azureEnvironment.getGalleryEndpoint();
-        this.activeDirectoryEndpoint = azureEnvironment.getActiveDirectoryEndpoint();
-        this.activeDirectoryResourceId = azureEnvironment.getActiveDirectoryResourceId();
-        this.activeDirectoryGraphEndpoint = azureEnvironment.getGraphEndpoint();
-        this.activeDirectoryGraphApiVersion = azureEnvironment.getActiveDirectoryGraphApiVersion();
-        this.microsoftGraphEndpoint = azureEnvironment.getMicrosoftGraphEndpoint();
-        this.dataLakeEndpointResourceId = azureEnvironment.getDataLakeEndpointResourceId();
-        this.storageEndpointSuffix = azureEnvironment.getStorageEndpointSuffix();
-        this.keyVaultDnsSuffix = azureEnvironment.getKeyVaultDnsSuffix();
-        this.azureDataLakeStoreFileSystemEndpointSuffix = azureEnvironment.getAzureDataLakeStoreFileSystemEndpointSuffix();
-        this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureEnvironment.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
-        this.azureLogAnalyticsEndpoint = azureEnvironment.getLogAnalyticsEndpoint();
-        this.azureApplicationInsightsEndpoint = azureEnvironment.getApplicationInsightsEndpoint();
+        if (others != null) {
+            this.serviceBusDomainName = others.getServiceBusDomainName();
+        }
     }
 
     @Override
     public AzureEnvironmentProperties fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment) {
-        return new AzureEnvironmentProperties(environment);
+        return new AzureEnvironmentProperties(environment, null);
+    }
+
+    @Override
+    public AzureProfileOptionsProvider.AzureEnvironmentOptions fromOtherAzureEnvironment(AzureProfileOptionsProvider.OtherAzureEnvironment environment) {
+        return new AzureEnvironmentProperties(null, environment);
+    }
+
+    @Override
+    public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureEnvironments(AzureEnvironment management, AzureProfileOptionsProvider.OtherAzureEnvironment others) {
+        return new AzureEnvironmentProperties(management, others);
     }
 
     @Override
@@ -375,4 +394,16 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
         this.azureApplicationInsightsEndpoint = azureApplicationInsightsEndpoint;
     }
 
+    @Override
+    public String getServiceBusDomainName() {
+        return serviceBusDomainName;
+    }
+
+    /**
+     * Set the domain name of Service Bus.
+     * @param serviceBusDomainName the Service Bus domain name.
+     */
+    public void setServiceBusDomainName(String serviceBusDomainName) {
+        this.serviceBusDomainName = serviceBusDomainName;
+    }
 }
