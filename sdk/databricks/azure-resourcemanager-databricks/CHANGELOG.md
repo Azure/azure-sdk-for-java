@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.3 (2023-01-16)
 
 - Azure Resource Manager AzureDatabricks client library for Java. This package contains Microsoft Azure SDK for AzureDatabricks Management SDK. The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace resources. Package tag package-2021-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
