@@ -15,6 +15,20 @@ public interface ServiceTopologies {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the service topology along with {@link Response}.
+     */
+    Response<ServiceTopologyResource> getByResourceGroupWithResponse(
+        String resourceGroupName, String serviceTopologyName, Context context);
+
+    /**
+     * Gets the service topology.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +37,7 @@ public interface ServiceTopologies {
     ServiceTopologyResource getByResourceGroup(String resourceGroupName, String serviceTopologyName);
 
     /**
-     * Gets the service topology.
+     * Deletes the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -31,9 +45,9 @@ public interface ServiceTopologies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service topology.
+     * @return the {@link Response}.
      */
-    Response<ServiceTopologyResource> getByResourceGroupWithResponse(
+    Response<Void> deleteByResourceGroupWithResponse(
         String resourceGroupName, String serviceTopologyName, Context context);
 
     /**
@@ -48,17 +62,16 @@ public interface ServiceTopologies {
     void deleteByResourceGroup(String resourceGroupName, String serviceTopologyName);
 
     /**
-     * Deletes the service topology.
+     * Lists the service topologies in the resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the list of service topologies along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, Context context);
+    Response<List<ServiceTopologyResource>> listWithResponse(String resourceGroupName, Context context);
 
     /**
      * Lists the service topologies in the resource group.
@@ -72,25 +85,13 @@ public interface ServiceTopologies {
     List<ServiceTopologyResource> list(String resourceGroupName);
 
     /**
-     * Lists the service topologies in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service topologies.
-     */
-    Response<List<ServiceTopologyResource>> listWithResponse(String resourceGroupName, Context context);
-
-    /**
      * Gets the service topology.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service topology.
+     * @return the service topology along with {@link Response}.
      */
     ServiceTopologyResource getById(String id);
 
@@ -102,7 +103,7 @@ public interface ServiceTopologies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service topology.
+     * @return the service topology along with {@link Response}.
      */
     Response<ServiceTopologyResource> getByIdWithResponse(String id, Context context);
 
@@ -124,7 +125,7 @@ public interface ServiceTopologies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

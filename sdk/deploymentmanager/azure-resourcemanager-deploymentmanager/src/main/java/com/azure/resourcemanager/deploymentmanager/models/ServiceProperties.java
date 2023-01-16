@@ -6,27 +6,26 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a service. */
 @Fluent
 public class ServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceProperties.class);
-
     /*
-     * The Azure location to which the resources in the service belong to or
-     * should be deployed to.
+     * The Azure location to which the resources in the service belong to or should be deployed to.
      */
     @JsonProperty(value = "targetLocation", required = true)
     private String targetLocation;
 
     /*
-     * The subscription to which the resources in the service belong to or
-     * should be deployed to.
+     * The subscription to which the resources in the service belong to or should be deployed to.
      */
     @JsonProperty(value = "targetSubscriptionId", required = true)
     private String targetSubscriptionId;
+
+    /** Creates an instance of ServiceProperties class. */
+    public ServiceProperties() {
+    }
 
     /**
      * Get the targetLocation property: The Azure location to which the resources in the service belong to or should be
@@ -79,16 +78,18 @@ public class ServiceProperties {
      */
     public void validate() {
         if (targetLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetLocation in model ServiceProperties"));
         }
         if (targetSubscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetSubscriptionId in model ServiceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceProperties.class);
 }

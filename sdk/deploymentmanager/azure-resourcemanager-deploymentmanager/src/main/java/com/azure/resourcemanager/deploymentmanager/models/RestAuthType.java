@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deploymentmanager.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RestAuthType. */
+/** The authentication type. */
 public enum RestAuthType {
     /** Enum value ApiKey. */
     API_KEY("ApiKey"),
@@ -30,6 +30,9 @@ public enum RestAuthType {
      */
     @JsonCreator
     public static RestAuthType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RestAuthType[] items = RestAuthType.values();
         for (RestAuthType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RestAuthType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

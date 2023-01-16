@@ -14,7 +14,32 @@ import java.util.List;
 /** An instance of this class provides access to all the operations defined in ServicesClient. */
 public interface ServicesClient {
     /**
-     * Synchronously creates a new service or updates an existing service.
+     * Creates or updates a service in the service topology.
+     *
+     * <p>Synchronously creates a new service or updates an existing service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @param serviceInfo The service object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource representation of a service in a service topology along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServiceResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String serviceTopologyName,
+        String serviceName,
+        ServiceResourceInner serviceInfo,
+        Context context);
+
+    /**
+     * Creates or updates a service in the service topology.
+     *
+     * <p>Synchronously creates a new service or updates an existing service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -30,25 +55,20 @@ public interface ServicesClient {
         String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo);
 
     /**
-     * Synchronously creates a new service or updates an existing service.
+     * Gets the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
      * @param serviceName The name of the service resource.
-     * @param serviceInfo The service object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource representation of a service in a service topology.
+     * @return the service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        ServiceResourceInner serviceInfo,
-        Context context);
+    Response<ServiceResourceInner> getWithResponse(
+        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
 
     /**
      * Gets the service.
@@ -65,7 +85,7 @@ public interface ServicesClient {
     ServiceResourceInner get(String resourceGroupName, String serviceTopologyName, String serviceName);
 
     /**
-     * Gets the service.
+     * Deletes the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -74,10 +94,10 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceInner> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
 
     /**
@@ -94,20 +114,19 @@ public interface ServicesClient {
     void delete(String resourceGroupName, String serviceTopologyName, String serviceName);
 
     /**
-     * Deletes the service.
+     * Lists the services in the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the list of services along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<List<ServiceResourceInner>> listWithResponse(
+        String resourceGroupName, String serviceTopologyName, Context context);
 
     /**
      * Lists the services in the service topology.
@@ -121,19 +140,4 @@ public interface ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     List<ServiceResourceInner> list(String resourceGroupName, String serviceTopologyName);
-
-    /**
-     * Lists the services in the service topology.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of services.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<ServiceResourceInner>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context);
 }

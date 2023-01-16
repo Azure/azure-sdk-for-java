@@ -6,27 +6,22 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Detailed runtime information of the rollout. */
 @Immutable
 public final class RolloutOperationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolloutOperationInfo.class);
-
     /*
-     * The ordinal count of the number of retry attempts on a rollout. 0 if no
-     * retries of the rollout have been performed. If the rollout is updated
-     * with a PUT, this count is reset to 0.
+     * The ordinal count of the number of retry attempts on a rollout. 0 if no retries of the rollout have been
+     * performed. If the rollout is updated with a PUT, this count is reset to 0.
      */
     @JsonProperty(value = "retryAttempt", access = JsonProperty.Access.WRITE_ONLY)
     private Integer retryAttempt;
 
     /*
-     * True, if all steps that succeeded on the previous run/attempt were
-     * chosen to be skipped in this retry attempt. False, otherwise.
+     * True, if all steps that succeeded on the previous run/attempt were chosen to be skipped in this retry attempt.
+     * False, otherwise.
      */
     @JsonProperty(value = "skipSucceededOnRetry", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean skipSucceededOnRetry;
@@ -38,8 +33,7 @@ public final class RolloutOperationInfo {
     private OffsetDateTime startTime;
 
     /*
-     * The start time of the rollout in UTC. This property will not be set if
-     * the rollout has not completed yet.
+     * The start time of the rollout in UTC. This property will not be set if the rollout has not completed yet.
      */
     @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
@@ -49,6 +43,10 @@ public final class RolloutOperationInfo {
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
+
+    /** Creates an instance of RolloutOperationInfo class. */
+    public RolloutOperationInfo() {
+    }
 
     /**
      * Get the retryAttempt property: The ordinal count of the number of retry attempts on a rollout. 0 if no retries of
