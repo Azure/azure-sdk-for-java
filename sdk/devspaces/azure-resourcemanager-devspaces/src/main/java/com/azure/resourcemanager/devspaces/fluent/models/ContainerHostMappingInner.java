@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devspaces.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Container host mapping object specifying the Container host resource ID and its associated Controller resource. */
 @Fluent
 public final class ContainerHostMappingInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerHostMappingInner.class);
-
     /*
      * ARM ID of the Container Host resource
      */
@@ -25,6 +21,10 @@ public final class ContainerHostMappingInner {
      */
     @JsonProperty(value = "mappedControllerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String mappedControllerResourceId;
+
+    /** Creates an instance of ContainerHostMappingInner class. */
+    public ContainerHostMappingInner() {
+    }
 
     /**
      * Get the containerHostResourceId property: ARM ID of the Container Host resource.
