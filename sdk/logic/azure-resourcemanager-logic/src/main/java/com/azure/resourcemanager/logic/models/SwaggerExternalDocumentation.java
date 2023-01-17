@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The swagger external documentation. */
 @Fluent
 public final class SwaggerExternalDocumentation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerExternalDocumentation.class);
-
     /*
      * The document description.
      */
@@ -31,7 +28,12 @@ public final class SwaggerExternalDocumentation {
      * The vendor extensions.
      */
     @JsonProperty(value = "extensions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> extensions;
+
+    /** Creates an instance of SwaggerExternalDocumentation class. */
+    public SwaggerExternalDocumentation() {
+    }
 
     /**
      * Get the description property: The document description.

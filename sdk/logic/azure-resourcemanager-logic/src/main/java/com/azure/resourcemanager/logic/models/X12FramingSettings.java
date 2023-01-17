@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 agreement framing settings. */
 @Fluent
 public final class X12FramingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12FramingSettings.class);
-
     /*
      * The data element separator.
      */
@@ -55,6 +52,10 @@ public final class X12FramingSettings {
      */
     @JsonProperty(value = "segmentTerminatorSuffix", required = true)
     private SegmentTerminatorSuffix segmentTerminatorSuffix;
+
+    /** Creates an instance of X12FramingSettings class. */
+    public X12FramingSettings() {
+    }
 
     /**
      * Get the dataElementSeparator property: The data element separator.
@@ -203,15 +204,17 @@ public final class X12FramingSettings {
      */
     public void validate() {
         if (characterSet() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property characterSet in model X12FramingSettings"));
         }
         if (segmentTerminatorSuffix() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property segmentTerminatorSuffix in model X12FramingSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12FramingSettings.class);
 }

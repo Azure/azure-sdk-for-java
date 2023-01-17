@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The batch configuration properties definition. */
 @Fluent
 public final class BatchConfigurationProperties extends ArtifactProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchConfigurationProperties.class);
-
     /*
      * The name of the batch group.
      */
@@ -26,6 +23,10 @@ public final class BatchConfigurationProperties extends ArtifactProperties {
      */
     @JsonProperty(value = "releaseCriteria", required = true)
     private BatchReleaseCriteria releaseCriteria;
+
+    /** Creates an instance of BatchConfigurationProperties class. */
+    public BatchConfigurationProperties() {
+    }
 
     /**
      * Get the batchGroupName property: The name of the batch group.
@@ -97,13 +98,13 @@ public final class BatchConfigurationProperties extends ArtifactProperties {
     public void validate() {
         super.validate();
         if (batchGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property batchGroupName in model BatchConfigurationProperties"));
         }
         if (releaseCriteria() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property releaseCriteria in model BatchConfigurationProperties"));
@@ -111,4 +112,6 @@ public final class BatchConfigurationProperties extends ArtifactProperties {
             releaseCriteria().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BatchConfigurationProperties.class);
 }

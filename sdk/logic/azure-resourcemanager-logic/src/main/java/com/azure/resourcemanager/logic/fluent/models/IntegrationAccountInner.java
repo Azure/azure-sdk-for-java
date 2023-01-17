@@ -5,20 +5,21 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSku;
+import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.WorkflowState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The integration account. */
-@JsonFlatten
 @Fluent
-public class IntegrationAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountInner.class);
+public final class IntegrationAccountInner extends Resource {
+    /*
+     * The integration account properties.
+     */
+    @JsonProperty(value = "properties")
+    private IntegrationAccountProperties innerProperties;
 
     /*
      * The sku.
@@ -26,17 +27,18 @@ public class IntegrationAccountInner extends Resource {
     @JsonProperty(value = "sku")
     private IntegrationAccountSku sku;
 
-    /*
-     * The integration service environment.
-     */
-    @JsonProperty(value = "properties.integrationServiceEnvironment")
-    private IntegrationServiceEnvironmentInner integrationServiceEnvironment;
+    /** Creates an instance of IntegrationAccountInner class. */
+    public IntegrationAccountInner() {
+    }
 
-    /*
-     * The workflow state.
+    /**
+     * Get the innerProperties property: The integration account properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.state")
-    private WorkflowState state;
+    private IntegrationAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: The sku.
@@ -58,47 +60,6 @@ public class IntegrationAccountInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the integrationServiceEnvironment property: The integration service environment.
-     *
-     * @return the integrationServiceEnvironment value.
-     */
-    public IntegrationServiceEnvironmentInner integrationServiceEnvironment() {
-        return this.integrationServiceEnvironment;
-    }
-
-    /**
-     * Set the integrationServiceEnvironment property: The integration service environment.
-     *
-     * @param integrationServiceEnvironment the integrationServiceEnvironment value to set.
-     * @return the IntegrationAccountInner object itself.
-     */
-    public IntegrationAccountInner withIntegrationServiceEnvironment(
-        IntegrationServiceEnvironmentInner integrationServiceEnvironment) {
-        this.integrationServiceEnvironment = integrationServiceEnvironment;
-        return this;
-    }
-
-    /**
-     * Get the state property: The workflow state.
-     *
-     * @return the state value.
-     */
-    public WorkflowState state() {
-        return this.state;
-    }
-
-    /**
-     * Set the state property: The workflow state.
-     *
-     * @param state the state value to set.
-     * @return the IntegrationAccountInner object itself.
-     */
-    public IntegrationAccountInner withState(WorkflowState state) {
-        this.state = state;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public IntegrationAccountInner withLocation(String location) {
@@ -114,16 +75,62 @@ public class IntegrationAccountInner extends Resource {
     }
 
     /**
+     * Get the integrationServiceEnvironment property: The integration service environment.
+     *
+     * @return the integrationServiceEnvironment value.
+     */
+    public ResourceReference integrationServiceEnvironment() {
+        return this.innerProperties() == null ? null : this.innerProperties().integrationServiceEnvironment();
+    }
+
+    /**
+     * Set the integrationServiceEnvironment property: The integration service environment.
+     *
+     * @param integrationServiceEnvironment the integrationServiceEnvironment value to set.
+     * @return the IntegrationAccountInner object itself.
+     */
+    public IntegrationAccountInner withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountProperties();
+        }
+        this.innerProperties().withIntegrationServiceEnvironment(integrationServiceEnvironment);
+        return this;
+    }
+
+    /**
+     * Get the state property: The workflow state.
+     *
+     * @return the state value.
+     */
+    public WorkflowState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Set the state property: The workflow state.
+     *
+     * @param state the state value to set.
+     * @return the IntegrationAccountInner object itself.
+     */
+    public IntegrationAccountInner withState(WorkflowState state) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountProperties();
+        }
+        this.innerProperties().withState(state);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (integrationServiceEnvironment() != null) {
-            integrationServiceEnvironment().validate();
         }
     }
 }

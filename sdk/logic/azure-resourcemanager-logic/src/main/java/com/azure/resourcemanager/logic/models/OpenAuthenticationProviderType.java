@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OpenAuthenticationProviderType. */
+/** Open authentication policy provider type. */
 public final class OpenAuthenticationProviderType extends ExpandableStringEnum<OpenAuthenticationProviderType> {
     /** Static value AAD for OpenAuthenticationProviderType. */
     public static final OpenAuthenticationProviderType AAD = fromString("AAD");
+
+    /**
+     * Creates a new instance of OpenAuthenticationProviderType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OpenAuthenticationProviderType() {
+    }
 
     /**
      * Creates or finds a OpenAuthenticationProviderType from its string representation.
@@ -24,7 +33,11 @@ public final class OpenAuthenticationProviderType extends ExpandableStringEnum<O
         return fromString(name, OpenAuthenticationProviderType.class);
     }
 
-    /** @return known OpenAuthenticationProviderType values. */
+    /**
+     * Gets known OpenAuthenticationProviderType values.
+     *
+     * @return known OpenAuthenticationProviderType values.
+     */
     public static Collection<OpenAuthenticationProviderType> values() {
         return values(OpenAuthenticationProviderType.class);
     }

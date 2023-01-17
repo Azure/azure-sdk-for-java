@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.logic.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.WorkflowState;
 import com.azure.resourcemanager.logic.models.WorkflowStatus;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerProvisioningState;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerRecurrence;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The workflow trigger. */
-@JsonFlatten
-@Immutable
-public class WorkflowTriggerInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggerInner.class);
+@Fluent
+public final class WorkflowTriggerInner extends SubResource {
+    /*
+     * The workflow trigger properties.
+     */
+    @JsonProperty(value = "properties")
+    private WorkflowTriggerProperties innerProperties;
 
     /*
      * Gets the workflow trigger name.
@@ -35,59 +35,18 @@ public class WorkflowTriggerInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Gets the provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowTriggerProvisioningState provisioningState;
+    /** Creates an instance of WorkflowTriggerInner class. */
+    public WorkflowTriggerInner() {
+    }
 
-    /*
-     * Gets the created time.
+    /**
+     * Get the innerProperties property: The workflow trigger properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * Gets the changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * Gets the state.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowState state;
-
-    /*
-     * Gets the status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowStatus status;
-
-    /*
-     * Gets the last execution time.
-     */
-    @JsonProperty(value = "properties.lastExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastExecutionTime;
-
-    /*
-     * Gets the next execution time.
-     */
-    @JsonProperty(value = "properties.nextExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextExecutionTime;
-
-    /*
-     * Gets the workflow trigger recurrence.
-     */
-    @JsonProperty(value = "properties.recurrence", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowTriggerRecurrence recurrence;
-
-    /*
-     * Gets the reference to workflow.
-     */
-    @JsonProperty(value = "properties.workflow", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReference workflow;
+    private WorkflowTriggerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets the workflow trigger name.
@@ -107,87 +66,6 @@ public class WorkflowTriggerInner extends SubResource {
         return this.type;
     }
 
-    /**
-     * Get the provisioningState property: Gets the provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public WorkflowTriggerProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the createdTime property: Gets the created time.
-     *
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the changedTime property: Gets the changed time.
-     *
-     * @return the changedTime value.
-     */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the state property: Gets the state.
-     *
-     * @return the state value.
-     */
-    public WorkflowState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the status property: Gets the status.
-     *
-     * @return the status value.
-     */
-    public WorkflowStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the lastExecutionTime property: Gets the last execution time.
-     *
-     * @return the lastExecutionTime value.
-     */
-    public OffsetDateTime lastExecutionTime() {
-        return this.lastExecutionTime;
-    }
-
-    /**
-     * Get the nextExecutionTime property: Gets the next execution time.
-     *
-     * @return the nextExecutionTime value.
-     */
-    public OffsetDateTime nextExecutionTime() {
-        return this.nextExecutionTime;
-    }
-
-    /**
-     * Get the recurrence property: Gets the workflow trigger recurrence.
-     *
-     * @return the recurrence value.
-     */
-    public WorkflowTriggerRecurrence recurrence() {
-        return this.recurrence;
-    }
-
-    /**
-     * Get the workflow property: Gets the reference to workflow.
-     *
-     * @return the workflow value.
-     */
-    public ResourceReference workflow() {
-        return this.workflow;
-    }
-
     /** {@inheritDoc} */
     @Override
     public WorkflowTriggerInner withId(String id) {
@@ -196,16 +74,94 @@ public class WorkflowTriggerInner extends SubResource {
     }
 
     /**
+     * Get the provisioningState property: Gets the provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public WorkflowTriggerProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the createdTime property: Gets the created time.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: Gets the changed time.
+     *
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the state property: Gets the state.
+     *
+     * @return the state value.
+     */
+    public WorkflowState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Get the status property: Gets the status.
+     *
+     * @return the status value.
+     */
+    public WorkflowStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the lastExecutionTime property: Gets the last execution time.
+     *
+     * @return the lastExecutionTime value.
+     */
+    public OffsetDateTime lastExecutionTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastExecutionTime();
+    }
+
+    /**
+     * Get the nextExecutionTime property: Gets the next execution time.
+     *
+     * @return the nextExecutionTime value.
+     */
+    public OffsetDateTime nextExecutionTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextExecutionTime();
+    }
+
+    /**
+     * Get the recurrence property: Gets the workflow trigger recurrence.
+     *
+     * @return the recurrence value.
+     */
+    public WorkflowTriggerRecurrence recurrence() {
+        return this.innerProperties() == null ? null : this.innerProperties().recurrence();
+    }
+
+    /**
+     * Get the workflow property: Gets the reference to workflow.
+     *
+     * @return the workflow value.
+     */
+    public ResourceReference workflow() {
+        return this.innerProperties() == null ? null : this.innerProperties().workflow();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (recurrence() != null) {
-            recurrence().validate();
-        }
-        if (workflow() != null) {
-            workflow().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
