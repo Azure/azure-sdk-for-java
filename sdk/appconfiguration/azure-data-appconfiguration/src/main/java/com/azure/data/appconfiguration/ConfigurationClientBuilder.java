@@ -117,7 +117,6 @@ public final class ConfigurationClientBuilder implements
     ConfigurationTrait<ConfigurationClientBuilder>,
     EndpointTrait<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final SyncTokenPolicy DEFAULT_SYNC_TOKEN_POLICY = new SyncTokenPolicy();
 
     /**
      * The serializer to serialize an object into a string.
@@ -186,7 +185,7 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationClient buildClient() {
-        return new ConfigurationClient(buildInnerClient(), DEFAULT_SYNC_TOKEN_POLICY);
+        return new ConfigurationClient(buildInnerClient(), new SyncTokenPolicy());
     }
 
     /**
@@ -206,7 +205,7 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
-        return new ConfigurationAsyncClient(buildInnerClient(), DEFAULT_SYNC_TOKEN_POLICY);
+        return new ConfigurationAsyncClient(buildInnerClient(), new SyncTokenPolicy());
     }
 
     /**
@@ -268,7 +267,7 @@ public final class ConfigurationClientBuilder implements
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-        policies.add(DEFAULT_SYNC_TOKEN_POLICY);
+        policies.add(new SyncTokenPolicy());
         policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
