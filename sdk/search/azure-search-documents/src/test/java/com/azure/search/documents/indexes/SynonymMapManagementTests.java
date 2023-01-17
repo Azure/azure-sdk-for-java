@@ -62,7 +62,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
         }
 
         if (synonymMapDeleted) {
-            TestHelpers.sleepIfRunningAgainstService(5000);
+            TestHelpers.sleepIfRunningAgainstService(3000);
         }
     }
 
@@ -91,11 +91,14 @@ public class SynonymMapManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void createSynonymMapReturnsCorrectDefinitionSync() {
+    public void createAndGetSynonymMapReturnsCorrectDefinitionSync() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
         SynonymMap actualSynonymMap = client.createSynonymMap(expectedSynonymMap);
         synonymMapsToDelete.add(actualSynonymMap.getName());
 
+        assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
+
+        actualSynonymMap = client.getSynonymMap(expectedSynonymMap.getName());
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
     }
 
@@ -109,6 +112,10 @@ public class SynonymMapManagementTests extends SearchTestBase {
                 assertSynonymMapsEqual(expectedSynonymMap, actual);
             })
             .verifyComplete();
+
+        StepVerifier.create(asyncClient.getSynonymMap(expectedSynonymMap.getName()))
+            .assertNext(actual -> assertSynonymMapsEqual(expectedSynonymMap, actual))
+            .verifyComplete();
     }
 
     @Test
@@ -117,6 +124,9 @@ public class SynonymMapManagementTests extends SearchTestBase {
         SynonymMap actualSynonymMap = client.createSynonymMapWithResponse(expectedSynonymMap, Context.NONE).getValue();
         synonymMapsToDelete.add(actualSynonymMap.getName());
 
+        assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
+
+        actualSynonymMap = client.getSynonymMapWithResponse(expectedSynonymMap.getName(), Context.NONE).getValue();
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
     }
 
@@ -128,6 +138,10 @@ public class SynonymMapManagementTests extends SearchTestBase {
                 synonymMapsToDelete.add(response.getValue().getName());
                 assertSynonymMapsEqual(expectedSynonymMap, response.getValue());
             })
+            .verifyComplete();
+
+        StepVerifier.create(asyncClient.getSynonymMapWithResponse(expectedSynonymMap.getName()))
+            .assertNext(response -> assertSynonymMapsEqual(expectedSynonymMap, response.getValue()))
             .verifyComplete();
     }
 
@@ -151,49 +165,6 @@ public class SynonymMapManagementTests extends SearchTestBase {
                 HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
                 assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
             });
-    }
-
-    @Test
-    public void getSynonymMapReturnsCorrectDefinitionSync() {
-        SynonymMap expected = createTestSynonymMap();
-        client.createSynonymMap(expected);
-        synonymMapsToDelete.add(expected.getName());
-
-        SynonymMap actual = client.getSynonymMap(expected.getName());
-        assertSynonymMapsEqual(expected, actual);
-    }
-
-    @Test
-    public void getSynonymMapReturnsCorrectDefinitionAsync() {
-        SynonymMap expected = createTestSynonymMap();
-        asyncClient.createSynonymMap(expected).block();
-        synonymMapsToDelete.add(expected.getName());
-
-        StepVerifier.create(asyncClient.getSynonymMap(expected.getName()))
-            .assertNext(actual -> assertSynonymMapsEqual(expected, actual))
-            .verifyComplete();
-    }
-
-    @Test
-    public void getSynonymMapReturnsCorrectDefinitionWithResponseSync() {
-        SynonymMap expected = createTestSynonymMap();
-        client.createSynonymMap(expected);
-        synonymMapsToDelete.add(expected.getName());
-
-        SynonymMap actual = client.getSynonymMapWithResponse(expected.getName(), Context.NONE)
-            .getValue();
-        assertSynonymMapsEqual(expected, actual);
-    }
-
-    @Test
-    public void getSynonymMapReturnsCorrectDefinitionWithResponseAsync() {
-        SynonymMap expected = createTestSynonymMap();
-        asyncClient.createSynonymMap(expected).block();
-        synonymMapsToDelete.add(expected.getName());
-
-        StepVerifier.create(asyncClient.getSynonymMapWithResponse(expected.getName()))
-            .assertNext(response -> assertSynonymMapsEqual(expected, response.getValue()))
-            .verifyComplete();
     }
 
     @Test
@@ -522,24 +493,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void canCreateAndDeleteSynonymMapSync() {
-        SynonymMap synonymMap = createTestSynonymMap();
-        client.createSynonymMap(synonymMap);
-        client.deleteSynonymMap(synonymMap.getName());
-        assertThrows(HttpResponseException.class, () -> client.getSynonymMap(synonymMap.getName()));
-    }
-
-    @Test
-    public void canCreateAndDeleteSynonymMapAsync() {
-        SynonymMap synonymMap = createTestSynonymMap();
-        asyncClient.createSynonymMap(synonymMap).block();
-        asyncClient.deleteSynonymMap(synonymMap.getName()).block();
-
-        StepVerifier.create(asyncClient.getSynonymMap(synonymMap.getName())).verifyError(HttpResponseException.class);
-    }
-
-    @Test
-    public void canCreateAndListSynonymMapsSync() {
+    public void canCreateAndListSynonymMapsSyncAndAsync() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap();
 
@@ -556,30 +510,15 @@ public class SynonymMapManagementTests extends SearchTestBase {
             .collect(Collectors.toMap(SynonymMap::getName, sm -> sm));
 
         compareMaps(expectedSynonyms, actualSynonyms, (expected, actual) -> assertObjectEquals(expected, actual, true));
-    }
-
-    @Test
-    public void canCreateAndListSynonymMapsAsync() {
-        SynonymMap synonymMap1 = createTestSynonymMap();
-        SynonymMap synonymMap2 = createTestSynonymMap();
-
-        client.createSynonymMap(synonymMap1);
-        synonymMapsToDelete.add(synonymMap1.getName());
-        client.createSynonymMap(synonymMap2);
-        synonymMapsToDelete.add(synonymMap2.getName());
-
-        Map<String, SynonymMap> expectedSynonyms = new HashMap<>();
-        expectedSynonyms.put(synonymMap1.getName(), synonymMap1);
-        expectedSynonyms.put(synonymMap2.getName(), synonymMap2);
 
         StepVerifier.create(asyncClient.listSynonymMaps().collectMap(SynonymMap::getName))
-            .assertNext(actualSynonyms -> compareMaps(expectedSynonyms, actualSynonyms,
+            .assertNext(actualSynonyms2 -> compareMaps(expectedSynonyms, actualSynonyms2,
                 (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
     }
 
     @Test
-    public void canListSynonymMapsWithSelectedFieldSync() {
+    public void canListSynonymMapsWithSelectedFieldSyncAndAsync() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap();
 
@@ -593,24 +532,11 @@ public class SynonymMapManagementTests extends SearchTestBase {
 
         assertEquals(expectedSynonymNames.size(), actualSynonymNames.size());
         assertTrue(actualSynonymNames.containsAll(expectedSynonymNames));
-    }
-
-    @Test
-    public void canListSynonymMapsWithSelectedFieldAsync() {
-        SynonymMap synonymMap1 = createTestSynonymMap();
-        SynonymMap synonymMap2 = createTestSynonymMap();
-
-        client.createSynonymMap(synonymMap1);
-        synonymMapsToDelete.add(synonymMap1.getName());
-        client.createSynonymMap(synonymMap2);
-        synonymMapsToDelete.add(synonymMap2.getName());
-
-        Set<String> expectedSynonymNames = new HashSet<>(Arrays.asList(synonymMap1.getName(), synonymMap2.getName()));
 
         StepVerifier.create(asyncClient.listSynonymMapNames().collect(Collectors.toSet()))
-            .assertNext(actualSynonymNames -> {
-                assertEquals(expectedSynonymNames.size(), actualSynonymNames.size());
-                assertTrue(actualSynonymNames.containsAll(expectedSynonymNames));
+            .assertNext(actualSynonymNames2 -> {
+                assertEquals(expectedSynonymNames.size(), actualSynonymNames2.size());
+                assertTrue(actualSynonymNames2.containsAll(expectedSynonymNames));
             })
             .verifyComplete();
     }

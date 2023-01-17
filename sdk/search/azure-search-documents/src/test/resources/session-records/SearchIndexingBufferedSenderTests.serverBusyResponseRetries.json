@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "36bc6ea6-47a0-43cb-8ca9-6d2e066aecba",
+      "x-ms-client-request-id" : "5af089da-9c5f-493e-add0-eb894a5a318c",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -17,7 +17,7 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "af040579-9553-4a40-91c0-948d0a55d011",
+      "x-ms-client-request-id" : "9f3fada8-5224-49b1-91b5-044427e7d97e",
       "Content-Type" : "application/json"
     },
     "Response" : {

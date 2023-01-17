@@ -4,24 +4,24 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-empty-instance')/docs/$count?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "57df3a01-b571-401d-a168-8e07f38d9dc6"
+      "x-ms-client-request-id" : "3e6ccfbc-75dc-4b5c-979d-2a4dc9bf2c26"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "57df3a01-b571-401d-a168-8e07f38d9dc6",
+      "request-id" : "3e6ccfbc-75dc-4b5c-979d-2a4dc9bf2c26",
       "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 17:10:14 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:42 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "57df3a01-b571-401d-a168-8e07f38d9dc6",
-      "elapsed-time" : "63",
+      "client-request-id" : "3e6ccfbc-75dc-4b5c-979d-2a4dc9bf2c26",
+      "elapsed-time" : "65",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "4",
       "Body" : "0",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "57df3a01-b571-401d-a168-8e07f38d9dc6",
+      "x-ms-client-request-id" : "3e6ccfbc-75dc-4b5c-979d-2a4dc9bf2c26",
       "Content-Type" : "text/plain"
     },
     "Exception" : null

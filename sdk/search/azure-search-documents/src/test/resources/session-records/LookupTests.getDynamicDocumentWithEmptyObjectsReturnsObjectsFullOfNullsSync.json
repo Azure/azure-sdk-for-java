@@ -4,51 +4,51 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-lookup-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "37bfc294-97b8-4ea3-a7f5-f72734f1b8a5",
+      "x-ms-client-request-id" : "42fbf0d2-f0e3-45fe-baad-aebb16ce9535",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "37bfc294-97b8-4ea3-a7f5-f72734f1b8a5",
+      "request-id" : "42fbf0d2-f0e3-45fe-baad-aebb16ce9535",
       "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 17:25:40 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:22:53 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "37bfc294-97b8-4ea3-a7f5-f72734f1b8a5",
-      "elapsed-time" : "45",
+      "client-request-id" : "42fbf0d2-f0e3-45fe-baad-aebb16ce9535",
+      "elapsed-time" : "92",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "83",
-      "Body" : "{\"value\":[{\"key\":\"1989973333\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"value\":[{\"key\":\"2134570279\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "37bfc294-97b8-4ea3-a7f5-f72734f1b8a5",
+      "x-ms-client-request-id" : "42fbf0d2-f0e3-45fe-baad-aebb16ce9535",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-lookup-shared-hotel-instance')/docs('1989973333')?$select=HotelId%2CAddress&api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-lookup-shared-hotel-instance')/docs('2134570279')?$select=HotelId%2CAddress&api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "258bd859-d9d2-4fe2-8fa7-82689a0bdd14"
+      "x-ms-client-request-id" : "dba2c232-96dd-4b09-aeff-31c4b744db3c"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "258bd859-d9d2-4fe2-8fa7-82689a0bdd14",
+      "request-id" : "dba2c232-96dd-4b09-aeff-31c4b744db3c",
       "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 17:25:42 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:22:55 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "258bd859-d9d2-4fe2-8fa7-82689a0bdd14",
-      "elapsed-time" : "15",
+      "client-request-id" : "dba2c232-96dd-4b09-aeff-31c4b744db3c",
+      "elapsed-time" : "16",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "123",
-      "Body" : "{\"HotelId\":\"1989973333\",\"Address\":{\"StreetAddress\":null,\"City\":null,\"StateProvince\":null,\"PostalCode\":null,\"Country\":null}}",
+      "Body" : "{\"HotelId\":\"2134570279\",\"Address\":{\"StreetAddress\":null,\"City\":null,\"StateProvince\":null,\"PostalCode\":null,\"Country\":null}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "258bd859-d9d2-4fe2-8fa7-82689a0bdd14",
+      "x-ms-client-request-id" : "dba2c232-96dd-4b09-aeff-31c4b744db3c",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null

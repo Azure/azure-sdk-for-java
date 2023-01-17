@@ -82,21 +82,24 @@ public class IndexManagementTests extends SearchTestBase {
         }
 
         if (synonymMapsDeleted) {
-            sleepIfRunningAgainstService(5000);
+            sleepIfRunningAgainstService(3000);
         }
     }
 
     @Test
-    public void createIndexReturnsCorrectDefinitionSync() {
+    public void createAndGetIndexReturnsCorrectDefinitionSync() {
         SearchIndex index = createTestIndex(null);
         SearchIndex createdIndex = client.createIndex(index);
         indexesToDelete.add(createdIndex.getName());
 
         assertObjectEquals(index, createdIndex, true, "etag");
+
+        SearchIndex getIndex = client.getIndex(index.getName());
+        assertObjectEquals(index, getIndex, true, "etag");
     }
 
     @Test
-    public void createIndexReturnsCorrectDefinitionAsync() {
+    public void createAndGetIndexReturnsCorrectDefinitionAsync() {
         SearchIndex index = createTestIndex(null);
 
         StepVerifier.create(asyncClient.createIndex(index))
@@ -105,19 +108,26 @@ public class IndexManagementTests extends SearchTestBase {
                 assertObjectEquals(index, createdIndex, true, "etag");
             })
             .verifyComplete();
+
+        StepVerifier.create(asyncClient.getIndex(index.getName()))
+            .assertNext(getIndex -> assertObjectEquals(index, getIndex, true, "etag"))
+            .verifyComplete();
     }
 
     @Test
-    public void createIndexReturnsCorrectDefinitionWithResponseSync() {
+    public void createAndGetIndexReturnsCorrectDefinitionWithResponseSync() {
         SearchIndex index = createTestIndex("hotel2");
         Response<SearchIndex> createIndexResponse = client.createIndexWithResponse(index, Context.NONE);
         indexesToDelete.add(createIndexResponse.getValue().getName());
 
         assertObjectEquals(index, createIndexResponse.getValue(), true, "etag");
+
+        Response<SearchIndex> getIndexResponse = client.getIndexWithResponse(index.getName(), Context.NONE);
+        assertObjectEquals(index, getIndexResponse.getValue(), true, "etag");
     }
 
     @Test
-    public void createIndexReturnsCorrectDefinitionWithResponseAsync() {
+    public void createAndGetIndexReturnsCorrectDefinitionWithResponseAsync() {
         SearchIndex index = createTestIndex("hotel2");
 
         StepVerifier.create(asyncClient.createIndexWithResponse(index))
@@ -126,6 +136,10 @@ public class IndexManagementTests extends SearchTestBase {
 
                 assertObjectEquals(index, response.getValue(), true, "etag");
             })
+            .verifyComplete();
+
+        StepVerifier.create(asyncClient.getIndexWithResponse(index.getName()))
+            .assertNext(response -> assertObjectEquals(index, response.getValue(), true, "etag"))
             .verifyComplete();
     }
 
@@ -196,48 +210,6 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void getIndexReturnsCorrectDefinitionSync() {
-        SearchIndex index = createTestIndex(null);
-        client.createIndex(index);
-        indexesToDelete.add(index.getName());
-
-        SearchIndex createdIndex = client.getIndex(index.getName());
-        assertObjectEquals(index, createdIndex, true, "etag");
-    }
-
-    @Test
-    public void getIndexReturnsCorrectDefinitionAsync() {
-        SearchIndex index = createTestIndex(null);
-        asyncClient.createIndex(index).block();
-        indexesToDelete.add(index.getName());
-
-        StepVerifier.create(asyncClient.getIndex(index.getName()))
-            .assertNext(createdIndex -> assertObjectEquals(index, createdIndex, true, "etag"))
-            .verifyComplete();
-    }
-
-    @Test
-    public void getIndexReturnsCorrectDefinitionWithResponseSync() {
-        SearchIndex index = createTestIndex(null);
-        client.createIndex(index);
-        indexesToDelete.add(index.getName());
-
-        Response<SearchIndex> getIndexResponse = client.getIndexWithResponse(index.getName(), Context.NONE);
-        assertObjectEquals(index, getIndexResponse.getValue(), true, "etag");
-    }
-
-    @Test
-    public void getIndexReturnsCorrectDefinitionWithResponseAsync() {
-        SearchIndex index = createTestIndex(null);
-        asyncClient.createIndex(index).block();
-        indexesToDelete.add(index.getName());
-
-        StepVerifier.create(asyncClient.getIndexWithResponse(index.getName()))
-            .assertNext(response -> assertObjectEquals(index, response.getValue(), true, "etag"))
-            .verifyComplete();
-    }
-
-    @Test
     public void getIndexThrowsOnNotFoundSync() {
         assertHttpResponseException(() -> client.getIndex("thisindexdoesnotexist"), HttpURLConnection.HTTP_NOT_FOUND,
             "No index with the name 'thisindexdoesnotexist' was found in the service");
@@ -260,8 +232,8 @@ public class IndexManagementTests extends SearchTestBase {
 
         // Update the resource, the eTag will be changed
         SearchIndex updatedIndex = client.createOrUpdateIndexWithResponse(
-                originalIndex.setCorsOptions(new CorsOptions(Collections.singletonList("https://test.com/"))), false, false,
-                Context.NONE)
+                originalIndex.setCorsOptions(new CorsOptions(Collections.singletonList("https://test.com/"))), false,
+                false, Context.NONE)
             .getValue();
 
         HttpResponseException ex = assertThrows(HttpResponseException.class,
@@ -369,25 +341,7 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void canCreateAndDeleteIndexSync() {
-        SearchIndex index = createTestIndex(null);
-        client.createIndex(index);
-        client.deleteIndex(index.getName());
-
-        assertThrows(HttpResponseException.class, () -> client.getIndex(index.getName()));
-    }
-
-    @Test
-    public void canCreateAndDeleteIndexAsync() {
-        SearchIndex index = createTestIndex(null);
-        asyncClient.createIndex(index).block();
-        asyncClient.deleteIndex(index.getName()).block();
-
-        StepVerifier.create(asyncClient.getIndex(index.getName())).verifyError(HttpResponseException.class);
-    }
-
-    @Test
-    public void canCreateAndListIndexesSync() {
+    public void canCreateAndListIndexesSyncAndAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
 
@@ -404,30 +358,15 @@ public class IndexManagementTests extends SearchTestBase {
             .collect(Collectors.toMap(SearchIndex::getName, si -> si));
 
         compareMaps(expectedIndexes, actualIndexes, (expected, actual) -> assertObjectEquals(expected, actual, true));
-    }
-
-    @Test
-    public void canCreateAndListIndexesAsync() {
-        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
-        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
-
-        asyncClient.createIndex(index1).block();
-        indexesToDelete.add(index1.getName());
-        asyncClient.createIndex(index2).block();
-        indexesToDelete.add(index2.getName());
-
-        Map<String, SearchIndex> expectedIndexes = new HashMap<>();
-        expectedIndexes.put(index1.getName(), index1);
-        expectedIndexes.put(index2.getName(), index2);
 
         StepVerifier.create(asyncClient.listIndexes().collectMap(SearchIndex::getName))
-            .assertNext(actualIndexes -> compareMaps(expectedIndexes, actualIndexes,
+            .assertNext(actualIndexes2 -> compareMaps(expectedIndexes, actualIndexes2,
                 (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
     }
 
     @Test
-    public void canListIndexesWithSelectedFieldSync() {
+    public void canListIndexesWithSelectedFieldSyncAndAsync() {
         SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
         SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
 
@@ -442,24 +381,11 @@ public class IndexManagementTests extends SearchTestBase {
 
         assertEquals(expectedIndexNames.size(), actualIndexNames.size());
         assertTrue(actualIndexNames.containsAll(expectedIndexNames));
-    }
-
-    @Test
-    public void canListIndexesWithSelectedFieldAsync() {
-        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
-        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
-
-        asyncClient.createIndex(index1).block();
-        indexesToDelete.add(index1.getName());
-        asyncClient.createIndex(index2).block();
-        indexesToDelete.add(index2.getName());
-
-        Set<String> expectedIndexNames = new HashSet<>(Arrays.asList(index1.getName(), index2.getName()));
 
         StepVerifier.create(asyncClient.listIndexNames().collect(Collectors.toSet()))
-            .assertNext(actualIndexNames -> {
-                assertEquals(expectedIndexNames.size(), actualIndexNames.size());
-                assertTrue(actualIndexNames.containsAll(expectedIndexNames));
+            .assertNext(actualIndexNames2 -> {
+                assertEquals(expectedIndexNames.size(), actualIndexNames2.size());
+                assertTrue(actualIndexNames2.containsAll(expectedIndexNames));
             })
             .verifyComplete();
     }
@@ -749,11 +675,6 @@ public class IndexManagementTests extends SearchTestBase {
         SearchIndex actual = client.createOrUpdateIndex(expected);
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
-
-        expected = createTestIndex("hotel1");
-        actual = client.createOrUpdateIndex(expected);
-        indexesToDelete.add(actual.getName());
-        assertObjectEquals(expected, actual, true, "etag");
     }
 
     @Test
@@ -769,13 +690,6 @@ public class IndexManagementTests extends SearchTestBase {
                 assertObjectEquals(indexes.getT1(), indexes.getT2(), true, "etag");
             })
             .verifyComplete();
-
-        StepVerifier.create(createAndValidateFunction.apply("hotel1"))
-            .assertNext(indexes -> {
-                indexesToDelete.add(indexes.getT2().getName());
-                assertObjectEquals(indexes.getT1(), indexes.getT2(), true, "etag");
-            })
-            .verifyComplete();
     }
 
     @Test
@@ -783,11 +697,6 @@ public class IndexManagementTests extends SearchTestBase {
         SearchIndex expected = createTestIndex(null);
 
         SearchIndex actual = client.createOrUpdateIndexWithResponse(expected, false, false, Context.NONE).getValue();
-        indexesToDelete.add(actual.getName());
-        assertObjectEquals(expected, actual, true, "etag");
-
-        expected = createTestIndex("hotel1");
-        actual = client.createOrUpdateIndexWithResponse(expected, false, false, Context.NONE).getValue();
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
     }
@@ -801,13 +710,6 @@ public class IndexManagementTests extends SearchTestBase {
         };
 
         StepVerifier.create(createAndValidateFunction.apply(null))
-            .assertNext(indexes -> {
-                indexesToDelete.add(indexes.getT2().getName());
-                assertObjectEquals(indexes.getT1(), indexes.getT2(), true, "etag");
-            })
-            .verifyComplete();
-
-        StepVerifier.create(createAndValidateFunction.apply("hotel1"))
             .assertNext(indexes -> {
                 indexesToDelete.add(indexes.getT2().getName());
                 assertObjectEquals(indexes.getT1(), indexes.getT2(), true, "etag");
@@ -948,6 +850,11 @@ public class IndexManagementTests extends SearchTestBase {
         SearchIndexStatistics indexStatistics = client.getIndexStatistics(index.getName());
         assertEquals(0, indexStatistics.getDocumentCount());
         assertEquals(0, indexStatistics.getStorageSize());
+
+        Response<SearchIndexStatistics> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
+            Context.NONE);
+        assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
+        assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
     }
 
     @Test
@@ -962,25 +869,6 @@ public class IndexManagementTests extends SearchTestBase {
                 assertEquals(0, indexStatistics.getStorageSize());
             })
             .verifyComplete();
-    }
-
-    @Test
-    public void canCreateAndGetIndexStatsWithResponseSync() {
-        SearchIndex index = createTestIndex(null);
-        client.createOrUpdateIndex(index);
-        indexesToDelete.add(index.getName());
-
-        Response<SearchIndexStatistics> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
-            Context.NONE);
-        assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
-        assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
-    }
-
-    @Test
-    public void canCreateAndGetIndexStatsWithResponseAsync() {
-        SearchIndex index = createTestIndex(null);
-        asyncClient.createOrUpdateIndex(index).block();
-        indexesToDelete.add(index.getName());
 
         StepVerifier.create(asyncClient.getIndexStatisticsWithResponse(index.getName()))
             .assertNext(indexStatisticsResponse -> {

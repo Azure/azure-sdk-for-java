@@ -4,51 +4,51 @@
     "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e9a59354-ef6c-415a-b96b-299dd4e3f23e",
+      "x-ms-client-request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e9a59354-ef6c-415a-b96b-299dd4e3f23e",
+      "request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
       "StatusCode" : "201",
-      "Date" : "Sat, 14 Jan 2023 14:50:03 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:45:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "e9a59354-ef6c-415a-b96b-299dd4e3f23e",
-      "ETag" : "W/\"0x8DAF63E9F51EB62\"",
-      "elapsed-time" : "42",
+      "client-request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
+      "ETag" : "W/\"0x8DAF8CBD7BEAF31\"",
+      "elapsed-time" : "44",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "847",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF63E9F51EB62\\\"\",\"name\":\"custom-skillset06655e391f04fd93a4f\",\"description\":\"Skillset for testing custom skillsets\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Custom.WebApiSkill\",\"name\":\"webapi-skill\",\"description\":\"Calls an Azure function, which in turn calls Bing Entity Search\",\"context\":null,\"uri\":\"https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo\",\"httpMethod\":\"POST\",\"timeout\":null,\"batchSize\":null,\"degreeOfParallelism\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}],\"httpHeaders\":{\"Ocp-Apim-Subscription-Key\":\"foobar\"}}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBD7BEAF31\\\"\",\"name\":\"custom-skillset92575c8cfd6bad98a47\",\"description\":\"Skillset for testing custom skillsets\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Custom.WebApiSkill\",\"name\":\"webapi-skill\",\"description\":\"Calls an Azure function, which in turn calls Bing Entity Search\",\"context\":null,\"uri\":\"https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo\",\"httpMethod\":\"POST\",\"timeout\":null,\"batchSize\":null,\"degreeOfParallelism\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}],\"httpHeaders\":{\"Ocp-Apim-Subscription-Key\":\"foobar\"}}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e9a59354-ef6c-415a-b96b-299dd4e3f23e",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('custom-skillset06655e391f04fd93a4f')?api-version=2021-04-30-Preview",
+      "x-ms-client-request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
+      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('custom-skillset92575c8cfd6bad98a47')?api-version=2021-04-30-Preview",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('custom-skillset06655e391f04fd93a4f')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('custom-skillset92575c8cfd6bad98a47')?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f5c51e35-8ec3-4ebc-b76d-6e6e26911469"
+      "x-ms-client-request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "f5c51e35-8ec3-4ebc-b76d-6e6e26911469",
-      "elapsed-time" : "24",
+      "client-request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67",
+      "elapsed-time" : "27",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f5c51e35-8ec3-4ebc-b76d-6e6e26911469",
+      "request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67",
       "StatusCode" : "204",
-      "Date" : "Sat, 14 Jan 2023 14:50:03 GMT",
-      "x-ms-client-request-id" : "f5c51e35-8ec3-4ebc-b76d-6e6e26911469"
+      "Date" : "Tue, 17 Jan 2023 20:45:59 GMT",
+      "x-ms-client-request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67"
     },
     "Exception" : null
   } ],
-  "variables" : [ "custom-skillset06655e391f04fd93a4f" ]
+  "variables" : [ "custom-skillset92575c8cfd6bad98a47" ]
 }

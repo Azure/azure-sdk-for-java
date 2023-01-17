@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ea0fe19a-3d20-4f59-b6c9-6feb3636f005",
+      "x-ms-client-request-id" : "f1264296-3ce0-4e5e-8545-732047b9d821",
       "Content-Type" : "application/json"
     },
     "Response" : {

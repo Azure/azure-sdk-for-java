@@ -262,12 +262,12 @@ public class CustomAnalyzerTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        LEXICAL_ANALYZER_NAMES.stream()
+        LEXICAL_ANALYZER_NAMES.parallelStream()
             .map(an -> new AnalyzeTextOptions("One two", an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
             }));
 
-        LEXICAL_TOKENIZER_NAMES.stream()
+        LEXICAL_TOKENIZER_NAMES.parallelStream()
             .map(tn -> new AnalyzeTextOptions("One two", tn))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
             }));
@@ -279,11 +279,11 @@ public class CustomAnalyzerTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        LEXICAL_ANALYZER_NAMES.stream()
+        LEXICAL_ANALYZER_NAMES.parallelStream()
             .map(an -> new AnalyzeTextOptions("One two", an))
             .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
 
-        LEXICAL_TOKENIZER_NAMES.stream()
+        LEXICAL_TOKENIZER_NAMES.parallelStream()
             .map(tn -> new AnalyzeTextOptions("One two", tn))
             .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
     }
@@ -442,13 +442,17 @@ public class CustomAnalyzerTests extends SearchTestBase {
     @Test
     public void canUseAllRegexFlagsTokenizerSync() {
         createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(generateName()).setPattern(".*").setFlags(REGEX_FLAGS).setGroup(0)));
+            .setTokenizers(new PatternTokenizer(generateName()).setPattern(".*").setFlags(REGEX_FLAGS).setGroup(0),
+                new PatternTokenizer(generateName()).setPattern(""),
+                new PatternTokenizer(generateName()).setGroup(null)));
     }
 
     @Test
     public void canUseAllRegexFlagsTokenizerAsync() {
         createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(generateName()).setPattern(".*").setFlags(REGEX_FLAGS).setGroup(0)));
+            .setTokenizers(new PatternTokenizer(generateName()).setPattern(".*").setFlags(REGEX_FLAGS).setGroup(0),
+                new PatternTokenizer(generateName()).setPattern(""),
+                new PatternTokenizer(generateName()).setGroup(null)));
     }
 
     @Test
@@ -459,18 +463,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
     @Test
     public void canUseAllRegexFlagsEmptyTokenizerAsync() {
         createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null).setTokenizers(new ArrayList<>()));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyPatternTokenizerSync() {
-        createAndValidateIndexSync(searchIndexClient,
-            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern("")));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyPatternTokenizerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient,
-            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern("")));
     }
 
     @Test
@@ -488,18 +480,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
         StepVerifier.create(searchIndexAsyncClient.createIndex(index))
             .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
                 "Values of property \\\"flags\\\" must belong to the set of allowed values"));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullGroupTokenizerSync() {
-        createAndValidateIndexSync(searchIndexClient,
-            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setGroup(null)));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullGroupTokenizerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient,
-            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setGroup(null)));
     }
 
     @Test

@@ -4,27 +4,27 @@
     "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "1fc2c26b-c2aa-48dd-8dec-52b3a400e89d",
+      "x-ms-client-request-id" : "64d78fff-d77d-43bb-8997-3f4b9585ed77",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1fc2c26b-c2aa-48dd-8dec-52b3a400e89d",
+      "request-id" : "64d78fff-d77d-43bb-8997-3f4b9585ed77",
       "StatusCode" : "201",
-      "Date" : "Fri, 13 Jan 2023 22:32:47 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:37:55 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "1fc2c26b-c2aa-48dd-8dec-52b3a400e89d",
-      "ETag" : "W/\"0x8DAF5B6190B2DC8\"",
-      "elapsed-time" : "26",
+      "client-request-id" : "64d78fff-d77d-43bb-8997-3f4b9585ed77",
+      "ETag" : "W/\"0x8DAF8CAB6B06744\"",
+      "elapsed-time" : "25",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "223",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8DAF5B6190B2DC8\\\"\",\"name\":\"names79975814bf54630b\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\",\"encryptionKey\":null}",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CAB6B06744\\\"\",\"name\":\"names673934f601b064c1\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "1fc2c26b-c2aa-48dd-8dec-52b3a400e89d",
-      "Location" : "https://alzimmer-basic.search.windows.net/synonymmaps('names79975814bf54630b')?api-version=2021-04-30-Preview",
+      "x-ms-client-request-id" : "64d78fff-d77d-43bb-8997-3f4b9585ed77",
+      "Location" : "https://alzimmer-basic.search.windows.net/synonymmaps('names673934f601b064c1')?api-version=2021-04-30-Preview",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
@@ -33,49 +33,49 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "53559863-b219-43ff-80c2-d1af533d3b33",
+      "x-ms-client-request-id" : "9d33212b-dcd2-41d2-bf34-2a25bfb758b9",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "53559863-b219-43ff-80c2-d1af533d3b33",
+      "request-id" : "9d33212b-dcd2-41d2-bf34-2a25bfb758b9",
       "StatusCode" : "201",
-      "Date" : "Fri, 13 Jan 2023 22:32:49 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:37:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "53559863-b219-43ff-80c2-d1af533d3b33",
-      "ETag" : "W/\"0x8DAF5B619C70F18\"",
-      "elapsed-time" : "768",
+      "client-request-id" : "9d33212b-dcd2-41d2-bf34-2a25bfb758b9",
+      "ETag" : "W/\"0x8DAF8CAB73FE7E2\"",
+      "elapsed-time" : "878",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "937",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF5B619C70F18\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[\"names79975814bf54630b\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CAB73FE7E2\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[\"names673934f601b064c1\"]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "53559863-b219-43ff-80c2-d1af533d3b33",
+      "x-ms-client-request-id" : "9d33212b-dcd2-41d2-bf34-2a25bfb758b9",
       "Location" : "https://alzimmer-basic.search.windows.net/indexes('hotels')?api-version=2021-04-30-Preview",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('names79975814bf54630b')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('names673934f601b064c1')?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "271b9ff9-ecc7-4f98-a5e0-3ff494935cb6"
+      "x-ms-client-request-id" : "9fd9971e-77c7-4272-a6be-ed3c6eaabce9"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "271b9ff9-ecc7-4f98-a5e0-3ff494935cb6",
-      "elapsed-time" : "15",
+      "client-request-id" : "9fd9971e-77c7-4272-a6be-ed3c6eaabce9",
+      "elapsed-time" : "13",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "271b9ff9-ecc7-4f98-a5e0-3ff494935cb6",
+      "request-id" : "9fd9971e-77c7-4272-a6be-ed3c6eaabce9",
       "StatusCode" : "204",
-      "Date" : "Fri, 13 Jan 2023 22:32:49 GMT",
-      "x-ms-client-request-id" : "271b9ff9-ecc7-4f98-a5e0-3ff494935cb6"
+      "Date" : "Tue, 17 Jan 2023 20:37:56 GMT",
+      "x-ms-client-request-id" : "9fd9971e-77c7-4272-a6be-ed3c6eaabce9"
     },
     "Exception" : null
   }, {
@@ -83,22 +83,22 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes('hotels')?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "81f7a827-5c09-40e5-8cd0-107074d9592f"
+      "x-ms-client-request-id" : "7567e419-0902-4cf8-a36c-65ffcfe4b821"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "81f7a827-5c09-40e5-8cd0-107074d9592f",
-      "elapsed-time" : "196",
+      "client-request-id" : "7567e419-0902-4cf8-a36c-65ffcfe4b821",
+      "elapsed-time" : "173",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "81f7a827-5c09-40e5-8cd0-107074d9592f",
+      "request-id" : "7567e419-0902-4cf8-a36c-65ffcfe4b821",
       "StatusCode" : "204",
-      "Date" : "Fri, 13 Jan 2023 22:32:49 GMT",
-      "x-ms-client-request-id" : "81f7a827-5c09-40e5-8cd0-107074d9592f"
+      "Date" : "Tue, 17 Jan 2023 20:37:56 GMT",
+      "x-ms-client-request-id" : "7567e419-0902-4cf8-a36c-65ffcfe4b821"
     },
     "Exception" : null
   } ],
-  "variables" : [ "names79975814bf54630b" ]
+  "variables" : [ "names673934f601b064c1" ]
 }

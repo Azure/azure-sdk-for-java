@@ -243,7 +243,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.close();
 
-        sleepIfRunningAgainstService((long) (15000 * 1.5));
+        sleepIfRunningAgainstService(10000);
 
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());
@@ -289,7 +289,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.close();
 
-        sleepIfRunningAgainstService((long) (15000 * 1.5));
+        sleepIfRunningAgainstService(10000);
 
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());

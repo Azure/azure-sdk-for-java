@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SuggestTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
     private static final String HOTEL_INDEX_NAME = "azsearch-suggest-shared-hotel-instance";
-    private static final String BOOKS_INDEX_NAME = "azsearch-suggest-shared-hotel-instance";
+    private static final String BOOKS_INDEX_NAME = "azsearch-suggest-shared-books-instance";
 
     private static SearchIndexClient searchIndexClient;
 

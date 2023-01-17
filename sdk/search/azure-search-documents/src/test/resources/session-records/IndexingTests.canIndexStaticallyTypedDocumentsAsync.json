@@ -4,103 +4,103 @@
     "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs/search.index?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "02b16c56-71c7-4f08-acd8-ba430a9d6c27",
+      "x-ms-client-request-id" : "9d5f339c-4a94-4eb9-9bb1-87364556112f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "02b16c56-71c7-4f08-acd8-ba430a9d6c27",
+      "request-id" : "9d5f339c-4a94-4eb9-9bb1-87364556112f",
       "StatusCode" : "207",
-      "Date" : "Tue, 17 Jan 2023 17:10:14 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:42 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "02b16c56-71c7-4f08-acd8-ba430a9d6c27",
-      "elapsed-time" : "100",
+      "client-request-id" : "9d5f339c-4a94-4eb9-9bb1-87364556112f",
+      "elapsed-time" : "58",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "393",
-      "Body" : "{\"value\":[{\"key\":\"1147329610\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"randomId\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"nonExistingHotel\",\"status\":false,\"errorMessage\":\"Document not found.\",\"statusCode\":404},{\"key\":\"1858908011\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"-961516202\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"value\":[{\"key\":\"1395501610\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"randomId\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"nonExistingHotel\",\"status\":false,\"errorMessage\":\"Document not found.\",\"statusCode\":404},{\"key\":\"-285709492\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"1099586157\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "02b16c56-71c7-4f08-acd8-ba430a9d6c27",
+      "x-ms-client-request-id" : "9d5f339c-4a94-4eb9-9bb1-87364556112f",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs('1147329610')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs('1395501610')?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "1f63e73f-0fb1-4f82-bab0-25e1bd2b7dfd"
+      "x-ms-client-request-id" : "6671b184-9f3f-4bfd-aea6-821d4cf2f415"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1f63e73f-0fb1-4f82-bab0-25e1bd2b7dfd",
+      "request-id" : "6671b184-9f3f-4bfd-aea6-821d4cf2f415",
       "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 17:10:14 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:42 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "1f63e73f-0fb1-4f82-bab0-25e1bd2b7dfd",
+      "client-request-id" : "6671b184-9f3f-4bfd-aea6-821d4cf2f415",
       "elapsed-time" : "38",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1074",
-      "Body" : "{\"HotelId\":\"1147329610\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
+      "Body" : "{\"HotelId\":\"1395501610\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "1f63e73f-0fb1-4f82-bab0-25e1bd2b7dfd",
+      "x-ms-client-request-id" : "6671b184-9f3f-4bfd-aea6-821d4cf2f415",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs('-961516202')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs('1099586157')?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "aaa87ad6-7bfc-4d35-8c14-d6fce304f496"
+      "x-ms-client-request-id" : "23c92d83-4725-4a94-b710-08d712e2ee47"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "aaa87ad6-7bfc-4d35-8c14-d6fce304f496",
+      "request-id" : "23c92d83-4725-4a94-b710-08d712e2ee47",
       "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 17:10:14 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:42 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "aaa87ad6-7bfc-4d35-8c14-d6fce304f496",
-      "elapsed-time" : "39",
+      "client-request-id" : "23c92d83-4725-4a94-b710-08d712e2ee47",
+      "elapsed-time" : "14",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1074",
-      "Body" : "{\"HotelId\":\"-961516202\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
+      "Body" : "{\"HotelId\":\"1099586157\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "aaa87ad6-7bfc-4d35-8c14-d6fce304f496",
+      "x-ms-client-request-id" : "23c92d83-4725-4a94-b710-08d712e2ee47",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs('1858908011')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-indexing-shared-hotel-instance')/docs('-285709492')?api-version=2021-04-30-Preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "bf60edfe-bd88-43d0-9004-dfee34bb81a6"
+      "x-ms-client-request-id" : "1f66c490-5846-4700-9e5f-92cc857c61b2"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bf60edfe-bd88-43d0-9004-dfee34bb81a6",
+      "request-id" : "1f66c490-5846-4700-9e5f-92cc857c61b2",
       "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 17:10:15 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:42 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "bf60edfe-bd88-43d0-9004-dfee34bb81a6",
-      "elapsed-time" : "16",
+      "client-request-id" : "1f66c490-5846-4700-9e5f-92cc857c61b2",
+      "elapsed-time" : "37",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1074",
-      "Body" : "{\"HotelId\":\"1858908011\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
+      "Body" : "{\"HotelId\":\"-285709492\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"1 Microsoft Way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"United States\"},\"Rooms\":[]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "bf60edfe-bd88-43d0-9004-dfee34bb81a6",
+      "x-ms-client-request-id" : "1f66c490-5846-4700-9e5f-92cc857c61b2",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
