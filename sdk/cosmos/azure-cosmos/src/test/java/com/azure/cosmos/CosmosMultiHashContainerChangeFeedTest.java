@@ -594,15 +594,13 @@ public class CosmosMultiHashContainerChangeFeedTest extends TestSuiteBase {
                 10)
             .map(CosmosItemResponse::getItem).collectList().block();
 
+        // Logic below is how we create the partitionKey keyObject within the partitionKeyBuilder for hierarchical pks
         for (ObjectNode doc : insertedDocs) {
             String pkToUse = new StringBuilder()
                 .append(doc.get("mypk").textValue())
                 .append("=")
                 .append(doc.get("prop").textValue())
                 .toString();
-//            PartitionKey pk = new PartitionKeyBuilder()
-//                .add(doc.get("mypk").textValue())
-//                .add(doc.get("prop").textValue()).build();
             partitionKeyToDocuments.put(pkToUse, doc);
         }
         logger.info("FINISHED INSERT");

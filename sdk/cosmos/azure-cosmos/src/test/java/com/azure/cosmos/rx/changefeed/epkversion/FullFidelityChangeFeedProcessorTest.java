@@ -192,6 +192,130 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void fullFidelityChangeFeedProcessorStartFromNowSubpartitioned() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollectionSubpartitioned(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .options(changeFeedProcessorOptions)
+                .hostName(hostName)
+                .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (ChangeFeedProcessorItem item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+                logger.info("Starting ChangeFeed processor");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                logger.info("Finished starting ChangeFeed processor");
+
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                logger.info("Set up read feed documents");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                logger.info("Validating changes now");
+
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                // Wait for the feed processor to shut down.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+
+    // Using this test to verify basic functionality
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void fullFidelityChangeFeedProcessorStartFromContinuationTokenSubpartitioned() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollectionSubpartitioned(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .options(changeFeedProcessorOptions)
+                .hostName(hostName)
+                .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (ChangeFeedProcessorItem item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+                logger.info("Starting ChangeFeed processor");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                logger.info("Finished starting ChangeFeed processor");
+
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                logger.info("Set up read feed documents");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                logger.info("Validating changes now");
+
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                // Wait for the feed processor to shut down.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
     @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void getCurrentState() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
@@ -977,6 +1101,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     private CosmosAsyncContainer createFeedCollection(int provisionedThroughput) {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
         return createCollection(createdDatabase, getCollectionDefinitionWithFullFidelity(), optionsFeedCollection, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createFeedCollectionSubpartitioned(int provisionedThroughput) {
+        CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
+        return createCollection(createdDatabase, getMultiHashCollectionDefinitionFFCF(UUID.randomUUID().toString()), optionsFeedCollection, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseCollection(int provisionedThroughput) {

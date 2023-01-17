@@ -553,6 +553,18 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return new CosmosContainerProperties(collectionId, partitionKeyDef);
     }
 
+    static protected CosmosContainerProperties getMultiHashCollectionDefinitionFFCF(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/id");
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        return new CosmosContainerProperties(collectionId, partitionKeyDef);
+    }
+
     static protected CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
         return new CosmosContainerProperties(collectionId, partitionKeyDefinition);
     }
