@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LogzOrganizationProperties model. */
 @Fluent
 public final class LogzOrganizationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogzOrganizationProperties.class);
-
     /*
      * Name of the Logz organization.
      */
@@ -37,6 +33,10 @@ public final class LogzOrganizationProperties {
      */
     @JsonProperty(value = "singleSignOnUrl")
     private String singleSignOnUrl;
+
+    /** Creates an instance of LogzOrganizationProperties class. */
+    public LogzOrganizationProperties() {
+    }
 
     /**
      * Get the companyName property: Name of the Logz organization.

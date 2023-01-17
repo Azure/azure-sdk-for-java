@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Jobs List. */
 public final class JobsListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-state-ne.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-list-all-filter-by-state-ne.json
      */
     /**
      * Sample code: Lists Jobs for the Transform filter by state not equal.
@@ -26,11 +24,11 @@ public final class JobsListSamples {
                 "exampleTransform",
                 "properties/state ne Microsoft.Media.JobState'processing'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-state-eq.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-list-all-filter-by-state-eq.json
      */
     /**
      * Sample code: Lists Jobs for the Transform filter by state equal.
@@ -47,11 +45,11 @@ public final class JobsListSamples {
                 "exampleTransform",
                 "properties/state eq Microsoft.Media.JobState'Processing'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-name.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-list-all-filter-by-name.json
      */
     /**
      * Sample code: Lists Jobs for the Transform filter by name.
@@ -68,11 +66,11 @@ public final class JobsListSamples {
                 "exampleTransform",
                 "name eq 'job1' or name eq 'job2'",
                 "name",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-lastmodified.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-list-all-filter-by-lastmodified.json
      */
     /**
      * Sample code: Lists Jobs for the Transform filter by lastmodified.
@@ -87,14 +85,14 @@ public final class JobsListSamples {
                 "contosoresources",
                 "contosomedia",
                 "exampleTransform",
-                "properties/lastmodified ge 2021-11-01T00:00:10.0000000Z and properties/lastmodified le"
-                    + " 2021-11-01T00:00:20.0000000Z",
+                "properties/lastmodified ge 2021-06-01T00:00:10.0000000Z and properties/lastmodified le"
+                    + " 2021-06-01T00:00:20.0000000Z",
                 "properties/lastmodified desc",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-created.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-list-all-filter-by-created.json
      */
     /**
      * Sample code: Lists Jobs for the Transform filter by created.
@@ -109,14 +107,14 @@ public final class JobsListSamples {
                 "contosoresources",
                 "contosomedia",
                 "exampleTransform",
-                "properties/created ge 2021-11-01T00:00:10.0000000Z and properties/created le"
-                    + " 2021-11-01T00:00:20.0000000Z",
+                "properties/created ge 2021-06-01T00:00:10.0000000Z and properties/created le"
+                    + " 2021-06-01T00:00:20.0000000Z",
                 "properties/created",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-list-all.json
      */
     /**
      * Sample code: Lists all of the Jobs for the Transform.
@@ -125,11 +123,13 @@ public final class JobsListSamples {
      */
     public static void listsAllOfTheJobsForTheTransform(
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.jobs().list("contosoresources", "contosomedia", "exampleTransform", null, null, Context.NONE);
+        manager
+            .jobs()
+            .list("contosoresources", "contosomedia", "exampleTransform", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-list-all-filter-by-name-and-state.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-list-all-filter-by-name-and-state.json
      */
     /**
      * Sample code: Lists Jobs for the Transform filter by name and state.
@@ -146,6 +146,6 @@ public final class JobsListSamples {
                 "exampleTransform",
                 "name eq 'job3' and properties/state eq Microsoft.Media.JobState'finished'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -20,6 +20,21 @@ public interface ControllersClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified dnc controller along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DelegatedControllerInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets details about the specified dnc controller.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,21 +42,6 @@ public interface ControllersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DelegatedControllerInner getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Gets details about the specified dnc controller.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc controller.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DelegatedControllerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Create a dnc controller.
@@ -52,9 +52,9 @@ public interface ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a DNC controller.
+     * @return the {@link SyncPoller} for polling of represents an instance of a DNC controller.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DelegatedControllerInner>, DelegatedControllerInner> beginCreate(
         String resourceGroupName, String resourceName, DelegatedControllerInner parameters);
 
@@ -68,9 +68,9 @@ public interface ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a DNC controller.
+     * @return the {@link SyncPoller} for polling of represents an instance of a DNC controller.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DelegatedControllerInner>, DelegatedControllerInner> beginCreate(
         String resourceGroupName, String resourceName, DelegatedControllerInner parameters, Context context);
 
@@ -112,9 +112,9 @@ public interface ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
@@ -126,9 +126,9 @@ public interface ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -162,6 +162,22 @@ public interface ControllersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters controller type parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an instance of a DNC controller along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DelegatedControllerInner> patchWithResponse(
+        String resourceGroupName, String resourceName, ControllerResourceUpdateParameters parameters, Context context);
+
+    /**
+     * Update dnc controller.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param parameters controller type parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,20 +186,4 @@ public interface ControllersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     DelegatedControllerInner patch(
         String resourceGroupName, String resourceName, ControllerResourceUpdateParameters parameters);
-
-    /**
-     * Update dnc controller.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param parameters controller type parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a DNC controller.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DelegatedControllerInner> patchWithResponse(
-        String resourceGroupName, String resourceName, ControllerResourceUpdateParameters parameters, Context context);
 }

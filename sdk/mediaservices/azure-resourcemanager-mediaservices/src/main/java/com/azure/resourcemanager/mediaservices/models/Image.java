@@ -61,6 +61,10 @@ public class Image extends Video {
     @JsonProperty(value = "range")
     private String range;
 
+    /** Creates an instance of Image class. */
+    public Image() {
+    }
+
     /**
      * Get the start property: The position in the input video from where to start generating thumbnails. The value can
      * be in ISO 8601 format (For example, PT05S to start at 5 seconds), or a frame count (For example, 10 to start at

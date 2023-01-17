@@ -79,6 +79,10 @@ public final class ContentKeyPolicyPlayReadyLicense {
     @JsonProperty(value = "contentType", required = true)
     private ContentKeyPolicyPlayReadyContentType contentType;
 
+    /** Creates an instance of ContentKeyPolicyPlayReadyLicense class. */
+    public ContentKeyPolicyPlayReadyLicense() {
+    }
+
     /**
      * Get the allowTestDevices property: A flag indicating whether test devices can use the license.
      *

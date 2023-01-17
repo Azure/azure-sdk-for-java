@@ -21,10 +21,9 @@ import com.azure.resourcemanager.logic.models.KeyVaultKey;
 import com.azure.resourcemanager.logic.models.ListKeyVaultKeysDefinition;
 import com.azure.resourcemanager.logic.models.RegenerateActionParameter;
 import com.azure.resourcemanager.logic.models.TrackingEventsDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountsImpl implements IntegrationAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountsImpl.class);
 
     private final IntegrationAccountsClient innerClient;
 
@@ -58,16 +57,6 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         return Utils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
     }
 
-    public IntegrationAccount getByResourceGroup(String resourceGroupName, String integrationAccountName) {
-        IntegrationAccountInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, integrationAccountName);
-        if (inner != null) {
-            return new IntegrationAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String integrationAccountName, Context context) {
         Response<IntegrationAccountInner> inner =
@@ -83,23 +72,23 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String integrationAccountName) {
-        this.serviceClient().delete(resourceGroupName, integrationAccountName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, integrationAccountName, context);
-    }
-
-    public CallbackUrl listCallbackUrl(
-        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters) {
-        CallbackUrlInner inner =
-            this.serviceClient().listCallbackUrl(resourceGroupName, integrationAccountName, parameters);
+    public IntegrationAccount getByResourceGroup(String resourceGroupName, String integrationAccountName) {
+        IntegrationAccountInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, integrationAccountName);
         if (inner != null) {
-            return new CallbackUrlImpl(inner, this.manager());
+            return new IntegrationAccountImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String integrationAccountName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, integrationAccountName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String integrationAccountName) {
+        this.serviceClient().delete(resourceGroupName, integrationAccountName);
     }
 
     public Response<CallbackUrl> listCallbackUrlWithResponse(
@@ -114,6 +103,17 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CallbackUrlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CallbackUrl listCallbackUrl(
+        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters) {
+        CallbackUrlInner inner =
+            this.serviceClient().listCallbackUrl(resourceGroupName, integrationAccountName, parameters);
+        if (inner != null) {
+            return new CallbackUrlImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -136,11 +136,6 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         return Utils.mapPage(inner, inner1 -> new KeyVaultKeyImpl(inner1, this.manager()));
     }
 
-    public void logTrackingEvents(
-        String resourceGroupName, String integrationAccountName, TrackingEventsDefinition logTrackingEvents) {
-        this.serviceClient().logTrackingEvents(resourceGroupName, integrationAccountName, logTrackingEvents);
-    }
-
     public Response<Void> logTrackingEventsWithResponse(
         String resourceGroupName,
         String integrationAccountName,
@@ -151,15 +146,9 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
             .logTrackingEventsWithResponse(resourceGroupName, integrationAccountName, logTrackingEvents, context);
     }
 
-    public IntegrationAccount regenerateAccessKey(
-        String resourceGroupName, String integrationAccountName, RegenerateActionParameter regenerateAccessKey) {
-        IntegrationAccountInner inner =
-            this.serviceClient().regenerateAccessKey(resourceGroupName, integrationAccountName, regenerateAccessKey);
-        if (inner != null) {
-            return new IntegrationAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void logTrackingEvents(
+        String resourceGroupName, String integrationAccountName, TrackingEventsDefinition logTrackingEvents) {
+        this.serviceClient().logTrackingEvents(resourceGroupName, integrationAccountName, logTrackingEvents);
     }
 
     public Response<IntegrationAccount> regenerateAccessKeyWithResponse(
@@ -183,10 +172,21 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
     }
 
+    public IntegrationAccount regenerateAccessKey(
+        String resourceGroupName, String integrationAccountName, RegenerateActionParameter regenerateAccessKey) {
+        IntegrationAccountInner inner =
+            this.serviceClient().regenerateAccessKey(resourceGroupName, integrationAccountName, regenerateAccessKey);
+        if (inner != null) {
+            return new IntegrationAccountImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public IntegrationAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -194,7 +194,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,7 +207,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
     public Response<IntegrationAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -215,7 +215,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -228,7 +228,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -236,20 +236,20 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, integrationAccountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -257,14 +257,14 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, integrationAccountName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, integrationAccountName, context);
     }
 
     private IntegrationAccountsClient serviceClient() {

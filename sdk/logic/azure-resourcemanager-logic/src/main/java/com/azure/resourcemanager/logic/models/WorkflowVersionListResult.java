@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowVersionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of workflow versions. */
 @Fluent
 public final class WorkflowVersionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowVersionListResult.class);
-
     /*
      * A list of workflow versions.
      */
@@ -27,6 +23,10 @@ public final class WorkflowVersionListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of WorkflowVersionListResult class. */
+    public WorkflowVersionListResult() {
+    }
 
     /**
      * Get the value property: A list of workflow versions.

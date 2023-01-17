@@ -29,6 +29,15 @@ public final class VersionState extends ExpandableStringEnum<VersionState> {
     public static final VersionState DEPRECATED = fromString("Deprecated");
 
     /**
+     * Creates a new instance of VersionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VersionState() {
+    }
+
+    /**
      * Creates or finds a VersionState from its string representation.
      *
      * @param name a name to look for.

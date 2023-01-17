@@ -382,7 +382,8 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         String packetCoreControlPlaneName,
         String packetCoreDataPlaneName,
         String attachedDataNetworkName) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName)
             .getSyncPoller();
     }
@@ -407,7 +408,8 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         String packetCoreDataPlaneName,
         String attachedDataNetworkName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,
@@ -989,7 +991,8 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         String packetCoreDataPlaneName,
         String attachedDataNetworkName,
         AttachedDataNetworkInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,
@@ -1021,7 +1024,8 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         String attachedDataNetworkName,
         AttachedDataNetworkInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,

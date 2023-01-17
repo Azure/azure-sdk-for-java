@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Migrate.SqlServer.AzureDbSqlMi.Complete")
 @Fluent
 public final class MigrateMISyncCompleteCommandProperties extends CommandProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateMISyncCompleteCommandProperties.class);
-
     /*
      * Command input
      */
@@ -29,6 +25,10 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private MigrateMISyncCompleteCommandOutput output;
+
+    /** Creates an instance of MigrateMISyncCompleteCommandProperties class. */
+    public MigrateMISyncCompleteCommandProperties() {
+    }
 
     /**
      * Get the input property: Command input.

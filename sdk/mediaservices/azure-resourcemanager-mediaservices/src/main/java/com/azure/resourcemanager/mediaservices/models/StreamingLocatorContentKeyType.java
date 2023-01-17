@@ -20,6 +20,15 @@ public final class StreamingLocatorContentKeyType extends ExpandableStringEnum<S
     public static final StreamingLocatorContentKeyType ENVELOPE_ENCRYPTION = fromString("EnvelopeEncryption");
 
     /**
+     * Creates a new instance of StreamingLocatorContentKeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StreamingLocatorContentKeyType() {
+    }
+
+    /**
      * Creates or finds a StreamingLocatorContentKeyType from its string representation.
      *
      * @param name a name to look for.

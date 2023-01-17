@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The API resource policies. */
 @Fluent
 public final class ApiResourcePolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiResourcePolicies.class);
-
     /*
      * The API level only policies XML as embedded content.
      */
@@ -25,6 +21,10 @@ public final class ApiResourcePolicies {
      */
     @JsonProperty(value = "contentLink")
     private String contentLink;
+
+    /** Creates an instance of ApiResourcePolicies class. */
+    public ApiResourcePolicies() {
+    }
 
     /**
      * Get the content property: The API level only policies XML as embedded content.

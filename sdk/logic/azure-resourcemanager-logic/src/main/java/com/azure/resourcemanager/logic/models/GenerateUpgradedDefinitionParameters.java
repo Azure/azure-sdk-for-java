@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to generate upgraded definition. */
 @Fluent
 public final class GenerateUpgradedDefinitionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenerateUpgradedDefinitionParameters.class);
-
     /*
      * The target schema version.
      */
     @JsonProperty(value = "targetSchemaVersion")
     private String targetSchemaVersion;
+
+    /** Creates an instance of GenerateUpgradedDefinitionParameters class. */
+    public GenerateUpgradedDefinitionParameters() {
+    }
 
     /**
      * Get the targetSchemaVersion property: The target schema version.

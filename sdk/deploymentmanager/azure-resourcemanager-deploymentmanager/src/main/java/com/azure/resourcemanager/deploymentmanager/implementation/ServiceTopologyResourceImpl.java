@@ -54,6 +54,10 @@ public final class ServiceTopologyResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceTopologyResourceInner innerModel() {
         return this.innerObject;
     }

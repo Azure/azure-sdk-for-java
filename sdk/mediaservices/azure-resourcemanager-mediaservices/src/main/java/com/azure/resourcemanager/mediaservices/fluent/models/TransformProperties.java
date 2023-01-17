@@ -38,6 +38,10 @@ public final class TransformProperties {
     @JsonProperty(value = "outputs", required = true)
     private List<TransformOutput> outputs;
 
+    /** Creates an instance of TransformProperties class. */
+    public TransformProperties() {
+    }
+
     /**
      * Get the created property: The UTC date and time when the Transform was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
      *

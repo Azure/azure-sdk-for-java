@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Key Vault update information used for user managed key rotation. */
 @Fluent
 public final class UpdateKeyVaultMetaInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateKeyVaultMetaInfo.class);
-
     /*
-     * The version of the user managed encryption key to update through a key
-     * rotation.
+     * The version of the user managed encryption key to update through a key rotation.
      */
     @JsonProperty(value = "encryptionKeyVersion")
     private String encryptionKeyVersion;
+
+    /** Creates an instance of UpdateKeyVaultMetaInfo class. */
+    public UpdateKeyVaultMetaInfo() {
+    }
 
     /**
      * Get the encryptionKeyVersion property: The version of the user managed encryption key to update through a key

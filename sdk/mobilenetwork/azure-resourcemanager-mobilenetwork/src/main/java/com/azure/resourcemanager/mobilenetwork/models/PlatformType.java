@@ -17,6 +17,15 @@ public final class PlatformType extends ExpandableStringEnum<PlatformType> {
     public static final PlatformType THREE_P_AZURE_STACK_HCI = fromString("3P-AZURE-STACK-HCI");
 
     /**
+     * Creates a new instance of PlatformType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PlatformType() {
+    }
+
+    /**
      * Creates or finds a PlatformType from its string representation.
      *
      * @param name a name to look for.

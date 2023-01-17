@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkflowState. */
+/** The workflow state. */
 public final class WorkflowState extends ExpandableStringEnum<WorkflowState> {
     /** Static value NotSpecified for WorkflowState. */
     public static final WorkflowState NOT_SPECIFIED = fromString("NotSpecified");
@@ -29,6 +29,15 @@ public final class WorkflowState extends ExpandableStringEnum<WorkflowState> {
     public static final WorkflowState SUSPENDED = fromString("Suspended");
 
     /**
+     * Creates a new instance of WorkflowState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkflowState() {
+    }
+
+    /**
      * Creates or finds a WorkflowState from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class WorkflowState extends ExpandableStringEnum<WorkflowState> {
         return fromString(name, WorkflowState.class);
     }
 
-    /** @return known WorkflowState values. */
+    /**
+     * Gets known WorkflowState values.
+     *
+     * @return known WorkflowState values.
+     */
     public static Collection<WorkflowState> values() {
         return values(WorkflowState.class);
     }

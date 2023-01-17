@@ -17,6 +17,15 @@ public final class ObsoleteVersion extends ExpandableStringEnum<ObsoleteVersion>
     public static final ObsoleteVersion NOT_OBSOLETE = fromString("NotObsolete");
 
     /**
+     * Creates a new instance of ObsoleteVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ObsoleteVersion() {
+    }
+
+    /**
      * Creates or finds a ObsoleteVersion from its string representation.
      *
      * @param name a name to look for.

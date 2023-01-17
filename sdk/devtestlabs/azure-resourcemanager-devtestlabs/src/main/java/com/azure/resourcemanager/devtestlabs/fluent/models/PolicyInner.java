@@ -5,227 +5,35 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.PolicyEvaluatorType;
 import com.azure.resourcemanager.devtestlabs.models.PolicyFactName;
 import com.azure.resourcemanager.devtestlabs.models.PolicyStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** A Policy. */
-@JsonFlatten
 @Fluent
-public class PolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyInner.class);
-
+public final class PolicyInner extends Resource {
     /*
-     * The description of the policy.
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties", required = true)
+    private PolicyProperties innerProperties = new PolicyProperties();
 
-    /*
-     * The status of the policy.
-     */
-    @JsonProperty(value = "properties.status")
-    private PolicyStatus status;
-
-    /*
-     * The fact name of the policy (e.g. LabVmCount, LabVmSize,
-     * MaxVmsAllowedPerLab, etc.
-     */
-    @JsonProperty(value = "properties.factName")
-    private PolicyFactName factName;
-
-    /*
-     * The fact data of the policy.
-     */
-    @JsonProperty(value = "properties.factData")
-    private String factData;
-
-    /*
-     * The threshold of the policy (i.e. a number for MaxValuePolicy, and a
-     * JSON array of values for AllowedValuesPolicy).
-     */
-    @JsonProperty(value = "properties.threshold")
-    private String threshold;
-
-    /*
-     * The evaluator type of the policy (i.e. AllowedValuesPolicy,
-     * MaxValuePolicy).
-     */
-    @JsonProperty(value = "properties.evaluatorType")
-    private PolicyEvaluatorType evaluatorType;
-
-    /*
-     * The creation date of the policy.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
-
-    /**
-     * Get the description property: The description of the policy.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
+    /** Creates an instance of PolicyInner class. */
+    public PolicyInner() {
     }
 
     /**
-     * Set the description property: The description of the policy.
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @param description the description value to set.
-     * @return the PolicyInner object itself.
+     * @return the innerProperties value.
      */
-    public PolicyInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the status property: The status of the policy.
-     *
-     * @return the status value.
-     */
-    public PolicyStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: The status of the policy.
-     *
-     * @param status the status value to set.
-     * @return the PolicyInner object itself.
-     */
-    public PolicyInner withStatus(PolicyStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the factName property: The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
-     *
-     * @return the factName value.
-     */
-    public PolicyFactName factName() {
-        return this.factName;
-    }
-
-    /**
-     * Set the factName property: The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
-     *
-     * @param factName the factName value to set.
-     * @return the PolicyInner object itself.
-     */
-    public PolicyInner withFactName(PolicyFactName factName) {
-        this.factName = factName;
-        return this;
-    }
-
-    /**
-     * Get the factData property: The fact data of the policy.
-     *
-     * @return the factData value.
-     */
-    public String factData() {
-        return this.factData;
-    }
-
-    /**
-     * Set the factData property: The fact data of the policy.
-     *
-     * @param factData the factData value to set.
-     * @return the PolicyInner object itself.
-     */
-    public PolicyInner withFactData(String factData) {
-        this.factData = factData;
-        return this;
-    }
-
-    /**
-     * Get the threshold property: The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of
-     * values for AllowedValuesPolicy).
-     *
-     * @return the threshold value.
-     */
-    public String threshold() {
-        return this.threshold;
-    }
-
-    /**
-     * Set the threshold property: The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of
-     * values for AllowedValuesPolicy).
-     *
-     * @param threshold the threshold value to set.
-     * @return the PolicyInner object itself.
-     */
-    public PolicyInner withThreshold(String threshold) {
-        this.threshold = threshold;
-        return this;
-    }
-
-    /**
-     * Get the evaluatorType property: The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
-     *
-     * @return the evaluatorType value.
-     */
-    public PolicyEvaluatorType evaluatorType() {
-        return this.evaluatorType;
-    }
-
-    /**
-     * Set the evaluatorType property: The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
-     *
-     * @param evaluatorType the evaluatorType value to set.
-     * @return the PolicyInner object itself.
-     */
-    public PolicyInner withEvaluatorType(PolicyEvaluatorType evaluatorType) {
-        this.evaluatorType = evaluatorType;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the policy.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
+    private PolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -243,10 +51,186 @@ public class PolicyInner extends Resource {
     }
 
     /**
+     * Get the description property: The description of the policy.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The description of the policy.
+     *
+     * @param description the description value to set.
+     * @return the PolicyInner object itself.
+     */
+    public PolicyInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the status property: The status of the policy.
+     *
+     * @return the status value.
+     */
+    public PolicyStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: The status of the policy.
+     *
+     * @param status the status value to set.
+     * @return the PolicyInner object itself.
+     */
+    public PolicyInner withStatus(PolicyStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the factName property: The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
+     *
+     * @return the factName value.
+     */
+    public PolicyFactName factName() {
+        return this.innerProperties() == null ? null : this.innerProperties().factName();
+    }
+
+    /**
+     * Set the factName property: The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
+     *
+     * @param factName the factName value to set.
+     * @return the PolicyInner object itself.
+     */
+    public PolicyInner withFactName(PolicyFactName factName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withFactName(factName);
+        return this;
+    }
+
+    /**
+     * Get the factData property: The fact data of the policy.
+     *
+     * @return the factData value.
+     */
+    public String factData() {
+        return this.innerProperties() == null ? null : this.innerProperties().factData();
+    }
+
+    /**
+     * Set the factData property: The fact data of the policy.
+     *
+     * @param factData the factData value to set.
+     * @return the PolicyInner object itself.
+     */
+    public PolicyInner withFactData(String factData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withFactData(factData);
+        return this;
+    }
+
+    /**
+     * Get the threshold property: The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of
+     * values for AllowedValuesPolicy).
+     *
+     * @return the threshold value.
+     */
+    public String threshold() {
+        return this.innerProperties() == null ? null : this.innerProperties().threshold();
+    }
+
+    /**
+     * Set the threshold property: The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of
+     * values for AllowedValuesPolicy).
+     *
+     * @param threshold the threshold value to set.
+     * @return the PolicyInner object itself.
+     */
+    public PolicyInner withThreshold(String threshold) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withThreshold(threshold);
+        return this;
+    }
+
+    /**
+     * Get the evaluatorType property: The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
+     *
+     * @return the evaluatorType value.
+     */
+    public PolicyEvaluatorType evaluatorType() {
+        return this.innerProperties() == null ? null : this.innerProperties().evaluatorType();
+    }
+
+    /**
+     * Set the evaluatorType property: The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
+     *
+     * @param evaluatorType the evaluatorType value to set.
+     * @return the PolicyInner object itself.
+     */
+    public PolicyInner withEvaluatorType(PolicyEvaluatorType evaluatorType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withEvaluatorType(evaluatorType);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the policy.
+     *
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     *
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model PolicyInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicyInner.class);
 }

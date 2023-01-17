@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContentKeyPolicies Delete. */
 public final class ContentKeyPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-delete.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-delete.json
      */
     /**
      * Sample code: Delete a Key Policy.
@@ -19,6 +17,10 @@ public final class ContentKeyPoliciesDeleteSamples {
     public static void deleteAKeyPolicy(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .contentKeyPolicies()
-            .deleteWithResponse("contoso", "contosomedia", "PolicyWithPlayReadyOptionAndOpenRestriction", Context.NONE);
+            .deleteWithResponse(
+                "contoso",
+                "contosomedia",
+                "PolicyWithPlayReadyOptionAndOpenRestriction",
+                com.azure.core.util.Context.NONE);
     }
 }

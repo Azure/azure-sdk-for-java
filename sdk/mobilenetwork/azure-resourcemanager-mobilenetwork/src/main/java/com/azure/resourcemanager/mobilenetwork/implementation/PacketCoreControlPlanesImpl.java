@@ -10,8 +10,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlanesClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.models.AsyncOperationStatusInner;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
+import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlane;
+import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlanes;
 
 public final class PacketCoreControlPlanesImpl implements PacketCoreControlPlanes {
@@ -80,6 +83,74 @@ public final class PacketCoreControlPlanesImpl implements PacketCoreControlPlane
         PagedIterable<PacketCoreControlPlaneInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneImpl(inner1, this.manager()));
+    }
+
+    public AsyncOperationStatus rollback(String resourceGroupName, String packetCoreControlPlaneName) {
+        AsyncOperationStatusInner inner = this.serviceClient().rollback(resourceGroupName, packetCoreControlPlaneName);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus rollback(String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+        AsyncOperationStatusInner inner =
+            this.serviceClient().rollback(resourceGroupName, packetCoreControlPlaneName, context);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus reinstall(String resourceGroupName, String packetCoreControlPlaneName) {
+        AsyncOperationStatusInner inner = this.serviceClient().reinstall(resourceGroupName, packetCoreControlPlaneName);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus reinstall(
+        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+        AsyncOperationStatusInner inner =
+            this.serviceClient().reinstall(resourceGroupName, packetCoreControlPlaneName, context);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus collectDiagnosticsPackage(
+        String resourceGroupName,
+        String packetCoreControlPlaneName,
+        PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
+        AsyncOperationStatusInner inner =
+            this.serviceClient().collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus collectDiagnosticsPackage(
+        String resourceGroupName,
+        String packetCoreControlPlaneName,
+        PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
+        Context context) {
+        AsyncOperationStatusInner inner =
+            this
+                .serviceClient()
+                .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters, context);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PacketCoreControlPlane getById(String id) {

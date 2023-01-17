@@ -38,6 +38,15 @@ public final class ChannelMapping extends ExpandableStringEnum<ChannelMapping> {
     public static final ChannelMapping STEREO_RIGHT = fromString("StereoRight");
 
     /**
+     * Creates a new instance of ChannelMapping value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChannelMapping() {
+    }
+
+    /**
      * Creates or finds a ChannelMapping from its string representation.
      *
      * @param name a name to look for.

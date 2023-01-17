@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databricks.fluent.VNetPeeringsClient;
 import com.azure.resourcemanager.databricks.fluent.models.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.databricks.models.VNetPeerings;
 import com.azure.resourcemanager.databricks.models.VirtualNetworkPeering;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VNetPeeringsImpl implements VNetPeerings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VNetPeeringsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VNetPeeringsImpl.class);
 
     private final VNetPeeringsClient innerClient;
 
@@ -26,15 +25,6 @@ public final class VNetPeeringsImpl implements VNetPeerings {
         VNetPeeringsClient innerClient, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public VirtualNetworkPeering get(String resourceGroupName, String workspaceName, String peeringName) {
-        VirtualNetworkPeeringInner inner = this.serviceClient().get(resourceGroupName, workspaceName, peeringName);
-        if (inner != null) {
-            return new VirtualNetworkPeeringImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<VirtualNetworkPeering> getWithResponse(
@@ -47,6 +37,15 @@ public final class VNetPeeringsImpl implements VNetPeerings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VirtualNetworkPeeringImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualNetworkPeering get(String resourceGroupName, String workspaceName, String peeringName) {
+        VirtualNetworkPeeringInner inner = this.serviceClient().get(resourceGroupName, workspaceName, peeringName);
+        if (inner != null) {
+            return new VirtualNetworkPeeringImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -76,7 +75,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
     public VirtualNetworkPeering getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,14 +83,14 @@ public final class VNetPeeringsImpl implements VNetPeerings {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,7 +104,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
     public Response<VirtualNetworkPeering> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,14 +112,14 @@ public final class VNetPeeringsImpl implements VNetPeerings {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,14 +141,14 @@ public final class VNetPeeringsImpl implements VNetPeerings {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,14 +170,14 @@ public final class VNetPeeringsImpl implements VNetPeerings {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

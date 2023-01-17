@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,9 +16,6 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel
     extends MigrateMySqlAzureDbForMySqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel.class);
-
     /*
      * Migration start time
      */
@@ -56,6 +51,10 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel
      */
     @JsonProperty(value = "targetServer", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServer;
+
+    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel class. */
+    public MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel() {
+    }
 
     /**
      * Get the startedOn property: Migration start time.

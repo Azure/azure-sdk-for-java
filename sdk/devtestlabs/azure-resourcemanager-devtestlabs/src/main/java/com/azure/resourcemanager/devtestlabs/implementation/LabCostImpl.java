@@ -105,6 +105,10 @@ public final class LabCostImpl implements LabCost, LabCost.Definition, LabCost.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LabCostInner innerModel() {
         return this.innerObject;
     }

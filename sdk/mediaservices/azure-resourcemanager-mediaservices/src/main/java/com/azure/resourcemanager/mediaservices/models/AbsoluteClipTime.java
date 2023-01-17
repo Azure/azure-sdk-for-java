@@ -26,6 +26,10 @@ public final class AbsoluteClipTime extends ClipTime {
     @JsonProperty(value = "time", required = true)
     private Duration time;
 
+    /** Creates an instance of AbsoluteClipTime class. */
+    public AbsoluteClipTime() {
+    }
+
     /**
      * Get the time property: The time position on the timeline of the input media. It is usually specified as an
      * ISO8601 period. e.g PT30S for 30 seconds.

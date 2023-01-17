@@ -28,6 +28,10 @@ public final class EntityNameAvailabilityCheckOutputInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of EntityNameAvailabilityCheckOutputInner class. */
+    public EntityNameAvailabilityCheckOutputInner() {
+    }
+
     /**
      * Get the nameAvailable property: Specifies if the name is available.
      *

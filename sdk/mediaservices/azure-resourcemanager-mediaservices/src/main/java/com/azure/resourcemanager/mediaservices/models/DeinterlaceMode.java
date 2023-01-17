@@ -17,6 +17,15 @@ public final class DeinterlaceMode extends ExpandableStringEnum<DeinterlaceMode>
     public static final DeinterlaceMode AUTO_PIXEL_ADAPTIVE = fromString("AutoPixelAdaptive");
 
     /**
+     * Creates a new instance of DeinterlaceMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeinterlaceMode() {
+    }
+
+    /**
      * Creates or finds a DeinterlaceMode from its string representation.
      *
      * @param name a name to look for.

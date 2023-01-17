@@ -20,6 +20,15 @@ public final class EntropyMode extends ExpandableStringEnum<EntropyMode> {
     public static final EntropyMode CAVLC = fromString("Cavlc");
 
     /**
+     * Creates a new instance of EntropyMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntropyMode() {
+    }
+
+    /**
      * Creates or finds a EntropyMode from its string representation.
      *
      * @param name a name to look for.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The swagger custom dynamic tree settings. */
 @Fluent
 public final class SwaggerCustomDynamicTreeSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerCustomDynamicTreeSettings.class);
-
     /*
      * Indicates whether parent nodes can be selected.
      */
@@ -25,6 +21,10 @@ public final class SwaggerCustomDynamicTreeSettings {
      */
     @JsonProperty(value = "CanSelectLeafNodes")
     private Boolean canSelectLeafNodes;
+
+    /** Creates an instance of SwaggerCustomDynamicTreeSettings class. */
+    public SwaggerCustomDynamicTreeSettings() {
+    }
 
     /**
      * Get the canSelectParentNodes property: Indicates whether parent nodes can be selected.

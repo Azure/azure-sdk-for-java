@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
     /*
      * The principal ID of resource identity.
      */
@@ -31,6 +27,10 @@ public class Identity {
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
+
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of resource identity.

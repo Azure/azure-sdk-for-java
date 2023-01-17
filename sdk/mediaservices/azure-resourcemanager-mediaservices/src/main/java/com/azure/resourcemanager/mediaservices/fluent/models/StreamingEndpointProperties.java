@@ -111,6 +111,10 @@ public final class StreamingEndpointProperties {
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
+    /** Creates an instance of StreamingEndpointProperties class. */
+    public StreamingEndpointProperties() {
+    }
+
     /**
      * Get the description property: The streaming endpoint description.
      *

@@ -533,6 +533,15 @@ public final class ContainerServiceVMSizeTypes extends ExpandableStringEnum<Cont
     public static final ContainerServiceVMSizeTypes STANDARD_NV6 = fromString("Standard_NV6");
 
     /**
+     * Creates a new instance of ContainerServiceVMSizeTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerServiceVMSizeTypes() {
+    }
+
+    /**
      * Creates or finds a ContainerServiceVMSizeTypes from its string representation.
      *
      * @param name a name to look for.

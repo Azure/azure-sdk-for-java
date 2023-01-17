@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A secret. */
-@Immutable
+@Fluent
 public final class SecretFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretFragment.class);
+    /** Creates an instance of SecretFragment class. */
+    public SecretFragment() {
+    }
 
     /** {@inheritDoc} */
     @Override

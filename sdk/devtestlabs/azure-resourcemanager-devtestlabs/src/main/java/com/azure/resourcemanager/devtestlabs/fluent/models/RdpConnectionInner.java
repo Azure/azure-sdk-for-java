@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a .rdp file. */
 @Fluent
 public final class RdpConnectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RdpConnectionInner.class);
-
     /*
      * The contents of the .rdp file
      */
     @JsonProperty(value = "contents")
     private String contents;
+
+    /** Creates an instance of RdpConnectionInner class. */
+    public RdpConnectionInner() {
+    }
 
     /**
      * Get the contents property: The contents of the .rdp file.

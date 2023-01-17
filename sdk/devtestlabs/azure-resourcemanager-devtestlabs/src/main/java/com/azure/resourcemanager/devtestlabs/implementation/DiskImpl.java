@@ -98,6 +98,10 @@ public final class DiskImpl implements Disk, Disk.Definition, Disk.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DiskInner innerModel() {
         return this.innerObject;
     }

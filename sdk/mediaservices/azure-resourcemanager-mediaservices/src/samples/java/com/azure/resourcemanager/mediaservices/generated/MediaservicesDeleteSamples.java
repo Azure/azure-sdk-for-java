@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Mediaservices Delete. */
 public final class MediaservicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accounts-delete.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/accounts-delete.json
      */
     /**
      * Sample code: Delete a Media Services account.
@@ -18,6 +16,8 @@ public final class MediaservicesDeleteSamples {
      */
     public static void deleteAMediaServicesAccount(
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.mediaservices().deleteWithResponse("contoso", "contososports", Context.NONE);
+        manager
+            .mediaservices()
+            .deleteByResourceGroupWithResponse("contoso", "contososports", com.azure.core.util.Context.NONE);
     }
 }

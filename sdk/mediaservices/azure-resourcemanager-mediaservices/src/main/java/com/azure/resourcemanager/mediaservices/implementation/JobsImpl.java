@@ -44,15 +44,6 @@ public final class JobsImpl implements Jobs {
         return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
-    public Job get(String resourceGroupName, String accountName, String transformName, String jobName) {
-        JobInner inner = this.serviceClient().get(resourceGroupName, accountName, transformName, jobName);
-        if (inner != null) {
-            return new JobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Job> getWithResponse(
         String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
         Response<JobInner> inner =
@@ -68,8 +59,13 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String transformName, String jobName) {
-        this.serviceClient().delete(resourceGroupName, accountName, transformName, jobName);
+    public Job get(String resourceGroupName, String accountName, String transformName, String jobName) {
+        JobInner inner = this.serviceClient().get(resourceGroupName, accountName, transformName, jobName);
+        if (inner != null) {
+            return new JobImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -77,8 +73,8 @@ public final class JobsImpl implements Jobs {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, transformName, jobName, context);
     }
 
-    public void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName) {
-        this.serviceClient().cancelJob(resourceGroupName, accountName, transformName, jobName);
+    public void delete(String resourceGroupName, String accountName, String transformName, String jobName) {
+        this.serviceClient().delete(resourceGroupName, accountName, transformName, jobName);
     }
 
     public Response<Void> cancelJobWithResponse(
@@ -86,6 +82,10 @@ public final class JobsImpl implements Jobs {
         return this
             .serviceClient()
             .cancelJobWithResponse(resourceGroupName, accountName, transformName, jobName, context);
+    }
+
+    public void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName) {
+        this.serviceClient().cancelJob(resourceGroupName, accountName, transformName, jobName);
     }
 
     public Job getById(String id) {

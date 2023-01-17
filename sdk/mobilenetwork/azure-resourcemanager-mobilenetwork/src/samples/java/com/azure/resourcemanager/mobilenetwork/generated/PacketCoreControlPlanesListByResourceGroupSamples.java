@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PacketCoreControlPlanes ListByResourceGroup. */
 public final class PacketCoreControlPlanesListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class PacketCoreControlPlanesListByResourceGroupSamples {
      */
     public static void listPacketCoreControlPlanesInResourceGroup(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlanes().listByResourceGroup("rg1", Context.NONE);
+        manager.packetCoreControlPlanes().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

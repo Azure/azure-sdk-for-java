@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a VHD in the lab. */
 @Fluent
 public final class LabVhdInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabVhdInner.class);
-
     /*
      * The URI to the VHD.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of LabVhdInner class. */
+    public LabVhdInner() {
+    }
 
     /**
      * Get the id property: The URI to the VHD.

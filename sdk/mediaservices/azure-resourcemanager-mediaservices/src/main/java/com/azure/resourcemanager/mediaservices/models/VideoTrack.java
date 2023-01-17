@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.VideoTrack")
 @Immutable
 public final class VideoTrack extends TrackBase {
+    /** Creates an instance of VideoTrack class. */
+    public VideoTrack() {
+    }
+
     /**
      * Validates the instance.
      *

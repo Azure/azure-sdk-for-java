@@ -25,6 +25,10 @@ public final class ContentKeyPolicyCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of ContentKeyPolicyCollection class. */
+    public ContentKeyPolicyCollection() {
+    }
+
     /**
      * Get the value property: A collection of ContentKeyPolicy items.
      *

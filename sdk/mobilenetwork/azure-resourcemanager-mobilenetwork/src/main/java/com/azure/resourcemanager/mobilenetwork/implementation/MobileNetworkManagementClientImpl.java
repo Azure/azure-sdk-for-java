@@ -27,13 +27,11 @@ import com.azure.resourcemanager.mobilenetwork.fluent.DataNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworkManagementClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.OperationsClient;
-import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlaneOperationsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlaneVersionsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlanesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreDataPlanesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.ServicesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimGroupsClient;
-import com.azure.resourcemanager.mobilenetwork.fluent.SimOperationsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimPoliciesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SitesClient;
@@ -182,18 +180,6 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.packetCoreControlPlanes;
     }
 
-    /** The PacketCoreControlPlaneOperationsClient object to access its operations. */
-    private final PacketCoreControlPlaneOperationsClient packetCoreControlPlaneOperations;
-
-    /**
-     * Gets the PacketCoreControlPlaneOperationsClient object to access its operations.
-     *
-     * @return the PacketCoreControlPlaneOperationsClient object.
-     */
-    public PacketCoreControlPlaneOperationsClient getPacketCoreControlPlaneOperations() {
-        return this.packetCoreControlPlaneOperations;
-    }
-
     /** The PacketCoreControlPlaneVersionsClient object to access its operations. */
     private final PacketCoreControlPlaneVersionsClient packetCoreControlPlaneVersions;
 
@@ -240,18 +226,6 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      */
     public SimsClient getSims() {
         return this.sims;
-    }
-
-    /** The SimOperationsClient object to access its operations. */
-    private final SimOperationsClient simOperations;
-
-    /**
-     * Gets the SimOperationsClient object to access its operations.
-     *
-     * @return the SimOperationsClient object.
-     */
-    public SimOperationsClient getSimOperations() {
-        return this.simOperations;
     }
 
     /** The SimGroupsClient object to access its operations. */
@@ -330,12 +304,10 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         this.mobileNetworks = new MobileNetworksClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.packetCoreControlPlanes = new PacketCoreControlPlanesClientImpl(this);
-        this.packetCoreControlPlaneOperations = new PacketCoreControlPlaneOperationsClientImpl(this);
         this.packetCoreControlPlaneVersions = new PacketCoreControlPlaneVersionsClientImpl(this);
         this.packetCoreDataPlanes = new PacketCoreDataPlanesClientImpl(this);
         this.services = new ServicesClientImpl(this);
         this.sims = new SimsClientImpl(this);
-        this.simOperations = new SimOperationsClientImpl(this);
         this.simGroups = new SimGroupsClientImpl(this);
         this.simPolicies = new SimPoliciesClientImpl(this);
         this.sites = new SitesClientImpl(this);

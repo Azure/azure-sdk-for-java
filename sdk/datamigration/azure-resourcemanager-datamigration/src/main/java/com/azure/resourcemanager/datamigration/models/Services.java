@@ -11,7 +11,26 @@ import com.azure.core.util.Context;
 /** Resource collection API of Services. */
 public interface Services {
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * retrieves information about a service instance.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Database Migration Service resource along with {@link Response}.
+     */
+    Response<DataMigrationService> getByResourceGroupWithResponse(
+        String groupName, String serviceName, Context context);
+
+    /**
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
      * retrieves information about a service instance.
      *
      * @param groupName Name of the resource group.
@@ -24,36 +43,10 @@ public interface Services {
     DataMigrationService getByResourceGroup(String groupName, String serviceName);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
-     * retrieves information about a service instance.
+     * Delete DMS Service Instance
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
-     */
-    Response<DataMigrationService> getByResourceGroupWithResponse(
-        String groupName, String serviceName, Context context);
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
-     *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String groupName, String serviceName, Boolean deleteRunningTasks);
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -64,8 +57,10 @@ public interface Services {
     void delete(String groupName, String serviceName);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -78,7 +73,26 @@ public interface Services {
     void delete(String groupName, String serviceName, Boolean deleteRunningTasks, Context context);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * performs a health check and returns the status of the service and virtual machine size.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service health status along with {@link Response}.
+     */
+    Response<DataMigrationServiceStatusResponse> checkStatusWithResponse(
+        String groupName, String serviceName, Context context);
+
+    /**
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * performs a health check and returns the status of the service and virtual machine size.
      *
      * @param groupName Name of the resource group.
@@ -91,22 +105,9 @@ public interface Services {
     DataMigrationServiceStatusResponse checkStatus(String groupName, String serviceName);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
-     * performs a health check and returns the status of the service and virtual machine size.
+     * Start service
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
-     */
-    Response<DataMigrationServiceStatusResponse> checkStatusWithResponse(
-        String groupName, String serviceName, Context context);
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -118,7 +119,9 @@ public interface Services {
     void start(String groupName, String serviceName);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -131,9 +134,11 @@ public interface Services {
     void start(String groupName, String serviceName, Context context);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -144,9 +149,11 @@ public interface Services {
     void stop(String groupName, String serviceName);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -158,21 +165,25 @@ public interface Services {
     void stop(String groupName, String serviceName, Context context);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailableServiceSku> listSkus(String groupName, String serviceName);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -180,12 +191,31 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailableServiceSku> listSkus(String groupName, String serviceName, Context context);
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param parameters Requested name to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
+     */
+    Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+        String groupName, String serviceName, NameAvailabilityRequest parameters, Context context);
+
+    /**
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -199,69 +229,80 @@ public interface Services {
         String groupName, String serviceName, NameAvailabilityRequest parameters);
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Get services in resource group
+     *
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * returns a list of service resources in a resource group.
      *
      * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DataMigrationService> listByResourceGroup(String groupName);
+
+    /**
+     * Get services in resource group
+     *
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * returns a list of service resources in a resource group.
+     *
+     * @param groupName Name of the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DataMigrationService> listByResourceGroup(String groupName, Context context);
+
+    /**
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
+     * returns a list of service resources in a subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DataMigrationService> list();
+
+    /**
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
+     * returns a list of service resources in a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DataMigrationService> list(Context context);
+
+    /**
+     * Check name validity and availability
+     *
+     * <p>This method checks whether a proposed top-level resource name is valid and available.
+     *
+     * @param location The Azure region of the operation.
      * @param parameters Requested name to validate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
      */
-    Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
-        String groupName, String serviceName, NameAvailabilityRequest parameters, Context context);
+    Response<NameAvailabilityResponse> checkNameAvailabilityWithResponse(
+        String location, NameAvailabilityRequest parameters, Context context);
 
     /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
-     * returns a list of service resources in a resource group.
+     * Check name validity and availability
      *
-     * @param groupName Name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
-     */
-    PagedIterable<DataMigrationService> listByResourceGroup(String groupName);
-
-    /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
-     * returns a list of service resources in a resource group.
-     *
-     * @param groupName Name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
-     */
-    PagedIterable<DataMigrationService> listByResourceGroup(String groupName, Context context);
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
-     * returns a list of service resources in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
-     */
-    PagedIterable<DataMigrationService> list();
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
-     * returns a list of service resources in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
-     */
-    PagedIterable<DataMigrationService> list(Context context);
-
-    /**
-     * This method checks whether a proposed top-level resource name is valid and available.
+     * <p>This method checks whether a proposed top-level resource name is valid and available.
      *
      * @param location The Azure region of the operation.
      * @param parameters Requested name to validate.
@@ -273,33 +314,23 @@ public interface Services {
     NameAvailabilityResponse checkNameAvailability(String location, NameAvailabilityRequest parameters);
 
     /**
-     * This method checks whether a proposed top-level resource name is valid and available.
+     * Get DMS Service Instance
      *
-     * @param location The Azure region of the operation.
-     * @param parameters Requested name to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
-     */
-    Response<NameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityRequest parameters, Context context);
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
      * retrieves information about a service instance.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response}.
      */
     DataMigrationService getById(String id);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
      * retrieves information about a service instance.
      *
      * @param id the resource ID.
@@ -307,13 +338,15 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response}.
      */
     Response<DataMigrationService> getByIdWithResponse(String id, Context context);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,8 +356,10 @@ public interface Services {
     void deleteById(String id);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param id the resource ID.
      * @param deleteRunningTasks Delete the resource even if it contains running tasks.

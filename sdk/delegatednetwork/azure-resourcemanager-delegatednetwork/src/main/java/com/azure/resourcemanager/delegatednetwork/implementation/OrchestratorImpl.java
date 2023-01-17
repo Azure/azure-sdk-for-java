@@ -7,11 +7,10 @@ package com.azure.resourcemanager.delegatednetwork.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.OrchestratorInner;
-import com.azure.resourcemanager.delegatednetwork.models.ControllerDetails;
 import com.azure.resourcemanager.delegatednetwork.models.Orchestrator;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorIdentity;
-import com.azure.resourcemanager.delegatednetwork.models.OrchestratorInstanceState;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorKind;
+import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceProperties;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceUpdateParameters;
 import java.util.Collections;
 import java.util.Map;
@@ -54,36 +53,8 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
         return this.innerModel().identity();
     }
 
-    public String resourceGuid() {
-        return this.innerModel().resourceGuid();
-    }
-
-    public OrchestratorInstanceState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String orchestratorAppId() {
-        return this.innerModel().orchestratorAppId();
-    }
-
-    public String orchestratorTenantId() {
-        return this.innerModel().orchestratorTenantId();
-    }
-
-    public String clusterRootCA() {
-        return this.innerModel().clusterRootCA();
-    }
-
-    public String apiServerEndpoint() {
-        return this.innerModel().apiServerEndpoint();
-    }
-
-    public String privateLinkResourceId() {
-        return this.innerModel().privateLinkResourceId();
-    }
-
-    public ControllerDetails controllerDetails() {
-        return this.innerModel().controllerDetails();
+    public OrchestratorResourceProperties properties() {
+        return this.innerModel().properties();
     }
 
     public Region region() {
@@ -92,6 +63,10 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public OrchestratorInner innerModel() {
@@ -221,33 +196,8 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
         return this;
     }
 
-    public OrchestratorImpl withOrchestratorAppId(String orchestratorAppId) {
-        this.innerModel().withOrchestratorAppId(orchestratorAppId);
-        return this;
-    }
-
-    public OrchestratorImpl withOrchestratorTenantId(String orchestratorTenantId) {
-        this.innerModel().withOrchestratorTenantId(orchestratorTenantId);
-        return this;
-    }
-
-    public OrchestratorImpl withClusterRootCA(String clusterRootCA) {
-        this.innerModel().withClusterRootCA(clusterRootCA);
-        return this;
-    }
-
-    public OrchestratorImpl withApiServerEndpoint(String apiServerEndpoint) {
-        this.innerModel().withApiServerEndpoint(apiServerEndpoint);
-        return this;
-    }
-
-    public OrchestratorImpl withPrivateLinkResourceId(String privateLinkResourceId) {
-        this.innerModel().withPrivateLinkResourceId(privateLinkResourceId);
-        return this;
-    }
-
-    public OrchestratorImpl withControllerDetails(ControllerDetails controllerDetails) {
-        this.innerModel().withControllerDetails(controllerDetails);
+    public OrchestratorImpl withProperties(OrchestratorResourceProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

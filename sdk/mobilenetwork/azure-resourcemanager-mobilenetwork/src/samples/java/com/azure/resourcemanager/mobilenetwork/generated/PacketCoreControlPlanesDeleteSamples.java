@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PacketCoreControlPlanes Delete. */
 public final class PacketCoreControlPlanesDeleteSamples {
     /*
@@ -18,6 +16,6 @@ public final class PacketCoreControlPlanesDeleteSamples {
      */
     public static void deletePacketCoreControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlanes().delete("rg1", "TestPacketCoreCP", Context.NONE);
+        manager.packetCoreControlPlanes().delete("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }

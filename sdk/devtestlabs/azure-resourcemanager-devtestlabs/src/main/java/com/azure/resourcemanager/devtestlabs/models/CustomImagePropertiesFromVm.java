@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for creating a custom image from a virtual machine. */
 @Fluent
 public final class CustomImagePropertiesFromVm {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomImagePropertiesFromVm.class);
-
     /*
      * The source vm identifier.
      */
@@ -31,6 +27,10 @@ public final class CustomImagePropertiesFromVm {
      */
     @JsonProperty(value = "linuxOsInfo")
     private LinuxOsInfo linuxOsInfo;
+
+    /** Creates an instance of CustomImagePropertiesFromVm class. */
+    public CustomImagePropertiesFromVm() {
+    }
 
     /**
      * Get the sourceVmId property: The source vm identifier.

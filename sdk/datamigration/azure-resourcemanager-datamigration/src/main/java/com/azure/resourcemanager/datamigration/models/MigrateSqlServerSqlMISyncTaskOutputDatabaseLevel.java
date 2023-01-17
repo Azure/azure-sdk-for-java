@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,9 +16,6 @@ import java.util.List;
 @JsonTypeName("DatabaseLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends MigrateSqlServerSqlMISyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.class);
-
     /*
      * Name of the database
      */
@@ -58,15 +53,13 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
     private BackupSetInfo lastRestoredBackupSetInfo;
 
     /*
-     * Backup sets that are currently active (Either being uploaded or getting
-     * restored)
+     * Backup sets that are currently active (Either being uploaded or getting restored)
      */
     @JsonProperty(value = "activeBackupSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<BackupSetInfo> activeBackupSets;
 
     /*
-     * Name of container created in the Azure Storage account where backups are
-     * copied to
+     * Name of container created in the Azure Storage account where backups are copied to
      */
     @JsonProperty(value = "containerName", access = JsonProperty.Access.WRITE_ONLY)
     private String containerName;
@@ -88,6 +81,10 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
      */
     @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
+
+    /** Creates an instance of MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel class. */
+    public MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel() {
+    }
 
     /**
      * Get the sourceDatabaseName property: Name of the database.

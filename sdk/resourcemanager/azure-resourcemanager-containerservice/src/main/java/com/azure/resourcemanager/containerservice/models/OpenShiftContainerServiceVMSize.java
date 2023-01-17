@@ -110,6 +110,15 @@ public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<
     public static final OpenShiftContainerServiceVMSize STANDARD_L32S = fromString("Standard_L32s");
 
     /**
+     * Creates a new instance of OpenShiftContainerServiceVMSize value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OpenShiftContainerServiceVMSize() {
+    }
+
+    /**
      * Creates or finds a OpenShiftContainerServiceVMSize from its string representation.
      *
      * @param name a name to look for.

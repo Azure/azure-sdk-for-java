@@ -18,7 +18,7 @@ import java.util.Map;
 /** Samples for LiveEvents Create. */
 public final class LiveEventsCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/liveevent-create.json
      */
     /**
      * Sample code: Create a LiveEvent.
@@ -47,7 +47,7 @@ public final class LiveEventsCreateSamples {
                                                     .withName("AllowAll")
                                                     .withAddress("0.0.0.0")
                                                     .withSubnetPrefixLength(0)))))
-                    .withKeyFrameIntervalDuration("PT6S"))
+                    .withKeyFrameIntervalDuration("fakeTokenPlaceholder"))
             .withPreview(
                 new LiveEventPreview()
                     .withAccessControl(

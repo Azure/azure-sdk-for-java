@@ -96,6 +96,10 @@ public final class IntegrationAccountSchemaImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountSchemaInner innerModel() {
         return this.innerObject;
     }
@@ -200,18 +204,18 @@ public final class IntegrationAccountSchemaImpl
         return this;
     }
 
-    public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
-        return serviceManager
-            .integrationAccountSchemas()
-            .listContentCallbackUrl(resourceGroupName, integrationAccountName, schemaName, listContentCallbackUrl);
-    }
-
     public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
         GetCallbackUrlParameters listContentCallbackUrl, Context context) {
         return serviceManager
             .integrationAccountSchemas()
             .listContentCallbackUrlWithResponse(
                 resourceGroupName, integrationAccountName, schemaName, listContentCallbackUrl, context);
+    }
+
+    public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
+        return serviceManager
+            .integrationAccountSchemas()
+            .listContentCallbackUrl(resourceGroupName, integrationAccountName, schemaName, listContentCallbackUrl);
     }
 
     public IntegrationAccountSchemaImpl withRegion(Region location) {

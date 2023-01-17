@@ -17,14 +17,15 @@ public interface ContainerHostMappings {
      * @param location Location of the container host.
      * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
      *     associated Controller resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
-     *     resource.
+     *     resource along with {@link Response}.
      */
-    ContainerHostMapping getContainerHostMapping(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping);
+    Response<ContainerHostMapping> getContainerHostMappingWithResponse(
+        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping, Context context);
 
     /**
      * Returns container host mapping object for a container host resource ID if an associated controller exists.
@@ -33,13 +34,12 @@ public interface ContainerHostMappings {
      * @param location Location of the container host.
      * @param containerHostMapping Container host mapping object specifying the Container host resource ID and its
      *     associated Controller resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container host mapping object specifying the Container host resource ID and its associated Controller
      *     resource.
      */
-    Response<ContainerHostMapping> getContainerHostMappingWithResponse(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping, Context context);
+    ContainerHostMapping getContainerHostMapping(
+        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping);
 }

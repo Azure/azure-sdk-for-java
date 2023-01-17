@@ -57,6 +57,10 @@ public final class AssemblyDefinitionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AssemblyDefinitionInner innerModel() {
         return this.innerObject;
     }
@@ -161,17 +165,17 @@ public final class AssemblyDefinitionImpl
         return this;
     }
 
-    public WorkflowTriggerCallbackUrl listContentCallbackUrl() {
-        return serviceManager
-            .integrationAccountAssemblies()
-            .listContentCallbackUrl(resourceGroupName, integrationAccountName, assemblyArtifactName);
-    }
-
     public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(Context context) {
         return serviceManager
             .integrationAccountAssemblies()
             .listContentCallbackUrlWithResponse(
                 resourceGroupName, integrationAccountName, assemblyArtifactName, context);
+    }
+
+    public WorkflowTriggerCallbackUrl listContentCallbackUrl() {
+        return serviceManager
+            .integrationAccountAssemblies()
+            .listContentCallbackUrl(resourceGroupName, integrationAccountName, assemblyArtifactName);
     }
 
     public AssemblyDefinitionImpl withRegion(Region location) {

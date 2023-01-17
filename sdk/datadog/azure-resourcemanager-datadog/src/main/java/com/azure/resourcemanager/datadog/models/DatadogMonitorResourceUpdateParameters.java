@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters for a PATCH request to a monitor resource. */
 @Fluent
 public final class DatadogMonitorResourceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogMonitorResourceUpdateParameters.class);
-
     /*
-     * The set of properties that can be update in a PATCH request to a monitor
-     * resource.
+     * The set of properties that can be update in a PATCH request to a monitor resource.
      */
     @JsonProperty(value = "properties")
     private MonitorUpdateProperties properties;
@@ -26,6 +22,7 @@ public final class DatadogMonitorResourceUpdateParameters {
      * The new tags of the monitor resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -33,6 +30,10 @@ public final class DatadogMonitorResourceUpdateParameters {
      */
     @JsonProperty(value = "sku")
     private ResourceSku sku;
+
+    /** Creates an instance of DatadogMonitorResourceUpdateParameters class. */
+    public DatadogMonitorResourceUpdateParameters() {
+    }
 
     /**
      * Get the properties property: The set of properties that can be update in a PATCH request to a monitor resource.

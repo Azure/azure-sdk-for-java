@@ -5,27 +5,22 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties that define a Azure Arc PrivateLinkScope resource. */
 @Fluent
 public final class HybridComputePrivateLinkScopeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridComputePrivateLinkScopeProperties.class);
-
     /*
-     * Indicates whether machines associated with the private link scope can
-     * also use public Azure Arc service endpoints.
+     * Indicates whether machines associated with the private link scope can also use public Azure Arc service
+     * endpoints.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessType publicNetworkAccess;
 
     /*
-     * Current state of this PrivateLinkScope: whether or not is has been
-     * provisioned within the resource group it is defined. Users cannot change
-     * this value but are able to read from it. Values will include
-     * Provisioning ,Succeeded, Canceled and Failed.
+     * Current state of this PrivateLinkScope: whether or not is has been provisioned within the resource group it is
+     * defined. Users cannot change this value but are able to read from it. Values will include Provisioning
+     * ,Succeeded, Canceled and Failed.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -35,6 +30,10 @@ public final class HybridComputePrivateLinkScopeProperties {
      */
     @JsonProperty(value = "privateLinkScopeId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkScopeId;
+
+    /** Creates an instance of HybridComputePrivateLinkScopeProperties class. */
+    public HybridComputePrivateLinkScopeProperties() {
+    }
 
     /**
      * Get the publicNetworkAccess property: Indicates whether machines associated with the private link scope can also

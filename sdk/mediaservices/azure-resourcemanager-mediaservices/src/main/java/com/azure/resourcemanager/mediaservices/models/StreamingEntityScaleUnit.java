@@ -16,6 +16,10 @@ public final class StreamingEntityScaleUnit {
     @JsonProperty(value = "scaleUnit")
     private Integer scaleUnit;
 
+    /** Creates an instance of StreamingEntityScaleUnit class. */
+    public StreamingEntityScaleUnit() {
+    }
+
     /**
      * Get the scaleUnit property: The scale unit number of the streaming endpoint.
      *

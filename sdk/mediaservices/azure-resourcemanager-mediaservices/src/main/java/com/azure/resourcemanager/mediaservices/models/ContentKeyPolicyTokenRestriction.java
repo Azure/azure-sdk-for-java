@@ -60,6 +60,10 @@ public final class ContentKeyPolicyTokenRestriction extends ContentKeyPolicyRest
     @JsonProperty(value = "openIdConnectDiscoveryDocument")
     private String openIdConnectDiscoveryDocument;
 
+    /** Creates an instance of ContentKeyPolicyTokenRestriction class. */
+    public ContentKeyPolicyTokenRestriction() {
+    }
+
     /**
      * Get the issuer property: The token issuer.
      *

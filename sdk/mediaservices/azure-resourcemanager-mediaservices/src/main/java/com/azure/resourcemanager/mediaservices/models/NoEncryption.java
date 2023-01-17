@@ -16,6 +16,10 @@ public final class NoEncryption {
     @JsonProperty(value = "enabledProtocols")
     private EnabledProtocols enabledProtocols;
 
+    /** Creates an instance of NoEncryption class. */
+    public NoEncryption() {
+    }
+
     /**
      * Get the enabledProtocols property: Representing supported protocols.
      *

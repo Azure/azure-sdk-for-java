@@ -46,6 +46,10 @@ public final class PresentationTimeRange {
     @JsonProperty(value = "forceEndTimestamp")
     private Boolean forceEndTimestamp;
 
+    /** Creates an instance of PresentationTimeRange class. */
+    public PresentationTimeRange() {
+    }
+
     /**
      * Get the startTimestamp property: The absolute start time boundary.
      *

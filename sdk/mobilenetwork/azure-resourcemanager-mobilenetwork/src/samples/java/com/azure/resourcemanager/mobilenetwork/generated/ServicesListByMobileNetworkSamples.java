@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Services ListByMobileNetwork. */
 public final class ServicesListByMobileNetworkSamples {
     /*
@@ -18,6 +16,8 @@ public final class ServicesListByMobileNetworkSamples {
      */
     public static void listServicesInAMobileNetwork(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.services().listByMobileNetwork("testResourceGroupName", "testMobileNetwork", Context.NONE);
+        manager
+            .services()
+            .listByMobileNetwork("testResourceGroupName", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }

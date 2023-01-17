@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact agreement framing settings. */
 @Fluent
 public final class EdifactFramingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactFramingSettings.class);
-
     /*
      * The service code list directory version.
      */
@@ -79,6 +76,10 @@ public final class EdifactFramingSettings {
      */
     @JsonProperty(value = "segmentTerminatorSuffix", required = true)
     private SegmentTerminatorSuffix segmentTerminatorSuffix;
+
+    /** Creates an instance of EdifactFramingSettings class. */
+    public EdifactFramingSettings() {
+    }
 
     /**
      * Get the serviceCodeListDirectoryVersion property: The service code list directory version.
@@ -307,22 +308,24 @@ public final class EdifactFramingSettings {
      */
     public void validate() {
         if (characterSet() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property characterSet in model EdifactFramingSettings"));
         }
         if (decimalPointIndicator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property decimalPointIndicator in model EdifactFramingSettings"));
         }
         if (segmentTerminatorSuffix() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property segmentTerminatorSuffix in model EdifactFramingSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactFramingSettings.class);
 }

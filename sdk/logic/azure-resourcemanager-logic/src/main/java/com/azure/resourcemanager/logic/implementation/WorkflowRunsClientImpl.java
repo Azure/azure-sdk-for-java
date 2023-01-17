@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.WorkflowRunsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunInner;
 import com.azure.resourcemanager.logic.models.WorkflowRunListResult;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkflowRunsClient. */
 public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowRunsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkflowRunsService service;
 
@@ -59,7 +56,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface WorkflowRunsService {
+    public interface WorkflowRunsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
@@ -131,7 +128,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunInner>> listSinglePageAsync(
@@ -194,7 +191,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunInner>> listSinglePageAsync(
@@ -253,7 +250,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowRunInner> listAsync(
@@ -271,7 +268,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowRunInner> listAsync(String resourceGroupName, String workflowName) {
@@ -294,7 +291,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowRunInner> listAsync(
@@ -312,7 +309,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowRunInner> list(String resourceGroupName, String workflowName) {
@@ -333,7 +330,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowRunInner> list(
@@ -350,7 +347,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run.
+     * @return a workflow run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowRunInner>> getWithResponseAsync(
@@ -404,7 +401,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run.
+     * @return a workflow run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowRunInner>> getWithResponseAsync(
@@ -454,19 +451,30 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run.
+     * @return a workflow run on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowRunInner> getAsync(String resourceGroupName, String workflowName, String runName) {
         return getWithResponseAsync(resourceGroupName, workflowName, runName)
-            .flatMap(
-                (Response<WorkflowRunInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a workflow run.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkflowRunInner> getWithResponse(
+        String resourceGroupName, String workflowName, String runName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workflowName, runName, context).block();
     }
 
     /**
@@ -482,25 +490,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowRunInner get(String resourceGroupName, String workflowName, String runName) {
-        return getAsync(resourceGroupName, workflowName, runName).block();
-    }
-
-    /**
-     * Gets a workflow run.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowRunInner> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, Context context) {
-        return getWithResponseAsync(resourceGroupName, workflowName, runName, context).block();
+        return getWithResponse(resourceGroupName, workflowName, runName, Context.NONE).getValue();
     }
 
     /**
@@ -512,7 +502,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> cancelWithResponseAsync(
@@ -566,7 +556,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> cancelWithResponseAsync(
@@ -616,12 +606,29 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String workflowName, String runName) {
-        return cancelWithResponseAsync(resourceGroupName, workflowName, runName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return cancelWithResponseAsync(resourceGroupName, workflowName, runName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Cancels a workflow run.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelWithResponse(
+        String resourceGroupName, String workflowName, String runName, Context context) {
+        return cancelWithResponseAsync(resourceGroupName, workflowName, runName, context).block();
     }
 
     /**
@@ -636,35 +643,18 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String workflowName, String runName) {
-        cancelAsync(resourceGroupName, workflowName, runName).block();
-    }
-
-    /**
-     * Cancels a workflow run.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-        String resourceGroupName, String workflowName, String runName, Context context) {
-        return cancelWithResponseAsync(resourceGroupName, workflowName, runName, context).block();
+        cancelWithResponse(resourceGroupName, workflowName, runName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow runs.
+     * @return the list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunInner>> listNextSinglePageAsync(String nextLink) {
@@ -695,12 +685,13 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow runs.
+     * @return the list of workflow runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakestore.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for UsageUnit. */
+/** Gets the unit of measurement. */
 public enum UsageUnit {
     /** Enum value Count. */
     COUNT("Count"),
@@ -42,6 +42,9 @@ public enum UsageUnit {
      */
     @JsonCreator
     public static UsageUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         UsageUnit[] items = UsageUnit.values();
         for (UsageUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum UsageUnit {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

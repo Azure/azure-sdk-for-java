@@ -17,6 +17,15 @@ public final class PreemptionCapability extends ExpandableStringEnum<PreemptionC
     public static final PreemptionCapability MAY_PREEMPT = fromString("MayPreempt");
 
     /**
+     * Creates a new instance of PreemptionCapability value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PreemptionCapability() {
+    }
+
+    /**
      * Creates or finds a PreemptionCapability from its string representation.
      *
      * @param name a name to look for.

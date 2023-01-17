@@ -4,95 +4,32 @@
 
 package com.azure.resourcemanager.delegatednetwork.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.delegatednetwork.models.ControllerResource;
-import com.azure.resourcemanager.delegatednetwork.models.ControllerState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.delegatednetwork.models.DelegatedControllerProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Represents an instance of a DNC controller. */
-@JsonFlatten
-@Immutable
-public class DelegatedControllerInner extends ControllerResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedControllerInner.class);
-
+@Fluent
+public final class DelegatedControllerInner extends ControllerResource {
     /*
-     * Resource guid.
+     * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGuid;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private DelegatedControllerProperties properties;
 
-    /*
-     * The current state of dnc controller resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ControllerState provisioningState;
-
-    /*
-     * dnc application id should be used by customer to authenticate with dnc
-     * gateway.
-     */
-    @JsonProperty(value = "properties.dncAppId", access = JsonProperty.Access.WRITE_ONLY)
-    private String dncAppId;
-
-    /*
-     * tenant id of dnc application id
-     */
-    @JsonProperty(value = "properties.dncTenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String dncTenantId;
-
-    /*
-     * dnc endpoint url that customers can use to connect to
-     */
-    @JsonProperty(value = "properties.dncEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String dncEndpoint;
-
-    /**
-     * Get the resourceGuid property: Resource guid.
-     *
-     * @return the resourceGuid value.
-     */
-    public String resourceGuid() {
-        return this.resourceGuid;
+    /** Creates an instance of DelegatedControllerInner class. */
+    public DelegatedControllerInner() {
     }
 
     /**
-     * Get the provisioningState property: The current state of dnc controller resource.
+     * Get the properties property: Properties of the provision operation request.
      *
-     * @return the provisioningState value.
+     * @return the properties value.
      */
-    public ControllerState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the dncAppId property: dnc application id should be used by customer to authenticate with dnc gateway.
-     *
-     * @return the dncAppId value.
-     */
-    public String dncAppId() {
-        return this.dncAppId;
-    }
-
-    /**
-     * Get the dncTenantId property: tenant id of dnc application id.
-     *
-     * @return the dncTenantId value.
-     */
-    public String dncTenantId() {
-        return this.dncTenantId;
-    }
-
-    /**
-     * Get the dncEndpoint property: dnc endpoint url that customers can use to connect to.
-     *
-     * @return the dncEndpoint value.
-     */
-    public String dncEndpoint() {
-        return this.dncEndpoint;
+    public DelegatedControllerProperties properties() {
+        return this.properties;
     }
 
     /** {@inheritDoc} */
@@ -117,5 +54,8 @@ public class DelegatedControllerInner extends ControllerResource {
     @Override
     public void validate() {
         super.validate();
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

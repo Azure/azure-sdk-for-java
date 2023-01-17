@@ -20,6 +20,10 @@ public final class SelectAudioTrackById extends AudioTrackDescriptor {
     @JsonProperty(value = "trackId", required = true)
     private long trackId;
 
+    /** Creates an instance of SelectAudioTrackById class. */
+    public SelectAudioTrackById() {
+    }
+
     /**
      * Get the trackId property: Track identifier to select.
      *

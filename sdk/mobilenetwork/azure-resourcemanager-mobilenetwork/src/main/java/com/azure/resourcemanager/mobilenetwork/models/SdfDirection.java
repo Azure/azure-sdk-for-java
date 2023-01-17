@@ -20,6 +20,15 @@ public final class SdfDirection extends ExpandableStringEnum<SdfDirection> {
     public static final SdfDirection BIDIRECTIONAL = fromString("Bidirectional");
 
     /**
+     * Creates a new instance of SdfDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SdfDirection() {
+    }
+
+    /**
      * Creates or finds a SdfDirection from its string representation.
      *
      * @param name a name to look for.

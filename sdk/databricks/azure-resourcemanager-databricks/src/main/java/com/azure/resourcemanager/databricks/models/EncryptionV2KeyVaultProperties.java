@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Key Vault input properties for encryption. */
 @Fluent
 public final class EncryptionV2KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionV2KeyVaultProperties.class);
-
     /*
      * The Uri of KeyVault.
      */
@@ -31,6 +28,10 @@ public final class EncryptionV2KeyVaultProperties {
      */
     @JsonProperty(value = "keyVersion", required = true)
     private String keyVersion;
+
+    /** Creates an instance of EncryptionV2KeyVaultProperties class. */
+    public EncryptionV2KeyVaultProperties() {
+    }
 
     /**
      * Get the keyVaultUri property: The Uri of KeyVault.
@@ -99,22 +100,24 @@ public final class EncryptionV2KeyVaultProperties {
      */
     public void validate() {
         if (keyVaultUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyVaultUri in model EncryptionV2KeyVaultProperties"));
         }
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyName in model EncryptionV2KeyVaultProperties"));
         }
         if (keyVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyVersion in model EncryptionV2KeyVaultProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionV2KeyVaultProperties.class);
 }

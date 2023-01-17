@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Assets Delete. */
 public final class AssetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-delete.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/assets-delete.json
      */
     /**
      * Sample code: Delete an Asset.
@@ -17,6 +15,8 @@ public final class AssetsDeleteSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void deleteAnAsset(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.assets().deleteWithResponse("contoso", "contosomedia", "ClimbingMountAdams", Context.NONE);
+        manager
+            .assets()
+            .deleteWithResponse("contoso", "contosomedia", "ClimbingMountAdams", com.azure.core.util.Context.NONE);
     }
 }

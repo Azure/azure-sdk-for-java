@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The workflow run trigger. */
 @Fluent
 public final class WorkflowRunTrigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunTrigger.class);
-
     /*
      * Gets the name.
      */
@@ -98,6 +94,10 @@ public final class WorkflowRunTrigger {
      */
     @JsonProperty(value = "trackedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object trackedProperties;
+
+    /** Creates an instance of WorkflowRunTrigger class. */
+    public WorkflowRunTrigger() {
+    }
 
     /**
      * Get the name property: Gets the name.

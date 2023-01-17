@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The Managed Identity details for storage account. */
 @Immutable
 public final class ManagedIdentityConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentityConfiguration.class);
-
     /*
-     * The objectId of the Managed Identity that is linked to the Managed
-     * Storage account.
+     * The objectId of the Managed Identity that is linked to the Managed Storage account.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
@@ -29,11 +24,14 @@ public final class ManagedIdentityConfiguration {
     private UUID tenantId;
 
     /*
-     * The type of Identity created. It can be either SystemAssigned or
-     * UserAssigned.
+     * The type of Identity created. It can be either SystemAssigned or UserAssigned.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ManagedIdentityConfiguration class. */
+    public ManagedIdentityConfiguration() {
+    }
 
     /**
      * Get the principalId property: The objectId of the Managed Identity that is linked to the Managed Storage account.

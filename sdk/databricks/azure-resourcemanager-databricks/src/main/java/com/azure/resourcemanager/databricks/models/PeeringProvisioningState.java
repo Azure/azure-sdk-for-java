@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PeeringProvisioningState. */
+/** The current provisioning state. */
 public final class PeeringProvisioningState extends ExpandableStringEnum<PeeringProvisioningState> {
     /** Static value Succeeded for PeeringProvisioningState. */
     public static final PeeringProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -23,6 +23,15 @@ public final class PeeringProvisioningState extends ExpandableStringEnum<Peering
     public static final PeeringProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of PeeringProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PeeringProvisioningState() {
+    }
+
+    /**
      * Creates or finds a PeeringProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class PeeringProvisioningState extends ExpandableStringEnum<Peering
         return fromString(name, PeeringProvisioningState.class);
     }
 
-    /** @return known PeeringProvisioningState values. */
+    /**
+     * Gets known PeeringProvisioningState values.
+     *
+     * @return known PeeringProvisioningState values.
+     */
     public static Collection<PeeringProvisioningState> values() {
         return values(PeeringProvisioningState.class);
     }

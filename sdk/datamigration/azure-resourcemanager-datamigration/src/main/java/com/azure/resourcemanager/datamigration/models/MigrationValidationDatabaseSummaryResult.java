@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Migration Validation Database level summary result. */
 @Immutable
 public final class MigrationValidationDatabaseSummaryResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationValidationDatabaseSummaryResult.class);
-
     /*
      * Result identifier
      */
@@ -56,6 +52,10 @@ public final class MigrationValidationDatabaseSummaryResult {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
+
+    /** Creates an instance of MigrationValidationDatabaseSummaryResult class. */
+    public MigrationValidationDatabaseSummaryResult() {
+    }
 
     /**
      * Get the id property: Result identifier.

@@ -5,39 +5,33 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Individual resource operation information. */
 @Fluent
 public final class ResourceOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceOperation.class);
-
     /*
-     * Name of the resource as specified in the artifacts. For ARM resources,
-     * this is the name of the resource specified in the template.
+     * Name of the resource as specified in the artifacts. For ARM resources, this is the name of the resource
+     * specified in the template.
      */
     @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
-     * Unique identifier of the operation. For ARM resources, this is the
-     * operationId obtained from ARM service.
+     * Unique identifier of the operation. For ARM resources, this is the operationId obtained from ARM service.
      */
     @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /*
-     * Type of the resource as specified in the artifacts. For ARM resources,
-     * this is the type of the resource specified in the template.
+     * Type of the resource as specified in the artifacts. For ARM resources, this is the type of the resource
+     * specified in the template.
      */
     @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
-     * State of the resource deployment. For ARM resources, this is the current
-     * provisioning state of the resource.
+     * State of the resource deployment. For ARM resources, this is the current provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -53,6 +47,10 @@ public final class ResourceOperation {
      */
     @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String statusCode;
+
+    /** Creates an instance of ResourceOperation class. */
+    public ResourceOperation() {
+    }
 
     /**
      * Get the resourceName property: Name of the resource as specified in the artifacts. For ARM resources, this is the

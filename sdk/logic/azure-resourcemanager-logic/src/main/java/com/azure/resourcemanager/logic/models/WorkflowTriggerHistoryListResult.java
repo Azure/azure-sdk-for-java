@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerHistoryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of workflow trigger histories. */
 @Fluent
 public final class WorkflowTriggerHistoryListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggerHistoryListResult.class);
-
     /*
      * A list of workflow trigger histories.
      */
@@ -27,6 +23,10 @@ public final class WorkflowTriggerHistoryListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of WorkflowTriggerHistoryListResult class. */
+    public WorkflowTriggerHistoryListResult() {
+    }
 
     /**
      * Get the value property: A list of workflow trigger histories.

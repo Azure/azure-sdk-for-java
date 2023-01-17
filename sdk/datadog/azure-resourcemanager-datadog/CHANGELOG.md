@@ -1,7 +1,41 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.4 (2023-01-16)
+
+- Azure Resource Manager MicrosoftDatadog client library for Java. This package contains Microsoft Azure SDK for MicrosoftDatadog Management SDK.  Package tag package-2021-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `MicrosoftDatadogManager$Configurable` was modified
+
+* `withScope(java.lang.String)` was added
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.DatadogMonitorResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DatadogSingleSignOnResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.MonitoringTagRules` was modified
+
+* `resourceGroupName()` was added
+
+#### `MicrosoftDatadogManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
 
 ## 1.0.0-beta.3 (2021-05-31)
 

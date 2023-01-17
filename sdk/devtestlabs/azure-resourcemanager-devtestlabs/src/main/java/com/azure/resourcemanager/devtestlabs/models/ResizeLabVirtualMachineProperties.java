@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body for resizing a virtual machine. */
 @Fluent
 public final class ResizeLabVirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResizeLabVirtualMachineProperties.class);
-
     /*
      * Specifies the size of the virtual machine.
      */
     @JsonProperty(value = "size")
     private String size;
+
+    /** Creates an instance of ResizeLabVirtualMachineProperties class. */
+    public ResizeLabVirtualMachineProperties() {
+    }
 
     /**
      * Get the size property: Specifies the size of the virtual machine.

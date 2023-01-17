@@ -76,6 +76,10 @@ public final class IntegrationAccountPartnerImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountPartnerInner innerModel() {
         return this.innerObject;
     }
@@ -180,18 +184,18 @@ public final class IntegrationAccountPartnerImpl
         return this;
     }
 
-    public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
-        return serviceManager
-            .integrationAccountPartners()
-            .listContentCallbackUrl(resourceGroupName, integrationAccountName, partnerName, listContentCallbackUrl);
-    }
-
     public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
         GetCallbackUrlParameters listContentCallbackUrl, Context context) {
         return serviceManager
             .integrationAccountPartners()
             .listContentCallbackUrlWithResponse(
                 resourceGroupName, integrationAccountName, partnerName, listContentCallbackUrl, context);
+    }
+
+    public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
+        return serviceManager
+            .integrationAccountPartners()
+            .listContentCallbackUrl(resourceGroupName, integrationAccountName, partnerName, listContentCallbackUrl);
     }
 
     public IntegrationAccountPartnerImpl withRegion(Region location) {

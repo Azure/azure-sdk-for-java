@@ -23,6 +23,15 @@ public final class Priority extends ExpandableStringEnum<Priority> {
     public static final Priority HIGH = fromString("High");
 
     /**
+     * Creates a new instance of Priority value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Priority() {
+    }
+
+    /**
      * Creates or finds a Priority from its string representation.
      *
      * @param name a name to look for.

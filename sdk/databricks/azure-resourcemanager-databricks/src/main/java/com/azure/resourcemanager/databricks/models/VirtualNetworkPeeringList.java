@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.fluent.models.VirtualNetworkPeeringInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Gets all virtual network peerings under a workspace. */
 @Fluent
 public final class VirtualNetworkPeeringList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringList.class);
-
     /*
      * List of virtual network peerings on workspace.
      */
@@ -23,11 +19,14 @@ public final class VirtualNetworkPeeringList {
     private List<VirtualNetworkPeeringInner> value;
 
     /*
-     * URL to get the next set of virtual network peering list results if there
-     * are any.
+     * URL to get the next set of virtual network peering list results if there are any.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of VirtualNetworkPeeringList class. */
+    public VirtualNetworkPeeringList() {
+    }
 
     /**
      * Get the value property: List of virtual network peerings on workspace.
