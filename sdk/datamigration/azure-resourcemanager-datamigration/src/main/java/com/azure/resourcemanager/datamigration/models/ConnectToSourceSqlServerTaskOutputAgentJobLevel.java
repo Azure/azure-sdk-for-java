@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,9 +18,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("AgentJobLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends ConnectToSourceSqlServerTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectToSourceSqlServerTaskOutputAgentJobLevel.class);
-
     /*
      * AgentJob name
      */
@@ -58,6 +53,10 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
      */
     @JsonProperty(value = "migrationEligibility", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationEligibilityInfo migrationEligibility;
+
+    /** Creates an instance of ConnectToSourceSqlServerTaskOutputAgentJobLevel class. */
+    public ConnectToSourceSqlServerTaskOutputAgentJobLevel() {
+    }
 
     /**
      * Get the name property: AgentJob name.

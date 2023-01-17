@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output for connect to Oracle, MySQL type source. */
 @Immutable
 public final class ConnectToSourceNonSqlTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceNonSqlTaskOutput.class);
-
     /*
      * Result identifier
      */
@@ -44,6 +40,10 @@ public final class ConnectToSourceNonSqlTaskOutput {
      */
     @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
+
+    /** Creates an instance of ConnectToSourceNonSqlTaskOutput class. */
+    public ConnectToSourceNonSqlTaskOutput() {
+    }
 
     /**
      * Get the id property: Result identifier.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceSkuCapacityScaleType. */
+/** The scale type applicable to the SKU. */
 public final class ResourceSkuCapacityScaleType extends ExpandableStringEnum<ResourceSkuCapacityScaleType> {
     /** Static value Automatic for ResourceSkuCapacityScaleType. */
     public static final ResourceSkuCapacityScaleType AUTOMATIC = fromString("Automatic");
@@ -18,6 +18,15 @@ public final class ResourceSkuCapacityScaleType extends ExpandableStringEnum<Res
 
     /** Static value None for ResourceSkuCapacityScaleType. */
     public static final ResourceSkuCapacityScaleType NONE = fromString("None");
+
+    /**
+     * Creates a new instance of ResourceSkuCapacityScaleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceSkuCapacityScaleType() {
+    }
 
     /**
      * Creates or finds a ResourceSkuCapacityScaleType from its string representation.
@@ -30,7 +39,11 @@ public final class ResourceSkuCapacityScaleType extends ExpandableStringEnum<Res
         return fromString(name, ResourceSkuCapacityScaleType.class);
     }
 
-    /** @return known ResourceSkuCapacityScaleType values. */
+    /**
+     * Gets known ResourceSkuCapacityScaleType values.
+     *
+     * @return known ResourceSkuCapacityScaleType values.
+     */
     public static Collection<ResourceSkuCapacityScaleType> values() {
         return values(ResourceSkuCapacityScaleType.class);
     }

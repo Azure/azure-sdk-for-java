@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceScalability. */
+/** The scalability approach. */
 public final class ServiceScalability extends ExpandableStringEnum<ServiceScalability> {
     /** Static value none for ServiceScalability. */
     public static final ServiceScalability NONE = fromString("none");
@@ -18,6 +18,15 @@ public final class ServiceScalability extends ExpandableStringEnum<ServiceScalab
 
     /** Static value automatic for ServiceScalability. */
     public static final ServiceScalability AUTOMATIC = fromString("automatic");
+
+    /**
+     * Creates a new instance of ServiceScalability value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceScalability() {
+    }
 
     /**
      * Creates or finds a ServiceScalability from its string representation.
@@ -30,7 +39,11 @@ public final class ServiceScalability extends ExpandableStringEnum<ServiceScalab
         return fromString(name, ServiceScalability.class);
     }
 
-    /** @return known ServiceScalability values. */
+    /**
+     * Gets known ServiceScalability values.
+     *
+     * @return known ServiceScalability values.
+     */
     public static Collection<ServiceScalability> values() {
         return values(ServiceScalability.class);
     }

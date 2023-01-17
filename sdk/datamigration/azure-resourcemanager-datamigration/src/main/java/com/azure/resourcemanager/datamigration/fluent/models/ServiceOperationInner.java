@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.models.ServiceOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of an action supported by the Database Migration Service. */
 @Fluent
 public final class ServiceOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceOperationInner.class);
-
     /*
-     * The fully qualified action name, e.g.
-     * Microsoft.DataMigration/services/read
+     * The fully qualified action name, e.g. Microsoft.DataMigration/services/read
      */
     @JsonProperty(value = "name")
     private String name;
@@ -27,6 +22,10 @@ public final class ServiceOperationInner {
      */
     @JsonProperty(value = "display")
     private ServiceOperationDisplay display;
+
+    /** Creates an instance of ServiceOperationInner class. */
+    public ServiceOperationInner() {
+    }
 
     /**
      * Get the name property: The fully qualified action name, e.g. Microsoft.DataMigration/services/read.
