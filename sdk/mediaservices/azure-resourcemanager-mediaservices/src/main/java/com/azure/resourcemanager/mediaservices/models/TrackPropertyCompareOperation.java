@@ -17,6 +17,15 @@ public final class TrackPropertyCompareOperation extends ExpandableStringEnum<Tr
     public static final TrackPropertyCompareOperation EQUAL = fromString("Equal");
 
     /**
+     * Creates a new instance of TrackPropertyCompareOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrackPropertyCompareOperation() {
+    }
+
+    /**
      * Creates or finds a TrackPropertyCompareOperation from its string representation.
      *
      * @param name a name to look for.

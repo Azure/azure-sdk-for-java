@@ -28,6 +28,10 @@ public final class ArmStreamingEndpointSkuInfo {
     @JsonProperty(value = "sku")
     private ArmStreamingEndpointSku sku;
 
+    /** Creates an instance of ArmStreamingEndpointSkuInfo class. */
+    public ArmStreamingEndpointSkuInfo() {
+    }
+
     /**
      * Get the resourceType property: The resourceType property.
      *

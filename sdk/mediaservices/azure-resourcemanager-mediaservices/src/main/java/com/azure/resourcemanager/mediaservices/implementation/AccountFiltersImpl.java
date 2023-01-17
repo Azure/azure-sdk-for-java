@@ -37,15 +37,6 @@ public final class AccountFiltersImpl implements AccountFilters {
         return Utils.mapPage(inner, inner1 -> new AccountFilterImpl(inner1, this.manager()));
     }
 
-    public AccountFilter get(String resourceGroupName, String accountName, String filterName) {
-        AccountFilterInner inner = this.serviceClient().get(resourceGroupName, accountName, filterName);
-        if (inner != null) {
-            return new AccountFilterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AccountFilter> getWithResponse(
         String resourceGroupName, String accountName, String filterName, Context context) {
         Response<AccountFilterInner> inner =
@@ -61,13 +52,22 @@ public final class AccountFiltersImpl implements AccountFilters {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String filterName) {
-        this.serviceClient().delete(resourceGroupName, accountName, filterName);
+    public AccountFilter get(String resourceGroupName, String accountName, String filterName) {
+        AccountFilterInner inner = this.serviceClient().get(resourceGroupName, accountName, filterName);
+        if (inner != null) {
+            return new AccountFilterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String filterName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, filterName, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String filterName) {
+        this.serviceClient().delete(resourceGroupName, accountName, filterName);
     }
 
     public AccountFilter getById(String id) {

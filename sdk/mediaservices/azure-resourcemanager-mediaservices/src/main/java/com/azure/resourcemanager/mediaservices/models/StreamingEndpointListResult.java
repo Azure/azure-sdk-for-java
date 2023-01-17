@@ -34,6 +34,10 @@ public final class StreamingEndpointListResult {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of StreamingEndpointListResult class. */
+    public StreamingEndpointListResult() {
+    }
+
     /**
      * Get the value property: The result of the List StreamingEndpoint operation.
      *

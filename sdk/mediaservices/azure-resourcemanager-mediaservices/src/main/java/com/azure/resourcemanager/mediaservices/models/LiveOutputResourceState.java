@@ -20,6 +20,15 @@ public final class LiveOutputResourceState extends ExpandableStringEnum<LiveOutp
     public static final LiveOutputResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of LiveOutputResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LiveOutputResourceState() {
+    }
+
+    /**
      * Creates or finds a LiveOutputResourceState from its string representation.
      *
      * @param name a name to look for.

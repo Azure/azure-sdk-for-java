@@ -35,6 +35,10 @@ public class MultiBitrateFormat extends Format {
     @JsonProperty(value = "outputFiles")
     private List<OutputFile> outputFiles;
 
+    /** Creates an instance of MultiBitrateFormat class. */
+    public MultiBitrateFormat() {
+    }
+
     /**
      * Get the outputFiles property: The list of output files to produce. Each entry in the list is a set of audio and
      * video layer labels to be muxed together .

@@ -57,6 +57,10 @@ public final class H264Layer extends VideoLayer {
     @JsonProperty(value = "entropyMode")
     private EntropyMode entropyMode;
 
+    /** Creates an instance of H264Layer class. */
+    public H264Layer() {
+    }
+
     /**
      * Get the profile property: We currently support Baseline, Main, High, High422, High444. Default is Auto.
      *

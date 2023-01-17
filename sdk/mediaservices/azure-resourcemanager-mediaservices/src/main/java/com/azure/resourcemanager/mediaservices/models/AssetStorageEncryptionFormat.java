@@ -18,6 +18,15 @@ public final class AssetStorageEncryptionFormat extends ExpandableStringEnum<Ass
         fromString("MediaStorageClientEncryption");
 
     /**
+     * Creates a new instance of AssetStorageEncryptionFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssetStorageEncryptionFormat() {
+    }
+
+    /**
      * Creates or finds a AssetStorageEncryptionFormat from its string representation.
      *
      * @param name a name to look for.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Assets ListStreamingLocators. */
 public final class AssetsListStreamingLocatorsSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-streaming-locators.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/assets-list-streaming-locators.json
      */
     /**
      * Sample code: List Asset SAS URLs.
@@ -19,6 +17,7 @@ public final class AssetsListStreamingLocatorsSamples {
     public static void listAssetSASURLs(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .assets()
-            .listStreamingLocatorsWithResponse("contoso", "contosomedia", "ClimbingMountSaintHelens", Context.NONE);
+            .listStreamingLocatorsWithResponse(
+                "contoso", "contosomedia", "ClimbingMountSaintHelens", com.azure.core.util.Context.NONE);
     }
 }

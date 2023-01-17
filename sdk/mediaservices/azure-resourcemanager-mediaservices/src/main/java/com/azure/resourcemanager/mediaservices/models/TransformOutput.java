@@ -35,6 +35,10 @@ public final class TransformOutput {
     @JsonProperty(value = "preset", required = true)
     private Preset preset;
 
+    /** Creates an instance of TransformOutput class. */
+    public TransformOutput() {
+    }
+
     /**
      * Get the onError property: A Transform can define more than one outputs. This property defines what the service
      * should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The

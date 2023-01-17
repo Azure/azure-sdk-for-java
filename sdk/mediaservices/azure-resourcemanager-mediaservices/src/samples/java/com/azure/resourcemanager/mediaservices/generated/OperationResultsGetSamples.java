@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OperationResults Get. */
 public final class OperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/asset-tracks-operation-result-by-id.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/asset-tracks-operation-result-by-id.json
      */
     /**
      * Sample code: Get result of asynchronous operation.
@@ -26,6 +24,6 @@ public final class OperationResultsGetSamples {
                 "ClimbingMountRainer",
                 "text1",
                 "e78f8d40-7aaa-4f2f-8ae6-73987e7c5a08",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

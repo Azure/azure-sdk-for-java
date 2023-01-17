@@ -20,6 +20,15 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
     public static final MetricAggregationType TOTAL = fromString("Total");
 
     /**
+     * Creates a new instance of MetricAggregationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricAggregationType() {
+    }
+
+    /**
      * Creates or finds a MetricAggregationType from its string representation.
      *
      * @param name a name to look for.

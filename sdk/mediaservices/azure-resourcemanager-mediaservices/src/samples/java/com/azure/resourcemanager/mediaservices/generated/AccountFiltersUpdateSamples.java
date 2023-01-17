@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.AccountFilter;
 import com.azure.resourcemanager.mediaservices.models.FirstQuality;
 import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
 /** Samples for AccountFilters Update. */
 public final class AccountFiltersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/accountFilters-update.json
      */
     /**
      * Sample code: Update an Account Filter.
@@ -23,7 +22,8 @@ public final class AccountFiltersUpdateSamples {
         AccountFilter resource =
             manager
                 .accountFilters()
-                .getWithResponse("contoso", "contosomedia", "accountFilterWithTimeWindowAndTrack", Context.NONE)
+                .getWithResponse(
+                    "contoso", "contosomedia", "accountFilterWithTimeWindowAndTrack", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

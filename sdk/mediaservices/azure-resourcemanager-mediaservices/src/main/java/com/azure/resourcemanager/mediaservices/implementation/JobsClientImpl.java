@@ -59,7 +59,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesJo")
-    private interface JobsService {
+    public interface JobsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
@@ -216,7 +216,7 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -291,7 +291,7 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -480,7 +480,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -542,7 +542,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -588,14 +588,16 @@ public final class JobsClientImpl implements JobsClient {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
+     * @return a Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner get(String resourceGroupName, String accountName, String transformName, String jobName) {
-        return getAsync(resourceGroupName, accountName, transformName, jobName).block();
+    public Response<JobInner> getWithResponse(
+        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
     }
 
     /**
@@ -607,16 +609,14 @@ public final class JobsClientImpl implements JobsClient {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job along with {@link Response}.
+     * @return a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> getWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
+    public JobInner get(String resourceGroupName, String accountName, String transformName, String jobName) {
+        return getWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE).getValue();
     }
 
     /**
@@ -667,7 +667,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -741,7 +741,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -790,27 +790,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param transformName The Transform name.
      * @param jobName The Job name.
      * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner create(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
-        return createAsync(resourceGroupName, accountName, transformName, jobName, parameters).block();
-    }
-
-    /**
-     * Create Job
-     *
-     * <p>Creates a Job.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -827,6 +806,28 @@ public final class JobsClientImpl implements JobsClient {
         Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create Job
+     *
+     * <p>Creates a Job.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobInner create(
+        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
+        return createWithResponse(resourceGroupName, accountName, transformName, jobName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -871,7 +872,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -933,7 +934,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -978,13 +979,16 @@ public final class JobsClientImpl implements JobsClient {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String transformName, String jobName) {
-        deleteAsync(resourceGroupName, accountName, transformName, jobName).block();
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
     }
 
     /**
@@ -996,16 +1000,13 @@ public final class JobsClientImpl implements JobsClient {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
+    public void delete(String resourceGroupName, String accountName, String transformName, String jobName) {
+        deleteWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE);
     }
 
     /**
@@ -1057,7 +1058,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1132,7 +1133,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1183,28 +1184,6 @@ public final class JobsClientImpl implements JobsClient {
      * @param transformName The Transform name.
      * @param jobName The Job name.
      * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner update(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
-        return updateAsync(resourceGroupName, accountName, transformName, jobName, parameters).block();
-    }
-
-    /**
-     * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1221,6 +1200,29 @@ public final class JobsClientImpl implements JobsClient {
         Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters, context)
             .block();
+    }
+
+    /**
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobInner update(
+        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
+        return updateWithResponse(resourceGroupName, accountName, transformName, jobName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1265,7 +1267,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1327,7 +1329,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1373,13 +1375,16 @@ public final class JobsClientImpl implements JobsClient {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName) {
-        cancelJobAsync(resourceGroupName, accountName, transformName, jobName).block();
+    public Response<Void> cancelJobWithResponse(
+        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+        return cancelJobWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
     }
 
     /**
@@ -1391,16 +1396,13 @@ public final class JobsClientImpl implements JobsClient {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelJobWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
-        return cancelJobWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
+    public void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName) {
+        cancelJobWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE);
     }
 
     /**

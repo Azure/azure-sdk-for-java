@@ -16,12 +16,13 @@ public interface MediaServicesOperationStatuses {
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media service operation status.
+     * @return media service operation status along with {@link Response}.
      */
-    MediaServiceOperationStatus get(String locationName, String operationId);
+    Response<MediaServiceOperationStatus> getWithResponse(String locationName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -30,11 +31,10 @@ public interface MediaServicesOperationStatuses {
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media service operation status along with {@link Response}.
+     * @return media service operation status.
      */
-    Response<MediaServiceOperationStatus> getWithResponse(String locationName, String operationId, Context context);
+    MediaServiceOperationStatus get(String locationName, String operationId);
 }

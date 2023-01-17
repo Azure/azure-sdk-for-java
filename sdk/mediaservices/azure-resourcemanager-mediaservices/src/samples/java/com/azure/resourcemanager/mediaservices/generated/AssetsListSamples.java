@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Assets List. */
 public final class AssetsListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-by-date.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/assets-list-by-date.json
      */
     /**
      * Sample code: List Asset ordered by date.
@@ -17,11 +15,13 @@ public final class AssetsListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listAssetOrderedByDate(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.assets().list("contoso", "contosomedia", null, null, "properties/created", Context.NONE);
+        manager
+            .assets()
+            .list("contoso", "contosomedia", null, null, "properties/created", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-in-date-range.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/assets-list-in-date-range.json
      */
     /**
      * Sample code: List Asset created in a date range.
@@ -38,11 +38,11 @@ public final class AssetsListSamples {
                 "properties/created gt 2012-06-01 and properties/created lt 2013-07-01",
                 null,
                 "properties/created",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-all.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/assets-list-all.json
      */
     /**
      * Sample code: List all Assets.
@@ -50,6 +50,6 @@ public final class AssetsListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listAllAssets(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.assets().list("contoso", "contosomedia", null, null, null, Context.NONE);
+        manager.assets().list("contoso", "contosomedia", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

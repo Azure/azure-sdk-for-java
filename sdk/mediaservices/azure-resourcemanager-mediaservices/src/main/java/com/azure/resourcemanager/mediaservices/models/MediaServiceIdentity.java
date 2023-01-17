@@ -39,6 +39,10 @@ public class MediaServiceIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
 
+    /** Creates an instance of MediaServiceIdentity class. */
+    public MediaServiceIdentity() {
+    }
+
     /**
      * Get the type property: The identity type.
      *

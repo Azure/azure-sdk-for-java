@@ -20,6 +20,15 @@ public final class AudioAnalysisMode extends ExpandableStringEnum<AudioAnalysisM
     public static final AudioAnalysisMode BASIC = fromString("Basic");
 
     /**
+     * Creates a new instance of AudioAnalysisMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AudioAnalysisMode() {
+    }
+
+    /**
      * Creates or finds a AudioAnalysisMode from its string representation.
      *
      * @param name a name to look for.

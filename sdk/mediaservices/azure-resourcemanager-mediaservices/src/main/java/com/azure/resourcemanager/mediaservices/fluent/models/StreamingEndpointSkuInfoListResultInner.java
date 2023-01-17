@@ -18,6 +18,10 @@ public final class StreamingEndpointSkuInfoListResultInner {
     @JsonProperty(value = "value")
     private List<ArmStreamingEndpointSkuInfo> value;
 
+    /** Creates an instance of StreamingEndpointSkuInfoListResultInner class. */
+    public StreamingEndpointSkuInfoListResultInner() {
+    }
+
     /**
      * Get the value property: The result of the List StreamingEndpoint skus.
      *
