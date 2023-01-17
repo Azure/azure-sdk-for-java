@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the ARM updatable properties of a hybrid machine. */
 @Fluent
 public final class MachineUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineUpdateProperties.class);
-
     /*
      * Metadata pertaining to the geographic location of the resource.
      */
@@ -21,18 +17,20 @@ public final class MachineUpdateProperties {
     private LocationData locationData;
 
     /*
-     * The resource id of the parent cluster (Azure HCI) this machine is
-     * assigned to, if any.
+     * The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.
      */
     @JsonProperty(value = "parentClusterResourceId")
     private String parentClusterResourceId;
 
     /*
-     * The resource id of the private link scope this machine is assigned to,
-     * if any.
+     * The resource id of the private link scope this machine is assigned to, if any.
      */
     @JsonProperty(value = "privateLinkScopeResourceId")
     private String privateLinkScopeResourceId;
+
+    /** Creates an instance of MachineUpdateProperties class. */
+    public MachineUpdateProperties() {
+    }
 
     /**
      * Get the locationData property: Metadata pertaining to the geographic location of the resource.
