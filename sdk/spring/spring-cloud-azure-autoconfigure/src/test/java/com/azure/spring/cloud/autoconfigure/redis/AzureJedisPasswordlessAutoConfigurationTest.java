@@ -3,31 +3,31 @@
 
 package com.azure.spring.cloud.autoconfigure.redis;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureJedisConnectionFactory;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureRedisCredentialSupplier;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.data.redis.JedisClientConfigurationBuilderCustomizer;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.JedisClientConfigurationBuilder;
 import redis.clients.jedis.JedisClientConfig;
 
 import java.time.Duration;
-import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link AzureJedisPasswordlessAutoConfiguration}.
  */
 class AzureJedisPasswordlessAutoConfigurationTest {
-    private static final String AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME = "azureRedisCredentialSupplier";
 
     private static final String REDIS_SCOPE_GLOBAL = "https://*.cacheinfra.windows.net:10225/appid/.default";
     private static final String REDIS_SCOPE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
@@ -40,13 +40,13 @@ class AzureJedisPasswordlessAutoConfigurationTest {
             "spring.redis.username = testuser",
             "spring.redis.host = testhost"
         )
-        .withConfiguration(AutoConfigurations.of(AzureJedisPasswordlessAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureJedisPasswordlessAutoConfiguration.class, CustomConfiguration.class));
 
     @Test
     @SuppressWarnings("unchecked")
     void testCredentialSupplier() {
         this.contextRunner.run((context) -> {
-            Supplier<String> supplier = (Supplier<String>) context.getBean(AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME);
+            AzureRedisCredentialSupplier supplier = context.getBean(AzureRedisCredentialSupplier.class);
             Assertions.assertNotNull(supplier);
         });
     }
@@ -85,9 +85,10 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     @Test
     @SuppressWarnings("unchecked")
     void testGetPasswordFromSupplier() {
-        Supplier<String> mockCredentialSupplier = () -> "fake-password-from-mock-supplier";
+        AzureRedisCredentialSupplier azureRedisCredentialSupplier = mock(AzureRedisCredentialSupplier.class);
+        when(azureRedisCredentialSupplier.get()).thenReturn("fake-password-from-mock-supplier");
         this.contextRunner.withPropertyValues("spring.redis.host:foo", "spring.redis.database:1")
-            .withBean("azureRedisCredentialSupplier", Supplier.class, () -> mockCredentialSupplier, beanDefinition -> beanDefinition.setPrimary(true))
+            .withBean("azureRedisCredentialSupplier", AzureRedisCredentialSupplier.class, () -> azureRedisCredentialSupplier, beanDefinition -> beanDefinition.setPrimary(true))
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
                 RedisStandaloneConfiguration redisStandaloneConfiguration = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
@@ -238,10 +239,9 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     static class CustomConfiguration {
 
         @Bean
-        JedisClientConfigurationBuilderCustomizer customizer() {
-            return JedisClientConfigurationBuilder::useSsl;
+        AzureGlobalProperties azureGlobalProperties() {
+            return new AzureGlobalProperties();
         }
-
     }
 
 }

@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.redis;
+package com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis;
 
+import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -24,12 +26,14 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
 @DisabledOnOs({OS.WINDOWS, OS.MAC})
-public class AzureRedisPasswordlessTest {
+public class AzureRedisAutoConfigurationTestContainerTest {
 
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
@@ -52,7 +56,10 @@ public class AzureRedisPasswordlessTest {
     }
 
     @Test
-    void testRedisTemplate() {
+    @Order(1)
+    void testSetAndGet() {
+        redis.start();
+
         Map<String, String> valueMap = new HashMap<>();
         valueMap.put("valueMap1", "map1");
         valueMap.put("valueMap2", "map2");
@@ -62,22 +69,32 @@ public class AzureRedisPasswordlessTest {
         Assertions.assertEquals("map2", value);
     }
 
+    @Test
+    @Order(2)
+    void testGetVauleAfterSet() {
+        String value = (String) redisTemplate.opsForValue().get("valueMap3");
+        Assertions.assertEquals("map3", value);
+    }
+
+
     @Configuration
     @Import({AzureJedisPasswordlessAutoConfiguration.class, RedisAutoConfiguration.class})
     static class AzureRedisPasswordlessTestConfig {
-        Supplier<String> redisCredential;
+        AzureRedisCredentialSupplier azureRedisCredentialSupplier;
 
-        AzureRedisPasswordlessTestConfig(Supplier<String> redisCredential) {
-            this.redisCredential = redisCredential;
+        AzureRedisPasswordlessTestConfig(AzureRedisCredentialSupplier azureRedisCredentialSupplier) {
+            this.azureRedisCredentialSupplier = azureRedisCredentialSupplier;
         }
     }
 
     @Configuration
     static class SupplierConfig {
 
-        @Bean(name = "azureRedisCredentialSupplier")
-        Supplier<String> redisCredential() {
-            return () -> REDIS_PASSWORD;
+        @Bean
+        AzureRedisCredentialSupplier azureRedisCredentialSupplier() {
+            AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
+            when(template.getTokenAsPassword()).thenReturn(REDIS_PASSWORD);
+            return new AzureRedisCredentialSupplier(template);
         }
     }
 
