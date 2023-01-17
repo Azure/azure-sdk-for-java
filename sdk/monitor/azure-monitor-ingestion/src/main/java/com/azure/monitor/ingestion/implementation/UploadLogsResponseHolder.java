@@ -5,14 +5,13 @@ package com.azure.monitor.ingestion.implementation;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
-import com.azure.monitor.ingestion.models.UploadLogsStatus;
 
 /**
  * The intermediate response holder for converting exceptions to {@link ResponseError} instances.
  */
 @Immutable
 public final class UploadLogsResponseHolder {
-    private UploadLogsStatus status;
+    private String status;
     private ResponseError responseError;
 
     /**
@@ -20,7 +19,7 @@ public final class UploadLogsResponseHolder {
      * @param status The status of the logs upload request.
      * @param responseError The error details of the upload request, if any.
      */
-    public UploadLogsResponseHolder(UploadLogsStatus status, ResponseError responseError) {
+    public UploadLogsResponseHolder(String status, ResponseError responseError) {
         this.status = status;
         this.responseError = responseError;
     }
@@ -29,7 +28,7 @@ public final class UploadLogsResponseHolder {
      * Returns the status of the logs upload request.
      * @return the status of the logs upload request.
      */
-    public UploadLogsStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 

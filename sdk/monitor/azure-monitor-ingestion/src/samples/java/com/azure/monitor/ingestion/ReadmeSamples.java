@@ -7,7 +7,6 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
 
 import java.util.List;
 
@@ -57,8 +56,8 @@ public final class ReadmeSamples {
                 .buildClient();
 
         List<Object> logs = getLogs();
-        UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-name>", logs);
-        System.out.println("Logs upload result status " + result.getStatus());
+        client.upload("<data-collection-rule-id>", "<stream-name>", logs);
+        System.out.println("Logs uploaded successfully");
         // END: readme-sample-uploadLogs
     }
 
@@ -77,9 +76,9 @@ public final class ReadmeSamples {
         List<Object> logs = getLogs();
         UploadLogsOptions uploadLogsOptions = new UploadLogsOptions()
                 .setMaxConcurrency(3);
-        UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
+        client.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions,
                 Context.NONE);
-        System.out.println("Logs upload result status " + result.getStatus());
+        System.out.println("Logs uploaded successfully");
         // END: readme-sample-uploadLogsWithMaxConcurrency
     }
 

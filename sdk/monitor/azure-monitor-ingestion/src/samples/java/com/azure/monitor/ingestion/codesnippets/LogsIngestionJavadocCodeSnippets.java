@@ -10,7 +10,6 @@ import com.azure.monitor.ingestion.LogsIngestionAsyncClient;
 import com.azure.monitor.ingestion.LogsIngestionClient;
 import com.azure.monitor.ingestion.LogsIngestionClientBuilder;
 import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
 
 import java.util.List;
 
@@ -47,8 +46,8 @@ public class LogsIngestionJavadocCodeSnippets {
                 .buildClient();
         // BEGIN: com.azure.monitor.ingestion.LogsIngestionClient.upload
         List<Object> logs = getLogs();
-        UploadLogsResult result = logsIngestionClient.upload("<data-collection-rule-id>", "<stream-name>", logs);
-        System.out.println("Logs upload result status " + result.getStatus());
+        logsIngestionClient.upload("<data-collection-rule-id>", "<stream-name>", logs);
+        System.out.println("Logs uploaded successfully");
         // END: com.azure.monitor.ingestion.LogsIngestionClient.upload
     }
 
@@ -61,9 +60,9 @@ public class LogsIngestionJavadocCodeSnippets {
         // BEGIN: com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency
         List<Object> logs = getLogs();
         UploadLogsOptions uploadLogsOptions = new UploadLogsOptions().setMaxConcurrency(4);
-        UploadLogsResult result = logsIngestionClient.upload("<data-collection-rule-id>", "<stream-name>", logs,
+        logsIngestionClient.upload("<data-collection-rule-id>", "<stream-name>", logs,
                 uploadLogsOptions, Context.NONE);
-        System.out.println("Logs upload result status " + result.getStatus());
+        System.out.println("Logs uploaded successfully");
         // END: com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency
     }
 
@@ -77,7 +76,7 @@ public class LogsIngestionJavadocCodeSnippets {
         // BEGIN: com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload
         List<Object> logs = getLogs();
         logsIngestionAsyncClient.upload("<data-collection-rule-id>", "<stream-name>", logs)
-                .subscribe(result -> System.out.println("Logs upload result status " + result.getStatus()));
+                .subscribe();
         // END: com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload
     }
 
@@ -91,7 +90,7 @@ public class LogsIngestionJavadocCodeSnippets {
         List<Object> logs = getLogs();
         UploadLogsOptions uploadLogsOptions = new UploadLogsOptions().setMaxConcurrency(4);
         logsIngestionAsyncClient.upload("<data-collection-rule-id>", "<stream-name>", logs, uploadLogsOptions)
-                .subscribe(result -> System.out.println("Logs upload result status " + result.getStatus()));
+                .subscribe();
         // END: com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency
     }
 

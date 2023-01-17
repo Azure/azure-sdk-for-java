@@ -4,7 +4,7 @@
 package com.azure.monitor.ingestion.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.models.ResponseError;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.List;
 
@@ -14,16 +14,16 @@ import java.util.List;
  */
 @Immutable
 public final class UploadLogsError {
-    private final ResponseError responseError;
+    private final HttpResponseException responseException;
     private final List<Object> failedLogs;
 
     /**
      * Creates an instance of error.
-     * @param error the response error containing the error details returned by the service.
+     * @param responseException the response exception containing the error details returned by the service.
      * @param failedLogs the logs that failed to upload.
      */
-    public UploadLogsError(ResponseError error, List<Object> failedLogs) {
-        this.responseError = error;
+    public UploadLogsError(HttpResponseException responseException, List<Object> failedLogs) {
+        this.responseException = responseException;
         this.failedLogs = failedLogs;
     }
 
@@ -31,8 +31,8 @@ public final class UploadLogsError {
      * Returns the response error containing the error details returned by the service.
      * @return the response error containing the error details returned by the service.
      */
-    public ResponseError getResponseError() {
-        return responseError;
+    public HttpResponseException getResponseException() {
+        return responseException;
     }
 
     /**

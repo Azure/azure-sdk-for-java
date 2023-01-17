@@ -22,11 +22,7 @@ import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesAsyncClient;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
-import com.azure.monitor.ingestion.models.UploadLogsError;
 import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
-import com.azure.monitor.ingestion.models.UploadLogsStatus;
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,9 +30,7 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -84,7 +78,7 @@ public final class LogsIngestionAsyncClient {
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
      * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;
-     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     *         .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
      *
@@ -97,7 +91,7 @@ public final class LogsIngestionAsyncClient {
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String ruleId, String streamName, List<Object> logs) {
+    public Mono<Void> upload(String ruleId, String streamName, Iterable<Object> logs) {
         return upload(ruleId, streamName, logs, new UploadLogsOptions());
     }
 
@@ -112,7 +106,7 @@ public final class LogsIngestionAsyncClient {
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
      * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
      * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, uploadLogsOptions&#41;
-     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     *         .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      *
@@ -126,8 +120,8 @@ public final class LogsIngestionAsyncClient {
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String ruleId, String streamName,
-                                         List<Object> logs, UploadLogsOptions options) {
+    public Mono<Void> upload(String ruleId, String streamName,
+                                         Iterable<Object> logs, UploadLogsOptions options) {
         return withContext(context -> upload(ruleId, streamName, logs, options, context));
     }
 
@@ -182,19 +176,19 @@ public final class LogsIngestionAsyncClient {
         return service.uploadWithResponse(ruleId, streamName, logs, requestOptions);
     }
 
-    Mono<UploadLogsResult> upload(String ruleId, String streamName,
-                                  List<Object> logs, UploadLogsOptions options,
+    Mono<Void> upload(String ruleId, String streamName,
+                                  Iterable<Object> logs, UploadLogsOptions options,
                                   Context context) {
         return Mono.defer(() -> splitAndUpload(ruleId, streamName, logs, options, context));
     }
 
-    private Mono<UploadLogsResult> splitAndUpload(String ruleId, String streamName, List<Object> logs, UploadLogsOptions options, Context context) {
+    private Mono<Void> splitAndUpload(String ruleId, String streamName, Iterable<Object> logs, UploadLogsOptions options, Context context) {
         try {
             Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
             Objects.requireNonNull(streamName, "'streamName' cannot be null.");
             Objects.requireNonNull(logs, "'logs' cannot be null.");
 
-            if (logs.isEmpty()) {
+            if (!logs.iterator().hasNext()) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("'logs' cannot be empty."));
             }
 
@@ -223,29 +217,30 @@ public final class LogsIngestionAsyncClient {
             return Flux.fromIterable(requests)
                     .flatMapSequential(bytes ->
                             uploadToService(ruleId, streamName, requestOptions, bytes), concurrency)
-                    .map(responseHolder -> mapResult(logBatchesIterator, responseHolder))
+                    // .map(responseHolder -> mapResult(logBatchesIterator, responseHolder))
                     .collectList()
-                    .map(this::createResponse);
+                    .then();
+                    // .map(this::createResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    private UploadLogsResult mapResult(Iterator<List<Object>> logBatchesIterator, UploadLogsResponseHolder responseHolder) {
-        List<Object> logsBatch = logBatchesIterator.next();
-        if (responseHolder.getStatus() == UploadLogsStatus.FAILURE) {
-            return new UploadLogsResult(responseHolder.getStatus(),
-                    Collections.singletonList(new UploadLogsError(responseHolder.getResponseError(), logsBatch)));
-        }
-        return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
-    }
-
+    // private void mapResult(Iterator<List<Object>> logBatchesIterator, UploadLogsResponseHolder responseHolder) {
+    //     List<Object> logsBatch = logBatchesIterator.next();
+    //     if (responseHolder.getStatus() == UploadLogsStatus.FAILURE) {
+    //         return new UploadLogsResult(responseHolder.getStatus(),
+    //                 Collections.singletonList(new UploadLogsError(responseHolder.getResponseError(), logsBatch)));
+    //     }
+    //     return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
+    // }
+    //
     private Mono<UploadLogsResponseHolder> uploadToService(String ruleId, String streamName, RequestOptions requestOptions, byte[] bytes) {
         return service.uploadWithResponse(ruleId, streamName,
                         BinaryData.fromBytes(bytes), requestOptions)
-                .map(response -> new UploadLogsResponseHolder(UploadLogsStatus.SUCCESS, null))
+                .map(response -> new UploadLogsResponseHolder(null, null))
                 .onErrorResume(HttpResponseException.class,
-                        ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(UploadLogsStatus.FAILURE,
+                        ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(null,
                                 mapToResponseError(ex))));
     }
 
@@ -276,63 +271,63 @@ public final class LogsIngestionAsyncClient {
         return responseError;
     }
 
-    private UploadLogsResult createResponse(List<UploadLogsResult> results) {
-        int failureCount = 0;
-        List<UploadLogsError> errors =  new ArrayList<>();
-        for (UploadLogsResult result : results) {
-            if (result.getStatus() != UploadLogsStatus.SUCCESS) {
-                failureCount++;
-                errors.addAll(result.getErrors());
-            }
-        }
-        if (failureCount == 0) {
-            return new UploadLogsResult(UploadLogsStatus.SUCCESS, errors);
-        }
-        if (failureCount < results.size()) {
-            return new UploadLogsResult(UploadLogsStatus.PARTIAL_FAILURE, errors);
-        }
-        return new UploadLogsResult(UploadLogsStatus.FAILURE, errors);
-    }
+    // private UploadLogsResult createResponse(List<UploadLogsResult> results) {
+    //     int failureCount = 0;
+    //     List<UploadLogsError> errors =  new ArrayList<>();
+    //     for (UploadLogsResult result : results) {
+    //         if (result.getStatus() != UploadLogsStatus.SUCCESS) {
+    //             failureCount++;
+    //             errors.addAll(result.getErrors());
+    //         }
+    //     }
+    //     if (failureCount == 0) {
+    //         return new UploadLogsResult(UploadLogsStatus.SUCCESS, errors);
+    //     }
+    //     if (failureCount < results.size()) {
+    //         return new UploadLogsResult(UploadLogsStatus.PARTIAL_FAILURE, errors);
+    //     }
+    //     return new UploadLogsResult(UploadLogsStatus.FAILURE, errors);
+    // }
 
-    private List<byte[]> createGzipRequests(List<Object> logs, ObjectSerializer serializer,
+    private List<byte[]> createGzipRequests(Iterable<Object> logs, ObjectSerializer serializer,
                                             List<List<Object>> logBatches) {
-        try {
+        // try {
             List<byte[]> requests = new ArrayList<>();
-            long currentBatchSize = 0;
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-            JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
-            generator.writeStartArray();
-            List<String> serializedLogs = new ArrayList<>();
-
-            int currentBatchStart = 0;
-            for (int i = 0; i < logs.size(); i++) {
-                byte[] bytes = serializer.serializeToBytes(logs.get(i));
-                int currentLogSize = bytes.length;
-                currentBatchSize += currentLogSize;
-                if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
-                    writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                    requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
-
-                    byteArrayOutputStream = new ByteArrayOutputStream();
-                    generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
-                    generator.writeStartArray();
-                    currentBatchSize = currentLogSize;
-                    serializedLogs.clear();
-                    logBatches.add(logs.subList(currentBatchStart, i));
-                    currentBatchStart = i;
-                }
-                serializedLogs.add(new String(bytes, StandardCharsets.UTF_8));
-            }
-            if (currentBatchSize > 0) {
-                writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
-                logBatches.add(logs.subList(currentBatchStart, logs.size()));
-            }
+            // long currentBatchSize = 0;
+            // ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            //
+            // JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
+            // generator.writeStartArray();
+            // List<String> serializedLogs = new ArrayList<>();
+            //
+            // int currentBatchStart = 0;
+            // for (int i = 0; i < logs.size(); i++) {
+            //     byte[] bytes = serializer.serializeToBytes(logs.get(i));
+            //     int currentLogSize = bytes.length;
+            //     currentBatchSize += currentLogSize;
+            //     if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
+            //         writeLogsAndCloseJsonGenerator(generator, serializedLogs);
+            //         requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
+            //
+            //         byteArrayOutputStream = new ByteArrayOutputStream();
+            //         generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
+            //         generator.writeStartArray();
+            //         currentBatchSize = currentLogSize;
+            //         serializedLogs.clear();
+            //         logBatches.add(logs.subList(currentBatchStart, i));
+            //         currentBatchStart = i;
+            //     }
+            //     serializedLogs.add(new String(bytes, StandardCharsets.UTF_8));
+            // }
+            // if (currentBatchSize > 0) {
+            //     writeLogsAndCloseJsonGenerator(generator, serializedLogs);
+            //     requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
+            //     logBatches.add(logs.subList(currentBatchStart, logs.size()));
+            // }
             return requests;
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
-        }
+        // } catch (IOException exception) {
+        //     throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+        // }
     }
 
     private void writeLogsAndCloseJsonGenerator(JsonGenerator generator, List<String> serializedLogs) throws IOException {

@@ -15,7 +15,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
 
 import java.util.List;
 
@@ -50,8 +49,8 @@ public final class LogsIngestionClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.upload -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsResult result = logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
-     * System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;;
+     * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
+     * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.upload -->
      *
@@ -64,8 +63,8 @@ public final class LogsIngestionClient {
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String ruleId, String streamName, List<Object> logs) {
-        return asyncClient.upload(ruleId, streamName, logs).block();
+    public void upload(String ruleId, String streamName, List<Object> logs) {
+        asyncClient.upload(ruleId, streamName, logs).block();
     }
 
     /**
@@ -78,9 +77,9 @@ public final class LogsIngestionClient {
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
      * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
-     * UploadLogsResult result = logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
+     * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
      *         uploadLogsOptions, Context.NONE&#41;;
-     * System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;;
+     * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
      * @param ruleId the data collection rule id that is configured to collect and transform the logs.
@@ -93,9 +92,9 @@ public final class LogsIngestionClient {
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String ruleId, String streamName,
-                                   List<Object> logs, UploadLogsOptions options) {
-        return asyncClient.upload(ruleId, streamName, logs, options, Context.NONE).block();
+    public void upload(String ruleId, String streamName,
+                                   Iterable<Object> logs, UploadLogsOptions options) {
+        asyncClient.upload(ruleId, streamName, logs, options, Context.NONE).block();
     }
 
     /**
@@ -115,9 +114,9 @@ public final class LogsIngestionClient {
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String ruleId, String streamName,
-                                                         List<Object> logs, UploadLogsOptions options, Context context) {
-        return asyncClient.upload(ruleId, streamName, logs, options, context).block();
+    public void upload(String ruleId, String streamName,
+                                   Iterable<Object> logs, UploadLogsOptions options, Context context) {
+        asyncClient.upload(ruleId, streamName, logs, options, context).block();
     }
 
     /**

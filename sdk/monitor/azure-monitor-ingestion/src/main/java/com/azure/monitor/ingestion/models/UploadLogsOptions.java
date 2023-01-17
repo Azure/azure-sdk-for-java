@@ -6,6 +6,8 @@ package com.azure.monitor.ingestion.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.ObjectSerializer;
 
+import java.util.function.Consumer;
+
 /**
  * The options model to configure the request to upload logs to Azure Monitor.
  */
@@ -13,6 +15,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 public final class UploadLogsOptions {
     private ObjectSerializer objectSerializer;
     private Integer maxConcurrency;
+    private Consumer<UploadLogsError> uploadLogsErrorConsumer;
 
     /**
      * Returns the serializer to use to convert the log objects to JSON.
@@ -47,6 +50,22 @@ public final class UploadLogsOptions {
      */
     public UploadLogsOptions setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
+        return this;
+    }
+
+    /**
+     * @return
+     */
+    public Consumer<UploadLogsError> getUploadLogsErrorConsumer() {
+        return uploadLogsErrorConsumer;
+    }
+
+    /**
+     * @param uploadLogsErrorConsumer
+     * @return
+     */
+    public UploadLogsOptions setUploadLogsErrorConsumer(Consumer<UploadLogsError> uploadLogsErrorConsumer) {
+        this.uploadLogsErrorConsumer = uploadLogsErrorConsumer;
         return this;
     }
 }
