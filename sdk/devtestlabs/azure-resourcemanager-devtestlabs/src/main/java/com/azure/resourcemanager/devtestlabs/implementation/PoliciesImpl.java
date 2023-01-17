@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.PoliciesClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.PolicyInner;
 import com.azure.resourcemanager.devtestlabs.models.Policies;
 import com.azure.resourcemanager.devtestlabs.models.Policy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PoliciesImpl implements Policies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PoliciesImpl.class);
 
     private final PoliciesClient innerClient;
 
@@ -47,15 +46,6 @@ public final class PoliciesImpl implements Policies {
         return Utils.mapPage(inner, inner1 -> new PolicyImpl(inner1, this.manager()));
     }
 
-    public Policy get(String resourceGroupName, String labName, String policySetName, String name) {
-        PolicyInner inner = this.serviceClient().get(resourceGroupName, labName, policySetName, name);
-        if (inner != null) {
-            return new PolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Policy> getWithResponse(
         String resourceGroupName, String labName, String policySetName, String name, String expand, Context context) {
         Response<PolicyInner> inner =
@@ -71,8 +61,13 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public void delete(String resourceGroupName, String labName, String policySetName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, policySetName, name);
+    public Policy get(String resourceGroupName, String labName, String policySetName, String name) {
+        PolicyInner inner = this.serviceClient().get(resourceGroupName, labName, policySetName, name);
+        if (inner != null) {
+            return new PolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -80,10 +75,14 @@ public final class PoliciesImpl implements Policies {
         return this.serviceClient().deleteWithResponse(resourceGroupName, labName, policySetName, name, context);
     }
 
+    public void delete(String resourceGroupName, String labName, String policySetName, String name) {
+        this.serviceClient().delete(resourceGroupName, labName, policySetName, name);
+    }
+
     public Policy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,21 +90,21 @@ public final class PoliciesImpl implements Policies {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String policySetName = Utils.getValueFromIdByName(id, "policysets");
         if (policySetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "policies");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
@@ -119,7 +118,7 @@ public final class PoliciesImpl implements Policies {
     public Response<Policy> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,21 +126,21 @@ public final class PoliciesImpl implements Policies {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String policySetName = Utils.getValueFromIdByName(id, "policysets");
         if (policySetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "policies");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
@@ -152,7 +151,7 @@ public final class PoliciesImpl implements Policies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -160,32 +159,32 @@ public final class PoliciesImpl implements Policies {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String policySetName = Utils.getValueFromIdByName(id, "policysets");
         if (policySetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "policies");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, labName, policySetName, name, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, labName, policySetName, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -193,21 +192,21 @@ public final class PoliciesImpl implements Policies {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String policySetName = Utils.getValueFromIdByName(id, "policysets");
         if (policySetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "policies");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));

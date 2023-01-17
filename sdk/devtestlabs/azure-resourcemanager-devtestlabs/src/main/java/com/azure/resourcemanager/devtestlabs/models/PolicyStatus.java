@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyStatus. */
+/** The status of the policy. */
 public final class PolicyStatus extends ExpandableStringEnum<PolicyStatus> {
     /** Static value Enabled for PolicyStatus. */
     public static final PolicyStatus ENABLED = fromString("Enabled");
 
     /** Static value Disabled for PolicyStatus. */
     public static final PolicyStatus DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of PolicyStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyStatus() {
+    }
 
     /**
      * Creates or finds a PolicyStatus from its string representation.
@@ -27,7 +36,11 @@ public final class PolicyStatus extends ExpandableStringEnum<PolicyStatus> {
         return fromString(name, PolicyStatus.class);
     }
 
-    /** @return known PolicyStatus values. */
+    /**
+     * Gets known PolicyStatus values.
+     *
+     * @return known PolicyStatus values.
+     */
     public static Collection<PolicyStatus> values() {
         return values(PolicyStatus.class);
     }

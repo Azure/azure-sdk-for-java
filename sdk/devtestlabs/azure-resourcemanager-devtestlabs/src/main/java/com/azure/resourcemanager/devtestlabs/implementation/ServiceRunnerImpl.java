@@ -54,6 +54,10 @@ public final class ServiceRunnerImpl implements ServiceRunner, ServiceRunner.Def
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceRunnerInner innerModel() {
         return this.innerObject;
     }

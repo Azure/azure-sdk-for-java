@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.OperationMetadataDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The REST API operation supported by DevTestLab ResourceProvider. */
 @Fluent
 public final class OperationMetadataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetadataInner.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}
      */
@@ -26,6 +22,10 @@ public final class OperationMetadataInner {
      */
     @JsonProperty(value = "display")
     private OperationMetadataDisplay display;
+
+    /** Creates an instance of OperationMetadataInner class. */
+    public OperationMetadataInner() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
