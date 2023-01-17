@@ -48,6 +48,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -106,7 +107,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.flush();
 
-        sleepIfRunningAgainstService(3000);
+        waitForIndexing();
 
         assertEquals(10, client.getDocumentCount());
 
@@ -131,7 +132,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        sleepIfRunningAgainstService(3000);
+        waitForIndexing();
 
         assertEquals(10, client.getDocumentCount());
         batchingClient.close();
@@ -154,7 +155,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        sleepIfRunningAgainstService((long) (3000 * 1.5));
+        waitForIndexing();
 
         assertEquals(10, client.getDocumentCount());
         batchingClient.close();
@@ -176,7 +177,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.close();
 
-        sleepIfRunningAgainstService(3000);
+        waitForIndexing();
 
         assertEquals(10, client.getDocumentCount());
     }
@@ -199,7 +200,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        sleepIfRunningAgainstService(3000);
+        waitForIndexing();
 
         assertEquals(0, client.getDocumentCount());
         batchingClient.close();

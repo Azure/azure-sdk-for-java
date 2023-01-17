@@ -23,18 +23,15 @@ import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
-import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -44,9 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SuggestTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
-    private static final String INDEX_NAME = "azsearch-suggest-shared-instance";
-
-    private final List<String> indexesToDelete = new ArrayList<>();
+    private static final String HOTEL_INDEX_NAME = "azsearch-suggest-shared-hotel-instance";
+    private static final String BOOKS_INDEX_NAME = "azsearch-suggest-shared-hotel-instance";
 
     private static SearchIndexClient searchIndexClient;
 
@@ -58,43 +54,45 @@ public class SuggestTests extends SearchTestBase {
             return;
         }
 
-        searchIndexClient = setupSharedIndex(INDEX_NAME, HOTELS_TESTS_INDEX_DATA_JSON, HOTELS_DATA_JSON);
-    }
+        searchIndexClient = setupSharedIndex(HOTEL_INDEX_NAME, HOTELS_TESTS_INDEX_DATA_JSON, HOTELS_DATA_JSON);
+        setupSharedIndex(BOOKS_INDEX_NAME, BOOKS_INDEX_JSON, null);
 
-    @Override
-    protected void afterTest() {
-        super.afterTest();
+        Author tolkien = new Author();
+        tolkien.firstName("J.R.R.");
+        tolkien.lastName("Tolkien");
+        Book doc1 = new Book();
+        doc1.ISBN("123");
+        doc1.title("Lord of the Rings");
+        doc1.author(tolkien);
 
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
-        for (String index : indexesToDelete) {
-            serviceClient.deleteIndex(index);
-        }
+        Book doc2 = new Book();
+        doc2.ISBN("456");
+        doc2.title("War and Peace");
+        doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
+
+        searchIndexClient.getSearchClient(BOOKS_INDEX_NAME)
+            .uploadDocuments(Arrays.asList(doc1, doc2));
     }
 
     @AfterAll
     protected static void cleanupClass() {
         if (TEST_MODE != TestMode.PLAYBACK) {
-            searchIndexClient.deleteIndex(INDEX_NAME);
+            searchIndexClient.deleteIndex(HOTEL_INDEX_NAME);
+            searchIndexClient.deleteIndex(BOOKS_INDEX_NAME);
         }
     }
 
-    private SearchClient setupClient(Supplier<String> indexSupplier) {
-        String indexName = indexSupplier.get();
-        indexesToDelete.add(indexName);
-
+    private SearchClient getClient(String indexName) {
         return getSearchClientBuilder(indexName).buildClient();
     }
 
-    private SearchAsyncClient setupAsyncClient(Supplier<String> indexSupplier) {
-        String indexName = indexSupplier.get();
-        indexesToDelete.add(indexName);
-
+    private SearchAsyncClient getAsyncClient(String indexName) {
         return getSearchClientBuilder(indexName).buildAsyncClient();
     }
 
     @Test
     public void canSuggestDynamicDocumentsSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId");
 
@@ -109,7 +107,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canSuggestDynamicDocumentsAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("HotelId");
 
@@ -120,7 +118,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void searchFieldsExcludesFieldsFromSuggestSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields("HotelName");
@@ -136,7 +134,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void searchFieldsExcludesFieldsFromSuggestAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields("HotelName");
@@ -148,7 +146,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canUseSuggestHitHighlightingSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
@@ -167,7 +165,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canUseSuggestHitHighlightingAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
@@ -182,7 +180,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canGetFuzzySuggestionsSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions().setUseFuzzyMatching(true);
 
@@ -197,7 +195,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canGetFuzzySuggestionsAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions().setUseFuzzyMatching(true);
 
@@ -208,7 +206,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canSuggestStaticallyTypedDocumentsSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
         //arrange
@@ -227,7 +225,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canSuggestStaticallyTypedDocumentsAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
         //arrange
@@ -241,21 +239,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canSuggestWithDateTimeInStaticModelSync() {
-        SearchClient client = setupClient(() -> setupIndexFromJsonFile(BOOKS_INDEX_JSON));
-
-        Author tolkien = new Author();
-        tolkien.firstName("J.R.R.");
-        tolkien.lastName("Tolkien");
-        Book doc1 = new Book();
-        doc1.ISBN("123");
-        doc1.title("Lord of the Rings");
-        doc1.author(tolkien);
-
-        Book doc2 = new Book();
-        doc2.ISBN("456");
-        doc2.title("War and Peace");
-        doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
-        uploadDocuments(client, Arrays.asList(doc1, doc2));
+        SearchClient client = getClient(BOOKS_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions();
         suggestOptions.setSelect("ISBN", "Title", "PublishDate");
@@ -269,21 +253,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void canSuggestWithDateTimeInStaticModelAsync() {
-        SearchAsyncClient asyncClient = setupAsyncClient(() -> setupIndexFromJsonFile(BOOKS_INDEX_JSON));
-
-        Author tolkien = new Author();
-        tolkien.firstName("J.R.R.");
-        tolkien.lastName("Tolkien");
-        Book doc1 = new Book();
-        doc1.ISBN("123");
-        doc1.title("Lord of the Rings");
-        doc1.author(tolkien);
-
-        Book doc2 = new Book();
-        doc2.ISBN("456");
-        doc2.title("War and Peace");
-        doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
-        uploadDocuments(asyncClient, Arrays.asList(doc1, doc2));
+        SearchAsyncClient asyncClient = getAsyncClient(BOOKS_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions();
         suggestOptions.setSelect("ISBN", "Title", "PublishDate");
@@ -295,7 +265,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void fuzzyIsOffByDefaultSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel", "sg", null, Context.NONE)
             .iterableByPage()
@@ -312,7 +282,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void fuzzyIsOffByDefaultAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         StepVerifier.create(asyncClient.suggest("hitel", "sg", null).byPage())
             .assertNext(response -> verifySuggestionCount(response, 0))
@@ -325,7 +295,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void suggestThrowsWhenGivenBadSuggesterNameSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestPagedIterable suggestResultIterator = client.suggest("Hotel", "Suggester does not exist",
             new SuggestOptions(), Context.NONE);
@@ -337,7 +307,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void suggestThrowsWhenGivenBadSuggesterNameAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         StepVerifier.create(asyncClient.suggest("Hotel", "Suggester does not exist", new SuggestOptions()).byPage())
             .thenRequest(1)
@@ -349,7 +319,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void suggestThrowsWhenRequestIsMalformedSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("This is not a valid orderby.");
 
@@ -362,7 +332,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void suggestThrowsWhenRequestIsMalformedAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("This is not a valid orderby.");
 
@@ -376,7 +346,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testCanSuggestWithMinimumCoverageSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -394,7 +364,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testCanSuggestWithMinimumCoverageAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -409,7 +379,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testTopTrimsResultsSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -428,7 +398,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testTopTrimsResultsAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         //arrange
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -443,7 +413,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testCanFilterSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
@@ -463,7 +433,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testCanFilterAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
@@ -483,7 +453,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testOrderByProgressivelyBreaksTiesSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(
@@ -503,7 +473,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testOrderByProgressivelyBreaksTiesAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy(
@@ -525,7 +495,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testCanSuggestWithSelectedFieldsSync() {
-        SearchClient client = getSearchClientBuilder(INDEX_NAME).buildClient();
+        SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
@@ -537,7 +507,7 @@ public class SuggestTests extends SearchTestBase {
 
     @Test
     public void testCanSuggestWithSelectedFieldsAsync() {
-        SearchAsyncClient asyncClient = getSearchClientBuilder(INDEX_NAME).buildAsyncClient();
+        SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
