@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CostThresholdStatus. */
+/** Indicates whether this threshold will be displayed on cost charts. */
 public final class CostThresholdStatus extends ExpandableStringEnum<CostThresholdStatus> {
     /** Static value Enabled for CostThresholdStatus. */
     public static final CostThresholdStatus ENABLED = fromString("Enabled");
 
     /** Static value Disabled for CostThresholdStatus. */
     public static final CostThresholdStatus DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of CostThresholdStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CostThresholdStatus() {
+    }
 
     /**
      * Creates or finds a CostThresholdStatus from its string representation.
@@ -27,7 +36,11 @@ public final class CostThresholdStatus extends ExpandableStringEnum<CostThreshol
         return fromString(name, CostThresholdStatus.class);
     }
 
-    /** @return known CostThresholdStatus values. */
+    /**
+     * Gets known CostThresholdStatus values.
+     *
+     * @return known CostThresholdStatus values.
+     */
     public static Collection<CostThresholdStatus> values() {
         return values(CostThresholdStatus.class);
     }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the cost summary. */
 @Fluent
 public final class LabCostSummaryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabCostSummaryProperties.class);
-
     /*
      * The cost component of the cost item.
      */
     @JsonProperty(value = "estimatedLabCost")
     private Double estimatedLabCost;
+
+    /** Creates an instance of LabCostSummaryProperties class. */
+    public LabCostSummaryProperties() {
+    }
 
     /**
      * Get the estimatedLabCost property: The cost component of the cost item.

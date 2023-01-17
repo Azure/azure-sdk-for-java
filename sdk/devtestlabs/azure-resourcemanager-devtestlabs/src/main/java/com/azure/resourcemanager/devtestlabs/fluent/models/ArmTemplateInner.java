@@ -4,143 +4,35 @@
 
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.ParametersValueFileInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** An Azure Resource Manager template. */
-@JsonFlatten
-@Immutable
-public class ArmTemplateInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmTemplateInner.class);
-
+@Fluent
+public final class ArmTemplateInner extends Resource {
     /*
-     * The display name of the ARM template.
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
+    @JsonProperty(value = "properties", required = true)
+    private ArmTemplateProperties innerProperties = new ArmTemplateProperties();
 
-    /*
-     * The description of the ARM template.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * The publisher of the ARM template.
-     */
-    @JsonProperty(value = "properties.publisher", access = JsonProperty.Access.WRITE_ONLY)
-    private String publisher;
-
-    /*
-     * The URI to the icon of the ARM template.
-     */
-    @JsonProperty(value = "properties.icon", access = JsonProperty.Access.WRITE_ONLY)
-    private String icon;
-
-    /*
-     * The contents of the ARM template.
-     */
-    @JsonProperty(value = "properties.contents", access = JsonProperty.Access.WRITE_ONLY)
-    private Object contents;
-
-    /*
-     * The creation date of the armTemplate.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * File name and parameter values information from all
-     * azuredeploy.*.parameters.json for the ARM template.
-     */
-    @JsonProperty(value = "properties.parametersValueFilesInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ParametersValueFileInfo> parametersValueFilesInfo;
-
-    /*
-     * Whether or not ARM template is enabled for use by lab user.
-     */
-    @JsonProperty(value = "properties.enabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean enabled;
-
-    /**
-     * Get the displayName property: The display name of the ARM template.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.displayName;
+    /** Creates an instance of ArmTemplateInner class. */
+    public ArmTemplateInner() {
     }
 
     /**
-     * Get the description property: The description of the ARM template.
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Get the publisher property: The publisher of the ARM template.
-     *
-     * @return the publisher value.
-     */
-    public String publisher() {
-        return this.publisher;
-    }
-
-    /**
-     * Get the icon property: The URI to the icon of the ARM template.
-     *
-     * @return the icon value.
-     */
-    public String icon() {
-        return this.icon;
-    }
-
-    /**
-     * Get the contents property: The contents of the ARM template.
-     *
-     * @return the contents value.
-     */
-    public Object contents() {
-        return this.contents;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the armTemplate.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the parametersValueFilesInfo property: File name and parameter values information from all
-     * azuredeploy.*.parameters.json for the ARM template.
-     *
-     * @return the parametersValueFilesInfo value.
-     */
-    public List<ParametersValueFileInfo> parametersValueFilesInfo() {
-        return this.parametersValueFilesInfo;
-    }
-
-    /**
-     * Get the enabled property: Whether or not ARM template is enabled for use by lab user.
-     *
-     * @return the enabled value.
-     */
-    public Boolean enabled() {
-        return this.enabled;
+    private ArmTemplateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -158,13 +50,93 @@ public class ArmTemplateInner extends Resource {
     }
 
     /**
+     * Get the displayName property: The display name of the ARM template.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Get the description property: The description of the ARM template.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Get the publisher property: The publisher of the ARM template.
+     *
+     * @return the publisher value.
+     */
+    public String publisher() {
+        return this.innerProperties() == null ? null : this.innerProperties().publisher();
+    }
+
+    /**
+     * Get the icon property: The URI to the icon of the ARM template.
+     *
+     * @return the icon value.
+     */
+    public String icon() {
+        return this.innerProperties() == null ? null : this.innerProperties().icon();
+    }
+
+    /**
+     * Get the contents property: The contents of the ARM template.
+     *
+     * @return the contents value.
+     */
+    public Object contents() {
+        return this.innerProperties() == null ? null : this.innerProperties().contents();
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the armTemplate.
+     *
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the parametersValueFilesInfo property: File name and parameter values information from all
+     * azuredeploy.*.parameters.json for the ARM template.
+     *
+     * @return the parametersValueFilesInfo value.
+     */
+    public List<ParametersValueFileInfo> parametersValueFilesInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().parametersValueFilesInfo();
+    }
+
+    /**
+     * Get the enabled property: Whether or not ARM template is enabled for use by lab user.
+     *
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parametersValueFilesInfo() != null) {
-            parametersValueFilesInfo().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ArmTemplateInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ArmTemplateInner.class);
 }

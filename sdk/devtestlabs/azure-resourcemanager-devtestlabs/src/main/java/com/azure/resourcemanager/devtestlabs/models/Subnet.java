@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subnet information. */
 @Fluent
 public final class Subnet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Subnet.class);
-
     /*
      * The resource ID of the subnet.
      */
@@ -27,11 +23,14 @@ public final class Subnet {
     private String labSubnetName;
 
     /*
-     * The permission policy of the subnet for allowing public IP addresses
-     * (i.e. Allow, Deny)).
+     * The permission policy of the subnet for allowing public IP addresses (i.e. Allow, Deny)).
      */
     @JsonProperty(value = "allowPublicIp")
     private UsagePermissionType allowPublicIp;
+
+    /** Creates an instance of Subnet class. */
+    public Subnet() {
+    }
 
     /**
      * Get the resourceId property: The resource ID of the subnet.

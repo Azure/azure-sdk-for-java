@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Policy violation. */
 @Fluent
 public final class PolicyViolation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyViolation.class);
-
     /*
      * The code of the policy violation.
      */
@@ -25,6 +21,10 @@ public final class PolicyViolation {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of PolicyViolation class. */
+    public PolicyViolation() {
+    }
 
     /**
      * Get the code property: The code of the policy violation.

@@ -16,13 +16,18 @@ public interface PolicySets {
      * @param labName The name of the lab.
      * @param name The name of the policy set.
      * @param evaluatePoliciesRequest Request body for evaluating a policy set.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set.
+     * @return response body for evaluating a policy set along with {@link Response}.
      */
-    EvaluatePoliciesResponse evaluatePolicies(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest);
+    Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(
+        String resourceGroupName,
+        String labName,
+        String name,
+        EvaluatePoliciesRequest evaluatePoliciesRequest,
+        Context context);
 
     /**
      * Evaluates lab policy.
@@ -31,16 +36,11 @@ public interface PolicySets {
      * @param labName The name of the lab.
      * @param name The name of the policy set.
      * @param evaluatePoliciesRequest Request body for evaluating a policy set.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for evaluating a policy set.
      */
-    Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context);
+    EvaluatePoliciesResponse evaluatePolicies(
+        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest);
 }

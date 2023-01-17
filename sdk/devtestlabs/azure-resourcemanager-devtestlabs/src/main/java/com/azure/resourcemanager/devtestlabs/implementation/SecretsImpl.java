@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.SecretsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.SecretInner;
 import com.azure.resourcemanager.devtestlabs.models.Secret;
 import com.azure.resourcemanager.devtestlabs.models.Secrets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecretsImpl implements Secrets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecretsImpl.class);
 
     private final SecretsClient innerClient;
 
@@ -47,15 +46,6 @@ public final class SecretsImpl implements Secrets {
         return Utils.mapPage(inner, inner1 -> new SecretImpl(inner1, this.manager()));
     }
 
-    public Secret get(String resourceGroupName, String labName, String username, String name) {
-        SecretInner inner = this.serviceClient().get(resourceGroupName, labName, username, name);
-        if (inner != null) {
-            return new SecretImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Secret> getWithResponse(
         String resourceGroupName, String labName, String username, String name, String expand, Context context) {
         Response<SecretInner> inner =
@@ -71,8 +61,13 @@ public final class SecretsImpl implements Secrets {
         }
     }
 
-    public void delete(String resourceGroupName, String labName, String username, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, username, name);
+    public Secret get(String resourceGroupName, String labName, String username, String name) {
+        SecretInner inner = this.serviceClient().get(resourceGroupName, labName, username, name);
+        if (inner != null) {
+            return new SecretImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -80,10 +75,14 @@ public final class SecretsImpl implements Secrets {
         return this.serviceClient().deleteWithResponse(resourceGroupName, labName, username, name, context);
     }
 
+    public void delete(String resourceGroupName, String labName, String username, String name) {
+        this.serviceClient().delete(resourceGroupName, labName, username, name);
+    }
+
     public Secret getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,21 +90,21 @@ public final class SecretsImpl implements Secrets {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "secrets");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));
@@ -117,7 +116,7 @@ public final class SecretsImpl implements Secrets {
     public Response<Secret> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,21 +124,21 @@ public final class SecretsImpl implements Secrets {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "secrets");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));
@@ -150,7 +149,7 @@ public final class SecretsImpl implements Secrets {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,32 +157,32 @@ public final class SecretsImpl implements Secrets {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "secrets");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, labName, username, name, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, labName, username, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -191,21 +190,21 @@ public final class SecretsImpl implements Secrets {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "secrets");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));

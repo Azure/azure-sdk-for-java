@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of a policy set evaluation. */
 @Fluent
 public final class PolicySetResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetResult.class);
-
     /*
-     * A value indicating whether this policy set evaluation has discovered
-     * violations.
+     * A value indicating whether this policy set evaluation has discovered violations.
      */
     @JsonProperty(value = "hasError")
     private Boolean hasError;
@@ -27,6 +22,10 @@ public final class PolicySetResult {
      */
     @JsonProperty(value = "policyViolations")
     private List<PolicyViolation> policyViolations;
+
+    /** Creates an instance of PolicySetResult class. */
+    public PolicySetResult() {
+    }
 
     /**
      * Get the hasError property: A value indicating whether this policy set evaluation has discovered violations.
