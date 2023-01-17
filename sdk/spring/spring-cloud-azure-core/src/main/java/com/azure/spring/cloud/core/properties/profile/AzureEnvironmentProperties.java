@@ -12,20 +12,20 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
 
     public static final AzureEnvironmentProperties AZURE = new AzureEnvironmentProperties(AzureEnvironment.AZURE) {{
-        setServiceBusDomainName("servicebus.windows.net");
-    }};
+            setServiceBusDomainName("servicebus.windows.net");
+        }};
 
     public static final AzureEnvironmentProperties AZURE_CHINA = new AzureEnvironmentProperties(AzureEnvironment.AZURE_CHINA) {{
-        setServiceBusDomainName("servicebus.chinacloudapi.cn");
-    }};
+            setServiceBusDomainName("servicebus.chinacloudapi.cn");
+        }};
 
     public static final AzureEnvironmentProperties AZURE_GERMANY = new AzureEnvironmentProperties(AzureEnvironment.AZURE_GERMANY) {{
-        setServiceBusDomainName("servicebus.cloudapi.de");
-    }};
+            setServiceBusDomainName("servicebus.cloudapi.de");
+        }};
 
     public static final AzureEnvironmentProperties AZURE_US_GOVERNMENT = new AzureEnvironmentProperties(AzureEnvironment.AZURE_US_GOVERNMENT) {{
-        setServiceBusDomainName("servicebus.usgovcloudapi.net");
-    }};
+            setServiceBusDomainName("servicebus.usgovcloudapi.net");
+        }};
 
     /**
      * The management portal URL.

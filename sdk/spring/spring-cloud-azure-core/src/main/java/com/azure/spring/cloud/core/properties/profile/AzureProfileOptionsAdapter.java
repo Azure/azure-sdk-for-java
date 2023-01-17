@@ -20,7 +20,7 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
         if (this.getCloudType() == null) {
             BeanUtils.copyProperties(new AzureEnvironmentProperties(), this.getEnvironment());
         } else {
-            AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType(), null);
+            AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType(), new AzureEnvironmentProperties());
             AzurePropertiesUtils.copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
         }
     }
