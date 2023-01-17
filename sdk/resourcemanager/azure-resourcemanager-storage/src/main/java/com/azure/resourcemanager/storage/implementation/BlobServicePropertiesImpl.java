@@ -226,6 +226,9 @@ class BlobServicePropertiesImpl
 
     @Override
     public BlobServicePropertiesImpl withLastAccessTimeTrackingPolicyDisabled() {
-        return withLastAccessTimeTrackingPolicy(new LastAccessTimeTrackingPolicy().withEnable(false));
+        if (this.innerModel().lastAccessTimeTrackingPolicy() != null) {
+            this.innerModel().lastAccessTimeTrackingPolicy().withEnable(false);
+        }
+        return this;
     }
 }
