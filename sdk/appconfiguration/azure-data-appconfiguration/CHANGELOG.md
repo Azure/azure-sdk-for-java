@@ -1,15 +1,9 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.4.1 (2023-01-17)
 
 ### Bugs Fixed
 - Fixed shared `SyncTokenToken` and `RetryPolicy` policies across Configuration clients. 
-
-### Other Changes
 
 ## 1.4.0 (2023-01-11)
 
