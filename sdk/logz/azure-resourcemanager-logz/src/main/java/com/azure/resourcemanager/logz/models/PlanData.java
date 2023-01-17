@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The PlanData model. */
 @Fluent
 public final class PlanData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlanData.class);
-
     /*
      * different usage type like PAYG/COMMITTED. this could be enum
      */
@@ -38,6 +34,10 @@ public final class PlanData {
      */
     @JsonProperty(value = "effectiveDate")
     private OffsetDateTime effectiveDate;
+
+    /** Creates an instance of PlanData class. */
+    public PlanData() {
+    }
 
     /**
      * Get the usageType property: different usage type like PAYG/COMMITTED. this could be enum.

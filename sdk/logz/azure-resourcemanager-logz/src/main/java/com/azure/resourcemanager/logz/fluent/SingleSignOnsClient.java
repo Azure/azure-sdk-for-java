@@ -23,7 +23,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogzSingleSignOnResourceInner> list(String resourceGroupName, String monitorName);
@@ -37,7 +37,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogzSingleSignOnResourceInner> list(String resourceGroupName, String monitorName, Context context);
@@ -48,15 +48,14 @@ public interface SingleSignOnsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body);
+        String resourceGroupName, String monitorName, String configurationName);
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
@@ -69,7 +68,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
@@ -78,22 +77,6 @@ public interface SingleSignOnsClient {
         String configurationName,
         LogzSingleSignOnResourceInner body,
         Context context);
-
-    /**
-     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configurationName parameter.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LogzSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body);
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
@@ -137,13 +120,15 @@ public interface SingleSignOnsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogzSingleSignOnResourceInner get(String resourceGroupName, String monitorName, String configurationName);
+    Response<LogzSingleSignOnResourceInner> getWithResponse(
+        String resourceGroupName, String monitorName, String configurationName, Context context);
 
     /**
      * Gets the Logz single sign-on resource for the given Monitor.
@@ -151,13 +136,11 @@ public interface SingleSignOnsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Logz single sign-on resource for the given Monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogzSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    LogzSingleSignOnResourceInner get(String resourceGroupName, String monitorName, String configurationName);
 }

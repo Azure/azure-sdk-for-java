@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request for checking user's role for Logz.io account. */
 @Fluent
 public final class UserRoleRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserRoleRequest.class);
-
     /*
      * Email of the user used by Logz for contacting them if needed
      */
     @JsonProperty(value = "emailAddress")
     private String emailAddress;
+
+    /** Creates an instance of UserRoleRequest class. */
+    public UserRoleRequest() {
+    }
 
     /**
      * Get the emailAddress property: Email of the user used by Logz for contacting them if needed.
