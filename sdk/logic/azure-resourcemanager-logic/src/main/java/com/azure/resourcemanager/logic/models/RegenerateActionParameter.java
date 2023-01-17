@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The access key regenerate action content. */
 @Fluent
 public final class RegenerateActionParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateActionParameter.class);
-
     /*
      * The key type.
      */
     @JsonProperty(value = "keyType")
     private KeyType keyType;
+
+    /** Creates an instance of RegenerateActionParameter class. */
+    public RegenerateActionParameter() {
+    }
 
     /**
      * Get the keyType property: The key type.

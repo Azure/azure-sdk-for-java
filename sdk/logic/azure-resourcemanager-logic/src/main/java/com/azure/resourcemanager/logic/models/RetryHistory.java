@@ -6,16 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The retry history. */
 @Fluent
 public final class RetryHistory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetryHistory.class);
-
     /*
      * Gets the start time.
      */
@@ -51,6 +47,10 @@ public final class RetryHistory {
      */
     @JsonProperty(value = "error")
     private ManagementError error;
+
+    /** Creates an instance of RetryHistory class. */
+    public RetryHistory() {
+    }
 
     /**
      * Get the startTime property: Gets the start time.

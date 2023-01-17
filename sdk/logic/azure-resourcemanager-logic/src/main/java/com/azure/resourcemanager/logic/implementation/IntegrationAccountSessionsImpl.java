@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.IntegrationAccountSessionsClient;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSessionInner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSession;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSessions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountSessionsImpl implements IntegrationAccountSessions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountSessionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountSessionsImpl.class);
 
     private final IntegrationAccountSessionsClient innerClient;
 
@@ -41,16 +40,6 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         return Utils.mapPage(inner, inner1 -> new IntegrationAccountSessionImpl(inner1, this.manager()));
     }
 
-    public IntegrationAccountSession get(String resourceGroupName, String integrationAccountName, String sessionName) {
-        IntegrationAccountSessionInner inner =
-            this.serviceClient().get(resourceGroupName, integrationAccountName, sessionName);
-        if (inner != null) {
-            return new IntegrationAccountSessionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationAccountSession> getWithResponse(
         String resourceGroupName, String integrationAccountName, String sessionName, Context context) {
         Response<IntegrationAccountSessionInner> inner =
@@ -66,8 +55,14 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
     }
 
-    public void delete(String resourceGroupName, String integrationAccountName, String sessionName) {
-        this.serviceClient().delete(resourceGroupName, integrationAccountName, sessionName);
+    public IntegrationAccountSession get(String resourceGroupName, String integrationAccountName, String sessionName) {
+        IntegrationAccountSessionInner inner =
+            this.serviceClient().get(resourceGroupName, integrationAccountName, sessionName);
+        if (inner != null) {
+            return new IntegrationAccountSessionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -75,10 +70,14 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         return this.serviceClient().deleteWithResponse(resourceGroupName, integrationAccountName, sessionName, context);
     }
 
+    public void delete(String resourceGroupName, String integrationAccountName, String sessionName) {
+        this.serviceClient().delete(resourceGroupName, integrationAccountName, sessionName);
+    }
+
     public IntegrationAccountSession getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,7 +85,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,7 +94,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String sessionName = Utils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
@@ -106,7 +105,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
     public Response<IntegrationAccountSession> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,7 +122,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String sessionName = Utils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
@@ -134,7 +133,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,7 +141,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,18 +150,18 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String sessionName = Utils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, sessionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, sessionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,7 +169,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +178,7 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
         String sessionName = Utils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));

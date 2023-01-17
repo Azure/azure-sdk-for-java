@@ -6,19 +6,20 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 message identifier. */
 @Fluent
 public final class X12MessageIdentifier {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12MessageIdentifier.class);
-
     /*
      * The message id.
      */
     @JsonProperty(value = "messageId", required = true)
     private String messageId;
+
+    /** Creates an instance of X12MessageIdentifier class. */
+    public X12MessageIdentifier() {
+    }
 
     /**
      * Get the messageId property: The message id.
@@ -47,9 +48,11 @@ public final class X12MessageIdentifier {
      */
     public void validate() {
         if (messageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property messageId in model X12MessageIdentifier"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12MessageIdentifier.class);
 }

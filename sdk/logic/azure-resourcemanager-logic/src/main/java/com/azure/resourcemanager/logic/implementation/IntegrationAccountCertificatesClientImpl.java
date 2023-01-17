@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationAccountCertificatesClient;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountCertificateInner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountCertificateListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationAccountCertificatesClient. */
 public final class IntegrationAccountCertificatesClientImpl implements IntegrationAccountCertificatesClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationAccountCertificatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationAccountCertificatesService service;
 
@@ -65,7 +62,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface IntegrationAccountCertificatesService {
+    public interface IntegrationAccountCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
@@ -151,7 +148,8 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountCertificateInner>> listSinglePageAsync(
@@ -213,7 +211,8 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountCertificateInner>> listSinglePageAsync(
@@ -271,7 +270,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountCertificateInner> listAsync(
@@ -289,7 +288,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountCertificateInner> listAsync(
@@ -310,7 +309,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountCertificateInner> listAsync(
@@ -328,7 +327,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountCertificateInner> list(
@@ -347,7 +346,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountCertificateInner> list(
@@ -364,7 +363,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account certificate.
+     * @return an integration account certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountCertificateInner>> getWithResponseAsync(
@@ -421,7 +420,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account certificate.
+     * @return an integration account certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountCertificateInner>> getWithResponseAsync(
@@ -474,20 +473,31 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account certificate.
+     * @return an integration account certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountCertificateInner> getAsync(
         String resourceGroupName, String integrationAccountName, String certificateName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, certificateName)
-            .flatMap(
-                (Response<IntegrationAccountCertificateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an integration account certificate.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param certificateName The integration account certificate name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration account certificate along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IntegrationAccountCertificateInner> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String certificateName, Context context) {
+        return getWithResponseAsync(resourceGroupName, integrationAccountName, certificateName, context).block();
     }
 
     /**
@@ -504,25 +514,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationAccountCertificateInner get(
         String resourceGroupName, String integrationAccountName, String certificateName) {
-        return getAsync(resourceGroupName, integrationAccountName, certificateName).block();
-    }
-
-    /**
-     * Gets an integration account certificate.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param certificateName The integration account certificate name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationAccountCertificateInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String certificateName, Context context) {
-        return getWithResponseAsync(resourceGroupName, integrationAccountName, certificateName, context).block();
+        return getWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -535,7 +527,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account certificate.
+     * @return the integration account certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountCertificateInner>> createOrUpdateWithResponseAsync(
@@ -602,7 +594,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account certificate.
+     * @return the integration account certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountCertificateInner>> createOrUpdateWithResponseAsync(
@@ -666,7 +658,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account certificate.
+     * @return the integration account certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountCertificateInner> createOrUpdateAsync(
@@ -675,14 +667,32 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
         String certificateName,
         IntegrationAccountCertificateInner certificate) {
         return createOrUpdateWithResponseAsync(resourceGroupName, integrationAccountName, certificateName, certificate)
-            .flatMap(
-                (Response<IntegrationAccountCertificateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates an integration account certificate.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param certificateName The integration account certificate name.
+     * @param certificate The integration account certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration account certificate along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IntegrationAccountCertificateInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String certificateName,
+        IntegrationAccountCertificateInner certificate,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, integrationAccountName, certificateName, certificate, context)
+            .block();
     }
 
     /**
@@ -703,32 +713,9 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
         String integrationAccountName,
         String certificateName,
         IntegrationAccountCertificateInner certificate) {
-        return createOrUpdateAsync(resourceGroupName, integrationAccountName, certificateName, certificate).block();
-    }
-
-    /**
-     * Creates or updates an integration account certificate.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param certificateName The integration account certificate name.
-     * @param certificate The integration account certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationAccountCertificateInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String certificateName,
-        IntegrationAccountCertificateInner certificate,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, integrationAccountName, certificateName, certificate, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, integrationAccountName, certificateName, certificate, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -740,7 +727,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -797,7 +784,7 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -850,12 +837,30 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String integrationAccountName, String certificateName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, certificateName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an integration account certificate.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param certificateName The integration account certificate name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String integrationAccountName, String certificateName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, integrationAccountName, certificateName, context).block();
     }
 
     /**
@@ -870,35 +875,19 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String integrationAccountName, String certificateName) {
-        deleteAsync(resourceGroupName, integrationAccountName, certificateName).block();
-    }
-
-    /**
-     * Deletes an integration account certificate.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param certificateName The integration account certificate name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String certificateName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, integrationAccountName, certificateName, context).block();
+        deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account certificates.
+     * @return the list of integration account certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountCertificateInner>> listNextSinglePageAsync(String nextLink) {
@@ -929,12 +918,14 @@ public final class IntegrationAccountCertificatesClientImpl implements Integrati
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account certificates.
+     * @return the list of integration account certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountCertificateInner>> listNextSinglePageAsync(

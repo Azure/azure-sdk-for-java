@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration account partner content. */
 @Fluent
 public final class PartnerContent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerContent.class);
-
     /*
      * The B2B partner content.
      */
     @JsonProperty(value = "b2b")
     private B2BPartnerContent b2B;
+
+    /** Creates an instance of PartnerContent class. */
+    public PartnerContent() {
+    }
 
     /**
      * Get the b2B property: The B2B partner content.

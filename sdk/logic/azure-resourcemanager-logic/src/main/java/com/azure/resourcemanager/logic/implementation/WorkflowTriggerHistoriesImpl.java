@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.WorkflowTriggerHistoriesClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerHistoryInner;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerHistories;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerHistory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowTriggerHistoriesImpl implements WorkflowTriggerHistories {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggerHistoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowTriggerHistoriesImpl.class);
 
     private final WorkflowTriggerHistoriesClient innerClient;
 
@@ -47,17 +46,6 @@ public final class WorkflowTriggerHistoriesImpl implements WorkflowTriggerHistor
         return Utils.mapPage(inner, inner1 -> new WorkflowTriggerHistoryImpl(inner1, this.manager()));
     }
 
-    public WorkflowTriggerHistory get(
-        String resourceGroupName, String workflowName, String triggerName, String historyName) {
-        WorkflowTriggerHistoryInner inner =
-            this.serviceClient().get(resourceGroupName, workflowName, triggerName, historyName);
-        if (inner != null) {
-            return new WorkflowTriggerHistoryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkflowTriggerHistory> getWithResponse(
         String resourceGroupName, String workflowName, String triggerName, String historyName, Context context) {
         Response<WorkflowTriggerHistoryInner> inner =
@@ -73,8 +61,15 @@ public final class WorkflowTriggerHistoriesImpl implements WorkflowTriggerHistor
         }
     }
 
-    public void resubmit(String resourceGroupName, String workflowName, String triggerName, String historyName) {
-        this.serviceClient().resubmit(resourceGroupName, workflowName, triggerName, historyName);
+    public WorkflowTriggerHistory get(
+        String resourceGroupName, String workflowName, String triggerName, String historyName) {
+        WorkflowTriggerHistoryInner inner =
+            this.serviceClient().get(resourceGroupName, workflowName, triggerName, historyName);
+        if (inner != null) {
+            return new WorkflowTriggerHistoryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> resubmitWithResponse(
@@ -82,6 +77,10 @@ public final class WorkflowTriggerHistoriesImpl implements WorkflowTriggerHistor
         return this
             .serviceClient()
             .resubmitWithResponse(resourceGroupName, workflowName, triggerName, historyName, context);
+    }
+
+    public void resubmit(String resourceGroupName, String workflowName, String triggerName, String historyName) {
+        this.serviceClient().resubmit(resourceGroupName, workflowName, triggerName, historyName);
     }
 
     private WorkflowTriggerHistoriesClient serviceClient() {

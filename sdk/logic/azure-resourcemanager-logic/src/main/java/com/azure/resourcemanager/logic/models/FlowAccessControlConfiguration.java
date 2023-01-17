@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The access control configuration. */
 @Fluent
 public final class FlowAccessControlConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowAccessControlConfiguration.class);
-
     /*
      * The access control configuration for invoking workflow triggers.
      */
@@ -37,6 +33,10 @@ public final class FlowAccessControlConfiguration {
      */
     @JsonProperty(value = "workflowManagement")
     private FlowAccessControlConfigurationPolicy workflowManagement;
+
+    /** Creates an instance of FlowAccessControlConfiguration class. */
+    public FlowAccessControlConfiguration() {
+    }
 
     /**
      * Get the triggers property: The access control configuration for invoking workflow triggers.

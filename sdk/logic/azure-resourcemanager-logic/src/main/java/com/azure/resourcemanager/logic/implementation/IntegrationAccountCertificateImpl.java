@@ -74,6 +74,10 @@ public final class IntegrationAccountCertificateImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountCertificateInner innerModel() {
         return this.innerObject;
     }

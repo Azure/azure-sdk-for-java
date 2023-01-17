@@ -13,12 +13,10 @@ import com.azure.resourcemanager.logic.fluent.WorkflowRunActionRepetitionsReques
 import com.azure.resourcemanager.logic.fluent.models.RequestHistoryInner;
 import com.azure.resourcemanager.logic.models.RequestHistory;
 import com.azure.resourcemanager.logic.models.WorkflowRunActionRepetitionsRequestHistories;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunActionRepetitionsRequestHistoriesImpl
     implements WorkflowRunActionRepetitionsRequestHistories {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkflowRunActionRepetitionsRequestHistoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionRepetitionsRequestHistoriesImpl.class);
 
     private final WorkflowRunActionRepetitionsRequestHistoriesClient innerClient;
 
@@ -50,24 +48,6 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesImpl
         return Utils.mapPage(inner, inner1 -> new RequestHistoryImpl(inner1, this.manager()));
     }
 
-    public RequestHistory get(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName) {
-        RequestHistoryInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName);
-        if (inner != null) {
-            return new RequestHistoryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RequestHistory> getWithResponse(
         String resourceGroupName,
         String workflowName,
@@ -87,6 +67,24 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RequestHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RequestHistory get(
+        String resourceGroupName,
+        String workflowName,
+        String runName,
+        String actionName,
+        String repetitionName,
+        String requestHistoryName) {
+        RequestHistoryInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName);
+        if (inner != null) {
+            return new RequestHistoryImpl(inner, this.manager());
         } else {
             return null;
         }

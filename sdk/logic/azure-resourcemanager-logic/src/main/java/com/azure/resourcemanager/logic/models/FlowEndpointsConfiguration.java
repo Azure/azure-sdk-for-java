@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The endpoints configuration. */
 @Fluent
 public final class FlowEndpointsConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowEndpointsConfiguration.class);
-
     /*
      * The workflow endpoints.
      */
@@ -25,6 +21,10 @@ public final class FlowEndpointsConfiguration {
      */
     @JsonProperty(value = "connector")
     private FlowEndpoints connector;
+
+    /** Creates an instance of FlowEndpointsConfiguration class. */
+    public FlowEndpointsConfiguration() {
+    }
 
     /**
      * Get the workflow property: The workflow endpoints.
