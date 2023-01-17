@@ -552,7 +552,32 @@ public final class BinaryData {
         return new BinaryData(new ByteBufferContent(data));
     }
 
-    public static BinaryData fromList(List<ByteBuffer> data) {
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link List} of {@link ByteBuffer}.
+     *
+     * <p>
+     * The input {@link ByteBuffer} instances are used as a reference by this instance of {@link BinaryData} and any
+     * changes to a {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance
+     * being updated as well. To safely update the byte array without impacting the BinaryData instance, perform an
+     * array copy first.
+     * </p>
+     *
+     * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromListByteBuffer#List -->
+     * <pre>
+     * final List&lt;ByteBuffer&gt; data = Stream.of("Some ", "data")
+     *     .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+     *     .collect(Collectors.toList());
+     * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromListByteBuffer#List -->
+     *
+     * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
+     */
+    public static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
         return new BinaryData(new ListByteBufferContent(data));
     }
 

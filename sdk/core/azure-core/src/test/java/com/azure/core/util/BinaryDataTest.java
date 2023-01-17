@@ -406,7 +406,7 @@ public class BinaryDataTest {
         final List<ByteBuffer> list = Arrays.asList(ByteBuffer.wrap(data), ByteBuffer.wrap(data));
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
 
-        BinaryData binaryData = BinaryData.fromList(list);
+        BinaryData binaryData = BinaryData.fromListByteBuffer(list);
         assertArrayEquals(expected, binaryData.toBytes());
     }
 
