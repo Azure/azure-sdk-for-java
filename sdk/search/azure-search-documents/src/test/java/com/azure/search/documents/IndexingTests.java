@@ -27,6 +27,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -34,16 +37,17 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
@@ -1021,7 +1025,7 @@ public class IndexingTests extends SearchTestBase {
             .verifyComplete();
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
     static Hotel prepareStaticallyTypedHotel(String hotelId) {
         return new Hotel()
             .hotelId(hotelId)
@@ -1035,7 +1039,7 @@ public class IndexingTests extends SearchTestBase {
                 "concierge"))
             .parkingIncluded(false)
             .smokingAllowed(false)
-            .lastRenovationDate(new Date(2010, Calendar.JUNE, 27))
+            .lastRenovationDate(parseDate("2010-06-27T00:00:00Z"))
             .rating(5)
             .location(new GeoPoint(-122.131577, 47.678581))
             .address(
@@ -1182,7 +1186,7 @@ public class IndexingTests extends SearchTestBase {
                 .rooms(Collections.emptyList()));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
     private static Hotel canMergeStaticallyTypedDocumentsOriginal() {
         // Define hotels
         return new Hotel()
@@ -1194,7 +1198,7 @@ public class IndexingTests extends SearchTestBase {
             .tags(Arrays.asList("pool", "air conditioning", "concierge"))
             .parkingIncluded(false)
             .smokingAllowed(true)
-            .lastRenovationDate(new Date(2010, Calendar.JUNE, 27))
+            .lastRenovationDate(parseDate("2010-06-27T00:00:00Z"))
             .rating(4)
             .location(new GeoPoint(-73.975403, 40.760586))
             .address(new HotelAddress()
@@ -1249,7 +1253,7 @@ public class IndexingTests extends SearchTestBase {
             ));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
     private static Hotel canMergeStaticallyTypedDocumentsExpected() {
         // Fields whose values get updated are updated, and whose values get erased remain the same.
         return new Hotel()
@@ -1261,7 +1265,7 @@ public class IndexingTests extends SearchTestBase {
             .tags(Arrays.asList("pool", "air conditioning"))
             .parkingIncluded(true)
             .smokingAllowed(true)
-            .lastRenovationDate(new Date(2010, Calendar.JUNE, 27))
+            .lastRenovationDate(parseDate("2010-06-27T00:00:00Z"))
             .rating(3)
             .location(new GeoPoint(-73.975403, 40.760586))
             .address(new HotelAddress()
@@ -1281,7 +1285,7 @@ public class IndexingTests extends SearchTestBase {
             ));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
     private static LoudHotel canSetExplicitNullsInStaticallyTypedDocumentOriginal() {
         return new LoudHotel()
             .HOTELID("1")
@@ -1292,7 +1296,7 @@ public class IndexingTests extends SearchTestBase {
             .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
             .PARKINGINCLUDED(false)
             .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(new Date(1970, Calendar.JANUARY, 18, 5, 0, 0))
+            .LASTRENOVATIONDATE(parseDate("1970-01-18T05:00:00Z"))
             .RATING(4)
             .LOCATION(new GeoPoint(-73.975403, 40.760586))
             .ADDRESS(new HotelAddress()
@@ -1323,7 +1327,7 @@ public class IndexingTests extends SearchTestBase {
             ));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
     private static LoudHotel canSetExplicitNullsInStaticallyTypedDocumentUpdated() {
         return new LoudHotel()
             .HOTELID("1")
@@ -1331,7 +1335,7 @@ public class IndexingTests extends SearchTestBase {
             .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
             .TAGS(Arrays.asList("pool", "air conditioning"))
             .PARKINGINCLUDED(true)
-            .LASTRENOVATIONDATE(new Date(1970, Calendar.JANUARY, 18, 5, 0, 0))
+            .LASTRENOVATIONDATE(parseDate("1970-01-18T05:00:00Z"))
             .RATING(3)
             //.LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
             .ADDRESS(new HotelAddress())
@@ -1345,7 +1349,7 @@ public class IndexingTests extends SearchTestBase {
             ));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
     private static LoudHotel canSetExplicitNullsInStaticallyTypedDocumentExpected() {
         return new LoudHotel()
             .HOTELID("1")
@@ -1356,7 +1360,7 @@ public class IndexingTests extends SearchTestBase {
             .TAGS(Arrays.asList("pool", "air conditioning"))
             .PARKINGINCLUDED(true)
             .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(new Date(1970, Calendar.JANUARY, 18, 5, 0, 0))
+            .LASTRENOVATIONDATE(parseDate("1970-01-18T05:00:00Z"))
             .RATING(3)
             //.LOCATION(null)
             .ADDRESS(new HotelAddress()
@@ -1491,5 +1495,17 @@ public class IndexingTests extends SearchTestBase {
         expectedDoc.put("Rooms", expectedRooms);
 
         return expectedDoc;
+    }
+
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    private static Date parseDate(String dateString) {
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try {
+            return dateFormat.parse(dateString);
+        } catch (ParseException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
