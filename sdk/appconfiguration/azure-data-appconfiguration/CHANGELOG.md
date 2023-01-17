@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed shared `SyncTokenToken` and `RetryPolicy` policies across Configuration clients. 
 
 ### Other Changes
 

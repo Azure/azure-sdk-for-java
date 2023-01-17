@@ -116,7 +116,6 @@ public final class ConfigurationClientBuilder implements
     HttpTrait<ConfigurationClientBuilder>,
     ConfigurationTrait<ConfigurationClientBuilder>,
     EndpointTrait<ConfigurationClientBuilder> {
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     /**
      * The serializer to serialize an object into a string.
@@ -185,7 +184,8 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationClient buildClient() {
-        return new ConfigurationClient(buildInnerClient(), new SyncTokenPolicy());
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
     }
 
     /**
@@ -205,7 +205,8 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
-        return new ConfigurationAsyncClient(buildInnerClient(), new SyncTokenPolicy());
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationAsyncClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
     }
 
     /**
@@ -213,20 +214,20 @@ public final class ConfigurationClientBuilder implements
      *
      * @return an instance of ConfigurationClientImpl.
      */
-    private ConfigurationClientImpl buildInnerClient() {
+    private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
         // Don't share the default auto-created pipeline between App Configuration client instances.
         return new ConfigurationClientImpl(
-            pipeline == null ? createHttpPipeline() : pipeline,
+            pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline,
             SERIALIZER_ADAPTER,
             endpoint,
             serviceVersion.getVersion());
     }
 
-    private HttpPipeline createHttpPipeline() {
+    private HttpPipeline createHttpPipeline(SyncTokenPolicy syncTokenPolicy) {
         // Global Env configuration store
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -251,7 +252,8 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions,
+            new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS)));
 
         policies.add(new AddDatePolicy());
 
@@ -267,7 +269,7 @@ public final class ConfigurationClientBuilder implements
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-        policies.add(new SyncTokenPolicy());
+        policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
