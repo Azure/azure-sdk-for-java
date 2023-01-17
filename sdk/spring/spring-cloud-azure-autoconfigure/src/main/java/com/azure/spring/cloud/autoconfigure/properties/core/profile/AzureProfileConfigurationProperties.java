@@ -25,7 +25,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
      */
     private AzureProfileOptionsProvider.CloudType cloudType;
 
-    private final AzureEnvironmentConfigurationProperties environment = new AzureEnvironmentConfigurationProperties(null, null);
+    private final AzureEnvironmentConfigurationProperties environment = new AzureEnvironmentConfigurationProperties(null);
 
     @Override
     public AzureProfileOptionsProvider.CloudType getCloudType() {
@@ -440,49 +440,37 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             this.serviceBusDomainName = serviceBusDomainName;
         }
 
-        private AzureEnvironmentConfigurationProperties(com.azure.core.management.AzureEnvironment management,
-                                                        AzureProfileOptionsProvider.OtherAzureEnvironment others) {
-            if (management != null) {
-                this.portal = management.getPortal();
-                this.publishingProfile = management.getPublishingProfile();
-                this.managementEndpoint = management.getManagementEndpoint();
-                this.resourceManagerEndpoint = management.getResourceManagerEndpoint();
-                this.sqlManagementEndpoint = management.getSqlManagementEndpoint();
-                this.sqlServerHostnameSuffix = management.getSqlServerHostnameSuffix();
-                this.galleryEndpoint = management.getGalleryEndpoint();
-                this.activeDirectoryEndpoint = management.getActiveDirectoryEndpoint();
-                this.activeDirectoryResourceId = management.getActiveDirectoryResourceId();
-                this.activeDirectoryGraphEndpoint = management.getGraphEndpoint();
-                this.activeDirectoryGraphApiVersion = management.getActiveDirectoryGraphApiVersion();
-                this.microsoftGraphEndpoint = management.getMicrosoftGraphEndpoint();
-                this.dataLakeEndpointResourceId = management.getDataLakeEndpointResourceId();
-                this.storageEndpointSuffix = management.getStorageEndpointSuffix();
-                this.keyVaultDnsSuffix = management.getKeyVaultDnsSuffix();
-                this.azureDataLakeStoreFileSystemEndpointSuffix = management.getAzureDataLakeStoreFileSystemEndpointSuffix();
-                this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
-                this.azureLogAnalyticsEndpoint = management.getLogAnalyticsEndpoint();
-                this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
+        private AzureEnvironmentConfigurationProperties(com.azure.core.management.AzureEnvironment management) {
+            if (management == null) {
+                return;
             }
-
-            if (others != null) {
-                this.serviceBusDomainName = others.getServiceBusDomainName();
-            }
+            this.portal = management.getPortal();
+            this.publishingProfile = management.getPublishingProfile();
+            this.managementEndpoint = management.getManagementEndpoint();
+            this.resourceManagerEndpoint = management.getResourceManagerEndpoint();
+            this.sqlManagementEndpoint = management.getSqlManagementEndpoint();
+            this.sqlServerHostnameSuffix = management.getSqlServerHostnameSuffix();
+            this.galleryEndpoint = management.getGalleryEndpoint();
+            this.activeDirectoryEndpoint = management.getActiveDirectoryEndpoint();
+            this.activeDirectoryResourceId = management.getActiveDirectoryResourceId();
+            this.activeDirectoryGraphEndpoint = management.getGraphEndpoint();
+            this.activeDirectoryGraphApiVersion = management.getActiveDirectoryGraphApiVersion();
+            this.microsoftGraphEndpoint = management.getMicrosoftGraphEndpoint();
+            this.dataLakeEndpointResourceId = management.getDataLakeEndpointResourceId();
+            this.storageEndpointSuffix = management.getStorageEndpointSuffix();
+            this.keyVaultDnsSuffix = management.getKeyVaultDnsSuffix();
+            this.azureDataLakeStoreFileSystemEndpointSuffix = management.getAzureDataLakeStoreFileSystemEndpointSuffix();
+            this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
+            this.azureLogAnalyticsEndpoint = management.getLogAnalyticsEndpoint();
+            this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
         }
+
 
         @Override
         public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureManagementEnvironment(AzureEnvironment environment) {
-            return new AzureEnvironmentConfigurationProperties(environment, null);
+            return new AzureEnvironmentConfigurationProperties(environment);
         }
 
-        @Override
-        public AzureProfileOptionsProvider.AzureEnvironmentOptions fromOtherAzureEnvironment(AzureProfileOptionsProvider.OtherAzureEnvironment environment) {
-            return new AzureEnvironmentConfigurationProperties(null, environment);
-        }
-
-        @Override
-        public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureEnvironments(AzureEnvironment management, AzureProfileOptionsProvider.OtherAzureEnvironment others) {
-            return new AzureEnvironmentConfigurationProperties(management, others);
-        }
     }
 
 }

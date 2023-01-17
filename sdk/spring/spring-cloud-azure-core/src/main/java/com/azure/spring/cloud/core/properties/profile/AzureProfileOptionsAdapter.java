@@ -20,7 +20,7 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
         if (this.getCloudType() == null) {
             BeanUtils.copyProperties(new AzureEnvironmentProperties(), this.getEnvironment());
         } else {
-            AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType());
+            AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType(), null);
             AzurePropertiesUtils.copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
         }
     }
@@ -31,10 +31,21 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
      */
     public abstract AzureProfileOptionsProvider.AzureEnvironmentOptions getEnvironment();
 
-    private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloud) {
-        AzureEnvironment managementEnv = decideAzureManagementEnvironment(cloud, null);
-        AzureProfileOptionsProvider.OtherAzureEnvironment otherEnv = decideOtherAzureEnvironment(cloud, null);
-        return getEnvironment().fromAzureEnvironments(managementEnv, otherEnv);
+    private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloudType,
+                                                                                       AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment) {
+        switch (cloudType) {
+            case AZURE_CHINA:
+                return AzureEnvironmentProperties.AZURE_CHINA;
+            case AZURE_US_GOVERNMENT:
+                return AzureEnvironmentProperties.AZURE_US_GOVERNMENT;
+            case AZURE_GERMANY:
+                return AzureEnvironmentProperties.AZURE_GERMANY;
+            case AZURE:
+                return AzureEnvironmentProperties.AZURE;
+            default:
+                return defaultEnvironment;
+        }
+
     }
 
     /**
@@ -56,24 +67,6 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
                 return AzureEnvironment.AZURE;
             default:
                 return defaultManagementEnvironment;
-        }
-    }
-
-    private AzureProfileOptionsProvider.OtherAzureEnvironment decideOtherAzureEnvironment(AzureProfileOptionsProvider.CloudType cloudType,
-                                                                                          AzureProfileOptionsProvider.OtherAzureEnvironment defaultEnvironment) {
-        switch (cloudType) {
-            case AZURE_CHINA:
-                return AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_CHINA;
-            case AZURE_US_GOVERNMENT:
-                return AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_US_GOVERNMENT;
-            case AZURE_GERMANY:
-                return AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_GERMANY;
-            case AZURE:
-                return AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE;
-            case OTHER:
-                return AzureProfileOptionsProvider.OtherAzureEnvironment.OTHER;
-            default:
-                return defaultEnvironment;
         }
     }
 

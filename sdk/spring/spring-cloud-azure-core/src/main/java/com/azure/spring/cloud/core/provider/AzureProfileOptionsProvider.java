@@ -192,12 +192,10 @@ public interface AzureProfileOptionsProvider {
          * Get the AzureEnvironment from {@link com.azure.core.management.AzureEnvironment}.
          * @param environment the azure core AzureEnvironment.
          * @return the AzureEnvironment implementation.
+         * @deprecated deprecate the dependency on {@link com.azure.core.management.AzureEnvironment}.
          */
+        @Deprecated
         AzureEnvironmentOptions fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment);
-
-        AzureEnvironmentOptions fromOtherAzureEnvironment(OtherAzureEnvironment environment);
-
-        AzureEnvironmentOptions fromAzureEnvironments(com.azure.core.management.AzureEnvironment management, OtherAzureEnvironment others);
 
         /**
          * @return the azure core {@link com.azure.core.management.AzureEnvironment}.
@@ -225,30 +223,6 @@ public interface AzureProfileOptionsProvider {
             endpointsMap.put("azureApplicationInsightsResourceId", getAzureApplicationInsightsEndpoint());
 
             return new com.azure.core.management.AzureEnvironment(endpointsMap);
-        }
-
-    }
-
-    enum OtherAzureEnvironment {
-
-        AZURE("servicebus.windows.net"),
-
-        AZURE_CHINA("servicebus.chinacloudapi.cn"),
-
-        AZURE_GERMANY("servicebus.cloudapi.de"),
-
-        AZURE_US_GOVERNMENT("servicebus.usgovcloudapi.net"),
-
-        OTHER(null);
-
-        private final String serviceBusDomainName;
-
-        OtherAzureEnvironment(String serviceBusDomainName) {
-            this.serviceBusDomainName = serviceBusDomainName;
-        }
-
-        public String getServiceBusDomainName() {
-            return serviceBusDomainName;
         }
 
     }

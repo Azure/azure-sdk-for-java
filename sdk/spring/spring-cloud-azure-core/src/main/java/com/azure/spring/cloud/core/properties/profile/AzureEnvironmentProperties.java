@@ -11,6 +11,22 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
  */
 public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
 
+    public static final AzureEnvironmentProperties AZURE = new AzureEnvironmentProperties(AzureEnvironment.AZURE) {{
+        setServiceBusDomainName("servicebus.windows.net");
+    }};
+
+    public static final AzureEnvironmentProperties AZURE_CHINA = new AzureEnvironmentProperties(AzureEnvironment.AZURE_CHINA) {{
+        setServiceBusDomainName("servicebus.chinacloudapi.cn");
+    }};
+
+    public static final AzureEnvironmentProperties AZURE_GERMANY = new AzureEnvironmentProperties(AzureEnvironment.AZURE_GERMANY) {{
+        setServiceBusDomainName("servicebus.cloudapi.de");
+    }};
+
+    public static final AzureEnvironmentProperties AZURE_US_GOVERNMENT = new AzureEnvironmentProperties(AzureEnvironment.AZURE_US_GOVERNMENT) {{
+        setServiceBusDomainName("servicebus.usgovcloudapi.net");
+    }};
+
     /**
      * The management portal URL.
      */
@@ -97,54 +113,41 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
      * Create an {@link AzureEnvironmentProperties} instance with default value.
      */
     public AzureEnvironmentProperties() {
-        this(null, null);
+        this(null);
     }
 
     /**
      * Create an {@link AzureEnvironmentProperties} instance with environment value from {@link com.azure.core.management.AzureEnvironment}.
      * @param management The {@link com.azure.core.management.AzureEnvironment} instance.
      */
-    private AzureEnvironmentProperties(com.azure.core.management.AzureEnvironment management,
-                                       AzureProfileOptionsProvider.OtherAzureEnvironment others) {
-        if (management != null) {
-            this.portal = management.getPortal();
-            this.publishingProfile = management.getPublishingProfile();
-            this.managementEndpoint = management.getManagementEndpoint();
-            this.resourceManagerEndpoint = management.getResourceManagerEndpoint();
-            this.sqlManagementEndpoint = management.getSqlManagementEndpoint();
-            this.sqlServerHostnameSuffix = management.getSqlServerHostnameSuffix();
-            this.galleryEndpoint = management.getGalleryEndpoint();
-            this.activeDirectoryEndpoint = management.getActiveDirectoryEndpoint();
-            this.activeDirectoryResourceId = management.getActiveDirectoryResourceId();
-            this.activeDirectoryGraphEndpoint = management.getGraphEndpoint();
-            this.activeDirectoryGraphApiVersion = management.getActiveDirectoryGraphApiVersion();
-            this.microsoftGraphEndpoint = management.getMicrosoftGraphEndpoint();
-            this.dataLakeEndpointResourceId = management.getDataLakeEndpointResourceId();
-            this.storageEndpointSuffix = management.getStorageEndpointSuffix();
-            this.keyVaultDnsSuffix = management.getKeyVaultDnsSuffix();
-            this.azureDataLakeStoreFileSystemEndpointSuffix = management.getAzureDataLakeStoreFileSystemEndpointSuffix();
-            this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
-            this.azureLogAnalyticsEndpoint = management.getLogAnalyticsEndpoint();
-            this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
+    private AzureEnvironmentProperties(com.azure.core.management.AzureEnvironment management) {
+        if (management == null) {
+            return;
         }
-        if (others != null) {
-            this.serviceBusDomainName = others.getServiceBusDomainName();
-        }
+        this.portal = management.getPortal();
+        this.publishingProfile = management.getPublishingProfile();
+        this.managementEndpoint = management.getManagementEndpoint();
+        this.resourceManagerEndpoint = management.getResourceManagerEndpoint();
+        this.sqlManagementEndpoint = management.getSqlManagementEndpoint();
+        this.sqlServerHostnameSuffix = management.getSqlServerHostnameSuffix();
+        this.galleryEndpoint = management.getGalleryEndpoint();
+        this.activeDirectoryEndpoint = management.getActiveDirectoryEndpoint();
+        this.activeDirectoryResourceId = management.getActiveDirectoryResourceId();
+        this.activeDirectoryGraphEndpoint = management.getGraphEndpoint();
+        this.activeDirectoryGraphApiVersion = management.getActiveDirectoryGraphApiVersion();
+        this.microsoftGraphEndpoint = management.getMicrosoftGraphEndpoint();
+        this.dataLakeEndpointResourceId = management.getDataLakeEndpointResourceId();
+        this.storageEndpointSuffix = management.getStorageEndpointSuffix();
+        this.keyVaultDnsSuffix = management.getKeyVaultDnsSuffix();
+        this.azureDataLakeStoreFileSystemEndpointSuffix = management.getAzureDataLakeStoreFileSystemEndpointSuffix();
+        this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
+        this.azureLogAnalyticsEndpoint = management.getLogAnalyticsEndpoint();
+        this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
     }
 
     @Override
     public AzureEnvironmentProperties fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment) {
-        return new AzureEnvironmentProperties(environment, null);
-    }
-
-    @Override
-    public AzureProfileOptionsProvider.AzureEnvironmentOptions fromOtherAzureEnvironment(AzureProfileOptionsProvider.OtherAzureEnvironment environment) {
-        return new AzureEnvironmentProperties(null, environment);
-    }
-
-    @Override
-    public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureEnvironments(AzureEnvironment management, AzureProfileOptionsProvider.OtherAzureEnvironment others) {
-        return new AzureEnvironmentProperties(management, others);
+        return new AzureEnvironmentProperties(environment);
     }
 
     @Override
