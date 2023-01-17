@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Information about backup files when existing backup mode is used. */
 @Immutable
 public final class DatabaseBackupInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseBackupInfo.class);
-
     /*
      * Database name.
      */
@@ -41,8 +37,7 @@ public final class DatabaseBackupInfo {
     private Integer position;
 
     /*
-     * Database was damaged when backed up, but the backup operation was
-     * requested to continue despite errors.
+     * Database was damaged when backed up, but the backup operation was requested to continue despite errors.
      */
     @JsonProperty(value = "isDamaged", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDamaged;
@@ -64,6 +59,10 @@ public final class DatabaseBackupInfo {
      */
     @JsonProperty(value = "backupFinishDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupFinishDate;
+
+    /** Creates an instance of DatabaseBackupInfo class. */
+    public DatabaseBackupInfo() {
+    }
 
     /**
      * Get the databaseName property: Database name.

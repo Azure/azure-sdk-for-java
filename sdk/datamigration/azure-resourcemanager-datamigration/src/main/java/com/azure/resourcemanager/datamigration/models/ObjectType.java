@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ObjectType. */
+/** An enumeration of type of objects. */
 public final class ObjectType extends ExpandableStringEnum<ObjectType> {
     /** Static value StoredProcedures for ObjectType. */
     public static final ObjectType STORED_PROCEDURES = fromString("StoredProcedures");
@@ -26,6 +26,15 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
     public static final ObjectType FUNCTION = fromString("Function");
 
     /**
+     * Creates a new instance of ObjectType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ObjectType() {
+    }
+
+    /**
      * Creates or finds a ObjectType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
         return fromString(name, ObjectType.class);
     }
 
-    /** @return known ObjectType values. */
+    /**
+     * Gets known ObjectType values.
+     *
+     * @return known ObjectType values.
+     */
     public static Collection<ObjectType> values() {
         return values(ObjectType.class);
     }

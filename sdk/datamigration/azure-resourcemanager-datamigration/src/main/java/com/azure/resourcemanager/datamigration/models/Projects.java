@@ -11,21 +11,25 @@ import com.azure.core.util.Context;
 /** Resource collection API of Projects. */
 public interface Projects {
     /**
-     * The project resource is a nested resource representing a stored migration project. This method returns a list of
-     * projects owned by a service resource.
+     * Get projects in a service
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
+     * of projects owned by a service resource.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources.
+     * @return oData page of project resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Project> listByResourceGroup(String groupName, String serviceName);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. This method returns a list of
-     * projects owned by a service resource.
+     * Get projects in a service
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
+     * of projects owned by a service resource.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -33,12 +37,31 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources.
+     * @return oData page of project resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Project> listByResourceGroup(String groupName, String serviceName, Context context);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * Get project information
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * information about a project.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param projectName Name of the project.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a project resource along with {@link Response}.
+     */
+    Response<Project> getWithResponse(String groupName, String serviceName, String projectName, Context context);
+
+    /**
+     * Get project information
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
      *
      * @param groupName Name of the resource group.
@@ -52,22 +75,28 @@ public interface Projects {
     Project get(String groupName, String serviceName, String projectName);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
-     * information about a project.
+     * Delete project
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * project.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
+     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource.
+     * @return the {@link Response}.
      */
-    Response<Project> getWithResponse(String groupName, String serviceName, String projectName, Context context);
+    Response<Void> deleteWithResponse(
+        String groupName, String serviceName, String projectName, Boolean deleteRunningTasks, Context context);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * Delete project
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
      *
      * @param groupName Name of the resource group.
@@ -80,36 +109,23 @@ public interface Projects {
     void delete(String groupName, String serviceName, String projectName);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
-     * project.
+     * Get project information
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param projectName Name of the project.
-     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String groupName, String serviceName, String projectName, Boolean deleteRunningTasks, Context context);
-
-    /**
-     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource.
+     * @return a project resource along with {@link Response}.
      */
     Project getById(String id);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * Get project information
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
      *
      * @param id the resource ID.
@@ -117,12 +133,14 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource.
+     * @return a project resource along with {@link Response}.
      */
     Response<Project> getByIdWithResponse(String id, Context context);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * Delete project
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
      *
      * @param id the resource ID.
@@ -133,7 +151,9 @@ public interface Projects {
     void deleteById(String id);
 
     /**
-     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * Delete project
+     *
+     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
      *
      * @param id the resource ID.
@@ -142,7 +162,7 @@ public interface Projects {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Boolean deleteRunningTasks, Context context);
 

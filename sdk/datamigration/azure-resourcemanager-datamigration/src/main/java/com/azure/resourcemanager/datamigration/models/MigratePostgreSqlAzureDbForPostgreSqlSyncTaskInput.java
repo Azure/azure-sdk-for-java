@@ -6,16 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that migrates PostgreSQL databases to Azure Database for PostgreSQL for online migrations. */
 @Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.class);
-
     /*
      * Databases to migrate
      */
@@ -33,6 +29,10 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
      */
     @JsonProperty(value = "sourceConnectionInfo", required = true)
     private PostgreSqlConnectionInfo sourceConnectionInfo;
+
+    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput class. */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput() {
+    }
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
@@ -104,7 +104,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
      */
     public void validate() {
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model"
@@ -113,7 +113,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
             selectedDatabases().forEach(e -> e.validate());
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model"
@@ -122,7 +122,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
             targetConnectionInfo().validate();
         }
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model"
@@ -131,4 +131,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput {
             sourceConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.class);
 }

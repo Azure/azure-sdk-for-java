@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +18,6 @@ import java.util.List;
 @JsonTypeName("ConnectToSource.PostgreSql.Sync")
 @Fluent
 public final class ConnectToSourcePostgreSqlSyncTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourcePostgreSqlSyncTaskProperties.class);
-
     /*
      * Task input
      */
@@ -33,6 +29,10 @@ public final class ConnectToSourcePostgreSqlSyncTaskProperties extends ProjectTa
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectToSourcePostgreSqlSyncTaskOutput> output;
+
+    /** Creates an instance of ConnectToSourcePostgreSqlSyncTaskProperties class. */
+    public ConnectToSourcePostgreSqlSyncTaskProperties() {
+    }
 
     /**
      * Get the input property: Task input.

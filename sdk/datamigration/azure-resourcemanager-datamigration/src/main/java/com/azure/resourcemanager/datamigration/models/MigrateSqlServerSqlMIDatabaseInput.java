@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Database specific information for SQL to Azure SQL DB Managed Instance migration task inputs. */
 @Fluent
 public final class MigrateSqlServerSqlMIDatabaseInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMIDatabaseInput.class);
-
     /*
      * Name of the database
      */
@@ -38,6 +35,10 @@ public final class MigrateSqlServerSqlMIDatabaseInput {
      */
     @JsonProperty(value = "backupFilePaths")
     private List<String> backupFilePaths;
+
+    /** Creates an instance of MigrateSqlServerSqlMIDatabaseInput class. */
+    public MigrateSqlServerSqlMIDatabaseInput() {
+    }
 
     /**
      * Get the name property: Name of the database.
@@ -126,13 +127,13 @@ public final class MigrateSqlServerSqlMIDatabaseInput {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model MigrateSqlServerSqlMIDatabaseInput"));
         }
         if (restoreDatabaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreDatabaseName in model MigrateSqlServerSqlMIDatabaseInput"));
@@ -141,4 +142,6 @@ public final class MigrateSqlServerSqlMIDatabaseInput {
             backupFileShare().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlMIDatabaseInput.class);
 }
