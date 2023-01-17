@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import org.junit.jupiter.api.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -23,7 +24,7 @@ import java.time.Duration;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests passing {@code x-ms-client-request-id} using {@link Context}.
@@ -144,11 +145,10 @@ public class ContextRequestIdTests extends SearchTestBase {
             assertEquals(expectedRequestId, extractFromResponse(requestRunner.get()));
         } catch (Throwable throwable) {
             String errorRequestId = extractFromThrowable(throwable);
-            if (errorRequestId != null) {
-                assertEquals(expectedRequestId, errorRequestId);
-            }
 
-            fail("Unexpected exception type.");
+            assertNotNull(errorRequestId, "Either unexpected exception type or missing x-ms-client-request-id header. "
+                + "Exception type: " + throwable.getClass() + ", header value: " + errorRequestId);
+            assertEquals(expectedRequestId, errorRequestId);
         }
     }
 
@@ -157,6 +157,7 @@ public class ContextRequestIdTests extends SearchTestBase {
     }
 
     private static String extractFromThrowable(Throwable throwable) {
+        throwable = Exceptions.unwrap(throwable);
         if (throwable instanceof HttpResponseException) {
             return ((HttpResponseException) throwable).getResponse().getHeaderValue(REQUEST_ID_HEADER);
         } else if (throwable instanceof RuntimeException) {

@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "69a81b24-714d-416b-b856-f5c5b647de92",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "69a81b24-714d-416b-b856-f5c5b647de92",
+      "StatusCode" : "201",
+      "Date" : "Sat, 14 Jan 2023 15:41:12 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "69a81b24-714d-416b-b856-f5c5b647de92",
+      "ETag" : "W/\"0x8DAF645C3DAFED5\"",
+      "elapsed-time" : "41",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "226",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8DAF645C3DAFED5\\\"\",\"name\":\"test-synonym020610d88cb6\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "69a81b24-714d-416b-b856-f5c5b647de92",
+      "Location" : "https://alzimmer-basic.search.windows.net/synonymmaps('test-synonym020610d88cb6')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym020610d88cb6')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c36d74e7-f345-40a9-a556-0dcef14ca78f"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c36d74e7-f345-40a9-a556-0dcef14ca78f",
+      "elapsed-time" : "51",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c36d74e7-f345-40a9-a556-0dcef14ca78f",
+      "StatusCode" : "204",
+      "Date" : "Sat, 14 Jan 2023 15:41:12 GMT",
+      "x-ms-client-request-id" : "c36d74e7-f345-40a9-a556-0dcef14ca78f"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test-synonym020610d88cb6" ]
+}

@@ -433,6 +433,8 @@ public class SearchAliasTests extends SearchTestBase {
         indexClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32),
             Collections.singletonList(searchClient.getIndexName())));
 
+        sleepIfRunningAgainstService(10000);
+
         SearchServiceStatistics serviceStatistics = indexClient.getServiceStatistics();
         assertEquals(3, serviceStatistics.getCounters().getAliasCounter().getUsage());
     }
@@ -445,6 +447,8 @@ public class SearchAliasTests extends SearchTestBase {
             Collections.singletonList(searchClient.getIndexName()))).block();
         indexAsyncClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32),
             Collections.singletonList(searchClient.getIndexName()))).block();
+
+        sleepIfRunningAgainstService(10000);
 
         StepVerifier.create(indexAsyncClient.getServiceStatistics())
             .assertNext(serviceStatistics -> assertEquals(3,

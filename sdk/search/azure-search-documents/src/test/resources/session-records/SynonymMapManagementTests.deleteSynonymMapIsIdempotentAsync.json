@@ -1,0 +1,106 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym79965fb62b83')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3ecf22b0-cbc7-4b01-9739-6869b3df044a"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "3ecf22b0-cbc7-4b01-9739-6869b3df044a",
+      "StatusCode" : "404",
+      "Date" : "Sat, 14 Jan 2023 15:42:40 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "3ecf22b0-cbc7-4b01-9739-6869b3df044a",
+      "elapsed-time" : "8",
+      "Expires" : "-1",
+      "Content-Length" : "135",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym79965fb62b83' was found in a service named 'alzimmer-basic'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "3ecf22b0-cbc7-4b01-9739-6869b3df044a",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f2f66f48-9b2b-4a17-95af-dbc1a197b533",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "f2f66f48-9b2b-4a17-95af-dbc1a197b533",
+      "StatusCode" : "201",
+      "Date" : "Sat, 14 Jan 2023 15:42:40 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f2f66f48-9b2b-4a17-95af-dbc1a197b533",
+      "ETag" : "W/\"0x8DAF645F823A26A\"",
+      "elapsed-time" : "28",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "226",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8DAF645F823A26A\\\"\",\"name\":\"test-synonym79965fb62b83\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "f2f66f48-9b2b-4a17-95af-dbc1a197b533",
+      "Location" : "https://alzimmer-basic.search.windows.net/synonymmaps('test-synonym79965fb62b83')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym79965fb62b83')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "adf29141-7cb1-42d1-831d-b8cb4a7dae53"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "adf29141-7cb1-42d1-831d-b8cb4a7dae53",
+      "elapsed-time" : "101",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "adf29141-7cb1-42d1-831d-b8cb4a7dae53",
+      "StatusCode" : "204",
+      "Date" : "Sat, 14 Jan 2023 15:42:40 GMT",
+      "x-ms-client-request-id" : "adf29141-7cb1-42d1-831d-b8cb4a7dae53"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym79965fb62b83')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4437859d-7285-4d41-b602-67b240b0ecb6"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "4437859d-7285-4d41-b602-67b240b0ecb6",
+      "StatusCode" : "404",
+      "Date" : "Sat, 14 Jan 2023 15:42:40 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "4437859d-7285-4d41-b602-67b240b0ecb6",
+      "elapsed-time" : "9",
+      "Expires" : "-1",
+      "Content-Length" : "135",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonymMap with the name 'test-synonym79965fb62b83' was found in a service named 'alzimmer-basic'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "4437859d-7285-4d41-b602-67b240b0ecb6",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test-synonym79965fb62b83" ]
+}

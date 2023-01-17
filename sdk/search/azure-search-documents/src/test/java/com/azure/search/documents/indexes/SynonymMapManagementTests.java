@@ -257,7 +257,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
 
                 SynonymMap updatedExpected = new SynonymMap(original.getName(), "newword1,newword2");
                 return asyncClient.createOrUpdateSynonymMap(updatedExpected)
-                    .map(update -> Tuples.of(original, update));
+                    .map(updateActual -> Tuples.of(updatedExpected, updateActual));
             });
 
         StepVerifier.create(createAndUpdateMono)

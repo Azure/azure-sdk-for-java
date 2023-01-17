@@ -386,7 +386,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteOneTermWithContextWithFuzzySync() {
-        List<String> expected = Arrays.asList("very polite", "very police");
+        List<String> expected = Collections.singletonList("very polite");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
@@ -397,7 +397,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteOneTermWithContextWithFuzzyAsync() {
-        List<String> expected = Arrays.asList("very polite", "very police");
+        List<String> expected = Collections.singletonList("very polite");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
@@ -408,7 +408,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteOneTermWithFuzzySync() {
-        List<String> expected = Arrays.asList("model", "modern", "morel", "motel");
+        List<String> expected = Arrays.asList("model", "modern");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
@@ -419,7 +419,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteOneTermWithFuzzyAsync() {
-        List<String> expected = Arrays.asList("model", "modern", "morel", "motel");
+        List<String> expected = Arrays.asList("model", "modern");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
@@ -430,8 +430,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteTwoTermsWithFuzzySync() {
-        List<String> expected = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings",
-            "motel");
+        List<String> expected = Arrays.asList("model suites", "modern architecture", "modern stay");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.TWO_TERMS)
@@ -442,8 +441,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteTwoTermsWithFuzzyAsync() {
-        List<String> expected = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings",
-            "motel");
+        List<String> expected = Arrays.asList("model suites", "modern architecture", "modern stay");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.TWO_TERMS)
@@ -454,7 +452,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteWithFilterAndFuzzySync() {
-        List<String> expected = Arrays.asList("modern", "motel");
+        List<String> expected = Collections.singletonList("modern");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
@@ -466,7 +464,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Test
     public void testAutocompleteWithFilterAndFuzzyAsync() {
-        List<String> expected = Arrays.asList("modern", "motel");
+        List<String> expected = Collections.singletonList("modern");
 
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)

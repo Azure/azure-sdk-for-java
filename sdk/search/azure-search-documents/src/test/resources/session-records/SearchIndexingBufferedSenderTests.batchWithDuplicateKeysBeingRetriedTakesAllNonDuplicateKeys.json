@@ -1,0 +1,49 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dd0b3db8-b6ac-4472-904d-94e4433d4ecc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "399",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":false,\"statusCode\":503},{\"key\":\"2\",\"status\":true,\"statusCode\":200},{\"key\":\"3\",\"status\":true,\"statusCode\":200},{\"key\":\"4\",\"status\":true,\"statusCode\":200},{\"key\":\"5\",\"status\":true,\"statusCode\":200},{\"key\":\"6\",\"status\":true,\"statusCode\":200},{\"key\":\"7\",\"status\":true,\"statusCode\":200},{\"key\":\"8\",\"status\":true,\"statusCode\":200},{\"key\":\"9\",\"status\":true,\"statusCode\":200}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a5e21aab-5788-427c-8455-82a8c18ccc50",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "54",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"statusCode\":200}]}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f0dd092b-efe9-47c1-b321-90487aa85565",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "54",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"statusCode\":200}]}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

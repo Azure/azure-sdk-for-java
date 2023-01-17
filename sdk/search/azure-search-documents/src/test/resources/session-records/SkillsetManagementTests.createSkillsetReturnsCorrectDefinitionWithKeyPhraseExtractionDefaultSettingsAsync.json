@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "bdcbde9e-6dce-41d0-a35b-3f6fa74ab906",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "bdcbde9e-6dce-41d0-a35b-3f6fa74ab906",
+      "StatusCode" : "201",
+      "Date" : "Sat, 14 Jan 2023 14:50:06 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "bdcbde9e-6dce-41d0-a35b-3f6fa74ab906",
+      "ETag" : "W/\"0x8DAF63EA088B708\"",
+      "elapsed-time" : "44",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "689",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF63EA088B708\\\"\",\"name\":\"key-phrase-extraction-skillset28812445e5f\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"maxKeyPhraseCount\":null,\"modelVersion\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/myText\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "bdcbde9e-6dce-41d0-a35b-3f6fa74ab906",
+      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('key-phrase-extraction-skillset28812445e5f')?api-version=2021-04-30-Preview",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('key-phrase-extraction-skillset28812445e5f')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "eb854f6d-870a-4717-a717-7ca242d87441"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "eb854f6d-870a-4717-a717-7ca242d87441",
+      "elapsed-time" : "26",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "eb854f6d-870a-4717-a717-7ca242d87441",
+      "StatusCode" : "204",
+      "Date" : "Sat, 14 Jan 2023 14:50:06 GMT",
+      "x-ms-client-request-id" : "eb854f6d-870a-4717-a717-7ca242d87441"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "key-phrase-extraction-skillset28812445e5f" ]
+}

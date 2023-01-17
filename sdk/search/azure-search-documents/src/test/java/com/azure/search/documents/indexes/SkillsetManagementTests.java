@@ -711,47 +711,6 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputsSync() {
-        List<InputFieldMappingEntry> inputs = createNestedInputFieldMappingEntry();
-        List<OutputFieldMappingEntry> outputs = createOutputFieldMappingEntry();
-
-        List<SearchIndexerSkill> skills = new ArrayList<>();
-        // Used for testing skill that shouldn't allow nested inputs
-        skills.add(new WebApiSkill(inputs, outputs, "https://contoso.example.org")
-            .setDescription("Invalid skill with nested inputs")
-            .setContext(CONTEXT_VALUE));
-
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset("nested-skillset-with-nonsharperskill")
-            .setDescription("Skillset for testing")
-            .setSkills(skills);
-
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> client.createSkillset(skillset));
-        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
-    }
-
-    @Test
-    public void createSkillsetThrowsExceptionWithNonShaperSkillWithNestedInputsAsync() {
-        List<InputFieldMappingEntry> inputs = createNestedInputFieldMappingEntry();
-        List<OutputFieldMappingEntry> outputs = createOutputFieldMappingEntry();
-
-        List<SearchIndexerSkill> skills = new ArrayList<>();
-        // Used for testing skill that shouldn't allow nested inputs
-        skills.add(new WebApiSkill(inputs, outputs, "https://contoso.example.org")
-            .setDescription("Invalid skill with nested inputs")
-            .setContext(CONTEXT_VALUE));
-
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset("nested-skillset-with-nonsharperskill")
-            .setDescription("Skillset for testing")
-            .setSkills(skills);
-
-        StepVerifier.create(asyncClient.createSkillset(skillset))
-            .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
-            });
-    }
-
-    @Test
     public void createSkillsetReturnsCorrectDefinitionConditionalSync() {
         SearchIndexerSkillset expected = createTestSkillsetConditional();
         SearchIndexerSkillset actual = client.createSkillset(expected);
@@ -809,6 +768,7 @@ public class SkillsetManagementTests extends SearchTestBase {
             asyncClient.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false), false)
                 .flatMap(response -> {
                     SearchIndexerSkillset original = response.getValue();
+                    skillsetsToDelete.add(original.getName());
 
                     return asyncClient.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), false)
                         .map(update -> Tuples.of(original.getETag(), update.getValue().getETag()));

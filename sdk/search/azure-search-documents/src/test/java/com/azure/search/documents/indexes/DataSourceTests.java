@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_TEST_NAME;
@@ -166,12 +165,18 @@ public class DataSourceTests extends SearchTestBase {
 
     @Test
     public void canCreateAndDeleteDatasourceSync() {
-        assertThrows(HttpResponseException.class, () -> client.getDataSourceConnection(UUID.randomUUID().toString()));
+        SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
+        client.deleteDataSourceConnection(dataSource.getName());
+
+        assertThrows(HttpResponseException.class, () -> client.getDataSourceConnection(dataSource.getName()));
     }
 
     @Test
     public void canCreateAndDeleteDatasourceAsync() {
-        StepVerifier.create(asyncClient.getDataSourceConnection(UUID.randomUUID().toString()))
+        SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
+        client.deleteDataSourceConnection(dataSource.getName());
+
+        StepVerifier.create(asyncClient.getDataSourceConnection(dataSource.getName()))
             .verifyError(HttpResponseException.class);
     }
 

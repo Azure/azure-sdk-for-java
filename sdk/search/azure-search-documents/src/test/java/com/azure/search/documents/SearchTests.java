@@ -426,15 +426,21 @@ public class SearchTests extends SearchTestBase {
 
         NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
 
+        Map<String, NonNullableModel> expectedDocs = new HashMap<>();
+        expectedDocs.put(doc1.key(), doc1);
+        expectedDocs.put(doc2.key(), doc2);
+
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         SearchPagedIterable results = client.search("*", new SearchOptions(), Context.NONE);
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
 
         SearchPagedResponse result = iterator.next();
-        assertEquals(2, result.getValue().size());
-        assertObjectEquals(doc1, result.getValue().get(0).getDocument(NonNullableModel.class), true);
-        assertObjectEquals(doc2, result.getValue().get(1).getDocument(NonNullableModel.class), true);
+        Map<String, NonNullableModel> actualDocs = result.getValue().stream()
+            .map(sr -> sr.getDocument(NonNullableModel.class))
+            .collect(Collectors.toMap(NonNullableModel::key, Function.identity()));
+
+        compareMaps(expectedDocs, actualDocs, (expected, actual) -> assertObjectEquals(expected, actual, true));
     }
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
@@ -456,13 +462,19 @@ public class SearchTests extends SearchTestBase {
 
         NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
 
+        Map<String, NonNullableModel> expectedDocs = new HashMap<>();
+        expectedDocs.put(doc1.key(), doc1);
+        expectedDocs.put(doc2.key(), doc2);
+
         uploadDocuments(asyncClient, Arrays.asList(doc1, doc2));
 
         StepVerifier.create(asyncClient.search("*", new SearchOptions()).byPage())
             .assertNext(response -> {
-                assertEquals(2, response.getValue().size());
-                assertObjectEquals(doc1, response.getValue().get(0).getDocument(NonNullableModel.class), true);
-                assertObjectEquals(doc2, response.getValue().get(1).getDocument(NonNullableModel.class), true);
+                Map<String, NonNullableModel> actualDocs = response.getValue().stream()
+                    .map(sr -> sr.getDocument(NonNullableModel.class))
+                    .collect(Collectors.toMap(NonNullableModel::key, Function.identity()));
+
+                compareMaps(expectedDocs, actualDocs, (expected, actual) -> assertObjectEquals(expected, actual, true));
             })
             .verifyComplete();
     }

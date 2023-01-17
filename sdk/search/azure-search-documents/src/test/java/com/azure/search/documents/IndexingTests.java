@@ -487,7 +487,7 @@ public class IndexingTests extends SearchTestBase {
         assertSuccessfulIndexResult(results.get(4), "2", 201);
 
         for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
-            SearchDocument actual = client.getDocument(hotel1.get("HotelId").toString(), SearchDocument.class);
+            SearchDocument actual = client.getDocument(hotel.get("HotelId").toString(), SearchDocument.class);
             assertMapEquals(hotel, actual, false);
         }
     }
@@ -613,7 +613,7 @@ public class IndexingTests extends SearchTestBase {
 
         for (Hotel expected : boundaryConditionDocs) {
             getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
-                (ignored, actual) -> assertObjectEquals(expected, actual));
+                (ignored, actual) -> assertObjectEquals(expected, actual, true));
         }
     }
 

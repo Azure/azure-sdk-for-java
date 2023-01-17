@@ -40,6 +40,8 @@ import static java.lang.Double.POSITIVE_INFINITY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LookupTests extends SearchTestBase {
+    // TODO (alzimmer): This test could be converted to use two static indexes instead of an index per test
+    //  by using random hotel keys.
     private final List<String> indexesToDelete = new ArrayList<>();
 
     @Override
@@ -218,7 +220,9 @@ public class LookupTests extends SearchTestBase {
 
         uploadDocument(client, expectedDoc);
         // Select only the fields set in the test case.
-        List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
+        List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded",
+            "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions",
+            "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
@@ -250,7 +254,9 @@ public class LookupTests extends SearchTestBase {
 
         uploadDocument(asyncClient, expectedDoc);
         // Select only the fields set in the test case.
-        List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
+        List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded",
+            "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions",
+            "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         getAndValidateDocumentAsync(asyncClient, "1", SearchDocument.class, selectedFields, expectedDoc,
             (ignored, actual) -> assertObjectEquals(expectedDoc, actual, true));
@@ -263,7 +269,6 @@ public class LookupTests extends SearchTestBase {
         SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", "1");
         originalDoc.put("Address", new SearchDocument());
-
 
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", "1");
@@ -292,7 +297,6 @@ public class LookupTests extends SearchTestBase {
         SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", "1");
         originalDoc.put("Address", new SearchDocument());
-
 
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", "1");
@@ -618,7 +622,8 @@ public class LookupTests extends SearchTestBase {
         expectedDoc.put("Rooms", Collections.singletonList(expectedRoom));
 
         uploadDocument(client, originalDoc);
-        List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
+        List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions",
+            "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
