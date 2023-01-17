@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationOrigin. */
+/** The intended executor of the operation. */
 public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin> {
     /** Static value NotSpecified for OperationOrigin. */
     public static final OperationOrigin NOT_SPECIFIED = fromString("NotSpecified");
@@ -18,6 +18,15 @@ public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin>
 
     /** Static value system for OperationOrigin. */
     public static final OperationOrigin SYSTEM = fromString("system");
+
+    /**
+     * Creates a new instance of OperationOrigin value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationOrigin() {
+    }
 
     /**
      * Creates or finds a OperationOrigin from its string representation.
@@ -30,7 +39,11 @@ public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin>
         return fromString(name, OperationOrigin.class);
     }
 
-    /** @return known OperationOrigin values. */
+    /**
+     * Gets known OperationOrigin values.
+     *
+     * @return known OperationOrigin values.
+     */
     public static Collection<OperationOrigin> values() {
         return values(OperationOrigin.class);
     }

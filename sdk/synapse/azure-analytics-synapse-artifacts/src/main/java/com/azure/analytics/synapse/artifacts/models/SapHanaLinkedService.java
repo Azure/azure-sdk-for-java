@@ -55,6 +55,9 @@ public class SapHanaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SapHanaLinkedService class. */
+    public SapHanaLinkedService() {}
+
     /**
      * Get the connectionString property: SAP HANA ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

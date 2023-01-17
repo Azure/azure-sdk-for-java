@@ -13,10 +13,9 @@ import com.azure.resourcemanager.frontdoor.fluent.ExperimentsClient;
 import com.azure.resourcemanager.frontdoor.fluent.models.ExperimentInner;
 import com.azure.resourcemanager.frontdoor.models.Experiment;
 import com.azure.resourcemanager.frontdoor.models.Experiments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExperimentsImpl implements Experiments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExperimentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExperimentsImpl.class);
 
     private final ExperimentsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class ExperimentsImpl implements Experiments {
         return Utils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
     }
 
-    public Experiment get(String resourceGroupName, String profileName, String experimentName) {
-        ExperimentInner inner = this.serviceClient().get(resourceGroupName, profileName, experimentName);
-        if (inner != null) {
-            return new ExperimentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Experiment> getWithResponse(
         String resourceGroupName, String profileName, String experimentName, Context context) {
         Response<ExperimentInner> inner =
@@ -58,6 +48,15 @@ public final class ExperimentsImpl implements Experiments {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ExperimentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Experiment get(String resourceGroupName, String profileName, String experimentName) {
+        ExperimentInner inner = this.serviceClient().get(resourceGroupName, profileName, experimentName);
+        if (inner != null) {
+            return new ExperimentImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -74,7 +73,7 @@ public final class ExperimentsImpl implements Experiments {
     public Experiment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -82,7 +81,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +91,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String experimentName = Utils.getValueFromIdByName(id, "Experiments");
         if (experimentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'Experiments'.", id)));
@@ -103,7 +102,7 @@ public final class ExperimentsImpl implements Experiments {
     public Response<Experiment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -121,7 +120,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String experimentName = Utils.getValueFromIdByName(id, "Experiments");
         if (experimentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'Experiments'.", id)));
@@ -132,7 +131,7 @@ public final class ExperimentsImpl implements Experiments {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +149,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String experimentName = Utils.getValueFromIdByName(id, "Experiments");
         if (experimentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'Experiments'.", id)));
@@ -161,7 +160,7 @@ public final class ExperimentsImpl implements Experiments {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +178,7 @@ public final class ExperimentsImpl implements Experiments {
         }
         String experimentName = Utils.getValueFromIdByName(id, "Experiments");
         if (experimentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'Experiments'.", id)));

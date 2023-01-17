@@ -6,15 +6,12 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a managed rule set. */
 @Fluent
 public final class ManagedRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleSet.class);
-
     /*
      * Defines the rule set type to use.
      */
@@ -28,8 +25,7 @@ public final class ManagedRuleSet {
     private String ruleSetVersion;
 
     /*
-     * Defines the action to take when a managed rule set score threshold is
-     * met.
+     * Defines the action to take when a managed rule set score threshold is met.
      */
     @JsonProperty(value = "ruleSetAction")
     private ManagedRuleSetActionType ruleSetAction;
@@ -45,6 +41,10 @@ public final class ManagedRuleSet {
      */
     @JsonProperty(value = "ruleGroupOverrides")
     private List<ManagedRuleGroupOverride> ruleGroupOverrides;
+
+    /** Creates an instance of ManagedRuleSet class. */
+    public ManagedRuleSet() {
+    }
 
     /**
      * Get the ruleSetType property: Defines the rule set type to use.
@@ -153,12 +153,12 @@ public final class ManagedRuleSet {
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ruleSetType in model ManagedRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ruleSetVersion in model ManagedRuleSet"));
         }
@@ -169,4 +169,6 @@ public final class ManagedRuleSet {
             ruleGroupOverrides().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleSet.class);
 }

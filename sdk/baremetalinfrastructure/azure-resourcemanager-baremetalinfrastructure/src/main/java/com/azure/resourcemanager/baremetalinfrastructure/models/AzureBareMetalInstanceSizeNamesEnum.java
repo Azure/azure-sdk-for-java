@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureBareMetalInstanceSizeNamesEnum. */
+/** Specifies the AzureBareMetal instance SKU. */
 public final class AzureBareMetalInstanceSizeNamesEnum
     extends ExpandableStringEnum<AzureBareMetalInstanceSizeNamesEnum> {
     /** Static value S72m for AzureBareMetalInstanceSizeNamesEnum. */
@@ -141,6 +141,15 @@ public final class AzureBareMetalInstanceSizeNamesEnum
     public static final AzureBareMetalInstanceSizeNamesEnum S960M = fromString("S960m");
 
     /**
+     * Creates a new instance of AzureBareMetalInstanceSizeNamesEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureBareMetalInstanceSizeNamesEnum() {
+    }
+
+    /**
      * Creates or finds a AzureBareMetalInstanceSizeNamesEnum from its string representation.
      *
      * @param name a name to look for.
@@ -151,7 +160,11 @@ public final class AzureBareMetalInstanceSizeNamesEnum
         return fromString(name, AzureBareMetalInstanceSizeNamesEnum.class);
     }
 
-    /** @return known AzureBareMetalInstanceSizeNamesEnum values. */
+    /**
+     * Gets known AzureBareMetalInstanceSizeNamesEnum values.
+     *
+     * @return known AzureBareMetalInstanceSizeNamesEnum values.
+     */
     public static Collection<AzureBareMetalInstanceSizeNamesEnum> values() {
         return values(AzureBareMetalInstanceSizeNamesEnum.class);
     }

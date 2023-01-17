@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for plan on a custom image. */
 @Fluent
 public final class CustomImagePropertiesFromPlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomImagePropertiesFromPlan.class);
-
     /*
      * The id of the plan, equivalent to name of the plan
      */
@@ -21,18 +17,20 @@ public final class CustomImagePropertiesFromPlan {
     private String id;
 
     /*
-     * The publisher for the plan from the marketplace image the custom image
-     * is derived from
+     * The publisher for the plan from the marketplace image the custom image is derived from
      */
     @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
-     * The offer for the plan from the marketplace image the custom image is
-     * derived from
+     * The offer for the plan from the marketplace image the custom image is derived from
      */
     @JsonProperty(value = "offer")
     private String offer;
+
+    /** Creates an instance of CustomImagePropertiesFromPlan class. */
+    public CustomImagePropertiesFromPlan() {
+    }
 
     /**
      * Get the id property: The id of the plan, equivalent to name of the plan.

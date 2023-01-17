@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.models.ViewResourceFormatInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of list view operation. */
 @Fluent
 public final class ViewListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewListResult.class);
-
     /*
      * Results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class ViewListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ViewListResult class. */
+    public ViewListResult() {
+    }
 
     /**
      * Get the value property: Results of the list operation.

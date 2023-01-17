@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HostCachingOptions. */
+/** Caching option for a data disk (i.e. None, ReadOnly, ReadWrite). */
 public final class HostCachingOptions extends ExpandableStringEnum<HostCachingOptions> {
     /** Static value None for HostCachingOptions. */
     public static final HostCachingOptions NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class HostCachingOptions extends ExpandableStringEnum<HostCachingOp
 
     /** Static value ReadWrite for HostCachingOptions. */
     public static final HostCachingOptions READ_WRITE = fromString("ReadWrite");
+
+    /**
+     * Creates a new instance of HostCachingOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HostCachingOptions() {
+    }
 
     /**
      * Creates or finds a HostCachingOptions from its string representation.
@@ -30,7 +39,11 @@ public final class HostCachingOptions extends ExpandableStringEnum<HostCachingOp
         return fromString(name, HostCachingOptions.class);
     }
 
-    /** @return known HostCachingOptions values. */
+    /**
+     * Gets known HostCachingOptions values.
+     *
+     * @return known HostCachingOptions values.
+     */
     public static Collection<HostCachingOptions> values() {
         return values(HostCachingOptions.class);
     }

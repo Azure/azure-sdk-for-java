@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatadogSetPasswordLink model. */
 @Fluent
 public final class DatadogSetPasswordLinkInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogSetPasswordLinkInner.class);
-
     /*
      * The setPasswordLink property.
      */
     @JsonProperty(value = "setPasswordLink")
     private String setPasswordLink;
+
+    /** Creates an instance of DatadogSetPasswordLinkInner class. */
+    public DatadogSetPasswordLinkInner() {
+    }
 
     /**
      * Get the setPasswordLink property: The setPasswordLink property.

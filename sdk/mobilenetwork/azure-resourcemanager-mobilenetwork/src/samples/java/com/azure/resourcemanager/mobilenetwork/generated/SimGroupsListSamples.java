@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SimGroups List. */
 public final class SimGroupsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupListBySubscription.json
      */
     /**
      * Sample code: List SIM groups in a subscription.
@@ -18,6 +16,6 @@ public final class SimGroupsListSamples {
      */
     public static void listSIMGroupsInASubscription(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.simGroups().list(Context.NONE);
+        manager.simGroups().list(com.azure.core.util.Context.NONE);
     }
 }

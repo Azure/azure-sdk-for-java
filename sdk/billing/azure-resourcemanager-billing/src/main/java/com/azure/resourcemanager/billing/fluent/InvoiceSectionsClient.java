@@ -24,7 +24,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionInner> listByBillingProfile(String billingAccountName, String billingProfileName);
@@ -39,11 +39,28 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionInner> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);
+
+    /**
+     * Gets an invoice section by its ID. The operation is supported only for billing accounts with agreement type
+     * Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an invoice section by its ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InvoiceSectionInner> getWithResponse(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
 
     /**
      * Gets an invoice section by its ID. The operation is supported only for billing accounts with agreement type
@@ -61,23 +78,6 @@ public interface InvoiceSectionsClient {
     InvoiceSectionInner get(String billingAccountName, String billingProfileName, String invoiceSectionName);
 
     /**
-     * Gets an invoice section by its ID. The operation is supported only for billing accounts with agreement type
-     * Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section by its ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InvoiceSectionInner> getWithResponse(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
-
-    /**
      * Creates or updates an invoice section. The operation is supported only for billing accounts with agreement type
      * Microsoft Customer Agreement.
      *
@@ -88,7 +88,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link SyncPoller} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(
@@ -109,7 +109,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link SyncPoller} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(

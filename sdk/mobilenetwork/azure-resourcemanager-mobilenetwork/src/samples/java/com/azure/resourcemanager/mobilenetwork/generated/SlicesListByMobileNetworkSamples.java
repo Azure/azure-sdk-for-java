@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Slices ListByMobileNetwork. */
 public final class SlicesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SliceListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SliceListByMobileNetwork.json
      */
     /**
      * Sample code: List network slices in a mobile network.
@@ -18,6 +16,6 @@ public final class SlicesListByMobileNetworkSamples {
      */
     public static void listNetworkSlicesInAMobileNetwork(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.slices().listByMobileNetwork("rg1", "testMobileNetwork", Context.NONE);
+        manager.slices().listByMobileNetwork("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.QueryColumn;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The QueryProperties model. */
 @Fluent
 public final class QueryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryProperties.class);
-
     /*
      * The link (url) to the next page of results.
      */
@@ -33,6 +29,10 @@ public final class QueryProperties {
      */
     @JsonProperty(value = "rows")
     private List<List<Object>> rows;
+
+    /** Creates an instance of QueryProperties class. */
+    public QueryProperties() {
+    }
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.

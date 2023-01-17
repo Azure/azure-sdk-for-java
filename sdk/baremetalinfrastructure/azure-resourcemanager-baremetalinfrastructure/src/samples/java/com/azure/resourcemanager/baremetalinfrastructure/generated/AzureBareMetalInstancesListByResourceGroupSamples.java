@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AzureBareMetalInstances ListByResourceGroup. */
 public final class AzureBareMetalInstancesListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class AzureBareMetalInstancesListByResourceGroupSamples {
      */
     public static void listAllAzureBareMetalInstancesInAResourceGroup(
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
-        manager.azureBareMetalInstances().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.azureBareMetalInstances().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

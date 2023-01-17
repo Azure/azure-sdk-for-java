@@ -35,6 +35,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ContentKeyPolicyConfiguration {
+    /** Creates an instance of ContentKeyPolicyConfiguration class. */
+    public ContentKeyPolicyConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

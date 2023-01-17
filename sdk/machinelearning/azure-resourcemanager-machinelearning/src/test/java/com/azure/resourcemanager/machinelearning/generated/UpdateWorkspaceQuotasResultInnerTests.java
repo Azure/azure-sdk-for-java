@@ -6,11 +6,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.UpdateWorkspaceQuotasResultInner;
-import org.junit.jupiter.api.Test;
 
 public final class UpdateWorkspaceQuotasResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UpdateWorkspaceQuotasResultInner model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class UpdateWorkspaceQuotasResultInnerTests {
                 .toObject(UpdateWorkspaceQuotasResultInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UpdateWorkspaceQuotasResultInner model = new UpdateWorkspaceQuotasResultInner();
         model = BinaryData.fromObject(model).toObject(UpdateWorkspaceQuotasResultInner.class);
     }

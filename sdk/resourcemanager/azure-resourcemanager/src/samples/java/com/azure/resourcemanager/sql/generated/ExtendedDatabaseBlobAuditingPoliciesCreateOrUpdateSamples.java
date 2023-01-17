@@ -13,7 +13,7 @@ import java.util.UUID;
 /** Samples for ExtendedDatabaseBlobAuditingPolicies CreateOrUpdate. */
 public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ExtendedDatabaseBlobAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with minimal parameters.
@@ -40,7 +40,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ExtendedDatabaseBlobAuditingCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with all parameters.
@@ -60,10 +60,6 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                 "testdb",
                 new ExtendedDatabaseBlobAuditingPolicyInner()
                     .withPredicateExpression("statement = 'select 1'")
-                    .withState(BlobAuditingPolicyState.ENABLED)
-                    .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
                     .withRetentionDays(6)
                     .withAuditActionsAndGroups(
                         Arrays
@@ -71,14 +67,19 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                                 "DATABASE_LOGOUT_GROUP",
                                 "DATABASE_ROLE_MEMBER_CHANGE_GROUP",
                                 "UPDATE on database::TestDatabaseName by public"))
-                    .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000"))
                     .withIsStorageSecondaryKeyInUse(false)
-                    .withIsAzureMonitorTargetEnabled(true),
+                    .withIsAzureMonitorTargetEnabled(true)
+                    .withQueueDelayMs(4000)
+                    .withState(BlobAuditingPolicyState.ENABLED)
+                    .withStorageEndpoint("https://mystorage.blob.core.windows.net")
+                    .withStorageAccountAccessKey(
+                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
+                    .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ExtendedDatabaseAzureMonitorAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseAzureMonitorAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended database's azure monitor auditing policy with minimal parameters.
@@ -97,8 +98,8 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                 "blobauditingtest-6440",
                 "testdb",
                 new ExtendedDatabaseBlobAuditingPolicyInner()
-                    .withState(BlobAuditingPolicyState.ENABLED)
-                    .withIsAzureMonitorTargetEnabled(true),
+                    .withIsAzureMonitorTargetEnabled(true)
+                    .withState(BlobAuditingPolicyState.ENABLED),
                 Context.NONE);
     }
 }

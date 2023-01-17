@@ -46,6 +46,10 @@ public final class MonitoringSummary {
     @JsonProperty(value = "unsupportedProviderCount")
     private Integer unsupportedProviderCount;
 
+    /** Creates an instance of MonitoringSummary class. */
+    public MonitoringSummary() {
+    }
+
     /**
      * Get the unHealthyVmCount property: Count of unhealthy VMs.
      *

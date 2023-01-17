@@ -63,6 +63,10 @@ public final class HybridComputePrivateLinkScopeImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public HybridComputePrivateLinkScopeInner innerModel() {
         return this.innerObject;
     }

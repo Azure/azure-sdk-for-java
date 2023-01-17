@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.DataLakeAnalyticsSchema;
 import com.azure.resourcemanager.machinelearning.models.DataLakeAnalyticsSchemaProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataLakeAnalyticsSchemaTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataLakeAnalyticsSchema model =
             BinaryData
                 .fromString("{\"properties\":{\"dataLakeStoreAccountName\":\"mg\"}}")
@@ -20,8 +19,8 @@ public final class DataLakeAnalyticsSchemaTests {
         Assertions.assertEquals("mg", model.properties().dataLakeStoreAccountName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataLakeAnalyticsSchema model =
             new DataLakeAnalyticsSchema()
                 .withProperties(new DataLakeAnalyticsSchemaProperties().withDataLakeStoreAccountName("mg"));

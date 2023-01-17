@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PacketCoreDataPlanes ListByPacketCoreControlPlane. */
 public final class PacketCoreDataPlanesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List packet core data planes in a control plane.
@@ -18,6 +16,8 @@ public final class PacketCoreDataPlanesListByPacketCoreControlPlaneSamples {
      */
     public static void listPacketCoreDataPlanesInAControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreDataPlanes().listByPacketCoreControlPlane("rg1", "testPacketCoreCP", Context.NONE);
+        manager
+            .packetCoreDataPlanes()
+            .listByPacketCoreControlPlane("rg1", "testPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }

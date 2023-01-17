@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakestore.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for EncryptionProvisioningState. */
+/** The current state of encryption provisioning for this Data Lake Store account. */
 public enum EncryptionProvisioningState {
     /** Enum value Creating. */
     CREATING("Creating"),
@@ -30,6 +30,9 @@ public enum EncryptionProvisioningState {
      */
     @JsonCreator
     public static EncryptionProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EncryptionProvisioningState[] items = EncryptionProvisioningState.values();
         for (EncryptionProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum EncryptionProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

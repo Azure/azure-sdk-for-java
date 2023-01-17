@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.StorageAccountCredentialInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The collection of storage account credentials. */
 @Immutable
 public final class StorageAccountCredentialList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCredentialList.class);
-
     /*
      * The value.
      */
@@ -27,6 +23,10 @@ public final class StorageAccountCredentialList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of StorageAccountCredentialList class. */
+    public StorageAccountCredentialList() {
+    }
 
     /**
      * Get the value property: The value.

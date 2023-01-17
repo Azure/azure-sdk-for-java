@@ -70,7 +70,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface OnlineDeploymentsService {
+    public interface OnlineDeploymentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
@@ -664,7 +664,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).getSyncPoller();
     }
 
     /**
@@ -683,7 +683,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
             .getSyncPoller();
     }
 
@@ -1152,7 +1153,9 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String endpointName,
         String deploymentName,
         PartialMinimalTrackedResourceWithSku body) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+            .getSyncPoller();
     }
 
     /**
@@ -1177,7 +1180,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String deploymentName,
         PartialMinimalTrackedResourceWithSku body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
     }
 
@@ -1502,7 +1506,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String endpointName,
         String deploymentName,
         OnlineDeploymentInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
 
@@ -1528,7 +1533,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         String deploymentName,
         OnlineDeploymentInner body,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
     }
 

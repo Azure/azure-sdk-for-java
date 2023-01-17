@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Sims Get. */
 public final class SimsGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGet.json
      */
     /**
      * Sample code: Get SIM.
@@ -17,6 +15,8 @@ public final class SimsGetSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sims().getWithResponse("testResourceGroupName", "testSimGroup", "testSimName", Context.NONE);
+        manager
+            .sims()
+            .getWithResponse("testResourceGroupName", "testSimGroup", "testSimName", com.azure.core.util.Context.NONE);
     }
 }

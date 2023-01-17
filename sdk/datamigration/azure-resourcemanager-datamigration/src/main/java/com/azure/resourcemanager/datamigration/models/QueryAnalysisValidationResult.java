@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Results for query analysis comparison between the source and target. */
 @Immutable
 public final class QueryAnalysisValidationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryAnalysisValidationResult.class);
-
     /*
      * List of queries executed and it's execution results in source and target
      */
@@ -25,6 +21,10 @@ public final class QueryAnalysisValidationResult {
      */
     @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationError validationErrors;
+
+    /** Creates an instance of QueryAnalysisValidationResult class. */
+    public QueryAnalysisValidationResult() {
+    }
 
     /**
      * Get the queryResults property: List of queries executed and it's execution results in source and target.

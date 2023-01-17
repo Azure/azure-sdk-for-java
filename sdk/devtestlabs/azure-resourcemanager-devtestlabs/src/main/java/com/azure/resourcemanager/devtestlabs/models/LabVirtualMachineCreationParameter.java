@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.devtestlabs.fluent.models.LabVirtualMachineCreationParameterProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** Properties for creating a virtual machine. */
-@JsonFlatten
 @Fluent
-public class LabVirtualMachineCreationParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabVirtualMachineCreationParameter.class);
+public final class LabVirtualMachineCreationParameter {
+    /*
+     * The properties of the resource.
+     */
+    @JsonProperty(value = "properties")
+    private LabVirtualMachineCreationParameterProperties innerProperties;
 
     /*
      * The name of the virtual machine or environment
@@ -35,155 +37,21 @@ public class LabVirtualMachineCreationParameter {
      * The tags of the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The number of virtual machine instances to create.
-     */
-    @JsonProperty(value = "properties.bulkCreationParameters")
-    private BulkCreationParameters bulkCreationParameters;
+    /** Creates an instance of LabVirtualMachineCreationParameter class. */
+    public LabVirtualMachineCreationParameter() {
+    }
 
-    /*
-     * The notes of the virtual machine.
+    /**
+     * Get the innerProperties property: The properties of the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.notes")
-    private String notes;
-
-    /*
-     * The object identifier of the owner of the virtual machine.
-     */
-    @JsonProperty(value = "properties.ownerObjectId")
-    private String ownerObjectId;
-
-    /*
-     * The user principal name of the virtual machine owner.
-     */
-    @JsonProperty(value = "properties.ownerUserPrincipalName")
-    private String ownerUserPrincipalName;
-
-    /*
-     * The creation date of the virtual machine.
-     */
-    @JsonProperty(value = "properties.createdDate")
-    private OffsetDateTime createdDate;
-
-    /*
-     * The custom image identifier of the virtual machine.
-     */
-    @JsonProperty(value = "properties.customImageId")
-    private String customImageId;
-
-    /*
-     * The size of the virtual machine.
-     */
-    @JsonProperty(value = "properties.size")
-    private String size;
-
-    /*
-     * The user name of the virtual machine.
-     */
-    @JsonProperty(value = "properties.userName")
-    private String username;
-
-    /*
-     * The password of the virtual machine administrator.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
-
-    /*
-     * The SSH key of the virtual machine administrator.
-     */
-    @JsonProperty(value = "properties.sshKey")
-    private String sshKey;
-
-    /*
-     * Indicates whether this virtual machine uses an SSH key for
-     * authentication.
-     */
-    @JsonProperty(value = "properties.isAuthenticationWithSshKey")
-    private Boolean isAuthenticationWithSshKey;
-
-    /*
-     * The lab subnet name of the virtual machine.
-     */
-    @JsonProperty(value = "properties.labSubnetName")
-    private String labSubnetName;
-
-    /*
-     * The lab virtual network identifier of the virtual machine.
-     */
-    @JsonProperty(value = "properties.labVirtualNetworkId")
-    private String labVirtualNetworkId;
-
-    /*
-     * Indicates whether the virtual machine is to be created without a public
-     * IP address.
-     */
-    @JsonProperty(value = "properties.disallowPublicIpAddress")
-    private Boolean disallowPublicIpAddress;
-
-    /*
-     * The artifacts to be installed on the virtual machine.
-     */
-    @JsonProperty(value = "properties.artifacts")
-    private List<ArtifactInstallProperties> artifacts;
-
-    /*
-     * The Microsoft Azure Marketplace image reference of the virtual machine.
-     */
-    @JsonProperty(value = "properties.galleryImageReference")
-    private GalleryImageReference galleryImageReference;
-
-    /*
-     * The id of the plan associated with the virtual machine image
-     */
-    @JsonProperty(value = "properties.planId")
-    private String planId;
-
-    /*
-     * The network interface properties.
-     */
-    @JsonProperty(value = "properties.networkInterface")
-    private NetworkInterfaceProperties networkInterface;
-
-    /*
-     * The expiration date for VM.
-     */
-    @JsonProperty(value = "properties.expirationDate")
-    private OffsetDateTime expirationDate;
-
-    /*
-     * Indicates whether another user can take ownership of the virtual machine
-     */
-    @JsonProperty(value = "properties.allowClaim")
-    private Boolean allowClaim;
-
-    /*
-     * Storage type to use for virtual machine (i.e. Standard, Premium).
-     */
-    @JsonProperty(value = "properties.storageType")
-    private String storageType;
-
-    /*
-     * The resource ID of the environment that contains this virtual machine,
-     * if any.
-     */
-    @JsonProperty(value = "properties.environmentId")
-    private String environmentId;
-
-    /*
-     * New or existing data disks to attach to the virtual machine after
-     * creation
-     */
-    @JsonProperty(value = "properties.dataDiskParameters")
-    private List<DataDiskProperties> dataDiskParameters;
-
-    /*
-     * Virtual Machine schedules to be created
-     */
-    @JsonProperty(value = "properties.scheduleParameters")
-    private List<ScheduleCreationParameter> scheduleParameters;
+    private LabVirtualMachineCreationParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the virtual machine or environment.
@@ -251,7 +119,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the bulkCreationParameters value.
      */
     public BulkCreationParameters bulkCreationParameters() {
-        return this.bulkCreationParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().bulkCreationParameters();
     }
 
     /**
@@ -262,7 +130,10 @@ public class LabVirtualMachineCreationParameter {
      */
     public LabVirtualMachineCreationParameter withBulkCreationParameters(
         BulkCreationParameters bulkCreationParameters) {
-        this.bulkCreationParameters = bulkCreationParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withBulkCreationParameters(bulkCreationParameters);
         return this;
     }
 
@@ -272,7 +143,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the notes value.
      */
     public String notes() {
-        return this.notes;
+        return this.innerProperties() == null ? null : this.innerProperties().notes();
     }
 
     /**
@@ -282,7 +153,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withNotes(String notes) {
-        this.notes = notes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withNotes(notes);
         return this;
     }
 
@@ -292,7 +166,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the ownerObjectId value.
      */
     public String ownerObjectId() {
-        return this.ownerObjectId;
+        return this.innerProperties() == null ? null : this.innerProperties().ownerObjectId();
     }
 
     /**
@@ -302,7 +176,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withOwnerObjectId(String ownerObjectId) {
-        this.ownerObjectId = ownerObjectId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withOwnerObjectId(ownerObjectId);
         return this;
     }
 
@@ -312,7 +189,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the ownerUserPrincipalName value.
      */
     public String ownerUserPrincipalName() {
-        return this.ownerUserPrincipalName;
+        return this.innerProperties() == null ? null : this.innerProperties().ownerUserPrincipalName();
     }
 
     /**
@@ -322,7 +199,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withOwnerUserPrincipalName(String ownerUserPrincipalName) {
-        this.ownerUserPrincipalName = ownerUserPrincipalName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withOwnerUserPrincipalName(ownerUserPrincipalName);
         return this;
     }
 
@@ -332,7 +212,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
@@ -342,7 +222,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withCreatedDate(OffsetDateTime createdDate) {
-        this.createdDate = createdDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withCreatedDate(createdDate);
         return this;
     }
 
@@ -352,7 +235,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the customImageId value.
      */
     public String customImageId() {
-        return this.customImageId;
+        return this.innerProperties() == null ? null : this.innerProperties().customImageId();
     }
 
     /**
@@ -362,7 +245,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withCustomImageId(String customImageId) {
-        this.customImageId = customImageId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withCustomImageId(customImageId);
         return this;
     }
 
@@ -372,7 +258,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the size value.
      */
     public String size() {
-        return this.size;
+        return this.innerProperties() == null ? null : this.innerProperties().size();
     }
 
     /**
@@ -382,7 +268,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withSize(String size) {
-        this.size = size;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withSize(size);
         return this;
     }
 
@@ -392,7 +281,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -402,7 +291,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withUsername(String username) {
-        this.username = username;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withUsername(username);
         return this;
     }
 
@@ -412,7 +304,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -422,7 +314,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withPassword(password);
         return this;
     }
 
@@ -432,7 +327,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the sshKey value.
      */
     public String sshKey() {
-        return this.sshKey;
+        return this.innerProperties() == null ? null : this.innerProperties().sshKey();
     }
 
     /**
@@ -442,7 +337,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withSshKey(String sshKey) {
-        this.sshKey = sshKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withSshKey(sshKey);
         return this;
     }
 
@@ -453,7 +351,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the isAuthenticationWithSshKey value.
      */
     public Boolean isAuthenticationWithSshKey() {
-        return this.isAuthenticationWithSshKey;
+        return this.innerProperties() == null ? null : this.innerProperties().isAuthenticationWithSshKey();
     }
 
     /**
@@ -464,7 +362,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withIsAuthenticationWithSshKey(Boolean isAuthenticationWithSshKey) {
-        this.isAuthenticationWithSshKey = isAuthenticationWithSshKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withIsAuthenticationWithSshKey(isAuthenticationWithSshKey);
         return this;
     }
 
@@ -474,7 +375,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the labSubnetName value.
      */
     public String labSubnetName() {
-        return this.labSubnetName;
+        return this.innerProperties() == null ? null : this.innerProperties().labSubnetName();
     }
 
     /**
@@ -484,7 +385,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withLabSubnetName(String labSubnetName) {
-        this.labSubnetName = labSubnetName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withLabSubnetName(labSubnetName);
         return this;
     }
 
@@ -494,7 +398,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the labVirtualNetworkId value.
      */
     public String labVirtualNetworkId() {
-        return this.labVirtualNetworkId;
+        return this.innerProperties() == null ? null : this.innerProperties().labVirtualNetworkId();
     }
 
     /**
@@ -504,7 +408,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withLabVirtualNetworkId(String labVirtualNetworkId) {
-        this.labVirtualNetworkId = labVirtualNetworkId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withLabVirtualNetworkId(labVirtualNetworkId);
         return this;
     }
 
@@ -515,7 +422,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the disallowPublicIpAddress value.
      */
     public Boolean disallowPublicIpAddress() {
-        return this.disallowPublicIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().disallowPublicIpAddress();
     }
 
     /**
@@ -526,7 +433,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withDisallowPublicIpAddress(Boolean disallowPublicIpAddress) {
-        this.disallowPublicIpAddress = disallowPublicIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withDisallowPublicIpAddress(disallowPublicIpAddress);
         return this;
     }
 
@@ -536,7 +446,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the artifacts value.
      */
     public List<ArtifactInstallProperties> artifacts() {
-        return this.artifacts;
+        return this.innerProperties() == null ? null : this.innerProperties().artifacts();
     }
 
     /**
@@ -546,7 +456,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withArtifacts(List<ArtifactInstallProperties> artifacts) {
-        this.artifacts = artifacts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withArtifacts(artifacts);
         return this;
     }
 
@@ -556,7 +469,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the galleryImageReference value.
      */
     public GalleryImageReference galleryImageReference() {
-        return this.galleryImageReference;
+        return this.innerProperties() == null ? null : this.innerProperties().galleryImageReference();
     }
 
     /**
@@ -566,7 +479,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withGalleryImageReference(GalleryImageReference galleryImageReference) {
-        this.galleryImageReference = galleryImageReference;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withGalleryImageReference(galleryImageReference);
         return this;
     }
 
@@ -576,7 +492,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the planId value.
      */
     public String planId() {
-        return this.planId;
+        return this.innerProperties() == null ? null : this.innerProperties().planId();
     }
 
     /**
@@ -586,7 +502,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withPlanId(String planId) {
-        this.planId = planId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withPlanId(planId);
         return this;
     }
 
@@ -596,7 +515,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the networkInterface value.
      */
     public NetworkInterfaceProperties networkInterface() {
-        return this.networkInterface;
+        return this.innerProperties() == null ? null : this.innerProperties().networkInterface();
     }
 
     /**
@@ -606,7 +525,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withNetworkInterface(NetworkInterfaceProperties networkInterface) {
-        this.networkInterface = networkInterface;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withNetworkInterface(networkInterface);
         return this;
     }
 
@@ -616,7 +538,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
-        return this.expirationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
     }
 
     /**
@@ -626,7 +548,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withExpirationDate(OffsetDateTime expirationDate) {
-        this.expirationDate = expirationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withExpirationDate(expirationDate);
         return this;
     }
 
@@ -636,7 +561,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the allowClaim value.
      */
     public Boolean allowClaim() {
-        return this.allowClaim;
+        return this.innerProperties() == null ? null : this.innerProperties().allowClaim();
     }
 
     /**
@@ -646,7 +571,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withAllowClaim(Boolean allowClaim) {
-        this.allowClaim = allowClaim;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withAllowClaim(allowClaim);
         return this;
     }
 
@@ -656,7 +584,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the storageType value.
      */
     public String storageType() {
-        return this.storageType;
+        return this.innerProperties() == null ? null : this.innerProperties().storageType();
     }
 
     /**
@@ -666,7 +594,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withStorageType(String storageType) {
-        this.storageType = storageType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withStorageType(storageType);
         return this;
     }
 
@@ -676,7 +607,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the environmentId value.
      */
     public String environmentId() {
-        return this.environmentId;
+        return this.innerProperties() == null ? null : this.innerProperties().environmentId();
     }
 
     /**
@@ -686,7 +617,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withEnvironmentId(String environmentId) {
-        this.environmentId = environmentId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withEnvironmentId(environmentId);
         return this;
     }
 
@@ -696,7 +630,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the dataDiskParameters value.
      */
     public List<DataDiskProperties> dataDiskParameters() {
-        return this.dataDiskParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskParameters();
     }
 
     /**
@@ -706,7 +640,10 @@ public class LabVirtualMachineCreationParameter {
      * @return the LabVirtualMachineCreationParameter object itself.
      */
     public LabVirtualMachineCreationParameter withDataDiskParameters(List<DataDiskProperties> dataDiskParameters) {
-        this.dataDiskParameters = dataDiskParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withDataDiskParameters(dataDiskParameters);
         return this;
     }
 
@@ -716,7 +653,7 @@ public class LabVirtualMachineCreationParameter {
      * @return the scheduleParameters value.
      */
     public List<ScheduleCreationParameter> scheduleParameters() {
-        return this.scheduleParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().scheduleParameters();
     }
 
     /**
@@ -727,7 +664,10 @@ public class LabVirtualMachineCreationParameter {
      */
     public LabVirtualMachineCreationParameter withScheduleParameters(
         List<ScheduleCreationParameter> scheduleParameters) {
-        this.scheduleParameters = scheduleParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachineCreationParameterProperties();
+        }
+        this.innerProperties().withScheduleParameters(scheduleParameters);
         return this;
     }
 
@@ -737,23 +677,8 @@ public class LabVirtualMachineCreationParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (bulkCreationParameters() != null) {
-            bulkCreationParameters().validate();
-        }
-        if (artifacts() != null) {
-            artifacts().forEach(e -> e.validate());
-        }
-        if (galleryImageReference() != null) {
-            galleryImageReference().validate();
-        }
-        if (networkInterface() != null) {
-            networkInterface().validate();
-        }
-        if (dataDiskParameters() != null) {
-            dataDiskParameters().forEach(e -> e.validate());
-        }
-        if (scheduleParameters() != null) {
-            scheduleParameters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

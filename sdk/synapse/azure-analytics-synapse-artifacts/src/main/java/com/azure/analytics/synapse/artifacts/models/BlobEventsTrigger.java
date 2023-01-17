@@ -51,6 +51,9 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties.scope", required = true)
     private String scope;
 
+    /** Creates an instance of BlobEventsTrigger class. */
+    public BlobEventsTrigger() {}
+
     /**
      * Get the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For
      * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records

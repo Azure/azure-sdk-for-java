@@ -30,6 +30,9 @@ public class TeradataTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of TeradataTableDataset class. */
+    public TeradataTableDataset() {}
+
     /**
      * Get the database property: The database name of Teradata. Type: string (or Expression with resultType string).
      *

@@ -45,6 +45,10 @@ public final class PredictiveResponseInner {
     @JsonProperty(value = "data")
     private List<PredictiveValue> data;
 
+    /** Creates an instance of PredictiveResponseInner class. */
+    public PredictiveResponseInner() {
+    }
+
     /**
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally

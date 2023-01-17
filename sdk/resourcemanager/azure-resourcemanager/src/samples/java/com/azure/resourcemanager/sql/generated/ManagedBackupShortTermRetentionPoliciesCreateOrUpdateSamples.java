@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedShortTermRetentionPolicyName;
 /** Samples for ManagedBackupShortTermRetentionPolicies CreateOrUpdate. */
 public final class ManagedBackupShortTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/UpdateManagedShortTermRetentionPolicy.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateManagedShortTermRetentionPolicy.json
      */
     /**
      * Sample code: Update the short term retention policy for the database.
@@ -30,7 +30,7 @@ public final class ManagedBackupShortTermRetentionPoliciesCreateOrUpdateSamples 
                 "testsvr",
                 "testdb",
                 ManagedShortTermRetentionPolicyName.DEFAULT,
-                new ManagedBackupShortTermRetentionPolicyInner(),
+                new ManagedBackupShortTermRetentionPolicyInner().withRetentionDays(14),
                 Context.NONE);
     }
 }

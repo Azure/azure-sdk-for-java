@@ -23,6 +23,9 @@ public final class QueryDataFlowDebugSessionsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of QueryDataFlowDebugSessionsResponse class. */
+    public QueryDataFlowDebugSessionsResponse() {}
+
     /**
      * Get the value property: Array with all active debug sessions.
      *

@@ -20,6 +20,15 @@ public final class AsyncOperationStatus extends ExpandableStringEnum<AsyncOperat
     public static final AsyncOperationStatus IN_PROGRESS = fromString("InProgress");
 
     /**
+     * Creates a new instance of AsyncOperationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AsyncOperationStatus() {
+    }
+
+    /**
      * Creates or finds a AsyncOperationStatus from its string representation.
      *
      * @param name a name to look for.

@@ -5,97 +5,37 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.CardinalityTypes;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.RelationshipTypeMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** The relationship resource format. */
-@JsonFlatten
 @Fluent
-public class RelationshipResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipResourceFormatInner.class);
-
+public final class RelationshipResourceFormatInner extends ProxyResource {
     /*
-     * The Relationship Cardinality.
+     * The definition of Relationship.
      */
-    @JsonProperty(value = "properties.cardinality")
-    private CardinalityTypes cardinality;
+    @JsonProperty(value = "properties")
+    private RelationshipDefinition innerProperties;
 
-    /*
-     * Localized display name for the Relationship.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    /** Creates an instance of RelationshipResourceFormatInner class. */
+    public RelationshipResourceFormatInner() {
+    }
 
-    /*
-     * Localized descriptions for the Relationship.
+    /**
+     * Get the innerProperties property: The definition of Relationship.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
-
-    /*
-     * The expiry date time in UTC.
-     */
-    @JsonProperty(value = "properties.expiryDateTimeUtc")
-    private OffsetDateTime expiryDateTimeUtc;
-
-    /*
-     * The properties of the Relationship.
-     */
-    @JsonProperty(value = "properties.fields")
-    private List<PropertyDefinition> fields;
-
-    /*
-     * Optional property to be used to map fields in profile to their strong
-     * ids in related profile.
-     */
-    @JsonProperty(value = "properties.lookupMappings")
-    private List<RelationshipTypeMapping> lookupMappings;
-
-    /*
-     * Profile type.
-     */
-    @JsonProperty(value = "properties.profileType")
-    private String profileType;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * The Relationship name.
-     */
-    @JsonProperty(value = "properties.relationshipName", access = JsonProperty.Access.WRITE_ONLY)
-    private String relationshipName;
-
-    /*
-     * Related profile being referenced.
-     */
-    @JsonProperty(value = "properties.relatedProfileType")
-    private String relatedProfileType;
-
-    /*
-     * The relationship guid id.
-     */
-    @JsonProperty(value = "properties.relationshipGuidId", access = JsonProperty.Access.WRITE_ONLY)
-    private String relationshipGuidId;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private RelationshipDefinition innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the cardinality property: The Relationship Cardinality.
@@ -103,7 +43,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the cardinality value.
      */
     public CardinalityTypes cardinality() {
-        return this.cardinality;
+        return this.innerProperties() == null ? null : this.innerProperties().cardinality();
     }
 
     /**
@@ -113,7 +53,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withCardinality(CardinalityTypes cardinality) {
-        this.cardinality = cardinality;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withCardinality(cardinality);
         return this;
     }
 
@@ -123,7 +66,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -133,7 +76,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -143,7 +89,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -153,7 +99,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -163,7 +112,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the expiryDateTimeUtc value.
      */
     public OffsetDateTime expiryDateTimeUtc() {
-        return this.expiryDateTimeUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryDateTimeUtc();
     }
 
     /**
@@ -173,7 +122,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withExpiryDateTimeUtc(OffsetDateTime expiryDateTimeUtc) {
-        this.expiryDateTimeUtc = expiryDateTimeUtc;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withExpiryDateTimeUtc(expiryDateTimeUtc);
         return this;
     }
 
@@ -183,7 +135,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the fields value.
      */
     public List<PropertyDefinition> fields() {
-        return this.fields;
+        return this.innerProperties() == null ? null : this.innerProperties().fields();
     }
 
     /**
@@ -193,7 +145,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withFields(List<PropertyDefinition> fields) {
-        this.fields = fields;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withFields(fields);
         return this;
     }
 
@@ -204,7 +159,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the lookupMappings value.
      */
     public List<RelationshipTypeMapping> lookupMappings() {
-        return this.lookupMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().lookupMappings();
     }
 
     /**
@@ -215,7 +170,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withLookupMappings(List<RelationshipTypeMapping> lookupMappings) {
-        this.lookupMappings = lookupMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withLookupMappings(lookupMappings);
         return this;
     }
 
@@ -225,7 +183,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the profileType value.
      */
     public String profileType() {
-        return this.profileType;
+        return this.innerProperties() == null ? null : this.innerProperties().profileType();
     }
 
     /**
@@ -235,7 +193,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withProfileType(String profileType) {
-        this.profileType = profileType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withProfileType(profileType);
         return this;
     }
 
@@ -245,7 +206,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -254,7 +215,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the relationshipName value.
      */
     public String relationshipName() {
-        return this.relationshipName;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipName();
     }
 
     /**
@@ -263,7 +224,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the relatedProfileType value.
      */
     public String relatedProfileType() {
-        return this.relatedProfileType;
+        return this.innerProperties() == null ? null : this.innerProperties().relatedProfileType();
     }
 
     /**
@@ -273,7 +234,10 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withRelatedProfileType(String relatedProfileType) {
-        this.relatedProfileType = relatedProfileType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withRelatedProfileType(relatedProfileType);
         return this;
     }
 
@@ -283,7 +247,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the relationshipGuidId value.
      */
     public String relationshipGuidId() {
-        return this.relationshipGuidId;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipGuidId();
     }
 
     /**
@@ -292,7 +256,7 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -301,11 +265,8 @@ public class RelationshipResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (fields() != null) {
-            fields().forEach(e -> e.validate());
-        }
-        if (lookupMappings() != null) {
-            lookupMappings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

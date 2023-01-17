@@ -20,7 +20,7 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
         if (this.getCloudType() == null) {
             BeanUtils.copyProperties(new AzureEnvironmentProperties(), this.getEnvironment());
         } else {
-            AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType());
+            AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType(), new AzureEnvironmentProperties());
             AzurePropertiesUtils.copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
         }
     }
@@ -31,9 +31,21 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
      */
     public abstract AzureProfileOptionsProvider.AzureEnvironmentOptions getEnvironment();
 
-    private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloud) {
-        AzureEnvironment managementAzureEnvironment = decideAzureManagementEnvironment(cloud, null);
-        return getEnvironment().fromAzureManagementEnvironment(managementAzureEnvironment);
+    private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloudType,
+                                                                                       AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment) {
+        switch (cloudType) {
+            case AZURE_CHINA:
+                return AzureEnvironmentProperties.AZURE_CHINA;
+            case AZURE_US_GOVERNMENT:
+                return AzureEnvironmentProperties.AZURE_US_GOVERNMENT;
+            case AZURE_GERMANY:
+                return AzureEnvironmentProperties.AZURE_GERMANY;
+            case AZURE:
+                return AzureEnvironmentProperties.AZURE;
+            default:
+                return defaultEnvironment;
+        }
+
     }
 
     /**

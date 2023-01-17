@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for task that migrates SQL Server databases to Azure SQL Database Managed Instance. */
 @Fluent
 public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMITaskInput.class);
-
     /*
      * Databases to migrate
      */
@@ -40,19 +37,21 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     private FileShare backupFileShare;
 
     /*
-     * SAS URI of Azure Storage Account Container to be used for storing backup
-     * files.
+     * SAS URI of Azure Storage Account Container to be used for storing backup files.
      */
     @JsonProperty(value = "backupBlobShare", required = true)
     private BlobShare backupBlobShare;
 
     /*
-     * Backup Mode to specify whether to use existing backup or create new
-     * backup. If using existing backups, backup file paths are required to be
-     * provided in selectedDatabases.
+     * Backup Mode to specify whether to use existing backup or create new backup. If using existing backups, backup
+     * file paths are required to be provided in selectedDatabases.
      */
     @JsonProperty(value = "backupMode")
     private BackupMode backupMode;
+
+    /** Creates an instance of MigrateSqlServerSqlMITaskInput class. */
+    public MigrateSqlServerSqlMITaskInput() {
+    }
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
@@ -200,7 +199,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     public void validate() {
         super.validate();
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model MigrateSqlServerSqlMITaskInput"));
@@ -211,7 +210,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
             backupFileShare().validate();
         }
         if (backupBlobShare() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property backupBlobShare in model MigrateSqlServerSqlMITaskInput"));
@@ -219,4 +218,6 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
             backupBlobShare().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlMITaskInput.class);
 }

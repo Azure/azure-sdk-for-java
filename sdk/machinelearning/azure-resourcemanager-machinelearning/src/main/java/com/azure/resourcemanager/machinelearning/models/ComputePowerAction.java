@@ -17,6 +17,15 @@ public final class ComputePowerAction extends ExpandableStringEnum<ComputePowerA
     public static final ComputePowerAction STOP = fromString("Stop");
 
     /**
+     * Creates a new instance of ComputePowerAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputePowerAction() {
+    }
+
+    /**
      * Creates or finds a ComputePowerAction from its string representation.
      *
      * @param name a name to look for.

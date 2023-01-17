@@ -36,6 +36,7 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CONNECTION_ID = "callConnectionId";
     static final String CALL_SERVER_CALL_ID = "serverCallId";
     static final String CALL_CALLER_ID = "callerId";
+    static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
@@ -56,8 +57,8 @@ public class CallAutomationUnitTestBase {
     }
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
-                                                String targetId, String connectionState, String subject, String callbackUri,
-                                                String mediaSubscriptionId) {
+                                                String callerDisplayName, String targetId, String connectionState,
+                                                String subject, String callbackUri, String mediaSubscriptionId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
@@ -65,7 +66,9 @@ public class CallAutomationUnitTestBase {
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
             .setMediaSubscriptionId(mediaSubscriptionId)
             .setSource(new CallSourceInternal()
-                .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId)))
+                .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
+                .setDisplayName(callerDisplayName)
+            )
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
 

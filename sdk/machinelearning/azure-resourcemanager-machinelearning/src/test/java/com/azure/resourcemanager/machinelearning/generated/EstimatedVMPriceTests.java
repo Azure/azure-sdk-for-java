@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.EstimatedVMPrice;
 import com.azure.resourcemanager.machinelearning.models.VMPriceOSType;
 import com.azure.resourcemanager.machinelearning.models.VMTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EstimatedVMPriceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EstimatedVMPrice model =
             BinaryData
                 .fromString("{\"retailPrice\":57.931778810567735,\"osType\":\"Linux\",\"vmTier\":\"LowPriority\"}")
@@ -23,8 +22,8 @@ public final class EstimatedVMPriceTests {
         Assertions.assertEquals(VMTier.LOW_PRIORITY, model.vmTier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EstimatedVMPrice model =
             new EstimatedVMPrice()
                 .withRetailPrice(57.931778810567735)

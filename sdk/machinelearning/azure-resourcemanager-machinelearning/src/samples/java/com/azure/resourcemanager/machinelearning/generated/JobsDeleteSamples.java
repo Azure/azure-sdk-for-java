@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Jobs Delete. */
 public final class JobsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class JobsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().delete("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().delete("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }

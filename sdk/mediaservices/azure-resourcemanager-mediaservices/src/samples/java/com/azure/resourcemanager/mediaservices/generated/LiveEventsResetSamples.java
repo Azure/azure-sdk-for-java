@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LiveEvents Reset. */
 public final class LiveEventsResetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-reset.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/liveevent-reset.json
      */
     /**
      * Sample code: Reset a LiveEvent.
@@ -17,6 +15,8 @@ public final class LiveEventsResetSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void resetALiveEvent(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.liveEvents().reset("mediaresources", "slitestmedia10", "myLiveEvent1", Context.NONE);
+        manager
+            .liveEvents()
+            .reset("mediaresources", "slitestmedia10", "myLiveEvent1", com.azure.core.util.Context.NONE);
     }
 }

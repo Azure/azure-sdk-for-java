@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions GetByInvoiceSection. */
 public final class BillingRoleDefinitionsGetByInvoiceSectionSamples {
     /*
@@ -24,6 +22,6 @@ public final class BillingRoleDefinitionsGetByInvoiceSectionSamples {
                 "{billingProfileName}",
                 "{invoiceSectionName}",
                 "{billingRoleDefinitionName}",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

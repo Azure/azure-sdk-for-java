@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("LoginLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlServerSqlMITaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMITaskOutputLoginLevel.class);
-
     /*
      * Login name.
      */
@@ -61,6 +57,10 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
      */
     @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
+
+    /** Creates an instance of MigrateSqlServerSqlMITaskOutputLoginLevel class. */
+    public MigrateSqlServerSqlMITaskOutputLoginLevel() {
+    }
 
     /**
      * Get the loginName property: Login name.

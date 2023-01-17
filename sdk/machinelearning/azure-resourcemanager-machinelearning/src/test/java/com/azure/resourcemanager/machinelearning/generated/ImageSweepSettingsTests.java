@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.EarlyTerminationPolicy;
 import com.azure.resourcemanager.machinelearning.models.ImageSweepSettings;
 import com.azure.resourcemanager.machinelearning.models.SamplingAlgorithmType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageSweepSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageSweepSettings model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class ImageSweepSettingsTests {
         Assertions.assertEquals(SamplingAlgorithmType.GRID, model.samplingAlgorithm());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageSweepSettings model =
             new ImageSweepSettings()
                 .withEarlyTermination(

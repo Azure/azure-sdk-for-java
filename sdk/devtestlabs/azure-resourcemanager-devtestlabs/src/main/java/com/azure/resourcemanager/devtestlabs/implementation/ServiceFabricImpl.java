@@ -78,6 +78,10 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceFabricInner innerModel() {
         return this.innerObject;
     }
@@ -184,14 +188,14 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
         return this;
     }
 
-    public ApplicableSchedule listApplicableSchedules() {
-        return serviceManager.serviceFabrics().listApplicableSchedules(resourceGroupName, labName, username, name);
-    }
-
     public Response<ApplicableSchedule> listApplicableSchedulesWithResponse(Context context) {
         return serviceManager
             .serviceFabrics()
             .listApplicableSchedulesWithResponse(resourceGroupName, labName, username, name, context);
+    }
+
+    public ApplicableSchedule listApplicableSchedules() {
+        return serviceManager.serviceFabrics().listApplicableSchedules(resourceGroupName, labName, username, name);
     }
 
     public void start() {

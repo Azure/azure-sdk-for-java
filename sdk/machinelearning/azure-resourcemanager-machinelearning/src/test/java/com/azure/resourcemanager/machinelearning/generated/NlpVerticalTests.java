@@ -12,11 +12,10 @@ import com.azure.resourcemanager.machinelearning.models.NlpVerticalFeaturization
 import com.azure.resourcemanager.machinelearning.models.NlpVerticalLimitSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NlpVerticalTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NlpVertical model =
             BinaryData
                 .fromString(
@@ -31,8 +30,8 @@ public final class NlpVerticalTests {
         Assertions.assertEquals("majnkd", model.validationData().uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NlpVertical model =
             new NlpVertical()
                 .withFeaturizationSettings(new NlpVerticalFeaturizationSettings().withDatasetLanguage("ubmomsgvvjh"))

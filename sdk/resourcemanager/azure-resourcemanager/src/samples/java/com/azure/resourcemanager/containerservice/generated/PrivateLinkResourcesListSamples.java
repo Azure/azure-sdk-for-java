@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources List. */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/PrivateLinkResourcesList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: List Private Link Resources by Managed Cluster.
@@ -22,6 +20,6 @@ public final class PrivateLinkResourcesListSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkResources()
-            .listWithResponse("rg1", "clustername1", Context.NONE);
+            .listWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

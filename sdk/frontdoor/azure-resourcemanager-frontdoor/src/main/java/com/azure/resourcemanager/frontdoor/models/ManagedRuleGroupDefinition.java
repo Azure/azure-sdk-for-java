@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a managed rule group. */
 @Immutable
 public final class ManagedRuleGroupDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleGroupDefinition.class);
-
     /*
      * Name of the managed rule group.
      */
@@ -32,6 +28,10 @@ public final class ManagedRuleGroupDefinition {
      */
     @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleDefinition> rules;
+
+    /** Creates an instance of ManagedRuleGroupDefinition class. */
+    public ManagedRuleGroupDefinition() {
+    }
 
     /**
      * Get the ruleGroupName property: Name of the managed rule group.

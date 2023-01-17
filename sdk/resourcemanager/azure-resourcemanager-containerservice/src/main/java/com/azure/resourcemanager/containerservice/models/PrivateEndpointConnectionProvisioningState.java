@@ -11,8 +11,8 @@ import java.util.Collection;
 /** The current provisioning state. */
 public final class PrivateEndpointConnectionProvisioningState
     extends ExpandableStringEnum<PrivateEndpointConnectionProvisioningState> {
-    /** Static value Succeeded for PrivateEndpointConnectionProvisioningState. */
-    public static final PrivateEndpointConnectionProvisioningState SUCCEEDED = fromString("Succeeded");
+    /** Static value Canceled for PrivateEndpointConnectionProvisioningState. */
+    public static final PrivateEndpointConnectionProvisioningState CANCELED = fromString("Canceled");
 
     /** Static value Creating for PrivateEndpointConnectionProvisioningState. */
     public static final PrivateEndpointConnectionProvisioningState CREATING = fromString("Creating");
@@ -22,6 +22,18 @@ public final class PrivateEndpointConnectionProvisioningState
 
     /** Static value Failed for PrivateEndpointConnectionProvisioningState. */
     public static final PrivateEndpointConnectionProvisioningState FAILED = fromString("Failed");
+
+    /** Static value Succeeded for PrivateEndpointConnectionProvisioningState. */
+    public static final PrivateEndpointConnectionProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /**
+     * Creates a new instance of PrivateEndpointConnectionProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointConnectionProvisioningState() {
+    }
 
     /**
      * Creates or finds a PrivateEndpointConnectionProvisioningState from its string representation.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TagRules Get. */
 public final class TagRulesGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class TagRulesGetSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void tagRulesGet(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.tagRules().getWithResponse("myResourceGroup", "myMonitor", "default", Context.NONE);
+        manager.tagRules().getWithResponse("myResourceGroup", "myMonitor", "default", com.azure.core.util.Context.NONE);
     }
 }

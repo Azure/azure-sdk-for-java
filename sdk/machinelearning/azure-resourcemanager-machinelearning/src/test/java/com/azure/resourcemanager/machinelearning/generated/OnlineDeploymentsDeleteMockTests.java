@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -57,6 +56,8 @@ public final class OnlineDeploymentsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.onlineDeployments().delete("mbhdo", "m", "ngkqlgxzduvxd", "xexatmdmnrs", Context.NONE);
+        manager
+            .onlineDeployments()
+            .delete("mbhdo", "m", "ngkqlgxzduvxd", "xexatmdmnrs", com.azure.core.util.Context.NONE);
     }
 }

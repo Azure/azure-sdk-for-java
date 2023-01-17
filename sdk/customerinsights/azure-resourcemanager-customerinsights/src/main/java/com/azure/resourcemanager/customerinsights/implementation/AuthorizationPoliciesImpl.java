@@ -15,10 +15,9 @@ import com.azure.resourcemanager.customerinsights.fluent.models.AuthorizationPol
 import com.azure.resourcemanager.customerinsights.models.AuthorizationPolicies;
 import com.azure.resourcemanager.customerinsights.models.AuthorizationPolicy;
 import com.azure.resourcemanager.customerinsights.models.AuthorizationPolicyResourceFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationPoliciesImpl.class);
 
     private final AuthorizationPoliciesClient innerClient;
 
@@ -29,17 +28,6 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public AuthorizationPolicyResourceFormat get(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
-        AuthorizationPolicyResourceFormatInner inner =
-            this.serviceClient().get(resourceGroupName, hubName, authorizationPolicyName);
-        if (inner != null) {
-            return new AuthorizationPolicyResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AuthorizationPolicyResourceFormat> getWithResponse(
@@ -57,6 +45,17 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
         }
     }
 
+    public AuthorizationPolicyResourceFormat get(
+        String resourceGroupName, String hubName, String authorizationPolicyName) {
+        AuthorizationPolicyResourceFormatInner inner =
+            this.serviceClient().get(resourceGroupName, hubName, authorizationPolicyName);
+        if (inner != null) {
+            return new AuthorizationPolicyResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<AuthorizationPolicyResourceFormat> listByHub(String resourceGroupName, String hubName) {
         PagedIterable<AuthorizationPolicyResourceFormatInner> inner =
             this.serviceClient().listByHub(resourceGroupName, hubName);
@@ -68,17 +67,6 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
         PagedIterable<AuthorizationPolicyResourceFormatInner> inner =
             this.serviceClient().listByHub(resourceGroupName, hubName, context);
         return Utils.mapPage(inner, inner1 -> new AuthorizationPolicyResourceFormatImpl(inner1, this.manager()));
-    }
-
-    public AuthorizationPolicy regeneratePrimaryKey(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
-        AuthorizationPolicyInner inner =
-            this.serviceClient().regeneratePrimaryKey(resourceGroupName, hubName, authorizationPolicyName);
-        if (inner != null) {
-            return new AuthorizationPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AuthorizationPolicy> regeneratePrimaryKeyWithResponse(
@@ -98,10 +86,10 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
         }
     }
 
-    public AuthorizationPolicy regenerateSecondaryKey(
+    public AuthorizationPolicy regeneratePrimaryKey(
         String resourceGroupName, String hubName, String authorizationPolicyName) {
         AuthorizationPolicyInner inner =
-            this.serviceClient().regenerateSecondaryKey(resourceGroupName, hubName, authorizationPolicyName);
+            this.serviceClient().regeneratePrimaryKey(resourceGroupName, hubName, authorizationPolicyName);
         if (inner != null) {
             return new AuthorizationPolicyImpl(inner, this.manager());
         } else {
@@ -126,10 +114,21 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
         }
     }
 
+    public AuthorizationPolicy regenerateSecondaryKey(
+        String resourceGroupName, String hubName, String authorizationPolicyName) {
+        AuthorizationPolicyInner inner =
+            this.serviceClient().regenerateSecondaryKey(resourceGroupName, hubName, authorizationPolicyName);
+        if (inner != null) {
+            return new AuthorizationPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public AuthorizationPolicyResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,14 +136,14 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String authorizationPolicyName = Utils.getValueFromIdByName(id, "authorizationPolicies");
         if (authorizationPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +157,7 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
     public Response<AuthorizationPolicyResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,14 +165,14 @@ public final class AuthorizationPoliciesImpl implements AuthorizationPolicies {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String authorizationPolicyName = Utils.getValueFromIdByName(id, "authorizationPolicies");
         if (authorizationPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

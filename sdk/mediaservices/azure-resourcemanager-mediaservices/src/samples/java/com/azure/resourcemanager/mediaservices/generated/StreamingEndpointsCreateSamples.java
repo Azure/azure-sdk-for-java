@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for StreamingEndpoints Create. */
 public final class StreamingEndpointsCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streamingendpoint-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/streamingendpoint-create.json
      */
     /**
      * Sample code: Create a streaming endpoint.
@@ -43,11 +43,11 @@ public final class StreamingEndpointsCreateSamples {
                                     .asList(
                                         new AkamaiSignatureHeaderAuthenticationKey()
                                             .withIdentifier("id1")
-                                            .withBase64Key("dGVzdGlkMQ==")
+                                            .withBase64Key("fakeTokenPlaceholder")
                                             .withExpiration(OffsetDateTime.parse("2029-12-31T16:00:00-08:00")),
                                         new AkamaiSignatureHeaderAuthenticationKey()
                                             .withIdentifier("id2")
-                                            .withBase64Key("dGVzdGlkMQ==")
+                                            .withBase64Key("fakeTokenPlaceholder")
                                             .withExpiration(OffsetDateTime.parse("2030-12-31T16:00:00-08:00")))))
                     .withIp(
                         new IpAccessControl()

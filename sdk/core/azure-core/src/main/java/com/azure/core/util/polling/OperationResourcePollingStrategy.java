@@ -196,8 +196,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
                     || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
-            } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                    && pollingContext.getData(PollingConstants.LOCATION) != null) {
+            } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
             } else {
                 return Mono.error(new AzureException("Cannot get final result"));

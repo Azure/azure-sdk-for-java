@@ -24,6 +24,9 @@ public class DynamicsAXResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path", required = true)
     private Object path;
 
+    /** Creates an instance of DynamicsAXResourceDataset class. */
+    public DynamicsAXResourceDataset() {}
+
     /**
      * Get the path property: The path of the Dynamics AX OData entity. Type: string (or Expression with resultType
      * string).

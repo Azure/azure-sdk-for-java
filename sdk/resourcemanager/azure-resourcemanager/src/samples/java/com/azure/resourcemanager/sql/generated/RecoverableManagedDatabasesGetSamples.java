@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RecoverableManagedDatabases Get. */
 public final class RecoverableManagedDatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/GetRecoverableManagedDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetRecoverableManagedDatabase.json
      */
     /**
      * Sample code: Gets a recoverable databases by managed instances.

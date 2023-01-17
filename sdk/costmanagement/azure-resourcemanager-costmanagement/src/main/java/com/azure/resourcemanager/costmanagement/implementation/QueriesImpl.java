@@ -14,10 +14,9 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
 import com.azure.resourcemanager.costmanagement.models.Queries;
 import com.azure.resourcemanager.costmanagement.models.QueryDefinition;
 import com.azure.resourcemanager.costmanagement.models.QueryResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QueriesImpl implements Queries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QueriesImpl.class);
 
     private final QueriesClient innerClient;
 
@@ -27,15 +26,6 @@ public final class QueriesImpl implements Queries {
         QueriesClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public QueryResult usage(String scope, QueryDefinition parameters) {
-        QueryResultInner inner = this.serviceClient().usage(scope, parameters);
-        if (inner != null) {
-            return new QueryResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<QueryResult> usageWithResponse(String scope, QueryDefinition parameters, Context context) {
@@ -51,14 +41,8 @@ public final class QueriesImpl implements Queries {
         }
     }
 
-    public QueryResult usageByExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters) {
-        QueryResultInner inner =
-            this
-                .serviceClient()
-                .usageByExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, parameters);
+    public QueryResult usage(String scope, QueryDefinition parameters) {
+        QueryResultInner inner = this.serviceClient().usage(scope, parameters);
         if (inner != null) {
             return new QueryResultImpl(inner, this.manager());
         } else {
@@ -82,6 +66,21 @@ public final class QueriesImpl implements Queries {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new QueryResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QueryResult usageByExternalCloudProviderType(
+        ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId,
+        QueryDefinition parameters) {
+        QueryResultInner inner =
+            this
+                .serviceClient()
+                .usageByExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, parameters);
+        if (inner != null) {
+            return new QueryResultImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 agreement acknowledgement settings. */
 @Fluent
 public final class X12AcknowledgementSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12AcknowledgementSettings.class);
-
     /*
      * The value indicating whether technical acknowledgement is needed.
      */
@@ -103,6 +99,10 @@ public final class X12AcknowledgementSettings {
      */
     @JsonProperty(value = "rolloverAcknowledgementControlNumber", required = true)
     private boolean rolloverAcknowledgementControlNumber;
+
+    /** Creates an instance of X12AcknowledgementSettings class. */
+    public X12AcknowledgementSettings() {
+    }
 
     /**
      * Get the needTechnicalAcknowledgement property: The value indicating whether technical acknowledgement is needed.

@@ -24,11 +24,10 @@ import com.azure.resourcemanager.machinelearning.models.ValidationMetricType;
 import java.time.Duration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageInstanceSegmentationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageInstanceSegmentation model =
             BinaryData
                 .fromString(
@@ -140,8 +139,8 @@ public final class ImageInstanceSegmentationTests {
         Assertions.assertEquals(82.02510999731906D, model.validationDataSize());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageInstanceSegmentation model =
             new ImageInstanceSegmentation()
                 .withLogVerbosity(LogVerbosity.NOT_SET)

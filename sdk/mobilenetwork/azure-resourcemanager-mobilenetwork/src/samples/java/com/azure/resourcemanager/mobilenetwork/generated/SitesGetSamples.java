@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Sites Get. */
 public final class SitesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SiteGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SiteGet.json
      */
     /**
      * Sample code: Get mobile network site.
@@ -17,6 +15,6 @@ public final class SitesGetSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sites().getWithResponse("rg1", "testMobileNetwork", "testSite", Context.NONE);
+        manager.sites().getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE);
     }
 }

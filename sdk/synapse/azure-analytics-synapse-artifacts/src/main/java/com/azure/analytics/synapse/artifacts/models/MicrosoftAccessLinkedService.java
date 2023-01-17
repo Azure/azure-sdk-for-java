@@ -57,6 +57,9 @@ public class MicrosoftAccessLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MicrosoftAccessLinkedService class. */
+    public MicrosoftAccessLinkedService() {}
+
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
      * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.

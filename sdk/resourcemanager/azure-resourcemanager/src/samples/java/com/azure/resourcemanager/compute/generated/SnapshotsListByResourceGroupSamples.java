@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots ListByResourceGroup. */
 public final class SnapshotsListByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class SnapshotsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .listByResourceGroup("myResourceGroup", Context.NONE);
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

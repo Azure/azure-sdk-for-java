@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.models.ImageDefinitionI
 import com.azure.resourcemanager.customerinsights.models.GetImageUploadUrlInput;
 import com.azure.resourcemanager.customerinsights.models.ImageDefinition;
 import com.azure.resourcemanager.customerinsights.models.Images;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ImagesImpl implements Images {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ImagesImpl.class);
 
     private final ImagesClient innerClient;
 
@@ -26,17 +25,6 @@ public final class ImagesImpl implements Images {
         ImagesClient innerClient, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ImageDefinition getUploadUrlForEntityType(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters) {
-        ImageDefinitionInner inner =
-            this.serviceClient().getUploadUrlForEntityType(resourceGroupName, hubName, parameters);
-        if (inner != null) {
-            return new ImageDefinitionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ImageDefinition> getUploadUrlForEntityTypeWithResponse(
@@ -54,9 +42,10 @@ public final class ImagesImpl implements Images {
         }
     }
 
-    public ImageDefinition getUploadUrlForData(
+    public ImageDefinition getUploadUrlForEntityType(
         String resourceGroupName, String hubName, GetImageUploadUrlInput parameters) {
-        ImageDefinitionInner inner = this.serviceClient().getUploadUrlForData(resourceGroupName, hubName, parameters);
+        ImageDefinitionInner inner =
+            this.serviceClient().getUploadUrlForEntityType(resourceGroupName, hubName, parameters);
         if (inner != null) {
             return new ImageDefinitionImpl(inner, this.manager());
         } else {
@@ -74,6 +63,16 @@ public final class ImagesImpl implements Images {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ImageDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ImageDefinition getUploadUrlForData(
+        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters) {
+        ImageDefinitionInner inner = this.serviceClient().getUploadUrlForData(resourceGroupName, hubName, parameters);
+        if (inner != null) {
+            return new ImageDefinitionImpl(inner, this.manager());
         } else {
             return null;
         }

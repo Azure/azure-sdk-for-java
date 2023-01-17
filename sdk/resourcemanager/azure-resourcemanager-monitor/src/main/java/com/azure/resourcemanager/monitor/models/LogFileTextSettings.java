@@ -17,6 +17,10 @@ public class LogFileTextSettings {
     @JsonProperty(value = "recordStartTimestampFormat", required = true)
     private KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat;
 
+    /** Creates an instance of LogFileTextSettings class. */
+    public LogFileTextSettings() {
+    }
+
     /**
      * Get the recordStartTimestampFormat property: One of the supported timestamp formats.
      *

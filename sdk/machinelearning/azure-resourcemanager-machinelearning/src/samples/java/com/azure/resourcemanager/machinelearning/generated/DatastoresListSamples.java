@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import java.util.Arrays;
 
 /** Samples for Datastores List. */
@@ -30,6 +29,6 @@ public final class DatastoresListSamples {
                 "string",
                 "string",
                 false,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

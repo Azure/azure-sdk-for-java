@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Database specific information for SQL to Azure SQL DB migration task inputs. */
 @Fluent
 public final class MigrateSqlServerSqlDbDatabaseInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbDatabaseInput.class);
-
     /*
      * Name of the database
      */
@@ -22,8 +19,7 @@ public final class MigrateSqlServerSqlDbDatabaseInput {
     private String name;
 
     /*
-     * Name of target database. Note: Target database will be truncated before
-     * starting migration.
+     * Name of target database. Note: Target database will be truncated before starting migration.
      */
     @JsonProperty(value = "targetDatabaseName")
     private String targetDatabaseName;
@@ -38,7 +34,12 @@ public final class MigrateSqlServerSqlDbDatabaseInput {
      * Mapping of source to target tables
      */
     @JsonProperty(value = "tableMap")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tableMap;
+
+    /** Creates an instance of MigrateSqlServerSqlDbDatabaseInput class. */
+    public MigrateSqlServerSqlDbDatabaseInput() {
+    }
 
     /**
      * Get the name property: Name of the database.

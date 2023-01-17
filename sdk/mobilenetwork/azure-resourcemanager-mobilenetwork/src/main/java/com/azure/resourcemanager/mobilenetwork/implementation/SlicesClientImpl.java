@@ -64,7 +64,7 @@ public final class SlicesClientImpl implements SlicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface SlicesService {
+    public interface SlicesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -322,7 +322,7 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String sliceName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName).getSyncPoller();
     }
 
     /**
@@ -340,7 +340,7 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName, context).getSyncPoller();
     }
 
     /**
@@ -543,22 +543,6 @@ public final class SlicesClientImpl implements SlicesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network slice.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SliceInner get(String resourceGroupName, String mobileNetworkName, String sliceName) {
-        return getAsync(resourceGroupName, mobileNetworkName, sliceName).block();
-    }
-
-    /**
-     * Gets information about the specified network slice.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the network slice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -572,7 +556,23 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Gets information about the specified network slice.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param sliceName The name of the network slice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified network slice.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SliceInner get(String resourceGroupName, String mobileNetworkName, String sliceName) {
+        return getWithResponse(resourceGroupName, mobileNetworkName, sliceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -633,7 +633,7 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -692,7 +692,7 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -715,7 +715,7 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -740,7 +740,7 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -754,11 +754,13 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters)
+            .getSyncPoller();
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -773,12 +775,13 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -798,7 +801,7 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -819,7 +822,7 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -837,7 +840,7 @@ public final class SlicesClientImpl implements SlicesClient {
     }
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1001,24 +1004,6 @@ public final class SlicesClientImpl implements SlicesClient {
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
      * @param parameters Parameters supplied to update network slice tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network slice resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SliceInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, mobileNetworkName, sliceName, parameters).block();
-    }
-
-    /**
-     * Updates slice tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the network slice.
-     * @param parameters Parameters supplied to update network slice tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1030,6 +1015,25 @@ public final class SlicesClientImpl implements SlicesClient {
         String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
             .block();
+    }
+
+    /**
+     * Updates slice tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param sliceName The name of the network slice.
+     * @param parameters Parameters supplied to update network slice tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network slice resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SliceInner updateTags(
+        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1219,7 +1223,8 @@ public final class SlicesClientImpl implements SlicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1256,7 +1261,8 @@ public final class SlicesClientImpl implements SlicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

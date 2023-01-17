@@ -20,6 +20,15 @@ public final class UseStl extends ExpandableStringEnum<UseStl> {
     public static final UseStl SEASON_TREND = fromString("SeasonTrend");
 
     /**
+     * Creates a new instance of UseStl value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UseStl() {
+    }
+
+    /**
      * Creates or finds a UseStl from its string representation.
      *
      * @param name a name to look for.

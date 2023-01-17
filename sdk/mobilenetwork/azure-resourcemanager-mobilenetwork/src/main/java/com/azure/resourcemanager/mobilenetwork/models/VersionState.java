@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VersionState. */
+/** The state of this packet core control plane version. */
 public final class VersionState extends ExpandableStringEnum<VersionState> {
     /** Static value Unknown for VersionState. */
     public static final VersionState UNKNOWN = fromString("Unknown");
@@ -27,6 +27,15 @@ public final class VersionState extends ExpandableStringEnum<VersionState> {
 
     /** Static value Deprecated for VersionState. */
     public static final VersionState DEPRECATED = fromString("Deprecated");
+
+    /**
+     * Creates a new instance of VersionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VersionState() {
+    }
 
     /**
      * Creates or finds a VersionState from its string representation.

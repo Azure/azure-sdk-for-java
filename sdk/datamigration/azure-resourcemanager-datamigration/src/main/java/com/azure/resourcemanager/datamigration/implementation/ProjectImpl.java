@@ -89,6 +89,10 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return groupName;
+    }
+
     public ProjectInner innerModel() {
         return this.innerObject;
     }

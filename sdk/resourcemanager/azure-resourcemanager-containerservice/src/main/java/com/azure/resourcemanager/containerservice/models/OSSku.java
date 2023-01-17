@@ -26,6 +26,15 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku WINDOWS2022 = fromString("Windows2022");
 
     /**
+     * Creates a new instance of OSSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OSSku() {
+    }
+
+    /**
      * Creates or finds a OSSku from its string representation.
      *
      * @param name a name to look for.

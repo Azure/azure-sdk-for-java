@@ -49,7 +49,7 @@ public final class CallConnectionState extends ExpandableStringEnum<CallConnecti
     /**
      * Private constructor
      */
-    private CallConnectionState() {
+    public CallConnectionState() {
 
     }
 }

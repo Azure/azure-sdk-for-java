@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRouteCrossConnections ListArpTable. */
 public final class ExpressRouteCrossConnectionsListArpTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCrossConnectionsArpTable.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteCrossConnectionsArpTable.json
      */
     /**
      * Sample code: GetExpressRouteCrossConnectionsArpTable.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of sqlManagedInstance. */
 @Fluent
 public final class SqlManagedInstanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceProperties.class);
-
     /*
      * null
      */
@@ -52,8 +48,7 @@ public final class SqlManagedInstanceProperties {
     private BasicLoginInformation basicLoginInformation;
 
     /*
-     * Last uploaded date from Kubernetes cluster. Defaults to current date
-     * time
+     * Last uploaded date from Kubernetes cluster. Defaults to current date time
      */
     @JsonProperty(value = "lastUploadedDate")
     private OffsetDateTime lastUploadedDate;
@@ -71,18 +66,21 @@ public final class SqlManagedInstanceProperties {
     private ArcSqlManagedInstanceLicenseType licenseType;
 
     /*
-     * If a CustomLocation is provided, this contains the ARM id of the
-     * connected cluster the custom location belongs to.
+     * If a CustomLocation is provided, this contains the ARM id of the connected cluster the custom location belongs
+     * to.
      */
     @JsonProperty(value = "clusterId")
     private String clusterId;
 
     /*
-     * If a CustomLocation is provided, this contains the ARM id of the
-     * extension the custom location belongs to.
+     * If a CustomLocation is provided, this contains the ARM id of the extension the custom location belongs to.
      */
     @JsonProperty(value = "extensionId")
     private String extensionId;
+
+    /** Creates an instance of SqlManagedInstanceProperties class. */
+    public SqlManagedInstanceProperties() {
+    }
 
     /**
      * Get the dataControllerId property: null.

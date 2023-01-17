@@ -30,6 +30,9 @@ public class PrivateEndpointConnection extends ProxyResource {
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of PrivateEndpointConnection class. */
+    public PrivateEndpointConnection() {}
+
     /**
      * Get the privateEndpoint property: The private endpoint which the connection belongs to.
      *

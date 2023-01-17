@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.ComputeResource;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettings;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettingsInformation;
@@ -23,7 +22,10 @@ public final class ComputeUpdateSamples {
     public static void updateAAmlComputeCompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         ComputeResource resource =
-            manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE).getValue();
+            manager
+                .computes()
+                .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withProperties(

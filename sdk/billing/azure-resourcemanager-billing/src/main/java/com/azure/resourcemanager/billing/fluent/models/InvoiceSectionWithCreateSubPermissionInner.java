@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.BillingProfileStatus;
 import com.azure.resourcemanager.billing.models.SpendingLimitForBillingProfile;
 import com.azure.resourcemanager.billing.models.StatusReasonCodeForBillingProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Invoice section properties with create subscription permission. */
 @Fluent
 public final class InvoiceSectionWithCreateSubPermissionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionWithCreateSubPermissionInner.class);
-
     /*
      * The ID of the invoice section.
      */
@@ -78,6 +74,10 @@ public final class InvoiceSectionWithCreateSubPermissionInner {
      */
     @JsonProperty(value = "enabledAzurePlans")
     private List<AzurePlan> enabledAzurePlans;
+
+    /** Creates an instance of InvoiceSectionWithCreateSubPermissionInner class. */
+    public InvoiceSectionWithCreateSubPermissionInner() {
+    }
 
     /**
      * Get the invoiceSectionId property: The ID of the invoice section.

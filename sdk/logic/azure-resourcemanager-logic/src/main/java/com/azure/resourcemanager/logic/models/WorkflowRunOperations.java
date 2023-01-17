@@ -16,12 +16,14 @@ public interface WorkflowRunOperations {
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
      * @param operationId The workflow operation id.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an operation for a run.
+     * @return an operation for a run along with {@link Response}.
      */
-    WorkflowRun get(String resourceGroupName, String workflowName, String runName, String operationId);
+    Response<WorkflowRun> getWithResponse(
+        String resourceGroupName, String workflowName, String runName, String operationId, Context context);
 
     /**
      * Gets an operation for a run.
@@ -30,12 +32,10 @@ public interface WorkflowRunOperations {
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
      * @param operationId The workflow operation id.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation for a run.
      */
-    Response<WorkflowRun> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context);
+    WorkflowRun get(String resourceGroupName, String workflowName, String runName, String operationId);
 }

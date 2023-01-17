@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datadog.fluent.MonitorsClient;
@@ -53,8 +52,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MonitorsClient. */
 public final class MonitorsClientImpl implements MonitorsClient {
-    private final ClientLogger logger = new ClientLogger(MonitorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final MonitorsService service;
 
@@ -77,7 +74,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftDatadogClie")
-    private interface MonitorsService {
+    public interface MonitorsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors"
@@ -338,7 +335,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogApiKeyInner>> listApiKeysSinglePageAsync(
@@ -396,7 +393,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogApiKeyInner>> listApiKeysSinglePageAsync(
@@ -450,7 +447,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogApiKeyInner> listApiKeysAsync(String resourceGroupName, String monitorName) {
@@ -468,7 +465,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogApiKeyInner> listApiKeysAsync(
@@ -486,7 +483,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogApiKeyInner> listApiKeys(String resourceGroupName, String monitorName) {
@@ -502,7 +499,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogApiKeyInner> listApiKeys(
@@ -518,7 +515,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default api key.
+     * @return the default api key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogApiKeyInner>> getDefaultKeyWithResponseAsync(
@@ -567,7 +564,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default api key.
+     * @return the default api key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogApiKeyInner>> getDefaultKeyWithResponseAsync(
@@ -612,19 +609,29 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default api key.
+     * @return the default api key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogApiKeyInner> getDefaultKeyAsync(String resourceGroupName, String monitorName) {
         return getDefaultKeyWithResponseAsync(resourceGroupName, monitorName)
-            .flatMap(
-                (Response<DatadogApiKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the default api key.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default api key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatadogApiKeyInner> getDefaultKeyWithResponse(
+        String resourceGroupName, String monitorName, Context context) {
+        return getDefaultKeyWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
@@ -639,24 +646,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogApiKeyInner getDefaultKey(String resourceGroupName, String monitorName) {
-        return getDefaultKeyAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * Get the default api key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default api key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatadogApiKeyInner> getDefaultKeyWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        return getDefaultKeyWithResponseAsync(resourceGroupName, monitorName, context).block();
+        return getDefaultKeyWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     /**
@@ -668,7 +658,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> setDefaultKeyWithResponseAsync(
@@ -722,7 +712,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> setDefaultKeyWithResponseAsync(
@@ -768,16 +758,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> setDefaultKeyAsync(String resourceGroupName, String monitorName, DatadogApiKeyInner body) {
-        return setDefaultKeyWithResponseAsync(resourceGroupName, monitorName, body)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    private Mono<Void> setDefaultKeyAsync(String resourceGroupName, String monitorName) {
+        final DatadogApiKeyInner body = null;
+        return setDefaultKeyWithResponseAsync(resourceGroupName, monitorName, body).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -785,16 +774,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> setDefaultKeyAsync(String resourceGroupName, String monitorName) {
-        final DatadogApiKeyInner body = null;
-        return setDefaultKeyWithResponseAsync(resourceGroupName, monitorName, body)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    public Response<Void> setDefaultKeyWithResponse(
+        String resourceGroupName, String monitorName, DatadogApiKeyInner body, Context context) {
+        return setDefaultKeyWithResponseAsync(resourceGroupName, monitorName, body, context).block();
     }
 
     /**
@@ -809,25 +799,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setDefaultKey(String resourceGroupName, String monitorName) {
         final DatadogApiKeyInner body = null;
-        setDefaultKeyAsync(resourceGroupName, monitorName, body).block();
-    }
-
-    /**
-     * Set the default api key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setDefaultKeyWithResponse(
-        String resourceGroupName, String monitorName, DatadogApiKeyInner body, Context context) {
-        return setDefaultKeyWithResponseAsync(resourceGroupName, monitorName, body, context).block();
+        setDefaultKeyWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -838,7 +810,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogHostInner>> listHostsSinglePageAsync(
@@ -896,7 +868,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogHostInner>> listHostsSinglePageAsync(
@@ -950,7 +922,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogHostInner> listHostsAsync(String resourceGroupName, String monitorName) {
@@ -968,7 +940,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogHostInner> listHostsAsync(String resourceGroupName, String monitorName, Context context) {
@@ -985,7 +957,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogHostInner> listHosts(String resourceGroupName, String monitorName) {
@@ -1001,7 +973,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogHostInner> listHosts(String resourceGroupName, String monitorName, Context context) {
@@ -1016,7 +988,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkedResourceInner>> listLinkedResourcesSinglePageAsync(
@@ -1074,7 +1046,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkedResourceInner>> listLinkedResourcesSinglePageAsync(
@@ -1128,7 +1100,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LinkedResourceInner> listLinkedResourcesAsync(String resourceGroupName, String monitorName) {
@@ -1146,7 +1118,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LinkedResourceInner> listLinkedResourcesAsync(
@@ -1164,7 +1136,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedResourceInner> listLinkedResources(String resourceGroupName, String monitorName) {
@@ -1180,7 +1152,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedResourceInner> listLinkedResources(
@@ -1196,7 +1168,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(
@@ -1254,7 +1226,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(
@@ -1308,7 +1280,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(
@@ -1327,7 +1299,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(
@@ -1345,7 +1317,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName) {
@@ -1361,7 +1333,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(
@@ -1374,7 +1346,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listSinglePageAsync() {
@@ -1420,7 +1392,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listSinglePageAsync(Context context) {
@@ -1461,7 +1433,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogMonitorResourceInner> listAsync() {
@@ -1475,7 +1447,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogMonitorResourceInner> listAsync(Context context) {
@@ -1488,7 +1460,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> list() {
@@ -1502,7 +1474,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> list(Context context) {
@@ -1516,7 +1488,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listByResourceGroupSinglePageAsync(
@@ -1569,7 +1541,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listByResourceGroupSinglePageAsync(
@@ -1618,7 +1590,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogMonitorResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1635,7 +1607,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogMonitorResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1651,7 +1623,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -1666,7 +1638,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogMonitorResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1681,7 +1653,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogMonitorResourceInner>> getByResourceGroupWithResponseAsync(
@@ -1730,7 +1703,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogMonitorResourceInner>> getByResourceGroupWithResponseAsync(
@@ -1775,19 +1749,29 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> getByResourceGroupAsync(String resourceGroupName, String monitorName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, monitorName)
-            .flatMap(
-                (Response<DatadogMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the properties of a specific monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a specific monitor resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatadogMonitorResourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String monitorName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
@@ -1802,24 +1786,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName) {
-        return getByResourceGroupAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * Get the properties of a specific monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatadogMonitorResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, monitorName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     /**
@@ -1831,7 +1798,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -1885,7 +1852,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -1935,9 +1902,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginCreateAsync(
         String resourceGroupName, String monitorName, DatadogMonitorResourceInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, monitorName, body);
@@ -1948,7 +1915,32 @@ public final class MonitorsClientImpl implements MonitorsClient {
                 this.client.getHttpPipeline(),
                 DatadogMonitorResourceInner.class,
                 DatadogMonitorResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
+    }
+
+    /**
+     * Create a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginCreateAsync(
+        String resourceGroupName, String monitorName) {
+        final DatadogMonitorResourceInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, monitorName, body);
+        return this
+            .client
+            .<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DatadogMonitorResourceInner.class,
+                DatadogMonitorResourceInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1961,9 +1953,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginCreateAsync(
         String resourceGroupName, String monitorName, DatadogMonitorResourceInner body, Context context) {
         context = this.client.mergeContext(context);
@@ -1983,16 +1975,16 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginCreate(
-        String resourceGroupName, String monitorName, DatadogMonitorResourceInner body) {
-        return beginCreateAsync(resourceGroupName, monitorName, body).getSyncPoller();
+        String resourceGroupName, String monitorName) {
+        final DatadogMonitorResourceInner body = null;
+        return this.beginCreateAsync(resourceGroupName, monitorName, body).getSyncPoller();
     }
 
     /**
@@ -2005,12 +1997,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginCreate(
         String resourceGroupName, String monitorName, DatadogMonitorResourceInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
     }
 
     /**
@@ -2022,7 +2014,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> createAsync(
@@ -2040,7 +2032,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> createAsync(String resourceGroupName, String monitorName) {
@@ -2060,7 +2052,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> createAsync(
@@ -2068,23 +2060,6 @@ public final class MonitorsClientImpl implements MonitorsClient {
         return beginCreateAsync(resourceGroupName, monitorName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatadogMonitorResourceInner create(
-        String resourceGroupName, String monitorName, DatadogMonitorResourceInner body) {
-        return createAsync(resourceGroupName, monitorName, body).block();
     }
 
     /**
@@ -2130,7 +2105,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2184,7 +2159,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2234,9 +2209,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdateAsync(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, monitorName, body);
@@ -2247,7 +2222,32 @@ public final class MonitorsClientImpl implements MonitorsClient {
                 this.client.getHttpPipeline(),
                 DatadogMonitorResourceInner.class,
                 DatadogMonitorResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
+    }
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdateAsync(
+        String resourceGroupName, String monitorName) {
+        final DatadogMonitorResourceUpdateParameters body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, monitorName, body);
+        return this
+            .client
+            .<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DatadogMonitorResourceInner.class,
+                DatadogMonitorResourceInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2260,9 +2260,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdateAsync(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
         context = this.client.mergeContext(context);
@@ -2282,16 +2282,16 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
-        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
-        return beginUpdateAsync(resourceGroupName, monitorName, body).getSyncPoller();
+        String resourceGroupName, String monitorName) {
+        final DatadogMonitorResourceUpdateParameters body = null;
+        return this.beginUpdateAsync(resourceGroupName, monitorName, body).getSyncPoller();
     }
 
     /**
@@ -2304,12 +2304,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context) {
-        return beginUpdateAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
     }
 
     /**
@@ -2321,7 +2321,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> updateAsync(
@@ -2339,7 +2339,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> updateAsync(String resourceGroupName, String monitorName) {
@@ -2359,7 +2359,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogMonitorResourceInner> updateAsync(
@@ -2367,23 +2367,6 @@ public final class MonitorsClientImpl implements MonitorsClient {
         return beginUpdateAsync(resourceGroupName, monitorName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatadogMonitorResourceInner update(
-        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body) {
-        return updateAsync(resourceGroupName, monitorName, body).block();
     }
 
     /**
@@ -2428,7 +2411,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName) {
@@ -2476,7 +2459,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -2521,14 +2504,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2540,9 +2524,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String monitorName, Context context) {
         context = this.client.mergeContext(context);
@@ -2560,11 +2544,11 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName) {
-        return beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
     }
 
     /**
@@ -2576,12 +2560,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String monitorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
     }
 
     /**
@@ -2592,7 +2576,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String monitorName) {
@@ -2608,7 +2592,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, Context context) {
@@ -2654,7 +2638,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogSetPasswordLinkInner>> refreshSetPasswordLinkWithResponseAsync(
@@ -2703,7 +2687,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogSetPasswordLinkInner>> refreshSetPasswordLinkWithResponseAsync(
@@ -2748,20 +2732,30 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatadogSetPasswordLinkInner> refreshSetPasswordLinkAsync(
         String resourceGroupName, String monitorName) {
         return refreshSetPasswordLinkWithResponseAsync(resourceGroupName, monitorName)
-            .flatMap(
-                (Response<DatadogSetPasswordLinkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Refresh the set password link and return a latest one.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatadogSetPasswordLinkInner> refreshSetPasswordLinkWithResponse(
+        String resourceGroupName, String monitorName, Context context) {
+        return refreshSetPasswordLinkWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
@@ -2776,34 +2770,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogSetPasswordLinkInner refreshSetPasswordLink(String resourceGroupName, String monitorName) {
-        return refreshSetPasswordLinkAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * Refresh the set password link and return a latest one.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatadogSetPasswordLinkInner> refreshSetPasswordLinkWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        return refreshSetPasswordLinkWithResponseAsync(resourceGroupName, monitorName, context).block();
+        return refreshSetPasswordLinkWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogApiKeyInner>> listApiKeysNextSinglePageAsync(String nextLink) {
@@ -2834,12 +2812,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogApiKeyInner>> listApiKeysNextSinglePageAsync(String nextLink, Context context) {
@@ -2870,11 +2849,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogHostInner>> listHostsNextSinglePageAsync(String nextLink) {
@@ -2905,12 +2885,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogHostInner>> listHostsNextSinglePageAsync(String nextLink, Context context) {
@@ -2941,11 +2922,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkedResourceInner>> listLinkedResourcesNextSinglePageAsync(String nextLink) {
@@ -2977,12 +2959,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkedResourceInner>> listLinkedResourcesNextSinglePageAsync(
@@ -3014,11 +2997,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(String nextLink) {
@@ -3050,12 +3034,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(
@@ -3087,11 +3072,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -3122,12 +3108,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -3158,11 +3145,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -3194,12 +3182,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatadogMonitorResourceInner>> listByResourceGroupNextSinglePageAsync(

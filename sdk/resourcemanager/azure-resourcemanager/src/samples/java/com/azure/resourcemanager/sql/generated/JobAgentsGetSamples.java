@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobAgents Get. */
 public final class JobAgentsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/GetJobAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobAgent.json
      */
     /**
      * Sample code: Get a job agent.

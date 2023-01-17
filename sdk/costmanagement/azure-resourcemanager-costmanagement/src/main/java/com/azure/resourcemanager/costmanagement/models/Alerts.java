@@ -26,12 +26,13 @@ public interface Alerts {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of alerts.
+     * @return result of alerts along with {@link Response}.
      */
-    AlertsResult list(String scope);
+    Response<AlertsResult> listWithResponse(String scope, Context context);
 
     /**
      * Lists the alerts for scope defined.
@@ -50,13 +51,38 @@ public interface Alerts {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of alerts.
      */
-    Response<AlertsResult> listWithResponse(String scope, Context context);
+    AlertsResult list(String scope);
+
+    /**
+     * Gets the alert for the scope by alert ID.
+     *
+     * @param scope The scope associated with alerts operations. This includes '/subscriptions/{subscriptionId}/' for
+     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
+     *     scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
+     *     for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+     *     Management Group scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     *     billingProfile scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+     *     for invoiceSection scope, and
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
+     *     partners.
+     * @param alertId Alert ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the alert for the scope by alert ID along with {@link Response}.
+     */
+    Response<Alert> getWithResponse(String scope, String alertId, Context context);
 
     /**
      * Gets the alert for the scope by alert ID.
@@ -84,7 +110,7 @@ public interface Alerts {
     Alert get(String scope, String alertId);
 
     /**
-     * Gets the alert for the scope by alert ID.
+     * Dismisses the specified alert.
      *
      * @param scope The scope associated with alerts operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -101,13 +127,14 @@ public interface Alerts {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param alertId Alert ID.
+     * @param parameters Parameters supplied to the Dismiss Alert operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the alert for the scope by alert ID.
+     * @return an individual alert along with {@link Response}.
      */
-    Response<Alert> getWithResponse(String scope, String alertId, Context context);
+    Response<Alert> dismissWithResponse(String scope, String alertId, DismissAlertPayload parameters, Context context);
 
     /**
      * Dismisses the specified alert.
@@ -136,31 +163,21 @@ public interface Alerts {
     Alert dismiss(String scope, String alertId, DismissAlertPayload parameters);
 
     /**
-     * Dismisses the specified alert.
+     * Lists the Alerts for external cloud provider type defined.
      *
-     * @param scope The scope associated with alerts operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     *     for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-     *     Management Group scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billingProfile scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-     *     for invoiceSection scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
-     * @param alertId Alert ID.
-     * @param parameters Parameters supplied to the Dismiss Alert operation.
+     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
+     *     This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated
+     *     account.
+     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
+     *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an individual alert.
+     * @return result of alerts along with {@link Response}.
      */
-    Response<Alert> dismissWithResponse(String scope, String alertId, DismissAlertPayload parameters, Context context);
+    Response<AlertsResult> listExternalWithResponse(
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, Context context);
 
     /**
      * Lists the Alerts for external cloud provider type defined.
@@ -176,21 +193,4 @@ public interface Alerts {
      * @return result of alerts.
      */
     AlertsResult listExternal(ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId);
-
-    /**
-     * Lists the Alerts for external cloud provider type defined.
-     *
-     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
-     *     This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated
-     *     account.
-     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
-     *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of alerts.
-     */
-    Response<AlertsResult> listExternalWithResponse(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, Context context);
 }

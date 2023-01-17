@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of invoice sections. */
 @Immutable
 public final class InvoiceSectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionListResult.class);
-
     /*
      * The list of invoice sections.
      */
@@ -33,6 +29,10 @@ public final class InvoiceSectionListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of InvoiceSectionListResult class. */
+    public InvoiceSectionListResult() {
+    }
 
     /**
      * Get the value property: The list of invoice sections.

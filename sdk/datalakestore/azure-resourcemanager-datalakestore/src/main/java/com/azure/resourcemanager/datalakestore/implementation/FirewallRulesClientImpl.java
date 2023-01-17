@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakestore.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.datalakestore.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.datalakestore.models.CreateOrUpdateFirewallRuleParameters;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
 public final class FirewallRulesClientImpl implements FirewallRulesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallRulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FirewallRulesService service;
 
@@ -64,7 +61,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataLakeStoreAccount")
-    private interface FirewallRulesService {
+    public interface FirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
@@ -164,7 +161,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByAccountSinglePageAsync(
@@ -222,7 +220,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByAccountSinglePageAsync(
@@ -276,7 +275,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FirewallRuleInner> listByAccountAsync(String resourceGroupName, String accountName) {
@@ -294,7 +293,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FirewallRuleInner> listByAccountAsync(
@@ -312,7 +311,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByAccount(String resourceGroupName, String accountName) {
@@ -328,7 +327,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByAccount(
@@ -347,7 +346,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
+     * @return data Lake Store firewall rule information along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> createOrUpdateWithResponseAsync(
@@ -413,7 +413,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
+     * @return data Lake Store firewall rule information along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> createOrUpdateWithResponseAsync(
@@ -476,7 +477,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
+     * @return data Lake Store firewall rule information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallRuleInner> createOrUpdateAsync(
@@ -485,14 +486,32 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         String firewallRuleName,
         CreateOrUpdateFirewallRuleParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters)
-            .flatMap(
-                (Response<FirewallRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
+     * replaced with this new firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param firewallRuleName The name of the firewall rule to create or update.
+     * @param parameters Parameters supplied to create or update the firewall rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Store firewall rule information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FirewallRuleInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String firewallRuleName,
+        CreateOrUpdateFirewallRuleParameters parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters, context)
+            .block();
     }
 
     /**
@@ -514,32 +533,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         String accountName,
         String firewallRuleName,
         CreateOrUpdateFirewallRuleParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, accountName, firewallRuleName, parameters).block();
-    }
-
-    /**
-     * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
-     * replaced with this new firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param firewallRuleName The name of the firewall rule to create or update.
-     * @param parameters Parameters supplied to create or update the firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        CreateOrUpdateFirewallRuleParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, accountName, firewallRuleName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -551,7 +546,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store firewall rule.
+     * @return the specified Data Lake Store firewall rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
@@ -606,7 +602,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store firewall rule.
+     * @return the specified Data Lake Store firewall rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
@@ -657,19 +654,30 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store firewall rule.
+     * @return the specified Data Lake Store firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallRuleInner> getAsync(String resourceGroupName, String accountName, String firewallRuleName) {
         return getWithResponseAsync(resourceGroupName, accountName, firewallRuleName)
-            .flatMap(
-                (Response<FirewallRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified Data Lake Store firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param firewallRuleName The name of the firewall rule to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Data Lake Store firewall rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FirewallRuleInner> getWithResponse(
+        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, firewallRuleName, context).block();
     }
 
     /**
@@ -685,25 +693,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner get(String resourceGroupName, String accountName, String firewallRuleName) {
-        return getAsync(resourceGroupName, accountName, firewallRuleName).block();
-    }
-
-    /**
-     * Gets the specified Data Lake Store firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param firewallRuleName The name of the firewall rule to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store firewall rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, firewallRuleName, context).block();
+        return getWithResponse(resourceGroupName, accountName, firewallRuleName, Context.NONE).getValue();
     }
 
     /**
@@ -716,7 +706,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
+     * @return data Lake Store firewall rule information along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> updateWithResponseAsync(
@@ -779,7 +770,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
+     * @return data Lake Store firewall rule information along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> updateWithResponseAsync(
@@ -835,27 +827,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to update.
-     * @param parameters Parameters supplied to update the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
+     * @return data Lake Store firewall rule information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FirewallRuleInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        UpdateFirewallRuleParameters parameters) {
+    private Mono<FirewallRuleInner> updateAsync(String resourceGroupName, String accountName, String firewallRuleName) {
+        final UpdateFirewallRuleParameters parameters = null;
         return updateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters)
-            .flatMap(
-                (Response<FirewallRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -864,23 +845,21 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to update.
+     * @param parameters Parameters supplied to update the firewall rule.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
+     * @return data Lake Store firewall rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FirewallRuleInner> updateAsync(String resourceGroupName, String accountName, String firewallRuleName) {
-        final UpdateFirewallRuleParameters parameters = null;
-        return updateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters)
-            .flatMap(
-                (Response<FirewallRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<FirewallRuleInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String firewallRuleName,
+        UpdateFirewallRuleParameters parameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters, context).block();
     }
 
     /**
@@ -897,30 +876,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner update(String resourceGroupName, String accountName, String firewallRuleName) {
         final UpdateFirewallRuleParameters parameters = null;
-        return updateAsync(resourceGroupName, accountName, firewallRuleName, parameters).block();
-    }
-
-    /**
-     * Updates the specified firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param firewallRuleName The name of the firewall rule to update.
-     * @param parameters Parameters supplied to update the firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        UpdateFirewallRuleParameters parameters,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, firewallRuleName, parameters, context).block();
+        return updateWithResponse(resourceGroupName, accountName, firewallRuleName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -932,7 +889,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -985,7 +942,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1034,12 +991,30 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String firewallRuleName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, firewallRuleName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the specified firewall rule from the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param firewallRuleName The name of the firewall rule to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, firewallRuleName, context).block();
     }
 
     /**
@@ -1054,35 +1029,19 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String firewallRuleName) {
-        deleteAsync(resourceGroupName, accountName, firewallRuleName).block();
-    }
-
-    /**
-     * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param firewallRuleName The name of the firewall rule to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, firewallRuleName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, firewallRuleName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -1113,12 +1072,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByAccountNextSinglePageAsync(String nextLink, Context context) {

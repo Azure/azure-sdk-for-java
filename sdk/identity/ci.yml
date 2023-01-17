@@ -34,6 +34,14 @@ parameters:
   displayName: 'Release depends on live tests'
   type: boolean
   default: true
+- name: release_azureidentity
+  displayName: 'azure-identity'
+  type: boolean
+  default: true
+- name: release_azureidentityextensions
+  displayName: 'azure-identity-extensions'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -45,6 +53,11 @@ extends:
       - name: azure-identity
         groupId: com.azure
         safeName: azureidentity
+        releaseInBatch: ${{ parameters.release_azureidentity }}
+      - name: azure-identity-extensions
+        groupId: com.azure
+        safeName: azureidentityextensions
+        releaseInBatch: ${{ parameters.release_azureidentityextensions }}
     AdditionalModules:
       - name: azure-identity-perf
         groupId: com.azure

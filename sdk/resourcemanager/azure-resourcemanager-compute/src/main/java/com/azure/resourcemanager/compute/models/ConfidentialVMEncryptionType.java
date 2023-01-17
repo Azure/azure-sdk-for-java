@@ -21,6 +21,15 @@ public final class ConfidentialVMEncryptionType extends ExpandableStringEnum<Con
     public static final ConfidentialVMEncryptionType ENCRYPTED_WITH_CMK = fromString("EncryptedWithCmk");
 
     /**
+     * Creates a new instance of ConfidentialVMEncryptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfidentialVMEncryptionType() {
+    }
+
+    /**
      * Creates or finds a ConfidentialVMEncryptionType from its string representation.
      *
      * @param name a name to look for.

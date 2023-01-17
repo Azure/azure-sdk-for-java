@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecommendedVersion. */
+/** Indicates whether this is the recommended version to use for new packet core control plane deployments. */
 public final class RecommendedVersion extends ExpandableStringEnum<RecommendedVersion> {
     /** Static value Recommended for RecommendedVersion. */
     public static final RecommendedVersion RECOMMENDED = fromString("Recommended");
 
     /** Static value NotRecommended for RecommendedVersion. */
     public static final RecommendedVersion NOT_RECOMMENDED = fromString("NotRecommended");
+
+    /**
+     * Creates a new instance of RecommendedVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendedVersion() {
+    }
 
     /**
      * Creates or finds a RecommendedVersion from its string representation.

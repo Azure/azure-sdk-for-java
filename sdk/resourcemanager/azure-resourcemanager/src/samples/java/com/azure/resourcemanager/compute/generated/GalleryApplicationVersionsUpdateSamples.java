@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionUpdate;
@@ -62,6 +61,6 @@ public final class GalleryApplicationVersionsUpdateSamples {
                                     .withRemove("del C:\\package ")))
                     .withSafetyProfile(
                         new GalleryApplicationVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

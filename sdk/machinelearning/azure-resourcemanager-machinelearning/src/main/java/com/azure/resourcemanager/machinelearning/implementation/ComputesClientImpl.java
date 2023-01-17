@@ -69,7 +69,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface ComputesService {
+    public interface ComputesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
@@ -822,7 +822,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
     }
 
     /**
@@ -846,7 +846,8 @@ public final class ComputesClientImpl implements ComputesClient {
         String computeName,
         ComputeResourceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1142,7 +1143,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(
         String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
     }
 
     /**
@@ -1166,7 +1167,9 @@ public final class ComputesClientImpl implements ComputesClient {
         String computeName,
         ClusterUpdateParameters parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1463,7 +1466,8 @@ public final class ComputesClientImpl implements ComputesClient {
         String workspaceName,
         String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction)
             .getSyncPoller();
     }
 
@@ -1488,7 +1492,8 @@ public final class ComputesClientImpl implements ComputesClient {
         String computeName,
         UnderlyingResourceAction underlyingResourceAction,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context)
             .getSyncPoller();
     }
 
@@ -2110,7 +2115,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String workspaceName, String computeName) {
-        return beginStartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
@@ -2128,7 +2133,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginStartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
@@ -2361,7 +2366,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String computeName) {
-        return beginStopAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
@@ -2379,7 +2384,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginStopAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
@@ -2612,7 +2617,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String workspaceName, String computeName) {
-        return beginRestartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
@@ -2630,7 +2635,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginRestartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**

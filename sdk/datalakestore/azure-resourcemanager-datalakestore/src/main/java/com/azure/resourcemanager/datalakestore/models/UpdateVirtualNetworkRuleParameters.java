@@ -5,22 +5,31 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.UpdateVirtualNetworkRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to update a virtual network rule. */
-@JsonFlatten
 @Fluent
-public class UpdateVirtualNetworkRuleParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateVirtualNetworkRuleParameters.class);
-
+public final class UpdateVirtualNetworkRuleParameters {
     /*
-     * The resource identifier for the subnet.
+     * The virtual network rule properties to use when updating a virtual network rule.
      */
-    @JsonProperty(value = "properties.subnetId")
-    private String subnetId;
+    @JsonProperty(value = "properties")
+    private UpdateVirtualNetworkRuleProperties innerProperties;
+
+    /** Creates an instance of UpdateVirtualNetworkRuleParameters class. */
+    public UpdateVirtualNetworkRuleParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The virtual network rule properties to use when updating a virtual network
+     * rule.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateVirtualNetworkRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the subnetId property: The resource identifier for the subnet.
@@ -28,7 +37,7 @@ public class UpdateVirtualNetworkRuleParameters {
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -38,7 +47,10 @@ public class UpdateVirtualNetworkRuleParameters {
      * @return the UpdateVirtualNetworkRuleParameters object itself.
      */
     public UpdateVirtualNetworkRuleParameters withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateVirtualNetworkRuleProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
         return this;
     }
 
@@ -48,5 +60,8 @@ public class UpdateVirtualNetworkRuleParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

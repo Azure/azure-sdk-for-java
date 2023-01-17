@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +26,6 @@ import java.util.List;
 })
 @Fluent
 public class JobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobDetails.class);
-
     /*
      * List of stages that run in the job.
      */
@@ -102,8 +99,7 @@ public class JobDetails {
     private KeyEncryptionKey keyEncryptionKey;
 
     /*
-     * The expected size of the data, which needs to be transferred in this
-     * job, in terabytes.
+     * The expected size of the data, which needs to be transferred in this job, in terabytes.
      */
     @JsonProperty(value = "expectedDataSizeInTeraBytes")
     private Integer expectedDataSizeInTeraBytes;
@@ -119,6 +115,10 @@ public class JobDetails {
      */
     @JsonProperty(value = "lastMitigationActionOnJob", access = JsonProperty.Access.WRITE_ONLY)
     private LastMitigationActionOnJob lastMitigationActionOnJob;
+
+    /** Creates an instance of JobDetails class. */
+    public JobDetails() {
+    }
 
     /**
      * Get the jobStages property: List of stages that run in the job.
@@ -344,7 +344,7 @@ public class JobDetails {
             jobStages().forEach(e -> e.validate());
         }
         if (contactDetails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactDetails in model JobDetails"));
         } else {
@@ -378,4 +378,6 @@ public class JobDetails {
             lastMitigationActionOnJob().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobDetails.class);
 }

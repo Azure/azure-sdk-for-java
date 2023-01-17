@@ -30,6 +30,9 @@ public class TwilioLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.password", required = true)
     private SecretBase password;
 
+    /** Creates an instance of TwilioLinkedService class. */
+    public TwilioLinkedService() {}
+
     /**
      * Get the userName property: The Account SID of Twilio service.
      *

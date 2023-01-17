@@ -24,6 +24,10 @@ public final class ListPathsResponseInner {
     @JsonProperty(value = "downloadPaths")
     private List<String> downloadPaths;
 
+    /** Creates an instance of ListPathsResponseInner class. */
+    public ListPathsResponseInner() {
+    }
+
     /**
      * Get the streamingPaths property: Streaming Paths supported by current Streaming Locator.
      *

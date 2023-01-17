@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomParameterType. */
+/** Provisioning status of the workspace. */
 public final class CustomParameterType extends ExpandableStringEnum<CustomParameterType> {
     /** Static value Bool for CustomParameterType. */
     public static final CustomParameterType BOOL = fromString("Bool");
@@ -18,6 +18,15 @@ public final class CustomParameterType extends ExpandableStringEnum<CustomParame
 
     /** Static value String for CustomParameterType. */
     public static final CustomParameterType STRING = fromString("String");
+
+    /**
+     * Creates a new instance of CustomParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomParameterType() {
+    }
 
     /**
      * Creates or finds a CustomParameterType from its string representation.
@@ -30,7 +39,11 @@ public final class CustomParameterType extends ExpandableStringEnum<CustomParame
         return fromString(name, CustomParameterType.class);
     }
 
-    /** @return known CustomParameterType values. */
+    /**
+     * Gets known CustomParameterType values.
+     *
+     * @return known CustomParameterType values.
+     */
     public static Collection<CustomParameterType> values() {
         return values(CustomParameterType.class);
     }

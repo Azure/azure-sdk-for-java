@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The set of properties that can be update in a PATCH request to a monitor resource. */
 @Fluent
 public final class MonitorUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorUpdateProperties.class);
-
     /*
      * Flag specifying if the resource monitoring is enabled or disabled.
      */
     @JsonProperty(value = "monitoringStatus")
     private MonitoringStatus monitoringStatus;
+
+    /** Creates an instance of MonitorUpdateProperties class. */
+    public MonitorUpdateProperties() {
+    }
 
     /**
      * Get the monitoringStatus property: Flag specifying if the resource monitoring is enabled or disabled.

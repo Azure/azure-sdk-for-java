@@ -13,10 +13,9 @@ import com.azure.resourcemanager.delegatednetwork.fluent.DelegatedSubnetServices
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedSubnetInner;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnet;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnetServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DelegatedSubnetServicesImpl implements DelegatedSubnetServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedSubnetServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DelegatedSubnetServicesImpl.class);
 
     private final DelegatedSubnetServicesClient innerClient;
 
@@ -27,15 +26,6 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public DelegatedSubnet getByResourceGroup(String resourceGroupName, String resourceName) {
-        DelegatedSubnetInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new DelegatedSubnetImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DelegatedSubnet> getByResourceGroupWithResponse(
@@ -53,8 +43,13 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
     }
 
-    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete) {
-        this.serviceClient().delete(resourceGroupName, resourceName, forceDelete);
+    public DelegatedSubnet getByResourceGroup(String resourceGroupName, String resourceName) {
+        DelegatedSubnetInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new DelegatedSubnetImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String resourceName) {
@@ -89,7 +84,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public DelegatedSubnet getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -97,7 +92,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,7 +105,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public Response<DelegatedSubnet> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +113,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +126,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,7 +134,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +148,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +156,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -23,6 +23,15 @@ public final class ValidationMetricType extends ExpandableStringEnum<ValidationM
     public static final ValidationMetricType COCO_VOC = fromString("CocoVoc");
 
     /**
+     * Creates a new instance of ValidationMetricType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ValidationMetricType() {
+    }
+
+    /**
      * Creates or finds a ValidationMetricType from its string representation.
      *
      * @param name a name to look for.

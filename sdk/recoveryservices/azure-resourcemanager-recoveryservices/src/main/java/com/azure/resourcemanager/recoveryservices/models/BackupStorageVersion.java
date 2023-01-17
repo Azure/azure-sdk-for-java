@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupStorageVersion. */
+/** Backup storage version. */
 public final class BackupStorageVersion extends ExpandableStringEnum<BackupStorageVersion> {
     /** Static value V1 for BackupStorageVersion. */
     public static final BackupStorageVersion V1 = fromString("V1");

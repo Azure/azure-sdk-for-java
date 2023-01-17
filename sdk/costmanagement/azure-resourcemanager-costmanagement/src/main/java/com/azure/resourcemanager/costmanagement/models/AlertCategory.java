@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertCategory. */
+/** Alert category. */
 public final class AlertCategory extends ExpandableStringEnum<AlertCategory> {
     /** Static value Cost for AlertCategory. */
     public static final AlertCategory COST = fromString("Cost");
@@ -23,6 +23,15 @@ public final class AlertCategory extends ExpandableStringEnum<AlertCategory> {
     public static final AlertCategory SYSTEM = fromString("System");
 
     /**
+     * Creates a new instance of AlertCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertCategory() {
+    }
+
+    /**
      * Creates or finds a AlertCategory from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class AlertCategory extends ExpandableStringEnum<AlertCategory> {
         return fromString(name, AlertCategory.class);
     }
 
-    /** @return known AlertCategory values. */
+    /**
+     * Gets known AlertCategory values.
+     *
+     * @return known AlertCategory values.
+     */
     public static Collection<AlertCategory> values() {
         return values(AlertCategory.class);
     }

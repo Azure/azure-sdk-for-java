@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("GetTDECertificates.Sql")
 @Fluent
 public final class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetTdeCertificatesSqlTaskProperties.class);
-
     /*
      * Task input
      */
@@ -30,6 +26,10 @@ public final class GetTdeCertificatesSqlTaskProperties extends ProjectTaskProper
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<GetTdeCertificatesSqlTaskOutput> output;
+
+    /** Creates an instance of GetTdeCertificatesSqlTaskProperties class. */
+    public GetTdeCertificatesSqlTaskProperties() {
+    }
 
     /**
      * Get the input property: Task input.

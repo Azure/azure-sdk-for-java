@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.MountState;
 import com.azure.resourcemanager.machinelearning.models.SourceType;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceDataMountTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceDataMount model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class ComputeInstanceDataMountTests {
         Assertions.assertEquals("rglvaw", model.error());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceDataMount model =
             new ComputeInstanceDataMount()
                 .withSource("wlxte")

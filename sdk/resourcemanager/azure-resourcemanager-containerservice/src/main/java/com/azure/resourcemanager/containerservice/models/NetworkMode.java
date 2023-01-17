@@ -21,6 +21,15 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
     public static final NetworkMode BRIDGE = fromString("bridge");
 
     /**
+     * Creates a new instance of NetworkMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkMode() {
+    }
+
+    /**
      * Creates or finds a NetworkMode from its string representation.
      *
      * @param name a name to look for.

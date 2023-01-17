@@ -7,7 +7,7 @@ import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import org.apache.spark.sql.types.{NumericType, StructType}
 
 import java.text.SimpleDateFormat
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util.UUID
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
@@ -245,11 +245,13 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe null
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
-      "spark.cosmos.read.maxItemCount" -> "1000"
+      "spark.cosmos.read.maxItemCount" -> "1000",
+      "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -259,6 +261,7 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe Duration.ofMillis(1000)
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
@@ -782,14 +785,14 @@ class CosmosConfigSpec extends UnitSpec {
              isValid,
              field.name,
              configString,
-             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath)))
+             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath, false)))
         } else {
           testParameters +=
            PatchColumnConfigParameterTest(
              isValid,
              field.name,
              configString,
-             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath)),
+             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath, false)),
              Some(errorMessage))
         }
 
@@ -838,8 +841,10 @@ class CosmosConfigSpec extends UnitSpec {
     val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
 
     val overrideConfig = Map(
-      "longTypeColumn" -> CosmosPatchColumnConfig("longTypeColumn", CosmosPatchOperationTypes.Increment, "/longTypeColumn"),
-      "stringTypeColumn" -> CosmosPatchColumnConfig("stringTypeColumn", CosmosPatchOperationTypes.Add, "/newPath")
+      "longTypeColumn" -> CosmosPatchColumnConfig(
+        "longTypeColumn", CosmosPatchOperationTypes.Increment, "/longTypeColumn", false),
+      "stringTypeColumn" -> CosmosPatchColumnConfig(
+        "stringTypeColumn", CosmosPatchOperationTypes.Add, "/newPath", false)
     )
 
     var aggregratedConfigString = "["
@@ -888,7 +893,7 @@ class CosmosConfigSpec extends UnitSpec {
     val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
     CosmosPatchOperationTypes.values.foreach(operationType => {
 
-      val columnConfig = CosmosPatchColumnConfig("dummyColumn", operationType, "/dummyColumn")
+      val columnConfig = CosmosPatchColumnConfig("dummyColumn", operationType, "/dummyColumn", false)
       operationType match {
         case CosmosPatchOperationTypes.Remove | CosmosPatchOperationTypes.None =>
           testParameters +=

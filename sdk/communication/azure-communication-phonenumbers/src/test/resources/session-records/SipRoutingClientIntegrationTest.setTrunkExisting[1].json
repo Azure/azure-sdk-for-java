@@ -3,21 +3,21 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b1e2cd7f-610a-45a4-8136-10df8a15c5ec"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8328378d-81de-4465-877b-9f5ca1ee014b"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "139ms",
-      "MS-CV" : "2QiRyfKXlkOpTBfFhRS/Gg.0",
+      "X-Processing-Time" : "60ms",
+      "MS-CV" : "qXzW9ILWl0iBqHDEKGPjaw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0f23XYgAAAAAu6EmcxXrKRK+Plv4Xrb65UFJHMDFFREdFMDkxOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "076OkYwAAAAD1f1C+lgUZSpRk1FyxSVSkTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
       "Body" : "{\"trunks\":{},\"routes\":[]}",
-      "Date" : "Wed, 20 Jul 2022 02:50:39 GMT",
+      "Date" : "Thu, 22 Dec 2022 18:37:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -25,8 +25,8 @@
     "Method" : "PATCH",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "124fe649-3e3c-4ed4-a2b0-f0f630f537c0",
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2b5e90bd-82b5-44a8-9613-efbe8666d2b9",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
@@ -34,13 +34,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "523ms",
-      "MS-CV" : "VZ6pfV3h8UCCyaRfMyeeWg.0",
+      "X-Processing-Time" : "522ms",
+      "MS-CV" : "dF32Yo8V8EmZLQL3u8MB0w.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0f23XYgAAAACn37xssBv+QKjK4J4+g3LfUFJHMDFFREdFMDkxOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "076OkYwAAAAALB6dqMeVFRqn2a7TXruqbTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"trunks\":{\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":4567},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"1.fqdn.com\":{\"sipSignalingPort\":1234}},\"routes\":[]}",
-      "Date" : "Wed, 20 Jul 2022 02:50:40 GMT",
+      "Body" : "{\"trunks\":{\"first.com\":{\"sipSignalingPort\":1234},\"second.com\":{\"sipSignalingPort\":2345},\"set.com\":{\"sipSignalingPort\":4567},\"third.com\":{\"sipSignalingPort\":3456}},\"routes\":[]}",
+      "Date" : "Thu, 22 Dec 2022 18:37:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,21 +48,21 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f70d17d0-5cd6-446f-b85a-9f8226f1b380"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3811921c-219d-4b2d-a003-b2ef4f40d9fe"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "164ms",
-      "MS-CV" : "3gYU3Cro60efVuu/tZv8Ng.0",
+      "X-Processing-Time" : "52ms",
+      "MS-CV" : "j+xfPKeTlEe/5U6JOn6DYw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0gG3XYgAAAADNRcP5br86SLMdA1yVzrYbUFJHMDFFREdFMDkxOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "08KOkYwAAAADf10Gpm7v7SYZ42bkRcxLRTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"trunks\":{\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":4567},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"1.fqdn.com\":{\"sipSignalingPort\":1234}},\"routes\":[]}",
-      "Date" : "Wed, 20 Jul 2022 02:50:40 GMT",
+      "Body" : "{\"trunks\":{\"first.com\":{\"sipSignalingPort\":1234},\"second.com\":{\"sipSignalingPort\":2345},\"set.com\":{\"sipSignalingPort\":4567},\"third.com\":{\"sipSignalingPort\":3456}},\"routes\":[]}",
+      "Date" : "Thu, 22 Dec 2022 18:37:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -70,8 +70,8 @@
     "Method" : "PATCH",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c8d5501d-0a36-4505-be6e-52e1420d58b9",
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "58f9ea0c-51b0-419f-bdce-2daaaad3861f",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
@@ -79,13 +79,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "287ms",
-      "MS-CV" : "AEVmoeFWkU2GDer0KKBr3Q.0",
+      "X-Processing-Time" : "308ms",
+      "MS-CV" : "2hd2V6GbakmqnpwftxoDJw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0gG3XYgAAAAA70n3PYdHWSrZwW2wrPzq9UFJHMDFFREdFMDkxOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "08KOkYwAAAAAtr9qxDLX7RoKJ4S4h8SoqTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"trunks\":{\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":7651},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"1.fqdn.com\":{\"sipSignalingPort\":1234}},\"routes\":[]}",
-      "Date" : "Wed, 20 Jul 2022 02:50:40 GMT",
+      "Body" : "{\"trunks\":{\"first.com\":{\"sipSignalingPort\":1234},\"second.com\":{\"sipSignalingPort\":2345},\"set.com\":{\"sipSignalingPort\":7651},\"third.com\":{\"sipSignalingPort\":3456}},\"routes\":[]}",
+      "Date" : "Thu, 22 Dec 2022 18:37:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -93,21 +93,21 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d3b68e27-bf24-4c3e-ae8c-cafcb3913fb3"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "05d2a44a-6b0d-4e96-9f28-082fc7656535"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "158ms",
-      "MS-CV" : "EcKvYj+xkUyUCDSctRFqXg.0",
+      "X-Processing-Time" : "60ms",
+      "MS-CV" : "Dc2v23mWJkCgA/bQYqDnKA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0gW3XYgAAAABHGD0pZqN1TK5qMsKN3Y1EUFJHMDFFREdFMDkxOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "08KOkYwAAAADjoHyq9INBSbI6yEbnZztzTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"trunks\":{\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":7651},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"1.fqdn.com\":{\"sipSignalingPort\":1234}},\"routes\":[]}",
-      "Date" : "Wed, 20 Jul 2022 02:50:41 GMT",
+      "Body" : "{\"trunks\":{\"first.com\":{\"sipSignalingPort\":1234},\"second.com\":{\"sipSignalingPort\":2345},\"set.com\":{\"sipSignalingPort\":7651},\"third.com\":{\"sipSignalingPort\":3456}},\"routes\":[]}",
+      "Date" : "Thu, 22 Dec 2022 18:37:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -115,21 +115,21 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a0261487-cf41-4229-98c3-b8f90775f16c"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4508b9f4-b89e-41c6-aa27-a82a88aaeffa"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "188ms",
-      "MS-CV" : "KtK/orjGuE2Ka8yYEszZTw.0",
+      "X-Processing-Time" : "107ms",
+      "MS-CV" : "F9HXsA/Mn0STsB0L9PGLjw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0gW3XYgAAAADPC1tzitbySJO+MaVfvlWDUFJHMDFFREdFMDkxOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "08KOkYwAAAAAKjas+DrBaSLMP+LawY9p4TUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"trunks\":{\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":7651},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"1.fqdn.com\":{\"sipSignalingPort\":1234}},\"routes\":[]}",
-      "Date" : "Wed, 20 Jul 2022 02:50:41 GMT",
+      "Body" : "{\"trunks\":{\"first.com\":{\"sipSignalingPort\":1234},\"second.com\":{\"sipSignalingPort\":2345},\"set.com\":{\"sipSignalingPort\":7651},\"third.com\":{\"sipSignalingPort\":3456}},\"routes\":[]}",
+      "Date" : "Thu, 22 Dec 2022 18:37:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

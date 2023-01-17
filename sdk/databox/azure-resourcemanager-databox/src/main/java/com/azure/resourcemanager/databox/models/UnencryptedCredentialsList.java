@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.fluent.models.UnencryptedCredentialsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of unencrypted credentials for accessing device. */
 @Fluent
 public final class UnencryptedCredentialsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnencryptedCredentialsList.class);
-
     /*
      * List of unencrypted credentials.
      */
@@ -27,6 +23,10 @@ public final class UnencryptedCredentialsList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of UnencryptedCredentialsList class. */
+    public UnencryptedCredentialsList() {
+    }
 
     /**
      * Get the value property: List of unencrypted credentials.

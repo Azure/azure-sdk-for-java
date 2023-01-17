@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FrequencyTypes. */
+/** The frequency to update. */
 public enum FrequencyTypes {
     /** Enum value Minute. */
     MINUTE("Minute"),
@@ -39,6 +39,9 @@ public enum FrequencyTypes {
      */
     @JsonCreator
     public static FrequencyTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FrequencyTypes[] items = FrequencyTypes.values();
         for (FrequencyTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum FrequencyTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

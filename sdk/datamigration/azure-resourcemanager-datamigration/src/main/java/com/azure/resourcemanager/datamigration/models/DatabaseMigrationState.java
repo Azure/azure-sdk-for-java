@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseMigrationState. */
+/** Database level migration state. */
 public final class DatabaseMigrationState extends ExpandableStringEnum<DatabaseMigrationState> {
     /** Static value UNDEFINED for DatabaseMigrationState. */
     public static final DatabaseMigrationState UNDEFINED = fromString("UNDEFINED");
@@ -41,6 +41,15 @@ public final class DatabaseMigrationState extends ExpandableStringEnum<DatabaseM
     public static final DatabaseMigrationState FAILED = fromString("FAILED");
 
     /**
+     * Creates a new instance of DatabaseMigrationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseMigrationState() {
+    }
+
+    /**
      * Creates or finds a DatabaseMigrationState from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class DatabaseMigrationState extends ExpandableStringEnum<DatabaseM
         return fromString(name, DatabaseMigrationState.class);
     }
 
-    /** @return known DatabaseMigrationState values. */
+    /**
+     * Gets known DatabaseMigrationState values.
+     *
+     * @return known DatabaseMigrationState values.
+     */
     public static Collection<DatabaseMigrationState> values() {
         return values(DatabaseMigrationState.class);
     }

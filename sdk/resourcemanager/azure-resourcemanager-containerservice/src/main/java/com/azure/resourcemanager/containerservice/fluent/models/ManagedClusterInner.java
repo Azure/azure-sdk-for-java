@@ -25,6 +25,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
@@ -545,8 +546,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
-     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
+     * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      *
      * @return the enablePodSecurityPolicy value.
      */
@@ -555,8 +557,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
-     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
+     * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      *
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the ManagedClusterInner object itself.
@@ -889,6 +892,30 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the workloadAutoScalerProfile property: Workload Auto-scaler profile for the managed cluster.
+     *
+     * @return the workloadAutoScalerProfile value.
+     */
+    public ManagedClusterWorkloadAutoScalerProfile workloadAutoScalerProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().workloadAutoScalerProfile();
+    }
+
+    /**
+     * Set the workloadAutoScalerProfile property: Workload Auto-scaler profile for the managed cluster.
+     *
+     * @param workloadAutoScalerProfile the workloadAutoScalerProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withWorkloadAutoScalerProfile(
+        ManagedClusterWorkloadAutoScalerProfile workloadAutoScalerProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withWorkloadAutoScalerProfile(workloadAutoScalerProfile);
         return this;
     }
 

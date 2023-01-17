@@ -20,6 +20,15 @@ public final class JobRetry extends ExpandableStringEnum<JobRetry> {
     public static final JobRetry MAY_RETRY = fromString("MayRetry");
 
     /**
+     * Creates a new instance of JobRetry value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobRetry() {
+    }
+
+    /**
      * Creates or finds a JobRetry from its string representation.
      *
      * @param name a name to look for.

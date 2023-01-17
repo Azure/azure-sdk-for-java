@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Notification preference for a job stage. */
 @Fluent
 public final class NotificationPreference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationPreference.class);
-
     /*
      * Name of the stage.
      */
@@ -25,6 +22,10 @@ public final class NotificationPreference {
      */
     @JsonProperty(value = "sendNotification", required = true)
     private boolean sendNotification;
+
+    /** Creates an instance of NotificationPreference class. */
+    public NotificationPreference() {
+    }
 
     /**
      * Get the stageName property: Name of the stage.
@@ -73,10 +74,12 @@ public final class NotificationPreference {
      */
     public void validate() {
         if (stageName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property stageName in model NotificationPreference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationPreference.class);
 }

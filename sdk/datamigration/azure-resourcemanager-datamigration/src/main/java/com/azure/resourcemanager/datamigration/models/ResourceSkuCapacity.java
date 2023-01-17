@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes scaling information of a SKU. */
 @Immutable
 public final class ResourceSkuCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapacity.class);
-
     /*
      * The minimum capacity.
      */
@@ -37,6 +33,10 @@ public final class ResourceSkuCapacity {
      */
     @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuCapacityScaleType scaleType;
+
+    /** Creates an instance of ResourceSkuCapacity class. */
+    public ResourceSkuCapacity() {
+    }
 
     /**
      * Get the minimum property: The minimum capacity.

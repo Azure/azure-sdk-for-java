@@ -15,10 +15,9 @@ import com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner;
 import com.azure.resourcemanager.azurestack.models.ActivationKeyResult;
 import com.azure.resourcemanager.azurestack.models.Registration;
 import com.azure.resourcemanager.azurestack.models.Registrations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegistrationsImpl implements Registrations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegistrationsImpl.class);
 
     private final RegistrationsClient innerClient;
 
@@ -40,13 +39,14 @@ public final class RegistrationsImpl implements Registrations {
         return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
     }
 
-    public Registration getByResourceGroup(String resourceGroup, String registrationName) {
-        RegistrationInner inner = this.serviceClient().getByResourceGroup(resourceGroup, registrationName);
-        if (inner != null) {
-            return new RegistrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<Registration> list() {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Registration> list(Context context) {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
     }
 
     public Response<Registration> getByResourceGroupWithResponse(
@@ -64,21 +64,22 @@ public final class RegistrationsImpl implements Registrations {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroup, String registrationName) {
-        this.serviceClient().delete(resourceGroup, registrationName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroup, String registrationName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroup, registrationName, context);
-    }
-
-    public ActivationKeyResult getActivationKey(String resourceGroup, String registrationName) {
-        ActivationKeyResultInner inner = this.serviceClient().getActivationKey(resourceGroup, registrationName);
+    public Registration getByResourceGroup(String resourceGroup, String registrationName) {
+        RegistrationInner inner = this.serviceClient().getByResourceGroup(resourceGroup, registrationName);
         if (inner != null) {
-            return new ActivationKeyResultImpl(inner, this.manager());
+            return new RegistrationImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroup, String registrationName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroup, registrationName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroup, String registrationName) {
+        this.serviceClient().delete(resourceGroup, registrationName);
     }
 
     public Response<ActivationKeyResult> getActivationKeyWithResponse(
@@ -96,8 +97,13 @@ public final class RegistrationsImpl implements Registrations {
         }
     }
 
-    public void enableRemoteManagement(String resourceGroup, String registrationName) {
-        this.serviceClient().enableRemoteManagement(resourceGroup, registrationName);
+    public ActivationKeyResult getActivationKey(String resourceGroup, String registrationName) {
+        ActivationKeyResultInner inner = this.serviceClient().getActivationKey(resourceGroup, registrationName);
+        if (inner != null) {
+            return new ActivationKeyResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> enableRemoteManagementWithResponse(
@@ -105,10 +111,14 @@ public final class RegistrationsImpl implements Registrations {
         return this.serviceClient().enableRemoteManagementWithResponse(resourceGroup, registrationName, context);
     }
 
+    public void enableRemoteManagement(String resourceGroup, String registrationName) {
+        this.serviceClient().enableRemoteManagement(resourceGroup, registrationName);
+    }
+
     public Registration getById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +126,7 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
@@ -127,7 +137,7 @@ public final class RegistrationsImpl implements Registrations {
     public Response<Registration> getByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +145,7 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
@@ -146,7 +156,7 @@ public final class RegistrationsImpl implements Registrations {
     public void deleteById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,18 +164,18 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        this.deleteWithResponse(resourceGroup, registrationName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroup, registrationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,12 +183,12 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        return this.deleteWithResponse(resourceGroup, registrationName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroup, registrationName, context);
     }
 
     private RegistrationsClient serviceClient() {

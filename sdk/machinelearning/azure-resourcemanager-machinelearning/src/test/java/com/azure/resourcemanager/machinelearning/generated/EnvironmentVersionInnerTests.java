@@ -14,11 +14,10 @@ import com.azure.resourcemanager.machinelearning.models.OperatingSystemType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentVersionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentVersionInner model =
             BinaryData
                 .fromString(
@@ -37,8 +36,8 @@ public final class EnvironmentVersionInnerTests {
         Assertions.assertEquals(OperatingSystemType.LINUX, model.properties().osType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EnvironmentVersionInner model =
             new EnvironmentVersionInner()
                 .withProperties(

@@ -29,6 +29,15 @@ public final class StreamingEndpointResourceState extends ExpandableStringEnum<S
     public static final StreamingEndpointResourceState SCALING = fromString("Scaling");
 
     /**
+     * Creates a new instance of StreamingEndpointResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StreamingEndpointResourceState() {
+    }
+
+    /**
      * Creates or finds a StreamingEndpointResourceState from its string representation.
      *
      * @param name a name to look for.

@@ -50,6 +50,9 @@
       --add-opens com.azure.xml/com.azure.xml=ALL-UNNAMED
       --add-opens com.azure.xml/com.azure.xml.contract=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <javadoc.excludePackageNames/>
+    <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
   </properties>
 
   <developers>

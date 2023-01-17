@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceConnections Get. */
 public final class WorkspaceConnectionsGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class WorkspaceConnectionsGetSamples {
      */
     public static void getWorkspaceConnection(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaceConnections().getWithResponse("resourceGroup-1", "workspace-1", "connection-1", Context.NONE);
+        manager
+            .workspaceConnections()
+            .getWithResponse("resourceGroup-1", "workspace-1", "connection-1", com.azure.core.util.Context.NONE);
     }
 }

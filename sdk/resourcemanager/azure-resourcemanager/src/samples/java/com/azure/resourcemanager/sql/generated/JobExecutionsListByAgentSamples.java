@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /** Samples for JobExecutions ListByAgent. */
 public final class JobExecutionsListByAgentSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ListJobExecutionsByAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionsByAgent.json
      */
     /**
      * Sample code: List all job executions in a job agent.
@@ -27,7 +27,7 @@ public final class JobExecutionsListByAgentSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ListJobExecutionsByAgentWithFilter.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionsByAgentWithFilter.json
      */
     /**
      * Sample code: List all job executions in a job agent with filtering.
@@ -45,10 +45,10 @@ public final class JobExecutionsListByAgentSamples {
                 "group1",
                 "server1",
                 "agent1",
-                OffsetDateTime.parse("2017-03-21T19:00:00.0000000Z"),
-                OffsetDateTime.parse("2017-03-21T19:05:00.0000000Z"),
-                OffsetDateTime.parse("2017-03-21T19:20:00.0000000Z"),
-                OffsetDateTime.parse("2017-03-21T19:25:00.0000000Z"),
+                OffsetDateTime.parse("2017-03-21T19:00:00Z"),
+                OffsetDateTime.parse("2017-03-21T19:05:00Z"),
+                OffsetDateTime.parse("2017-03-21T19:20:00Z"),
+                OffsetDateTime.parse("2017-03-21T19:25:00Z"),
                 false,
                 null,
                 null,

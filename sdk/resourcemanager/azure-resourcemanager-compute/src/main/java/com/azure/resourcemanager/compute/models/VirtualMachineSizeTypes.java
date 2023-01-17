@@ -519,6 +519,15 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
     public static final VirtualMachineSizeTypes STANDARD_NV24 = fromString("Standard_NV24");
 
     /**
+     * Creates a new instance of VirtualMachineSizeTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachineSizeTypes() {
+    }
+
+    /**
      * Creates or finds a VirtualMachineSizeTypes from its string representation.
      *
      * @param name a name to look for.

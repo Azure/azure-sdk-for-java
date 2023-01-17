@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkAdapterDhcpStatus. */
+/** Value indicating whether this adapter has DHCP enabled. */
 public final class NetworkAdapterDhcpStatus extends ExpandableStringEnum<NetworkAdapterDhcpStatus> {
     /** Static value Disabled for NetworkAdapterDhcpStatus. */
     public static final NetworkAdapterDhcpStatus DISABLED = fromString("Disabled");
 
     /** Static value Enabled for NetworkAdapterDhcpStatus. */
     public static final NetworkAdapterDhcpStatus ENABLED = fromString("Enabled");
+
+    /**
+     * Creates a new instance of NetworkAdapterDhcpStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkAdapterDhcpStatus() {
+    }
 
     /**
      * Creates or finds a NetworkAdapterDhcpStatus from its string representation.
@@ -27,7 +36,11 @@ public final class NetworkAdapterDhcpStatus extends ExpandableStringEnum<Network
         return fromString(name, NetworkAdapterDhcpStatus.class);
     }
 
-    /** @return known NetworkAdapterDhcpStatus values. */
+    /**
+     * Gets known NetworkAdapterDhcpStatus values.
+     *
+     * @return known NetworkAdapterDhcpStatus values.
+     */
     public static Collection<NetworkAdapterDhcpStatus> values() {
         return values(NetworkAdapterDhcpStatus.class);
     }

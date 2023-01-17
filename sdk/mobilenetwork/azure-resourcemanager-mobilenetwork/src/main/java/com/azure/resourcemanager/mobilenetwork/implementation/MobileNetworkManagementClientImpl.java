@@ -156,42 +156,6 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.mobileNetworks;
     }
 
-    /** The SitesClient object to access its operations. */
-    private final SitesClient sites;
-
-    /**
-     * Gets the SitesClient object to access its operations.
-     *
-     * @return the SitesClient object.
-     */
-    public SitesClient getSites() {
-        return this.sites;
-    }
-
-    /** The SimGroupsClient object to access its operations. */
-    private final SimGroupsClient simGroups;
-
-    /**
-     * Gets the SimGroupsClient object to access its operations.
-     *
-     * @return the SimGroupsClient object.
-     */
-    public SimGroupsClient getSimGroups() {
-        return this.simGroups;
-    }
-
-    /** The SimsClient object to access its operations. */
-    private final SimsClient sims;
-
-    /**
-     * Gets the SimsClient object to access its operations.
-     *
-     * @return the SimsClient object.
-     */
-    public SimsClient getSims() {
-        return this.sims;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -252,6 +216,30 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.services;
     }
 
+    /** The SimsClient object to access its operations. */
+    private final SimsClient sims;
+
+    /**
+     * Gets the SimsClient object to access its operations.
+     *
+     * @return the SimsClient object.
+     */
+    public SimsClient getSims() {
+        return this.sims;
+    }
+
+    /** The SimGroupsClient object to access its operations. */
+    private final SimGroupsClient simGroups;
+
+    /**
+     * Gets the SimGroupsClient object to access its operations.
+     *
+     * @return the SimGroupsClient object.
+     */
+    public SimGroupsClient getSimGroups() {
+        return this.simGroups;
+    }
+
     /** The SimPoliciesClient object to access its operations. */
     private final SimPoliciesClient simPolicies;
 
@@ -262,6 +250,18 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      */
     public SimPoliciesClient getSimPolicies() {
         return this.simPolicies;
+    }
+
+    /** The SitesClient object to access its operations. */
+    private final SitesClient sites;
+
+    /**
+     * Gets the SitesClient object to access its operations.
+     *
+     * @return the SitesClient object.
+     */
+    public SitesClient getSites() {
+        return this.sites;
     }
 
     /** The SlicesClient object to access its operations. */
@@ -298,19 +298,19 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-04-01-preview";
+        this.apiVersion = "2022-11-01";
         this.attachedDataNetworks = new AttachedDataNetworksClientImpl(this);
         this.dataNetworks = new DataNetworksClientImpl(this);
         this.mobileNetworks = new MobileNetworksClientImpl(this);
-        this.sites = new SitesClientImpl(this);
-        this.simGroups = new SimGroupsClientImpl(this);
-        this.sims = new SimsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.packetCoreControlPlanes = new PacketCoreControlPlanesClientImpl(this);
         this.packetCoreControlPlaneVersions = new PacketCoreControlPlaneVersionsClientImpl(this);
         this.packetCoreDataPlanes = new PacketCoreDataPlanesClientImpl(this);
         this.services = new ServicesClientImpl(this);
+        this.sims = new SimsClientImpl(this);
+        this.simGroups = new SimGroupsClientImpl(this);
         this.simPolicies = new SimPoliciesClientImpl(this);
+        this.sites = new SitesClientImpl(this);
         this.slices = new SlicesClientImpl(this);
     }
 

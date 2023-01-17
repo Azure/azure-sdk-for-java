@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersionInner;
 import com.azure.resourcemanager.compute.models.GalleryApplicationCustomAction;
 import com.azure.resourcemanager.compute.models.GalleryApplicationCustomActionParameter;
@@ -85,6 +84,6 @@ public final class GalleryApplicationVersionsCreateOrUpdateSamples {
                                                                 "This is the description of the parameter"))))))
                     .withSafetyProfile(
                         new GalleryApplicationVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

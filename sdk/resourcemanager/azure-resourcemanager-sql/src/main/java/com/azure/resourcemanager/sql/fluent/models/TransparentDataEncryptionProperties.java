@@ -5,35 +5,40 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the properties of a database transparent data encryption. */
+/** Properties of a transparent data encryption. */
 @Fluent
 public final class TransparentDataEncryptionProperties {
     /*
-     * The status of the database transparent data encryption.
+     * Specifies the state of the transparent data encryption.
      */
-    @JsonProperty(value = "status")
-    private TransparentDataEncryptionStatus status;
+    @JsonProperty(value = "state", required = true)
+    private TransparentDataEncryptionState state;
 
-    /**
-     * Get the status property: The status of the database transparent data encryption.
-     *
-     * @return the status value.
-     */
-    public TransparentDataEncryptionStatus status() {
-        return this.status;
+    /** Creates an instance of TransparentDataEncryptionProperties class. */
+    public TransparentDataEncryptionProperties() {
     }
 
     /**
-     * Set the status property: The status of the database transparent data encryption.
+     * Get the state property: Specifies the state of the transparent data encryption.
      *
-     * @param status the status value to set.
+     * @return the state value.
+     */
+    public TransparentDataEncryptionState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: Specifies the state of the transparent data encryption.
+     *
+     * @param state the state value to set.
      * @return the TransparentDataEncryptionProperties object itself.
      */
-    public TransparentDataEncryptionProperties withStatus(TransparentDataEncryptionStatus status) {
-        this.status = status;
+    public TransparentDataEncryptionProperties withState(TransparentDataEncryptionState state) {
+        this.state = state;
         return this;
     }
 
@@ -43,5 +48,13 @@ public final class TransparentDataEncryptionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (state() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property state in model TransparentDataEncryptionProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransparentDataEncryptionProperties.class);
 }

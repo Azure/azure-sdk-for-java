@@ -20,6 +20,15 @@ public final class Level extends ExpandableStringEnum<Level> {
     public static final Level IMPORTANT = fromString("Important");
 
     /**
+     * Creates a new instance of Level value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Level() {
+    }
+
+    /**
      * Creates or finds a Level from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +39,11 @@ public final class Level extends ExpandableStringEnum<Level> {
         return fromString(name, Level.class);
     }
 
-    /** @return known Level values. */
+    /**
+     * Gets known Level values.
+     *
+     * @return known Level values.
+     */
     public static Collection<Level> values() {
         return values(Level.class);
     }

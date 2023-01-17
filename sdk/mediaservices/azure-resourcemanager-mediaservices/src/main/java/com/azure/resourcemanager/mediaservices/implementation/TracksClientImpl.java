@@ -64,7 +64,7 @@ public final class TracksClientImpl implements TracksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesTr")
-    private interface TracksService {
+    public interface TracksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
@@ -515,14 +515,16 @@ public final class TracksClientImpl implements TracksClient {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset.
+     * @return the details of a Track in the Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName) {
-        return getAsync(resourceGroupName, accountName, assetName, trackName).block();
+    public Response<AssetTrackInner> getWithResponse(
+        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context).block();
     }
 
     /**
@@ -534,16 +536,14 @@ public final class TracksClientImpl implements TracksClient {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset along with {@link Response}.
+     * @return the details of a Track in the Asset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssetTrackInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context).block();
+    public AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName) {
+        return getWithResponse(resourceGroupName, accountName, assetName, trackName, Context.NONE).getValue();
     }
 
     /**
@@ -766,7 +766,8 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
             .getSyncPoller();
     }
 
@@ -794,7 +795,8 @@ public final class TracksClientImpl implements TracksClient {
         String trackName,
         AssetTrackInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1086,7 +1088,7 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String assetName, String trackName) {
-        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
     }
 
     /**
@@ -1107,7 +1109,7 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, assetName, trackName, context).getSyncPoller();
     }
 
     /**
@@ -1412,7 +1414,7 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).getSyncPoller();
     }
 
     /**
@@ -1439,7 +1441,8 @@ public final class TracksClientImpl implements TracksClient {
         String trackName,
         AssetTrackInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1746,7 +1749,7 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
         String resourceGroupName, String accountName, String assetName, String trackName) {
-        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
+        return this.beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
     }
 
     /**
@@ -1770,7 +1773,9 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
         String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context).getSyncPoller();
+        return this
+            .beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context)
+            .getSyncPoller();
     }
 
     /**

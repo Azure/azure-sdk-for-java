@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datamigration.fluent.ServicesClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServicesClient. */
 public final class ServicesClientImpl implements ServicesClient {
-    private final ClientLogger logger = new ClientLogger(ServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServicesService service;
 
@@ -72,7 +69,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataMigrationManagem")
-    private interface ServicesService {
+    public interface ServicesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
@@ -282,7 +279,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -296,7 +295,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -342,7 +342,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -357,7 +359,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -400,7 +403,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -414,9 +419,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(groupName, serviceName, parameters);
@@ -427,11 +432,13 @@ public final class ServicesClientImpl implements ServicesClient {
                 this.client.getHttpPipeline(),
                 DataMigrationServiceInner.class,
                 DataMigrationServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -446,9 +453,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -465,7 +472,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -479,16 +488,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
-        return beginCreateOrUpdateAsync(groupName, serviceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(groupName, serviceName, parameters).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -503,16 +514,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginCreateOrUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(groupName, serviceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(groupName, serviceName, parameters, context).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -526,7 +539,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> createOrUpdateAsync(
@@ -537,7 +550,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -552,7 +567,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> createOrUpdateAsync(
@@ -563,7 +578,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -586,7 +603,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PUT method
+     * Create or update DMS Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PUT method
      * creates a new service or updates an existing one. When a service is updated, existing child resources (i.e.
      * tasks) are unaffected. Services currently support a single kind, "vm", which refers to a VM-based service,
      * although other kinds may be added in the future. This method can change the kind, SKU, and network of the
@@ -610,7 +629,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
      * retrieves information about a service instance.
      *
      * @param groupName Name of the resource group.
@@ -618,7 +639,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceInner>> getByResourceGroupWithResponseAsync(
@@ -658,7 +680,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
      * retrieves information about a service instance.
      *
      * @param groupName Name of the resource group.
@@ -667,7 +691,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceInner>> getByResourceGroupWithResponseAsync(
@@ -704,7 +729,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
      * retrieves information about a service instance.
      *
      * @param groupName Name of the resource group.
@@ -712,23 +739,38 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> getByResourceGroupAsync(String groupName, String serviceName) {
         return getByResourceGroupWithResponseAsync(groupName, serviceName)
-            .flatMap(
-                (Response<DataMigrationServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
+     * retrieves information about a service instance.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Database Migration Service resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataMigrationServiceInner> getByResourceGroupWithResponse(
+        String groupName, String serviceName, Context context) {
+        return getByResourceGroupWithResponseAsync(groupName, serviceName, context).block();
+    }
+
+    /**
+     * Get DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The GET method
      * retrieves information about a service instance.
      *
      * @param groupName Name of the resource group.
@@ -740,30 +782,14 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataMigrationServiceInner getByResourceGroup(String groupName, String serviceName) {
-        return getByResourceGroupAsync(groupName, serviceName).block();
+        return getByResourceGroupWithResponse(groupName, serviceName, Context.NONE).getValue();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The GET method
-     * retrieves information about a service instance.
+     * Delete DMS Service Instance
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataMigrationServiceInner> getByResourceGroupWithResponse(
-        String groupName, String serviceName, Context context) {
-        return getByResourceGroupWithResponseAsync(groupName, serviceName, context).block();
-    }
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -771,7 +797,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -812,8 +838,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -822,7 +850,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -860,8 +888,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -869,20 +899,46 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String groupName, String serviceName, Boolean deleteRunningTasks) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(groupName, serviceName, deleteRunningTasks);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String groupName, String serviceName) {
+        final Boolean deleteRunningTasks = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(groupName, serviceName, deleteRunningTasks);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -891,9 +947,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String groupName, String serviceName, Boolean deleteRunningTasks, Context context) {
         context = this.client.mergeContext(context);
@@ -905,26 +961,29 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
-     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String groupName, String serviceName, Boolean deleteRunningTasks) {
-        return beginDeleteAsync(groupName, serviceName, deleteRunningTasks).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String groupName, String serviceName) {
+        final Boolean deleteRunningTasks = null;
+        return this.beginDeleteAsync(groupName, serviceName, deleteRunningTasks).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -933,17 +992,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String groupName, String serviceName, Boolean deleteRunningTasks, Context context) {
-        return beginDeleteAsync(groupName, serviceName, deleteRunningTasks, context).getSyncPoller();
+        return this.beginDeleteAsync(groupName, serviceName, deleteRunningTasks, context).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -951,7 +1012,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String groupName, String serviceName, Boolean deleteRunningTasks) {
@@ -961,15 +1022,17 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String groupName, String serviceName) {
@@ -980,8 +1043,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -990,7 +1055,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String groupName, String serviceName, Boolean deleteRunningTasks, Context context) {
@@ -1000,24 +1065,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String groupName, String serviceName, Boolean deleteRunningTasks) {
-        deleteAsync(groupName, serviceName, deleteRunningTasks).block();
-    }
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1032,8 +1083,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The DELETE method
-     * deletes a service. Any running tasks will be canceled.
+     * Delete DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The DELETE
+     * method deletes a service. Any running tasks will be canceled.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1049,9 +1102,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1059,7 +1114,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1105,9 +1161,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1116,7 +1174,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1159,9 +1218,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1169,9 +1230,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(groupName, serviceName, parameters);
@@ -1182,13 +1243,15 @@ public final class ServicesClientImpl implements ServicesClient {
                 this.client.getHttpPipeline(),
                 DataMigrationServiceInner.class,
                 DataMigrationServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1197,9 +1260,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link PollerFlux} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdateAsync(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1215,9 +1278,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1225,18 +1290,20 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters) {
-        return beginUpdateAsync(groupName, serviceName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(groupName, serviceName, parameters).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1245,18 +1312,20 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return the {@link SyncPoller} for polling of a Database Migration Service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataMigrationServiceInner>, DataMigrationServiceInner> beginUpdate(
         String groupName, String serviceName, DataMigrationServiceInner parameters, Context context) {
-        return beginUpdateAsync(groupName, serviceName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(groupName, serviceName, parameters, context).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1264,7 +1333,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> updateAsync(
@@ -1275,9 +1344,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1286,7 +1357,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Database Migration Service resource.
+     * @return a Database Migration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceInner> updateAsync(
@@ -1297,9 +1368,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1316,9 +1389,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The PATCH method
-     * updates an existing service. This method can change the kind, SKU, and network of the service, but if tasks are
-     * currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
+     * Create or update DMS Service Instance
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The PATCH
+     * method updates an existing service. This method can change the kind, SKU, and network of the service, but if
+     * tasks are currently running (i.e. the service is busy), this will fail with 400 Bad Request ("ServiceIsBusy").
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1336,7 +1411,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * performs a health check and returns the status of the service and virtual machine size.
      *
      * @param groupName Name of the resource group.
@@ -1344,7 +1421,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceStatusResponseInner>> checkStatusWithResponseAsync(
@@ -1384,7 +1461,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * performs a health check and returns the status of the service and virtual machine size.
      *
      * @param groupName Name of the resource group.
@@ -1393,7 +1472,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMigrationServiceStatusResponseInner>> checkStatusWithResponseAsync(
@@ -1430,7 +1509,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * performs a health check and returns the status of the service and virtual machine size.
      *
      * @param groupName Name of the resource group.
@@ -1438,23 +1519,37 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
+     * @return service health status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMigrationServiceStatusResponseInner> checkStatusAsync(String groupName, String serviceName) {
-        return checkStatusWithResponseAsync(groupName, serviceName)
-            .flatMap(
-                (Response<DataMigrationServiceStatusResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkStatusWithResponseAsync(groupName, serviceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * performs a health check and returns the status of the service and virtual machine size.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service health status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataMigrationServiceStatusResponseInner> checkStatusWithResponse(
+        String groupName, String serviceName, Context context) {
+        return checkStatusWithResponseAsync(groupName, serviceName, context).block();
+    }
+
+    /**
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * performs a health check and returns the status of the service and virtual machine size.
      *
      * @param groupName Name of the resource group.
@@ -1466,29 +1561,13 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataMigrationServiceStatusResponseInner checkStatus(String groupName, String serviceName) {
-        return checkStatusAsync(groupName, serviceName).block();
+        return checkStatusWithResponse(groupName, serviceName, Context.NONE).getValue();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
-     * performs a health check and returns the status of the service and virtual machine size.
+     * Start service
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataMigrationServiceStatusResponseInner> checkStatusWithResponse(
-        String groupName, String serviceName, Context context) {
-        return checkStatusWithResponseAsync(groupName, serviceName, context).block();
-    }
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1496,7 +1575,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String groupName, String serviceName) {
@@ -1535,7 +1614,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1544,7 +1625,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1581,7 +1662,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1589,18 +1672,21 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String groupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(groupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1609,9 +1695,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String groupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(groupName, serviceName, context);
@@ -1621,7 +1707,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1629,15 +1717,17 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String groupName, String serviceName) {
-        return beginStartAsync(groupName, serviceName).getSyncPoller();
+        return this.beginStartAsync(groupName, serviceName).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1646,15 +1736,17 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String groupName, String serviceName, Context context) {
-        return beginStartAsync(groupName, serviceName, context).getSyncPoller();
+        return this.beginStartAsync(groupName, serviceName, context).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1662,7 +1754,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String groupName, String serviceName) {
@@ -1670,7 +1762,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1679,7 +1773,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String groupName, String serviceName, Context context) {
@@ -1687,7 +1781,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1702,7 +1798,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param groupName Name of the resource group.
@@ -1718,16 +1816,18 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String groupName, String serviceName) {
@@ -1766,9 +1866,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1776,7 +1878,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -1813,29 +1915,34 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String groupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(groupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1843,9 +1950,9 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String groupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(groupName, serviceName, context);
@@ -1855,26 +1962,30 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String groupName, String serviceName) {
-        return beginStopAsync(groupName, serviceName).getSyncPoller();
+        return this.beginStopAsync(groupName, serviceName).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1882,24 +1993,26 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String groupName, String serviceName, Context context) {
-        return beginStopAsync(groupName, serviceName, context).getSyncPoller();
+        return this.beginStopAsync(groupName, serviceName, context).getSyncPoller();
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String groupName, String serviceName) {
@@ -1907,9 +2020,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1917,7 +2032,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String groupName, String serviceName, Context context) {
@@ -1925,9 +2040,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1941,9 +2058,11 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -1958,15 +2077,17 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusSinglePageAsync(
@@ -2015,8 +2136,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -2024,7 +2147,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusSinglePageAsync(
@@ -2070,15 +2193,17 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableServiceSkuInner> listSkusAsync(String groupName, String serviceName) {
@@ -2087,8 +2212,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -2096,7 +2223,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableServiceSkuInner> listSkusAsync(String groupName, String serviceName, Context context) {
@@ -2106,15 +2233,17 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceSkuInner> listSkus(String groupName, String serviceName) {
@@ -2122,8 +2251,10 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. The skus action
-     * returns the list of SKUs that a service resource can be updated to.
+     * Get compatible SKUs
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. The skus
+     * action returns the list of SKUs that a service resource can be updated to.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -2131,7 +2262,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceSkuInner> listSkus(String groupName, String serviceName, Context context) {
@@ -2139,7 +2270,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -2147,7 +2280,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailabilityWithResponseAsync(
@@ -2193,7 +2327,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -2202,7 +2338,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityResponseInner>> nestedCheckNameAvailabilityWithResponseAsync(
@@ -2245,7 +2382,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -2253,24 +2392,39 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NameAvailabilityResponseInner> nestedCheckNameAvailabilityAsync(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
         return nestedCheckNameAvailabilityWithResponseAsync(groupName, serviceName, parameters)
-            .flatMap(
-                (Response<NameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param parameters Requested name to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NameAvailabilityResponseInner> nestedCheckNameAvailabilityWithResponse(
+        String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
+        return nestedCheckNameAvailabilityWithResponseAsync(groupName, serviceName, parameters, context).block();
+    }
+
+    /**
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -2283,36 +2437,20 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NameAvailabilityResponseInner nestedCheckNameAvailability(
         String groupName, String serviceName, NameAvailabilityRequest parameters) {
-        return nestedCheckNameAvailabilityAsync(groupName, serviceName, parameters).block();
+        return nestedCheckNameAvailabilityWithResponse(groupName, serviceName, parameters, Context.NONE).getValue();
     }
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Get services in resource group
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param parameters Requested name to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NameAvailabilityResponseInner> nestedCheckNameAvailabilityWithResponse(
-        String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
-        return nestedCheckNameAvailabilityWithResponseAsync(groupName, serviceName, parameters, context).block();
-    }
-
-    /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a resource group.
      *
      * @param groupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupSinglePageAsync(String groupName) {
@@ -2356,7 +2494,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in resource group
+     *
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a resource group.
      *
      * @param groupName Name of the resource group.
@@ -2364,7 +2504,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupSinglePageAsync(
@@ -2406,14 +2546,16 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in resource group
+     *
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a resource group.
      *
      * @param groupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listByResourceGroupAsync(String groupName) {
@@ -2423,7 +2565,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in resource group
+     *
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a resource group.
      *
      * @param groupName Name of the resource group.
@@ -2431,7 +2575,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listByResourceGroupAsync(String groupName, Context context) {
@@ -2441,14 +2585,16 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in resource group
+     *
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a resource group.
      *
      * @param groupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> listByResourceGroup(String groupName) {
@@ -2456,7 +2602,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The Services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in resource group
+     *
+     * <p>The Services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a resource group.
      *
      * @param groupName Name of the resource group.
@@ -2464,7 +2612,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> listByResourceGroup(String groupName, Context context) {
@@ -2472,12 +2620,14 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listSinglePageAsync() {
@@ -2517,14 +2667,16 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listSinglePageAsync(Context context) {
@@ -2561,12 +2713,14 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listAsync() {
@@ -2574,14 +2728,16 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMigrationServiceInner> listAsync(Context context) {
@@ -2590,12 +2746,14 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> list() {
@@ -2603,14 +2761,16 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get services in subscription
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of service resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMigrationServiceInner> list(Context context) {
@@ -2618,14 +2778,17 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * This method checks whether a proposed top-level resource name is valid and available.
+     * Check name validity and availability
+     *
+     * <p>This method checks whether a proposed top-level resource name is valid and available.
      *
      * @param location The Azure region of the operation.
      * @param parameters Requested name to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -2667,7 +2830,9 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * This method checks whether a proposed top-level resource name is valid and available.
+     * Check name validity and availability
+     *
+     * <p>This method checks whether a proposed top-level resource name is valid and available.
      *
      * @param location The Azure region of the operation.
      * @param parameters Requested name to validate.
@@ -2675,7 +2840,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -2714,31 +2880,47 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * This method checks whether a proposed top-level resource name is valid and available.
+     * Check name validity and availability
+     *
+     * <p>This method checks whether a proposed top-level resource name is valid and available.
      *
      * @param location The Azure region of the operation.
      * @param parameters Requested name to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
+     * @return indicates whether a proposed resource name is available on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NameAvailabilityResponseInner> checkNameAvailabilityAsync(
         String location, NameAvailabilityRequest parameters) {
         return checkNameAvailabilityWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<NameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * This method checks whether a proposed top-level resource name is valid and available.
+     * Check name validity and availability
+     *
+     * <p>This method checks whether a proposed top-level resource name is valid and available.
+     *
+     * @param location The Azure region of the operation.
+     * @param parameters Requested name to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
+        String location, NameAvailabilityRequest parameters, Context context) {
+        return checkNameAvailabilityWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Check name validity and availability
+     *
+     * <p>This method checks whether a proposed top-level resource name is valid and available.
      *
      * @param location The Azure region of the operation.
      * @param parameters Requested name to validate.
@@ -2749,34 +2931,18 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NameAvailabilityResponseInner checkNameAvailability(String location, NameAvailabilityRequest parameters) {
-        return checkNameAvailabilityAsync(location, parameters).block();
-    }
-
-    /**
-     * This method checks whether a proposed top-level resource name is valid and available.
-     *
-     * @param location The Azure region of the operation.
-     * @param parameters Requested name to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityRequest parameters, Context context) {
-        return checkNameAvailabilityWithResponseAsync(location, parameters, context).block();
+        return checkNameAvailabilityWithResponse(location, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusNextSinglePageAsync(String nextLink) {
@@ -2807,12 +2973,13 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of available SKUs.
+     * @return oData page of available SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceSkuInner>> listSkusNextSinglePageAsync(
@@ -2844,11 +3011,12 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2880,12 +3048,13 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listByResourceGroupNextSinglePageAsync(
@@ -2917,11 +3086,12 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2952,12 +3122,13 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of service objects.
+     * @return oData page of service objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMigrationServiceInner>> listNextSinglePageAsync(String nextLink, Context context) {

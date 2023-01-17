@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that contains details of encryption used on the workspace. */
 @Fluent
 public final class WorkspaceEncryptionParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceEncryptionParameter.class);
-
     /*
      * The type of variable that this is
      */
@@ -25,6 +21,10 @@ public final class WorkspaceEncryptionParameter {
      */
     @JsonProperty(value = "value")
     private Encryption value;
+
+    /** Creates an instance of WorkspaceEncryptionParameter class. */
+    public WorkspaceEncryptionParameter() {
+    }
 
     /**
      * Get the type property: The type of variable that this is.

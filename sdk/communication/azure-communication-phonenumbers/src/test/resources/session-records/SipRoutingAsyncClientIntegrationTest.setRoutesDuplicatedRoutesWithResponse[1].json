@@ -3,21 +3,21 @@
     "Method" : "PATCH",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f3ca7b55-f42d-4221-9d51-25c9171232d2",
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "18ff0135-ba48-484e-9c39-36081f7dc5c1",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "19ms",
-      "MS-CV" : "eOuFBTOZvEK+vyKpt+N1BA.0",
+      "X-Processing-Time" : "44ms",
+      "MS-CV" : "UNj2887Ts0+vDE3Q4g60QQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0+YTZYgAAAAAwTnbjbVvkSbRjOA9HnDysUFJHMDFFREdFMDkxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0maOkYwAAAADfft1RZDAuTZdRpkcXRL8WTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"DuplicatedRoute\",\"message\":\"There is a duplicated route.\"}}}",
-      "Date" : "Thu, 21 Jul 2022 16:55:21 GMT",
+      "Date" : "Thu, 22 Dec 2022 18:36:09 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedDatabases Delete. */
 public final class ManagedDatabasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseDelete.json
      */
     /**
      * Sample code: Delete managed database.

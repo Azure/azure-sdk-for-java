@@ -23,10 +23,9 @@ import com.azure.resourcemanager.datadog.models.DatadogSetPasswordLink;
 import com.azure.resourcemanager.datadog.models.LinkedResource;
 import com.azure.resourcemanager.datadog.models.MonitoredResource;
 import com.azure.resourcemanager.datadog.models.Monitors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MonitorsImpl implements Monitors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MonitorsImpl.class);
 
     private final MonitorsClient innerClient;
 
@@ -49,15 +48,6 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new DatadogApiKeyImpl(inner1, this.manager()));
     }
 
-    public DatadogApiKey getDefaultKey(String resourceGroupName, String monitorName) {
-        DatadogApiKeyInner inner = this.serviceClient().getDefaultKey(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new DatadogApiKeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DatadogApiKey> getDefaultKeyWithResponse(
         String resourceGroupName, String monitorName, Context context) {
         Response<DatadogApiKeyInner> inner =
@@ -73,13 +63,22 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
-    public void setDefaultKey(String resourceGroupName, String monitorName) {
-        this.serviceClient().setDefaultKey(resourceGroupName, monitorName);
+    public DatadogApiKey getDefaultKey(String resourceGroupName, String monitorName) {
+        DatadogApiKeyInner inner = this.serviceClient().getDefaultKey(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new DatadogApiKeyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> setDefaultKeyWithResponse(
         String resourceGroupName, String monitorName, DatadogApiKeyInner body, Context context) {
         return this.serviceClient().setDefaultKeyWithResponse(resourceGroupName, monitorName, body, context);
+    }
+
+    public void setDefaultKey(String resourceGroupName, String monitorName) {
+        this.serviceClient().setDefaultKey(resourceGroupName, monitorName);
     }
 
     public PagedIterable<DatadogHost> listHosts(String resourceGroupName, String monitorName) {
@@ -139,15 +138,6 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new DatadogMonitorResourceImpl(inner1, this.manager()));
     }
 
-    public DatadogMonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {
-        DatadogMonitorResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new DatadogMonitorResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DatadogMonitorResource> getByResourceGroupWithResponse(
         String resourceGroupName, String monitorName, Context context) {
         Response<DatadogMonitorResourceInner> inner =
@@ -163,21 +153,21 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
+    public DatadogMonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {
+        DatadogMonitorResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new DatadogMonitorResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String monitorName) {
         this.serviceClient().delete(resourceGroupName, monitorName);
     }
 
     public void delete(String resourceGroupName, String monitorName, Context context) {
         this.serviceClient().delete(resourceGroupName, monitorName, context);
-    }
-
-    public DatadogSetPasswordLink refreshSetPasswordLink(String resourceGroupName, String monitorName) {
-        DatadogSetPasswordLinkInner inner = this.serviceClient().refreshSetPasswordLink(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new DatadogSetPasswordLinkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DatadogSetPasswordLink> refreshSetPasswordLinkWithResponse(
@@ -195,10 +185,19 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
+    public DatadogSetPasswordLink refreshSetPasswordLink(String resourceGroupName, String monitorName) {
+        DatadogSetPasswordLinkInner inner = this.serviceClient().refreshSetPasswordLink(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new DatadogSetPasswordLinkImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DatadogMonitorResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,7 +205,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -217,7 +216,7 @@ public final class MonitorsImpl implements Monitors {
     public Response<DatadogMonitorResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -225,7 +224,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -236,7 +235,7 @@ public final class MonitorsImpl implements Monitors {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -244,7 +243,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -255,7 +254,7 @@ public final class MonitorsImpl implements Monitors {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -263,7 +262,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));

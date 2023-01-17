@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 12.3.7 (2023-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` dependency to `1.35.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.8`.
+
 ## 12.3.6 (2022-11-08)
 
 ### Other Changes

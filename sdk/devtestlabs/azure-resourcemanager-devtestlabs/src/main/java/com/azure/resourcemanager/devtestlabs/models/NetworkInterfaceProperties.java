@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a network interface. */
 @Fluent
 public final class NetworkInterfaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceProperties.class);
-
     /*
      * The resource ID of the virtual network.
      */
@@ -51,25 +47,27 @@ public final class NetworkInterfaceProperties {
     private String dnsName;
 
     /*
-     * The RdpAuthority property is a server DNS host name or IP address
-     * followed by the service port number for RDP (Remote Desktop Protocol).
+     * The RdpAuthority property is a server DNS host name or IP address followed by the service port number for RDP
+     * (Remote Desktop Protocol).
      */
     @JsonProperty(value = "rdpAuthority")
     private String rdpAuthority;
 
     /*
-     * The SshAuthority property is a server DNS host name or IP address
-     * followed by the service port number for SSH.
+     * The SshAuthority property is a server DNS host name or IP address followed by the service port number for SSH.
      */
     @JsonProperty(value = "sshAuthority")
     private String sshAuthority;
 
     /*
-     * The configuration for sharing a public IP address across multiple
-     * virtual machines.
+     * The configuration for sharing a public IP address across multiple virtual machines.
      */
     @JsonProperty(value = "sharedPublicIpAddressConfiguration")
     private SharedPublicIpAddressConfiguration sharedPublicIpAddressConfiguration;
+
+    /** Creates an instance of NetworkInterfaceProperties class. */
+    public NetworkInterfaceProperties() {
+    }
 
     /**
      * Get the virtualNetworkId property: The resource ID of the virtual network.

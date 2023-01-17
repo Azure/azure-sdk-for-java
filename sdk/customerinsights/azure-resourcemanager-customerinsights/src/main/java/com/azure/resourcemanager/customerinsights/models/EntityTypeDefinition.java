@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,11 +13,9 @@ import java.util.Map;
 /** Describes an entity. */
 @Fluent
 public class EntityTypeDefinition extends MetadataDefinitionBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityTypeDefinition.class);
-
     /*
-     * The api entity set name. This becomes the odata entity set name for the
-     * entity Type being referred in this object.
+     * The api entity set name. This becomes the odata entity set name for the entity Type being referred in this
+     * object.
      */
     @JsonProperty(value = "apiEntitySetName")
     private String apiEntitySetName;
@@ -55,8 +51,7 @@ public class EntityTypeDefinition extends MetadataDefinitionBase {
     private ProvisioningStates provisioningState;
 
     /*
-     * The schema org link. This helps ACI identify and suggest semantic
-     * models.
+     * The schema org link. This helps ACI identify and suggest semantic models.
      */
     @JsonProperty(value = "schemaItemTypeLink")
     private String schemaItemTypeLink;
@@ -68,8 +63,7 @@ public class EntityTypeDefinition extends MetadataDefinitionBase {
     private String tenantId;
 
     /*
-     * The timestamp property name. Represents the time when the interaction or
-     * profile update happened.
+     * The timestamp property name. Represents the time when the interaction or profile update happened.
      */
     @JsonProperty(value = "timestampFieldName")
     private String timestampFieldName;
@@ -79,6 +73,10 @@ public class EntityTypeDefinition extends MetadataDefinitionBase {
      */
     @JsonProperty(value = "typeName")
     private String typeName;
+
+    /** Creates an instance of EntityTypeDefinition class. */
+    public EntityTypeDefinition() {
+    }
 
     /**
      * Get the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the entity

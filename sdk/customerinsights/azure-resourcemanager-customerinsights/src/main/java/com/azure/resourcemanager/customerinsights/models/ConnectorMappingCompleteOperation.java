@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The complete operation. */
 @Fluent
 public final class ConnectorMappingCompleteOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingCompleteOperation.class);
-
     /*
      * The type of completion operation.
      */
@@ -21,11 +17,14 @@ public final class ConnectorMappingCompleteOperation {
     private CompletionOperationTypes completionOperationType;
 
     /*
-     * The destination folder where files will be moved to once the import is
-     * done.
+     * The destination folder where files will be moved to once the import is done.
      */
     @JsonProperty(value = "destinationFolder")
     private String destinationFolder;
+
+    /** Creates an instance of ConnectorMappingCompleteOperation class. */
+    public ConnectorMappingCompleteOperation() {
+    }
 
     /**
      * Get the completionOperationType property: The type of completion operation.

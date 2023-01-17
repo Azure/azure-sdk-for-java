@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobExecutionLifecycle. */
+/** The detailed state of the job execution. */
 public final class JobExecutionLifecycle extends ExpandableStringEnum<JobExecutionLifecycle> {
     /** Static value Created for JobExecutionLifecycle. */
     public static final JobExecutionLifecycle CREATED = fromString("Created");

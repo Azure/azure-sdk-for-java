@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.SharesClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.ShareInner;
 import com.azure.resourcemanager.databoxedge.models.Share;
 import com.azure.resourcemanager.databoxedge.models.Shares;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SharesImpl implements Shares {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SharesImpl.class);
 
     private final SharesClient innerClient;
 
@@ -39,15 +38,6 @@ public final class SharesImpl implements Shares {
         return Utils.mapPage(inner, inner1 -> new ShareImpl(inner1, this.manager()));
     }
 
-    public Share get(String deviceName, String name, String resourceGroupName) {
-        ShareInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
-        if (inner != null) {
-            return new ShareImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Share> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
         Response<ShareInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
         if (inner != null) {
@@ -56,6 +46,15 @@ public final class SharesImpl implements Shares {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ShareImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Share get(String deviceName, String name, String resourceGroupName) {
+        ShareInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
+        if (inner != null) {
+            return new ShareImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,7 +79,7 @@ public final class SharesImpl implements Shares {
     public Share getById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,14 +88,14 @@ public final class SharesImpl implements Shares {
         }
         String name = Utils.getValueFromIdByName(id, "shares");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'shares'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class SharesImpl implements Shares {
     public Response<Share> getByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,14 +116,14 @@ public final class SharesImpl implements Shares {
         }
         String name = Utils.getValueFromIdByName(id, "shares");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'shares'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class SharesImpl implements Shares {
     public void deleteById(String id) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,14 +144,14 @@ public final class SharesImpl implements Shares {
         }
         String name = Utils.getValueFromIdByName(id, "shares");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'shares'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class SharesImpl implements Shares {
     public void deleteByIdWithResponse(String id, Context context) {
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,14 +172,14 @@ public final class SharesImpl implements Shares {
         }
         String name = Utils.getValueFromIdByName(id, "shares");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'shares'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

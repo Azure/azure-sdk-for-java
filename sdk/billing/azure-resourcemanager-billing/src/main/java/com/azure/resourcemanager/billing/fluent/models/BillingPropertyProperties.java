@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.BillingProfileSpendingLimit;
 import com.azure.resourcemanager.billing.models.BillingProfileStatus;
 import com.azure.resourcemanager.billing.models.BillingProfileStatusReasonCode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The billing property. */
 @Fluent
 public final class BillingPropertyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPropertyProperties.class);
-
     /*
-     * The email address on which the account admin gets all Azure
-     * notifications.
+     * The email address on which the account admin gets all Azure notifications.
      */
     @JsonProperty(value = "accountAdminNotificationEmailAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String accountAdminNotificationEmailAddress;
@@ -119,6 +114,10 @@ public final class BillingPropertyProperties {
      */
     @JsonProperty(value = "skuDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String skuDescription;
+
+    /** Creates an instance of BillingPropertyProperties class. */
+    public BillingPropertyProperties() {
+    }
 
     /**
      * Get the accountAdminNotificationEmailAddress property: The email address on which the account admin gets all

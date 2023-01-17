@@ -20,6 +20,15 @@ public final class Caching extends ExpandableStringEnum<Caching> {
     public static final Caching READ_WRITE = fromString("ReadWrite");
 
     /**
+     * Creates a new instance of Caching value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Caching() {
+    }
+
+    /**
      * Creates or finds a Caching from its string representation.
      *
      * @param name a name to look for.

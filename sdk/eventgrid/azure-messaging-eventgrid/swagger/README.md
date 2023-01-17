@@ -191,6 +191,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -200,30 +201,29 @@ import java.util.stream.Collectors;
  */
 public class EventGridCustomization extends Customization {
 
-    private static final String SYSTEM_EVENT_CLASS_HEADER = "// Copyright (c) Microsoft Corporation. All rights reserved.\n" +
-        "// Licensed under the MIT License.\n" +
-        "\n" +
-        "package com.azure.messaging.eventgrid.implementation;\n\n";
+    private static final String SYSTEM_EVENT_CLASS_HEADER = "// Copyright (c) Microsoft Corporation. All rights reserved." + System.lineSeparator() +
+        "// Licensed under the MIT License." + System.lineSeparator() + System.lineSeparator() +
+        "package com.azure.messaging.eventgrid;" + System.lineSeparator() + System.lineSeparator();
 
-    private static final String CLASS_DEF = "/**\n" +
-        " * This class contains a number of constants that correspond to the value of {@code eventType} of {@link EventGridEvent}s\n" +
-        " * and {@code type} of {@link CloudEvent}s, when the event originated from an Azure service. This list should be\n" +
-        " * updated with all the service event strings. It also contains a mapping from each service event string to the\n" +
-        " * model class that the event string corresponds to in the {@code data} field, which is used to automatically deserialize\n" +
-        " * system events by their known string.\n" +
-        " */\n" +
-        "public final class SystemEventMappingNames {\n";
+    private static final String CLASS_DEF = "/**" + System.lineSeparator() +
+        " * This class contains a number of constants that correspond to the value of {@code eventType} of {@link EventGridEvent}s" + System.lineSeparator() +
+        " * and {@code type} of {@link CloudEvent}s, when the event originated from an Azure service. This list should be" + System.lineSeparator() +
+        " * updated with all the service event strings. It also contains a mapping from each service event string to the" + System.lineSeparator() +
+        " * model class that the event string corresponds to in the {@code data} field, which is used to automatically deserialize" + System.lineSeparator() +
+        " * system events by their known string." + System.lineSeparator() +
+        " */" + System.lineSeparator() +
+        "public final class SystemEventNames {" + System.lineSeparator();
 
-    private static final String PRIVATE_CTOR = "/**\n" +
-        "     * Get a mapping of all the system event type strings to their respective class. This is used by default in\n" +
-        "     * the {@link EventGridEvent} and {@link CloudEvent} classes.\n" +
-        "     * @return a mapping of all the system event strings to system event objects.\n" +
-        "     */\n" +
-        "    public static Map<String, Class<?>> getSystemEventMappings() {\n" +
-        "        return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);\n" +
-        "    }\n" +
-        "\n" +
-        "    private SystemEventMappingNames() { \n" +
+    private static final String PRIVATE_CTOR = "/**" + System.lineSeparator() +
+        "     * Get a mapping of all the system event type strings to their respective class. This is used by default in" + System.lineSeparator() +
+        "     * the {@link EventGridEvent} and {@link CloudEvent} classes." + System.lineSeparator() +
+        "     * @return a mapping of all the system event strings to system event objects." + System.lineSeparator() +
+        "     */" + System.lineSeparator() +
+        "    public static Map<String, Class<?>> getSystemEventMappings() {" + System.lineSeparator() +
+        "        return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);" + System.lineSeparator() +
+        "    }" + System.lineSeparator() +
+        System.lineSeparator()  +
+        "    private SystemEventNames() { " + System.lineSeparator() +
         "    }";
 
     @Override
@@ -263,7 +263,7 @@ public class EventGridCustomization extends Customization {
                 int endIndex = classCustomization.getJavadoc().getDescription().indexOf(" ", startIndex);
                 String eventName = classCustomization.getJavadoc().getDescription().substring(startIndex, endIndex);
                 String className = classCustomization.getClassName();
-                String constantName = getConstantName(className.replace("EventData", ""));
+                String constantName = getReplacementName(getConstantName(className.replace("EventData", "")));
 
                 constantNameMap.put(className, constantName);
                 nameMap.put(className, eventName);
@@ -278,49 +278,127 @@ public class EventGridCustomization extends Customization {
         Collections.sort(imports);
         sb.append(SYSTEM_EVENT_CLASS_HEADER);
 
-        sb.append("import com.azure.core.models.CloudEvent;\n");
-        sb.append("import com.azure.messaging.eventgrid.EventGridEvent;\n");
-        sb.append("import java.util.Collections;\n");
-        sb.append("import java.util.HashMap;\n");
-        sb.append("import java.util.Map;\n");
-
+        sb.append("import com.azure.core.models.CloudEvent;");
+        sb.append(System.lineSeparator());
+        sb.append("import com.azure.messaging.eventgrid.EventGridEvent;");
+        sb.append(System.lineSeparator());
+        sb.append("import java.util.Collections;");
+        sb.append(System.lineSeparator());
+        sb.append("import java.util.HashMap;");
+        sb.append(System.lineSeparator());
+        sb.append("import java.util.Map;");
+        sb.append(System.lineSeparator());
+        // these two imports are for deprecated events.
+        sb.append("import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;");
+        sb.append(System.lineSeparator());
+        sb.append("import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;");
+        sb.append(System.lineSeparator());
         for (String className : imports) {
-            sb.append("import com.azure.messaging.eventgrid.systemevents." + className + ";\n");
+            sb.append("import com.azure.messaging.eventgrid.systemevents." + className + ";");
+            sb.append(System.lineSeparator());
         }
         sb.append(CLASS_DEF);
 
         for (String className : imports) {
-            sb.append("/**\n");
-            sb.append("* " + descriptionMap.get(className) + "\n");
-            sb.append("*/\n");
+            sb.append("/**");
+            sb.append(System.lineSeparator());
+            sb.append("* " + descriptionMap.get(className));
+            sb.append(System.lineSeparator());
+            sb.append("*/");
+            sb.append(System.lineSeparator());
             sb.append("public static final String " + constantNameMap.get(className) + " = \"" + nameMap.get(className) +
-                "\";\n\n");
+                "\";");
+            sb.append(System.lineSeparator());
+            sb.append(System.lineSeparator());
         }
+        // Add deprecated events
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated This event does not exist.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatMemberAddedToThreadWithUser\";");
+        sb.append(System.lineSeparator());
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated This event does not exist.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatMemberRemovedFromThreadWithUser\";");
+        sb.append(System.lineSeparator());
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatThreadParticipantRemoved\";");
+        sb.append(System.lineSeparator());
+
+        sb.append("/**");
+        sb.append(System.lineSeparator());
+        sb.append(" * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER}.");
+        sb.append(System.lineSeparator());
+        sb.append(" */");
+        sb.append(System.lineSeparator());
+        sb.append("@Deprecated");
+        sb.append(System.lineSeparator());
+        sb.append("public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER =");
+        sb.append(System.lineSeparator());
+        sb.append("\"Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser\";");
+        sb.append(System.lineSeparator());
 
         sb.append("private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>()" +
-            " {{\n");
+            " {{");
+        sb.append(System.lineSeparator());
 
         for (String className : imports) {
-            sb.append("put(" + constantNameMap.get(className) + ", " + classMap.get(className) + ");\n");
+            sb.append("put(" + constantNameMap.get(className) + ", " + classMap.get(className) + ");");
+            sb.append(System.lineSeparator());
         }
-        sb.append("}\n};\n");
+        sb.append("put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);");
+        sb.append(System.lineSeparator());
+        sb.append("put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER, AcsChatParticipantRemovedFromThreadWithUserEventData.class);");
+        sb.append(System.lineSeparator());
+        sb.append("put(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER, AcsChatMemberAddedToThreadWithUserEventData.class);");
+        sb.append(System.lineSeparator());
+        sb.append("put(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER, AcsChatMemberRemovedFromThreadWithUserEventData.class);");
+        sb.append(System.lineSeparator());
+        sb.append("}};");
+        sb.append(System.lineSeparator());
 
         sb.append(PRIVATE_CTOR);
 
-        sb.append("}\n");
+        sb.append("}"); 
+        sb.append(System.lineSeparator());
         logger.info("Total number of events " + eventData.size());
         logger.info("Total number of events with proper description " + validEventDescription.size());
 
         customization.getRawEditor()
-            .addFile("src/main/java/com/azure/messaging/eventgrid/implementation/SystemEventMappingNames.java", sb.toString());
+        .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", sb.toString());
 
-        replaceClassAnnotation(customization);
+        
         customizeMediaJobOutputAsset(customization);
         customizeStorageDirectoryDeletedEventData(customization);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization);
         customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(customization);
         customizeMediaLiveEventIngestHeartbeatEventData(customization);
         customizeResourceEvents(customization, logger);
+        customizeEventGridClientImplImports(customization);
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -466,48 +544,6 @@ public class EventGridCustomization extends Customization {
         packageModels.getClass("MediaJobOutputAsset").setModifier(Modifier.PUBLIC | Modifier.FINAL);
     }
     
-    public void replaceClassAnnotation(LibraryCustomization customization) {
-        // HealthcareFhirResource events
-        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
-        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable");
-        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable");
-        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable");
-        // Communication events
-        packageModels.getClass("AcsUserDisconnectedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        // Api Management events
-        packageModels.getClass("ApiManagementApiCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiReleaseCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiReleaseDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiReleaseUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementProductCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementProductDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementProductUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementSubscriptionCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementSubscriptionDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementSubscriptionUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementUserCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementUserDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementUserUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-    }
-    
     public static String getConstantName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return name;
@@ -537,6 +573,66 @@ public class EventGridCustomization extends Customization {
             }
         }
         return result.toUpperCase();
+    }
+
+    public void customizeEventGridClientImplImports(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.implementation");
+        ClassCustomization classCustomization = packageModels.getClass("EventGridPublisherClientImpl");
+    
+        classCustomization.customizeAst(comp -> {
+            comp.getImports().removeIf(p -> {
+                return p.getNameAsString().equals("com.azure.messaging.eventgrid.implementation.models.CloudEvent");
+            });
+            comp.addImport("com.azure.core.models.CloudEvent");
+        });
+
+    }
+
+    private static final Map<String, String> replacementNames = new HashMap<String,String>() {
+        {
+            put("ACS_CHAT_MESSAGE_DELETED","COMMUNICATION_CHAT_MESSAGE_DELETED");
+            put("ACS_CHAT_MESSAGE_DELETED_IN_THREAD","COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD");
+            put("ACS_CHAT_MESSAGE_EDITED","COMMUNICATION_CHAT_MESSAGE_EDITED");
+            put("ACS_CHAT_MESSAGE_EDITED_IN_THREAD","COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD");
+            put("ACS_CHAT_MESSAGE_RECEIVED","COMMUNICATION_CHAT_MESSAGE_RECEIVED");
+            put("ACS_CHAT_MESSAGE_RECEIVED_IN_THREAD","COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD");
+            put("ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD","COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD");
+            put("ACS_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER","COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER");
+            put("ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD","COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD");
+            put("ACS_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER","COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER");
+            put("ACS_CHAT_THREAD_CREATED","COMMUNICATION_CHAT_THREAD_CREATED");
+            put("ACS_CHAT_THREAD_CREATED_WITH_USER","COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER");
+            put("ACS_CHAT_THREAD_DELETED","COMMUNICATION_CHAT_THREAD_DELETED");
+            put("ACS_CHAT_THREAD_PROPERTIES_UPDATED","COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED");
+            put("ACS_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER","COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER");
+            put("ACS_CHAT_THREAD_WITH_USER_DELETED","COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED");
+            put("ACS_RECORDING_FILE_STATUS_UPDATED","COMMUNICATION_RECORDING_FILE_STATUS_UPDATED");
+            put("ACS_SMS_DELIVERY_REPORT_RECEIVED","COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED");
+            put("ACS_SMS_RECEIVED","COMMUNICATION_SMS_RECEIVED");
+            put("ACS_USER_DISCONNECTED","COMMUNICATION_USER_DISCONNECTED");
+            put("SUBSCRIPTION_DELETED","EVENT_GRID_SUBSCRIPTION_DELETED");
+            put("SUBSCRIPTION_VALIDATION","EVENT_GRID_SUBSCRIPTION_VALIDATION");
+            put("MACHINE_LEARNING_SERVICES_DATASET_DRIFT_DETECTED","MACHINE_LEARNING_DATASET_DRIFT_DETECTED");
+            put("MACHINE_LEARNING_SERVICES_MODEL_DEPLOYED","MACHINE_LEARNING_MODEL_DEPLOYED");
+            put("MACHINE_LEARNING_SERVICES_MODEL_REGISTERED","MACHINE_LEARNING_MODEL_REGISTERED");
+            put("MACHINE_LEARNING_SERVICES_RUN_COMPLETED","MACHINE_LEARNING_RUN_COMPLETED");
+            put("MACHINE_LEARNING_SERVICES_RUN_STATUS_CHANGED","MACHINE_LEARNING_RUN_STATUS_CHANGED");
+            put("KEY_VAULT_ACCESS_POLICY_CHANGED","KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED");
+            put("MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC","MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUTOFSYNC");
+            put("MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC","MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC");
+            put("SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS","SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION");
+            put("SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATIONS","SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION");
+            put("SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENERS","SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER");
+            put("SIGNAL_RSERVICE_CLIENT_CONNECTION_CONNECTED","SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED");
+            put("SIGNAL_RSERVICE_CLIENT_CONNECTION_DISCONNECTED","SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED");
+        }
+    };
+
+    private String getReplacementName(String name) {
+        if (replacementNames.containsKey(name)) {
+            return replacementNames.get(name);
+        }
+        return name;
     }
 }
 ```

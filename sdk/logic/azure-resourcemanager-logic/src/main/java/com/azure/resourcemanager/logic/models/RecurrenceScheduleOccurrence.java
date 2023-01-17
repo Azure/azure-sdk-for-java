@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The recurrence schedule occurrence. */
 @Fluent
 public final class RecurrenceScheduleOccurrence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecurrenceScheduleOccurrence.class);
-
     /*
      * The day of the week.
      */
@@ -25,6 +21,10 @@ public final class RecurrenceScheduleOccurrence {
      */
     @JsonProperty(value = "occurrence")
     private Integer occurrence;
+
+    /** Creates an instance of RecurrenceScheduleOccurrence class. */
+    public RecurrenceScheduleOccurrence() {
+    }
 
     /**
      * Get the day property: The day of the week.

@@ -34,6 +34,9 @@ public final class DataFlowDebugPreviewDataRequest {
     @JsonProperty(value = "rowLimits")
     private Integer rowLimits;
 
+    /** Creates an instance of DataFlowDebugPreviewDataRequest class. */
+    public DataFlowDebugPreviewDataRequest() {}
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

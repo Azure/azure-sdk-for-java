@@ -13,11 +13,10 @@ import com.azure.resourcemanager.machinelearning.models.NlpVerticalLimitSettings
 import com.azure.resourcemanager.machinelearning.models.TextClassificationMultilabel;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TextClassificationMultilabelTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TextClassificationMultilabel model =
             BinaryData
                 .fromString(
@@ -37,8 +36,8 @@ public final class TextClassificationMultilabelTests {
         Assertions.assertEquals("grdcgubsrtmdy", model.validationData().uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TextClassificationMultilabel model =
             new TextClassificationMultilabel()
                 .withLogVerbosity(LogVerbosity.WARNING)

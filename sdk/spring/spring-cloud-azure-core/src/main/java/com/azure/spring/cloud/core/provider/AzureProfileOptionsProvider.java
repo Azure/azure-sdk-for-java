@@ -184,10 +184,17 @@ public interface AzureProfileOptionsProvider {
         String getAzureApplicationInsightsEndpoint();
 
         /**
+         * @return the domain name of Service Bus.
+         */
+        String getServiceBusDomainName();
+
+        /**
          * Get the AzureEnvironment from {@link com.azure.core.management.AzureEnvironment}.
          * @param environment the azure core AzureEnvironment.
          * @return the AzureEnvironment implementation.
+         * @deprecated deprecate the dependency on {@link com.azure.core.management.AzureEnvironment}.
          */
+        @Deprecated
         AzureEnvironmentOptions fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment);
 
         /**

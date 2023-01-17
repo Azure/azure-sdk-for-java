@@ -26,6 +26,15 @@ public final class ModelSize extends ExpandableStringEnum<ModelSize> {
     public static final ModelSize EXTRA_LARGE = fromString("ExtraLarge");
 
     /**
+     * Creates a new instance of ModelSize value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ModelSize() {
+    }
+
+    /**
      * Creates or finds a ModelSize from its string representation.
      *
      * @param name a name to look for.

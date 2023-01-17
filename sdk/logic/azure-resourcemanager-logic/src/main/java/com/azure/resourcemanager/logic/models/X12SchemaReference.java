@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 schema reference. */
 @Fluent
 public final class X12SchemaReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12SchemaReference.class);
-
     /*
      * The message id.
      */
@@ -37,6 +34,10 @@ public final class X12SchemaReference {
      */
     @JsonProperty(value = "schemaName", required = true)
     private String schemaName;
+
+    /** Creates an instance of X12SchemaReference class. */
+    public X12SchemaReference() {
+    }
 
     /**
      * Get the messageId property: The message id.
@@ -125,20 +126,22 @@ public final class X12SchemaReference {
      */
     public void validate() {
         if (messageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property messageId in model X12SchemaReference"));
         }
         if (schemaVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaVersion in model X12SchemaReference"));
         }
         if (schemaName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property schemaName in model X12SchemaReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12SchemaReference.class);
 }

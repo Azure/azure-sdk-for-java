@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The workflow run action correlation properties. */
 @Fluent
 public final class RunActionCorrelation extends RunCorrelation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunActionCorrelation.class);
-
     /*
      * The action tracking identifier.
      */
     @JsonProperty(value = "actionTrackingId")
     private String actionTrackingId;
+
+    /** Creates an instance of RunActionCorrelation class. */
+    public RunActionCorrelation() {
+    }
 
     /**
      * Get the actionTrackingId property: The action tracking identifier.

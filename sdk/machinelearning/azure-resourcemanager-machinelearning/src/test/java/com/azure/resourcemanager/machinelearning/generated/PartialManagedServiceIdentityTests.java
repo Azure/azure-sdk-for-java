@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.PartialManagedServiceIde
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialManagedServiceIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PartialManagedServiceIdentity model =
             BinaryData
                 .fromString("{\"type\":\"None\",\"userAssignedIdentities\":{\"dtmhrkwofyyvoqa\":\"dataibahwflus\"}}")
@@ -22,8 +21,8 @@ public final class PartialManagedServiceIdentityTests {
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PartialManagedServiceIdentity model =
             new PartialManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.NONE)

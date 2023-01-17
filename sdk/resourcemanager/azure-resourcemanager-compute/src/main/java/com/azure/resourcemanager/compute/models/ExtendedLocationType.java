@@ -14,6 +14,15 @@ public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLoc
     public static final ExtendedLocationType EDGE_ZONE = fromString("EdgeZone");
 
     /**
+     * Creates a new instance of ExtendedLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtendedLocationType() {
+    }
+
+    /**
      * Creates or finds a ExtendedLocationType from its string representation.
      *
      * @param name a name to look for.

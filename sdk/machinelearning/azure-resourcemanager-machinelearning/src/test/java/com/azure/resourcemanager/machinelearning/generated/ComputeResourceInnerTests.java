@@ -15,15 +15,14 @@ import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"principalId\":\"a3042893-f595-483d-8d13-b8f8fa8569c6\",\"tenantId\":\"5f2bfd89-eabb-4504-9884-a468d0ad70e9\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"idokgjlj\":{\"principalId\":\"abdcd1f6-cbab-49a8-9041-0db070881b3b\",\"clientId\":\"d91f8efc-2334-4d63-98ed-897009bf02d2\"}}},\"location\":\"xgvcl\",\"tags\":{\"bijhtxfvgxbf\":\"sncghkjeszz\",\"ec\":\"mxnehmp\",\"gr\":\"godebfqkkrbmpu\"},\"sku\":{\"name\":\"flz\",\"tier\":\"Standard\",\"size\":\"zpuzycisp\",\"family\":\"zahmgkbrpyydhibn\",\"capacity\":2043148337},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"kadrgvt\",\"provisioningState\":\"Unknown\",\"description\":\"buynhijggm\",\"createdOn\":\"2021-03-31T00:28:57Z\",\"modifiedOn\":\"2021-01-01T18:17:26Z\",\"resourceId\":\"rbu\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":true},\"id\":\"zzmhjrunmpxttd\",\"name\":\"hrbnlankxmyskpbh\",\"type\":\"nbtkcxywnytnr\"}")
+                    "{\"identity\":{\"principalId\":\"7fba71ed-02a3-4dcb-81fc-4ba57769d9aa\",\"tenantId\":\"e70fe5bc-d75a-4541-bc8f-32e7904dcaaf\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"idokgjlj\":{\"principalId\":\"94a7d9af-e519-4c92-87c2-8418a856bc2c\",\"clientId\":\"29eb96fc-b273-4899-963f-bd7b5e463024\"}}},\"location\":\"xgvcl\",\"tags\":{\"bijhtxfvgxbf\":\"sncghkjeszz\",\"ec\":\"mxnehmp\",\"gr\":\"godebfqkkrbmpu\"},\"sku\":{\"name\":\"flz\",\"tier\":\"Standard\",\"size\":\"zpuzycisp\",\"family\":\"zahmgkbrpyydhibn\",\"capacity\":2043148337},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"kadrgvt\",\"provisioningState\":\"Unknown\",\"description\":\"buynhijggm\",\"createdOn\":\"2021-03-31T00:28:57Z\",\"modifiedOn\":\"2021-01-01T18:17:26Z\",\"resourceId\":\"rbu\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":true},\"id\":\"zzmhjrunmpxttd\",\"name\":\"hrbnlankxmyskpbh\",\"type\":\"nbtkcxywnytnr\"}")
                 .toObject(ComputeResourceInner.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("xgvcl", model.location());
@@ -39,8 +38,8 @@ public final class ComputeResourceInnerTests {
         Assertions.assertEquals(true, model.properties().disableLocalAuth());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeResourceInner model =
             new ComputeResourceInner()
                 .withIdentity(

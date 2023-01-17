@@ -7,7 +7,7 @@ package com.azure.resourcemanager.azurearcdata.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Infrastructure. */
+/** The infrastructure the data controller is running on. */
 public enum Infrastructure {
     /** Enum value azure. */
     AZURE("azure"),
@@ -42,6 +42,9 @@ public enum Infrastructure {
      */
     @JsonCreator
     public static Infrastructure fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Infrastructure[] items = Infrastructure.values();
         for (Infrastructure item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum Infrastructure {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

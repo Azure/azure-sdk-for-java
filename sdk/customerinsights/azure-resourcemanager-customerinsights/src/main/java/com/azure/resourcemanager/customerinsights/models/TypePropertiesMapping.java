@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metadata for a Link's property mapping. */
 @Fluent
 public final class TypePropertiesMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TypePropertiesMapping.class);
-
     /*
      * Property name on the source Entity Type.
      */
@@ -31,6 +28,10 @@ public final class TypePropertiesMapping {
      */
     @JsonProperty(value = "linkType")
     private LinkTypes linkType;
+
+    /** Creates an instance of TypePropertiesMapping class. */
+    public TypePropertiesMapping() {
+    }
 
     /**
      * Get the sourcePropertyName property: Property name on the source Entity Type.
@@ -99,16 +100,18 @@ public final class TypePropertiesMapping {
      */
     public void validate() {
         if (sourcePropertyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourcePropertyName in model TypePropertiesMapping"));
         }
         if (targetPropertyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetPropertyName in model TypePropertiesMapping"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TypePropertiesMapping.class);
 }

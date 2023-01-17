@@ -34,6 +34,9 @@ public final class SsisObjectMetadataStatusResponse {
     @JsonProperty(value = "error")
     private String error;
 
+    /** Creates an instance of SsisObjectMetadataStatusResponse class. */
+    public SsisObjectMetadataStatusResponse() {}
+
     /**
      * Get the status property: The status of the operation.
      *

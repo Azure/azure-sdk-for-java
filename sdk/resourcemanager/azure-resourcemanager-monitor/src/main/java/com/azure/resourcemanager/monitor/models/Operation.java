@@ -22,6 +22,10 @@ public final class Operation {
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
+    /** Creates an instance of Operation class. */
+    public Operation() {
+    }
+
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
      *

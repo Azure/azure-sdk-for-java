@@ -20,6 +20,15 @@ public final class AvailabilitySetSkuTypes extends ExpandableStringEnum<Availabi
     public static final AvailabilitySetSkuTypes ALIGNED = fromString("Aligned");
 
     /**
+     * Creates a new instance of AvailabilitySetSkuTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvailabilitySetSkuTypes() {
+    }
+
+    /**
      * Creates or finds a AvailabilitySetSkuTypes from its string representation.
      *
      * @param name a name to look for.

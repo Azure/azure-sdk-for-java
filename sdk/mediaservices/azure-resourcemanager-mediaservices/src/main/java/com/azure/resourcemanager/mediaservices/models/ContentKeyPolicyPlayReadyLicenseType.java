@@ -21,6 +21,15 @@ public final class ContentKeyPolicyPlayReadyLicenseType
     public static final ContentKeyPolicyPlayReadyLicenseType PERSISTENT = fromString("Persistent");
 
     /**
+     * Creates a new instance of ContentKeyPolicyPlayReadyLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentKeyPolicyPlayReadyLicenseType() {
+    }
+
+    /**
      * Creates or finds a ContentKeyPolicyPlayReadyLicenseType from its string representation.
      *
      * @param name a name to look for.

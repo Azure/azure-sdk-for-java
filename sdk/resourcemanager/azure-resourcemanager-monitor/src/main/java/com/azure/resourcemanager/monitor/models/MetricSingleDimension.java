@@ -23,6 +23,10 @@ public final class MetricSingleDimension {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of MetricSingleDimension class. */
+    public MetricSingleDimension() {
+    }
+
     /**
      * Get the name property: Name of the dimension.
      *

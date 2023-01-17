@@ -16,12 +16,14 @@ public interface Relationships {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified relationship.
+     * @return information about the specified relationship along with {@link Response}.
      */
-    RelationshipResourceFormat get(String resourceGroupName, String hubName, String relationshipName);
+    Response<RelationshipResourceFormat> getWithResponse(
+        String resourceGroupName, String hubName, String relationshipName, Context context);
 
     /**
      * Gets information about the specified relationship.
@@ -29,14 +31,12 @@ public interface Relationships {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified relationship.
      */
-    Response<RelationshipResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipName, Context context);
+    RelationshipResourceFormat get(String resourceGroupName, String hubName, String relationshipName);
 
     /**
      * Deletes a relationship within a hub.
@@ -71,7 +71,7 @@ public interface Relationships {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationships in the hub.
+     * @return all relationships in the hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RelationshipResourceFormat> listByHub(String resourceGroupName, String hubName);
 
@@ -84,7 +84,7 @@ public interface Relationships {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationships in the hub.
+     * @return all relationships in the hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RelationshipResourceFormat> listByHub(String resourceGroupName, String hubName, Context context);
 
@@ -95,7 +95,7 @@ public interface Relationships {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified relationship.
+     * @return information about the specified relationship along with {@link Response}.
      */
     RelationshipResourceFormat getById(String id);
 
@@ -107,7 +107,7 @@ public interface Relationships {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified relationship.
+     * @return information about the specified relationship along with {@link Response}.
      */
     Response<RelationshipResourceFormat> getByIdWithResponse(String id, Context context);
 
