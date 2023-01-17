@@ -23,6 +23,8 @@ public class ListByteBufferContent extends BinaryDataContent {
     private static final AtomicReferenceFieldUpdater<ListByteBufferContent, byte[]> BYTES_UPDATER
         = AtomicReferenceFieldUpdater.newUpdater(ListByteBufferContent.class, byte[].class, "bytes");
 
+    private Long cachedLength;
+
     /**
      * Creates a new instance of {@link BinaryDataContent}.
      *
@@ -34,7 +36,10 @@ public class ListByteBufferContent extends BinaryDataContent {
     }
     @Override
     public Long getLength() {
-        return content.stream().mapToLong(Buffer::remaining).sum();
+        if (cachedLength == null) {
+            cachedLength = content.stream().mapToLong(Buffer::remaining).sum();
+        }
+        return cachedLength;
     }
 
     @Override
