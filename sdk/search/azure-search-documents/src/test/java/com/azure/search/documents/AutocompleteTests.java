@@ -49,7 +49,7 @@ public class AutocompleteTests extends SearchTestBase {
             return;
         }
 
-        searchIndexClient = setupSharedIndex(INDEX_NAME);
+        searchIndexClient = setupSharedIndex(INDEX_NAME, HOTELS_TESTS_INDEX_DATA_JSON, HOTELS_DATA_JSON);
     }
 
     @Override

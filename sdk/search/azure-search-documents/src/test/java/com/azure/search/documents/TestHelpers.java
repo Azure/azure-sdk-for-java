@@ -45,8 +45,6 @@ import java.util.function.Function;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
-import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
@@ -263,7 +261,7 @@ public final class TestHelpers {
 
     public static void waitForIndexing() {
         // Wait 2 seconds to allow index request to finish.
-        sleepIfRunningAgainstService(3000);
+        sleepIfRunningAgainstService(2000);
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
@@ -358,9 +356,9 @@ public final class TestHelpers {
         }
     }
 
-    public static SearchIndexClient setupSharedIndex(String indexName) {
+    public static SearchIndexClient setupSharedIndex(String indexName, String indexDefinition, String indexData) {
         try {
-            byte[] hotelsTestIndexDataJsonData = loadResource(HOTELS_TESTS_INDEX_DATA_JSON);
+            byte[] hotelsTestIndexDataJsonData = loadResource(indexDefinition);
             JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
             ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
 
@@ -373,7 +371,10 @@ public final class TestHelpers {
                 .buildClient();
 
             searchIndexClient.createOrUpdateIndex(index);
-            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
+
+            if (indexData != null) {
+                uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), indexData);
+            }
 
             return searchIndexClient;
         } catch (Throwable ex) {
