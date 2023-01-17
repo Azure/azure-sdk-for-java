@@ -62,6 +62,10 @@ public final class MachineExtensionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public MachineExtensionInner innerModel() {
         return this.innerObject;
     }

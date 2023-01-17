@@ -7,15 +7,12 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List hybrid machine operation response. */
 @Fluent
 public final class MachineListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineListResult.class);
-
     /*
      * The list of hybrid machines.
      */
@@ -23,11 +20,15 @@ public final class MachineListResult {
     private List<MachineInner> value;
 
     /*
-     * The URI to fetch the next page of Machines. Call ListNext() with this
-     * URI to fetch the next page of hybrid machines.
+     * The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of hybrid
+     * machines.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of MachineListResult class. */
+    public MachineListResult() {
+    }
 
     /**
      * Get the value property: The list of hybrid machines.
@@ -78,11 +79,13 @@ public final class MachineListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model MachineListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MachineListResult.class);
 }

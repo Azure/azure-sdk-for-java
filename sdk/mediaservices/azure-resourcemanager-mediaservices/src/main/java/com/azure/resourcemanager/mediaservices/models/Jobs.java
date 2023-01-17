@@ -58,22 +58,6 @@ public interface Jobs {
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
-     */
-    Job get(String resourceGroupName, String accountName, String transformName, String jobName);
-
-    /**
-     * Get Job
-     *
-     * <p>Gets a Job.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,9 +68,9 @@ public interface Jobs {
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Delete Job
+     * Get Job
      *
-     * <p>Deletes a Job.
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -95,8 +79,9 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job.
      */
-    void delete(String resourceGroupName, String accountName, String transformName, String jobName);
+    Job get(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
      * Delete Job
@@ -117,9 +102,9 @@ public interface Jobs {
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Cancel Job
+     * Delete Job
      *
-     * <p>Cancel a Job.
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -129,7 +114,7 @@ public interface Jobs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName);
+    void delete(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
      * Cancel Job
@@ -148,6 +133,21 @@ public interface Jobs {
      */
     Response<Void> cancelJobWithResponse(
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+
+    /**
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
      * Get Job

@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.41.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.40.0 (2023-01-13)
 #### Features Added
 * Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)

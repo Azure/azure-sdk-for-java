@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes metadata for retrieving price info. */
 @Immutable
 public final class ResourceSkuCosts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCosts.class);
-
     /*
      * Used for querying price from commerce.
      */
@@ -31,6 +27,10 @@ public final class ResourceSkuCosts {
      */
     @JsonProperty(value = "extendedUnit", access = JsonProperty.Access.WRITE_ONLY)
     private String extendedUnit;
+
+    /** Creates an instance of ResourceSkuCosts class. */
+    public ResourceSkuCosts() {
+    }
 
     /**
      * Get the meterId property: Used for querying price from commerce.

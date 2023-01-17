@@ -14,7 +14,27 @@ import java.util.List;
 /** An instance of this class provides access to all the operations defined in StepsClient. */
 public interface StepsClient {
     /**
-     * Synchronously creates a new step or updates an existing step.
+     * Creates or updates a rollout step with the given step properties.
+     *
+     * <p>Synchronously creates a new step or updates an existing step.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param stepName The name of the deployment step.
+     * @param stepInfo The step object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource representation of a rollout step along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<StepResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName, String stepName, StepResourceInner stepInfo, Context context);
+
+    /**
+     * Creates or updates a rollout step with the given step properties.
+     *
+     * <p>Synchronously creates a new step or updates an existing step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -27,20 +47,19 @@ public interface StepsClient {
     StepResourceInner createOrUpdate(String resourceGroupName, String stepName);
 
     /**
-     * Synchronously creates a new step or updates an existing step.
+     * Gets the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
-     * @param stepInfo The step object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource representation of a rollout step.
+     * @return the step along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StepResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String stepName, StepResourceInner stepInfo, Context context);
+    Response<StepResourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String stepName, Context context);
 
     /**
      * Gets the step.
@@ -56,7 +75,7 @@ public interface StepsClient {
     StepResourceInner getByResourceGroup(String resourceGroupName, String stepName);
 
     /**
-     * Gets the step.
+     * Deletes the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -64,11 +83,10 @@ public interface StepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the step.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StepResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String stepName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String stepName, Context context);
 
     /**
      * Deletes the step.
@@ -83,18 +101,17 @@ public interface StepsClient {
     void delete(String resourceGroupName, String stepName);
 
     /**
-     * Deletes the step.
+     * Lists the steps in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param stepName The name of the deployment step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the list of steps along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String stepName, Context context);
+    Response<List<StepResourceInner>> listWithResponse(String resourceGroupName, Context context);
 
     /**
      * Lists the steps in a resource group.
@@ -107,17 +124,4 @@ public interface StepsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     List<StepResourceInner> list(String resourceGroupName);
-
-    /**
-     * Lists the steps in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of steps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<StepResourceInner>> listWithResponse(String resourceGroupName, Context context);
 }

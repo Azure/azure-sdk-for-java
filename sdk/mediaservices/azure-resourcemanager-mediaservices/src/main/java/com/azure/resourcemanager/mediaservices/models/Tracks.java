@@ -50,12 +50,14 @@ public interface Tracks {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset.
+     * @return the details of a Track in the Asset along with {@link Response}.
      */
-    AssetTrack get(String resourceGroupName, String accountName, String assetName, String trackName);
+    Response<AssetTrack> getWithResponse(
+        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
 
     /**
      * Get a Track
@@ -66,14 +68,12 @@ public interface Tracks {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset along with {@link Response}.
+     * @return the details of a Track in the Asset.
      */
-    Response<AssetTrack> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    AssetTrack get(String resourceGroupName, String accountName, String assetName, String trackName);
 
     /**
      * Delete a Track

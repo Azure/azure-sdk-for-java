@@ -183,17 +183,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.40.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.41.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -208,7 +208,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-tables</artifactId>
-      <version>12.3.7</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+      <version>12.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -655,7 +655,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.31.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.32.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
 	  <dependency>
       <groupId>com.azure</groupId>

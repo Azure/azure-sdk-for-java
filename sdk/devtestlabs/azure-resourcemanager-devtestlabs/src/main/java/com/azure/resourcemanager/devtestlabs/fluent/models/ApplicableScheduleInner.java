@@ -5,73 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Schedules applicable to a virtual machine. The schedules may have been defined on a VM or on lab level. */
-@JsonFlatten
 @Fluent
-public class ApplicableScheduleInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicableScheduleInner.class);
-
+public final class ApplicableScheduleInner extends Resource {
     /*
-     * The auto-shutdown schedule, if one has been set at the lab or lab
-     * resource level.
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.labVmsShutdown")
-    private ScheduleInner labVmsShutdown;
+    @JsonProperty(value = "properties", required = true)
+    private ApplicableSchedulePropertiesInner innerProperties = new ApplicableSchedulePropertiesInner();
 
-    /*
-     * The auto-startup schedule, if one has been set at the lab or lab
-     * resource level.
-     */
-    @JsonProperty(value = "properties.labVmsStartup")
-    private ScheduleInner labVmsStartup;
-
-    /**
-     * Get the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
-     * level.
-     *
-     * @return the labVmsShutdown value.
-     */
-    public ScheduleInner labVmsShutdown() {
-        return this.labVmsShutdown;
+    /** Creates an instance of ApplicableScheduleInner class. */
+    public ApplicableScheduleInner() {
     }
 
     /**
-     * Set the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
-     * level.
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @param labVmsShutdown the labVmsShutdown value to set.
-     * @return the ApplicableScheduleInner object itself.
+     * @return the innerProperties value.
      */
-    public ApplicableScheduleInner withLabVmsShutdown(ScheduleInner labVmsShutdown) {
-        this.labVmsShutdown = labVmsShutdown;
-        return this;
-    }
-
-    /**
-     * Get the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
-     *
-     * @return the labVmsStartup value.
-     */
-    public ScheduleInner labVmsStartup() {
-        return this.labVmsStartup;
-    }
-
-    /**
-     * Set the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
-     *
-     * @param labVmsStartup the labVmsStartup value to set.
-     * @return the ApplicableScheduleInner object itself.
-     */
-    public ApplicableScheduleInner withLabVmsStartup(ScheduleInner labVmsStartup) {
-        this.labVmsStartup = labVmsStartup;
-        return this;
+    private ApplicableSchedulePropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -89,16 +47,68 @@ public class ApplicableScheduleInner extends Resource {
     }
 
     /**
+     * Get the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
+     * level.
+     *
+     * @return the labVmsShutdown value.
+     */
+    public ScheduleInner labVmsShutdown() {
+        return this.innerProperties() == null ? null : this.innerProperties().labVmsShutdown();
+    }
+
+    /**
+     * Set the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
+     * level.
+     *
+     * @param labVmsShutdown the labVmsShutdown value to set.
+     * @return the ApplicableScheduleInner object itself.
+     */
+    public ApplicableScheduleInner withLabVmsShutdown(ScheduleInner labVmsShutdown) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicableSchedulePropertiesInner();
+        }
+        this.innerProperties().withLabVmsShutdown(labVmsShutdown);
+        return this;
+    }
+
+    /**
+     * Get the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
+     *
+     * @return the labVmsStartup value.
+     */
+    public ScheduleInner labVmsStartup() {
+        return this.innerProperties() == null ? null : this.innerProperties().labVmsStartup();
+    }
+
+    /**
+     * Set the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
+     *
+     * @param labVmsStartup the labVmsStartup value to set.
+     * @return the ApplicableScheduleInner object itself.
+     */
+    public ApplicableScheduleInner withLabVmsStartup(ScheduleInner labVmsStartup) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicableSchedulePropertiesInner();
+        }
+        this.innerProperties().withLabVmsStartup(labVmsStartup);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (labVmsShutdown() != null) {
-            labVmsShutdown().validate();
-        }
-        if (labVmsStartup() != null) {
-            labVmsStartup().validate();
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ApplicableScheduleInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicableScheduleInner.class);
 }

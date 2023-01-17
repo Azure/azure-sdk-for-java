@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PacketCoreControlPlaneVersions Get. */
 public final class PacketCoreControlPlaneVersionsGetSamples {
     /*
@@ -18,6 +16,6 @@ public final class PacketCoreControlPlaneVersionsGetSamples {
      */
     public static void getPacketCoreControlPlaneVersion(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlaneVersions().getWithResponse("PMN-4-11-1", Context.NONE);
+        manager.packetCoreControlPlaneVersions().getWithResponse("PMN-4-11-1", com.azure.core.util.Context.NONE);
     }
 }

@@ -2,6 +2,10 @@
 
 ## 2.23.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported enabling last access time tracking policy for `BlobServiceProperties`.
+
 ### Bugs Fixed
 
 - Fixed a bug that `StorageAccount.infrastructureEncryptionEnabled()` always returns `false`.

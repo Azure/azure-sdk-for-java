@@ -23,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.fluent.CostsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.LabCostInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CostsClient. */
 public final class CostsClientImpl implements CostsClient {
-    private final ClientLogger logger = new ClientLogger(CostsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CostsService service;
 
@@ -54,7 +51,7 @@ public final class CostsClientImpl implements CostsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientCos")
-    private interface CostsService {
+    public interface CostsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs"
@@ -100,7 +97,7 @@ public final class CostsClientImpl implements CostsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return cost along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LabCostInner>> getWithResponseAsync(
@@ -156,7 +153,7 @@ public final class CostsClientImpl implements CostsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return cost along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LabCostInner>> getWithResponseAsync(
@@ -204,23 +201,16 @@ public final class CostsClientImpl implements CostsClient {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
-     * @param expand Specify the $expand query. Example: 'properties($expand=labCostDetails)'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return cost on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LabCostInner> getAsync(String resourceGroupName, String labName, String name, String expand) {
+    private Mono<LabCostInner> getAsync(String resourceGroupName, String labName, String name) {
+        final String expand = null;
         return getWithResponseAsync(resourceGroupName, labName, name, expand)
-            .flatMap(
-                (Response<LabCostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -229,23 +219,17 @@ public final class CostsClientImpl implements CostsClient {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
+     * @param expand Specify the $expand query. Example: 'properties($expand=labCostDetails)'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return cost along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LabCostInner> getAsync(String resourceGroupName, String labName, String name) {
-        final String expand = null;
-        return getWithResponseAsync(resourceGroupName, labName, name, expand)
-            .flatMap(
-                (Response<LabCostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<LabCostInner> getWithResponse(
+        String resourceGroupName, String labName, String name, String expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, labName, name, expand, context).block();
     }
 
     /**
@@ -262,26 +246,7 @@ public final class CostsClientImpl implements CostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabCostInner get(String resourceGroupName, String labName, String name) {
         final String expand = null;
-        return getAsync(resourceGroupName, labName, name, expand).block();
-    }
-
-    /**
-     * Get cost.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the cost.
-     * @param expand Specify the $expand query. Example: 'properties($expand=labCostDetails)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LabCostInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context) {
-        return getWithResponseAsync(resourceGroupName, labName, name, expand, context).block();
+        return getWithResponse(resourceGroupName, labName, name, expand, Context.NONE).getValue();
     }
 
     /**
@@ -294,7 +259,7 @@ public final class CostsClientImpl implements CostsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost item.
+     * @return a cost item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LabCostInner>> createOrUpdateWithResponseAsync(
@@ -355,7 +320,7 @@ public final class CostsClientImpl implements CostsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost item.
+     * @return a cost item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LabCostInner>> createOrUpdateWithResponseAsync(
@@ -412,20 +377,32 @@ public final class CostsClientImpl implements CostsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost item.
+     * @return a cost item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LabCostInner> createOrUpdateAsync(
         String resourceGroupName, String labName, String name, LabCostInner labCost) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, name, labCost)
-            .flatMap(
-                (Response<LabCostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or replace an existing cost.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param name The name of the cost.
+     * @param labCost A cost item.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cost item along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LabCostInner> createOrUpdateWithResponse(
+        String resourceGroupName, String labName, String name, LabCostInner labCost, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, labName, name, labCost, context).block();
     }
 
     /**
@@ -442,25 +419,6 @@ public final class CostsClientImpl implements CostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabCostInner createOrUpdate(String resourceGroupName, String labName, String name, LabCostInner labCost) {
-        return createOrUpdateAsync(resourceGroupName, labName, name, labCost).block();
-    }
-
-    /**
-     * Create or replace an existing cost.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the cost.
-     * @param labCost A cost item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LabCostInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, LabCostInner labCost, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, labName, name, labCost, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, labName, name, labCost, Context.NONE).getValue();
     }
 }

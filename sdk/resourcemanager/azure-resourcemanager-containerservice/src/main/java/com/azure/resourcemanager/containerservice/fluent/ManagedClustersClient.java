@@ -23,6 +23,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.RunCommandResult
 import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClustersGetCommandResultResponse;
 import com.azure.resourcemanager.containerservice.models.RunCommandRequest;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -1647,11 +1648,11 @@ public interface ManagedClustersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the results of a command which has been run on the Managed Cluster on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RunCommandResultInner>> getCommandResultWithResponseAsync(
+    Mono<ManagedClustersGetCommandResultResponse> getCommandResultWithResponseAsync(
         String resourceGroupName, String resourceName, String commandId);
 
     /**
@@ -1679,10 +1680,10 @@ public interface ManagedClustersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response}.
+     * @return the results of a command which has been run on the Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RunCommandResultInner> getCommandResultWithResponse(
+    ManagedClustersGetCommandResultResponse getCommandResultWithResponse(
         String resourceGroupName, String resourceName, String commandId, Context context);
 
     /**
