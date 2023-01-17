@@ -50,39 +50,42 @@ public class GraphClient {
         GroupInformation groupInformation = new GroupInformation();
         String aadMembershipRestUri = properties.getGraphMembershipUri();
         while (aadMembershipRestUri != null) {
-            try {
-                ResponseEntity<Memberships> userMemberships = getUserMemberships(accessToken, aadMembershipRestUri);
-                Memberships memberships = userMemberships.getBody();
-                if (userMemberships.getStatusCode() == HttpStatus.OK) {
-                    for (Membership membership : memberships.getValue()) {
-                        if (isGroupObject(membership)) {
-                            groupInformation.getGroupsIds().add(membership.getObjectID());
-                            groupInformation.getGroupsNames().add(membership.getDisplayName());
-                        }
-                        aadMembershipRestUri = Optional.of(memberships)
-                                                       .map(Memberships::getOdataNextLink)
-                                                       .orElse(null);
+            Optional<Memberships> userMemberships = getUserMemberships(accessToken, aadMembershipRestUri);
+            if (userMemberships.isPresent()) {
+                for (Membership membership : userMemberships.get().getValue()) {
+                    if (isGroupObject(membership)) {
+                        groupInformation.getGroupsIds().add(membership.getObjectID());
+                        groupInformation.getGroupsNames().add(membership.getDisplayName());
                     }
-                } else {
-                    LOGGER.error("Response code [{}] is not 200, the response body is [{}].", userMemberships.getStatusCode(), userMemberships.getBody());
-                    break;
                 }
-            } catch (RestClientException restClientException) {
-                LOGGER.error("Can not get group information from graph server.", restClientException);
+                aadMembershipRestUri = userMemberships
+                    .map(Memberships::getOdataNextLink)
+                    .orElse(null);
+            } else {
                 break;
             }
         }
         return groupInformation;
     }
 
-    private ResponseEntity<Memberships> getUserMemberships(String accessToken, String urlString) {
+    private Optional<Memberships> getUserMemberships(String accessToken, String urlString) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Memberships> response = operations.exchange(urlString, HttpMethod.GET, entity, Memberships.class);
-        return response;
+        try {
+            ResponseEntity<Memberships> response = operations.exchange(urlString, HttpMethod.GET, entity, Memberships.class);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return Optional.of(response.getBody());
+            } else {
+                LOGGER.error("Response code [{}] is not 200, the response body is [{}].", response.getStatusCode(), response.getBody());
+                return Optional.empty();
+            }
+        } catch (RestClientException restClientException) {
+            LOGGER.error("Can not get group information from graph server.", restClientException);
+            return Optional.empty();
+        }
     }
 
     private boolean isGroupObject(final Membership membership) {
