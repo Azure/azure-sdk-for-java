@@ -1,0 +1,1 @@
+inherit: job:///walmart-comos-sdk-looper-folder/walmart-comos-sdk-looper-job:looper-build.yml
