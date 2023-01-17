@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/emails:send?api-version=2021-10-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-email/1.0.0-beta.2 (11.0.15; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "70a71eee-3b80-4da6-86d0-3f17cd53605e",
+      "x-ms-client-request-id" : "564a5203-9892-49c6-929f-44f03f8a2eea",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,13 +12,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-10-01-preview",
       "Repeatability-Result" : "accepted",
-      "mise-correlation-id" : "718b98f6-a523-4a5c-afa8-68ec82050271",
+      "mise-correlation-id" : "70d9cd07-d574-4602-9df5-7b3d42af80a5",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0vWV9YwAAAABYGAj9yI7BT68KJ21LtW/rQ0hHRURHRTE1MTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0O9TBYwAAAABIpIKGT0XxRLrRnuX9j1hlQk9TMzIxMDAwMTA5MDUxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
       "StatusCode" : "202",
       "Operation-Location" : "REDACTED",
-      "x-ms-request-id" : "61540cde-20cb-4aae-b37c-381dbbf1fbfd",
-      "Date" : "Wed, 23 Nov 2022 00:13:49 GMT"
+      "x-ms-request-id" : "fb442636-f358-4b92-aeca-79ee3c58ab0a",
+      "Date" : "Fri, 13 Jan 2023 21:59:22 GMT"
     },
     "Exception" : null
   } ],

@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus.propertie
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ class AzureServiceBusPropertiesTest {
     }
 
     @Test
-    void defaultProfileCloudTypeIsAzure() {
+    void defaultProfileCloudTypeIsNull() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
         AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
@@ -44,17 +45,34 @@ class AzureServiceBusPropertiesTest {
     }
 
     @Test
-    void defaultDomainNameIsAzure() {
+    void defaultDomainNameIsNull() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
         AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
         AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
         AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
 
-        assertEquals("servicebus.windows.net", serviceBusProperties.getDomainName());
-        assertEquals("servicebus.windows.net", producer.getDomainName());
-        assertEquals("servicebus.windows.net", consumer.getDomainName());
-        assertEquals("servicebus.windows.net", processor.getDomainName());
+        assertNull(serviceBusProperties.getDomainName());
+        assertNull(producer.getDomainName());
+        assertNull(consumer.getDomainName());
+        assertNull(processor.getDomainName());
+    }
+
+    @Test
+    void getDomainNameFromCloud() {
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
+        assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
+                serviceBusProperties.getDomainName());
+    }
+
+    @Test
+    void domainNameOverrideCloud() {
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.setDomainName(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+        serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(),
+                serviceBusProperties.getDomainName());
     }
 
     @Test

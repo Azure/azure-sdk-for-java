@@ -3,8 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.ContentsImpl;
-import com.azure.communication.callautomation.implementation.ServerCallsImpl;
+import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
@@ -65,17 +64,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  * CallRecordingAsync.
  */
 public class CallRecordingAsync {
-    private final ServerCallsImpl serverCallsInternal;
-    private final ContentsImpl contentsInternal;
+    private final CallRecordingsImpl callRecordingsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
 
-    CallRecordingAsync(ServerCallsImpl serverCallsInternal, ContentsImpl contentsInternal,
-                       ContentDownloader contentDownloader, HttpPipeline httpPipelineInternal, String resourceEndpoint) {
-        this.serverCallsInternal = serverCallsInternal;
-        this.contentsInternal = contentsInternal;
+    CallRecordingAsync(CallRecordingsImpl callRecordingsInternal, ContentDownloader contentDownloader,
+                       HttpPipeline httpPipelineInternal, String resourceEndpoint) {
+        this.callRecordingsInternal = callRecordingsInternal;
         this.contentDownloader = contentDownloader;
         this.httpPipelineInternal = httpPipelineInternal;
         this.resourceEndpoint = resourceEndpoint;
@@ -125,8 +122,8 @@ public class CallRecordingAsync {
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return contentsInternal
-                    .recordingWithResponseAsync(
+                return callRecordingsInternal
+                    .startRecordingWithResponseAsync(
                         request,
                         options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
                         options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
@@ -211,7 +208,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .stopRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -250,7 +247,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .pauseRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -289,7 +286,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .resumeRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -328,7 +325,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
