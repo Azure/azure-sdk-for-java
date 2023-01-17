@@ -34,6 +34,10 @@ public final class EnabledProtocols {
     @JsonProperty(value = "smoothStreaming", required = true)
     private boolean smoothStreaming;
 
+    /** Creates an instance of EnabledProtocols class. */
+    public EnabledProtocols() {
+    }
+
     /**
      * Get the download property: Enable Download protocol or not.
      *

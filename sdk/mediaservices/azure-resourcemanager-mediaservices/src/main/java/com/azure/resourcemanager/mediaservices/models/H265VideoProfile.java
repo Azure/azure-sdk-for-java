@@ -20,6 +20,15 @@ public final class H265VideoProfile extends ExpandableStringEnum<H265VideoProfil
     public static final H265VideoProfile MAIN10 = fromString("Main10");
 
     /**
+     * Creates a new instance of H265VideoProfile value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public H265VideoProfile() {
+    }
+
+    /**
      * Creates or finds a H265VideoProfile from its string representation.
      *
      * @param name a name to look for.

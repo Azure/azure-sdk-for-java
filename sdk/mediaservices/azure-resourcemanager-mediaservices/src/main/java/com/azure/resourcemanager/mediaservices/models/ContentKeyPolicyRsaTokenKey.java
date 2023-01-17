@@ -28,6 +28,10 @@ public final class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestricti
     @JsonProperty(value = "modulus", required = true)
     private byte[] modulus;
 
+    /** Creates an instance of ContentKeyPolicyRsaTokenKey class. */
+    public ContentKeyPolicyRsaTokenKey() {
+    }
+
     /**
      * Get the exponent property: The RSA Parameter exponent.
      *

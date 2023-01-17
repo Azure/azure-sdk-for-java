@@ -45,6 +45,10 @@ public final class LiveEventEncoding {
     @JsonProperty(value = "keyFrameInterval")
     private Duration keyFrameInterval;
 
+    /** Creates an instance of LiveEventEncoding class. */
+    public LiveEventEncoding() {
+    }
+
     /**
      * Get the encodingType property: Live event type. When encodingType is set to PassthroughBasic or
      * PassthroughStandard, the service simply passes through the incoming video and audio layer(s) to the output. When

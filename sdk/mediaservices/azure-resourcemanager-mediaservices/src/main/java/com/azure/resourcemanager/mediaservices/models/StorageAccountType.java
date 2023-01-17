@@ -17,6 +17,15 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     public static final StorageAccountType SECONDARY = fromString("Secondary");
 
     /**
+     * Creates a new instance of StorageAccountType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageAccountType() {
+    }
+
+    /**
      * Creates or finds a StorageAccountType from its string representation.
      *
      * @param name a name to look for.

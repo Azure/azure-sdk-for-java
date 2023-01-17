@@ -56,6 +56,10 @@ public final class FaceDetectorPreset extends Preset {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> experimentalOptions;
 
+    /** Creates an instance of FaceDetectorPreset class. */
+    public FaceDetectorPreset() {
+    }
+
     /**
      * Get the resolution property: Specifies the maximum resolution at which your video is analyzed. The default
      * behavior is "SourceResolution," which will keep the input video at its original resolution when analyzed. Using

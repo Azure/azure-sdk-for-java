@@ -72,6 +72,10 @@ public class JobOutput {
     @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of JobOutput class. */
+    public JobOutput() {
+    }
+
     /**
      * Get the error property: If the JobOutput is in the Error state, it contains the details of the error.
      *

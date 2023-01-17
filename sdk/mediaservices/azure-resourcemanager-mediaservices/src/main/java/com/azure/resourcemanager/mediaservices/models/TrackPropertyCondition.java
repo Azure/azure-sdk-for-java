@@ -29,6 +29,10 @@ public final class TrackPropertyCondition {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of TrackPropertyCondition class. */
+    public TrackPropertyCondition() {
+    }
+
     /**
      * Get the property property: Track property type.
      *

@@ -23,6 +23,15 @@ public final class VideoSyncMode extends ExpandableStringEnum<VideoSyncMode> {
     public static final VideoSyncMode VFR = fromString("Vfr");
 
     /**
+     * Creates a new instance of VideoSyncMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VideoSyncMode() {
+    }
+
+    /**
      * Creates or finds a VideoSyncMode from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,15 @@ public final class TrackPropertyType extends ExpandableStringEnum<TrackPropertyT
     public static final TrackPropertyType FOUR_CC = fromString("FourCC");
 
     /**
+     * Creates a new instance of TrackPropertyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrackPropertyType() {
+    }
+
+    /**
      * Creates or finds a TrackPropertyType from its string representation.
      *
      * @param name a name to look for.
