@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubAccount Update. */
 public final class SubAccountUpdateSamples {
     /*
@@ -17,6 +15,8 @@ public final class SubAccountUpdateSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void subAccountUpdate(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.subAccounts().updateWithResponse("myResourceGroup", "myMonitor", "SubAccount1", null, Context.NONE);
+        manager
+            .subAccounts()
+            .updateWithResponse("myResourceGroup", "myMonitor", "SubAccount1", null, com.azure.core.util.Context.NONE);
     }
 }

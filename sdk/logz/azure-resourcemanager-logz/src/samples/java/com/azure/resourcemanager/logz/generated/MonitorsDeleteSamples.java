@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Monitors Delete. */
 public final class MonitorsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class MonitorsDeleteSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void monitorsDelete(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.monitors().delete("myResourceGroup", "myMonitor", Context.NONE);
+        manager.monitors().delete("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

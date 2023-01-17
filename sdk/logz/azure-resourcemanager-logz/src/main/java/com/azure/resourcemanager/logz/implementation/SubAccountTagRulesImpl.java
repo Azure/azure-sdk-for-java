@@ -14,10 +14,9 @@ import com.azure.resourcemanager.logz.fluent.models.MonitoringTagRulesInner;
 import com.azure.resourcemanager.logz.models.MonitoringTagRules;
 import com.azure.resourcemanager.logz.models.SubAccountTagRules;
 import com.azure.resourcemanager.logz.models.SubAccountTagRulesDeleteResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubAccountTagRulesImpl implements SubAccountTagRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubAccountTagRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubAccountTagRulesImpl.class);
 
     private final SubAccountTagRulesClient innerClient;
 
@@ -42,17 +41,6 @@ public final class SubAccountTagRulesImpl implements SubAccountTagRules {
         return Utils.mapPage(inner, inner1 -> new MonitoringTagRulesImpl(inner1, this.manager()));
     }
 
-    public MonitoringTagRules createOrUpdate(
-        String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
-        MonitoringTagRulesInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, monitorName, subAccountName, ruleSetName);
-        if (inner != null) {
-            return new MonitoringTagRulesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MonitoringTagRules> createOrUpdateWithResponse(
         String resourceGroupName,
         String monitorName,
@@ -75,10 +63,10 @@ public final class SubAccountTagRulesImpl implements SubAccountTagRules {
         }
     }
 
-    public MonitoringTagRules get(
+    public MonitoringTagRules createOrUpdate(
         String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
         MonitoringTagRulesInner inner =
-            this.serviceClient().get(resourceGroupName, monitorName, subAccountName, ruleSetName);
+            this.serviceClient().createOrUpdate(resourceGroupName, monitorName, subAccountName, ruleSetName);
         if (inner != null) {
             return new MonitoringTagRulesImpl(inner, this.manager());
         } else {
@@ -101,8 +89,15 @@ public final class SubAccountTagRulesImpl implements SubAccountTagRules {
         }
     }
 
-    public void delete(String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
-        this.serviceClient().delete(resourceGroupName, monitorName, subAccountName, ruleSetName);
+    public MonitoringTagRules get(
+        String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
+        MonitoringTagRulesInner inner =
+            this.serviceClient().get(resourceGroupName, monitorName, subAccountName, ruleSetName);
+        if (inner != null) {
+            return new MonitoringTagRulesImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public SubAccountTagRulesDeleteResponse deleteWithResponse(
@@ -110,6 +105,10 @@ public final class SubAccountTagRulesImpl implements SubAccountTagRules {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, monitorName, subAccountName, ruleSetName, context);
+    }
+
+    public void delete(String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
+        this.serviceClient().delete(resourceGroupName, monitorName, subAccountName, ruleSetName);
     }
 
     private SubAccountTagRulesClient serviceClient() {
