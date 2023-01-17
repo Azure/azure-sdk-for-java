@@ -93,7 +93,7 @@ public class ListByteBufferContent extends BinaryDataContent {
             throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
 
-        byte[] bytes = new byte[(int)length];
+        byte[] bytes = new byte[(int) length];
         int offset = 0;
 
         for (ByteBuffer bb : content) {
