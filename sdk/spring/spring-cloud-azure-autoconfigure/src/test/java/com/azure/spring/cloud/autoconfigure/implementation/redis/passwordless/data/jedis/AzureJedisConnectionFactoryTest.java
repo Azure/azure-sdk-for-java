@@ -27,9 +27,9 @@ import static org.mockito.Mockito.when;
 
 class AzureJedisConnectionFactoryTest {
 
-    RedisStandaloneConfiguration standaloneConfig;
-    JedisClientConfiguration clientConfiguration;
-    Supplier<String> credentialSupplier;
+    private RedisStandaloneConfiguration standaloneConfig;
+    private JedisClientConfiguration clientConfiguration;
+    private Supplier<String> credentialSupplier;
 
     @Test
     void testFetchJedisConnectorWithNoPool() {

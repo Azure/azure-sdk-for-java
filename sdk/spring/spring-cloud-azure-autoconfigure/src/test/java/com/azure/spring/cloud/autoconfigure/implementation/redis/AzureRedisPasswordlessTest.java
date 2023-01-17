@@ -28,9 +28,8 @@ import java.util.function.Supplier;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
-//@ActiveProfiles("redis")
 @DisabledOnOs({OS.WINDOWS, OS.MAC})
-public class AzureRedisPasswordlessUT {
+public class AzureRedisPasswordlessTest {
 
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
@@ -53,7 +52,7 @@ public class AzureRedisPasswordlessUT {
     }
 
     @Test
-    public void testRedisTemplate() {
+    void testRedisTemplate() {
         Map<String, String> valueMap = new HashMap<>();
         valueMap.put("valueMap1", "map1");
         valueMap.put("valueMap2", "map2");
@@ -65,10 +64,10 @@ public class AzureRedisPasswordlessUT {
 
     @Configuration
     @Import({AzureJedisPasswordlessAutoConfiguration.class, RedisAutoConfiguration.class})
-    static class AzureRedisPasswordlessUTConfig {
+    static class AzureRedisPasswordlessTestConfig {
         Supplier<String> redisCredential;
 
-        AzureRedisPasswordlessUTConfig(Supplier<String> redisCredential) {
+        AzureRedisPasswordlessTestConfig(Supplier<String> redisCredential) {
             this.redisCredential = redisCredential;
         }
     }
