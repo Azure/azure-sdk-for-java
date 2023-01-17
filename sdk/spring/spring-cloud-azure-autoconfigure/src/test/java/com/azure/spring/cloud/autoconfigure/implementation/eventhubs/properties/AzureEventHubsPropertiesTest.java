@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
@@ -64,16 +65,16 @@ class AzureEventHubsPropertiesTest {
     void getDomainNameFromCloud() {
         AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
         eventHubsProperties.getProfile().setCloudType(AZURE_CHINA);
-        assertEquals(AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_CHINA.getServiceBusDomainName(),
+        assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
                 eventHubsProperties.getDomainName());
     }
 
     @Test
     void domainNameOverrideCloud() {
         AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
-        eventHubsProperties.setDomainName(AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_GERMANY.getServiceBusDomainName());
+        eventHubsProperties.setDomainName(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
         eventHubsProperties.getProfile().setCloudType(AZURE_CHINA);
-        assertEquals(AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_GERMANY.getServiceBusDomainName(),
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(),
                 eventHubsProperties.getDomainName());
     }
 

@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus.propertie
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
@@ -61,16 +62,16 @@ class AzureServiceBusPropertiesTest {
     void getDomainNameFromCloud() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
         serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
-        assertEquals(AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_CHINA.getServiceBusDomainName(),
+        assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
                 serviceBusProperties.getDomainName());
     }
 
     @Test
     void domainNameOverrideCloud() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
-        serviceBusProperties.setDomainName(AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_GERMANY.getServiceBusDomainName());
+        serviceBusProperties.setDomainName(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
         serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
-        assertEquals(AzureProfileOptionsProvider.OtherAzureEnvironment.AZURE_GERMANY.getServiceBusDomainName(),
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(),
                 serviceBusProperties.getDomainName());
     }
 
