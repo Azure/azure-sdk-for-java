@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils;
-import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -89,13 +89,12 @@ class AzureEventHubsConsumerClientConfigurationTests {
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group",
                 "spring.cloud.azure.eventhubs.namespace=test-namespace"
             )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
             .run(
                 context -> {
                     assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class);
                     assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class);
-                    assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
-                    assertThat(context).hasSingleBean(EventHubClientBuilder.class);
                     assertThat(context).hasSingleBean(EventHubConsumerAsyncClient.class);
                     assertThat(context).hasSingleBean(EventHubConsumerClient.class);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME);

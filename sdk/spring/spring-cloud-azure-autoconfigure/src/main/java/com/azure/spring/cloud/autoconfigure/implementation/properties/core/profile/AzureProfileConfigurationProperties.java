@@ -140,6 +140,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
          */
         private String azureApplicationInsightsEndpoint;
 
+        /**
+         * The domain name for Service Bus.
+         */
+        private String serviceBusDomainName;
+
         @Override
         public String getPortal() {
             return portal;
@@ -309,6 +314,19 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
 
         public void setAzureApplicationInsightsEndpoint(String azureApplicationInsightsEndpoint) {
             this.azureApplicationInsightsEndpoint = azureApplicationInsightsEndpoint;
+        }
+
+        @Override
+        public String getServiceBusDomainName() {
+            return serviceBusDomainName;
+        }
+
+        /**
+         * Set the Service Bus domain name.
+         * @param serviceBusDomainName the Service Bus domain name.
+         */
+        public void setServiceBusDomainName(String serviceBusDomainName) {
+            this.serviceBusDomainName = serviceBusDomainName;
         }
 
         private AzureEnvironmentConfigurationProperties(com.azure.core.management.AzureEnvironment azureEnvironment) {

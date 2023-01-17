@@ -794,7 +794,8 @@
         "DOWHILE",
         "failondeprecatedstatus",
         "failonerror",
-        "qpid"
+        "qpid",
+        "usgovcloudapi"
       ]
     },
     {
