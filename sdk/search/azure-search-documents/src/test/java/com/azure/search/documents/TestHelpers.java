@@ -364,11 +364,7 @@ public final class TestHelpers {
 
             SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
-                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
-                .buildClient();
+            SearchIndexClient searchIndexClient = createSharedSearchIndexClient();
 
             searchIndexClient.createOrUpdateIndex(index);
 
@@ -380,6 +376,14 @@ public final class TestHelpers {
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static SearchIndexClient createSharedSearchIndexClient() {
+        return new SearchIndexClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
+            .buildClient();
     }
 
     public static String createGeographyPolygon(String... coordinates) {
