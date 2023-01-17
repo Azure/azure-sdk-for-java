@@ -32,7 +32,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
@@ -79,15 +78,15 @@ public class LookupTests extends SearchTestBase {
         return getSearchClientBuilder(indexName).buildAsyncClient();
     }
 
-    private static String getRandomDocumentKey() {
-        return String.valueOf(ThreadLocalRandom.current().nextInt());
+    private String getRandomDocumentKey() {
+        return testResourceNamer.randomName("key", 32);
     }
 
     @Test
     public void canGetStaticallyTypedDocumentSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        Hotel expected = prepareExpectedHotel();
+        Hotel expected = prepareExpectedHotel(getRandomDocumentKey());
         uploadDocument(client, expected);
 
         Hotel actual = client.getDocument(expected.hotelId(), Hotel.class);
@@ -98,7 +97,7 @@ public class LookupTests extends SearchTestBase {
     public void canGetStaticallyTypedDocumentAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        Hotel expected = prepareExpectedHotel();
+        Hotel expected = prepareExpectedHotel(getRandomDocumentKey());
         uploadDocument(asyncClient, expected);
 
         getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
@@ -109,7 +108,7 @@ public class LookupTests extends SearchTestBase {
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValuesSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        Hotel expected = prepareEmptyHotel();
+        Hotel expected = prepareEmptyHotel(getRandomDocumentKey());
         uploadDocument(client, expected);
 
         Hotel actual = client.getDocument(expected.hotelId(), Hotel.class);
@@ -120,7 +119,7 @@ public class LookupTests extends SearchTestBase {
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValuesAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        Hotel expected = prepareEmptyHotel();
+        Hotel expected = prepareEmptyHotel(getRandomDocumentKey());
         uploadDocument(asyncClient, expected);
 
         getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
@@ -131,7 +130,7 @@ public class LookupTests extends SearchTestBase {
     public void canGetStaticallyTypedDocumentWithPascalCaseFieldsSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        Hotel expected = preparePascalCaseFieldsHotel();
+        Hotel expected = preparePascalCaseFieldsHotel(getRandomDocumentKey());
         uploadDocument(client, expected);
 
         Hotel actual = client.getDocument(expected.hotelId(), Hotel.class);
@@ -142,7 +141,7 @@ public class LookupTests extends SearchTestBase {
     public void canGetStaticallyTypedDocumentWithPascalCaseFieldsAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        Hotel expected = preparePascalCaseFieldsHotel();
+        Hotel expected = preparePascalCaseFieldsHotel(getRandomDocumentKey());
         uploadDocument(asyncClient, expected);
 
         getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
@@ -153,7 +152,7 @@ public class LookupTests extends SearchTestBase {
     public void canRoundTripStaticallyTypedPrimitiveCollectionsSync() {
         SearchClient client = getClient(TYPE_INDEX_NAME);
 
-        ModelWithPrimitiveCollections expected = preparePrimitivesModel();
+        ModelWithPrimitiveCollections expected = preparePrimitivesModel(getRandomDocumentKey());
         uploadDocument(client, expected);
 
         ModelWithPrimitiveCollections actual = client.getDocument(expected.key(), ModelWithPrimitiveCollections.class);
@@ -164,7 +163,7 @@ public class LookupTests extends SearchTestBase {
     public void canRoundTripStaticallyTypedPrimitiveCollectionsAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(TYPE_INDEX_NAME);
 
-        ModelWithPrimitiveCollections expected = preparePrimitivesModel();
+        ModelWithPrimitiveCollections expected = preparePrimitivesModel(getRandomDocumentKey());
         uploadDocument(asyncClient, expected);
 
         getAndValidateDocumentAsync(asyncClient, expected.key(), ModelWithPrimitiveCollections.class, expected,
@@ -175,7 +174,7 @@ public class LookupTests extends SearchTestBase {
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNullSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
-        Hotel indexedDoc = prepareSelectedFieldsHotel();
+        Hotel indexedDoc = prepareSelectedFieldsHotel(getRandomDocumentKey());
         Hotel expected = new Hotel()
             .hotelName("Countryside Hotel")
             .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, "
@@ -195,7 +194,7 @@ public class LookupTests extends SearchTestBase {
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNullAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
-        Hotel indexedDoc = prepareSelectedFieldsHotel();
+        Hotel indexedDoc = prepareSelectedFieldsHotel(getRandomDocumentKey());
         Hotel expected = new Hotel()
             .hotelName("Countryside Hotel")
             .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, "
@@ -763,9 +762,9 @@ public class LookupTests extends SearchTestBase {
     }
 
     @SuppressWarnings({"deprecation", "UseOfObsoleteDateTimeApi"})
-    static Hotel prepareExpectedHotel() {
+    static Hotel prepareExpectedHotel(String key) {
         Date expectDate = Date.from(Instant.ofEpochMilli(1277582400000L));
-        return new Hotel().hotelId(getRandomDocumentKey())
+        return new Hotel().hotelId(key)
             .hotelName("Fancy Stay")
             .description("Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.")
             .descriptionFr("Meilleur hôtel en ville si vous aimez les hôtels de luxe. Ils ont une magnifique piscine à débordement, un spa et un concierge très utile. L'emplacement est parfait – en plein centre, à proximité de toutes les attractions touristiques. Nous recommandons fortement cet hôtel.")
@@ -798,24 +797,24 @@ public class LookupTests extends SearchTestBase {
             .verifyComplete();
     }
 
-    static Hotel prepareEmptyHotel() {
-        return new Hotel().hotelId(getRandomDocumentKey())
+    static Hotel prepareEmptyHotel(String key) {
+        return new Hotel().hotelId(key)
             .tags(new ArrayList<>())
             .rooms(Collections.singletonList(new HotelRoom().tags(new String[0])));
     }
 
-    static Hotel preparePascalCaseFieldsHotel() {
+    static Hotel preparePascalCaseFieldsHotel(String key) {
         return new Hotel()
-            .hotelId(getRandomDocumentKey())
+            .hotelId(key)
             .hotelName("Lord of the Rings")
             .description("J.R.R")
             .descriptionFr("Tolkien");
     }
 
     @SuppressWarnings({"deprecation", "UseOfObsoleteDateTimeApi"})
-    static Hotel prepareSelectedFieldsHotel() {
+    static Hotel prepareSelectedFieldsHotel(String key) {
         return new Hotel()
-            .hotelId(getRandomDocumentKey())
+            .hotelId(key)
             .hotelName("Countryside Hotel")
             .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.")
             .descriptionFr("Économisez jusqu'à 50% sur les hôtels traditionnels.  WiFi gratuit, très bien situé près du centre-ville, cuisine complète, laveuse & sécheuse, support 24/7, bowling, centre de fitness et plus encore.")
@@ -848,9 +847,9 @@ public class LookupTests extends SearchTestBase {
                     .tags(new String[]{"coffee maker"})));
     }
 
-    static ModelWithPrimitiveCollections preparePrimitivesModel() {
+    static ModelWithPrimitiveCollections preparePrimitivesModel(String key) {
         return new ModelWithPrimitiveCollections()
-            .key(getRandomDocumentKey())
+            .key(key)
             .bools(new Boolean[]{true, false})
             .dates(new OffsetDateTime[]{
                 OffsetDateTime.parse("2019-04-14T14:24:00Z"),

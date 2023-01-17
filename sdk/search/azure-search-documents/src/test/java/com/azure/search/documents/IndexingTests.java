@@ -44,7 +44,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
@@ -102,8 +101,8 @@ public class IndexingTests extends SearchTestBase {
         return getSearchClientBuilder(indexName).buildAsyncClient();
     }
 
-    private static String getRandomDocumentKey() {
-        return String.valueOf(ThreadLocalRandom.current().nextInt());
+    private String getRandomDocumentKey() {
+        return testResourceNamer.randomName("key", 32);
     }
 
     @Test
