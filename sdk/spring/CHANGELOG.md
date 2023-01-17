@@ -1,5 +1,8 @@
 # Release History
 
+## 5.1.0-beta.1 (Unreleased)
+
+
 ## 5.0.0 (2023-01-17)
 - This release is compatible with Spring Boot 3.0.0-3.0.1. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
