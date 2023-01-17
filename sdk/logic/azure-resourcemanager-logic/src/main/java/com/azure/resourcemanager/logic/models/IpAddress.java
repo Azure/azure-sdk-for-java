@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ip address. */
 @Fluent
 public final class IpAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddress.class);
-
     /*
      * The address.
      */
     @JsonProperty(value = "address")
     private String address;
+
+    /** Creates an instance of IpAddress class. */
+    public IpAddress() {
+    }
 
     /**
      * Get the address property: The address.

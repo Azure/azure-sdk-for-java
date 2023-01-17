@@ -44,15 +44,6 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         return Utils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
     }
 
-    public StreamingEndpoint get(String resourceGroupName, String accountName, String streamingEndpointName) {
-        StreamingEndpointInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingEndpointName);
-        if (inner != null) {
-            return new StreamingEndpointImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<StreamingEndpoint> getWithResponse(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         Response<StreamingEndpointInner> inner =
@@ -68,23 +59,21 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         }
     }
 
+    public StreamingEndpoint get(String resourceGroupName, String accountName, String streamingEndpointName) {
+        StreamingEndpointInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingEndpointName);
+        if (inner != null) {
+            return new StreamingEndpointImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String accountName, String streamingEndpointName) {
         this.serviceClient().delete(resourceGroupName, accountName, streamingEndpointName);
     }
 
     public void delete(String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, streamingEndpointName, context);
-    }
-
-    public StreamingEndpointSkuInfoListResult skus(
-        String resourceGroupName, String accountName, String streamingEndpointName) {
-        StreamingEndpointSkuInfoListResultInner inner =
-            this.serviceClient().skus(resourceGroupName, accountName, streamingEndpointName);
-        if (inner != null) {
-            return new StreamingEndpointSkuInfoListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<StreamingEndpointSkuInfoListResult> skusWithResponse(
@@ -97,6 +86,17 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new StreamingEndpointSkuInfoListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public StreamingEndpointSkuInfoListResult skus(
+        String resourceGroupName, String accountName, String streamingEndpointName) {
+        StreamingEndpointSkuInfoListResultInner inner =
+            this.serviceClient().skus(resourceGroupName, accountName, streamingEndpointName);
+        if (inner != null) {
+            return new StreamingEndpointSkuInfoListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -135,16 +135,6 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         this.serviceClient().scale(resourceGroupName, accountName, streamingEndpointName, parameters, context);
     }
 
-    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
-        AsyncOperationResultInner inner =
-            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
-        if (inner != null) {
-            return new AsyncOperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AsyncOperationResult> asyncOperationWithResponse(
         String resourceGroupName, String accountName, String operationId, Context context) {
         Response<AsyncOperationResultInner> inner =
@@ -160,12 +150,11 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         }
     }
 
-    public StreamingEndpoint operationLocation(
-        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
-        StreamingEndpointInner inner =
-            this.serviceClient().operationLocation(resourceGroupName, accountName, streamingEndpointName, operationId);
+    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
         if (inner != null) {
-            return new StreamingEndpointImpl(inner, this.manager());
+            return new AsyncOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -188,6 +177,17 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new StreamingEndpointImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public StreamingEndpoint operationLocation(
+        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+        StreamingEndpointInner inner =
+            this.serviceClient().operationLocation(resourceGroupName, accountName, streamingEndpointName, operationId);
+        if (inner != null) {
+            return new StreamingEndpointImpl(inner, this.manager());
         } else {
             return null;
         }

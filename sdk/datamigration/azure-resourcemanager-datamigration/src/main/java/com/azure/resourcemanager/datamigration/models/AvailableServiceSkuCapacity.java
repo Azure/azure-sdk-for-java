@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A description of the scaling capacities of the SKU. */
 @Fluent
 public final class AvailableServiceSkuCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableServiceSkuCapacity.class);
-
     /*
      * The minimum capacity, usually 0 or 1.
      */
@@ -37,6 +33,10 @@ public final class AvailableServiceSkuCapacity {
      */
     @JsonProperty(value = "scaleType")
     private ServiceScalability scaleType;
+
+    /** Creates an instance of AvailableServiceSkuCapacity class. */
+    public AvailableServiceSkuCapacity() {
+    }
 
     /**
      * Get the minimum property: The minimum capacity, usually 0 or 1.

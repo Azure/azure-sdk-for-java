@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.ArmTemplatesClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInner;
 import com.azure.resourcemanager.devtestlabs.models.ArmTemplate;
 import com.azure.resourcemanager.devtestlabs.models.ArmTemplates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ArmTemplatesImpl implements ArmTemplates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmTemplatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ArmTemplatesImpl.class);
 
     private final ArmTemplatesClient innerClient;
 
@@ -50,15 +49,6 @@ public final class ArmTemplatesImpl implements ArmTemplates {
         return Utils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
     }
 
-    public ArmTemplate get(String resourceGroupName, String labName, String artifactSourceName, String name) {
-        ArmTemplateInner inner = this.serviceClient().get(resourceGroupName, labName, artifactSourceName, name);
-        if (inner != null) {
-            return new ArmTemplateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ArmTemplate> getWithResponse(
         String resourceGroupName,
         String labName,
@@ -74,6 +64,15 @@ public final class ArmTemplatesImpl implements ArmTemplates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ArmTemplateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ArmTemplate get(String resourceGroupName, String labName, String artifactSourceName, String name) {
+        ArmTemplateInner inner = this.serviceClient().get(resourceGroupName, labName, artifactSourceName, name);
+        if (inner != null) {
+            return new ArmTemplateImpl(inner, this.manager());
         } else {
             return null;
         }

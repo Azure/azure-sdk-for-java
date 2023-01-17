@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the Machine Extensions List Result. */
 @Fluent
 public final class MachineExtensionsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineExtensionsListResult.class);
-
     /*
      * The list of extensions
      */
@@ -23,11 +19,15 @@ public final class MachineExtensionsListResult {
     private List<MachineExtensionInner> value;
 
     /*
-     * The uri to fetch the next page of machine extensions. Call ListNext()
-     * with this to fetch the next page of extensions.
+     * The uri to fetch the next page of machine extensions. Call ListNext() with this to fetch the next page of
+     * extensions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of MachineExtensionsListResult class. */
+    public MachineExtensionsListResult() {
+    }
 
     /**
      * Get the value property: The list of extensions.

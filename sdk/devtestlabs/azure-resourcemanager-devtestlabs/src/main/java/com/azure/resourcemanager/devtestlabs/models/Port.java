@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a network port. */
 @Fluent
 public final class Port {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Port.class);
-
     /*
      * Protocol type of the port.
      */
@@ -25,6 +21,10 @@ public final class Port {
      */
     @JsonProperty(value = "backendPort")
     private Integer backendPort;
+
+    /** Creates an instance of Port class. */
+    public Port() {
+    }
 
     /**
      * Get the transportProtocol property: Protocol type of the port.

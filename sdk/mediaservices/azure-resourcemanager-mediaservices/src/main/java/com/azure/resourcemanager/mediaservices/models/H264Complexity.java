@@ -20,6 +20,15 @@ public final class H264Complexity extends ExpandableStringEnum<H264Complexity> {
     public static final H264Complexity QUALITY = fromString("Quality");
 
     /**
+     * Creates a new instance of H264Complexity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public H264Complexity() {
+    }
+
+    /**
      * Creates or finds a H264Complexity from its string representation.
      *
      * @param name a name to look for.

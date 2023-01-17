@@ -50,22 +50,6 @@ public interface AssetFilters {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param filterName The Asset Filter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset Filter associated with the specified Asset.
-     */
-    AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName);
-
-    /**
-     * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param filterName The Asset Filter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,9 +60,9 @@ public interface AssetFilters {
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
 
     /**
-     * Delete an Asset Filter.
+     * Get an Asset Filter.
      *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -87,8 +71,9 @@ public interface AssetFilters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of an Asset Filter associated with the specified Asset.
      */
-    void delete(String resourceGroupName, String accountName, String assetName, String filterName);
+    AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
      * Delete an Asset Filter.
@@ -107,6 +92,21 @@ public interface AssetFilters {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
+
+    /**
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param filterName The Asset Filter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
      * Get an Asset Filter.

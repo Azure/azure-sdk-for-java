@@ -23,6 +23,15 @@ public final class StreamingPolicyStreamingProtocol extends ExpandableStringEnum
     public static final StreamingPolicyStreamingProtocol DOWNLOAD = fromString("Download");
 
     /**
+     * Creates a new instance of StreamingPolicyStreamingProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StreamingPolicyStreamingProtocol() {
+    }
+
+    /**
      * Creates or finds a StreamingPolicyStreamingProtocol from its string representation.
      *
      * @param name a name to look for.

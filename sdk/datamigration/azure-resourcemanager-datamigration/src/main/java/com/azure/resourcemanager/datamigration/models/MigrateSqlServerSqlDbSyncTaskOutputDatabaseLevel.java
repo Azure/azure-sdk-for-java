@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,9 +15,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("DatabaseLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends MigrateSqlServerSqlDbSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.class);
-
     /*
      * Name of the database
      */
@@ -109,6 +104,10 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends Migr
      */
     @JsonProperty(value = "latency", access = JsonProperty.Access.WRITE_ONLY)
     private Long latency;
+
+    /** Creates an instance of MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel class. */
+    public MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel() {
+    }
 
     /**
      * Get the databaseName property: Name of the database.

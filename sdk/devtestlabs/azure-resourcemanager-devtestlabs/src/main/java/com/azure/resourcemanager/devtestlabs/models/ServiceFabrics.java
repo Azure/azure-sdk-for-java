@@ -19,7 +19,7 @@ public interface ServiceFabrics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServiceFabric> list(String resourceGroupName, String labName, String username);
 
@@ -37,7 +37,7 @@ public interface ServiceFabrics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServiceFabric> list(
         String resourceGroupName,
@@ -56,12 +56,15 @@ public interface ServiceFabrics {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the service fabric.
+     * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service fabric.
+     * @return service fabric along with {@link Response}.
      */
-    ServiceFabric get(String resourceGroupName, String labName, String username, String name);
+    Response<ServiceFabric> getWithResponse(
+        String resourceGroupName, String labName, String username, String name, String expand, Context context);
 
     /**
      * Get service fabric.
@@ -70,15 +73,12 @@ public interface ServiceFabrics {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the service fabric.
-     * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service fabric.
      */
-    Response<ServiceFabric> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    ServiceFabric get(String resourceGroupName, String labName, String username, String name);
 
     /**
      * Delete service fabric. This operation can take a while to complete.
@@ -114,12 +114,14 @@ public interface ServiceFabrics {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the service fabric.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine.
+     * @return schedules applicable to a virtual machine along with {@link Response}.
      */
-    ApplicableSchedule listApplicableSchedules(String resourceGroupName, String labName, String username, String name);
+    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(
+        String resourceGroupName, String labName, String username, String name, Context context);
 
     /**
      * Lists the applicable start/stop schedules, if any.
@@ -128,14 +130,12 @@ public interface ServiceFabrics {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the service fabric.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedules applicable to a virtual machine.
      */
-    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(
-        String resourceGroupName, String labName, String username, String name, Context context);
+    ApplicableSchedule listApplicableSchedules(String resourceGroupName, String labName, String username, String name);
 
     /**
      * Start a service fabric. This operation can take a while to complete.
@@ -198,7 +198,7 @@ public interface ServiceFabrics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service fabric.
+     * @return service fabric along with {@link Response}.
      */
     ServiceFabric getById(String id);
 
@@ -211,7 +211,7 @@ public interface ServiceFabrics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service fabric.
+     * @return service fabric along with {@link Response}.
      */
     Response<ServiceFabric> getByIdWithResponse(String id, String expand, Context context);
 

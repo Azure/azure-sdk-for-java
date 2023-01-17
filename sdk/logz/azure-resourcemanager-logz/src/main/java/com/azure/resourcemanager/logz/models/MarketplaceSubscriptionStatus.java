@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MarketplaceSubscriptionStatus. */
+/**
+ * Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource
+ * will go in Suspended state.
+ */
 public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<MarketplaceSubscriptionStatus> {
     /** Static value Active for MarketplaceSubscriptionStatus. */
     public static final MarketplaceSubscriptionStatus ACTIVE = fromString("Active");
 
     /** Static value Suspended for MarketplaceSubscriptionStatus. */
     public static final MarketplaceSubscriptionStatus SUSPENDED = fromString("Suspended");
+
+    /**
+     * Creates a new instance of MarketplaceSubscriptionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MarketplaceSubscriptionStatus() {
+    }
 
     /**
      * Creates or finds a MarketplaceSubscriptionStatus from its string representation.
@@ -27,7 +39,11 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
         return fromString(name, MarketplaceSubscriptionStatus.class);
     }
 
-    /** @return known MarketplaceSubscriptionStatus values. */
+    /**
+     * Gets known MarketplaceSubscriptionStatus values.
+     *
+     * @return known MarketplaceSubscriptionStatus values.
+     */
     public static Collection<MarketplaceSubscriptionStatus> values() {
         return values(MarketplaceSubscriptionStatus.class);
     }

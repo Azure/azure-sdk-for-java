@@ -20,6 +20,15 @@ public final class AacAudioProfile extends ExpandableStringEnum<AacAudioProfile>
     public static final AacAudioProfile HE_AAC_V2 = fromString("HeAacV2");
 
     /**
+     * Creates a new instance of AacAudioProfile value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AacAudioProfile() {
+    }
+
+    /**
      * Creates or finds a AacAudioProfile from its string representation.
      *
      * @param name a name to look for.

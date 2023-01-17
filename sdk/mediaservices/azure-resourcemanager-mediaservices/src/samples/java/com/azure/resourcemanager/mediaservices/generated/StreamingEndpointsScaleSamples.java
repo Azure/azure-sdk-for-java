@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.StreamingEntityScaleUnit;
 
 /** Samples for StreamingEndpoints Scale. */
 public final class StreamingEndpointsScaleSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streamingendpoint-scale.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/streamingendpoint-scale.json
      */
     /**
      * Sample code: Scale a StreamingEndpoint.
@@ -25,6 +24,6 @@ public final class StreamingEndpointsScaleSamples {
                 "slitestmedia10",
                 "myStreamingEndpoint1",
                 new StreamingEntityScaleUnit().withScaleUnit(5),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

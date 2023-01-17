@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body for adding a new or existing data disk to a virtual machine. */
 @Fluent
 public final class DataDiskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDiskProperties.class);
-
     /*
      * Specifies options to attach a new disk to the virtual machine.
      */
@@ -31,6 +27,10 @@ public final class DataDiskProperties {
      */
     @JsonProperty(value = "hostCaching")
     private HostCachingOptions hostCaching;
+
+    /** Creates an instance of DataDiskProperties class. */
+    public DataDiskProperties() {
+    }
 
     /**
      * Get the attachNewDataDiskOptions property: Specifies options to attach a new disk to the virtual machine.

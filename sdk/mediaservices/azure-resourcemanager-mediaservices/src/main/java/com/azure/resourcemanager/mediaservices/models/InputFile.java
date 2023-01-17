@@ -21,6 +21,10 @@ public final class InputFile extends InputDefinition {
     @JsonProperty(value = "filename")
     private String filename;
 
+    /** Creates an instance of InputFile class. */
+    public InputFile() {
+    }
+
     /**
      * Get the filename property: Name of the file that this input definition applies to.
      *

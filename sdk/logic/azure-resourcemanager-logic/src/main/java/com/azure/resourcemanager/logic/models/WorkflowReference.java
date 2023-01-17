@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.logic.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 
 /** The workflow reference. */
-@Immutable
+@Fluent
 public final class WorkflowReference extends ResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowReference.class);
+    /** Creates an instance of WorkflowReference class. */
+    public WorkflowReference() {
+    }
 
     /** {@inheritDoc} */
     @Override

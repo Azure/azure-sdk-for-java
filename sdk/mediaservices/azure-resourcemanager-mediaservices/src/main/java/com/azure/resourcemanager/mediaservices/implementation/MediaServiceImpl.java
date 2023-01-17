@@ -220,24 +220,24 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
         return this;
     }
 
-    public void syncStorageKeys(SyncStorageKeysInput parameters) {
-        serviceManager.mediaservices().syncStorageKeys(resourceGroupName, accountName, parameters);
-    }
-
     public Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context) {
         return serviceManager
             .mediaservices()
             .syncStorageKeysWithResponse(resourceGroupName, accountName, parameters, context);
     }
 
-    public EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters) {
-        return serviceManager.mediaservices().listEdgePolicies(resourceGroupName, accountName, parameters);
+    public void syncStorageKeys(SyncStorageKeysInput parameters) {
+        serviceManager.mediaservices().syncStorageKeys(resourceGroupName, accountName, parameters);
     }
 
     public Response<EdgePolicies> listEdgePoliciesWithResponse(ListEdgePoliciesInput parameters, Context context) {
         return serviceManager
             .mediaservices()
             .listEdgePoliciesWithResponse(resourceGroupName, accountName, parameters, context);
+    }
+
+    public EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters) {
+        return serviceManager.mediaservices().listEdgePolicies(resourceGroupName, accountName, parameters);
     }
 
     public MediaServiceImpl withRegion(Region location) {

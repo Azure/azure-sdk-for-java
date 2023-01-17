@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.models.NameCheckFailureReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Indicates whether a proposed resource name is available. */
 @Immutable
 public final class NameAvailabilityResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityResponseInner.class);
-
     /*
-     * If true, the name is valid and available. If false, 'reason' describes
-     * why not.
+     * If true, the name is valid and available. If false, 'reason' describes why not.
      */
     @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
@@ -29,11 +24,14 @@ public final class NameAvailabilityResponseInner {
     private NameCheckFailureReason reason;
 
     /*
-     * The localized reason why the name is not available, if nameAvailable is
-     * false
+     * The localized reason why the name is not available, if nameAvailable is false
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of NameAvailabilityResponseInner class. */
+    public NameAvailabilityResponseInner() {
+    }
 
     /**
      * Get the nameAvailable property: If true, the name is valid and available. If false, 'reason' describes why not.

@@ -18,7 +18,7 @@ public interface IntegrationAccountAssemblies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AssemblyDefinition> list(String resourceGroupName, String integrationAccountName);
 
@@ -31,9 +31,24 @@ public interface IntegrationAccountAssemblies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AssemblyDefinition> list(String resourceGroupName, String integrationAccountName, Context context);
+
+    /**
+     * Get an assembly for an integration account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param assemblyArtifactName The assembly artifact name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an assembly for an integration account along with {@link Response}.
+     */
+    Response<AssemblyDefinition> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context);
 
     /**
      * Get an assembly for an integration account.
@@ -49,7 +64,7 @@ public interface IntegrationAccountAssemblies {
     AssemblyDefinition get(String resourceGroupName, String integrationAccountName, String assemblyArtifactName);
 
     /**
-     * Get an assembly for an integration account.
+     * Delete an assembly for an integration account.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -58,9 +73,9 @@ public interface IntegrationAccountAssemblies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return the {@link Response}.
      */
-    Response<AssemblyDefinition> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context);
 
     /**
@@ -76,7 +91,7 @@ public interface IntegrationAccountAssemblies {
     void delete(String resourceGroupName, String integrationAccountName, String assemblyArtifactName);
 
     /**
-     * Delete an assembly for an integration account.
+     * Get the content callback url for an integration account assembly.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -85,9 +100,9 @@ public interface IntegrationAccountAssemblies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the content callback url for an integration account assembly along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
+    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context);
 
     /**
@@ -105,28 +120,13 @@ public interface IntegrationAccountAssemblies {
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName);
 
     /**
-     * Get the content callback url for an integration account assembly.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param assemblyArtifactName The assembly artifact name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url for an integration account assembly.
-     */
-    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context);
-
-    /**
      * Get an assembly for an integration account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return an assembly for an integration account along with {@link Response}.
      */
     AssemblyDefinition getById(String id);
 
@@ -138,7 +138,7 @@ public interface IntegrationAccountAssemblies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return an assembly for an integration account along with {@link Response}.
      */
     Response<AssemblyDefinition> getByIdWithResponse(String id, Context context);
 
@@ -160,7 +160,7 @@ public interface IntegrationAccountAssemblies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

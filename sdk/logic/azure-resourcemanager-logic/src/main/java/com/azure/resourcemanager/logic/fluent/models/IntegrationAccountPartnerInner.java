@@ -5,128 +5,34 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.PartnerContent;
 import com.azure.resourcemanager.logic.models.PartnerType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The integration account partner. */
-@JsonFlatten
 @Fluent
-public class IntegrationAccountPartnerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountPartnerInner.class);
-
+public final class IntegrationAccountPartnerInner extends Resource {
     /*
-     * The partner type.
+     * The integration account partner properties.
      */
-    @JsonProperty(value = "properties.partnerType", required = true)
-    private PartnerType partnerType;
+    @JsonProperty(value = "properties", required = true)
+    private IntegrationAccountPartnerProperties innerProperties = new IntegrationAccountPartnerProperties();
 
-    /*
-     * The created time.
-     */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * The changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The partner content.
-     */
-    @JsonProperty(value = "properties.content", required = true)
-    private PartnerContent content;
-
-    /**
-     * Get the partnerType property: The partner type.
-     *
-     * @return the partnerType value.
-     */
-    public PartnerType partnerType() {
-        return this.partnerType;
+    /** Creates an instance of IntegrationAccountPartnerInner class. */
+    public IntegrationAccountPartnerInner() {
     }
 
     /**
-     * Set the partnerType property: The partner type.
+     * Get the innerProperties property: The integration account partner properties.
      *
-     * @param partnerType the partnerType value to set.
-     * @return the IntegrationAccountPartnerInner object itself.
+     * @return the innerProperties value.
      */
-    public IntegrationAccountPartnerInner withPartnerType(PartnerType partnerType) {
-        this.partnerType = partnerType;
-        return this;
-    }
-
-    /**
-     * Get the createdTime property: The created time.
-     *
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the changedTime property: The changed time.
-     *
-     * @return the changedTime value.
-     */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the metadata property: The metadata.
-     *
-     * @return the metadata value.
-     */
-    public Object metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the IntegrationAccountPartnerInner object itself.
-     */
-    public IntegrationAccountPartnerInner withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the content property: The partner content.
-     *
-     * @return the content value.
-     */
-    public PartnerContent content() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: The partner content.
-     *
-     * @param content the content value to set.
-     * @return the IntegrationAccountPartnerInner object itself.
-     */
-    public IntegrationAccountPartnerInner withContent(PartnerContent content) {
-        this.content = content;
-        return this;
+    private IntegrationAccountPartnerProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -144,24 +50,107 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
+     * Get the partnerType property: The partner type.
+     *
+     * @return the partnerType value.
+     */
+    public PartnerType partnerType() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerType();
+    }
+
+    /**
+     * Set the partnerType property: The partner type.
+     *
+     * @param partnerType the partnerType value to set.
+     * @return the IntegrationAccountPartnerInner object itself.
+     */
+    public IntegrationAccountPartnerInner withPartnerType(PartnerType partnerType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountPartnerProperties();
+        }
+        this.innerProperties().withPartnerType(partnerType);
+        return this;
+    }
+
+    /**
+     * Get the createdTime property: The created time.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     *
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     *
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: The metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the IntegrationAccountPartnerInner object itself.
+     */
+    public IntegrationAccountPartnerInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountPartnerProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
+     * Get the content property: The partner content.
+     *
+     * @return the content value.
+     */
+    public PartnerContent content() {
+        return this.innerProperties() == null ? null : this.innerProperties().content();
+    }
+
+    /**
+     * Set the content property: The partner content.
+     *
+     * @param content the content value to set.
+     * @return the IntegrationAccountPartnerInner object itself.
+     */
+    public IntegrationAccountPartnerInner withContent(PartnerContent content) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountPartnerProperties();
+        }
+        this.innerProperties().withContent(content);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (partnerType() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property partnerType in model IntegrationAccountPartnerInner"));
-        }
-        if (content() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property content in model IntegrationAccountPartnerInner"));
+                        "Missing required property innerProperties in model IntegrationAccountPartnerInner"));
         } else {
-            content().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountPartnerInner.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.ApiOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of managed API operations. */
 @Fluent
 public final class ApiOperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiOperationListResult.class);
-
     /*
      * The api operation definitions for an API.
      */
@@ -27,6 +23,10 @@ public final class ApiOperationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ApiOperationListResult class. */
+    public ApiOperationListResult() {
+    }
 
     /**
      * Get the value property: The api operation definitions for an API.

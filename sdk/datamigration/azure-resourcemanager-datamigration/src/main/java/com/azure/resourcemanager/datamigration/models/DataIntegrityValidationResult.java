@@ -5,20 +5,18 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Results for checksum based Data Integrity validation results. */
 @Immutable
 public final class DataIntegrityValidationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataIntegrityValidationResult.class);
-
     /*
      * List of failed table names of source and target pair
      */
     @JsonProperty(value = "failedObjects", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> failedObjects;
 
     /*
@@ -26,6 +24,10 @@ public final class DataIntegrityValidationResult {
      */
     @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationError validationErrors;
+
+    /** Creates an instance of DataIntegrityValidationResult class. */
+    public DataIntegrityValidationResult() {
+    }
 
     /**
      * Get the failedObjects property: List of failed table names of source and target pair.

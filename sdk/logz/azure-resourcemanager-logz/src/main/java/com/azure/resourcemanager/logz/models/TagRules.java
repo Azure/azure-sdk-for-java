@@ -18,7 +18,7 @@ public interface TagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName);
 
@@ -31,9 +31,24 @@ public interface TagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName, Context context);
+
+    /**
+     * Get a tag rule set for a given monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param ruleSetName The ruleSetName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a tag rule set for a given monitor resource along with {@link Response}.
+     */
+    Response<MonitoringTagRules> getWithResponse(
+        String resourceGroupName, String monitorName, String ruleSetName, Context context);
 
     /**
      * Get a tag rule set for a given monitor resource.
@@ -47,33 +62,6 @@ public interface TagRules {
      * @return a tag rule set for a given monitor resource.
      */
     MonitoringTagRules get(String resourceGroupName, String monitorName, String ruleSetName);
-
-    /**
-     * Get a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName The ruleSetName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
-     */
-    Response<MonitoringTagRules> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
-
-    /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName The ruleSetName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String monitorName, String ruleSetName);
 
     /**
      * Delete a tag rule set for a given monitor resource.
@@ -91,13 +79,25 @@ public interface TagRules {
         String resourceGroupName, String monitorName, String ruleSetName, Context context);
 
     /**
+     * Delete a tag rule set for a given monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param ruleSetName The ruleSetName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String monitorName, String ruleSetName);
+
+    /**
      * Get a tag rule set for a given monitor resource.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return a tag rule set for a given monitor resource along with {@link Response}.
      */
     MonitoringTagRules getById(String id);
 
@@ -109,7 +109,7 @@ public interface TagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return a tag rule set for a given monitor resource along with {@link Response}.
      */
     Response<MonitoringTagRules> getByIdWithResponse(String id, Context context);
 

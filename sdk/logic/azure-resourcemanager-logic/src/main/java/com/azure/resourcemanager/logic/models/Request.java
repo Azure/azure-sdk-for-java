@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A request. */
 @Fluent
 public final class Request {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Request.class);
-
     /*
      * A list of all the headers attached to the request.
      */
@@ -31,6 +27,10 @@ public final class Request {
      */
     @JsonProperty(value = "method")
     private String method;
+
+    /** Creates an instance of Request class. */
+    public Request() {
+    }
 
     /**
      * Get the headers property: A list of all the headers attached to the request.

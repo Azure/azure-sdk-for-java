@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MiSqlConnectionInfo")
 @Fluent
 public final class MiSqlConnectionInfo extends ConnectionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MiSqlConnectionInfo.class);
-
     /*
      * Resource id for Azure SQL database Managed instance
      */
     @JsonProperty(value = "managedInstanceResourceId", required = true)
     private String managedInstanceResourceId;
+
+    /** Creates an instance of MiSqlConnectionInfo class. */
+    public MiSqlConnectionInfo() {
+    }
 
     /**
      * Get the managedInstanceResourceId property: Resource id for Azure SQL database Managed instance.
@@ -67,10 +68,12 @@ public final class MiSqlConnectionInfo extends ConnectionInfo {
     public void validate() {
         super.validate();
         if (managedInstanceResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property managedInstanceResourceId in model MiSqlConnectionInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MiSqlConnectionInfo.class);
 }

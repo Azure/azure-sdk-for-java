@@ -34,6 +34,10 @@ public class Layer {
     @JsonProperty(value = "label")
     private String label;
 
+    /** Creates an instance of Layer class. */
+    public Layer() {
+    }
+
     /**
      * Get the width property: The width of the output video for this layer. The value can be absolute (in pixels) or
      * relative (in percentage). For example 50% means the output video has half as many pixels in width as the input.

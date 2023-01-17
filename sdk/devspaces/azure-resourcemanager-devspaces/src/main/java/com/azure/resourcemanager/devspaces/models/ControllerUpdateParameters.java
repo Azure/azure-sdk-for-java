@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.devspaces.fluent.models.ControllerUpdateParametersProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters for updating an Azure Dev Spaces Controller. */
-@JsonFlatten
 @Fluent
-public class ControllerUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllerUpdateParameters.class);
-
+public final class ControllerUpdateParameters {
     /*
      * Tags for the Azure Dev Spaces Controller.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * Credentials of the target container host (base64).
+     * The properties property.
      */
-    @JsonProperty(value = "properties.targetContainerHostCredentialsBase64")
-    private String targetContainerHostCredentialsBase64;
+    @JsonProperty(value = "properties")
+    private ControllerUpdateParametersProperties innerProperties;
+
+    /** Creates an instance of ControllerUpdateParameters class. */
+    public ControllerUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Tags for the Azure Dev Spaces Controller.
@@ -50,12 +51,21 @@ public class ControllerUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The properties property.
+     *
+     * @return the innerProperties value.
+     */
+    private ControllerUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
      *
      * @return the targetContainerHostCredentialsBase64 value.
      */
     public String targetContainerHostCredentialsBase64() {
-        return this.targetContainerHostCredentialsBase64;
+        return this.innerProperties() == null ? null : this.innerProperties().targetContainerHostCredentialsBase64();
     }
 
     /**
@@ -66,7 +76,10 @@ public class ControllerUpdateParameters {
      */
     public ControllerUpdateParameters withTargetContainerHostCredentialsBase64(
         String targetContainerHostCredentialsBase64) {
-        this.targetContainerHostCredentialsBase64 = targetContainerHostCredentialsBase64;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ControllerUpdateParametersProperties();
+        }
+        this.innerProperties().withTargetContainerHostCredentialsBase64(targetContainerHostCredentialsBase64);
         return this;
     }
 
@@ -76,5 +89,8 @@ public class ControllerUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

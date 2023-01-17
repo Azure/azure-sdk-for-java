@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** The swagger schema. */
 @Fluent
 public final class SwaggerSchema {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerSchema.class);
-
     /*
      * The reference.
      */
@@ -44,6 +41,7 @@ public final class SwaggerSchema {
      * The object properties
      */
     @JsonProperty(value = "properties")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerSchema> properties;
 
     /*
@@ -107,8 +105,8 @@ public final class SwaggerSchema {
     private Object example;
 
     /*
-     * Indicates the notification url extension. If this is set, the property's
-     * value should be a callback url for a webhook.
+     * Indicates the notification url extension. If this is set, the property's value should be a callback url for a
+     * webhook.
      */
     @JsonProperty(value = "notificationUrlExtension")
     private Boolean notificationUrlExtension;
@@ -136,6 +134,10 @@ public final class SwaggerSchema {
      */
     @JsonProperty(value = "dynamicTree")
     private SwaggerCustomDynamicTree dynamicTree;
+
+    /** Creates an instance of SwaggerSchema class. */
+    public SwaggerSchema() {
+    }
 
     /**
      * Get the ref property: The reference.

@@ -15,7 +15,7 @@ public interface Labs {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> list();
 
@@ -30,7 +30,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> list(String expand, String filter, Integer top, String orderby, Context context);
 
@@ -41,7 +41,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> listByResourceGroup(String resourceGroupName);
 
@@ -57,10 +57,24 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> listByResourceGroup(
         String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+
+    /**
+     * Get lab.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lab along with {@link Response}.
+     */
+    Response<Lab> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand, Context context);
 
     /**
      * Get lab.
@@ -73,20 +87,6 @@ public interface Labs {
      * @return lab.
      */
     Lab getByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Get lab.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
-     */
-    Response<Lab> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand, Context context);
 
     /**
      * Delete lab. This operation can take a while to complete.
@@ -200,13 +200,14 @@ public interface Labs {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param generateUploadUriParameter Properties for generating an upload URI.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI.
+     * @return response body for generating an upload URI along with {@link Response}.
      */
-    GenerateUploadUriResponse generateUploadUri(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter);
+    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
+        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
@@ -214,14 +215,13 @@ public interface Labs {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param generateUploadUriParameter Properties for generating an upload URI.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for generating an upload URI.
      */
-    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
+    GenerateUploadUriResponse generateUploadUri(
+        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -263,7 +263,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds(String resourceGroupName, String name);
 
@@ -276,7 +276,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds(String resourceGroupName, String name, Context context);
 
@@ -287,7 +287,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
+     * @return lab along with {@link Response}.
      */
     Lab getById(String id);
 
@@ -300,7 +300,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
+     * @return lab along with {@link Response}.
      */
     Response<Lab> getByIdWithResponse(String id, String expand, Context context);
 

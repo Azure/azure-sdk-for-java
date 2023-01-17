@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Api Operation Annotation. */
 @Fluent
 public final class ApiOperationAnnotation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiOperationAnnotation.class);
-
     /*
      * The status annotation.
      */
@@ -31,6 +27,10 @@ public final class ApiOperationAnnotation {
      */
     @JsonProperty(value = "revision")
     private Integer revision;
+
+    /** Creates an instance of ApiOperationAnnotation class. */
+    public ApiOperationAnnotation() {
+    }
 
     /**
      * Get the status property: The status annotation.

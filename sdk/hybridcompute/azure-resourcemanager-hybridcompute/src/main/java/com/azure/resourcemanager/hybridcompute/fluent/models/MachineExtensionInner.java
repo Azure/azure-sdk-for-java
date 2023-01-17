@@ -7,17 +7,13 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Machine Extension. */
 @Fluent
 public final class MachineExtensionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineExtensionInner.class);
-
     /*
      * Describes Machine Extension Properties.
      */
@@ -29,6 +25,10 @@ public final class MachineExtensionInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of MachineExtensionInner class. */
+    public MachineExtensionInner() {
+    }
 
     /**
      * Get the properties property: Describes Machine Extension Properties.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.fluent.models.LogzMonitorResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response of a list operation. */
 @Fluent
 public final class LogzMonitorResourceListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogzMonitorResourceListResponse.class);
-
     /*
      * Results of a list operation.
      */
@@ -27,6 +23,10 @@ public final class LogzMonitorResourceListResponse {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of LogzMonitorResourceListResponse class. */
+    public LogzMonitorResourceListResponse() {
+    }
 
     /**
      * Get the value property: Results of a list operation.

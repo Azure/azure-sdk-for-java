@@ -28,17 +28,6 @@ public final class OperationResultsImpl implements OperationResults {
         this.serviceManager = serviceManager;
     }
 
-    public AssetTrack get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
-        AssetTrackInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
-        if (inner != null) {
-            return new AssetTrackImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AssetTrack> getWithResponse(
         String resourceGroupName,
         String accountName,
@@ -56,6 +45,17 @@ public final class OperationResultsImpl implements OperationResults {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AssetTrackImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AssetTrack get(
+        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+        AssetTrackInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
+        if (inner != null) {
+            return new AssetTrackImpl(inner, this.manager());
         } else {
             return null;
         }

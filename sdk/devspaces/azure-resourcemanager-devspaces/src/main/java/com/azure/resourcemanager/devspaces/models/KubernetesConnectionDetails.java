@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Kubernetes")
 @Fluent
 public final class KubernetesConnectionDetails extends OrchestratorSpecificConnectionDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KubernetesConnectionDetails.class);
-
     /*
      * Gets the kubeconfig for the cluster.
      */
     @JsonProperty(value = "kubeConfig")
     private String kubeConfig;
+
+    /** Creates an instance of KubernetesConnectionDetails class. */
+    public KubernetesConnectionDetails() {
+    }
 
     /**
      * Get the kubeConfig property: Gets the kubeconfig for the cluster.

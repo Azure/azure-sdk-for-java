@@ -17,6 +17,10 @@ public final class IpAccessControl {
     @JsonProperty(value = "allow")
     private List<IpRange> allow;
 
+    /** Creates an instance of IpAccessControl class. */
+    public IpAccessControl() {
+    }
+
     /**
      * Get the allow property: The IP allow list.
      *

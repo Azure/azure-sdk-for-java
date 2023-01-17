@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("TaskLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectToSourceSqlServerTaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceSqlServerTaskOutputTaskLevel.class);
-
     /*
      * Source databases as a map from database name to database id
      */
@@ -56,6 +52,10 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
      */
     @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
+
+    /** Creates an instance of ConnectToSourceSqlServerTaskOutputTaskLevel class. */
+    public ConnectToSourceSqlServerTaskOutputTaskLevel() {
+    }
 
     /**
      * Get the databases property: Source databases as a map from database name to database id.

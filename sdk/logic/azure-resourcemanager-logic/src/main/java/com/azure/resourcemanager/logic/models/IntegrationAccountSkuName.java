@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationAccountSkuName. */
+/** The integration account sku name. */
 public final class IntegrationAccountSkuName extends ExpandableStringEnum<IntegrationAccountSkuName> {
     /** Static value NotSpecified for IntegrationAccountSkuName. */
     public static final IntegrationAccountSkuName NOT_SPECIFIED = fromString("NotSpecified");
@@ -23,6 +23,15 @@ public final class IntegrationAccountSkuName extends ExpandableStringEnum<Integr
     public static final IntegrationAccountSkuName STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of IntegrationAccountSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationAccountSkuName() {
+    }
+
+    /**
      * Creates or finds a IntegrationAccountSkuName from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class IntegrationAccountSkuName extends ExpandableStringEnum<Integr
         return fromString(name, IntegrationAccountSkuName.class);
     }
 
-    /** @return known IntegrationAccountSkuName values. */
+    /**
+     * Gets known IntegrationAccountSkuName values.
+     *
+     * @return known IntegrationAccountSkuName values.
+     */
     public static Collection<IntegrationAccountSkuName> values() {
         return values(IntegrationAccountSkuName.class);
     }

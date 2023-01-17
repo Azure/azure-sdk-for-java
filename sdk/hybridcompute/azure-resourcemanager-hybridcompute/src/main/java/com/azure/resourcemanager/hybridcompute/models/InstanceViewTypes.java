@@ -14,6 +14,15 @@ public final class InstanceViewTypes extends ExpandableStringEnum<InstanceViewTy
     public static final InstanceViewTypes INSTANCE_VIEW = fromString("instanceView");
 
     /**
+     * Creates a new instance of InstanceViewTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InstanceViewTypes() {
+    }
+
+    /**
      * Creates or finds a InstanceViewTypes from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class InstanceViewTypes extends ExpandableStringEnum<InstanceViewTy
         return fromString(name, InstanceViewTypes.class);
     }
 
-    /** @return known InstanceViewTypes values. */
+    /**
+     * Gets known InstanceViewTypes values.
+     *
+     * @return known InstanceViewTypes values.
+     */
     public static Collection<InstanceViewTypes> values() {
         return values(InstanceViewTypes.class);
     }

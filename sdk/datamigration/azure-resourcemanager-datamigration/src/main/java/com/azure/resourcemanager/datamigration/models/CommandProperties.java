@@ -6,8 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -32,8 +30,6 @@ import java.util.List;
 })
 @Immutable
 public class CommandProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommandProperties.class);
-
     /*
      * Array of errors. This is ignored if submitted.
      */
@@ -45,6 +41,10 @@ public class CommandProperties {
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private CommandState state;
+
+    /** Creates an instance of CommandProperties class. */
+    public CommandProperties() {
+    }
 
     /**
      * Get the errors property: Array of errors. This is ignored if submitted.

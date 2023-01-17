@@ -111,6 +111,13 @@ public interface Controller {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devspaces.fluent.models.ControllerInner object.
      *
      * @return the inner object.
@@ -287,7 +294,24 @@ public interface Controller {
     Controller refresh(Context context);
 
     /**
-     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * Lists connection details for an Azure Dev Spaces Controller.
+     *
+     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     *
+     * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(
+        ListConnectionDetailsParameters listConnectionDetailsParameters, Context context);
+
+    /**
+     * Lists connection details for an Azure Dev Spaces Controller.
+     *
+     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
      *
      * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,17 +321,4 @@ public interface Controller {
      */
     ControllerConnectionDetailsList listConnectionDetails(
         ListConnectionDetailsParameters listConnectionDetailsParameters);
-
-    /**
-     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
-     *
-     * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(
-        ListConnectionDetailsParameters listConnectionDetailsParameters, Context context);
 }

@@ -17,6 +17,10 @@ public final class LiveEventActionInput {
     @JsonProperty(value = "removeOutputsOnStop")
     private Boolean removeOutputsOnStop;
 
+    /** Creates an instance of LiveEventActionInput class. */
+    public LiveEventActionInput() {
+    }
+
     /**
      * Get the removeOutputsOnStop property: The flag indicates whether live outputs are automatically deleted when live
      * event is being stopped. Deleting live outputs do not delete the underlying assets.
