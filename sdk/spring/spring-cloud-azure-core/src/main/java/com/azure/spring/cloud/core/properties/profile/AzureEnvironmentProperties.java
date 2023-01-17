@@ -11,18 +11,30 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
  */
 public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
 
+    /**
+     * Provides the environment instance for the public Azure.
+     */
     public static final AzureEnvironmentProperties AZURE = new AzureEnvironmentProperties(AzureEnvironment.AZURE) {{
             setServiceBusDomainName("servicebus.windows.net");
         }};
 
+    /**
+     * Provides the environment instance for Azure China.
+     */
     public static final AzureEnvironmentProperties AZURE_CHINA = new AzureEnvironmentProperties(AzureEnvironment.AZURE_CHINA) {{
             setServiceBusDomainName("servicebus.chinacloudapi.cn");
         }};
 
+    /**
+     * Provides the environment instance for Azure Germany.
+     */
     public static final AzureEnvironmentProperties AZURE_GERMANY = new AzureEnvironmentProperties(AzureEnvironment.AZURE_GERMANY) {{
             setServiceBusDomainName("servicebus.cloudapi.de");
         }};
 
+    /**
+     * Provides the environment instance for Azure US Government.
+     */
     public static final AzureEnvironmentProperties AZURE_US_GOVERNMENT = new AzureEnvironmentProperties(AzureEnvironment.AZURE_US_GOVERNMENT) {{
             setServiceBusDomainName("servicebus.usgovcloudapi.net");
         }};

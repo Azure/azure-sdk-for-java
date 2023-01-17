@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,8 +53,17 @@ class EventHubsProducerPropertiesTests {
     }
 
     @Test
+    void domainNameConfigureAsCloud() {
+        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, producerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(), producerProperties.getDomainName());
+    }
+
+    @Test
     void customDomainNameShouldSet() {
         producerProperties.setDomainName("new.servicebus.windows.net");
+        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, producerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", producerProperties.getDomainName());
     }
 
