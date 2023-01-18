@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.OrderCompleted event. */
 @Fluent
@@ -18,10 +19,16 @@ public final class DataBoxOrderCompletedEventData {
     private String serialNumber;
 
     /*
-     * Metadata related to the stage detail
+     * Name of the current Stage
      */
-    @JsonProperty(value = "stageDetails")
-    private StageDetail stageDetails;
+    @JsonProperty(value = "stageName")
+    private DataBoxStageName stageName;
+
+    /*
+     * The time at which the stage happened.
+     */
+    @JsonProperty(value = "stageTime")
+    private OffsetDateTime stageTime;
 
     /**
      * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
@@ -46,22 +53,42 @@ public final class DataBoxOrderCompletedEventData {
     }
 
     /**
-     * Get the stageDetails property: Metadata related to the stage detail.
+     * Get the stageName property: Name of the current Stage.
      *
-     * @return the stageDetails value.
+     * @return the stageName value.
      */
-    public StageDetail getStageDetails() {
-        return this.stageDetails;
+    public DataBoxStageName getStageName() {
+        return this.stageName;
     }
 
     /**
-     * Set the stageDetails property: Metadata related to the stage detail.
+     * Set the stageName property: Name of the current Stage.
      *
-     * @param stageDetails the stageDetails value to set.
+     * @param stageName the stageName value to set.
      * @return the DataBoxOrderCompletedEventData object itself.
      */
-    public DataBoxOrderCompletedEventData setStageDetails(StageDetail stageDetails) {
-        this.stageDetails = stageDetails;
+    public DataBoxOrderCompletedEventData setStageName(DataBoxStageName stageName) {
+        this.stageName = stageName;
+        return this;
+    }
+
+    /**
+     * Get the stageTime property: The time at which the stage happened.
+     *
+     * @return the stageTime value.
+     */
+    public OffsetDateTime getStageTime() {
+        return this.stageTime;
+    }
+
+    /**
+     * Set the stageTime property: The time at which the stage happened.
+     *
+     * @param stageTime the stageTime value to set.
+     * @return the DataBoxOrderCompletedEventData object itself.
+     */
+    public DataBoxOrderCompletedEventData setStageTime(OffsetDateTime stageTime) {
+        this.stageTime = stageTime;
         return this;
     }
 }
