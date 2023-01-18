@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.models.QueryPerformanceInsightResetDataResultState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result of Query Performance Insight data reset. */
 @Fluent
 public final class QueryPerformanceInsightResetDataResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryPerformanceInsightResetDataResultInner.class);
-
     /*
      * Indicates result of the operation.
      */
@@ -26,6 +22,10 @@ public final class QueryPerformanceInsightResetDataResultInner {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of QueryPerformanceInsightResetDataResultInner class. */
+    public QueryPerformanceInsightResetDataResultInner() {
+    }
 
     /**
      * Get the status property: Indicates result of the operation.
