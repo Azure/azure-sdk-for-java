@@ -24,7 +24,7 @@ import java.util.Arrays;
 /** Samples for BackupPolicies CreateOrUpdate. */
 public final class BackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/CreateOrUpdateBackupPolicy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/PolicyCRUD/CreateOrUpdateBackupPolicy.json
      */
     /**
      * Sample code: CreateOrUpdate BackupPolicy.
@@ -36,7 +36,7 @@ public final class BackupPoliciesCreateOrUpdateSamples {
         manager
             .backupPolicies()
             .define("OSSDBPolicy")
-            .withExistingBackupVault("PrivatePreviewVault", "000pikumar")
+            .withExistingBackupVault("000pikumar", "PrivatePreviewVault")
             .withProperties(
                 new BackupPolicy()
                     .withDatasourceTypes(Arrays.asList("OssDB"))

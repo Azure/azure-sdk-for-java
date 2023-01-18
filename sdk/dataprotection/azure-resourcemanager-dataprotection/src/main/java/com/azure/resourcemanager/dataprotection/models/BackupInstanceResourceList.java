@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.BackupInstanceResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** BackupInstanceResourceList BackupInstance Resource list response. */
+/**
+ * BackupInstanceResourceList
+ *
+ * <p>BackupInstance Resource list response.
+ */
 @Fluent
 public final class BackupInstanceResourceList extends DppResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInstanceResourceList.class);
-
     /*
      * List of resources.
      */
     @JsonProperty(value = "value")
     private List<BackupInstanceResourceInner> value;
+
+    /** Creates an instance of BackupInstanceResourceList class. */
+    public BackupInstanceResourceList() {
+    }
 
     /**
      * Get the value property: List of resources.

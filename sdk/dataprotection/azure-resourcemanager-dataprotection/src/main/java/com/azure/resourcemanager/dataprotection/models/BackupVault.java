@@ -6,14 +6,21 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** BackupVault Backup Vault. */
+/**
+ * BackupVault
+ *
+ * <p>Backup Vault.
+ */
 @Fluent
 public final class BackupVault {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVault.class);
+    /*
+     * Monitoring Settings
+     */
+    @JsonProperty(value = "monitoringSettings")
+    private MonitoringSettings monitoringSettings;
 
     /*
      * Provisioning state of the BackupVault resource
@@ -34,10 +41,46 @@ public final class BackupVault {
     private ResourceMoveDetails resourceMoveDetails;
 
     /*
+     * Security Settings
+     */
+    @JsonProperty(value = "securitySettings")
+    private SecuritySettings securitySettings;
+
+    /*
      * Storage Settings
      */
     @JsonProperty(value = "storageSettings", required = true)
     private List<StorageSetting> storageSettings;
+
+    /*
+     * Is vault protected by resource guard
+     */
+    @JsonProperty(value = "isVaultProtectedByResourceGuard", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isVaultProtectedByResourceGuard;
+
+    /** Creates an instance of BackupVault class. */
+    public BackupVault() {
+    }
+
+    /**
+     * Get the monitoringSettings property: Monitoring Settings.
+     *
+     * @return the monitoringSettings value.
+     */
+    public MonitoringSettings monitoringSettings() {
+        return this.monitoringSettings;
+    }
+
+    /**
+     * Set the monitoringSettings property: Monitoring Settings.
+     *
+     * @param monitoringSettings the monitoringSettings value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withMonitoringSettings(MonitoringSettings monitoringSettings) {
+        this.monitoringSettings = monitoringSettings;
+        return this;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the BackupVault resource.
@@ -67,6 +110,26 @@ public final class BackupVault {
     }
 
     /**
+     * Get the securitySettings property: Security Settings.
+     *
+     * @return the securitySettings value.
+     */
+    public SecuritySettings securitySettings() {
+        return this.securitySettings;
+    }
+
+    /**
+     * Set the securitySettings property: Security Settings.
+     *
+     * @param securitySettings the securitySettings value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withSecuritySettings(SecuritySettings securitySettings) {
+        this.securitySettings = securitySettings;
+        return this;
+    }
+
+    /**
      * Get the storageSettings property: Storage Settings.
      *
      * @return the storageSettings value.
@@ -87,20 +150,37 @@ public final class BackupVault {
     }
 
     /**
+     * Get the isVaultProtectedByResourceGuard property: Is vault protected by resource guard.
+     *
+     * @return the isVaultProtectedByResourceGuard value.
+     */
+    public Boolean isVaultProtectedByResourceGuard() {
+        return this.isVaultProtectedByResourceGuard;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (monitoringSettings() != null) {
+            monitoringSettings().validate();
+        }
         if (resourceMoveDetails() != null) {
             resourceMoveDetails().validate();
         }
+        if (securitySettings() != null) {
+            securitySettings().validate();
+        }
         if (storageSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property storageSettings in model BackupVault"));
         } else {
             storageSettings().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupVault.class);
 }
