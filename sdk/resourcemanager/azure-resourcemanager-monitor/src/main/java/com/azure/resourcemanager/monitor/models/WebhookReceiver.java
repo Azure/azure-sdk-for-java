@@ -53,6 +53,10 @@ public final class WebhookReceiver {
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
+    /** Creates an instance of WebhookReceiver class. */
+    public WebhookReceiver() {
+    }
+
     /**
      * Get the name property: The name of the webhook receiver. Names must be unique across all receivers within an
      * action group.

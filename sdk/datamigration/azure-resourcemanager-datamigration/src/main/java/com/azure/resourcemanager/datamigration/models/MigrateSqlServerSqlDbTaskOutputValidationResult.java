@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,9 +16,6 @@ import java.util.Map;
 @JsonTypeName("MigrationValidationOutput")
 @Fluent
 public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
-
     /*
      * Migration Identifier
      */
@@ -30,14 +26,19 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
      * Validation summary results for each database
      */
     @JsonProperty(value = "summaryResults")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, MigrationValidationDatabaseSummaryResult> summaryResults;
 
     /*
-     * Current status of validation at the migration level. Status from the
-     * database validation result status will be aggregated here.
+     * Current status of validation at the migration level. Status from the database validation result status will be
+     * aggregated here.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
+
+    /** Creates an instance of MigrateSqlServerSqlDbTaskOutputValidationResult class. */
+    public MigrateSqlServerSqlDbTaskOutputValidationResult() {
+    }
 
     /**
      * Get the migrationId property: Migration Identifier.

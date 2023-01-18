@@ -1,6 +1,6 @@
 # Release History
 
-## 1.35.0-beta.1 (Unreleased)
+## 1.36.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.35.0 (2023-01-05)
+
+### Features Added
+
+- Added corresponding `HttpHeaderName` APIs to `HttpRequest` and `HttpResponse`.
+- Enhanced exception based retrying by inspecting the causal exceptions in addition to the thrown exception.
+
+### Bugs Fixed
+
+- Fixed a bug where cancellation would result in an application stall by using `doFinally` instead of `doOnTermination` ([#32727](https://github.com/Azure/azure-sdk-for-java/pull/32727)).
+
+### Other Changes
+
+- Added more details to key exception messages.
+
+### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.23` to `3.4.26`.
 
 ## 1.34.0 (2022-11-04)
 

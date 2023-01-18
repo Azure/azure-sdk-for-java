@@ -35,6 +35,15 @@ public final class OperationStatus extends ExpandableStringEnum<OperationStatus>
     public static final OperationStatus DELETE_FAILED = fromString("DeleteFailed");
 
     /**
+     * Creates a new instance of OperationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationStatus() {
+    }
+
+    /**
      * Creates or finds a OperationStatus from its string representation.
      *
      * @param name a name to look for.

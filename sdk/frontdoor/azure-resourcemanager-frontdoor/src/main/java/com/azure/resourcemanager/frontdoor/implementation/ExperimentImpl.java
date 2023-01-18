@@ -81,6 +81,10 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ExperimentInner innerModel() {
         return this.innerObject;
     }

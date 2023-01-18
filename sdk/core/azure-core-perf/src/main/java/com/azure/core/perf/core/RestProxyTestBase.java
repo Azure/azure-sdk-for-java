@@ -41,8 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -181,7 +180,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         switch (options.getBinaryDataSource()) {
             case BYTES:
                 byte[] bytes = new byte[(int) size];
-                new Random().nextBytes(bytes);
+                ThreadLocalRandom.current().nextBytes(bytes);
                 return  () -> BinaryData.fromBytes(bytes);
             case FILE:
                 try {

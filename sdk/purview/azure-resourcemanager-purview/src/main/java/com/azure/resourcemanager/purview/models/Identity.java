@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The Managed Identity of the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
     /*
      * Service principal object Id
      */
@@ -31,6 +29,17 @@ public class Identity {
      */
     @JsonProperty(value = "type")
     private Type type;
+
+    /*
+     * User Assigned Identities
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
 
     /**
      * Get the principalId property: Service principal object Id.
@@ -71,10 +80,40 @@ public class Identity {
     }
 
     /**
+     * Get the userAssignedIdentities property: User Assigned Identities.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: User Assigned Identities.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the Identity object itself.
+     */
+    public Identity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class TrackBase {
+    /** Creates an instance of TrackBase class. */
+    public TrackBase() {
+    }
+
     /**
      * Validates the instance.
      *

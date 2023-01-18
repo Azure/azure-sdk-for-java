@@ -55,7 +55,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientAlertRu")
-    private interface AlertRuleIncidentsService {
+    public interface AlertRuleIncidentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
@@ -219,22 +219,6 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param incidentName The name of the incident to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident associated to an alert rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IncidentInner get(String resourceGroupName, String ruleName, String incidentName) {
-        return getAsync(resourceGroupName, ruleName, incidentName).block();
-    }
-
-    /**
-     * Gets an incident associated to an alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param incidentName The name of the incident to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,6 +229,22 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
     public Response<IncidentInner> getWithResponse(
         String resourceGroupName, String ruleName, String incidentName, Context context) {
         return getWithResponseAsync(resourceGroupName, ruleName, incidentName, context).block();
+    }
+
+    /**
+     * Gets an incident associated to an alert rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param incidentName The name of the incident to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an incident associated to an alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IncidentInner get(String resourceGroupName, String ruleName, String incidentName) {
+        return getWithResponse(resourceGroupName, ruleName, incidentName, Context.NONE).getValue();
     }
 
     /**

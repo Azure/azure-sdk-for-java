@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ContainerType;
 import com.azure.resourcemanager.machinelearning.models.DeploymentLogs;
@@ -70,7 +69,7 @@ public final class OnlineDeploymentsGetLogsWithResponseMockTests {
                     "cant",
                     "syxzxjmkanbc",
                     new DeploymentLogsRequest().withContainerType(ContainerType.INFERENCE_SERVER).withTail(129296832),
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("exvtemasp", response.content());

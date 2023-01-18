@@ -16,6 +16,21 @@ public interface Services {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
      * @param serviceName The name of the service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the service along with {@link Response}.
+     */
+    Response<ServiceResource> getWithResponse(
+        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+
+    /**
+     * Gets the service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,7 +39,7 @@ public interface Services {
     ServiceResource get(String resourceGroupName, String serviceTopologyName, String serviceName);
 
     /**
-     * Gets the service.
+     * Deletes the service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -33,9 +48,9 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service.
+     * @return the {@link Response}.
      */
-    Response<ServiceResource> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
 
     /**
@@ -51,19 +66,18 @@ public interface Services {
     void delete(String resourceGroupName, String serviceTopologyName, String serviceName);
 
     /**
-     * Deletes the service.
+     * Lists the services in the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the list of services along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<List<ServiceResource>> listWithResponse(
+        String resourceGroupName, String serviceTopologyName, Context context);
 
     /**
      * Lists the services in the service topology.
@@ -78,27 +92,13 @@ public interface Services {
     List<ServiceResource> list(String resourceGroupName, String serviceTopologyName);
 
     /**
-     * Lists the services in the service topology.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of services.
-     */
-    Response<List<ServiceResource>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context);
-
-    /**
      * Gets the service.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service.
+     * @return the service along with {@link Response}.
      */
     ServiceResource getById(String id);
 
@@ -110,7 +110,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service.
+     * @return the service along with {@link Response}.
      */
     Response<ServiceResource> getByIdWithResponse(String id, Context context);
 
@@ -132,7 +132,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

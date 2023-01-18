@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,10 +16,6 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel
     extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
-
     /*
      * Migration start time
      */
@@ -57,6 +51,10 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
      */
     @JsonProperty(value = "targetServer", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServer;
+
+    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel class. */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel() {
+    }
 
     /**
      * Get the startedOn property: Migration start time.

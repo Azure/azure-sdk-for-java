@@ -29,6 +29,15 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
     public static final EndpointProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of EndpointProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointProvisioningState() {
+    }
+
+    /**
      * Creates or finds a EndpointProvisioningState from its string representation.
      *
      * @param name a name to look for.

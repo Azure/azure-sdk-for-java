@@ -21,6 +21,15 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
         fromString("UserAssignedManagedIdentity");
 
     /**
+     * Creates a new instance of SqlAlwaysEncryptedAkvAuthType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlAlwaysEncryptedAkvAuthType() {
+    }
+
+    /**
      * Creates or finds a SqlAlwaysEncryptedAkvAuthType from its string representation.
      *
      * @param name a name to look for.

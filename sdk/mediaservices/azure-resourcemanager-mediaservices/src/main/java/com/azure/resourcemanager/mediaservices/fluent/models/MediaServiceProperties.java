@@ -66,6 +66,10 @@ public final class MediaServiceProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
+    /** Creates an instance of MediaServiceProperties class. */
+    public MediaServiceProperties() {
+    }
+
     /**
      * Get the mediaServiceId property: The Media Services account ID.
      *

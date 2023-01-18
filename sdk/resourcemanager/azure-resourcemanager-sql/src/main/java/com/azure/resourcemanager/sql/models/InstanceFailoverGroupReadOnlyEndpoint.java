@@ -16,6 +16,10 @@ public final class InstanceFailoverGroupReadOnlyEndpoint {
     @JsonProperty(value = "failoverPolicy")
     private ReadOnlyEndpointFailoverPolicy failoverPolicy;
 
+    /** Creates an instance of InstanceFailoverGroupReadOnlyEndpoint class. */
+    public InstanceFailoverGroupReadOnlyEndpoint() {
+    }
+
     /**
      * Get the failoverPolicy property: Failover policy of the read-only endpoint for the failover group.
      *

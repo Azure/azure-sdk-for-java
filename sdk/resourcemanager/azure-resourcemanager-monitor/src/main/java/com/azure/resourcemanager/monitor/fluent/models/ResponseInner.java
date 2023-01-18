@@ -51,6 +51,10 @@ public final class ResponseInner {
     @JsonProperty(value = "value", required = true)
     private List<MetricInner> value;
 
+    /** Creates an instance of ResponseInner class. */
+    public ResponseInner() {
+    }
+
     /**
      * Get the cost property: The integer value representing the relative cost of the query.
      *

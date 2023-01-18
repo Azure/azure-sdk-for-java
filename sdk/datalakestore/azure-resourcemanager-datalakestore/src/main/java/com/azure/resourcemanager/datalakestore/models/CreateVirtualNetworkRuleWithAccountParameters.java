@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateVirtualNetworkRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to create a new virtual network rule while creating a new Data Lake Store account. */
-@JsonFlatten
 @Fluent
-public class CreateVirtualNetworkRuleWithAccountParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CreateVirtualNetworkRuleWithAccountParameters.class);
-
+public final class CreateVirtualNetworkRuleWithAccountParameters {
     /*
      * The unique name of the virtual network rule to create.
      */
@@ -24,10 +19,15 @@ public class CreateVirtualNetworkRuleWithAccountParameters {
     private String name;
 
     /*
-     * The resource identifier for the subnet.
+     * The virtual network rule properties to use when creating a new virtual network rule.
      */
-    @JsonProperty(value = "properties.subnetId", required = true)
-    private String subnetId;
+    @JsonProperty(value = "properties", required = true)
+    private CreateOrUpdateVirtualNetworkRuleProperties innerProperties =
+        new CreateOrUpdateVirtualNetworkRuleProperties();
+
+    /** Creates an instance of CreateVirtualNetworkRuleWithAccountParameters class. */
+    public CreateVirtualNetworkRuleWithAccountParameters() {
+    }
 
     /**
      * Get the name property: The unique name of the virtual network rule to create.
@@ -50,12 +50,22 @@ public class CreateVirtualNetworkRuleWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The virtual network rule properties to use when creating a new virtual network
+     * rule.
+     *
+     * @return the innerProperties value.
+     */
+    private CreateOrUpdateVirtualNetworkRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the subnetId property: The resource identifier for the subnet.
      *
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -65,7 +75,10 @@ public class CreateVirtualNetworkRuleWithAccountParameters {
      * @return the CreateVirtualNetworkRuleWithAccountParameters object itself.
      */
     public CreateVirtualNetworkRuleWithAccountParameters withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateVirtualNetworkRuleProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
         return this;
     }
 
@@ -76,16 +89,21 @@ public class CreateVirtualNetworkRuleWithAccountParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CreateVirtualNetworkRuleWithAccountParameters"));
         }
-        if (subnetId() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property subnetId in model CreateVirtualNetworkRuleWithAccountParameters"));
+                        "Missing required property innerProperties in model"
+                            + " CreateVirtualNetworkRuleWithAccountParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateVirtualNetworkRuleWithAccountParameters.class);
 }

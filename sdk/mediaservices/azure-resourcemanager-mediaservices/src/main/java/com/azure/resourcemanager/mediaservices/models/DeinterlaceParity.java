@@ -20,6 +20,15 @@ public final class DeinterlaceParity extends ExpandableStringEnum<DeinterlacePar
     public static final DeinterlaceParity BOTTOM_FIELD_FIRST = fromString("BottomFieldFirst");
 
     /**
+     * Creates a new instance of DeinterlaceParity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeinterlaceParity() {
+    }
+
+    /**
      * Creates or finds a DeinterlaceParity from its string representation.
      *
      * @param name a name to look for.

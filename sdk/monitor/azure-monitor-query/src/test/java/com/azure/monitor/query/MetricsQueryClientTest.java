@@ -11,7 +11,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit tests for {@link MetricsQueryClient}.
  */
 public class MetricsQueryClientTest extends TestBase {
-    public static final String RESOURCE_URI = Configuration.getGlobalConfiguration()
+    private static final String RESOURCE_URI = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_METRICS_RESOURCE_URI",
                     "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics");
     private MetricsQueryClient client;
@@ -102,11 +102,7 @@ public class MetricsQueryClientTest extends TestBase {
     }
 
     private TokenCredential getCredential() {
-        return new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET"))
-            .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
-            .build();
+        return new DefaultAzureCredentialBuilder().build();
     }
 
     @Test

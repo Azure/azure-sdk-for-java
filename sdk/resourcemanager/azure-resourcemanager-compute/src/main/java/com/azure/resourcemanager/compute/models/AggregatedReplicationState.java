@@ -23,6 +23,15 @@ public final class AggregatedReplicationState extends ExpandableStringEnum<Aggre
     public static final AggregatedReplicationState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of AggregatedReplicationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AggregatedReplicationState() {
+    }
+
+    /**
      * Creates or finds a AggregatedReplicationState from its string representation.
      *
      * @param name a name to look for.

@@ -34,6 +34,7 @@
     <module>sdk/batch</module>
     <module>sdk/batchai</module>
     <module>sdk/billing</module>
+    <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
@@ -136,6 +137,7 @@
     <module>sdk/quota</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/recoveryservicesbackup</module>
+    <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>

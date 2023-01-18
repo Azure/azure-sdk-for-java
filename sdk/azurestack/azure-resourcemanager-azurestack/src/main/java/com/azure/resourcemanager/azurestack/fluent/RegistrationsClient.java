@@ -22,7 +22,7 @@ public interface RegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of registrations.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RegistrationInner> listByResourceGroup(String resourceGroup);
@@ -35,10 +35,47 @@ public interface RegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of registrations.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RegistrationInner> listByResourceGroup(String resourceGroup, Context context);
+
+    /**
+     * Returns a list of all registrations under current subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RegistrationInner> list();
+
+    /**
+     * Returns a list of all registrations under current subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RegistrationInner> list(Context context);
+
+    /**
+     * Returns the properties of an Azure Stack registration.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return registration information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RegistrationInner> getByResourceGroupWithResponse(
+        String resourceGroup, String registrationName, Context context);
 
     /**
      * Returns the properties of an Azure Stack registration.
@@ -54,7 +91,7 @@ public interface RegistrationsClient {
     RegistrationInner getByResourceGroup(String resourceGroup, String registrationName);
 
     /**
-     * Returns the properties of an Azure Stack registration.
+     * Delete the requested Azure Stack registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -62,11 +99,10 @@ public interface RegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registration information.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegistrationInner> getByResourceGroupWithResponse(
-        String resourceGroup, String registrationName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroup, String registrationName, Context context);
 
     /**
      * Delete the requested Azure Stack registration.
@@ -81,18 +117,20 @@ public interface RegistrationsClient {
     void delete(String resourceGroup, String registrationName);
 
     /**
-     * Delete the requested Azure Stack registration.
+     * Create or update an Azure Stack registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
+     * @param token Registration token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return registration information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroup, String registrationName, Context context);
+    Response<RegistrationInner> createOrUpdateWithResponse(
+        String resourceGroup, String registrationName, RegistrationParameter token, Context context);
 
     /**
      * Create or update an Azure Stack registration.
@@ -109,7 +147,7 @@ public interface RegistrationsClient {
     RegistrationInner createOrUpdate(String resourceGroup, String registrationName, RegistrationParameter token);
 
     /**
-     * Create or update an Azure Stack registration.
+     * Patch an Azure Stack registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -118,10 +156,10 @@ public interface RegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registration information.
+     * @return registration information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegistrationInner> createOrUpdateWithResponse(
+    Response<RegistrationInner> updateWithResponse(
         String resourceGroup, String registrationName, RegistrationParameter token, Context context);
 
     /**
@@ -139,20 +177,19 @@ public interface RegistrationsClient {
     RegistrationInner update(String resourceGroup, String registrationName, RegistrationParameter token);
 
     /**
-     * Patch an Azure Stack registration.
+     * Returns Azure Stack Activation Key.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registration information.
+     * @return the resource containing the Azure Stack activation key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegistrationInner> updateWithResponse(
-        String resourceGroup, String registrationName, RegistrationParameter token, Context context);
+    Response<ActivationKeyResultInner> getActivationKeyWithResponse(
+        String resourceGroup, String registrationName, Context context);
 
     /**
      * Returns Azure Stack Activation Key.
@@ -168,7 +205,7 @@ public interface RegistrationsClient {
     ActivationKeyResultInner getActivationKey(String resourceGroup, String registrationName);
 
     /**
-     * Returns Azure Stack Activation Key.
+     * Enables remote management for device under the Azure Stack registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -176,11 +213,10 @@ public interface RegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource containing the Azure Stack activation key.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ActivationKeyResultInner> getActivationKeyWithResponse(
-        String resourceGroup, String registrationName, Context context);
+    Response<Void> enableRemoteManagementWithResponse(String resourceGroup, String registrationName, Context context);
 
     /**
      * Enables remote management for device under the Azure Stack registration.
@@ -193,18 +229,4 @@ public interface RegistrationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void enableRemoteManagement(String resourceGroup, String registrationName);
-
-    /**
-     * Enables remote management for device under the Azure Stack registration.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> enableRemoteManagementWithResponse(String resourceGroup, String registrationName, Context context);
 }

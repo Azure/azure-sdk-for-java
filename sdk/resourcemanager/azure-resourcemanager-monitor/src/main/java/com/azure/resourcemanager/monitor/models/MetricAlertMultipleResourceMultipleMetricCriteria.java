@@ -21,6 +21,10 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     @JsonProperty(value = "allOf")
     private List<MultiMetricCriteria> allOf;
 
+    /** Creates an instance of MetricAlertMultipleResourceMultipleMetricCriteria class. */
+    public MetricAlertMultipleResourceMultipleMetricCriteria() {
+    }
+
     /**
      * Get the allOf property: the list of multiple metric criteria for this 'all of' operation.
      *

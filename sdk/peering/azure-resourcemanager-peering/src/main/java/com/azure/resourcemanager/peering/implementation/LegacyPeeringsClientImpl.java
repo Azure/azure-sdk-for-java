@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.LegacyPeeringsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringInner;
 import com.azure.resourcemanager.peering.models.LegacyPeeringsKind;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LegacyPeeringsClient. */
 public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
-    private final ClientLogger logger = new ClientLogger(LegacyPeeringsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LegacyPeeringsService service;
 
@@ -59,7 +56,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
-    private interface LegacyPeeringsService {
+    public interface LegacyPeeringsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings")
         @ExpectedResponses({200})
@@ -94,7 +91,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringInner>> listSinglePageAsync(
@@ -154,7 +151,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringInner>> listSinglePageAsync(
@@ -210,7 +207,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringInner> listAsync(String peeringLocation, LegacyPeeringsKind kind, Integer asn) {
@@ -226,7 +223,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringInner> listAsync(String peeringLocation, LegacyPeeringsKind kind) {
@@ -245,7 +242,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringInner> listAsync(
@@ -263,7 +260,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringInner> list(String peeringLocation, LegacyPeeringsKind kind) {
@@ -281,7 +278,7 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringInner> list(
@@ -292,11 +289,12 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringInner>> listNextSinglePageAsync(String nextLink) {
@@ -327,12 +325,13 @@ public final class LegacyPeeringsClientImpl implements LegacyPeeringsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringInner>> listNextSinglePageAsync(String nextLink, Context context) {

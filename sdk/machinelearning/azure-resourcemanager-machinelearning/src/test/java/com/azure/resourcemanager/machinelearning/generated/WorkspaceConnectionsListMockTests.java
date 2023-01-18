@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
@@ -64,7 +63,9 @@ public final class WorkspaceConnectionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> response =
-            manager.workspaceConnections().list("idb", "pglhzqp", "zbawkikcdgfh", "ssdpjeyoqxded", Context.NONE);
+            manager
+                .workspaceConnections()
+                .list("idb", "pglhzqp", "zbawkikcdgfh", "ssdpjeyoqxded", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ConnectionCategory.GIT, response.iterator().next().properties().category());
         Assertions.assertEquals("wh", response.iterator().next().properties().target());

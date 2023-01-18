@@ -5,20 +5,19 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** InnerError Inner Error. */
+/**
+ * InnerError
+ *
+ * <p>Inner Error.
+ */
 @Fluent
 public final class InnerError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InnerError.class);
-
     /*
-     * Any Key value pairs that can be provided to the client for additional
-     * verbose information.
+     * Any Key value pairs that can be provided to the client for additional  verbose information.
      */
     @JsonProperty(value = "additionalInfo")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -31,10 +30,16 @@ public final class InnerError {
     private String code;
 
     /*
-     * InnerError Child Inner Error, to allow Nesting.
+     * InnerError
+     *
+     * Child Inner Error, to allow Nesting.
      */
     @JsonProperty(value = "embeddedInnerError")
     private InnerError embeddedInnerError;
+
+    /** Creates an instance of InnerError class. */
+    public InnerError() {
+    }
 
     /**
      * Get the additionalInfo property: Any Key value pairs that can be provided to the client for additional verbose
@@ -79,7 +84,9 @@ public final class InnerError {
     }
 
     /**
-     * Get the embeddedInnerError property: InnerError Child Inner Error, to allow Nesting.
+     * Get the embeddedInnerError property: InnerError
+     *
+     * <p>Child Inner Error, to allow Nesting.
      *
      * @return the embeddedInnerError value.
      */
@@ -88,7 +95,9 @@ public final class InnerError {
     }
 
     /**
-     * Set the embeddedInnerError property: InnerError Child Inner Error, to allow Nesting.
+     * Set the embeddedInnerError property: InnerError
+     *
+     * <p>Child Inner Error, to allow Nesting.
      *
      * @param embeddedInnerError the embeddedInnerError value to set.
      * @return the InnerError object itself.

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.RolesClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.RoleResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.RoleListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RolesClient. */
 public final class RolesClientImpl implements RolesClient {
-    private final ClientLogger logger = new ClientLogger(RolesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RolesService service;
 
@@ -57,7 +54,7 @@ public final class RolesClientImpl implements RolesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface RolesService {
+    public interface RolesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -92,7 +89,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleResourceFormatInner>> listByHubSinglePageAsync(
@@ -150,7 +147,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleResourceFormatInner>> listByHubSinglePageAsync(
@@ -204,7 +201,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
@@ -222,7 +219,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleResourceFormatInner> listByHubAsync(
@@ -240,7 +237,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -256,7 +253,7 @@ public final class RolesClientImpl implements RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context) {
@@ -266,11 +263,13 @@ public final class RolesClientImpl implements RolesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list role assignment operation.
+     * @return the response of list role assignment operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -301,12 +300,14 @@ public final class RolesClientImpl implements RolesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list role assignment operation.
+     * @return the response of list role assignment operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleResourceFormatInner>> listByHubNextSinglePageAsync(

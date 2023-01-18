@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ class AzureEventHubsPropertiesTest {
     }
 
     @Test
-    void defaultProfileCloudTypeIsAzure() {
+    void defaultProfileCloudTypeIsNull() {
         AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
 
         AzureEventHubsProperties.Producer producer = eventHubsProperties.buildProducerProperties();
@@ -47,17 +48,34 @@ class AzureEventHubsPropertiesTest {
     }
 
     @Test
-    void defaultDomainNameIsAzure() {
+    void defaultDomainNameIsNull() {
         AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
 
         AzureEventHubsProperties.Producer producer = eventHubsProperties.buildProducerProperties();
         AzureEventHubsProperties.Consumer consumer = eventHubsProperties.buildConsumerProperties();
         AzureEventHubsProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
 
-        assertEquals("servicebus.windows.net", eventHubsProperties.getDomainName());
-        assertEquals("servicebus.windows.net", producer.getDomainName());
-        assertEquals("servicebus.windows.net", consumer.getDomainName());
-        assertEquals("servicebus.windows.net", processor.getDomainName());
+        assertNull(eventHubsProperties.getDomainName());
+        assertNull(producer.getDomainName());
+        assertNull(consumer.getDomainName());
+        assertNull(processor.getDomainName());
+    }
+
+    @Test
+    void getDomainNameFromCloud() {
+        AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
+        eventHubsProperties.getProfile().setCloudType(AZURE_CHINA);
+        assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
+                eventHubsProperties.getDomainName());
+    }
+
+    @Test
+    void domainNameOverrideCloud() {
+        AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
+        eventHubsProperties.setDomainName(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+        eventHubsProperties.getProfile().setCloudType(AZURE_CHINA);
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(),
+                eventHubsProperties.getDomainName());
     }
 
     @Test

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mariadb.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ServerSecurityAlertPolicyState. */
+/** Specifies the state of the policy, whether it is enabled or disabled. */
 public enum ServerSecurityAlertPolicyState {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +30,9 @@ public enum ServerSecurityAlertPolicyState {
      */
     @JsonCreator
     public static ServerSecurityAlertPolicyState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ServerSecurityAlertPolicyState[] items = ServerSecurityAlertPolicyState.values();
         for (ServerSecurityAlertPolicyState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ServerSecurityAlertPolicyState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

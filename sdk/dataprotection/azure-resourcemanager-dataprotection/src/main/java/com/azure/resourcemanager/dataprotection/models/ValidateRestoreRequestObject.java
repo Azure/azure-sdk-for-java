@@ -6,22 +6,31 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ValidateRestoreRequestObject Validate restore request object. */
+/**
+ * ValidateRestoreRequestObject
+ *
+ * <p>Validate restore request object.
+ */
 @Fluent
 public final class ValidateRestoreRequestObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateRestoreRequestObject.class);
-
     /*
-     * AzureBackupRestoreRequest Gets or sets the restore request object.
+     * AzureBackupRestoreRequest
+     *
+     * Gets or sets the restore request object.
      */
     @JsonProperty(value = "restoreRequestObject", required = true)
     private AzureBackupRestoreRequest restoreRequestObject;
 
+    /** Creates an instance of ValidateRestoreRequestObject class. */
+    public ValidateRestoreRequestObject() {
+    }
+
     /**
-     * Get the restoreRequestObject property: AzureBackupRestoreRequest Gets or sets the restore request object.
+     * Get the restoreRequestObject property: AzureBackupRestoreRequest
+     *
+     * <p>Gets or sets the restore request object.
      *
      * @return the restoreRequestObject value.
      */
@@ -30,7 +39,9 @@ public final class ValidateRestoreRequestObject {
     }
 
     /**
-     * Set the restoreRequestObject property: AzureBackupRestoreRequest Gets or sets the restore request object.
+     * Set the restoreRequestObject property: AzureBackupRestoreRequest
+     *
+     * <p>Gets or sets the restore request object.
      *
      * @param restoreRequestObject the restoreRequestObject value to set.
      * @return the ValidateRestoreRequestObject object itself.
@@ -47,7 +58,7 @@ public final class ValidateRestoreRequestObject {
      */
     public void validate() {
         if (restoreRequestObject() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restoreRequestObject in model ValidateRestoreRequestObject"));
@@ -55,4 +66,6 @@ public final class ValidateRestoreRequestObject {
             restoreRequestObject().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateRestoreRequestObject.class);
 }

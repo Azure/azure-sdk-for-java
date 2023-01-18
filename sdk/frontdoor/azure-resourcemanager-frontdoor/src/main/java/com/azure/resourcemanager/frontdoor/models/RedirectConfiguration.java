@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Describes Redirect Route. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration")
-@JsonFlatten
 @Fluent
-public class RedirectConfiguration extends RouteConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedirectConfiguration.class);
-
+public final class RedirectConfiguration extends RouteConfiguration {
     /*
      * The redirect type the rule will use when redirecting traffic.
      */
@@ -33,35 +27,36 @@ public class RedirectConfiguration extends RouteConfiguration {
     private FrontDoorRedirectProtocol redirectProtocol;
 
     /*
-     * Host to redirect. Leave empty to use the incoming host as the
-     * destination host.
+     * Host to redirect. Leave empty to use the incoming host as the destination host.
      */
     @JsonProperty(value = "customHost")
     private String customHost;
 
     /*
-     * The full path to redirect. Path cannot be empty and must start with /.
-     * Leave empty to use the incoming path as destination path.
+     * The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as
+     * destination path.
      */
     @JsonProperty(value = "customPath")
     private String customPath;
 
     /*
-     * Fragment to add to the redirect URL. Fragment is the part of the URL
-     * that comes after #. Do not include the #.
+     * Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
      */
     @JsonProperty(value = "customFragment")
     private String customFragment;
 
     /*
-     * The set of query strings to be placed in the redirect URL. Setting this
-     * value would replace any existing query string; leave empty to preserve
-     * the incoming query string. Query string must be in <key>=<value> format.
-     * The first ? and & will be added automatically so do not include them in
-     * the front, but do separate multiple query strings with &.
+     * The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query
+     * string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. The
+     * first ? and & will be added automatically so do not include them in the front, but do separate multiple query
+     * strings with &.
      */
     @JsonProperty(value = "customQueryString")
     private String customQueryString;
+
+    /** Creates an instance of RedirectConfiguration class. */
+    public RedirectConfiguration() {
+    }
 
     /**
      * Get the redirectType property: The redirect type the rule will use when redirecting traffic.

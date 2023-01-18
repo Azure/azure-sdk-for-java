@@ -20,6 +20,15 @@ public final class ReferenceType extends ExpandableStringEnum<ReferenceType> {
     public static final ReferenceType OUTPUT_PATH = fromString("OutputPath");
 
     /**
+     * Creates a new instance of ReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReferenceType() {
+    }
+
+    /**
      * Creates or finds a ReferenceType from its string representation.
      *
      * @param name a name to look for.

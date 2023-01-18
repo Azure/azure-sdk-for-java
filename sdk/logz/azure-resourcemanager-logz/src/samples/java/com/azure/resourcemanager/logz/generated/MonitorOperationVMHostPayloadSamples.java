@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MonitorOperation VMHostPayload. */
 public final class MonitorOperationVMHostPayloadSamples {
     /*
@@ -17,6 +15,8 @@ public final class MonitorOperationVMHostPayloadSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void mainAccountVMHostsPayload(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.monitorOperations().vMHostPayloadWithResponse("myResourceGroup", "myMonitor", Context.NONE);
+        manager
+            .monitorOperations()
+            .vMHostPayloadWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

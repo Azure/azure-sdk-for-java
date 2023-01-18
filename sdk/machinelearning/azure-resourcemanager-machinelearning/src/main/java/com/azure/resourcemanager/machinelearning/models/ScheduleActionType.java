@@ -17,6 +17,15 @@ public final class ScheduleActionType extends ExpandableStringEnum<ScheduleActio
     public static final ScheduleActionType INVOKE_BATCH_ENDPOINT = fromString("InvokeBatchEndpoint");
 
     /**
+     * Creates a new instance of ScheduleActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduleActionType() {
+    }
+
+    /**
      * Creates or finds a ScheduleActionType from its string representation.
      *
      * @param name a name to look for.

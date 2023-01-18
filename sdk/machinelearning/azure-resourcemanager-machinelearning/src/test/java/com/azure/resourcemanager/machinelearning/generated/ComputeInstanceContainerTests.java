@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.ComputeInstanceContainer
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceEnvironmentInfo;
 import com.azure.resourcemanager.machinelearning.models.Network;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceContainerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceContainer model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class ComputeInstanceContainerTests {
         Assertions.assertEquals("phkixkykxdssjpe", model.environment().version());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceContainer model =
             new ComputeInstanceContainer()
                 .withName("khvuhxepmrutz")

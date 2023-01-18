@@ -11,6 +11,8 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -232,6 +234,62 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     this.responseDiagnosticsProcessor))
             .block();
 
+        assert response != null;
+        return toDomainObject(domainType, response.getItem());
+    }
+
+    /**
+     * Patches item
+     *
+     * applies partial update (patch) to an item
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    @Override
+    public <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations) {
+        return patch(id, partitionKey, domainType, patchOperations,  null);
+    }
+
+    /**
+     * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
+     *
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    public <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(patchOperations, "expected non-null cosmosPatchOperations");
+
+        final String containerName = getContainerName(domainType);
+        Assert.notNull(id, "id should not be null");
+        Assert.notNull(partitionKey, "partitionKey should not be null, empty or only whitespaces");
+        Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
+
+        LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(),
+            containerName);
+
+        if (options == null) {
+            options = new CosmosPatchItemRequestOptions();
+        }
+        final CosmosItemResponse<JsonNode> response = this.getCosmosAsyncClient()
+            .getDatabase(this.getDatabaseName())
+            .getContainer(containerName)
+            .patchItem(id.toString(), partitionKey, patchOperations, options, JsonNode.class)
+            .publishOn(Schedulers.parallel())
+            .doOnNext(cosmosItemResponse ->
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    cosmosItemResponse.getDiagnostics(), null))
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,
+                    this.responseDiagnosticsProcessor))
+            .block();
         assert response != null;
         return toDomainObject(domainType, response.getItem());
     }
@@ -591,8 +649,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public <T> void deleteEntity(String containerName, T entity) {
         Assert.notNull(entity, "entity to be deleted should not be null");
-        @SuppressWarnings("unchecked")
-        final Class<T> domainType = (Class<T>) entity.getClass();
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) entity.getClass();
         final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(entity.getClass(), originalItem, options);
@@ -689,8 +746,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final List<JsonNode> results = findItemsAsFlux(query, containerName, domainType).collectList().block();
         assert results != null;
         return results.stream()
-                      .map(item -> deleteItem(item, containerName, domainType))
-                      .collect(Collectors.toList());
+            .map(item -> deleteItem(item, containerName, domainType))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -737,8 +794,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     private <T> Page<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
-                                       Pageable pageable, Sort sort,
-                                       Class<T> returnType, String containerName,
+                                        Pageable pageable, Sort sort,
+                                        Class<T> returnType, String containerName,
                                         Optional<Object> partitionKeyValue) {
         Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName, partitionKeyValue);
         final long total = getCountValue(countQuerySpec, containerName);
@@ -746,8 +803,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     private <T> Slice<T> sliceQuery(SqlQuerySpec querySpec,
-                                   Pageable pageable, Sort sort,
-                                   Class<T> returnType, String containerName,
+                                    Pageable pageable, Sort sort,
+                                    Class<T> returnType, String containerName,
                                     Optional<Object> partitionKeyValue) {
         Assert.isTrue(pageable.getPageSize() > 0,
             "pageable should have page size larger than 0");
@@ -884,9 +941,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
-                   .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
-                   .collectList()
-                   .block();
+            .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
+            .collectList()
+            .block();
     }
 
     private void markAuditedIfConfigured(Object object) {
@@ -951,8 +1008,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                                                              cosmosItemFeedResponse.getCosmosDiagnostics(),
-                                                              cosmosItemFeedResponse);
+                    cosmosItemFeedResponse.getCosmosDiagnostics(),
+                    cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .onErrorResume(throwable ->

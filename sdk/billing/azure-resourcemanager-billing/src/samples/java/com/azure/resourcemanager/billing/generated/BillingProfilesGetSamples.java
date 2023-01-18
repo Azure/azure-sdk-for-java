@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingProfiles Get. */
 public final class BillingProfilesGetSamples {
     /*
@@ -19,7 +17,8 @@ public final class BillingProfilesGetSamples {
     public static void billingProfileWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingProfiles()
-            .getWithResponse("{billingAccountName}", "{billingProfileName}", "invoiceSections", Context.NONE);
+            .getWithResponse(
+                "{billingAccountName}", "{billingProfileName}", "invoiceSections", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +30,8 @@ public final class BillingProfilesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProfiles().getWithResponse("{billingAccountName}", "{billingProfileName}", null, Context.NONE);
+        manager
+            .billingProfiles()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", null, com.azure.core.util.Context.NONE);
     }
 }

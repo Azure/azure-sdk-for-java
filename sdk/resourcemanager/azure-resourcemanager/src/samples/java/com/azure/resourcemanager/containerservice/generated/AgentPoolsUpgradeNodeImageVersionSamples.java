@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AgentPools UpgradeNodeImageVersion. */
 public final class AgentPoolsUpgradeNodeImageVersionSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/AgentPoolsUpgradeNodeImageVersion.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsUpgradeNodeImageVersion.json
      */
     /**
      * Sample code: Upgrade Agent Pool Node Image Version.
@@ -22,6 +20,6 @@ public final class AgentPoolsUpgradeNodeImageVersionSamples {
             .manager()
             .serviceClient()
             .getAgentPools()
-            .upgradeNodeImageVersion("rg1", "clustername1", "agentpool1", Context.NONE);
+            .upgradeNodeImageVersion("rg1", "clustername1", "agentpool1", com.azure.core.util.Context.NONE);
     }
 }

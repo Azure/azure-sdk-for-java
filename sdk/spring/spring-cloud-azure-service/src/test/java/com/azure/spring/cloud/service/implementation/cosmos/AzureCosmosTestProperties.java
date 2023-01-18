@@ -43,7 +43,7 @@ class AzureCosmosTestProperties extends AzureSdkProperties implements CosmosClie
     private final ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
 
     private ConsistencyLevel consistencyLevel;
-    private ConnectionMode connectionMode = ConnectionMode.DIRECT;
+    private ConnectionMode connectionMode;
     private final GatewayConnection gatewayConnection = new GatewayConnection();
     private final DirectConnection directConnection = new DirectConnection();
 

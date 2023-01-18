@@ -16,6 +16,10 @@ public final class SyncDatabaseIdPropertiesInner {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of SyncDatabaseIdPropertiesInner class. */
+    public SyncDatabaseIdPropertiesInner() {
+    }
+
     /**
      * Get the id property: ARM resource id of sync database.
      *

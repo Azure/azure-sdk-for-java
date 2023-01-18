@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AttachedDataNetworks Get. */
 public final class AttachedDataNetworksGetSamples {
     /*
@@ -19,6 +17,11 @@ public final class AttachedDataNetworksGetSamples {
     public static void getAttachedDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager
             .attachedDataNetworks()
-            .getWithResponse("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork", Context.NONE);
+            .getWithResponse(
+                "rg1",
+                "TestPacketCoreCP",
+                "TestPacketCoreDP",
+                "TestAttachedDataNetwork",
+                com.azure.core.util.Context.NONE);
     }
 }

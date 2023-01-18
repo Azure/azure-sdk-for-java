@@ -93,7 +93,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.39.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.40.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
   </dependencies>
 

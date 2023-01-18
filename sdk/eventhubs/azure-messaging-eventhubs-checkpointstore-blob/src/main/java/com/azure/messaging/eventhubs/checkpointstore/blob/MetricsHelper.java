@@ -8,12 +8,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.LongCounter;
+import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,7 +60,7 @@ final class MetricsHelper {
 
     private final Meter meter;
     private final LongGauge lastSequenceNumber;
-    private final LongCounter checkpointCounter;
+    private final DoubleHistogram checkpointDuration;
     private final boolean isEnabled;
 
     MetricsHelper(MetricsOptions metricsOptions, MeterProvider meterProvider) {
@@ -72,15 +74,19 @@ final class MetricsHelper {
 
         if (isEnabled) {
             this.lastSequenceNumber = this.meter.createLongGauge("messaging.eventhubs.checkpoint.sequence_number", "Last successfully checkpointed sequence number.", "seqNo");
-            this.checkpointCounter = this.meter.createLongCounter("messaging.eventhubs.checkpoints", "Number of checkpoints.", null);
+            this.checkpointDuration = this.meter.createDoubleHistogram("messaging.eventhubs.checkpoint.duration", "Duration of checkpoint call.", "ms");
         } else {
             this.lastSequenceNumber = null;
-            this.checkpointCounter = null;
+            this.checkpointDuration = null;
         }
     }
 
-    void reportCheckpoint(Checkpoint checkpoint, String attributesId, boolean success) {
-        if (!isEnabled || !(lastSequenceNumber.isEnabled() && checkpointCounter.isEnabled())) {
+    boolean isCheckpointDurationEnabled() {
+        return isEnabled && checkpointDuration.isEnabled();
+    }
+
+    void reportCheckpoint(Checkpoint checkpoint, String attributesId, boolean success, Instant startTime) {
+        if (!isEnabled || !(lastSequenceNumber.isEnabled() && checkpointDuration.isEnabled())) {
             return;
         }
 
@@ -93,15 +99,18 @@ final class MetricsHelper {
             updateCurrentValue(attributesId, checkpoint);
         }
 
-        if (checkpointCounter.isEnabled()) {
-            TelemetryAttributes attributes = null;
+        if (checkpointDuration.isEnabled()) {
+            TelemetryAttributes attributes;
             if (success) {
                 attributes = getOrCreate(checkpointSuccess, attributesId, checkpoint, "ok");
             } else {
                 attributes = getOrCreate(checkpointFailure, attributesId, checkpoint, "error");
             }
+
             if (attributes != null) {
-                checkpointCounter.add(1, attributes, Context.NONE);
+                if (checkpointDuration.isEnabled()) {
+                    checkpointDuration.record(Duration.between(startTime, Instant.now()).toMillis(), attributes, Context.NONE);
+                }
             }
         }
     }

@@ -34,6 +34,10 @@ public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     @JsonProperty(value = "filterValue")
     private String filterValue;
 
+    /** Creates an instance of SelectAudioTrackByAttribute class. */
+    public SelectAudioTrackByAttribute() {
+    }
+
     /**
      * Get the attribute property: The TrackAttribute to filter the tracks by.
      *

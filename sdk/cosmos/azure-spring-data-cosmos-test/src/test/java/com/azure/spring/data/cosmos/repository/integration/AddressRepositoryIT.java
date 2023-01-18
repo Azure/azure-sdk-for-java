@@ -2,12 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import org.assertj.core.util.Lists;
@@ -27,12 +31,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static com.azure.spring.data.cosmos.common.TestConstants.CITY;
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION1;
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION2;
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS2_PARTITION1;
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITION3;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -49,6 +55,21 @@ public class AddressRepositoryIT {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    CosmosPatchOperations patchSetOperation = CosmosPatchOperations
+        .create()
+        .set("/street", TestConstants.NEW_STREET);
+
+    CosmosPatchOperations patchReplaceOperation = CosmosPatchOperations
+        .create()
+        .replace("/street", TestConstants.NEW_STREET);
+
+    CosmosPatchOperations patchRemoveOperation = CosmosPatchOperations
+        .create()
+        .remove("/street");
+
+    private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+
 
     @Before
     public void setUp() {
@@ -232,5 +253,41 @@ public class AddressRepositoryIT {
         assertThat(results.size()).isEqualTo(1);
         assertThat(results.get(0).getStreet()).isEqualTo(updatedAddress.getStreet());
         assertThat(results.get(0).getPostalCode()).isEqualTo(updatedAddress.getPostalCode());
+    }
+
+    @Test
+    public void testPatchEntitySet() {
+        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation);
+        assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
+    }
+
+    @Test
+    public void testPatchEntityReplace() {
+        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchReplaceOperation);
+        assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
+    }
+
+    @Test
+    public void testPatchEntityRemove() {
+        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchRemoveOperation);
+        assertNull(patchedAddress.getStreet());
+    }
+    @Test
+    public void testPatchPreConditionSuccess() {
+        options.setFilterPredicate("FROM address a WHERE a.city = '"+CITY+"'");
+        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation, options);
+        assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
+    }
+
+    @Test
+    public void testPatchPreConditionFail() {
+        try {
+            options.setFilterPredicate("FROM address a WHERE a.city = 'dummy'");
+            Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation, options);
+            assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
+            Assert.fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);
+        }
     }
 }

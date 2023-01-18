@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -24,13 +23,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class DataStoreParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataStoreParameters.class);
-
     /*
      * type of datastore; Operational/Vault/Archive
      */
     @JsonProperty(value = "dataStoreType", required = true)
     private DataStoreTypes dataStoreType;
+
+    /** Creates an instance of DataStoreParameters class. */
+    public DataStoreParameters() {
+    }
 
     /**
      * Get the dataStoreType property: type of datastore; Operational/Vault/Archive.
@@ -59,10 +60,12 @@ public class DataStoreParameters {
      */
     public void validate() {
         if (dataStoreType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataStoreType in model DataStoreParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataStoreParameters.class);
 }

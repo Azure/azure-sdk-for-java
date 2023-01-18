@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deploymentmanager.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StepType. */
+/** The type of step. */
 public enum StepType {
     /** Enum value Wait. */
     WAIT("Wait"),
@@ -30,6 +30,9 @@ public enum StepType {
      */
     @JsonCreator
     public static StepType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StepType[] items = StepType.values();
         for (StepType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum StepType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

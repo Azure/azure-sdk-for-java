@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryImageUpdate;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
@@ -40,6 +39,6 @@ public final class GalleryImagesUpdateSamples {
                             .withPublisher("myPublisherName")
                             .withOffer("myOfferName")
                             .withSku("mySkuName")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

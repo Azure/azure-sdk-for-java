@@ -7,17 +7,19 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -25,13 +27,17 @@ import java.util.Map;
 /** Represents a server. */
 @Fluent
 public final class ServerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerInner.class);
-
     /*
      * The SKU (pricing tier) of the server.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * Describes the identity of the application.
+     */
+    @JsonProperty(value = "identity")
+    private UserAssignedIdentity identity;
 
     /*
      * Properties of the server.
@@ -40,10 +46,14 @@ public final class ServerInner extends Resource {
     private ServerProperties innerProperties;
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ServerInner class. */
+    public ServerInner() {
+    }
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
@@ -66,6 +76,26 @@ public final class ServerInner extends Resource {
     }
 
     /**
+     * Get the identity property: Describes the identity of the application.
+     *
+     * @return the identity value.
+     */
+    public UserAssignedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Describes the identity of the application.
+     *
+     * @param identity the identity value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withIdentity(UserAssignedIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: Properties of the server.
      *
      * @return the innerProperties value.
@@ -75,7 +105,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -219,6 +249,52 @@ public final class ServerInner extends Resource {
     }
 
     /**
+     * Get the authConfig property: AuthConfig properties of a server.
+     *
+     * @return the authConfig value.
+     */
+    public AuthConfig authConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().authConfig();
+    }
+
+    /**
+     * Set the authConfig property: AuthConfig properties of a server.
+     *
+     * @param authConfig the authConfig value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withAuthConfig(AuthConfig authConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withAuthConfig(authConfig);
+        return this;
+    }
+
+    /**
+     * Get the dataEncryption property: Data encryption properties of a server.
+     *
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEncryption();
+    }
+
+    /**
+     * Set the dataEncryption property: Data encryption properties of a server.
+     *
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withDataEncryption(DataEncryption dataEncryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withDataEncryption(dataEncryption);
+        return this;
+    }
+
+    /**
      * Get the backup property: Backup properties of a server.
      *
      * @return the backup value.
@@ -312,7 +388,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
      *
      * @return the sourceServerResourceId value.
      */
@@ -322,7 +398,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerInner object itself.
@@ -337,7 +413,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -347,7 +423,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerInner object itself.
@@ -384,6 +460,52 @@ public final class ServerInner extends Resource {
     }
 
     /**
+     * Get the replicationRole property: Replication role of the server.
+     *
+     * @return the replicationRole value.
+     */
+    public ReplicationRole replicationRole() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicationRole();
+    }
+
+    /**
+     * Set the replicationRole property: Replication role of the server.
+     *
+     * @param replicationRole the replicationRole value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicationRole(ReplicationRole replicationRole) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withReplicationRole(replicationRole);
+        return this;
+    }
+
+    /**
+     * Get the replicaCapacity property: Replicas allowed for a server.
+     *
+     * @return the replicaCapacity value.
+     */
+    public Integer replicaCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicaCapacity();
+    }
+
+    /**
+     * Set the replicaCapacity property: Replicas allowed for a server.
+     *
+     * @param replicaCapacity the replicaCapacity value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicaCapacity(Integer replicaCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withReplicaCapacity(replicaCapacity);
+        return this;
+    }
+
+    /**
      * Get the createMode property: The mode to create a new PostgreSQL server.
      *
      * @return the createMode value.
@@ -407,29 +529,6 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tagsPropertiesTags() {
-        return this.innerProperties() == null ? null : this.innerProperties().tags();
-    }
-
-    /**
-     * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
-     * @param tags the tags value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withTagsPropertiesTags(Map<String, String> tags) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerProperties();
-        }
-        this.innerProperties().withTags(tags);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -437,6 +536,9 @@ public final class ServerInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();

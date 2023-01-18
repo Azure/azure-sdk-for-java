@@ -15,11 +15,10 @@ public class NamespaceProperties extends CommonProperties implements EventHubsNa
     /**
      * The default constructor.
      *
-     * The object constructed from this constructor will have a domain name and cloud type default
+     * The object constructed from this constructor will have a cloud type default
      * to the Azure global cloud.
      */
     public NamespaceProperties() {
-        this.setDomainName("servicebus.windows.net");
         this.getProfile().setCloudType(CloudType.AZURE);
     }
 

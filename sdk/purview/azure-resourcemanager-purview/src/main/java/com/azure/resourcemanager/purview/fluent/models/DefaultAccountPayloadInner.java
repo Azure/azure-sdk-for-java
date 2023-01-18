@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.models.ScopeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Payload to get and set the default account in the given scope. */
 @Fluent
 public final class DefaultAccountPayloadInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DefaultAccountPayloadInner.class);
-
     /*
      * The name of the account that is set as the default.
      */
@@ -50,6 +46,10 @@ public final class DefaultAccountPayloadInner {
      */
     @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
+
+    /** Creates an instance of DefaultAccountPayloadInner class. */
+    public DefaultAccountPayloadInner() {
+    }
 
     /**
      * Get the accountName property: The name of the account that is set as the default.

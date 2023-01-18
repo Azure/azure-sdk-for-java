@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ElasticPools Delete. */
 public final class ElasticPoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ElasticPoolDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ElasticPoolDelete.json
      */
     /**
      * Sample code: Delete an elastic pool.

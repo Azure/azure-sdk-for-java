@@ -26,6 +26,15 @@ public final class BlurType extends ExpandableStringEnum<BlurType> {
     public static final BlurType BLACK = fromString("Black");
 
     /**
+     * Creates a new instance of BlurType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlurType() {
+    }
+
+    /**
      * Creates or finds a BlurType from its string representation.
      *
      * @param name a name to look for.

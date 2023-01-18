@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.SkuResource;
 import com.azure.resourcemanager.machinelearning.models.SkuScaleType;
@@ -64,7 +63,9 @@ public final class OnlineDeploymentsListSkusMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SkuResource> response =
-            manager.onlineDeployments().listSkus("anydsc", "k", "w", "pwjc", 1694569219, "aahntofelfh", Context.NONE);
+            manager
+                .onlineDeployments()
+                .listSkus("anydsc", "k", "w", "pwjc", 1694569219, "aahntofelfh", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(535751545, response.iterator().next().capacity().defaultProperty());
         Assertions.assertEquals(1856017180, response.iterator().next().capacity().maximum());

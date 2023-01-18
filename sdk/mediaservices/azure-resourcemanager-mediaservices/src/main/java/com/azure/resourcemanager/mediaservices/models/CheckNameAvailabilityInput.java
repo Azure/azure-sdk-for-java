@@ -22,6 +22,10 @@ public final class CheckNameAvailabilityInput {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of CheckNameAvailabilityInput class. */
+    public CheckNameAvailabilityInput() {
+    }
+
     /**
      * Get the name property: The account name.
      *

@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem, Strings}
-import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, DedicatedGatewayRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -16,6 +16,8 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
+
+import java.time.Duration
 
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
@@ -50,6 +52,8 @@ private case class ItemsPartitionReader
     s"query: ${cosmosQuery.toString}, Context: ${operationContext.toString} ${getThreadInfo}")
 
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+
+
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
@@ -138,6 +142,8 @@ private case class ItemsPartitionReader
           java.lang.Integer.MAX_VALUE
         ).toInt
       )
+
+      queryOptions.setDedicatedGatewayRequestOptions(readConfig.dedicatedGatewayRequestOptions)
 
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper

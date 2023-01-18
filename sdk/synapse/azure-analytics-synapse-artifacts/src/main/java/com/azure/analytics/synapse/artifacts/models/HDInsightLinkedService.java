@@ -68,6 +68,9 @@ public class HDInsightLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.fileSystem")
     private Object fileSystem;
 
+    /** Creates an instance of HDInsightLinkedService class. */
+    public HDInsightLinkedService() {}
+
     /**
      * Get the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
      *

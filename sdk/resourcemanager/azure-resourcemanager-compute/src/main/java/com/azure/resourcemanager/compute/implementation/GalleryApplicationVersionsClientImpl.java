@@ -447,7 +447,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String galleryApplicationName,
         String galleryApplicationVersionName,
         GalleryApplicationVersionInner galleryApplicationVersion) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 galleryName,
                 galleryApplicationName,
@@ -483,7 +484,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String galleryApplicationVersionName,
         GalleryApplicationVersionInner galleryApplicationVersion,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 galleryName,
                 galleryApplicationName,
@@ -908,7 +910,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String galleryApplicationName,
         String galleryApplicationVersionName,
         GalleryApplicationVersionUpdate galleryApplicationVersion) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName,
                 galleryName,
                 galleryApplicationName,
@@ -943,7 +946,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String galleryApplicationVersionName,
         GalleryApplicationVersionUpdate galleryApplicationVersion,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName,
                 galleryName,
                 galleryApplicationName,
@@ -1531,7 +1535,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String galleryName,
         String galleryApplicationName,
         String galleryApplicationVersionName) {
-        return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName)
+        return this
+            .beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName)
             .getSyncPoller();
     }
 
@@ -1556,7 +1561,8 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         String galleryApplicationName,
         String galleryApplicationVersionName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, context)
             .getSyncPoller();
     }

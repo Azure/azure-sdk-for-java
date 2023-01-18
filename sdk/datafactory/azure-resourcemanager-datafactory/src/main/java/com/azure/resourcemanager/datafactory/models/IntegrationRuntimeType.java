@@ -17,6 +17,15 @@ public final class IntegrationRuntimeType extends ExpandableStringEnum<Integrati
     public static final IntegrationRuntimeType SELF_HOSTED = fromString("SelfHosted");
 
     /**
+     * Creates a new instance of IntegrationRuntimeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeType() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeType from its string representation.
      *
      * @param name a name to look for.
