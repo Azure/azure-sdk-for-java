@@ -4,8 +4,15 @@
 
 ### Breaking Changes
 
-- Remove `messaging.eventhubs.checkpoints` counter and replace it with `messaging.eventhubs.checkpoint.duration` 
-  histogram that can be used to count checkpoint calls. 
+- Remove `messaging.eventhubs.checkpoints` counter and replace it with `messaging.eventhubs.checkpoint.duration`
+  histogram that can be used to count checkpoint calls.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.1`.
+- Update `azure-storage-blob` dependency to `12.20.2`.
 
 ## 1.16.1 (2022-11-16)
 
