@@ -39,15 +39,6 @@ public final class AssetFiltersImpl implements AssetFilters {
         return Utils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
     }
 
-    public AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName) {
-        AssetFilterInner inner = this.serviceClient().get(resourceGroupName, accountName, assetName, filterName);
-        if (inner != null) {
-            return new AssetFilterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AssetFilter> getWithResponse(
         String resourceGroupName, String accountName, String assetName, String filterName, Context context) {
         Response<AssetFilterInner> inner =
@@ -63,13 +54,22 @@ public final class AssetFiltersImpl implements AssetFilters {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String assetName, String filterName) {
-        this.serviceClient().delete(resourceGroupName, accountName, assetName, filterName);
+    public AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName) {
+        AssetFilterInner inner = this.serviceClient().get(resourceGroupName, accountName, assetName, filterName);
+        if (inner != null) {
+            return new AssetFilterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String assetName, String filterName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, assetName, filterName, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String assetName, String filterName) {
+        this.serviceClient().delete(resourceGroupName, accountName, assetName, filterName);
     }
 
     public AssetFilter getById(String id) {

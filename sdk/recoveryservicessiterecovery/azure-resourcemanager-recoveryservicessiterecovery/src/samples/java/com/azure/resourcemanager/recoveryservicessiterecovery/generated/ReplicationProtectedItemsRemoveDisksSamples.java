@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2ARemoveDisksInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveDisksInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveDisksInputProperties;
@@ -37,6 +36,6 @@ public final class ReplicationProtectedItemsRemoveDisksSamples {
                                 new A2ARemoveDisksInput()
                                     .withVmDisksUris(
                                         Arrays.asList("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

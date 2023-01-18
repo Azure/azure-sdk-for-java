@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectableItems ListByReplicationProtectionContainers. */
 public final class ReplicationProtectableItemsListByReplicationPro {
     /*
@@ -28,6 +26,6 @@ public final class ReplicationProtectableItemsListByReplicationPro {
                 null,
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

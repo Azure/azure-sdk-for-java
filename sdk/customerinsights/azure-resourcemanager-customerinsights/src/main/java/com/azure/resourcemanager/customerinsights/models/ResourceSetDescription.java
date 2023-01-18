@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The resource set description. */
 @Fluent
 public final class ResourceSetDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSetDescription.class);
-
     /*
      * The elements included in the set.
      */
@@ -22,11 +18,14 @@ public final class ResourceSetDescription {
     private List<String> elements;
 
     /*
-     * The elements that are not included in the set, in case elements contains
-     * '*' indicating 'all'.
+     * The elements that are not included in the set, in case elements contains '*' indicating 'all'.
      */
     @JsonProperty(value = "exceptions")
     private List<String> exceptions;
+
+    /** Creates an instance of ResourceSetDescription class. */
+    public ResourceSetDescription() {
+    }
 
     /**
      * Get the elements property: The elements included in the set.

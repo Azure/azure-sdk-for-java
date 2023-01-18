@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,11 +17,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = ItemLevelRestoreCriteria.class)
 @JsonTypeName("ItemLevelRestoreCriteria")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "RangeBasedItemLevelRestoreCriteria", value = RangeBasedItemLevelRestoreCriteria.class)
+    @JsonSubTypes.Type(name = "ItemPathBasedRestoreCriteria", value = ItemPathBasedRestoreCriteria.class),
+    @JsonSubTypes.Type(name = "RangeBasedItemLevelRestoreCriteria", value = RangeBasedItemLevelRestoreCriteria.class),
+    @JsonSubTypes.Type(
+        name = "KubernetesStorageClassRestoreCriteria",
+        value = KubernetesStorageClassRestoreCriteria.class),
+    @JsonSubTypes.Type(name = "KubernetesPVRestoreCriteria", value = KubernetesPVRestoreCriteria.class),
+    @JsonSubTypes.Type(name = "KubernetesClusterRestoreCriteria", value = KubernetesClusterRestoreCriteria.class)
 })
 @Immutable
 public class ItemLevelRestoreCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ItemLevelRestoreCriteria.class);
+    /** Creates an instance of ItemLevelRestoreCriteria class. */
+    public ItemLevelRestoreCriteria() {
+    }
 
     /**
      * Validates the instance.

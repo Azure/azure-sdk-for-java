@@ -14,6 +14,15 @@ public final class CopyCompletionErrorReason extends ExpandableStringEnum<CopyCo
     public static final CopyCompletionErrorReason COPY_SOURCE_NOT_FOUND = fromString("CopySourceNotFound");
 
     /**
+     * Creates a new instance of CopyCompletionErrorReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CopyCompletionErrorReason() {
+    }
+
+    /**
      * Creates or finds a CopyCompletionErrorReason from its string representation.
      *
      * @param name a name to look for.

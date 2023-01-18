@@ -26,6 +26,15 @@ public final class ConnectionAuthType extends ExpandableStringEnum<ConnectionAut
     public static final ConnectionAuthType SAS = fromString("SAS");
 
     /**
+     * Creates a new instance of ConnectionAuthType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionAuthType() {
+    }
+
+    /**
      * Creates or finds a ConnectionAuthType from its string representation.
      *
      * @param name a name to look for.

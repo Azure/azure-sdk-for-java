@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DebugDataAccessLevel. */
+/** The current state of the DebugDataAccessLevel for this account. */
 public enum DebugDataAccessLevel {
     /** Enum value All. */
     ALL("All"),
@@ -33,6 +33,9 @@ public enum DebugDataAccessLevel {
      */
     @JsonCreator
     public static DebugDataAccessLevel fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DebugDataAccessLevel[] items = DebugDataAccessLevel.values();
         for (DebugDataAccessLevel item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum DebugDataAccessLevel {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

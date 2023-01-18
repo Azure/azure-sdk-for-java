@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ImageModelDistributionSettingsObjectDetection;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageModelDistributionSettingsObjectDetectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageModelDistributionSettingsObjectDetection model =
             BinaryData
                 .fromString(
@@ -60,8 +59,8 @@ public final class ImageModelDistributionSettingsObjectDetectionTests {
         Assertions.assertEquals("dxwnazkurrd", model.validationMetricType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageModelDistributionSettingsObjectDetection model =
             new ImageModelDistributionSettingsObjectDetection()
                 .withAmsGradient("yzjwhsetwwjwzzq")

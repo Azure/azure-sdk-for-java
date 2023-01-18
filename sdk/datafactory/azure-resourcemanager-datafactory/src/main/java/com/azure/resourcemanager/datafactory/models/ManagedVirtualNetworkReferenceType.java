@@ -15,6 +15,15 @@ public final class ManagedVirtualNetworkReferenceType extends ExpandableStringEn
         fromString("ManagedVirtualNetworkReference");
 
     /**
+     * Creates a new instance of ManagedVirtualNetworkReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedVirtualNetworkReferenceType() {
+    }
+
+    /**
      * Creates or finds a ManagedVirtualNetworkReferenceType from its string representation.
      *
      * @param name a name to look for.

@@ -806,7 +806,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         String fabricName,
         String vcenterName,
         AddVCenterRequest addVCenterRequest) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest)
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest)
             .getSyncPoller();
     }
 
@@ -834,7 +835,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         String vcenterName,
         AddVCenterRequest addVCenterRequest,
         Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest, context)
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest, context)
             .getSyncPoller();
     }
 
@@ -1129,7 +1131,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String fabricName, String vcenterName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName).getSyncPoller();
     }
 
     /**
@@ -1150,7 +1152,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String fabricName, String vcenterName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName, context).getSyncPoller();
     }
 
     /**
@@ -1465,7 +1467,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         String fabricName,
         String vcenterName,
         UpdateVCenterRequest updateVCenterRequest) {
-        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest)
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest)
             .getSyncPoller();
     }
 
@@ -1493,7 +1496,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         String vcenterName,
         UpdateVCenterRequest updateVCenterRequest,
         Context context) {
-        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest, context)
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest, context)
             .getSyncPoller();
     }
 

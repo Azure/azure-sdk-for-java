@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkflowTriggerProvisioningState. */
+/** The workflow trigger provisioning state. */
 public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum<WorkflowTriggerProvisioningState> {
     /** Static value NotSpecified for WorkflowTriggerProvisioningState. */
     public static final WorkflowTriggerProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
@@ -65,6 +65,15 @@ public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum
     public static final WorkflowTriggerProvisioningState COMPLETED = fromString("Completed");
 
     /**
+     * Creates a new instance of WorkflowTriggerProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkflowTriggerProvisioningState() {
+    }
+
+    /**
      * Creates or finds a WorkflowTriggerProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -75,7 +84,11 @@ public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum
         return fromString(name, WorkflowTriggerProvisioningState.class);
     }
 
-    /** @return known WorkflowTriggerProvisioningState values. */
+    /**
+     * Gets known WorkflowTriggerProvisioningState values.
+     *
+     * @return known WorkflowTriggerProvisioningState values.
+     */
     public static Collection<WorkflowTriggerProvisioningState> values() {
         return values(WorkflowTriggerProvisioningState.class);
     }

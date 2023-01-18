@@ -734,7 +734,7 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginCancel(
         String resourceName, String resourceGroupName, String jobName) {
-        return beginCancelAsync(resourceName, resourceGroupName, jobName).getSyncPoller();
+        return this.beginCancelAsync(resourceName, resourceGroupName, jobName).getSyncPoller();
     }
 
     /**
@@ -754,7 +754,7 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginCancel(
         String resourceName, String resourceGroupName, String jobName, Context context) {
-        return beginCancelAsync(resourceName, resourceGroupName, jobName, context).getSyncPoller();
+        return this.beginCancelAsync(resourceName, resourceGroupName, jobName, context).getSyncPoller();
     }
 
     /**
@@ -1008,7 +1008,7 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginRestart(
         String resourceName, String resourceGroupName, String jobName) {
-        return beginRestartAsync(resourceName, resourceGroupName, jobName).getSyncPoller();
+        return this.beginRestartAsync(resourceName, resourceGroupName, jobName).getSyncPoller();
     }
 
     /**
@@ -1028,7 +1028,7 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginRestart(
         String resourceName, String resourceGroupName, String jobName, Context context) {
-        return beginRestartAsync(resourceName, resourceGroupName, jobName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceName, resourceGroupName, jobName, context).getSyncPoller();
     }
 
     /**
@@ -1311,7 +1311,7 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginResume(
         String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams) {
-        return beginResumeAsync(resourceName, resourceGroupName, jobName, resumeJobParams).getSyncPoller();
+        return this.beginResumeAsync(resourceName, resourceGroupName, jobName, resumeJobParams).getSyncPoller();
     }
 
     /**
@@ -1336,7 +1336,9 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
         String jobName,
         ResumeJobParams resumeJobParams,
         Context context) {
-        return beginResumeAsync(resourceName, resourceGroupName, jobName, resumeJobParams, context).getSyncPoller();
+        return this
+            .beginResumeAsync(resourceName, resourceGroupName, jobName, resumeJobParams, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1613,7 +1615,7 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginExport(
         String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter) {
-        return beginExportAsync(resourceName, resourceGroupName, jobQueryParameter).getSyncPoller();
+        return this.beginExportAsync(resourceName, resourceGroupName, jobQueryParameter).getSyncPoller();
     }
 
     /**
@@ -1633,7 +1635,7 @@ public final class ReplicationJobsClientImpl implements ReplicationJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobInner>, JobInner> beginExport(
         String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter, Context context) {
-        return beginExportAsync(resourceName, resourceGroupName, jobQueryParameter, context).getSyncPoller();
+        return this.beginExportAsync(resourceName, resourceGroupName, jobQueryParameter, context).getSyncPoller();
     }
 
     /**

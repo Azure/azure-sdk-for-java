@@ -17,6 +17,15 @@ public final class SourceSiteOperations extends ExpandableStringEnum<SourceSiteO
     public static final SourceSiteOperations NOT_REQUIRED = fromString("NotRequired");
 
     /**
+     * Creates a new instance of SourceSiteOperations value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceSiteOperations() {
+    }
+
+    /**
      * Creates or finds a SourceSiteOperations from its string representation.
      *
      * @param name a name to look for.

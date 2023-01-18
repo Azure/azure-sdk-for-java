@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerEventType. */
+/** Trigger Kind. */
 public final class TriggerEventType extends ExpandableStringEnum<TriggerEventType> {
     /** Static value FileEvent for TriggerEventType. */
     public static final TriggerEventType FILE_EVENT = fromString("FileEvent");
 
     /** Static value PeriodicTimerEvent for TriggerEventType. */
     public static final TriggerEventType PERIODIC_TIMER_EVENT = fromString("PeriodicTimerEvent");
+
+    /**
+     * Creates a new instance of TriggerEventType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TriggerEventType() {
+    }
 
     /**
      * Creates or finds a TriggerEventType from its string representation.
@@ -27,7 +36,11 @@ public final class TriggerEventType extends ExpandableStringEnum<TriggerEventTyp
         return fromString(name, TriggerEventType.class);
     }
 
-    /** @return known TriggerEventType values. */
+    /**
+     * Gets known TriggerEventType values.
+     *
+     * @return known TriggerEventType values.
+     */
     public static Collection<TriggerEventType> values() {
         return values(TriggerEventType.class);
     }

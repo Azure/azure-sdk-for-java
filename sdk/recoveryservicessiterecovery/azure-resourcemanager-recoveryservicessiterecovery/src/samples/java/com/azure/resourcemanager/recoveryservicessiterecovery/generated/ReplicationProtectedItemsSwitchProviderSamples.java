@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageAzureV2SwitchProviderInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProviderInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProviderInputProperties;
@@ -40,6 +39,6 @@ public final class ReplicationProtectedItemsSwitchProviderSamples {
                                     .withTargetFabricId(
                                         "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud2")
                                     .withTargetApplianceId("5efaa202-e958-435e-8171-706bf735fcc4"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

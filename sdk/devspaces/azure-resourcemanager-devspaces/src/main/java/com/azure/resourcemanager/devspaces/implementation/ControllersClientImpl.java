@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devspaces.fluent.ControllersClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ControllersClient. */
 public final class ControllersClientImpl implements ControllersClient {
-    private final ClientLogger logger = new ClientLogger(ControllersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ControllersService service;
 
@@ -71,7 +68,7 @@ public final class ControllersClientImpl implements ControllersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DevSpacesManagementC")
-    private interface ControllersService {
+    public interface ControllersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevSpaces"
@@ -197,14 +194,17 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Gets the properties for an Azure Dev Spaces Controller.
+     * Gets an Azure Dev Spaces Controller.
+     *
+     * <p>Gets the properties for an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for an Azure Dev Spaces Controller.
+     * @return the properties for an Azure Dev Spaces Controller along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ControllerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name) {
@@ -244,7 +244,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Gets the properties for an Azure Dev Spaces Controller.
+     * Gets an Azure Dev Spaces Controller.
+     *
+     * <p>Gets the properties for an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -252,7 +254,8 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for an Azure Dev Spaces Controller.
+     * @return the properties for an Azure Dev Spaces Controller along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ControllerInner>> getByResourceGroupWithResponseAsync(
@@ -290,30 +293,46 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Gets the properties for an Azure Dev Spaces Controller.
+     * Gets an Azure Dev Spaces Controller.
+     *
+     * <p>Gets the properties for an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for an Azure Dev Spaces Controller.
+     * @return the properties for an Azure Dev Spaces Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ControllerInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<ControllerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets the properties for an Azure Dev Spaces Controller.
+     * Gets an Azure Dev Spaces Controller.
+     *
+     * <p>Gets the properties for an Azure Dev Spaces Controller.
+     *
+     * @param resourceGroupName Resource group to which the resource belongs.
+     * @param name Name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for an Azure Dev Spaces Controller along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ControllerInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String name, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
+     * Gets an Azure Dev Spaces Controller.
+     *
+     * <p>Gets the properties for an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -324,28 +343,13 @@ public final class ControllersClientImpl implements ControllersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ControllerInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
+        return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
     /**
-     * Gets the properties for an Azure Dev Spaces Controller.
+     * Creates an Azure Dev Spaces Controller.
      *
-     * @param resourceGroupName Resource group to which the resource belongs.
-     * @param name Name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for an Azure Dev Spaces Controller.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ControllerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
-    }
-
-    /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -353,7 +357,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -400,7 +404,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -409,7 +415,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -453,7 +459,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -461,20 +469,26 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ControllerInner>, ControllerInner> beginCreateAsync(
         String resourceGroupName, String name, ControllerInner controller) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, name, controller);
         return this
             .client
             .<ControllerInner, ControllerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ControllerInner.class, ControllerInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ControllerInner.class,
+                ControllerInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -483,9 +497,9 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ControllerInner>, ControllerInner> beginCreateAsync(
         String resourceGroupName, String name, ControllerInner controller, Context context) {
         context = this.client.mergeContext(context);
@@ -497,7 +511,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -505,16 +521,18 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ControllerInner>, ControllerInner> beginCreate(
         String resourceGroupName, String name, ControllerInner controller) {
-        return beginCreateAsync(resourceGroupName, name, controller).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, controller).getSyncPoller();
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -523,16 +541,18 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ControllerInner>, ControllerInner> beginCreate(
         String resourceGroupName, String name, ControllerInner controller, Context context) {
-        return beginCreateAsync(resourceGroupName, name, controller, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, controller, context).getSyncPoller();
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -540,7 +560,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ControllerInner> createAsync(String resourceGroupName, String name, ControllerInner controller) {
@@ -550,7 +570,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -559,7 +581,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ControllerInner> createAsync(
@@ -570,7 +592,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -586,7 +610,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * Creates an Azure Dev Spaces Controller.
+     *
+     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -603,14 +629,16 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
@@ -650,7 +678,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -658,7 +688,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -696,25 +726,30 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -722,9 +757,9 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -735,22 +770,26 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -758,22 +797,24 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String name) {
@@ -781,7 +822,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -789,7 +832,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String name, Context context) {
@@ -797,7 +840,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -811,7 +856,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Deletes an existing Azure Dev Spaces Controller.
+     * Deletes an Azure Dev Spaces Controller.
+     *
+     * <p>Deletes an existing Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -826,7 +873,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     * Updates an Azure Dev Spaces Controller.
+     *
+     * <p>Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -834,7 +883,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ControllerInner>> updateWithResponseAsync(
@@ -884,7 +933,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     * Updates an Azure Dev Spaces Controller.
+     *
+     * <p>Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -893,7 +944,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ControllerInner>> updateWithResponseAsync(
@@ -940,7 +991,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     * Updates an Azure Dev Spaces Controller.
+     *
+     * <p>Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -948,24 +1001,39 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ControllerInner> updateAsync(
         String resourceGroupName, String name, ControllerUpdateParameters controllerUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, name, controllerUpdateParameters)
-            .flatMap(
-                (Response<ControllerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     * Updates an Azure Dev Spaces Controller.
+     *
+     * <p>Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     *
+     * @param resourceGroupName Resource group to which the resource belongs.
+     * @param name Name of the resource.
+     * @param controllerUpdateParameters Parameters for updating the Azure Dev Spaces Controller.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ControllerInner> updateWithResponse(
+        String resourceGroupName, String name, ControllerUpdateParameters controllerUpdateParameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, name, controllerUpdateParameters, context).block();
+    }
+
+    /**
+     * Updates an Azure Dev Spaces Controller.
+     *
+     * <p>Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -978,36 +1046,20 @@ public final class ControllersClientImpl implements ControllersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ControllerInner update(
         String resourceGroupName, String name, ControllerUpdateParameters controllerUpdateParameters) {
-        return updateAsync(resourceGroupName, name, controllerUpdateParameters).block();
+        return updateWithResponse(resourceGroupName, name, controllerUpdateParameters, Context.NONE).getValue();
     }
 
     /**
-     * Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     * Lists the Azure Dev Spaces Controllers in a resource group.
      *
-     * @param resourceGroupName Resource group to which the resource belongs.
-     * @param name Name of the resource.
-     * @param controllerUpdateParameters Parameters for updating the Azure Dev Spaces Controller.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ControllerInner> updateWithResponse(
-        String resourceGroupName, String name, ControllerUpdateParameters controllerUpdateParameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, name, controllerUpdateParameters, context).block();
-    }
-
-    /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1052,7 +1104,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * Lists the Azure Dev Spaces Controllers in a resource group.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
@@ -1060,7 +1114,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listByResourceGroupSinglePageAsync(
@@ -1103,14 +1157,16 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * Lists the Azure Dev Spaces Controllers in a resource group.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ControllerInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1120,7 +1176,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * Lists the Azure Dev Spaces Controllers in a resource group.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
@@ -1128,7 +1186,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ControllerInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1138,14 +1196,16 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * Lists the Azure Dev Spaces Controllers in a resource group.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ControllerInner> listByResourceGroup(String resourceGroupName) {
@@ -1153,7 +1213,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * Lists the Azure Dev Spaces Controllers in a resource group.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
@@ -1161,7 +1223,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ControllerInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1169,11 +1231,13 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * Lists the Azure Dev Spaces Controllers in a subscription.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listSinglePageAsync() {
@@ -1213,13 +1277,15 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * Lists the Azure Dev Spaces Controllers in a subscription.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listSinglePageAsync(Context context) {
@@ -1256,11 +1322,13 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * Lists the Azure Dev Spaces Controllers in a subscription.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ControllerInner> listAsync() {
@@ -1268,13 +1336,15 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * Lists the Azure Dev Spaces Controllers in a subscription.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ControllerInner> listAsync(Context context) {
@@ -1283,11 +1353,13 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * Lists the Azure Dev Spaces Controllers in a subscription.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ControllerInner> list() {
@@ -1295,13 +1367,15 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * Lists the Azure Dev Spaces Controllers in a subscription.
+     *
+     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ControllerInner> list(Context context) {
@@ -1309,7 +1383,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * Lists connection details for an Azure Dev Spaces Controller.
+     *
+     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -1317,7 +1393,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ControllerConnectionDetailsListInner>> listConnectionDetailsWithResponseAsync(
@@ -1367,7 +1443,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * Lists connection details for an Azure Dev Spaces Controller.
+     *
+     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -1376,7 +1454,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ControllerConnectionDetailsListInner>> listConnectionDetailsWithResponseAsync(
@@ -1426,7 +1504,9 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * Lists connection details for an Azure Dev Spaces Controller.
+     *
+     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -1434,41 +1514,19 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ControllerConnectionDetailsListInner> listConnectionDetailsAsync(
         String resourceGroupName, String name, ListConnectionDetailsParameters listConnectionDetailsParameters) {
         return listConnectionDetailsWithResponseAsync(resourceGroupName, name, listConnectionDetailsParameters)
-            .flatMap(
-                (Response<ControllerConnectionDetailsListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * Lists connection details for an Azure Dev Spaces Controller.
      *
-     * @param resourceGroupName Resource group to which the resource belongs.
-     * @param name Name of the resource.
-     * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ControllerConnectionDetailsListInner listConnectionDetails(
-        String resourceGroupName, String name, ListConnectionDetailsParameters listConnectionDetailsParameters) {
-        return listConnectionDetailsAsync(resourceGroupName, name, listConnectionDetailsParameters).block();
-    }
-
-    /**
-     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
      *
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
@@ -1477,7 +1535,7 @@ public final class ControllersClientImpl implements ControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ControllerConnectionDetailsListInner> listConnectionDetailsWithResponse(
@@ -1490,13 +1548,34 @@ public final class ControllersClientImpl implements ControllersClient {
     }
 
     /**
-     * Get the next page of items.
+     * Lists connection details for an Azure Dev Spaces Controller.
      *
-     * @param nextLink The nextLink parameter.
+     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     *
+     * @param resourceGroupName Resource group to which the resource belongs.
+     * @param name Name of the resource.
+     * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ControllerConnectionDetailsListInner listConnectionDetails(
+        String resourceGroupName, String name, ListConnectionDetailsParameters listConnectionDetailsParameters) {
+        return listConnectionDetailsWithResponse(resourceGroupName, name, listConnectionDetailsParameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1528,12 +1607,13 @@ public final class ControllersClientImpl implements ControllersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listByResourceGroupNextSinglePageAsync(
@@ -1565,11 +1645,12 @@ public final class ControllersClientImpl implements ControllersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listNextSinglePageAsync(String nextLink) {
@@ -1600,12 +1681,13 @@ public final class ControllersClientImpl implements ControllersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ControllerInner>> listNextSinglePageAsync(String nextLink, Context context) {

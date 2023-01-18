@@ -20,6 +20,15 @@ public final class RpInMageRecoveryPointType extends ExpandableStringEnum<RpInMa
     public static final RpInMageRecoveryPointType CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of RpInMageRecoveryPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RpInMageRecoveryPointType() {
+    }
+
+    /**
      * Creates or finds a RpInMageRecoveryPointType from its string representation.
      *
      * @param name a name to look for.

@@ -55,6 +55,10 @@ public final class BatchConfigurationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BatchConfigurationInner innerModel() {
         return this.innerObject;
     }

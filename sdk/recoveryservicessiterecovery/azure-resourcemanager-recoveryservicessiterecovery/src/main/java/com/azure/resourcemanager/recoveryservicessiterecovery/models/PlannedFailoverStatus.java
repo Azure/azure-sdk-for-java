@@ -23,6 +23,15 @@ public final class PlannedFailoverStatus extends ExpandableStringEnum<PlannedFai
     public static final PlannedFailoverStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of PlannedFailoverStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PlannedFailoverStatus() {
+    }
+
+    /**
      * Creates or finds a PlannedFailoverStatus from its string representation.
      *
      * @param name a name to look for.

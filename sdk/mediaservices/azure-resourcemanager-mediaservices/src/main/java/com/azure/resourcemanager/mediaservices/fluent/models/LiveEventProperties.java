@@ -105,6 +105,10 @@ public final class LiveEventProperties {
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
+    /** Creates an instance of LiveEventProperties class. */
+    public LiveEventProperties() {
+    }
+
     /**
      * Get the description property: A description for the live event.
      *

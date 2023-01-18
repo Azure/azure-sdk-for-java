@@ -56,6 +56,15 @@ public final class AgentUpgradeBlockedReason extends ExpandableStringEnum<AgentU
     public static final AgentUpgradeBlockedReason UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of AgentUpgradeBlockedReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AgentUpgradeBlockedReason() {
+    }
+
+    /**
      * Creates or finds a AgentUpgradeBlockedReason from its string representation.
      *
      * @param name a name to look for.

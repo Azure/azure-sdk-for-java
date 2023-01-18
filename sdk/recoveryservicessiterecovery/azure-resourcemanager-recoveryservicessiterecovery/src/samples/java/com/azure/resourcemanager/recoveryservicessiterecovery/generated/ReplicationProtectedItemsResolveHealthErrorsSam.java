@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResolveHealthError;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResolveHealthInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResolveHealthInputProperties;
@@ -34,6 +33,6 @@ public final class ReplicationProtectedItemsResolveHealthErrorsSam {
                     .withProperties(
                         new ResolveHealthInputProperties()
                             .withHealthErrors(Arrays.asList(new ResolveHealthError().withHealthErrorId("3:8020")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

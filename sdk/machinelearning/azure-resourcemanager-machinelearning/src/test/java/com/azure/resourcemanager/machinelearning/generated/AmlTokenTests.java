@@ -6,16 +6,15 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AmlToken;
-import org.junit.jupiter.api.Test;
 
 public final class AmlTokenTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AmlToken model = BinaryData.fromString("{\"identityType\":\"AMLToken\"}").toObject(AmlToken.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AmlToken model = new AmlToken();
         model = BinaryData.fromObject(model).toObject(AmlToken.class);
     }

@@ -624,7 +624,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, parameters).getSyncPoller();
     }
 
     /**
@@ -642,7 +642,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -863,7 +863,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName).getSyncPoller();
     }
 
     /**
@@ -880,7 +880,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, context).getSyncPoller();
     }
 
     /**
@@ -1118,7 +1118,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
         String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1136,7 +1136,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
         String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1601,7 +1601,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     public SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner> beginDiagnose(
         String resourceGroupName, String workspaceName) {
         final DiagnoseWorkspaceParameters parameters = null;
-        return beginDiagnoseAsync(resourceGroupName, workspaceName, parameters).getSyncPoller();
+        return this.beginDiagnoseAsync(resourceGroupName, workspaceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1619,7 +1619,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner> beginDiagnose(
         String resourceGroupName, String workspaceName, DiagnoseWorkspaceParameters parameters, Context context) {
-        return beginDiagnoseAsync(resourceGroupName, workspaceName, parameters, context).getSyncPoller();
+        return this.beginDiagnoseAsync(resourceGroupName, workspaceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2011,7 +2011,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncKeys(String resourceGroupName, String workspaceName) {
-        return beginResyncKeysAsync(resourceGroupName, workspaceName).getSyncPoller();
+        return this.beginResyncKeysAsync(resourceGroupName, workspaceName).getSyncPoller();
     }
 
     /**
@@ -2029,7 +2029,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncKeys(
         String resourceGroupName, String workspaceName, Context context) {
-        return beginResyncKeysAsync(resourceGroupName, workspaceName, context).getSyncPoller();
+        return this.beginResyncKeysAsync(resourceGroupName, workspaceName, context).getSyncPoller();
     }
 
     /**
@@ -2571,7 +2571,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepareNotebook(
         String resourceGroupName, String workspaceName) {
-        return beginPrepareNotebookAsync(resourceGroupName, workspaceName).getSyncPoller();
+        return this.beginPrepareNotebookAsync(resourceGroupName, workspaceName).getSyncPoller();
     }
 
     /**
@@ -2588,7 +2588,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepareNotebook(
         String resourceGroupName, String workspaceName, Context context) {
-        return beginPrepareNotebookAsync(resourceGroupName, workspaceName, context).getSyncPoller();
+        return this.beginPrepareNotebookAsync(resourceGroupName, workspaceName, context).getSyncPoller();
     }
 
     /**

@@ -14,7 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
@@ -47,11 +47,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class LogsQueryClientTest extends TestBase {
 
-    public static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
+    private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
     private LogsQueryClient client;
-    public static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
-            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
+    private static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
+            + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
+            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
             + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
     @BeforeEach
@@ -84,11 +86,7 @@ public class LogsQueryClientTest extends TestBase {
     }
 
     private TokenCredential getCredential() {
-        return new ClientSecretCredentialBuilder()
-                .clientId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID))
-                .clientSecret(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))
-                .tenantId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID))
-                .build();
+        return new DefaultAzureCredentialBuilder().build();
     }
 
     @Test

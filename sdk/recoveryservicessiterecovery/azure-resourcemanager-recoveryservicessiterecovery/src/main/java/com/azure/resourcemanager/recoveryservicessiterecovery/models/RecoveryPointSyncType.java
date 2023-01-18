@@ -17,6 +17,15 @@ public final class RecoveryPointSyncType extends ExpandableStringEnum<RecoveryPo
     public static final RecoveryPointSyncType PER_VM_RECOVERY_POINT = fromString("PerVmRecoveryPoint");
 
     /**
+     * Creates a new instance of RecoveryPointSyncType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryPointSyncType() {
+    }
+
+    /**
      * Creates or finds a RecoveryPointSyncType from its string representation.
      *
      * @param name a name to look for.

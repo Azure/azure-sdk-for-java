@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 
@@ -28,7 +27,7 @@ public final class DisksGrantAccessSamples {
                 "myResourceGroup",
                 "myDisk",
                 new GrantAccessData().withAccess(AccessLevel.READ).withDurationInSeconds(300),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -52,6 +51,6 @@ public final class DisksGrantAccessSamples {
                     .withAccess(AccessLevel.READ)
                     .withDurationInSeconds(300)
                     .withGetSecureVMGuestStateSas(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

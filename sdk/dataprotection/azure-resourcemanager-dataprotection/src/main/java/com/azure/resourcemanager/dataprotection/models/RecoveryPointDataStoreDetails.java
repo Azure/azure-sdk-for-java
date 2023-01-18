@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** RecoveryPointDataStoreDetails RecoveryPoint datastore details. */
+/**
+ * RecoveryPointDataStoreDetails
+ *
+ * <p>RecoveryPoint datastore details.
+ */
 @Fluent
 public final class RecoveryPointDataStoreDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointDataStoreDetails.class);
-
     /*
      * The creationTime property.
      */
@@ -68,6 +68,10 @@ public final class RecoveryPointDataStoreDetails {
      */
     @JsonProperty(value = "rehydrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RehydrationStatus rehydrationStatus;
+
+    /** Creates an instance of RecoveryPointDataStoreDetails class. */
+    public RecoveryPointDataStoreDetails() {
+    }
 
     /**
      * Get the creationTime property: The creationTime property.

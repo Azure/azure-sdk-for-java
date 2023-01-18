@@ -64,7 +64,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesLi")
-    private interface LiveOutputsService {
+    public interface LiveOutputsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
@@ -537,15 +537,16 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
      * @param liveOutputName The name of the live output.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live output.
+     * @return a live output along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LiveOutputInner get(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
-        return getAsync(resourceGroupName, accountName, liveEventName, liveOutputName).block();
+    public Response<LiveOutputInner> getWithResponse(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, liveEventName, liveOutputName, context).block();
     }
 
     /**
@@ -557,16 +558,15 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
      * @param liveOutputName The name of the live output.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live output along with {@link Response}.
+     * @return a live output.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LiveOutputInner> getWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, liveEventName, liveOutputName, context).block();
+    public LiveOutputInner get(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
+        return getWithResponse(resourceGroupName, accountName, liveEventName, liveOutputName, Context.NONE).getValue();
     }
 
     /**
@@ -801,7 +801,8 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         String liveEventName,
         String liveOutputName,
         LiveOutputInner parameters) {
-        return beginCreateAsync(resourceGroupName, accountName, liveEventName, liveOutputName, parameters)
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, liveEventName, liveOutputName, parameters)
             .getSyncPoller();
     }
 
@@ -829,7 +830,8 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         String liveOutputName,
         LiveOutputInner parameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, liveEventName, liveOutputName, parameters, context)
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, liveEventName, liveOutputName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1129,7 +1131,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
-        return beginDeleteAsync(resourceGroupName, accountName, liveEventName, liveOutputName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, liveEventName, liveOutputName).getSyncPoller();
     }
 
     /**
@@ -1150,7 +1152,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, liveEventName, liveOutputName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, accountName, liveEventName, liveOutputName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1374,24 +1378,6 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Live Output operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
-        return asyncOperationAsync(resourceGroupName, accountName, operationId).block();
-    }
-
-    /**
-     * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1402,6 +1388,24 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     public Response<AsyncOperationResultInner> asyncOperationWithResponse(
         String resourceGroupName, String accountName, String operationId, Context context) {
         return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationWithResponse(resourceGroupName, accountName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -1572,28 +1576,6 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @param liveEventName The name of the live event, maximum length is 32.
      * @param liveOutputName The name of the live output.
      * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Live Output operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LiveOutputInner operationLocation(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
-        return operationLocationAsync(resourceGroupName, accountName, liveEventName, liveOutputName, operationId)
-            .block();
-    }
-
-    /**
-     * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param liveEventName The name of the live event, maximum length is 32.
-     * @param liveOutputName The name of the live output.
-     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1611,6 +1593,29 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         return operationLocationWithResponseAsync(
                 resourceGroupName, accountName, liveEventName, liveOutputName, operationId, context)
             .block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LiveOutputInner operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
+        return operationLocationWithResponse(
+                resourceGroupName, accountName, liveEventName, liveOutputName, operationId, Context.NONE)
+            .getValue();
     }
 
     /**

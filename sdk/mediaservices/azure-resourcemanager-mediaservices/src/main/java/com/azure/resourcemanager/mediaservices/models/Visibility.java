@@ -21,6 +21,15 @@ public final class Visibility extends ExpandableStringEnum<Visibility> {
     public static final Visibility VISIBLE = fromString("Visible");
 
     /**
+     * Creates a new instance of Visibility value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Visibility() {
+    }
+
+    /**
      * Creates or finds a Visibility from its string representation.
      *
      * @param name a name to look for.

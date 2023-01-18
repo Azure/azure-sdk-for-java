@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 
 /** Samples for VirtualNetworkSubnetUsage Execute. */
 public final class VirtualNetworkSubnetUsageExecuteSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/VirtualNetworkSubnetUsage.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/VirtualNetworkSubnetUsage.json
      */
     /**
      * Sample code: VirtualNetworkSubnetUsageList.
@@ -26,6 +25,6 @@ public final class VirtualNetworkSubnetUsageExecuteSamples {
                 new VirtualNetworkSubnetUsageParameter()
                     .withVirtualNetworkArmResourceId(
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/testvnet"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

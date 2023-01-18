@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionInner;
 import com.azure.resourcemanager.compute.models.DataDiskImageEncryption;
 import com.azure.resourcemanager.compute.models.EncryptionImages;
@@ -64,7 +63,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -141,7 +140,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                             .withLun(1))))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -222,7 +221,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/{vmName}")))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -303,7 +302,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionName}")))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -389,7 +388,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                             .withLun(1))))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -475,7 +474,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                             .withLun(1))))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -556,7 +555,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -637,7 +636,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                         "/communityGalleries/{communityGalleryName}/images/{communityGalleryImageName}")))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -718,6 +717,6 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
                     .withSafetyProfile(
                         new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

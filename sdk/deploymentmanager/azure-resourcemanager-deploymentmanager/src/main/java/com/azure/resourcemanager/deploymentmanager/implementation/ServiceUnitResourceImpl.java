@@ -64,6 +64,10 @@ public final class ServiceUnitResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceUnitResourceInner innerModel() {
         return this.innerObject;
     }

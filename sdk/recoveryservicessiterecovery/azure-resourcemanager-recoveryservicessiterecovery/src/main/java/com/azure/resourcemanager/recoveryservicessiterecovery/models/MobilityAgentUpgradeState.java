@@ -23,6 +23,15 @@ public final class MobilityAgentUpgradeState extends ExpandableStringEnum<Mobili
     public static final MobilityAgentUpgradeState COMMIT = fromString("Commit");
 
     /**
+     * Creates a new instance of MobilityAgentUpgradeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MobilityAgentUpgradeState() {
+    }
+
+    /**
      * Creates or finds a MobilityAgentUpgradeState from its string representation.
      *
      * @param name a name to look for.

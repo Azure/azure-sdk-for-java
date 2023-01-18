@@ -7,20 +7,21 @@ package com.azure.resourcemanager.powerbidedicated.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.AutoScaleVCoreInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of auto scale v-core resources. */
 @Fluent
 public final class AutoScaleVCoreListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleVCoreListResult.class);
-
     /*
      * An array of auto scale v-core resources.
      */
     @JsonProperty(value = "value", required = true)
     private List<AutoScaleVCoreInner> value;
+
+    /** Creates an instance of AutoScaleVCoreListResult class. */
+    public AutoScaleVCoreListResult() {
+    }
 
     /**
      * Get the value property: An array of auto scale v-core resources.
@@ -49,11 +50,13 @@ public final class AutoScaleVCoreListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model AutoScaleVCoreListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoScaleVCoreListResult.class);
 }

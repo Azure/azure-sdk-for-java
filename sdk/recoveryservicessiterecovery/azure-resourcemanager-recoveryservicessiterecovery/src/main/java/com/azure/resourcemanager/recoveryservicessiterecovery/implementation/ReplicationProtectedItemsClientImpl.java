@@ -1307,7 +1307,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         EnableProtectionInput input) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -1343,7 +1344,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         EnableProtectionInput input,
         Context context) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -1742,7 +1744,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String fabricName,
         String protectionContainerName,
         String replicatedProtectedItemName) {
-        return beginPurgeAsync(
+        return this
+            .beginPurgeAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName)
             .getSyncPoller();
     }
@@ -1773,7 +1776,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         Context context) {
-        return beginPurgeAsync(
+        return this
+            .beginPurgeAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -2189,7 +2193,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         UpdateReplicationProtectedItemInput updateProtectionInput) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -2225,7 +2230,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         UpdateReplicationProtectedItemInput updateProtectionInput,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -2655,7 +2661,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         AddDisksInput addDisksInput) {
-        return beginAddDisksAsync(
+        return this
+            .beginAddDisksAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -2691,7 +2698,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         AddDisksInput addDisksInput,
         Context context) {
-        return beginAddDisksAsync(
+        return this
+            .beginAddDisksAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -3127,7 +3135,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput) {
-        return beginApplyRecoveryPointAsync(
+        return this
+            .beginApplyRecoveryPointAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -3163,7 +3172,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput,
         Context context) {
-        return beginApplyRecoveryPointAsync(
+        return this
+            .beginApplyRecoveryPointAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -3567,7 +3577,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String fabricName,
         String protectionContainerName,
         String replicatedProtectedItemName) {
-        return beginFailoverCancelAsync(
+        return this
+            .beginFailoverCancelAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName)
             .getSyncPoller();
     }
@@ -3596,7 +3607,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         Context context) {
-        return beginFailoverCancelAsync(
+        return this
+            .beginFailoverCancelAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -3979,7 +3991,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String fabricName,
         String protectionContainerName,
         String replicatedProtectedItemName) {
-        return beginFailoverCommitAsync(
+        return this
+            .beginFailoverCommitAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName)
             .getSyncPoller();
     }
@@ -4008,7 +4021,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         Context context) {
-        return beginFailoverCommitAsync(
+        return this
+            .beginFailoverCommitAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -4419,7 +4433,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         PlannedFailoverInput failoverInput) {
-        return beginPlannedFailoverAsync(
+        return this
+            .beginPlannedFailoverAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -4455,7 +4470,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         PlannedFailoverInput failoverInput,
         Context context) {
-        return beginPlannedFailoverAsync(
+        return this
+            .beginPlannedFailoverAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -4876,7 +4892,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         DisableProtectionInput disableProtectionInput) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -4912,7 +4929,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         DisableProtectionInput disableProtectionInput,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -5342,7 +5360,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         RemoveDisksInput removeDisksInput) {
-        return beginRemoveDisksAsync(
+        return this
+            .beginRemoveDisksAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -5378,7 +5397,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         RemoveDisksInput removeDisksInput,
         Context context) {
-        return beginRemoveDisksAsync(
+        return this
+            .beginRemoveDisksAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -5787,7 +5807,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String fabricName,
         String protectionContainerName,
         String replicatedProtectedItemName) {
-        return beginRepairReplicationAsync(
+        return this
+            .beginRepairReplicationAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName)
             .getSyncPoller();
     }
@@ -5817,7 +5838,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         Context context) {
-        return beginRepairReplicationAsync(
+        return this
+            .beginRepairReplicationAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -6230,7 +6252,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         ReverseReplicationInput reprotectInput) {
-        return beginReprotectAsync(
+        return this
+            .beginReprotectAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -6266,7 +6289,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         ReverseReplicationInput reprotectInput,
         Context context) {
-        return beginReprotectAsync(
+        return this
+            .beginReprotectAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -6701,7 +6725,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             String protectionContainerName,
             String replicatedProtectedItemName,
             ResolveHealthInput resolveHealthInput) {
-        return beginResolveHealthErrorsAsync(
+        return this
+            .beginResolveHealthErrorsAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -6738,7 +6763,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             String replicatedProtectedItemName,
             ResolveHealthInput resolveHealthInput,
             Context context) {
-        return beginResolveHealthErrorsAsync(
+        return this
+            .beginResolveHealthErrorsAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -7172,7 +7198,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         SwitchProviderInput switchProviderInput) {
-        return beginSwitchProviderAsync(
+        return this
+            .beginSwitchProviderAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -7208,7 +7235,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         SwitchProviderInput switchProviderInput,
         Context context) {
-        return beginSwitchProviderAsync(
+        return this
+            .beginSwitchProviderAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -7640,7 +7668,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         TestFailoverInput testfailoverInput) {
-        return beginTestFailoverAsync(
+        return this
+            .beginTestFailoverAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -7676,7 +7705,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         TestFailoverInput testfailoverInput,
         Context context) {
-        return beginTestFailoverAsync(
+        return this
+            .beginTestFailoverAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -8109,7 +8139,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             String protectionContainerName,
             String replicatedProtectedItemName,
             TestFailoverCleanupInput cleanupInput) {
-        return beginTestFailoverCleanupAsync(
+        return this
+            .beginTestFailoverCleanupAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -8146,7 +8177,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             String replicatedProtectedItemName,
             TestFailoverCleanupInput cleanupInput,
             Context context) {
-        return beginTestFailoverCleanupAsync(
+        return this
+            .beginTestFailoverCleanupAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -8578,7 +8610,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         UnplannedFailoverInput failoverInput) {
-        return beginUnplannedFailoverAsync(
+        return this
+            .beginUnplannedFailoverAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -8614,7 +8647,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         UnplannedFailoverInput failoverInput,
         Context context) {
-        return beginUnplannedFailoverAsync(
+        return this
+            .beginUnplannedFailoverAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -9048,7 +9082,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String protectionContainerName,
         String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
-        return beginUpdateApplianceAsync(
+        return this
+            .beginUpdateApplianceAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -9084,7 +9119,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
         String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput,
         Context context) {
-        return beginUpdateApplianceAsync(
+        return this
+            .beginUpdateApplianceAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -9528,7 +9564,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             String protectionContainerName,
             String replicatedProtectedItemName,
             UpdateMobilityServiceRequest updateMobilityServiceRequest) {
-        return beginUpdateMobilityServiceAsync(
+        return this
+            .beginUpdateMobilityServiceAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -9566,7 +9603,8 @@ public final class ReplicationProtectedItemsClientImpl implements ReplicationPro
             String replicatedProtectedItemName,
             UpdateMobilityServiceRequest updateMobilityServiceRequest,
             Context context) {
-        return beginUpdateMobilityServiceAsync(
+        return this
+            .beginUpdateMobilityServiceAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,

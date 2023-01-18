@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.EnrollmentAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a department. */
 @Fluent
 public final class DepartmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DepartmentProperties.class);
-
     /*
      * The name of the department.
      */
@@ -35,11 +31,14 @@ public final class DepartmentProperties {
     private String status;
 
     /*
-     * Associated enrollment accounts. By default this is not populated, unless
-     * it's specified in $expand.
+     * Associated enrollment accounts. By default this is not populated, unless it's specified in $expand.
      */
     @JsonProperty(value = "enrollmentAccounts")
     private List<EnrollmentAccount> enrollmentAccounts;
+
+    /** Creates an instance of DepartmentProperties class. */
+    public DepartmentProperties() {
+    }
 
     /**
      * Get the departmentName property: The name of the department.

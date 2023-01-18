@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataStoreTypes. */
+/** type of datastore; Operational/Vault/Archive. */
 public final class DataStoreTypes extends ExpandableStringEnum<DataStoreTypes> {
     /** Static value OperationalStore for DataStoreTypes. */
     public static final DataStoreTypes OPERATIONAL_STORE = fromString("OperationalStore");
@@ -18,6 +18,15 @@ public final class DataStoreTypes extends ExpandableStringEnum<DataStoreTypes> {
 
     /** Static value ArchiveStore for DataStoreTypes. */
     public static final DataStoreTypes ARCHIVE_STORE = fromString("ArchiveStore");
+
+    /**
+     * Creates a new instance of DataStoreTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataStoreTypes() {
+    }
 
     /**
      * Creates or finds a DataStoreTypes from its string representation.
@@ -30,7 +39,11 @@ public final class DataStoreTypes extends ExpandableStringEnum<DataStoreTypes> {
         return fromString(name, DataStoreTypes.class);
     }
 
-    /** @return known DataStoreTypes values. */
+    /**
+     * Gets known DataStoreTypes values.
+     *
+     * @return known DataStoreTypes values.
+     */
     public static Collection<DataStoreTypes> values() {
         return values(DataStoreTypes.class);
     }

@@ -17,6 +17,15 @@ public final class Format extends ExpandableStringEnum<Format> {
     public static final Format EXEC = fromString("exec");
 
     /**
+     * Creates a new instance of Format value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Format() {
+    }
+
+    /**
      * Creates or finds a Format from its string representation.
      *
      * @param name a name to look for.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement acknowledgement connection settings. */
 @Fluent
 public final class AS2AcknowledgementConnectionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2AcknowledgementConnectionSettings.class);
-
     /*
      * Indicates whether to ignore mismatch in certificate name.
      */
@@ -37,6 +33,10 @@ public final class AS2AcknowledgementConnectionSettings {
      */
     @JsonProperty(value = "unfoldHttpHeaders", required = true)
     private boolean unfoldHttpHeaders;
+
+    /** Creates an instance of AS2AcknowledgementConnectionSettings class. */
+    public AS2AcknowledgementConnectionSettings() {
+    }
 
     /**
      * Get the ignoreCertificateNameMismatch property: Indicates whether to ignore mismatch in certificate name.

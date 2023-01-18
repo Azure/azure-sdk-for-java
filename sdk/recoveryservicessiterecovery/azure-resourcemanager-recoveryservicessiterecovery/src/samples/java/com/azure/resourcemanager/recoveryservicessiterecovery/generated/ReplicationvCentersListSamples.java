@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationvCenters List. */
 public final class ReplicationvCentersListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationvCentersListSamples {
      */
     public static void getsTheListOfVCenterRegisteredUnderTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationvCenters().list("MadhaviVault", "MadhaviVRG", Context.NONE);
+        manager.replicationvCenters().list("MadhaviVault", "MadhaviVRG", com.azure.core.util.Context.NONE);
     }
 }

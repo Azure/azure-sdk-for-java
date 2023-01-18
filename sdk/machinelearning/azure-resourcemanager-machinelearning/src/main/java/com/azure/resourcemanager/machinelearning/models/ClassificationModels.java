@@ -50,6 +50,15 @@ public final class ClassificationModels extends ExpandableStringEnum<Classificat
     public static final ClassificationModels XGBOOST_CLASSIFIER = fromString("XGBoostClassifier");
 
     /**
+     * Creates a new instance of ClassificationModels value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClassificationModels() {
+    }
+
+    /**
      * Creates or finds a ClassificationModels from its string representation.
      *
      * @param name a name to look for.

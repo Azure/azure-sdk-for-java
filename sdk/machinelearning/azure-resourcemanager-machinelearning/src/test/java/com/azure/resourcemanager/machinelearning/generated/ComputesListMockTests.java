@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ComputeResource;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
@@ -35,7 +34,7 @@ public final class ComputesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"identity\":{\"principalId\":\"0f1d14cd-09be-4748-8c83-17a9eccb9cc0\",\"tenantId\":\"16e72e8e-3526-4eba-b935-78b8f6797973\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"ujmoi\",\"tags\":{\"jslkyozdsfzjue\":\"wemhdee\",\"jtv\":\"rhrhtsl\",\"xvgjbfi\":\"j\",\"bj\":\"bpnjodf\"},\"sku\":{\"name\":\"wmtqsmoxsaz\",\"tier\":\"Basic\",\"size\":\"gwecywnfysz\",\"family\":\"czs\",\"capacity\":57372147},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"ddbboz\",\"provisioningState\":\"Deleting\",\"description\":\"mkjmyitrchwudlxe\",\"createdOn\":\"2021-07-21T06:48:48Z\",\"modifiedOn\":\"2021-01-08T01:59:39Z\",\"resourceId\":\"noejhqlfmsibz\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":true},\"id\":\"ydpmypgfqvmt\",\"name\":\"whlakxpejpew\",\"type\":\"yjl\"}]}";
+            "{\"value\":[{\"identity\":{\"principalId\":\"0be36eb6-1866-4b48-9c68-496f7e78e9dd\",\"tenantId\":\"3db7bdd0-a243-4495-af5a-9360ec87f65c\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"ujmoi\",\"tags\":{\"jslkyozdsfzjue\":\"wemhdee\",\"jtv\":\"rhrhtsl\",\"xvgjbfi\":\"j\",\"bj\":\"bpnjodf\"},\"sku\":{\"name\":\"wmtqsmoxsaz\",\"tier\":\"Basic\",\"size\":\"gwecywnfysz\",\"family\":\"czs\",\"capacity\":57372147},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"ddbboz\",\"provisioningState\":\"Deleting\",\"description\":\"mkjmyitrchwudlxe\",\"createdOn\":\"2021-07-21T06:48:48Z\",\"modifiedOn\":\"2021-01-08T01:59:39Z\",\"resourceId\":\"noejhqlfmsibz\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":true},\"id\":\"ydpmypgfqvmt\",\"name\":\"whlakxpejpew\",\"type\":\"yjl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +62,8 @@ public final class ComputesListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ComputeResource> response = manager.computes().list("zb", "yqjoghdsa", "djanormo", Context.NONE);
+        PagedIterable<ComputeResource> response =
+            manager.computes().list("zb", "yqjoghdsa", "djanormo", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
         Assertions.assertEquals("ujmoi", response.iterator().next().location());

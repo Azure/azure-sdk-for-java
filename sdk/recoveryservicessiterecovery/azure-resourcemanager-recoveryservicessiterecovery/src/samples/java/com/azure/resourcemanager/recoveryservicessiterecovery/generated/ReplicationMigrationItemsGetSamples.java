@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationMigrationItems Get. */
 public final class ReplicationMigrationItemsGetSamples {
     /*
@@ -26,6 +24,6 @@ public final class ReplicationMigrationItemsGetSamples {
                 "vmwarefabric1",
                 "vmwareContainer1",
                 "virtualmachine1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FirewallState. */
+/** The current state of the IP address firewall for this account. */
 public enum FirewallState {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +30,9 @@ public enum FirewallState {
      */
     @JsonCreator
     public static FirewallState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FirewallState[] items = FirewallState.values();
         for (FirewallState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum FirewallState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

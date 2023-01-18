@@ -23,7 +23,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics firewall rule list information.
+     * @return data Lake Analytics firewall rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FirewallRuleInner> listByAccount(String resourceGroupName, String accountName);
@@ -37,10 +37,32 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics firewall rule list information.
+     * @return data Lake Analytics firewall rule list information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FirewallRuleInner> listByAccount(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
+     * replaced with this new firewall rule.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param firewallRuleName The name of the firewall rule to create or update.
+     * @param parameters Parameters supplied to create or update the firewall rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Analytics firewall rule information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FirewallRuleInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String firewallRuleName,
+        CreateOrUpdateFirewallRuleParameters parameters,
+        Context context);
 
     /**
      * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
@@ -63,26 +85,20 @@ public interface FirewallRulesClient {
         CreateOrUpdateFirewallRuleParameters parameters);
 
     /**
-     * Creates or updates the specified firewall rule. During update, the firewall rule with the specified name will be
-     * replaced with this new firewall rule.
+     * Gets the specified Data Lake Analytics firewall rule.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param firewallRuleName The name of the firewall rule to create or update.
-     * @param parameters Parameters supplied to create or update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics firewall rule information.
+     * @return the specified Data Lake Analytics firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        CreateOrUpdateFirewallRuleParameters parameters,
-        Context context);
+    Response<FirewallRuleInner> getWithResponse(
+        String resourceGroupName, String accountName, String firewallRuleName, Context context);
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
@@ -99,20 +115,25 @@ public interface FirewallRulesClient {
     FirewallRuleInner get(String resourceGroupName, String accountName, String firewallRuleName);
 
     /**
-     * Gets the specified Data Lake Analytics firewall rule.
+     * Updates the specified firewall rule.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param firewallRuleName The name of the firewall rule to retrieve.
+     * @param firewallRuleName The name of the firewall rule to update.
+     * @param parameters Parameters supplied to update the firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics firewall rule.
+     * @return data Lake Analytics firewall rule information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
+    Response<FirewallRuleInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String firewallRuleName,
+        UpdateFirewallRuleParameters parameters,
+        Context context);
 
     /**
      * Updates the specified firewall rule.
@@ -129,25 +150,20 @@ public interface FirewallRulesClient {
     FirewallRuleInner update(String resourceGroupName, String accountName, String firewallRuleName);
 
     /**
-     * Updates the specified firewall rule.
+     * Deletes the specified firewall rule from the specified Data Lake Analytics account.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param firewallRuleName The name of the firewall rule to update.
-     * @param parameters Parameters supplied to update the firewall rule.
+     * @param firewallRuleName The name of the firewall rule to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics firewall rule information.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String firewallRuleName,
-        UpdateFirewallRuleParameters parameters,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String firewallRuleName, Context context);
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
@@ -161,20 +177,4 @@ public interface FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String accountName, String firewallRuleName);
-
-    /**
-     * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param firewallRuleName The name of the firewall rule to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
 }

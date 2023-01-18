@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
+import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner;
 import com.azure.resourcemanager.costmanagement.models.ExportExecution;
 import com.azure.resourcemanager.costmanagement.models.ExportExecutionListResult;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ExportExecutionListResultImpl implements ExportExecutionListResult {
     private ExportExecutionListResultInner innerObject;
@@ -23,9 +25,14 @@ public final class ExportExecutionListResultImpl implements ExportExecutionListR
     }
 
     public List<ExportExecution> value() {
-        List<ExportExecution> inner = this.innerModel().value();
+        List<ExportExecutionInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new ExportExecutionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

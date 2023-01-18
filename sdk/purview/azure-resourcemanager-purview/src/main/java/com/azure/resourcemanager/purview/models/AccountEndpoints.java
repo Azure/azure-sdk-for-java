@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The account endpoints. */
 @Immutable
 public class AccountEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountEndpoints.class);
-
     /*
      * Gets the catalog endpoint.
      */
@@ -31,6 +27,10 @@ public class AccountEndpoints {
      */
     @JsonProperty(value = "scan", access = JsonProperty.Access.WRITE_ONLY)
     private String scan;
+
+    /** Creates an instance of AccountEndpoints class. */
+    public AccountEndpoints() {
+    }
 
     /**
      * Get the catalog property: Gets the catalog endpoint.

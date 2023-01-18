@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The swagger custom dynamic schema. */
 @Fluent
 public final class SwaggerCustomDynamicSchema {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerCustomDynamicSchema.class);
-
     /*
      * The operation id to fetch dynamic schema.
      */
@@ -31,7 +28,12 @@ public final class SwaggerCustomDynamicSchema {
      * The operation parameters.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> parameters;
+
+    /** Creates an instance of SwaggerCustomDynamicSchema class. */
+    public SwaggerCustomDynamicSchema() {
+    }
 
     /**
      * Get the operationId property: The operation id to fetch dynamic schema.

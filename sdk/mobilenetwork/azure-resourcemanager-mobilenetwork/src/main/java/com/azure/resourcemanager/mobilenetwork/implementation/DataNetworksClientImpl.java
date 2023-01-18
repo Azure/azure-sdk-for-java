@@ -325,7 +325,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName).getSyncPoller();
     }
 
     /**
@@ -343,7 +343,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context).getSyncPoller();
     }
 
     /**
@@ -774,7 +774,8 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters)
             .getSyncPoller();
     }
 
@@ -798,7 +799,8 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         String dataNetworkName,
         DataNetworkInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
             .getSyncPoller();
     }
 

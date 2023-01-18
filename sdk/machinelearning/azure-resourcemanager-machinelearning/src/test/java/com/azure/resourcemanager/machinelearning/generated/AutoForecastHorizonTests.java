@@ -6,16 +6,15 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AutoForecastHorizon;
-import org.junit.jupiter.api.Test;
 
 public final class AutoForecastHorizonTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoForecastHorizon model = BinaryData.fromString("{\"mode\":\"Auto\"}").toObject(AutoForecastHorizon.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoForecastHorizon model = new AutoForecastHorizon();
         model = BinaryData.fromObject(model).toObject(AutoForecastHorizon.class);
     }

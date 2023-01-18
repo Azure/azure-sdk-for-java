@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders Get. */
 public final class ReplicationRecoveryServicesProvidersGetSamples {
     /*
@@ -21,6 +19,10 @@ public final class ReplicationRecoveryServicesProvidersGetSamples {
         manager
             .replicationRecoveryServicesProviders()
             .getWithResponse(
-                "vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "241641e6-ee7b-4ee4-8141-821fadda43fa",
+                com.azure.core.util.Context.NONE);
     }
 }

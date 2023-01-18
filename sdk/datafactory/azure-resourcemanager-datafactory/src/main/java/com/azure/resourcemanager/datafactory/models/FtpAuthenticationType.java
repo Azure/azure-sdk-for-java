@@ -17,6 +17,15 @@ public final class FtpAuthenticationType extends ExpandableStringEnum<FtpAuthent
     public static final FtpAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
+     * Creates a new instance of FtpAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FtpAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a FtpAuthenticationType from its string representation.
      *
      * @param name a name to look for.

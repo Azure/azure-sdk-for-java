@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.ApplyUpdateForResourceGroupsClient;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 import com.azure.resourcemanager.maintenance.models.ListApplyUpdate;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplyUpdateForResourceGroupsClient. */
 public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdateForResourceGroupsClient {
-    private final ClientLogger logger = new ClientLogger(ApplyUpdateForResourceGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApplyUpdateForResourceGroupsService service;
 
@@ -60,7 +57,7 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
      */
     @Host("{$host}")
     @ServiceInterface(name = "MaintenanceManagemen")
-    private interface ApplyUpdateForResourceGroupsService {
+    public interface ApplyUpdateForResourceGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance"
@@ -83,7 +80,8 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplyUpdateInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -130,7 +128,8 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplyUpdateInner>> listByResourceGroupSinglePageAsync(
@@ -174,7 +173,8 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplyUpdateInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -189,7 +189,8 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplyUpdateInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -203,7 +204,8 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplyUpdateInner> listByResourceGroup(String resourceGroupName) {
@@ -218,7 +220,8 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplyUpdateInner> listByResourceGroup(String resourceGroupName, Context context) {

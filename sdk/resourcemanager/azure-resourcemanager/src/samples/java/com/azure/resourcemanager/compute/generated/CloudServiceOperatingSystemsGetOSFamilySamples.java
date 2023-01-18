@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServiceOperatingSystems GetOSFamily. */
 public final class CloudServiceOperatingSystemsGetOSFamilySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceOSFamily_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceOSFamily_Get.json
      */
     /**
      * Sample code: Get Cloud Service OS Family.
@@ -22,6 +20,6 @@ public final class CloudServiceOperatingSystemsGetOSFamilySamples {
             .manager()
             .serviceClient()
             .getCloudServiceOperatingSystems()
-            .getOSFamilyWithResponse("westus2", "3", Context.NONE);
+            .getOSFamilyWithResponse("westus2", "3", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Slices Delete. */
 public final class SlicesDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class SlicesDeleteSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.slices().delete("rg1", "testMobileNetwork", "testSlice", Context.NONE);
+        manager.slices().delete("rg1", "testMobileNetwork", "testSlice", com.azure.core.util.Context.NONE);
     }
 }

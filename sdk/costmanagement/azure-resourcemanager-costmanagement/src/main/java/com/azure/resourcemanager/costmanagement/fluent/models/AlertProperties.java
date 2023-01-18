@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDetails;
 import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AlertProperties model. */
 @Fluent
 public final class AlertProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertProperties.class);
-
     /*
      * defines the type of alert
      */
@@ -83,6 +79,10 @@ public final class AlertProperties {
      */
     @JsonProperty(value = "statusModificationTime")
     private String statusModificationTime;
+
+    /** Creates an instance of AlertProperties class. */
+    public AlertProperties() {
+    }
 
     /**
      * Get the definition property: defines the type of alert.

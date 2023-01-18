@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubAccountTagRules List. */
 public final class SubAccountTagRulesListSamples {
     /*
@@ -17,6 +15,8 @@ public final class SubAccountTagRulesListSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void subAccountTagRulesList(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.subAccountTagRules().list("myResourceGroup", "myMonitor", "SubAccount1", Context.NONE);
+        manager
+            .subAccountTagRules()
+            .list("myResourceGroup", "myMonitor", "SubAccount1", com.azure.core.util.Context.NONE);
     }
 }

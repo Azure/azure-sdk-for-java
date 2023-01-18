@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The correlation property. */
 @Fluent
 public final class Correlation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Correlation.class);
-
     /*
      * The client tracking id.
      */
     @JsonProperty(value = "clientTrackingId")
     private String clientTrackingId;
+
+    /** Creates an instance of Correlation class. */
+    public Correlation() {
+    }
 
     /**
      * Get the clientTrackingId property: The client tracking id.
