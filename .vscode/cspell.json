@@ -810,7 +810,9 @@
         "Dspotbugs",
         "JPMS",
         "nimbusds",
-        "Pdev"
+        "Pdev",
+        "Pnative",
+        "Djava"
       ]
     },
     {
