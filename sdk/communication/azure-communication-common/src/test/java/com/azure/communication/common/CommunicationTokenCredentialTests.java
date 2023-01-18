@@ -321,6 +321,8 @@ public class CommunicationTokenCredentialTests {
         StepVerifier.create(tokenCredential.getToken())
             .assertNext(token -> {
                 assertFalse(token.isExpired(), "New AccessToken should have been generated on demand");
+                assertEquals(tokenStr, token.getToken());
+                assertEquals(1, immediateFresher.numCalls());
             })
             .verifyComplete();
         tokenCredential.close();
