@@ -18,7 +18,7 @@ public enum Messages {
     /**
      * Class not a supported type message.
      */
-    public static final String CLASS_NOT_A_SUPPORTED_TYPE = getMessage("CLASS_NOT_A_SUPPORTED_TYPE");
+    static final String CLASS_NOT_A_SUPPORTED_TYPE = getMessage("CLASS_NOT_A_SUPPORTED_TYPE");
 
     /**
      * Encoding type not supported message.

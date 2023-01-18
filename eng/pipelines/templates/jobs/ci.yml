@@ -364,7 +364,6 @@ jobs:
           filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Reports.ps1
           arguments: -OutputDirectory $(Build.ArtifactStagingDirectory)/linting-reports
           pwsh: true
-          workingDirectory: $(Pipeline.Workspace)
         displayName: 'Generate Linting Reports'
         condition: always()
 
