@@ -1,12 +1,13 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.10.1 (2023-01-17)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Updating to SDK 1.4.1 to fix sync token issue.
 
 ### Other Changes
 
