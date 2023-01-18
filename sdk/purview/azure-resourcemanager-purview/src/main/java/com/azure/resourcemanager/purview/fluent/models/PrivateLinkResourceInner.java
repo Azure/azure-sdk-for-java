@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A privately linkable resource. */
 @Immutable
 public final class PrivateLinkResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
-
     /*
      * The private link resource identifier.
      */
@@ -38,6 +34,10 @@ public final class PrivateLinkResourceInner {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of PrivateLinkResourceInner class. */
+    public PrivateLinkResourceInner() {
+    }
 
     /**
      * Get the id property: The private link resource identifier.

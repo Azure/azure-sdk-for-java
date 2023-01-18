@@ -310,7 +310,7 @@ com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.2;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-logic;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-machinelearningservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mariadb;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-servicefabric;1.0.0-beta.2;1.0.0-beta.3
@@ -326,14 +326,14 @@ com.azure.resourcemanager:azure-resourcemanager-notificationhubs;1.0.0-beta.3;1.
 com.azure.resourcemanager:azure-resourcemanager-marketplaceordering;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-timeseriesinsights;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-streamanalytics;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-operationsmanagement;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-operationsmanagement;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-batch;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-datalakeanalytics;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-datalakestore;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-iotcentral;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-labservices;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-vmwarecloudsimple;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-managedapplications;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-managedapplications;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-videoanalyzer;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-maps;1.0.0-beta.1;1.0.0-beta.2
@@ -346,7 +346,7 @@ com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0-beta.3;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.2;1.0.0-beta.3
