@@ -6,6 +6,10 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
@@ -57,6 +61,10 @@ public final class IdentityClientOptions implements Cloneable {
     private ManagedIdentityType managedIdentityType;
     private ManagedIdentityParameters managedIdentityParameters;
     private Set<String> additionallyAllowedTenants;
+    private ClientOptions clientOptions;
+    private HttpLogOptions httpLogOptions;
+    private RetryOptions retryOptions;
+    private RetryPolicy retryPolicy;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -477,6 +485,77 @@ public final class IdentityClientOptions implements Cloneable {
         return this.additionallyAllowedTenants;
     }
 
+    /**
+     * Configure the client options.
+     * @param clientOptions the client options input.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setClientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured client options.
+     * @return the client options.
+     */
+    public ClientOptions getClientOptions() {
+        return this.clientOptions;
+    }
+
+    /**
+     * Configure the client options.
+     * @param httpLogOptions the Http log options input.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setHttpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured Http log options.
+     * @return the Http log options.
+     */
+    public HttpLogOptions getHttpLogOptions() {
+        return this.httpLogOptions;
+    }
+
+    /**
+     * Configure the retry options.
+     * @param retryOptions the retry options input.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setRetryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured retry options.
+     * @return the retry options.
+     */
+    public RetryOptions getRetryOptions() {
+        return this.retryOptions;
+    }
+
+    /**
+     * Configure the retry policy.
+     * @param retryPolicy the retry policy.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setRetryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Get the configured retry policy.
+     * @return the retry policy.
+     */
+    public RetryPolicy getRetryPolicy() {
+        return this.retryPolicy;
+    }
 
     IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
         this.cp1Disabled = cp1Disabled;
@@ -524,7 +603,6 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
-
     /**
      * Loads the details from the specified Configuration Store.
      */
@@ -561,6 +639,10 @@ public final class IdentityClientOptions implements Cloneable {
             .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
             .setUserAssertion(this.userAssertion)
             .setConfigurationStore(this.configuration)
-            .setPersistenceCache(this.sharedTokenCacheEnabled);
+            .setPersistenceCache(this.sharedTokenCacheEnabled)
+            .setClientOptions(this.clientOptions)
+            .setHttpLogOptions(this.httpLogOptions)
+            .setRetryOptions(this.retryOptions)
+            .setRetryPolicy(this.retryPolicy);
     }
 }
