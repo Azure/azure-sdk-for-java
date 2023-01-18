@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Default error model. */
 @Immutable
 public class ErrorModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorModel.class);
-
     /*
      * Gets or sets the code.
      */
@@ -38,6 +34,10 @@ public class ErrorModel {
      */
     @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
+
+    /** Creates an instance of ErrorModel class. */
+    public ErrorModel() {
+    }
 
     /**
      * Get the code property: Gets or sets the code.
