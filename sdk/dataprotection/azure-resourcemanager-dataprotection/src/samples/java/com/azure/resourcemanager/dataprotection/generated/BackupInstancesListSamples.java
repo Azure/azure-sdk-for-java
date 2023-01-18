@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BackupInstances List. */
 public final class BackupInstancesListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/ListBackupInstances.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/BackupInstanceOperations/ListBackupInstances.json
      */
     /**
      * Sample code: List BackupInstances in a Vault.
@@ -18,6 +16,6 @@ public final class BackupInstancesListSamples {
      */
     public static void listBackupInstancesInAVault(
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupInstances().list("PratikPrivatePreviewVault1", "000pikumar", Context.NONE);
+        manager.backupInstances().list("000pikumar", "PratikPrivatePreviewVault1", com.azure.core.util.Context.NONE);
     }
 }
