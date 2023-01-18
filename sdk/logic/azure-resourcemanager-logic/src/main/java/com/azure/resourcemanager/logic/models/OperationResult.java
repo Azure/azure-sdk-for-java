@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** The operation result definition. */
 @Fluent
 public class OperationResult extends OperationResultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResult.class);
-
     /*
      * Gets the tracking id.
      */
@@ -63,6 +59,10 @@ public class OperationResult extends OperationResultProperties {
      */
     @JsonProperty(value = "iterationCount")
     private Integer iterationCount;
+
+    /** Creates an instance of OperationResult class. */
+    public OperationResult() {
+    }
 
     /**
      * Get the trackingId property: Gets the tracking id.

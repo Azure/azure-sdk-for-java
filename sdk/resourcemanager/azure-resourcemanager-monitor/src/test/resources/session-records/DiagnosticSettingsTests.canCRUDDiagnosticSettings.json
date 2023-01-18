@@ -146,7 +146,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2022-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "88ccff5e-0c8f-4514-b5b6-82a7554863ed",
@@ -289,7 +289,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2022-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "c9221782-13b6-4450-97a0-23ca02e5f556"

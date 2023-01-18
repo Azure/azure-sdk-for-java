@@ -228,6 +228,10 @@ public final class LabVirtualMachineImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LabVirtualMachineInner innerModel() {
         return this.innerObject;
     }
@@ -366,24 +370,24 @@ public final class LabVirtualMachineImpl
             .detachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, context);
     }
 
-    public RdpConnection getRdpFileContents() {
-        return serviceManager.virtualMachines().getRdpFileContents(resourceGroupName, labName, name);
-    }
-
     public Response<RdpConnection> getRdpFileContentsWithResponse(Context context) {
         return serviceManager
             .virtualMachines()
             .getRdpFileContentsWithResponse(resourceGroupName, labName, name, context);
     }
 
-    public ApplicableSchedule listApplicableSchedules() {
-        return serviceManager.virtualMachines().listApplicableSchedules(resourceGroupName, labName, name);
+    public RdpConnection getRdpFileContents() {
+        return serviceManager.virtualMachines().getRdpFileContents(resourceGroupName, labName, name);
     }
 
     public Response<ApplicableSchedule> listApplicableSchedulesWithResponse(Context context) {
         return serviceManager
             .virtualMachines()
             .listApplicableSchedulesWithResponse(resourceGroupName, labName, name, context);
+    }
+
+    public ApplicableSchedule listApplicableSchedules() {
+        return serviceManager.virtualMachines().listApplicableSchedules(resourceGroupName, labName, name);
     }
 
     public void redeploy() {

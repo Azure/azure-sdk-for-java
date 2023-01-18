@@ -50,6 +50,7 @@
       --add-opens com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <checkstyle.excludes>**/generatedtestsources/**/*.java</checkstyle.excludes>
+    <javadoc.excludePackageNames/>
   </properties>
 
   <developers>

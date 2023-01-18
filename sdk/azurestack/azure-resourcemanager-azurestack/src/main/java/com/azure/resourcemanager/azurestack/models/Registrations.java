@@ -17,7 +17,7 @@ public interface Registrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of registrations.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Registration> listByResourceGroup(String resourceGroup);
 
@@ -29,9 +29,43 @@ public interface Registrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of registrations.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Registration> listByResourceGroup(String resourceGroup, Context context);
+
+    /**
+     * Returns a list of all registrations under current subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Registration> list();
+
+    /**
+     * Returns a list of all registrations under current subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of registrations as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Registration> list(Context context);
+
+    /**
+     * Returns the properties of an Azure Stack registration.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return registration information along with {@link Response}.
+     */
+    Response<Registration> getByResourceGroupWithResponse(
+        String resourceGroup, String registrationName, Context context);
 
     /**
      * Returns the properties of an Azure Stack registration.
@@ -46,7 +80,7 @@ public interface Registrations {
     Registration getByResourceGroup(String resourceGroup, String registrationName);
 
     /**
-     * Returns the properties of an Azure Stack registration.
+     * Delete the requested Azure Stack registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -54,10 +88,9 @@ public interface Registrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registration information.
+     * @return the {@link Response}.
      */
-    Response<Registration> getByResourceGroupWithResponse(
-        String resourceGroup, String registrationName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroup, String registrationName, Context context);
 
     /**
      * Delete the requested Azure Stack registration.
@@ -71,7 +104,7 @@ public interface Registrations {
     void deleteByResourceGroup(String resourceGroup, String registrationName);
 
     /**
-     * Delete the requested Azure Stack registration.
+     * Returns Azure Stack Activation Key.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -79,9 +112,10 @@ public interface Registrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the resource containing the Azure Stack activation key along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroup, String registrationName, Context context);
+    Response<ActivationKeyResult> getActivationKeyWithResponse(
+        String resourceGroup, String registrationName, Context context);
 
     /**
      * Returns Azure Stack Activation Key.
@@ -96,7 +130,7 @@ public interface Registrations {
     ActivationKeyResult getActivationKey(String resourceGroup, String registrationName);
 
     /**
-     * Returns Azure Stack Activation Key.
+     * Enables remote management for device under the Azure Stack registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -104,10 +138,9 @@ public interface Registrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource containing the Azure Stack activation key.
+     * @return the {@link Response}.
      */
-    Response<ActivationKeyResult> getActivationKeyWithResponse(
-        String resourceGroup, String registrationName, Context context);
+    Response<Void> enableRemoteManagementWithResponse(String resourceGroup, String registrationName, Context context);
 
     /**
      * Enables remote management for device under the Azure Stack registration.
@@ -121,26 +154,13 @@ public interface Registrations {
     void enableRemoteManagement(String resourceGroup, String registrationName);
 
     /**
-     * Enables remote management for device under the Azure Stack registration.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> enableRemoteManagementWithResponse(String resourceGroup, String registrationName, Context context);
-
-    /**
      * Returns the properties of an Azure Stack registration.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registration information.
+     * @return registration information along with {@link Response}.
      */
     Registration getById(String id);
 
@@ -152,7 +172,7 @@ public interface Registrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registration information.
+     * @return registration information along with {@link Response}.
      */
     Response<Registration> getByIdWithResponse(String id, Context context);
 
@@ -174,7 +194,7 @@ public interface Registrations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

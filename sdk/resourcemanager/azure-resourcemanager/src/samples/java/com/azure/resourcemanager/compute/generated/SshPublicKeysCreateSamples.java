@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyResourceInner;
 
 /** Samples for SshPublicKeys Create. */
 public final class SshPublicKeysCreateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/sshPublicKeyExamples/SshPublicKey_Create.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKey_Create.json
      */
     /**
      * Sample code: Create a new SSH public key resource.
@@ -27,6 +26,6 @@ public final class SshPublicKeysCreateSamples {
                 "myResourceGroup",
                 "mySshPublicKeyName",
                 new SshPublicKeyResourceInner().withLocation("westus").withPublicKey("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

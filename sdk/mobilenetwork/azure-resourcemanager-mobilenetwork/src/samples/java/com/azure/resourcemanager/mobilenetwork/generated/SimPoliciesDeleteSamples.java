@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SimPolicies Delete. */
 public final class SimPoliciesDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class SimPoliciesDeleteSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteSIMPolicy(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.simPolicies().delete("rg1", "testMobileNetwork", "testPolicy", Context.NONE);
+        manager.simPolicies().delete("rg1", "testMobileNetwork", "testPolicy", com.azure.core.util.Context.NONE);
     }
 }

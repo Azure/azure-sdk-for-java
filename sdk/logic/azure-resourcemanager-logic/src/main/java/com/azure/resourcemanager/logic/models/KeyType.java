@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeyType. */
+/** The key type. */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
     /** Static value NotSpecified for KeyType. */
     public static final KeyType NOT_SPECIFIED = fromString("NotSpecified");
@@ -18,6 +18,15 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /** Static value Secondary for KeyType. */
     public static final KeyType SECONDARY = fromString("Secondary");
+
+    /**
+     * Creates a new instance of KeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyType() {
+    }
 
     /**
      * Creates or finds a KeyType from its string representation.
@@ -30,7 +39,11 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
         return fromString(name, KeyType.class);
     }
 
-    /** @return known KeyType values. */
+    /**
+     * Gets known KeyType values.
+     *
+     * @return known KeyType values.
+     */
     public static Collection<KeyType> values() {
         return values(KeyType.class);
     }

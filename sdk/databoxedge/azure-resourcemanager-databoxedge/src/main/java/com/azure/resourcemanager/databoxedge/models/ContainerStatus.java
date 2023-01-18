@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerStatus. */
+/** Current status of the container. */
 public final class ContainerStatus extends ExpandableStringEnum<ContainerStatus> {
     /** Static value OK for ContainerStatus. */
     public static final ContainerStatus OK = fromString("OK");
@@ -26,6 +26,15 @@ public final class ContainerStatus extends ExpandableStringEnum<ContainerStatus>
     public static final ContainerStatus NEEDS_ATTENTION = fromString("NeedsAttention");
 
     /**
+     * Creates a new instance of ContainerStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerStatus() {
+    }
+
+    /**
      * Creates or finds a ContainerStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ContainerStatus extends ExpandableStringEnum<ContainerStatus>
         return fromString(name, ContainerStatus.class);
     }
 
-    /** @return known ContainerStatus values. */
+    /**
+     * Gets known ContainerStatus values.
+     *
+     * @return known ContainerStatus values.
+     */
     public static Collection<ContainerStatus> values() {
         return values(ContainerStatus.class);
     }

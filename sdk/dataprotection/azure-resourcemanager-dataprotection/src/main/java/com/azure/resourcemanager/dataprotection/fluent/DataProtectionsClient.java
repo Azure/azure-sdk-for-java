@@ -18,6 +18,21 @@ public interface DataProtectionsClient {
      *
      * @param location The location parameter.
      * @param parameters Feature support request object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for Backup Feature support along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(
+        String location, FeatureValidationRequestBase parameters, Context context);
+
+    /**
+     * Validates if a feature is supported.
+     *
+     * @param location The location parameter.
+     * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,19 +40,4 @@ public interface DataProtectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FeatureValidationResponseBaseInner checkFeatureSupport(String location, FeatureValidationRequestBase parameters);
-
-    /**
-     * Validates if a feature is supported.
-     *
-     * @param location The location parameter.
-     * @param parameters Feature support request object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(
-        String location, FeatureValidationRequestBase parameters, Context context);
 }

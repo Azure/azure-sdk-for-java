@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.PeeringServiceProvidersClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceProviderInner;
 import com.azure.resourcemanager.peering.models.PeeringServiceProviderListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PeeringServiceProvidersClient. */
 public final class PeeringServiceProvidersClientImpl implements PeeringServiceProvidersClient {
-    private final ClientLogger logger = new ClientLogger(PeeringServiceProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PeeringServiceProvidersService service;
 
@@ -59,7 +56,7 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
      */
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
-    private interface PeeringServiceProvidersService {
+    public interface PeeringServiceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders")
         @ExpectedResponses({200})
@@ -87,7 +84,8 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceProviderInner>> listSinglePageAsync() {
@@ -133,7 +131,8 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceProviderInner>> listSinglePageAsync(Context context) {
@@ -174,7 +173,7 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServiceProviderInner> listAsync() {
@@ -188,7 +187,7 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServiceProviderInner> listAsync(Context context) {
@@ -201,7 +200,7 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServiceProviderInner> list() {
@@ -215,7 +214,7 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServiceProviderInner> list(Context context) {
@@ -225,11 +224,13 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceProviderInner>> listNextSinglePageAsync(String nextLink) {
@@ -260,12 +261,14 @@ public final class PeeringServiceProvidersClientImpl implements PeeringServicePr
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service providers.
+     * @return the paginated list of peering service providers along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceProviderInner>> listNextSinglePageAsync(String nextLink, Context context) {

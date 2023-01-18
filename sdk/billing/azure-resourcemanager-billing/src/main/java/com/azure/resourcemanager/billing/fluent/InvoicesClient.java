@@ -27,7 +27,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceInner> listByBillingAccount(
@@ -44,7 +44,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceInner> listByBillingAccount(
@@ -61,7 +61,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceInner> listByBillingProfile(
@@ -79,7 +79,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceInner> listByBillingProfile(
@@ -88,6 +88,21 @@ public interface InvoicesClient {
         String periodStartDate,
         String periodEndDate,
         Context context);
+
+    /**
+     * Gets an invoice by billing account name and ID. The operation is supported for billing accounts with agreement
+     * type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an invoice by billing account name and ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InvoiceInner> getWithResponse(String billingAccountName, String invoiceName, Context context);
 
     /**
      * Gets an invoice by billing account name and ID. The operation is supported for billing accounts with agreement
@@ -104,19 +119,18 @@ public interface InvoicesClient {
     InvoiceInner get(String billingAccountName, String invoiceName);
 
     /**
-     * Gets an invoice by billing account name and ID. The operation is supported for billing accounts with agreement
-     * type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     * Gets an invoice by ID. The operation is supported for billing accounts with agreement type Microsoft Partner
+     * Agreement or Microsoft Customer Agreement.
      *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by billing account name and ID.
+     * @return an invoice by ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InvoiceInner> getWithResponse(String billingAccountName, String invoiceName, Context context);
+    Response<InvoiceInner> getByIdWithResponse(String invoiceName, Context context);
 
     /**
      * Gets an invoice by ID. The operation is supported for billing accounts with agreement type Microsoft Partner
@@ -132,20 +146,6 @@ public interface InvoicesClient {
     InvoiceInner getById(String invoiceName);
 
     /**
-     * Gets an invoice by ID. The operation is supported for billing accounts with agreement type Microsoft Partner
-     * Agreement or Microsoft Customer Agreement.
-     *
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InvoiceInner> getByIdWithResponse(String invoiceName, Context context);
-
-    /**
      * Gets a URL to download an invoice. The operation is supported for billing accounts with agreement type Microsoft
      * Partner Agreement or Microsoft Customer Agreement.
      *
@@ -155,7 +155,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoice(
@@ -172,7 +172,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoice(
@@ -220,7 +220,8 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoices(
@@ -237,7 +238,8 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoices(
@@ -283,7 +285,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceInner> listByBillingSubscription(String periodStartDate, String periodEndDate);
@@ -297,11 +299,24 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceInner> listByBillingSubscription(
         String periodStartDate, String periodEndDate, Context context);
+
+    /**
+     * Gets an invoice by subscription ID and invoice ID.
+     *
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an invoice by subscription ID and invoice ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InvoiceInner> getBySubscriptionAndInvoiceIdWithResponse(String invoiceName, Context context);
 
     /**
      * Gets an invoice by subscription ID and invoice ID.
@@ -316,19 +331,6 @@ public interface InvoicesClient {
     InvoiceInner getBySubscriptionAndInvoiceId(String invoiceName);
 
     /**
-     * Gets an invoice by subscription ID and invoice ID.
-     *
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by subscription ID and invoice ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InvoiceInner> getBySubscriptionAndInvoiceIdWithResponse(String invoiceName, Context context);
-
-    /**
      * Gets a URL to download an invoice.
      *
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -336,7 +338,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoice(
@@ -351,7 +353,7 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoice(
@@ -391,7 +393,8 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingSubscriptionInvoices(
@@ -405,7 +408,8 @@ public interface InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingSubscriptionInvoices(

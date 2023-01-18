@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User assigned identity properties. */
 @Fluent
 public final class UserAssignedProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedProperties.class);
-
     /*
-     * Arm resource id for user assigned identity to be used to fetch MSI
-     * token.
+     * Arm resource id for user assigned identity to be used to fetch MSI token.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /** Creates an instance of UserAssignedProperties class. */
+    public UserAssignedProperties() {
+    }
 
     /**
      * Get the resourceId property: Arm resource id for user assigned identity to be used to fetch MSI token.

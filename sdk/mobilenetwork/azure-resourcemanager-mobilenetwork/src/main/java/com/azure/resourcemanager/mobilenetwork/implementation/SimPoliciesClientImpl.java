@@ -323,7 +323,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String simPolicyName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName).getSyncPoller();
     }
 
     /**
@@ -341,7 +341,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, simPolicyName, context).getSyncPoller();
     }
 
     /**
@@ -767,7 +767,8 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters)
             .getSyncPoller();
     }
 
@@ -791,7 +792,8 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
         String simPolicyName,
         SimPolicyInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters, context)
             .getSyncPoller();
     }
 

@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The swagger custom dynamic list. */
 @Fluent
 public final class SwaggerCustomDynamicList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerCustomDynamicList.class);
-
     /*
      * The operation id to fetch dynamic schema.
      */
@@ -28,8 +25,8 @@ public final class SwaggerCustomDynamicList {
     private String builtInOperation;
 
     /*
-     * The path to a response property (relative to the response object, not
-     * the response body) which contains an array of dynamic value items.
+     * The path to a response property (relative to the response object, not the response body) which contains an array
+     * of dynamic value items.
      */
     @JsonProperty(value = "itemsPath")
     private String itemsPath;
@@ -50,7 +47,12 @@ public final class SwaggerCustomDynamicList {
      * The parameters.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerCustomDynamicProperties> parameters;
+
+    /** Creates an instance of SwaggerCustomDynamicList class. */
+    public SwaggerCustomDynamicList() {
+    }
 
     /**
      * Get the operationId property: The operation id to fetch dynamic schema.

@@ -24,6 +24,15 @@ public final class IntegrationRuntimeInternalChannelEncryptionMode
     public static final IntegrationRuntimeInternalChannelEncryptionMode NOT_ENCRYPTED = fromString("NotEncrypted");
 
     /**
+     * Creates a new instance of IntegrationRuntimeInternalChannelEncryptionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeInternalChannelEncryptionMode() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeInternalChannelEncryptionMode from its string representation.
      *
      * @param name a name to look for.

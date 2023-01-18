@@ -22,25 +22,6 @@ public interface OperationResultsClient {
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
      * @param operationId Operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset track operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackInner get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
-
-    /**
-     * Get operation result.
-     *
-     * <p>Get asset track operation result.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param trackName The Asset Track name.
-     * @param operationId Operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,4 +36,23 @@ public interface OperationResultsClient {
         String trackName,
         String operationId,
         Context context);
+
+    /**
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param trackName The Asset Track name.
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asset track operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AssetTrackInner get(
+        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
 }

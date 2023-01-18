@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure SKU instance. */
 @Fluent
 public final class ServiceSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSku.class);
-
     /*
      * The unique name of the SKU, such as 'P3'
      */
@@ -27,16 +23,15 @@ public final class ServiceSku {
     private String tier;
 
     /*
-     * The SKU family, used when the service has multiple performance classes
-     * within a tier, such as 'A', 'D', etc. for virtual machines
+     * The SKU family, used when the service has multiple performance classes within a tier, such as 'A', 'D', etc. for
+     * virtual machines
      */
     @JsonProperty(value = "family")
     private String family;
 
     /*
-     * The size of the SKU, used when the name alone does not denote a service
-     * size or when a SKU has multiple performance classes within a family,
-     * e.g. 'A1' for virtual machines
+     * The size of the SKU, used when the name alone does not denote a service size or when a SKU has multiple
+     * performance classes within a family, e.g. 'A1' for virtual machines
      */
     @JsonProperty(value = "size")
     private String size;
@@ -46,6 +41,10 @@ public final class ServiceSku {
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /** Creates an instance of ServiceSku class. */
+    public ServiceSku() {
+    }
 
     /**
      * Get the name property: The unique name of the SKU, such as 'P3'.

@@ -18,6 +18,23 @@ public interface CostsClient {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
+     * @param expand Specify the $expand query. Example: 'properties($expand=labCostDetails)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cost along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LabCostInner> getWithResponse(
+        String resourceGroupName, String labName, String name, String expand, Context context);
+
+    /**
+     * Get cost.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param name The name of the cost.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,21 +44,21 @@ public interface CostsClient {
     LabCostInner get(String resourceGroupName, String labName, String name);
 
     /**
-     * Get cost.
+     * Create or replace an existing cost.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
-     * @param expand Specify the $expand query. Example: 'properties($expand=labCostDetails)'.
+     * @param labCost A cost item.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return a cost item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabCostInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<LabCostInner> createOrUpdateWithResponse(
+        String resourceGroupName, String labName, String name, LabCostInner labCost, Context context);
 
     /**
      * Create or replace an existing cost.
@@ -57,21 +74,4 @@ public interface CostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     LabCostInner createOrUpdate(String resourceGroupName, String labName, String name, LabCostInner labCost);
-
-    /**
-     * Create or replace an existing cost.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the cost.
-     * @param labCost A cost item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cost item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabCostInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, LabCostInner labCost, Context context);
 }

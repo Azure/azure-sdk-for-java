@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EnrollmentAccounts Get. */
 public final class EnrollmentAccountsGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class EnrollmentAccountsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void enrollmentAccountsGet(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.enrollmentAccounts().getWithResponse("e1bf1c8c-5ac6-44a0-bdcd-aa7c1cf60556", Context.NONE);
+        manager
+            .enrollmentAccounts()
+            .getWithResponse("e1bf1c8c-5ac6-44a0-bdcd-aa7c1cf60556", com.azure.core.util.Context.NONE);
     }
 }

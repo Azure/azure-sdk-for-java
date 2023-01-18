@@ -55,15 +55,14 @@ public class SyncRestProxy extends RestProxyBase {
         return createHttpRequest(methodParser, serializer, false, args);
     }
 
-
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         Throwable throwable = null;
+        context = startTracingSpan(methodParser, context);
+        AutoCloseable scope = tracer.makeSpanCurrent(context);
         try {
-            context = startTracingSpan(methodParser, context);
-
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
             if (options != null && requestCallback != null) {
@@ -84,6 +83,12 @@ public class SyncRestProxy extends RestProxyBase {
         } finally {
             if (decodedResponse != null || throwable != null) {
                 endTracingSpan(decodedResponse, throwable, context);
+            }
+
+            try {
+                scope.close();
+            } catch (Exception e) {
+                LOGGER.verbose("Failed to close scope");
             }
         }
     }

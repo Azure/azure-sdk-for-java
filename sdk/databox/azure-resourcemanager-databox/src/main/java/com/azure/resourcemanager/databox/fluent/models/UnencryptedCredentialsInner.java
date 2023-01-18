@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.models.JobSecrets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Unencrypted credentials for accessing device. */
 @Immutable
 public final class UnencryptedCredentialsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnencryptedCredentialsInner.class);
-
     /*
      * Name of the job.
      */
@@ -26,6 +22,10 @@ public final class UnencryptedCredentialsInner {
      */
     @JsonProperty(value = "jobSecrets", access = JsonProperty.Access.WRITE_ONLY)
     private JobSecrets jobSecrets;
+
+    /** Creates an instance of UnencryptedCredentialsInner class. */
+    public UnencryptedCredentialsInner() {
+    }
 
     /**
      * Get the jobName property: Name of the job.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Types of validations to run after the migration. */
 @Fluent
 public final class MigrationValidationOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationValidationOptions.class);
-
     /*
      * Allows to compare the schema information between source and target.
      */
@@ -21,20 +17,23 @@ public final class MigrationValidationOptions {
     private Boolean enableSchemaValidation;
 
     /*
-     * Allows to perform a checksum based data integrity validation between
-     * source and target for the selected database / tables .
+     * Allows to perform a checksum based data integrity validation between source and target for the selected database
+     * / tables .
      */
     @JsonProperty(value = "enableDataIntegrityValidation")
     private Boolean enableDataIntegrityValidation;
 
     /*
-     * Allows to perform a quick and intelligent query analysis by retrieving
-     * queries from the source database and executes them in the target. The
-     * result will have execution statistics for executions in source and
-     * target databases for the extracted queries.
+     * Allows to perform a quick and intelligent query analysis by retrieving queries from the source database and
+     * executes them in the target. The result will have execution statistics for executions in source and target
+     * databases for the extracted queries.
      */
     @JsonProperty(value = "enableQueryAnalysisValidation")
     private Boolean enableQueryAnalysisValidation;
+
+    /** Creates an instance of MigrationValidationOptions class. */
+    public MigrationValidationOptions() {
+    }
 
     /**
      * Get the enableSchemaValidation property: Allows to compare the schema information between source and target.

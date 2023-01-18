@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.RelationshipsLookup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of suggest relationship links operation. */
 @Immutable
 public final class SuggestRelationshipLinksResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SuggestRelationshipLinksResponseInner.class);
-
     /*
      * The interaction name.
      */
@@ -27,6 +23,10 @@ public final class SuggestRelationshipLinksResponseInner {
      */
     @JsonProperty(value = "suggestedRelationships", access = JsonProperty.Access.WRITE_ONLY)
     private List<RelationshipsLookup> suggestedRelationships;
+
+    /** Creates an instance of SuggestRelationshipLinksResponseInner class. */
+    public SuggestRelationshipLinksResponseInner() {
+    }
 
     /**
      * Get the interactionName property: The interaction name.

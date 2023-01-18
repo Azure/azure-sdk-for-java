@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MarketplacePurchasesPolicy. */
+/** The policy that controls whether Azure marketplace purchases are allowed for a billing profile. */
 public final class MarketplacePurchasesPolicy extends ExpandableStringEnum<MarketplacePurchasesPolicy> {
     /** Static value AllAllowed for MarketplacePurchasesPolicy. */
     public static final MarketplacePurchasesPolicy ALL_ALLOWED = fromString("AllAllowed");
@@ -18,6 +18,15 @@ public final class MarketplacePurchasesPolicy extends ExpandableStringEnum<Marke
 
     /** Static value NotAllowed for MarketplacePurchasesPolicy. */
     public static final MarketplacePurchasesPolicy NOT_ALLOWED = fromString("NotAllowed");
+
+    /**
+     * Creates a new instance of MarketplacePurchasesPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MarketplacePurchasesPolicy() {
+    }
 
     /**
      * Creates or finds a MarketplacePurchasesPolicy from its string representation.
@@ -30,7 +39,11 @@ public final class MarketplacePurchasesPolicy extends ExpandableStringEnum<Marke
         return fromString(name, MarketplacePurchasesPolicy.class);
     }
 
-    /** @return known MarketplacePurchasesPolicy values. */
+    /**
+     * Gets known MarketplacePurchasesPolicy values.
+     *
+     * @return known MarketplacePurchasesPolicy values.
+     */
     public static Collection<MarketplacePurchasesPolicy> values() {
         return values(MarketplacePurchasesPolicy.class);
     }

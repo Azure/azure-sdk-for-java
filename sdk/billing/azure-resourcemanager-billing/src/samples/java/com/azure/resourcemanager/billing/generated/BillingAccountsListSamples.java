@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingAccounts List. */
 public final class BillingAccountsListSamples {
     /*
@@ -17,7 +15,7 @@ public final class BillingAccountsListSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts().list(null, Context.NONE);
+        manager.billingAccounts().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -30,7 +28,9 @@ public final class BillingAccountsListSamples {
      */
     public static void billingAccountsListWithExpandForEnrollmentDetails(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts().list("enrollmentDetails,departments,enrollmentAccounts", Context.NONE);
+        manager
+            .billingAccounts()
+            .list("enrollmentDetails,departments,enrollmentAccounts", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -42,6 +42,8 @@ public final class BillingAccountsListSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountsListWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts().list("soldTo,billingProfiles,billingProfiles/invoiceSections", Context.NONE);
+        manager
+            .billingAccounts()
+            .list("soldTo,billingProfiles,billingProfiles/invoiceSections", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration service environment access endpoint. */
 @Fluent
 public final class IntegrationServiceEnvironmentAccessEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentAccessEndpoint.class);
-
     /*
      * The access endpoint type.
      */
     @JsonProperty(value = "type")
     private IntegrationServiceEnvironmentAccessEndpointType type;
+
+    /** Creates an instance of IntegrationServiceEnvironmentAccessEndpoint class. */
+    public IntegrationServiceEnvironmentAccessEndpoint() {
+    }
 
     /**
      * Get the type property: The access endpoint type.

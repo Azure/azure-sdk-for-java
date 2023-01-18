@@ -9,17 +9,13 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.models.Kind;
-import com.azure.resourcemanager.maps.models.MapsAccountProperties;
 import com.azure.resourcemanager.maps.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure resource which represents access to a suite of Maps REST APIs. */
 @Fluent
 public final class MapsAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsAccountInner.class);
-
     /*
      * The SKU of this account.
      */
@@ -43,6 +39,10 @@ public final class MapsAccountInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private MapsAccountProperties properties;
+
+    /** Creates an instance of MapsAccountInner class. */
+    public MapsAccountInner() {
+    }
 
     /**
      * Get the sku property: The SKU of this account.
@@ -134,7 +134,7 @@ public final class MapsAccountInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model MapsAccountInner"));
         } else {
@@ -144,4 +144,6 @@ public final class MapsAccountInner extends Resource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MapsAccountInner.class);
 }

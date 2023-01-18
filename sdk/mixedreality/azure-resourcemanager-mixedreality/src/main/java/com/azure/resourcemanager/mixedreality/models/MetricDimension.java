@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifications of the Dimension of metrics. */
 @Fluent
 public final class MetricDimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimension.class);
-
     /*
      * Name of the dimension
      */
@@ -31,6 +27,16 @@ public final class MetricDimension {
      */
     @JsonProperty(value = "internalName")
     private String internalName;
+
+    /*
+     * Whether the dimension should be included for the shoebox export scenario.
+     */
+    @JsonProperty(value = "toBeExportedForShoebox")
+    private Boolean toBeExportedForShoebox;
+
+    /** Creates an instance of MetricDimension class. */
+    public MetricDimension() {
+    }
 
     /**
      * Get the name property: Name of the dimension.
@@ -89,6 +95,28 @@ public final class MetricDimension {
      */
     public MetricDimension withInternalName(String internalName) {
         this.internalName = internalName;
+        return this;
+    }
+
+    /**
+     * Get the toBeExportedForShoebox property: Whether the dimension should be included for the shoebox export
+     * scenario.
+     *
+     * @return the toBeExportedForShoebox value.
+     */
+    public Boolean toBeExportedForShoebox() {
+        return this.toBeExportedForShoebox;
+    }
+
+    /**
+     * Set the toBeExportedForShoebox property: Whether the dimension should be included for the shoebox export
+     * scenario.
+     *
+     * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
+     * @return the MetricDimension object itself.
+     */
+    public MetricDimension withToBeExportedForShoebox(Boolean toBeExportedForShoebox) {
+        this.toBeExportedForShoebox = toBeExportedForShoebox;
         return this;
     }
 

@@ -5,96 +5,37 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.models.ComputeRole;
 import com.azure.resourcemanager.azurestack.models.DataDiskImage;
 import com.azure.resourcemanager.azurestack.models.OperatingSystem;
 import com.azure.resourcemanager.azurestack.models.OsDiskImage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Extended description about the product required for installing it into Azure Stack. */
-@JsonFlatten
 @Immutable
-public class ExtendedProductInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedProductInner.class);
-
+public final class ExtendedProductInner {
     /*
-     * The URI to the .azpkg file that provides information required for
-     * showing product in the gallery.
+     * The URI to the .azpkg file that provides information required for showing product in the gallery.
      */
     @JsonProperty(value = "galleryPackageBlobSasUri", access = JsonProperty.Access.WRITE_ONLY)
     private String galleryPackageBlobSasUri;
 
     /*
-     * Specifies the kind of the product (virtualMachine or
-     * virtualMachineExtension).
+     * Specifies the kind of the product (virtualMachine or virtualMachineExtension).
      */
     @JsonProperty(value = "productKind", access = JsonProperty.Access.WRITE_ONLY)
     private String productKind;
 
     /*
-     * Specifies kind of compute role included in the package.
+     * Specifies additional properties describing the product.
      */
-    @JsonProperty(value = "properties.computeRole", access = JsonProperty.Access.WRITE_ONLY)
-    private ComputeRole computeRole;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private ExtendedProductProperties innerProperties;
 
-    /*
-     * Specifies if product is a Virtual Machine Extension.
-     */
-    @JsonProperty(value = "properties.isSystemExtension", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isSystemExtension;
-
-    /*
-     * Indicates if specified product supports multiple extensions.
-     */
-    @JsonProperty(value = "properties.supportMultipleExtensions", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean supportMultipleExtensions;
-
-    /*
-     * Specifies product version.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String versionPropertiesVersion;
-
-    /*
-     * Specifies operating system used by the product.
-     */
-    @JsonProperty(value = "properties.vmOsType", access = JsonProperty.Access.WRITE_ONLY)
-    private OperatingSystem vmOsType;
-
-    /*
-     * Indicates if virtual machine Scale Set is enabled in the specified
-     * product.
-     */
-    @JsonProperty(value = "properties.vmScaleSetEnabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean vmScaleSetEnabled;
-
-    /*
-     * The URI.
-     */
-    @JsonProperty(value = "properties.sourceBlob.uri", access = JsonProperty.Access.WRITE_ONLY)
-    private String uri;
-
-    /*
-     * Specifies product version.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * OS disk image used by product.
-     */
-    @JsonProperty(value = "properties.osDiskImage", access = JsonProperty.Access.WRITE_ONLY)
-    private OsDiskImage osDiskImage;
-
-    /*
-     * List of attached data disks.
-     */
-    @JsonProperty(value = "properties.dataDiskImages", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DataDiskImage> dataDiskImages;
+    /** Creates an instance of ExtendedProductInner class. */
+    public ExtendedProductInner() {
+    }
 
     /**
      * Get the galleryPackageBlobSasUri property: The URI to the .azpkg file that provides information required for
@@ -116,66 +57,12 @@ public class ExtendedProductInner {
     }
 
     /**
-     * Get the computeRole property: Specifies kind of compute role included in the package.
+     * Get the innerProperties property: Specifies additional properties describing the product.
      *
-     * @return the computeRole value.
+     * @return the innerProperties value.
      */
-    public ComputeRole computeRole() {
-        return this.computeRole;
-    }
-
-    /**
-     * Get the isSystemExtension property: Specifies if product is a Virtual Machine Extension.
-     *
-     * @return the isSystemExtension value.
-     */
-    public Boolean isSystemExtension() {
-        return this.isSystemExtension;
-    }
-
-    /**
-     * Get the supportMultipleExtensions property: Indicates if specified product supports multiple extensions.
-     *
-     * @return the supportMultipleExtensions value.
-     */
-    public Boolean supportMultipleExtensions() {
-        return this.supportMultipleExtensions;
-    }
-
-    /**
-     * Get the versionPropertiesVersion property: Specifies product version.
-     *
-     * @return the versionPropertiesVersion value.
-     */
-    public String versionPropertiesVersion() {
-        return this.versionPropertiesVersion;
-    }
-
-    /**
-     * Get the vmOsType property: Specifies operating system used by the product.
-     *
-     * @return the vmOsType value.
-     */
-    public OperatingSystem vmOsType() {
-        return this.vmOsType;
-    }
-
-    /**
-     * Get the vmScaleSetEnabled property: Indicates if virtual machine Scale Set is enabled in the specified product.
-     *
-     * @return the vmScaleSetEnabled value.
-     */
-    public Boolean vmScaleSetEnabled() {
-        return this.vmScaleSetEnabled;
-    }
-
-    /**
-     * Get the uri property: The URI.
-     *
-     * @return the uri value.
-     */
-    public String uri() {
-        return this.uri;
+    private ExtendedProductProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -184,7 +71,7 @@ public class ExtendedProductInner {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -193,7 +80,7 @@ public class ExtendedProductInner {
      * @return the osDiskImage value.
      */
     public OsDiskImage osDiskImage() {
-        return this.osDiskImage;
+        return this.innerProperties() == null ? null : this.innerProperties().osDiskImage();
     }
 
     /**
@@ -202,7 +89,61 @@ public class ExtendedProductInner {
      * @return the dataDiskImages value.
      */
     public List<DataDiskImage> dataDiskImages() {
-        return this.dataDiskImages;
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskImages();
+    }
+
+    /**
+     * Get the computeRole property: Specifies kind of compute role included in the package.
+     *
+     * @return the computeRole value.
+     */
+    public ComputeRole computeRole() {
+        return this.innerProperties() == null ? null : this.innerProperties().computeRole();
+    }
+
+    /**
+     * Get the isSystemExtension property: Specifies if product is a Virtual Machine Extension.
+     *
+     * @return the isSystemExtension value.
+     */
+    public Boolean isSystemExtension() {
+        return this.innerProperties() == null ? null : this.innerProperties().isSystemExtension();
+    }
+
+    /**
+     * Get the uri property: The URI.
+     *
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
+    }
+
+    /**
+     * Get the supportMultipleExtensions property: Indicates if specified product supports multiple extensions.
+     *
+     * @return the supportMultipleExtensions value.
+     */
+    public Boolean supportMultipleExtensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportMultipleExtensions();
+    }
+
+    /**
+     * Get the vmOsType property: Specifies operating system used by the product.
+     *
+     * @return the vmOsType value.
+     */
+    public OperatingSystem vmOsType() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmOsType();
+    }
+
+    /**
+     * Get the vmScaleSetEnabled property: Indicates if virtual machine Scale Set is enabled in the specified product.
+     *
+     * @return the vmScaleSetEnabled value.
+     */
+    public Boolean vmScaleSetEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmScaleSetEnabled();
     }
 
     /**
@@ -211,11 +152,8 @@ public class ExtendedProductInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (osDiskImage() != null) {
-            osDiskImage().validate();
-        }
-        if (dataDiskImages() != null) {
-            dataDiskImages().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

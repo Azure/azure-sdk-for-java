@@ -17,6 +17,15 @@ public final class AzureSearchIndexWriteBehaviorType extends ExpandableStringEnu
     public static final AzureSearchIndexWriteBehaviorType UPLOAD = fromString("Upload");
 
     /**
+     * Creates a new instance of AzureSearchIndexWriteBehaviorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureSearchIndexWriteBehaviorType() {
+    }
+
+    /**
      * Creates or finds a AzureSearchIndexWriteBehaviorType from its string representation.
      *
      * @param name a name to look for.

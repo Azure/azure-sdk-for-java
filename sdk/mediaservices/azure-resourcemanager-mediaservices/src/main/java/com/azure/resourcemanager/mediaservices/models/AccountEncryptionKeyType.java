@@ -17,6 +17,15 @@ public final class AccountEncryptionKeyType extends ExpandableStringEnum<Account
     public static final AccountEncryptionKeyType CUSTOMER_KEY = fromString("CustomerKey");
 
     /**
+     * Creates a new instance of AccountEncryptionKeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccountEncryptionKeyType() {
+    }
+
+    /**
      * Creates or finds a AccountEncryptionKeyType from its string representation.
      *
      * @param name a name to look for.
