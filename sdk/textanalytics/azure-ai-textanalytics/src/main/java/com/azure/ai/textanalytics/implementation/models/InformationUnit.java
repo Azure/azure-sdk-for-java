@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InformationUnit. */
+/** The information (data) Unit of measurement. */
 public final class InformationUnit extends ExpandableStringEnum<InformationUnit> {
     /** Static value Unspecified for InformationUnit. */
     public static final InformationUnit UNSPECIFIED = fromString("Unspecified");

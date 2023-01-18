@@ -43,6 +43,9 @@ public class AnalyzeTextLROResult extends TaskState {
     @JsonProperty(value = "taskName")
     private String taskName;
 
+    /** Creates an instance of AnalyzeTextLROResult class. */
+    public AnalyzeTextLROResult() {}
+
     /**
      * Get the taskName property: The taskName property.
      *
