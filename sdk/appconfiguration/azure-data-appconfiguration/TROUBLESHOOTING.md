@@ -19,9 +19,8 @@ App Configuration Java client library, and mitigation steps to resolve these err
 ### Enable client logging
 
 To troubleshoot issues with Azure App Configuration library, it is important to first enable logging to monitor the
-behavior of the application. The errors and warnings in the logs generally provide
-useful insights into what went wrong and sometimes include corrective actions to fix issues.
-The Azure client libraries for Java have two logging options:
+behavior of the application. The errors and warnings in the logs generally provide useful insights into what went wrong 
+and sometimes include corrective actions to fix issues. The Azure client libraries for Java have two logging options:
 
 * A built-in logging framework.
 * Support for logging using the [SLF4J](https://www.slf4j.org/) interface.
@@ -30,9 +29,9 @@ Refer to the instructions in this reference document on how to [configure loggin
 
 ### Enable HTTP request/response logging
 
-Reviewing the HTTP request sent or response received over the wire to/from the Azure Monitor service can be useful in
-troubleshooting issues. To enable logging the HTTP request and response payload, the LogsQueryClient and the
-MetricsQueryClient can be configured as shown below:
+Reviewing the HTTP request sent or response received over the wire to/from the Azure App Configuration service can be 
+useful in troubleshooting issues. To enable logging the HTTP request and response payload, the [ConfigurationClient][configuration_client] 
+can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
 ConfigurationClient configurationClient = new ConfigurationClientBuilder()
@@ -67,12 +66,12 @@ information. When logging headers, the client library has a default set of heade
 but this set can be updated by updating the log options in the builder as shown below:
 
 ```java
-clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-log-header-name"))
+new ConfigurationClientBuilder().httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-log-header-name"))
 ```
 
 ### Authentication errors
 
-Azure App Configuration supports Azure Active Directory authentication. `ConfigurationClientBuilder` has method to set 
+Azure App Configuration supports Azure Active Directory authentication. [ConfigurationClientBuilder][configuration_client_builder] has method to set 
 the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more details on getting 
 started, refer to the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration#create-a-configuration-client)
 of Azure App Configuration library. You can also refer to the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity)
@@ -84,9 +83,13 @@ If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application
 dependency version conflict. Please take a look at [troubleshooting dependency version conflicts](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict) for more information on
 why this happens and [ways to mitigate this issue](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
 
-
 ## Troubleshooting Issues By Response Code
+
 
 ## Get additional help
 
 Additional information on ways to reach out for support can be found in the [SUPPORT.md](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md) at the root of the repo.
+
+<!-- Links -->
+[configuration_client]: https://learn.microsoft.com/java/api/com.azure.data.appconfiguration.configurationclient?view=azure-java-stable
+[configuration_client_builder]: https://learn.microsoft.com/java/api/com.azure.data.appconfiguration.configurationclientbuilder?view=azure-java-stable
