@@ -7,9 +7,13 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed shared `SyncTokenToken` and `RetryPolicy` policies across Configuration clients. 
 
 ### Other Changes
+
+## 1.4.1 (2023-01-17)
+
+### Bugs Fixed
+- Fixed shared `SyncTokenToken` and `RetryPolicy` policies across Configuration clients. 
 
 ## 1.4.0 (2023-01-11)
 
