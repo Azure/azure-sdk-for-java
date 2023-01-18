@@ -5,104 +5,38 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Apply Update request. */
-@JsonFlatten
 @Fluent
-public class ApplyUpdateInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplyUpdateInner.class);
-
+public final class ApplyUpdateInner extends ProxyResource {
     /*
-     * The status
+     * Properties of the apply update
      */
-    @JsonProperty(value = "properties.status")
-    private UpdateStatus status;
+    @JsonProperty(value = "properties")
+    private ApplyUpdateProperties innerProperties;
 
     /*
-     * The resourceId
-     */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
-
-    /*
-     * Last Update time
-     */
-    @JsonProperty(value = "properties.lastUpdateTime")
-    private OffsetDateTime lastUpdateTime;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Get the status property: The status.
-     *
-     * @return the status value.
-     */
-    public UpdateStatus status() {
-        return this.status;
+    /** Creates an instance of ApplyUpdateInner class. */
+    public ApplyUpdateInner() {
     }
 
     /**
-     * Set the status property: The status.
+     * Get the innerProperties property: Properties of the apply update.
      *
-     * @param status the status value to set.
-     * @return the ApplyUpdateInner object itself.
+     * @return the innerProperties value.
      */
-    public ApplyUpdateInner withStatus(UpdateStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the resourceId property: The resourceId.
-     *
-     * @return the resourceId value.
-     */
-    public String resourceId() {
-        return this.resourceId;
-    }
-
-    /**
-     * Set the resourceId property: The resourceId.
-     *
-     * @param resourceId the resourceId value to set.
-     * @return the ApplyUpdateInner object itself.
-     */
-    public ApplyUpdateInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
-        return this;
-    }
-
-    /**
-     * Get the lastUpdateTime property: Last Update time.
-     *
-     * @return the lastUpdateTime value.
-     */
-    public OffsetDateTime lastUpdateTime() {
-        return this.lastUpdateTime;
-    }
-
-    /**
-     * Set the lastUpdateTime property: Last Update time.
-     *
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @return the ApplyUpdateInner object itself.
-     */
-    public ApplyUpdateInner withLastUpdateTime(OffsetDateTime lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-        return this;
+    private ApplyUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -115,10 +49,82 @@ public class ApplyUpdateInner extends ProxyResource {
     }
 
     /**
+     * Get the status property: The status.
+     *
+     * @return the status value.
+     */
+    public UpdateStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: The status.
+     *
+     * @param status the status value to set.
+     * @return the ApplyUpdateInner object itself.
+     */
+    public ApplyUpdateInner withStatus(UpdateStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplyUpdateProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the resourceId property: The resourceId.
+     *
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
+    }
+
+    /**
+     * Set the resourceId property: The resourceId.
+     *
+     * @param resourceId the resourceId value to set.
+     * @return the ApplyUpdateInner object itself.
+     */
+    public ApplyUpdateInner withResourceId(String resourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplyUpdateProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
+        return this;
+    }
+
+    /**
+     * Get the lastUpdateTime property: Last Update time.
+     *
+     * @return the lastUpdateTime value.
+     */
+    public OffsetDateTime lastUpdateTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdateTime();
+    }
+
+    /**
+     * Set the lastUpdateTime property: Last Update time.
+     *
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @return the ApplyUpdateInner object itself.
+     */
+    public ApplyUpdateInner withLastUpdateTime(OffsetDateTime lastUpdateTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplyUpdateProperties();
+        }
+        this.innerProperties().withLastUpdateTime(lastUpdateTime);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -11,7 +11,37 @@ import com.azure.core.util.Context;
 /** Resource collection API of ApplyUpdates. */
 public interface ApplyUpdates {
     /**
-     * Track maintenance updates to resource with parent.
+     * Track Updates to resource with parent
+     *
+     * <p>Track maintenance updates to resource with parent.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param applyUpdateName applyUpdate Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request along with {@link Response}.
+     */
+    Response<ApplyUpdate> getParentWithResponse(
+        String resourceGroupName,
+        String resourceParentType,
+        String resourceParentName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String applyUpdateName,
+        Context context);
+
+    /**
+     * Track Updates to resource with parent
+     *
+     * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
      * @param resourceParentType Resource parent type.
@@ -35,11 +65,11 @@ public interface ApplyUpdates {
         String applyUpdateName);
 
     /**
-     * Track maintenance updates to resource with parent.
+     * Track Updates to resource
+     *
+     * <p>Track maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
@@ -48,12 +78,10 @@ public interface ApplyUpdates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response}.
      */
-    Response<ApplyUpdate> getParentWithResponse(
+    Response<ApplyUpdate> getWithResponse(
         String resourceGroupName,
-        String resourceParentType,
-        String resourceParentName,
         String providerName,
         String resourceType,
         String resourceName,
@@ -61,7 +89,9 @@ public interface ApplyUpdates {
         Context context);
 
     /**
-     * Track maintenance updates to resource.
+     * Track Updates to resource
+     *
+     * <p>Track maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -81,29 +111,35 @@ public interface ApplyUpdates {
         String applyUpdateName);
 
     /**
-     * Track maintenance updates to resource.
+     * Apply Updates to resource with parent
+     *
+     * <p>Apply maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
-     * @param applyUpdateName applyUpdate Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response}.
      */
-    Response<ApplyUpdate> getWithResponse(
+    Response<ApplyUpdate> createOrUpdateParentWithResponse(
         String resourceGroupName,
         String providerName,
+        String resourceParentType,
+        String resourceParentName,
         String resourceType,
         String resourceName,
-        String applyUpdateName,
         Context context);
 
     /**
-     * Apply maintenance updates to resource with parent.
+     * Apply Updates to resource with parent
+     *
+     * <p>Apply maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -125,31 +161,27 @@ public interface ApplyUpdates {
         String resourceName);
 
     /**
-     * Apply maintenance updates to resource with parent.
+     * Apply Updates to resource
+     *
+     * <p>Apply maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response}.
      */
-    Response<ApplyUpdate> createOrUpdateParentWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        Context context);
+    Response<ApplyUpdate> createOrUpdateWithResponse(
+        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context);
 
     /**
-     * Apply maintenance updates to resource.
+     * Apply Updates to resource
+     *
+     * <p>Apply maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -163,27 +195,11 @@ public interface ApplyUpdates {
     ApplyUpdate createOrUpdate(String resourceGroupName, String providerName, String resourceType, String resourceName);
 
     /**
-     * Apply maintenance updates to resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
-    Response<ApplyUpdate> createOrUpdateWithResponse(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context);
-
-    /**
      * Get Configuration records within a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApplyUpdate> list();
 
@@ -194,7 +210,7 @@ public interface ApplyUpdates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApplyUpdate> list(Context context);
 }
