@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.service.implementation.passwordless;
 
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,12 +12,17 @@ import java.util.Map;
  */
 public class AzureRedisPasswordlessProperties extends AzurePasswordlessProperties {
 
+    private static final String REDIS_SCOPE_AZURE = "https://*.cacheinfra.windows.net:10225/appid/.default";
+    private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
+    private static final String REDIS_SCOPE_AZURE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
+    private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
+
     private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
         {
-            put(AzureProfileOptionsProvider.CloudType.AZURE, "https://*.cacheinfra.windows.net:10225/appid/.default");
-            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, "https://*.cacheinfra.windows.net.china:10225/appid/.default");
-            put(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, "https://*.cacheinfra.windows.net.germany:10225/appid/.default");
-            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, "https://*.cacheinfra.windows.us.government.net:10225/appid/.default");
+            put(AzureProfileOptionsProvider.CloudType.AZURE, REDIS_SCOPE_AZURE);
+            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, REDIS_SCOPE_AZURE_CHINA);
+            put(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, REDIS_SCOPE_AZURE_GERMANY);
+            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, REDIS_SCOPE_AZURE_US_GOVERNMENT);
         }
     };
 
@@ -28,18 +32,7 @@ public class AzureRedisPasswordlessProperties extends AzurePasswordlessPropertie
     }
 
     private String getRedisScopes() {
-        String redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE);
-        AzureProfileOptionsProvider.CloudType cloudType = getProfile().getCloudType();
-        if (AzureProfileOptionsProvider.CloudType.AZURE.equals(cloudType)) {
-            redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE);
-        } else if (AzureProfileOptionsProvider.CloudType.AZURE_CHINA.equals(cloudType)) {
-            redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
-        } else if (AzureProfileOptionsProvider.CloudType.AZURE_GERMANY.equals(cloudType)) {
-            redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
-        } else if (AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT.equals(cloudType)) {
-            redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-        }
-        return redisScope;
+        return REDIS_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), REDIS_SCOPE_AZURE);
     }
 
 }
