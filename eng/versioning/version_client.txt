@@ -182,7 +182,7 @@ com.azure.spring:azure-spring-cloud-appconfiguration-config;2.10.0;2.11.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.10.0;2.11.0-beta.1
-com.azure.spring:spring-cloud-azure-dependencies;5.0.0;5.0.0
+com.azure.spring:spring-cloud-azure-dependencies;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-messaging-azure;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-messaging-azure-servicebus;5.0.0;5.1.0-beta.1
@@ -195,7 +195,7 @@ com.azure.spring:spring-cloud-azure-core;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-actuator-autoconfigure;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-actuator;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-autoconfigure;5.0.0;5.1.0-beta.1
-com.azure.spring:spring-cloud-azure-native-reachability;5.0.0-beta.1;5.0.0-beta.1
+com.azure.spring:spring-cloud-azure-native-reachability;5.0.0-beta.1;5.0.0-beta.2
 com.azure.spring:spring-cloud-azure-resourcemanager;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-service;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-active-directory;5.0.0;5.1.0-beta.1
