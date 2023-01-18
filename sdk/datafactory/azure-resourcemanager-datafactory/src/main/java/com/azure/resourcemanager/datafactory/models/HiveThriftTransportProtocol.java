@@ -20,6 +20,15 @@ public final class HiveThriftTransportProtocol extends ExpandableStringEnum<Hive
     public static final HiveThriftTransportProtocol HTTP = fromString("HTTP ");
 
     /**
+     * Creates a new instance of HiveThriftTransportProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HiveThriftTransportProtocol() {
+    }
+
+    /**
      * Creates or finds a HiveThriftTransportProtocol from its string representation.
      *
      * @param name a name to look for.

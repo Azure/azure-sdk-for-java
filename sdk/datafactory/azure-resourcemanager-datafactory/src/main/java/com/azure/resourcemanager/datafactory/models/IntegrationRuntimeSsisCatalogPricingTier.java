@@ -27,6 +27,15 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
     public static final IntegrationRuntimeSsisCatalogPricingTier PREMIUM_RS = fromString("PremiumRS");
 
     /**
+     * Creates a new instance of IntegrationRuntimeSsisCatalogPricingTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeSsisCatalogPricingTier() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeSsisCatalogPricingTier from its string representation.
      *
      * @param name a name to look for.

@@ -21,6 +21,15 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
         fromString("WindowsAzureHDInsightService");
 
     /**
+     * Creates a new instance of PhoenixAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PhoenixAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a PhoenixAuthenticationType from its string representation.
      *
      * @param name a name to look for.

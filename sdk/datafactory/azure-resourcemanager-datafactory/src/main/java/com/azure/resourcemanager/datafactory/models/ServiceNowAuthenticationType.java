@@ -17,6 +17,15 @@ public final class ServiceNowAuthenticationType extends ExpandableStringEnum<Ser
     public static final ServiceNowAuthenticationType OAUTH2 = fromString("OAuth2");
 
     /**
+     * Creates a new instance of ServiceNowAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceNowAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a ServiceNowAuthenticationType from its string representation.
      *
      * @param name a name to look for.
