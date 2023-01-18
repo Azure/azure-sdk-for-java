@@ -123,13 +123,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // ask gateway for the addresses
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(),
                 serviceEndpoint,
                 protocol,
                 authorizationTokenProvider,
                 null,
-                getHttpClient(configs),
+                httpClientWrapper.getSpyHttpClient(),
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
@@ -139,6 +140,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
                     collectionLink + "/docs/",
                     getDocumentDefinition(), new HashMap<>());
+            req.requestContext.cosmosDiagnostics = req.createCosmosDiagnostics();
             if (i == 1) {
                 req.forceCollectionRoutingMapRefresh = true; //testing address api with x-ms-collectionroutingmap-refresh true
             }
@@ -150,7 +152,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .replicasOfPartitions(partitionKeyRangeIds)
                 .build();
 
-            validateSuccess(addresses, validator, TIMEOUT);
+            validateSuccess(addresses, validator, httpClientWrapper, TIMEOUT);
         }
     }
 
@@ -161,12 +163,13 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // ask gateway for the addresses
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(), serviceEndpoint,
                                                             protocol,
                                                             authorizationTokenProvider,
                                                             null,
-                                                            getHttpClient(configs),
+                                                            httpClientWrapper.getSpyHttpClient(),
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
@@ -176,6 +179,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
                     "/dbs",
                     new Database(), new HashMap<>());
+            req.requestContext.cosmosDiagnostics = req.createCosmosDiagnostics();
             if (i == 1) {
                 req.forceCollectionRoutingMapRefresh = true; //testing address api with x-ms-collectionroutingmap-refresh true
             }
@@ -187,7 +191,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .replicasOfSamePartition()
                 .build();
 
-            validateSuccess(addresses, validator, TIMEOUT);
+            validateSuccess(addresses, validator, httpClientWrapper, TIMEOUT);
         }
     }
 
@@ -1284,7 +1288,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     public static void validateSuccess(Mono<List<Address>> observable,
-                                       PartitionReplicasAddressesValidator validator, long timeout) {
+                                       PartitionReplicasAddressesValidator validator,
+                                       HttpClientUnderTestWrapper httpClient,
+                                       long timeout) {
         TestSubscriber<List<Address>> testSubscriber = new TestSubscriber<>();
         observable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
@@ -1292,6 +1298,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
         validator.validate(testSubscriber.values().get(0));
+        // Verifying activity id is being set in header on address call to gateway.
+        assertThat(httpClient.capturedRequests.get(0).headers().value(HttpConstants.HttpHeaders.ACTIVITY_ID)).isNotNull();
     }
 
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
