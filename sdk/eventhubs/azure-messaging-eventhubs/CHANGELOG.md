@@ -1,11 +1,11 @@
 # Release History
 
-## 5.15.1 (2022-11-16)
+## 5.15.1 (2023-01-18)
 
 ### Features Added
 
 - Added support for setting different value types in `EventData.getProperties()`. [32518](https://github.com/Azure/azure-sdk-for-java/issues/32518)
-  
+
 ### Bugs Fixed
 
 - Fixed ability to pass in namespace connection string in EventHubClientBuilder. ([#29536](https://github.com/Azure/azure-sdk-for-java/issues/29536))
