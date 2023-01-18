@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-mariadb</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-mariadb;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-mariadb;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for MariaDB Management</name>
