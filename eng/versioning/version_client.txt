@@ -195,6 +195,7 @@ com.azure.spring:spring-cloud-azure-core;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-actuator-autoconfigure;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-actuator;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-autoconfigure;5.0.0;5.1.0-beta.1
+com.azure.spring:spring-cloud-azure-native-reachability;5.0.0-beta.1;5.0.0-beta.1
 com.azure.spring:spring-cloud-azure-resourcemanager;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-service;5.0.0;5.1.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-active-directory;5.0.0;5.1.0-beta.1
