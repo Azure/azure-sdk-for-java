@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidatePreferences")
 @Fluent
 public final class PreferencesValidationRequest extends ValidationInputRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreferencesValidationRequest.class);
-
     /*
      * Preference of transport and data center.
      */
@@ -29,6 +26,10 @@ public final class PreferencesValidationRequest extends ValidationInputRequest {
      */
     @JsonProperty(value = "deviceType", required = true)
     private SkuName deviceType;
+
+    /** Creates an instance of PreferencesValidationRequest class. */
+    public PreferencesValidationRequest() {
+    }
 
     /**
      * Get the preference property: Preference of transport and data center.
@@ -82,10 +83,12 @@ public final class PreferencesValidationRequest extends ValidationInputRequest {
             preference().validate();
         }
         if (deviceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deviceType in model PreferencesValidationRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PreferencesValidationRequest.class);
 }

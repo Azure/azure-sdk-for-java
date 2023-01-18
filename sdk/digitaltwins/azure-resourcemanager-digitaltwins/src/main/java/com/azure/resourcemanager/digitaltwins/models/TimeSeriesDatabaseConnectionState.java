@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TimeSeriesDatabaseConnectionState. */
+/** The provisioning state. */
 public final class TimeSeriesDatabaseConnectionState extends ExpandableStringEnum<TimeSeriesDatabaseConnectionState> {
     /** Static value Provisioning for TimeSeriesDatabaseConnectionState. */
     public static final TimeSeriesDatabaseConnectionState PROVISIONING = fromString("Provisioning");

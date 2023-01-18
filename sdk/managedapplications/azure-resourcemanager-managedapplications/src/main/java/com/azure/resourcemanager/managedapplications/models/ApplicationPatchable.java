@@ -5,17 +5,18 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationPropertiesPatchable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Information about managed application. */
-@JsonFlatten
 @Fluent
-public class ApplicationPatchable extends GenericResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationPatchable.class);
+public final class ApplicationPatchable extends GenericResource {
+    /*
+     * The managed application properties.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationPropertiesPatchable innerProperties;
 
     /*
      * The plan information.
@@ -24,42 +25,23 @@ public class ApplicationPatchable extends GenericResource {
     private PlanPatchable plan;
 
     /*
-     * The kind of the managed application. Allowed values are MarketPlace and
-     * ServiceCatalog.
+     * The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
      */
     @JsonProperty(value = "kind")
     private String kind;
 
-    /*
-     * The managed resource group Id.
-     */
-    @JsonProperty(value = "properties.managedResourceGroupId")
-    private String managedResourceGroupId;
+    /** Creates an instance of ApplicationPatchable class. */
+    public ApplicationPatchable() {
+    }
 
-    /*
-     * The fully qualified path of managed application definition Id.
+    /**
+     * Get the innerProperties property: The managed application properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.applicationDefinitionId")
-    private String applicationDefinitionId;
-
-    /*
-     * Name and value pairs that define the managed application parameters. It
-     * can be a JObject or a well formed JSON string.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Object parameters;
-
-    /*
-     * Name and value pairs that define the managed application outputs.
-     */
-    @JsonProperty(value = "properties.outputs", access = JsonProperty.Access.WRITE_ONLY)
-    private Object outputs;
-
-    /*
-     * The managed application provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationPropertiesPatchable innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the plan property: The plan information.
@@ -101,86 +83,6 @@ public class ApplicationPatchable extends GenericResource {
         return this;
     }
 
-    /**
-     * Get the managedResourceGroupId property: The managed resource group Id.
-     *
-     * @return the managedResourceGroupId value.
-     */
-    public String managedResourceGroupId() {
-        return this.managedResourceGroupId;
-    }
-
-    /**
-     * Set the managedResourceGroupId property: The managed resource group Id.
-     *
-     * @param managedResourceGroupId the managedResourceGroupId value to set.
-     * @return the ApplicationPatchable object itself.
-     */
-    public ApplicationPatchable withManagedResourceGroupId(String managedResourceGroupId) {
-        this.managedResourceGroupId = managedResourceGroupId;
-        return this;
-    }
-
-    /**
-     * Get the applicationDefinitionId property: The fully qualified path of managed application definition Id.
-     *
-     * @return the applicationDefinitionId value.
-     */
-    public String applicationDefinitionId() {
-        return this.applicationDefinitionId;
-    }
-
-    /**
-     * Set the applicationDefinitionId property: The fully qualified path of managed application definition Id.
-     *
-     * @param applicationDefinitionId the applicationDefinitionId value to set.
-     * @return the ApplicationPatchable object itself.
-     */
-    public ApplicationPatchable withApplicationDefinitionId(String applicationDefinitionId) {
-        this.applicationDefinitionId = applicationDefinitionId;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: Name and value pairs that define the managed application parameters. It can be a
-     * JObject or a well formed JSON string.
-     *
-     * @return the parameters value.
-     */
-    public Object parameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Name and value pairs that define the managed application parameters. It can be a
-     * JObject or a well formed JSON string.
-     *
-     * @param parameters the parameters value to set.
-     * @return the ApplicationPatchable object itself.
-     */
-    public ApplicationPatchable withParameters(Object parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
-     * Get the outputs property: Name and value pairs that define the managed application outputs.
-     *
-     * @return the outputs value.
-     */
-    public Object outputs() {
-        return this.outputs;
-    }
-
-    /**
-     * Get the provisioningState property: The managed application provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
     /** {@inheritDoc} */
     @Override
     public ApplicationPatchable withManagedBy(String managedBy) {
@@ -217,6 +119,95 @@ public class ApplicationPatchable extends GenericResource {
     }
 
     /**
+     * Get the managedResourceGroupId property: The managed resource group Id.
+     *
+     * @return the managedResourceGroupId value.
+     */
+    public String managedResourceGroupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedResourceGroupId();
+    }
+
+    /**
+     * Set the managedResourceGroupId property: The managed resource group Id.
+     *
+     * @param managedResourceGroupId the managedResourceGroupId value to set.
+     * @return the ApplicationPatchable object itself.
+     */
+    public ApplicationPatchable withManagedResourceGroupId(String managedResourceGroupId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationPropertiesPatchable();
+        }
+        this.innerProperties().withManagedResourceGroupId(managedResourceGroupId);
+        return this;
+    }
+
+    /**
+     * Get the applicationDefinitionId property: The fully qualified path of managed application definition Id.
+     *
+     * @return the applicationDefinitionId value.
+     */
+    public String applicationDefinitionId() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationDefinitionId();
+    }
+
+    /**
+     * Set the applicationDefinitionId property: The fully qualified path of managed application definition Id.
+     *
+     * @param applicationDefinitionId the applicationDefinitionId value to set.
+     * @return the ApplicationPatchable object itself.
+     */
+    public ApplicationPatchable withApplicationDefinitionId(String applicationDefinitionId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationPropertiesPatchable();
+        }
+        this.innerProperties().withApplicationDefinitionId(applicationDefinitionId);
+        return this;
+    }
+
+    /**
+     * Get the parameters property: Name and value pairs that define the managed application parameters. It can be a
+     * JObject or a well formed JSON string.
+     *
+     * @return the parameters value.
+     */
+    public Object parameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: Name and value pairs that define the managed application parameters. It can be a
+     * JObject or a well formed JSON string.
+     *
+     * @param parameters the parameters value to set.
+     * @return the ApplicationPatchable object itself.
+     */
+    public ApplicationPatchable withParameters(Object parameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationPropertiesPatchable();
+        }
+        this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the outputs property: Name and value pairs that define the managed application outputs.
+     *
+     * @return the outputs value.
+     */
+    public Object outputs() {
+        return this.innerProperties() == null ? null : this.innerProperties().outputs();
+    }
+
+    /**
+     * Get the provisioningState property: The managed application provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -224,6 +215,9 @@ public class ApplicationPatchable extends GenericResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (plan() != null) {
             plan().validate();
         }

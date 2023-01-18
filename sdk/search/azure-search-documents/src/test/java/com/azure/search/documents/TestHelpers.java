@@ -14,6 +14,7 @@ import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.test.environment.models.NonNullableModel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -30,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -39,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
@@ -110,6 +113,32 @@ public final class TestHelpers {
             ObjectNode actualNode = MAPPER.valueToTree(actual);
             assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
         }
+    }
+
+    /**
+     * Determines if two lists of documents are equal by comparing their keys.
+     *
+     * @param group1 The first list of documents.
+     * @param group2 The second list documents.
+     * @return True of false if the documents are equal or not equal, respectively.
+     */
+    public static boolean equalDocumentSets(List<NonNullableModel> group1, List<NonNullableModel> group2) {
+        List<String> group1Keys = produceKeyList(group1, TestHelpers::extractKeyFromDocument);
+        List<String> group2Keys = produceKeyList(group2, TestHelpers::extractKeyFromDocument);
+        return group1Keys.containsAll(group2Keys);
+    }
+
+    private static <T> List<String> produceKeyList(List<T> objList, Function<T, String> extractKeyFunc) {
+        List<String> keyList = new ArrayList<>();
+        for (T obj : objList) {
+            keyList.add(extractKeyFunc.apply(obj));
+        }
+        return keyList;
+    }
+
+    private static String extractKeyFromDocument(NonNullableModel document) {
+        ObjectNode node = MAPPER.valueToTree(document);
+        return node.get("Key").asText();
     }
 
     /**

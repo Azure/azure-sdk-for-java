@@ -14,7 +14,7 @@ public final class ScheduleListResultTests {
         ScheduleListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"vsmzlxwab\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"ifrvtpu\",\"timeZone\":\"jmqlgkfb\",\"state\":\"Enabled\"},\"id\":\"aongbj\",\"name\":\"ntuji\",\"type\":\"c\"},{\"properties\":{\"provisioningState\":\"ftwwaezkojvdc\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"uicybxarzgszuf\",\"timeZone\":\"ciqopidoa\",\"state\":\"Disabled\"},\"id\":\"dhkha\",\"name\":\"xkhnzbonlwnto\",\"type\":\"gokdwbwhks\"}],\"nextLink\":\"cmrvexzt\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"tkl\",\"timeZone\":\"xbjhwuaanozjosph\",\"state\":\"Enabled\"},\"id\":\"pjrvxagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}],\"nextLink\":\"cskfcktqumiekk\"}")
                 .toObject(ScheduleListResult.class);
     }
 

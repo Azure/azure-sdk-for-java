@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Check Name Availability Request. */
 @Fluent
 public final class CheckNameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequest.class);
-
     /*
      * Resource Name To Verify
      */
@@ -25,6 +22,10 @@ public final class CheckNameAvailabilityRequest {
      */
     @JsonProperty(value = "type", required = true)
     private String type;
+
+    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    public CheckNameAvailabilityRequest() {
+    }
 
     /**
      * Get the name property: Resource Name To Verify.
@@ -73,16 +74,18 @@ public final class CheckNameAvailabilityRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CheckNameAvailabilityRequest"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property type in model CheckNameAvailabilityRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityRequest.class);
 }

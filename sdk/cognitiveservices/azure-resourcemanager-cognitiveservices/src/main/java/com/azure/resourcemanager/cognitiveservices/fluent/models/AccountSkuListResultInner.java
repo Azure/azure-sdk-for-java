@@ -18,6 +18,10 @@ public final class AccountSkuListResultInner {
     @JsonProperty(value = "value")
     private List<AccountSku> value;
 
+    /** Creates an instance of AccountSkuListResultInner class. */
+    public AccountSkuListResultInner() {
+    }
+
     /**
      * Get the value property: Gets the list of Cognitive Services accounts and their properties.
      *

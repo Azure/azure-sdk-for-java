@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerDnsAliases Delete. */
 public final class ServerDnsAliasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerDnsAliasDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDnsAliasDelete.json
      */
     /**
      * Sample code: Delete server DNS alias.

@@ -20,7 +20,10 @@ public class CosmosFactory {
 
     private final CosmosAsyncClient cosmosAsyncClient;
 
-    private final String databaseName;
+    /**
+     * Database Name to be used for operations.
+     */
+    protected String databaseName;
 
     private static final String USER_AGENT_SUFFIX =
         Constants.USER_AGENT_SUFFIX + PropertyLoader.getProjectVersion();

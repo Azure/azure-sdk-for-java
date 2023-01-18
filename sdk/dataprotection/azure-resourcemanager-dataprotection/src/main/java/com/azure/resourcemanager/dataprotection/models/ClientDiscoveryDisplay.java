@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ClientDiscoveryDisplay Localized display information of an operation. */
+/**
+ * ClientDiscoveryDisplay
+ *
+ * <p>Localized display information of an operation.
+ */
 @Fluent
 public final class ClientDiscoveryDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryDisplay.class);
-
     /*
      * Description of the operation having details of what operation is about.
      */
@@ -37,6 +37,10 @@ public final class ClientDiscoveryDisplay {
      */
     @JsonProperty(value = "resource")
     private String resource;
+
+    /** Creates an instance of ClientDiscoveryDisplay class. */
+    public ClientDiscoveryDisplay() {
+    }
 
     /**
      * Get the description property: Description of the operation having details of what operation is about.

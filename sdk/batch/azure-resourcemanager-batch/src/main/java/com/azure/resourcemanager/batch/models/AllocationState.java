@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AllocationState. */
+/** Whether the pool is resizing. */
 public enum AllocationState {
     /** Enum value Steady. */
     STEADY("Steady"),
@@ -33,6 +33,9 @@ public enum AllocationState {
      */
     @JsonCreator
     public static AllocationState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AllocationState[] items = AllocationState.values();
         for (AllocationState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AllocationState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

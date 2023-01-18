@@ -29,7 +29,7 @@ public class SampleEnvironment {
     private final String clientSecret = Configuration.getGlobalConfiguration().get("REMOTERENDERING_CLIENT_SECRET");
 
     /**
-     * Get the accounId used in samples.
+     * Get the accountId used in samples.
      *
      * @return the accountId.
      */

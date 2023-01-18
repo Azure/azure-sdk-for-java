@@ -62,6 +62,9 @@ public class EloquaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of EloquaLinkedService class. */
+    public EloquaLinkedService() {}
+
     /**
      * Get the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
      *

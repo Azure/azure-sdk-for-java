@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeySource. */
+/** Enumerates the possible value of keySource for Encryption. */
 public final class KeySource extends ExpandableStringEnum<KeySource> {
     /** Static value Microsoft.CognitiveServices for KeySource. */
     public static final KeySource MICROSOFT_COGNITIVE_SERVICES = fromString("Microsoft.CognitiveServices");

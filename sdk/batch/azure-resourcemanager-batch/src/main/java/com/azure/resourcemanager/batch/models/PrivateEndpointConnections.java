@@ -45,20 +45,6 @@ public interface PrivateEndpointConnections {
      * @param accountName The name of the Batch account.
      * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
      *     account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified private endpoint connection.
-     */
-    PrivateEndpointConnection get(String resourceGroupName, String accountName, String privateEndpointConnectionName);
-
-    /**
-     * Gets information about the specified private endpoint connection.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
-     *     account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,27 +55,18 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Updates the properties of an existing private endpoint connection.
+     * Gets information about the specified private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
      *     account.
-     * @param parameters PrivateEndpointConnection properties that should be updated. Properties that are supplied will
-     *     be updated, any property not supplied will be unchanged.
-     * @param ifMatch The state (ETag) version of the private endpoint connection to update. This value can be omitted
-     *     or set to "*" to apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a private link resource.
+     * @return information about the specified private endpoint connection.
      */
-    PrivateEndpointConnection update(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        String ifMatch);
+    PrivateEndpointConnection get(String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
      * Updates the properties of an existing private endpoint connection.
@@ -135,4 +112,31 @@ public interface PrivateEndpointConnections {
         PrivateEndpointConnectionInner parameters,
         String ifMatch,
         Context context);
+
+    /**
+     * Deletes the specified private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
+     *     account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+
+    /**
+     * Deletes the specified private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param privateEndpointConnectionName The private endpoint connection name. This must be unique within the
+     *     account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
 }

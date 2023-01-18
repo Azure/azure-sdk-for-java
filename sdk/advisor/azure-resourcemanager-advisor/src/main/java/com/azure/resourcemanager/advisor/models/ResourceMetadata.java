@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Recommendation resource metadata. */
 @Fluent
 public final class ResourceMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetadata.class);
-
     /*
      * Azure resource Id of the assessed resource
      */
@@ -31,6 +28,7 @@ public final class ResourceMetadata {
      * The action to view resource.
      */
     @JsonProperty(value = "action")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> action;
 
     /*
@@ -44,6 +42,10 @@ public final class ResourceMetadata {
      */
     @JsonProperty(value = "plural")
     private String plural;
+
+    /** Creates an instance of ResourceMetadata class. */
+    public ResourceMetadata() {
+    }
 
     /**
      * Get the resourceId property: Azure resource Id of the assessed resource.

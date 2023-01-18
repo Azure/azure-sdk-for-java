@@ -23,6 +23,15 @@ public final class PolicyViolationCategory extends ExpandableStringEnum<PolicyVi
     public static final PolicyViolationCategory IP_THEFT = fromString("IpTheft");
 
     /**
+     * Creates a new instance of PolicyViolationCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyViolationCategory() {
+    }
+
+    /**
      * Creates or finds a PolicyViolationCategory from its string representation.
      *
      * @param name a name to look for.

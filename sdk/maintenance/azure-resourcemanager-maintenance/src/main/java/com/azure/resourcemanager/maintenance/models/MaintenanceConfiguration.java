@@ -48,6 +48,13 @@ public interface MaintenanceConfiguration {
     Map<String, String> tags();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the namespace property: Gets or sets namespace of the resource.
      *
      * @return the namespace value.
@@ -128,13 +135,6 @@ public interface MaintenanceConfiguration {
     String recurEvery();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -147,6 +147,13 @@ public interface MaintenanceConfiguration {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner object.

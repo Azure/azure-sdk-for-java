@@ -42,7 +42,7 @@ public interface AllowedEnvironmentType {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeInner object.

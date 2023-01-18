@@ -31,11 +31,6 @@ public class TransferToParticipantCallOptions {
     private PhoneNumberIdentifier transfereeCallerId;
 
     /**
-     * The user to user information.
-     */
-    private String userToUserInformation;
-
-    /**
      * Repeatability Headers Configuration
      */
     private RepeatabilityHeaders repeatabilityHeaders;
@@ -78,15 +73,6 @@ public class TransferToParticipantCallOptions {
     }
 
     /**
-     * Get the userToUserInformation.
-     *
-     * @return the userToUserInformation
-     */
-    public String  getUserToUserInformation() {
-        return userToUserInformation;
-    }
-
-    /**
      * Get the Repeatability headers configuration.
      *
      * @return the repeatabilityHeaders
@@ -115,17 +101,6 @@ public class TransferToParticipantCallOptions {
      */
     public TransferToParticipantCallOptions setSourceCallerId(PhoneNumberIdentifier transfereeCallerId) {
         this.transfereeCallerId = transfereeCallerId;
-        return this;
-    }
-
-    /**
-     * Set the invitationTimeoutInSeconds.
-     *
-     * @param userToUserInformation The user to user information.
-     * @return the TransferToParticipantCallOptions object itself.
-     */
-    public TransferToParticipantCallOptions setUserToUserInformation(String userToUserInformation) {
-        this.userToUserInformation = userToUserInformation;
         return this;
     }
 

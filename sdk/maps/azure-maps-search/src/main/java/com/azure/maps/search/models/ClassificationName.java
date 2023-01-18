@@ -22,6 +22,9 @@ public final class ClassificationName {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
+    /** Creates an instance of ClassificationName class. */
+    public ClassificationName() {}
+
     /**
      * Get the nameLocale property: Name Locale property.
      *

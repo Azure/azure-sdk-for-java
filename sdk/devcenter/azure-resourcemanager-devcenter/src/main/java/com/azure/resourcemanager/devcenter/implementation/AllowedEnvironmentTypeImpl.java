@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeInner;
 import com.azure.resourcemanager.devcenter.models.AllowedEnvironmentType;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 
 public final class AllowedEnvironmentTypeImpl implements AllowedEnvironmentType {
     private AllowedEnvironmentTypeInner innerObject;
@@ -35,7 +36,7 @@ public final class AllowedEnvironmentTypeImpl implements AllowedEnvironmentType 
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlManagedInstanceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of SqlManagedInstance. */
 @Immutable
 public final class SqlManagedInstanceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceListResult.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class SqlManagedInstanceListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SqlManagedInstanceListResult class. */
+    public SqlManagedInstanceListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

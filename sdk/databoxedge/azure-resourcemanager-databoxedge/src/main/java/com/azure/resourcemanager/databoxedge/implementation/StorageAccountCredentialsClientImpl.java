@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.StorageAccountCredentialsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in StorageAccountCredentialsClient. */
 public final class StorageAccountCredentialsClientImpl implements StorageAccountCredentialsClient {
-    private final ClientLogger logger = new ClientLogger(StorageAccountCredentialsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final StorageAccountCredentialsService service;
 
@@ -68,7 +65,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxEdgeManagemen")
-    private interface StorageAccountCredentialsService {
+    public interface StorageAccountCredentialsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
@@ -152,7 +149,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceSinglePageAsync(
@@ -210,7 +208,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceSinglePageAsync(
@@ -264,7 +263,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageAccountCredentialInner> listByDataBoxEdgeDeviceAsync(
@@ -283,7 +283,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageAccountCredentialInner> listByDataBoxEdgeDeviceAsync(
@@ -301,7 +302,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(
@@ -318,7 +320,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(
@@ -335,7 +338,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountCredentialInner>> getWithResponseAsync(
@@ -389,7 +393,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountCredentialInner>> getWithResponseAsync(
@@ -439,19 +444,30 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageAccountCredentialInner> getAsync(String deviceName, String name, String resourceGroupName) {
         return getWithResponseAsync(deviceName, name, resourceGroupName)
-            .flatMap(
-                (Response<StorageAccountCredentialInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the properties of the specified storage account credential.
+     *
+     * @param deviceName The device name.
+     * @param name The storage account credential name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified storage account credential along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageAccountCredentialInner> getWithResponse(
+        String deviceName, String name, String resourceGroupName, Context context) {
+        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
     }
 
     /**
@@ -467,25 +483,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAccountCredentialInner get(String deviceName, String name, String resourceGroupName) {
-        return getAsync(deviceName, name, resourceGroupName).block();
-    }
-
-    /**
-     * Gets the properties of the specified storage account credential.
-     *
-     * @param deviceName The device name.
-     * @param name The storage account credential name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageAccountCredentialInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context) {
-        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
+        return getWithResponse(deviceName, name, resourceGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -498,7 +496,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the storage account credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -564,7 +562,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the storage account credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -627,9 +625,9 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link PollerFlux} for polling of the storage account credential.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner>
         beginCreateOrUpdateAsync(
             String deviceName,
@@ -645,7 +643,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
                 this.client.getHttpPipeline(),
                 StorageAccountCredentialInner.class,
                 StorageAccountCredentialInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -659,9 +657,9 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link PollerFlux} for polling of the storage account credential.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner>
         beginCreateOrUpdateAsync(
             String deviceName,
@@ -692,15 +690,17 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link SyncPoller} for polling of the storage account credential.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner> beginCreateOrUpdate(
         String deviceName,
         String name,
         String resourceGroupName,
         StorageAccountCredentialInner storageAccountCredential) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential)
+            .getSyncPoller();
     }
 
     /**
@@ -714,16 +714,17 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link SyncPoller} for polling of the storage account credential.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner> beginCreateOrUpdate(
         String deviceName,
         String name,
         String resourceGroupName,
         StorageAccountCredentialInner storageAccountCredential,
         Context context) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential, context)
+        return this
+            .beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential, context)
             .getSyncPoller();
     }
 
@@ -737,7 +738,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the storage account credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageAccountCredentialInner> createOrUpdateAsync(
@@ -761,7 +762,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the storage account credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageAccountCredentialInner> createOrUpdateAsync(
@@ -828,7 +829,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -882,7 +883,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -932,15 +933,16 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String deviceName, String name, String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -953,9 +955,9 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String deviceName, String name, String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -974,11 +976,11 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName).getSyncPoller();
+        return this.beginDeleteAsync(deviceName, name, resourceGroupName).getSyncPoller();
     }
 
     /**
@@ -991,12 +993,12 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String deviceName, String name, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
     }
 
     /**
@@ -1008,7 +1010,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName) {
@@ -1027,7 +1029,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName, Context context) {
@@ -1070,11 +1072,13 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of storage account credentials.
+     * @return the collection of storage account credentials along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(
@@ -1107,12 +1111,14 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of storage account credentials.
+     * @return the collection of storage account credentials along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(

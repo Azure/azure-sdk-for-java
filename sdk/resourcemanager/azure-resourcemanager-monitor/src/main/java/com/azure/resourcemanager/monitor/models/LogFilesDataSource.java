@@ -44,6 +44,10 @@ public final class LogFilesDataSource {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of LogFilesDataSource class. */
+    public LogFilesDataSource() {
+    }
+
     /**
      * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema
      * will be used for this data source.

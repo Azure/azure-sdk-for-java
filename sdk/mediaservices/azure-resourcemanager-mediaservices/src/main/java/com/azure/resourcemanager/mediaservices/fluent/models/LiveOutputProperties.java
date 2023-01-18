@@ -86,6 +86,10 @@ public final class LiveOutputProperties {
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private LiveOutputResourceState resourceState;
 
+    /** Creates an instance of LiveOutputProperties class. */
+    public LiveOutputProperties() {
+    }
+
     /**
      * Get the description property: The description of the live output.
      *

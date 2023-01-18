@@ -1,6 +1,20 @@
 # Release History
 
-## 2.21.0-beta.1 (Unreleased)
+## 2.23.0-beta.1 (Unreleased)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Features Added
+
+- Supported `withHibernationSupport` method in `Disk` to support hibernation for the OS on the disk.
+
+## 2.21.0 (2022-11-24)
 
 ### Features Added
 

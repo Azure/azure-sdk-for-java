@@ -31,14 +31,17 @@ public class Identity {
     private String principalId;
 
     /*
-     * The list of user assigned identities associated with the resource. The
-     * user identity dictionary key references will be ARM resource ids in the
-     * form:
+     * The list of user assigned identities associated with the resource. The user identity dictionary key references
+     * will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
 
     /**
      * Get the type property: The identity type.

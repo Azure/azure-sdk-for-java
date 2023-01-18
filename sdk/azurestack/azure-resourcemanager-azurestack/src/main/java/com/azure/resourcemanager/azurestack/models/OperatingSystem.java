@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperatingSystem. */
+/** Operating system type (Windows or Linux). */
 public final class OperatingSystem extends ExpandableStringEnum<OperatingSystem> {
     /** Static value None for OperatingSystem. */
     public static final OperatingSystem NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class OperatingSystem extends ExpandableStringEnum<OperatingSystem>
 
     /** Static value Linux for OperatingSystem. */
     public static final OperatingSystem LINUX = fromString("Linux");
+
+    /**
+     * Creates a new instance of OperatingSystem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperatingSystem() {
+    }
 
     /**
      * Creates or finds a OperatingSystem from its string representation.
@@ -30,7 +39,11 @@ public final class OperatingSystem extends ExpandableStringEnum<OperatingSystem>
         return fromString(name, OperatingSystem.class);
     }
 
-    /** @return known OperatingSystem values. */
+    /**
+     * Gets known OperatingSystem values.
+     *
+     * @return known OperatingSystem values.
+     */
     public static Collection<OperatingSystem> values() {
         return values(OperatingSystem.class);
     }

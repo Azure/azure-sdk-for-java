@@ -17,9 +17,9 @@ public final class EnvironmentTypeUpdateTests {
         EnvironmentTypeUpdate model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"}}")
+                    "{\"tags\":{\"eoejzic\":\"nfyhx\",\"hajdeyeamdpha\":\"ifsjttgzfbishcb\",\"wkgshwa\":\"alpbuxwgipwhon\",\"bin\":\"kix\"}}")
                 .toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("yn", model.tags().get("qidybyx"));
+        Assertions.assertEquals("nfyhx", model.tags().get("eoejzic"));
     }
 
     @Test
@@ -28,16 +28,16 @@ public final class EnvironmentTypeUpdateTests {
             new EnvironmentTypeUpdate()
                 .withTags(
                     mapOf(
-                        "qidybyx",
-                        "yn",
-                        "aaxdbabphlwrq",
-                        "zfcl",
-                        "hsucoc",
-                        "fkts",
-                        "ckzywbiexzfeyue",
-                        "nyyazttbtwwrqpue"));
+                        "eoejzic",
+                        "nfyhx",
+                        "hajdeyeamdpha",
+                        "ifsjttgzfbishcb",
+                        "wkgshwa",
+                        "alpbuxwgipwhon",
+                        "bin",
+                        "kix"));
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("yn", model.tags().get("qidybyx"));
+        Assertions.assertEquals("nfyhx", model.tags().get("eoejzic"));
     }
 
     @SuppressWarnings("unchecked")

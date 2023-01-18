@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deploymentmanager.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DeploymentMode. */
+/** Describes the type of ARM deployment to be performed on the resource. */
 public enum DeploymentMode {
     /** Enum value Incremental. */
     INCREMENTAL("Incremental"),
@@ -30,6 +30,9 @@ public enum DeploymentMode {
      */
     @JsonCreator
     public static DeploymentMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DeploymentMode[] items = DeploymentMode.values();
         for (DeploymentMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum DeploymentMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

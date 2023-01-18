@@ -136,6 +136,9 @@ public class SapOdpLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SapOdpLinkedService class. */
+    public SapOdpLinkedService() {}
+
     /**
      * Get the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
      * with resultType string).

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnvironmentTypes Get. */
 public final class EnvironmentTypesGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/EnvironmentTypes_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_Get.json
      */
     /**
      * Sample code: EnvironmentTypes_Get.
@@ -17,6 +17,6 @@ public final class EnvironmentTypesGetSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void environmentTypesGet(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.environmentTypes().getWithResponse("rg1", "Contoso", "{environmentTypeName}", Context.NONE);
+        manager.environmentTypes().getWithResponse("rg1", "Contoso", "DevTest", Context.NONE);
     }
 }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -18,7 +19,7 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
      * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /** Creates an instance of ProjectEnvironmentTypeProperties class. */
     public ProjectEnvironmentTypeProperties() {
@@ -29,7 +30,7 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

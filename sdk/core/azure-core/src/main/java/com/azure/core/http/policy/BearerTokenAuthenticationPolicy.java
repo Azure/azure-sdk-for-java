@@ -6,13 +6,13 @@ package com.azure.core.http.policy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessTokenCache;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -189,7 +189,6 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private static void setAuthorizationHeader(HttpHeaders headers, String token) {
-        HttpHeadersHelper.setNoKeyFormatting(headers, AUTHORIZATION_HEADER_LOWER_CASE, AUTHORIZATION_HEADER,
-            BEARER + " " + token);
+        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
     }
 }

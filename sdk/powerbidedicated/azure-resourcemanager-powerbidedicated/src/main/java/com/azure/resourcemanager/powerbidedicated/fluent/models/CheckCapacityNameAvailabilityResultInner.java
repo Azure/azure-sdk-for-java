@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The checking result of capacity name availability. */
 @Fluent
 public final class CheckCapacityNameAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckCapacityNameAvailabilityResultInner.class);
-
     /*
      * Indicator of availability of the capacity name.
      */
@@ -31,6 +27,10 @@ public final class CheckCapacityNameAvailabilityResultInner {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of CheckCapacityNameAvailabilityResultInner class. */
+    public CheckCapacityNameAvailabilityResultInner() {
+    }
 
     /**
      * Get the nameAvailable property: Indicator of availability of the capacity name.

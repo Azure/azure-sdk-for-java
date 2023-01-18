@@ -55,6 +55,9 @@ public class AzureBatchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureBatchLinkedService class. */
+    public AzureBatchLinkedService() {}
+
     /**
      * Get the accountName property: The Azure Batch account name. Type: string (or Expression with resultType string).
      *

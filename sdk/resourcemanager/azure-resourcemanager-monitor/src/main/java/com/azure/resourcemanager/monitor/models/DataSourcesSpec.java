@@ -47,6 +47,10 @@ public class DataSourcesSpec {
     @JsonProperty(value = "iisLogs")
     private List<IisLogsDataSource> iisLogs;
 
+    /** Creates an instance of DataSourcesSpec class. */
+    public DataSourcesSpec() {
+    }
+
     /**
      * Get the performanceCounters property: The list of performance counter data source configurations.
      *

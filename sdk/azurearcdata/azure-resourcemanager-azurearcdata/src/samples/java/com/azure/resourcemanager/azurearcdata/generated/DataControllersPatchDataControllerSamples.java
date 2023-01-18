@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.models.DataControllerResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,7 @@ public final class DataControllersPatchDataControllerSamples {
         DataControllerResource resource =
             manager
                 .dataControllers()
-                .getByResourceGroupWithResponse("testrg", "testdataController1", Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testdataController1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }

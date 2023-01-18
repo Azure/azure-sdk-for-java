@@ -22,6 +22,10 @@ public final class CommitmentQuota {
     @JsonProperty(value = "unit")
     private String unit;
 
+    /** Creates an instance of CommitmentQuota class. */
+    public CommitmentQuota() {
+    }
+
     /**
      * Get the quantity property: Commitment quota quantity.
      *

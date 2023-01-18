@@ -5,33 +5,33 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.models.LogicalDatabaseTransparentDataEncryptionInner;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 
 /** Samples for TransparentDataEncryptions CreateOrUpdate. */
 public final class TransparentDataEncryptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseTransparentDataEncryptionCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/TransparentDataEncryptionUpdate.json
      */
     /**
-     * Sample code: Create or update a database's transparent data encryption configuration.
+     * Sample code: Update a database's Transparent Data Encryption state with minimal parameters.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateADatabaseSTransparentDataEncryptionConfiguration(
+    public static void updateADatabaseSTransparentDataEncryptionStateWithMinimalParameters(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
             .manager()
             .serviceClient()
             .getTransparentDataEncryptions()
-            .createOrUpdateWithResponse(
-                "sqlcrudtest-6852",
-                "sqlcrudtest-2080",
-                "sqlcrudtest-9187",
+            .createOrUpdate(
+                "securitytde-42-rg",
+                "securitytde-42",
+                "testdb",
                 TransparentDataEncryptionName.CURRENT,
-                new TransparentDataEncryptionInner().withStatus(TransparentDataEncryptionStatus.ENABLED),
+                new LogicalDatabaseTransparentDataEncryptionInner().withState(TransparentDataEncryptionState.ENABLED),
                 Context.NONE);
     }
 }

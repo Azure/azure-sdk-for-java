@@ -17,26 +17,26 @@ public final class PoolPropertiesTests {
         PoolProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"a\",\"devBoxDefinitionName\":\"feqztppriol\",\"networkConnectionName\":\"rjaltolmncw\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"}")
+                    "{\"provisioningState\":\"Deleting\",\"devBoxDefinitionName\":\"gvvcnayrhyr\",\"networkConnectionName\":\"xmueed\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"}")
                 .toObject(PoolProperties.class);
-        Assertions.assertEquals("feqztppriol", model.devBoxDefinitionName());
-        Assertions.assertEquals("rjaltolmncw", model.networkConnectionName());
+        Assertions.assertEquals("gvvcnayrhyr", model.devBoxDefinitionName());
+        Assertions.assertEquals("xmueed", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
     }
 
     @Test
     public void testSerialize() {
         PoolProperties model =
             new PoolProperties()
-                .withDevBoxDefinitionName("feqztppriol")
-                .withNetworkConnectionName("rjaltolmncw")
+                .withDevBoxDefinitionName("gvvcnayrhyr")
+                .withNetworkConnectionName("xmueed")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
-                .withLocalAdministrator(LocalAdminStatus.ENABLED);
+                .withLocalAdministrator(LocalAdminStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(PoolProperties.class);
-        Assertions.assertEquals("feqztppriol", model.devBoxDefinitionName());
-        Assertions.assertEquals("rjaltolmncw", model.networkConnectionName());
+        Assertions.assertEquals("gvvcnayrhyr", model.devBoxDefinitionName());
+        Assertions.assertEquals("xmueed", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
     }
 }

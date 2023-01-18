@@ -40,6 +40,10 @@ public final class CommitmentPeriod {
     @JsonProperty(value = "endDate", access = JsonProperty.Access.WRITE_ONLY)
     private String endDate;
 
+    /** Creates an instance of CommitmentPeriod class. */
+    public CommitmentPeriod() {
+    }
+
     /**
      * Get the tier property: Commitment period commitment tier.
      *

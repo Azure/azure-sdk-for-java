@@ -112,6 +112,13 @@ public final class VirtualMachineScaleSetVMProfile {
     @JsonProperty(value = "hardwareProfile")
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
 
+    /*
+     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
+     * set when using 'latest' image version. Minimum api-version: 2022-11-01
+     */
+    @JsonProperty(value = "serviceArtifactReference")
+    private ServiceArtifactReference serviceArtifactReference;
+
     /** Creates an instance of VirtualMachineScaleSetVMProfile class. */
     public VirtualMachineScaleSetVMProfile() {
     }
@@ -460,6 +467,31 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
+     * Get the serviceArtifactReference property: Specifies the service artifact reference id used to set same image
+     * version for all virtual machines in the scale set when using 'latest' image version. Minimum api-version:
+     * 2022-11-01.
+     *
+     * @return the serviceArtifactReference value.
+     */
+    public ServiceArtifactReference serviceArtifactReference() {
+        return this.serviceArtifactReference;
+    }
+
+    /**
+     * Set the serviceArtifactReference property: Specifies the service artifact reference id used to set same image
+     * version for all virtual machines in the scale set when using 'latest' image version. Minimum api-version:
+     * 2022-11-01.
+     *
+     * @param serviceArtifactReference the serviceArtifactReference value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withServiceArtifactReference(
+        ServiceArtifactReference serviceArtifactReference) {
+        this.serviceArtifactReference = serviceArtifactReference;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -497,6 +529,9 @@ public final class VirtualMachineScaleSetVMProfile {
         }
         if (hardwareProfile() != null) {
             hardwareProfile().validate();
+        }
+        if (serviceArtifactReference() != null) {
+            serviceArtifactReference().validate();
         }
     }
 }

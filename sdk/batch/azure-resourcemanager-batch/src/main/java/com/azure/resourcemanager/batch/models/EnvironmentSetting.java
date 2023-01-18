@@ -23,6 +23,10 @@ public final class EnvironmentSetting {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of EnvironmentSetting class. */
+    public EnvironmentSetting() {
+    }
+
     /**
      * Get the name property: The name of the environment variable.
      *

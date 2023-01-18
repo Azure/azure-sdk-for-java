@@ -6,25 +6,20 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Shipment pick up request details. */
 @Fluent
 public final class ShipmentPickUpRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShipmentPickUpRequest.class);
-
     /*
-     * Minimum date after which the pick up should commence, this must be in
-     * local time of pick up area.
+     * Minimum date after which the pick up should commence, this must be in local time of pick up area.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * Maximum date before which the pick up should commence, this must be in
-     * local time of pick up area.
+     * Maximum date before which the pick up should commence, this must be in local time of pick up area.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
@@ -34,6 +29,10 @@ public final class ShipmentPickUpRequest {
      */
     @JsonProperty(value = "shipmentLocation", required = true)
     private String shipmentLocation;
+
+    /** Creates an instance of ShipmentPickUpRequest class. */
+    public ShipmentPickUpRequest() {
+    }
 
     /**
      * Get the startTime property: Minimum date after which the pick up should commence, this must be in local time of
@@ -106,20 +105,22 @@ public final class ShipmentPickUpRequest {
      */
     public void validate() {
         if (startTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property startTime in model ShipmentPickUpRequest"));
         }
         if (endTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property endTime in model ShipmentPickUpRequest"));
         }
         if (shipmentLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property shipmentLocation in model ShipmentPickUpRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ShipmentPickUpRequest.class);
 }

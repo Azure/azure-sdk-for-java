@@ -5,13 +5,13 @@ package com.azure.core.util.polling;
 
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -100,8 +100,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
-        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(initialResponse.getHeaders(),
-            PollingConstants.LOCATION_LOWER_CASE);
+        HttpHeader locationHeader = initialResponse.getHeaders().get(HttpHeaderName.LOCATION);
         if (locationHeader != null) {
             try {
                 new URL(getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
@@ -117,8 +116,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                                    TypeReference<T> pollResponseType) {
-        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
-            PollingConstants.LOCATION_LOWER_CASE);
+        HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
         if (locationHeader != null) {
             pollingContext.setData(PollingConstants.LOCATION,
                 getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
@@ -148,8 +146,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                 CoreUtils.mergeContexts(context1, this.context)))
             .flatMap(response -> {
-                HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
-                    PollingConstants.LOCATION_LOWER_CASE);
+                HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
                 if (locationHeader != null) {
                     pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
                 }
@@ -185,8 +182,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
                 || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
-        } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                && pollingContext.getData(PollingConstants.LOCATION) != null) {
+        } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
         } else {
             return Mono.error(new AzureException("Cannot get final result"));

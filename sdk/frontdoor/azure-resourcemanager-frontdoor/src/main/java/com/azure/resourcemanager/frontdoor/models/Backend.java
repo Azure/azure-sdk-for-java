@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Backend address of a frontDoor load balancer. */
 @Fluent
 public final class Backend {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Backend.class);
-
     /*
      * Location of the backend (IP address or FQDN)
      */
@@ -21,22 +17,20 @@ public final class Backend {
     private String address;
 
     /*
-     * The Alias of the Private Link resource. Populating this optional field
-     * indicates that this backend is 'Private'
+     * The Alias of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
      */
     @JsonProperty(value = "privateLinkAlias")
     private String privateLinkAlias;
 
     /*
-     * The Resource Id of the Private Link resource. Populating this optional
-     * field indicates that this backend is 'Private'
+     * The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is
+     * 'Private'
      */
     @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
-     * The location of the Private Link resource. Required only if
-     * 'privateLinkResourceId' is populated
+     * The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
      */
     @JsonProperty(value = "privateLinkLocation")
     private String privateLinkLocation;
@@ -48,8 +42,7 @@ public final class Backend {
     private PrivateEndpointStatus privateEndpointStatus;
 
     /*
-     * A custom message to be included in the approval request to connect to
-     * the Private Link
+     * A custom message to be included in the approval request to connect to the Private Link
      */
     @JsonProperty(value = "privateLinkApprovalMessage")
     private String privateLinkApprovalMessage;
@@ -67,15 +60,14 @@ public final class Backend {
     private Integer httpsPort;
 
     /*
-     * Whether to enable use of this backend. Permitted values are 'Enabled' or
-     * 'Disabled'
+     * Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "enabledState")
     private BackendEnabledState enabledState;
 
     /*
-     * Priority to use for load balancing. Higher priorities will not be used
-     * for load balancing if any lower priority backend is healthy.
+     * Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority
+     * backend is healthy.
      */
     @JsonProperty(value = "priority")
     private Integer priority;
@@ -87,11 +79,15 @@ public final class Backend {
     private Integer weight;
 
     /*
-     * The value to use as the host header sent to the backend. If blank or
-     * unspecified, this defaults to the incoming host.
+     * The value to use as the host header sent to the backend. If blank or unspecified, this defaults to the incoming
+     * host.
      */
     @JsonProperty(value = "backendHostHeader")
     private String backendHostHeader;
+
+    /** Creates an instance of Backend class. */
+    public Backend() {
+    }
 
     /**
      * Get the address property: Location of the backend (IP address or FQDN).

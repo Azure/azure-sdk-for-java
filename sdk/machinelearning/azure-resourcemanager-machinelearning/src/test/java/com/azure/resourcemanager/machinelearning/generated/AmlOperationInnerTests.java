@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.AmlOperationInner;
 import com.azure.resourcemanager.machinelearning.models.AmlOperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AmlOperationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AmlOperationInner model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class AmlOperationInnerTests {
         Assertions.assertEquals(false, model.isDataAction());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AmlOperationInner model =
             new AmlOperationInner()
                 .withName("siznto")

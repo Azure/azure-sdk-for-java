@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.ExposureControlBatchRequest;
 import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
 import java.util.Arrays;
@@ -36,6 +35,6 @@ public final class ExposureControlQueryFeatureValuesByFactorySamples {
                                 new ExposureControlRequest()
                                     .withFeatureName("ADFSampleFeature")
                                     .withFeatureType("Feature"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

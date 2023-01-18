@@ -14,10 +14,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import com.azure.resourcemanager.devtestlabs.models.VirtualMachineSchedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineSchedulesImpl.class);
 
     private final VirtualMachineSchedulesClient innerClient;
 
@@ -51,15 +50,6 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public Schedule get(String resourceGroupName, String labName, String virtualMachineName, String name) {
-        ScheduleInner inner = this.serviceClient().get(resourceGroupName, labName, virtualMachineName, name);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Schedule> getWithResponse(
         String resourceGroupName,
         String labName,
@@ -80,10 +70,8 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         }
     }
 
-    public Schedule createOrUpdate(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleInner schedule) {
-        ScheduleInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, labName, virtualMachineName, name, schedule);
+    public Schedule get(String resourceGroupName, String labName, String virtualMachineName, String name) {
+        ScheduleInner inner = this.serviceClient().get(resourceGroupName, labName, virtualMachineName, name);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
         } else {
@@ -113,8 +101,15 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         }
     }
 
-    public void delete(String resourceGroupName, String labName, String virtualMachineName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, virtualMachineName, name);
+    public Schedule createOrUpdate(
+        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleInner schedule) {
+        ScheduleInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, labName, virtualMachineName, name, schedule);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -122,15 +117,8 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         return this.serviceClient().deleteWithResponse(resourceGroupName, labName, virtualMachineName, name, context);
     }
 
-    public Schedule update(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleFragment schedule) {
-        ScheduleInner inner =
-            this.serviceClient().update(resourceGroupName, labName, virtualMachineName, name, schedule);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String labName, String virtualMachineName, String name) {
+        this.serviceClient().delete(resourceGroupName, labName, virtualMachineName, name);
     }
 
     public Response<Schedule> updateWithResponse(
@@ -150,6 +138,17 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Schedule update(
+        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleFragment schedule) {
+        ScheduleInner inner =
+            this.serviceClient().update(resourceGroupName, labName, virtualMachineName, name, schedule);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
         } else {
             return null;
         }

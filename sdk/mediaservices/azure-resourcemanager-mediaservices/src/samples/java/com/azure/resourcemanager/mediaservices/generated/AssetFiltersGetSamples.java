@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AssetFilters Get. */
 public final class AssetFiltersGetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assetFilters-get-by-name.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/assetFilters-get-by-name.json
      */
     /**
      * Sample code: Get an Asset Filter by name.
@@ -20,6 +18,10 @@ public final class AssetFiltersGetSamples {
         manager
             .assetFilters()
             .getWithResponse(
-                "contoso", "contosomedia", "ClimbingMountRainer", "assetFilterWithTimeWindowAndTrack", Context.NONE);
+                "contoso",
+                "contosomedia",
+                "ClimbingMountRainer",
+                "assetFilterWithTimeWindowAndTrack",
+                com.azure.core.util.Context.NONE);
     }
 }

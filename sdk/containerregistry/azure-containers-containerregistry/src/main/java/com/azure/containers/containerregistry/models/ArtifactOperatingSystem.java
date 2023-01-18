@@ -63,7 +63,11 @@ public final class ArtifactOperatingSystem extends ExpandableStringEnum<Artifact
         return fromString(name, ArtifactOperatingSystem.class);
     }
 
-    /** @return known ArtifactOperatingSystem values. */
+    /**
+     * Gets known ArtifactOperatingSystem values.
+     *
+     * @return known ArtifactOperatingSystem values.
+     */
     public static Collection<ArtifactOperatingSystem> values() {
         return values(ArtifactOperatingSystem.class);
     }

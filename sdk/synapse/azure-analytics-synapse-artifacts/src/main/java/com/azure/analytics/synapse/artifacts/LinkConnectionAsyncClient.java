@@ -45,8 +45,8 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LinkConnectionResource> listLinkConnectionsByWorkspace() {
-        return this.serviceClient.listLinkConnectionsByWorkspaceAsync();
+    public PagedFlux<LinkConnectionResource> listByWorkspace() {
+        return this.serviceClient.listByWorkspaceAsync();
     }
 
     /**
@@ -61,9 +61,9 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionResource>> createOrUpdateLinkConnectionWithResponse(
+    public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponse(
             String linkConnectionName, LinkConnectionResource linkConnection) {
-        return this.serviceClient.createOrUpdateLinkConnectionWithResponseAsync(linkConnectionName, linkConnection);
+        return this.serviceClient.createOrUpdateWithResponseAsync(linkConnectionName, linkConnection);
     }
 
     /**
@@ -78,9 +78,9 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionResource> createOrUpdateLinkConnection(
+    public Mono<LinkConnectionResource> createOrUpdate(
             String linkConnectionName, LinkConnectionResource linkConnection) {
-        return this.serviceClient.createOrUpdateLinkConnectionAsync(linkConnectionName, linkConnection);
+        return this.serviceClient.createOrUpdateAsync(linkConnectionName, linkConnection);
     }
 
     /**
@@ -94,8 +94,8 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionResource>> getLinkConnectionWithResponse(String linkConnectionName) {
-        return this.serviceClient.getLinkConnectionWithResponseAsync(linkConnectionName);
+    public Mono<Response<LinkConnectionResource>> getWithResponse(String linkConnectionName) {
+        return this.serviceClient.getWithResponseAsync(linkConnectionName);
     }
 
     /**
@@ -109,8 +109,8 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionResource> getLinkConnection(String linkConnectionName) {
-        return this.serviceClient.getLinkConnectionAsync(linkConnectionName);
+    public Mono<LinkConnectionResource> get(String linkConnectionName) {
+        return this.serviceClient.getAsync(linkConnectionName);
     }
 
     /**
@@ -124,8 +124,8 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteLinkConnectionWithResponse(String linkConnectionName) {
-        return this.serviceClient.deleteLinkConnectionWithResponseAsync(linkConnectionName);
+    public Mono<Response<Void>> deleteWithResponse(String linkConnectionName) {
+        return this.serviceClient.deleteWithResponseAsync(linkConnectionName);
     }
 
     /**
@@ -139,8 +139,8 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteLinkConnection(String linkConnectionName) {
-        return this.serviceClient.deleteLinkConnectionAsync(linkConnectionName);
+    public Mono<Void> delete(String linkConnectionName) {
+        return this.serviceClient.deleteAsync(linkConnectionName);
     }
 
     /**
@@ -176,7 +176,8 @@ public final class LinkConnectionAsyncClient {
     }
 
     /**
-     * Start a link connection.
+     * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
+     * LinkConnection_GetDetailedStatus.
      *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +192,8 @@ public final class LinkConnectionAsyncClient {
     }
 
     /**
-     * Start a link connection.
+     * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
+     * LinkConnection_GetDetailedStatus.
      *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +208,8 @@ public final class LinkConnectionAsyncClient {
     }
 
     /**
-     * Stop a link connection.
+     * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
+     * LinkConnection_GetDetailedStatus.
      *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +224,8 @@ public final class LinkConnectionAsyncClient {
     }
 
     /**
-     * Stop a link connection.
+     * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
+     * LinkConnection_GetDetailedStatus.
      *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,5 +368,69 @@ public final class LinkConnectionAsyncClient {
             String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
         return this.serviceClient.updateLandingZoneCredentialAsync(
                 linkConnectionName, updateLandingZoneCredentialRequest);
+    }
+
+    /**
+     * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
+     * LinkConnection_GetDetailedStatus.
+     *
+     * @param linkConnectionName The link connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> pauseWithResponse(String linkConnectionName) {
+        return this.serviceClient.pauseWithResponseAsync(linkConnectionName);
+    }
+
+    /**
+     * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
+     * LinkConnection_GetDetailedStatus.
+     *
+     * @param linkConnectionName The link connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> pause(String linkConnectionName) {
+        return this.serviceClient.pauseAsync(linkConnectionName);
+    }
+
+    /**
+     * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
+     * LinkConnection_GetDetailedStatus.
+     *
+     * @param linkConnectionName The link connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resumeWithResponse(String linkConnectionName) {
+        return this.serviceClient.resumeWithResponseAsync(linkConnectionName);
+    }
+
+    /**
+     * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
+     * LinkConnection_GetDetailedStatus.
+     *
+     * @param linkConnectionName The link connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resume(String linkConnectionName) {
+        return this.serviceClient.resumeAsync(linkConnectionName);
     }
 }

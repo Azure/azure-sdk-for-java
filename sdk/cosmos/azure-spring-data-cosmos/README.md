@@ -99,7 +99,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.30.0</version>
+    <version>3.31.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -149,10 +149,10 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
-    
+
     @Value("${azure.cosmos.maxBufferedItemCount}")
     private int maxBufferedItemCount;
-    
+
     @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
@@ -930,6 +930,32 @@ public class MultiDatabaseApplication implements CommandLineRunner {
         database1Template.deleteAll(User1.class.getSimpleName(), User1.class).block();
         // Same to this.userRepository1.deleteAll().block();
         database2Template.deleteAll(User2.class.getSimpleName(), User2.class).block();
+    }
+}
+```
+
+### Multi-Tenancy at the Database Level
+- Azure-spring-data-cosmos supports multi-tenancy at the database level configuration by extending `CosmosFactory` and overriding the getDatabaseName() function.
+```java readme-sample-MultiTenantDBCosmosFactory
+public class MultiTenantDBCosmosFactory extends CosmosFactory {
+
+    private String tenantId;
+    
+    /**
+     * Validate config and initialization
+     *
+     * @param cosmosAsyncClient cosmosAsyncClient
+     * @param databaseName      databaseName
+     */
+    public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
+        super(cosmosAsyncClient, databaseName);
+        
+        this.tenantId = databaseName;
+    }
+
+    @Override
+    public String getDatabaseName() {
+        return this.getCosmosAsyncClient().getDatabase(this.tenantId).toString();
     }
 }
 ```

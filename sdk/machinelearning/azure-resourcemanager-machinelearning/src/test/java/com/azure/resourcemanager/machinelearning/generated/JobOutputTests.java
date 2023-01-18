@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.JobOutput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobOutputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         JobOutput model =
             BinaryData
                 .fromString("{\"jobOutputType\":\"JobOutput\",\"description\":\"qmbzmq\"}")
@@ -19,8 +18,8 @@ public final class JobOutputTests {
         Assertions.assertEquals("qmbzmq", model.description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JobOutput model = new JobOutput().withDescription("qmbzmq");
         model = BinaryData.fromObject(model).toObject(JobOutput.class);
         Assertions.assertEquals("qmbzmq", model.description());

@@ -80,6 +80,10 @@ public final class ApiProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ApiProperties class. */
+    public ApiProperties() {
+    }
+
     /**
      * Get the qnaRuntimeEndpoint property: (QnAMaker Only) The runtime endpoint of QnAMaker.
      *

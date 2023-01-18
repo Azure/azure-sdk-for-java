@@ -64,6 +64,9 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SalesforceServiceCloudLinkedService class. */
+    public SalesforceServiceCloudLinkedService() {}
+
     /**
      * Get the environmentUrl property: The URL of Salesforce Service Cloud instance. Default is
      * 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'. To copy data

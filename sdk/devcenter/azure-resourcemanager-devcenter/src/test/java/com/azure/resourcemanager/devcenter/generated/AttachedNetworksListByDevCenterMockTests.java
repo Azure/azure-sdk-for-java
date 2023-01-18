@@ -33,7 +33,7 @@ public final class AttachedNetworksListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"bvleorfmluiqtqzf\",\"networkConnectionId\":\"vyvnqqyb\",\"networkConnectionLocation\":\"yeua\",\"healthCheckStatus\":\"Unknown\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"MovingResources\",\"networkConnectionId\":\"qnrojlpijnkrxfrd\",\"networkConnectionLocation\":\"c\",\"healthCheckStatus\":\"Warning\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"ronasxift\",\"name\":\"zq\",\"type\":\"zh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class AttachedNetworksListByDevCenterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AttachedNetworkConnection> response =
-            manager.attachedNetworks().listByDevCenter("dyg", "ookk", 2146938073, Context.NONE);
+            manager.attachedNetworks().listByDevCenter("iufxqknpir", "nepttwqmsni", 1579066306, Context.NONE);
 
-        Assertions.assertEquals("vyvnqqyb", response.iterator().next().networkConnectionId());
+        Assertions.assertEquals("qnrojlpijnkrxfrd", response.iterator().next().networkConnectionId());
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -17,6 +18,10 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private LongTermRetentionBackupProperties innerProperties;
+
+    /** Creates an instance of LongTermRetentionBackupInner class. */
+    public LongTermRetentionBackupInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -79,6 +84,39 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
      */
     public OffsetDateTime backupExpirationTime() {
         return this.innerProperties() == null ? null : this.innerProperties().backupExpirationTime();
+    }
+
+    /**
+     * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @return the backupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy backupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupStorageRedundancy();
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().requestedBackupStorageRedundancy();
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the LongTermRetentionBackupInner object itself.
+     */
+    public LongTermRetentionBackupInner withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionBackupProperties();
+        }
+        this.innerProperties().withRequestedBackupStorageRedundancy(requestedBackupStorageRedundancy);
+        return this;
     }
 
     /**

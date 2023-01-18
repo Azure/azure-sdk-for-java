@@ -19,10 +19,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.StorageAccountInformat
 import com.azure.resourcemanager.datalakeanalytics.models.StorageAccounts;
 import com.azure.resourcemanager.datalakeanalytics.models.StorageContainer;
 import com.azure.resourcemanager.datalakeanalytics.models.UpdateStorageAccountParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageAccountsImpl implements StorageAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountsImpl.class);
 
     private final StorageAccountsClient innerClient;
 
@@ -58,14 +57,6 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return Utils.mapPage(inner, inner1 -> new StorageAccountInformationImpl(inner1, this.manager()));
     }
 
-    public void add(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        AddStorageAccountParameters parameters) {
-        this.serviceClient().add(resourceGroupName, accountName, storageAccountName, parameters);
-    }
-
     public Response<Void> addWithResponse(
         String resourceGroupName,
         String accountName,
@@ -77,14 +68,12 @@ public final class StorageAccountsImpl implements StorageAccounts {
             .addWithResponse(resourceGroupName, accountName, storageAccountName, parameters, context);
     }
 
-    public StorageAccountInformation get(String resourceGroupName, String accountName, String storageAccountName) {
-        StorageAccountInformationInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, storageAccountName);
-        if (inner != null) {
-            return new StorageAccountInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void add(
+        String resourceGroupName,
+        String accountName,
+        String storageAccountName,
+        AddStorageAccountParameters parameters) {
+        this.serviceClient().add(resourceGroupName, accountName, storageAccountName, parameters);
     }
 
     public Response<StorageAccountInformation> getWithResponse(
@@ -102,8 +91,14 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
     }
 
-    public void update(String resourceGroupName, String accountName, String storageAccountName) {
-        this.serviceClient().update(resourceGroupName, accountName, storageAccountName);
+    public StorageAccountInformation get(String resourceGroupName, String accountName, String storageAccountName) {
+        StorageAccountInformationInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, storageAccountName);
+        if (inner != null) {
+            return new StorageAccountInformationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> updateWithResponse(
@@ -117,13 +112,17 @@ public final class StorageAccountsImpl implements StorageAccounts {
             .updateWithResponse(resourceGroupName, accountName, storageAccountName, parameters, context);
     }
 
-    public void delete(String resourceGroupName, String accountName, String storageAccountName) {
-        this.serviceClient().delete(resourceGroupName, accountName, storageAccountName);
+    public void update(String resourceGroupName, String accountName, String storageAccountName) {
+        this.serviceClient().update(resourceGroupName, accountName, storageAccountName);
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String storageAccountName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, storageAccountName, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String storageAccountName) {
+        this.serviceClient().delete(resourceGroupName, accountName, storageAccountName);
     }
 
     public PagedIterable<StorageContainer> listStorageContainers(
@@ -138,17 +137,6 @@ public final class StorageAccountsImpl implements StorageAccounts {
         PagedIterable<StorageContainerInner> inner =
             this.serviceClient().listStorageContainers(resourceGroupName, accountName, storageAccountName, context);
         return Utils.mapPage(inner, inner1 -> new StorageContainerImpl(inner1, this.manager()));
-    }
-
-    public StorageContainer getStorageContainer(
-        String resourceGroupName, String accountName, String storageAccountName, String containerName) {
-        StorageContainerInner inner =
-            this.serviceClient().getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName);
-        if (inner != null) {
-            return new StorageContainerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<StorageContainer> getStorageContainerWithResponse(
@@ -168,6 +156,17 @@ public final class StorageAccountsImpl implements StorageAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new StorageContainerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public StorageContainer getStorageContainer(
+        String resourceGroupName, String accountName, String storageAccountName, String containerName) {
+        StorageContainerInner inner =
+            this.serviceClient().getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName);
+        if (inner != null) {
+            return new StorageContainerImpl(inner, this.manager());
         } else {
             return null;
         }

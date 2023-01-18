@@ -28,7 +28,10 @@
   intention that a null could be passed in. In the original code, it would have thrown a
   NullReferenceException. -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
+	  <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer$Getter"/>
+    </Or>
     <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
   </Match>
 

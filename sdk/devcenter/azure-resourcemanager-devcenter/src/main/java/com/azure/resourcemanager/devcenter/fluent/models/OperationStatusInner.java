@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.devcenter.models.ErrorDetail;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.devcenter.models.OperationStatusResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -99,7 +99,7 @@ public final class OperationStatusInner extends OperationStatusResult {
 
     /** {@inheritDoc} */
     @Override
-    public OperationStatusInner withError(ErrorDetail error) {
+    public OperationStatusInner withError(ManagementError error) {
         super.withError(error);
         return this;
     }

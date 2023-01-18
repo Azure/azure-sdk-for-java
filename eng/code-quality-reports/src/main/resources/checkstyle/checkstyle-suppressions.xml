@@ -102,6 +102,12 @@
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.PublishEventsTracingWithCustomContextSample.java"/>
 
+    <!-- Suppress external dependency Checkstyle on Event Hubs Stress Test packages as it use spring framework and may directly use external dependencies -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.messaging.eventhubs.stress.*\.java"/>
+  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.eventhubs.stress.*\.java"/>       
+
+
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
     https://github.com/Azure/azure-sdk/issues/321 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
@@ -120,6 +126,11 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiver(Async)?Client.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="ServiceBusMessageBatch.java"/>
+
+  <!-- Suppress external dependency Checkstyle on Service Bus Stress Test packages as it use spring framework and may directly use external dependencies -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.messaging.servicebus.stress.*\.java"/>
+  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.servicebus.stress.*\.java"/>       
 
   <!-- Suppress warning for ServiceClients to have Client in its name as Azure Container Registry has Clientlets which do not follow the same convention. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="(ContainerRepository|RegistryArtifact)(Async)?.java"/>
@@ -197,6 +208,8 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.monitor.opentelemetry.exporter.AzureMonitorLogExporter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions"/>
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -370,9 +383,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- jdbc sdk suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.identity.providers.(mysql|postgresql).(AzureIdentityMysqlAuthenticationPlugin|AzureIdentityPostgresqlAuthenticationPlugin).java"/>
+            files="com.azure.identity.extensions.jdbc.(mysql|postgresql).(AzureMysqlAuthenticationPlugin|AzurePostgresqlAuthenticationPlugin).java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files="com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin"/>
+            files="com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin"/>
 
   <!-- ### begin: Spring related suppression -->
 
@@ -399,6 +412,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aadb2c.*" />
   <!-- Suppress package name warning: oauth2 is the protocol name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter"/>
   <!-- The package name length limit -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties"/>
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.package-info.java"/>

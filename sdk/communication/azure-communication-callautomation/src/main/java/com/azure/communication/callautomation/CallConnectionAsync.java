@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
-import com.azure.communication.callautomation.implementation.ContentsImpl;
+import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
@@ -54,16 +54,16 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
-    private final ContentsImpl contentsInternal;
+    private final CallMediasImpl callMediasInternal;
     private final ClientLogger logger;
 
     CallConnectionAsync(
         String callConnectionId,
         CallConnectionsImpl callConnectionInternal,
-        ContentsImpl contentsInternal) {
+        CallMediasImpl contentsInternal) {
         this.callConnectionId = callConnectionId;
         this.callConnectionInternal = callConnectionInternal;
-        this.contentsInternal = contentsInternal;
+        this.callMediasInternal = contentsInternal;
         this.logger = new ClientLogger(CallConnectionAsync.class);
     }
 
@@ -264,7 +264,6 @@ public class CallConnectionAsync {
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetParticipant()))
                 .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTransfereeCallerId()))
-                .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
             transferToParticipantCallOptions.setRepeatabilityHeaders(handleApiIdempotency(transferToParticipantCallOptions.getRepeatabilityHeaders()));
@@ -317,6 +316,8 @@ public class CallConnectionAsync {
             AddParticipantsRequestInternal request = new AddParticipantsRequestInternal()
                 .setParticipantsToAdd(participantModels)
                 .setSourceCallerId(PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()))
+                .setSourceDisplayName(addParticipantsOptions.getSourceDisplayName())
+                .setSourceIdentifier(CommunicationIdentifierConverter.convert(addParticipantsOptions.getSourceIdentifier()))
                 .setOperationContext(addParticipantsOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
@@ -394,7 +395,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
-        return new CallMediaAsync(callConnectionId, contentsInternal);
+        return new CallMediaAsync(callConnectionId, callMediasInternal);
     }
     //endregion
 

@@ -31,15 +31,6 @@ public final class LocationsImpl implements Locations {
         this.serviceManager = serviceManager;
     }
 
-    public BatchLocationQuota getQuotas(String locationName) {
-        BatchLocationQuotaInner inner = this.serviceClient().getQuotas(locationName);
-        if (inner != null) {
-            return new BatchLocationQuotaImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BatchLocationQuota> getQuotasWithResponse(String locationName, Context context) {
         Response<BatchLocationQuotaInner> inner = this.serviceClient().getQuotasWithResponse(locationName, context);
         if (inner != null) {
@@ -48,6 +39,15 @@ public final class LocationsImpl implements Locations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BatchLocationQuotaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BatchLocationQuota getQuotas(String locationName) {
+        BatchLocationQuotaInner inner = this.serviceClient().getQuotas(locationName);
+        if (inner != null) {
+            return new BatchLocationQuotaImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -77,16 +77,6 @@ public final class LocationsImpl implements Locations {
         return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
-    public CheckNameAvailabilityResult checkNameAvailability(
-        String locationName, CheckNameAvailabilityParameters parameters) {
-        CheckNameAvailabilityResultInner inner = this.serviceClient().checkNameAvailability(locationName, parameters);
-        if (inner != null) {
-            return new CheckNameAvailabilityResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
         String locationName, CheckNameAvailabilityParameters parameters, Context context) {
         Response<CheckNameAvailabilityResultInner> inner =
@@ -97,6 +87,16 @@ public final class LocationsImpl implements Locations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameAvailabilityResult checkNameAvailability(
+        String locationName, CheckNameAvailabilityParameters parameters) {
+        CheckNameAvailabilityResultInner inner = this.serviceClient().checkNameAvailability(locationName, parameters);
+        if (inner != null) {
+            return new CheckNameAvailabilityResultImpl(inner, this.manager());
         } else {
             return null;
         }

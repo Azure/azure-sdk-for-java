@@ -18,12 +18,12 @@ public final class SchedulePropertiesTests {
         ScheduleProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"kgtdlmkkze\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"pusdstt\",\"timeZone\":\"ogvbbejdcngq\",\"state\":\"Enabled\"}")
+                    "{\"provisioningState\":\"Updated\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"bjhhyx\",\"timeZone\":\"wlycoduhpkxkg\",\"state\":\"Enabled\"}")
                 .toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("pusdstt", model.time());
-        Assertions.assertEquals("ogvbbejdcngq", model.timeZone());
+        Assertions.assertEquals("bjhhyx", model.time());
+        Assertions.assertEquals("wlycoduhpkxkg", model.timeZone());
         Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 
@@ -33,14 +33,14 @@ public final class SchedulePropertiesTests {
             new ScheduleProperties()
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("pusdstt")
-                .withTimeZone("ogvbbejdcngq")
+                .withTime("bjhhyx")
+                .withTimeZone("wlycoduhpkxkg")
                 .withState(EnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("pusdstt", model.time());
-        Assertions.assertEquals("ogvbbejdcngq", model.timeZone());
+        Assertions.assertEquals("bjhhyx", model.time());
+        Assertions.assertEquals("wlycoduhpkxkg", model.timeZone());
         Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 }

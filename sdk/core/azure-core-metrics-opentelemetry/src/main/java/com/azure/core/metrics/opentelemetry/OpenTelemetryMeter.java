@@ -25,7 +25,6 @@ import java.util.Objects;
  * {@inheritDoc}
  */
 class OpenTelemetryMeter implements Meter {
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
     private final io.opentelemetry.api.metrics.Meter meter;
     private final boolean isEnabled;
 

@@ -32,7 +32,7 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"tqmieox\",\"devCenterId\":\"ggufhyaomtb\",\"description\":\"havgrvk\"},\"location\":\"ovjzhpjbibgjmfx\",\"tags\":{\"xnbkfezzxscyhwzd\":\"fcluyov\",\"omvzzbtd\":\"irujbz\",\"yujviylwdshfssn\":\"qvpn\",\"rymsgaojfmw\":\"bgye\"},\"id\":\"cotmr\",\"name\":\"hirctymoxoftpipi\",\"type\":\"yczuhxacpq\"}";
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"devCenterUri\":\"vjayvblmhvkzu\",\"devCenterId\":\"xvvy\",\"description\":\"s\"},\"location\":\"byrqufeg\",\"tags\":{\"bnhlmc\":\"wz\"},\"id\":\"l\",\"name\":\"dn\",\"type\":\"itvgbmhrixkwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,14 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Project response =
-            manager.projects().getByResourceGroupWithResponse("ejnt", "sewgioilqukr", Context.NONE).getValue();
+            manager
+                .projects()
+                .getByResourceGroupWithResponse("nrvgoupmfiibfgg", "ioolvrwxkvtkkgll", Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("ovjzhpjbibgjmfx", response.location());
-        Assertions.assertEquals("fcluyov", response.tags().get("xnbkfezzxscyhwzd"));
-        Assertions.assertEquals("ggufhyaomtb", response.devCenterId());
-        Assertions.assertEquals("havgrvk", response.description());
+        Assertions.assertEquals("byrqufeg", response.location());
+        Assertions.assertEquals("wz", response.tags().get("bnhlmc"));
+        Assertions.assertEquals("xvvy", response.devCenterId());
+        Assertions.assertEquals("s", response.description());
     }
 }

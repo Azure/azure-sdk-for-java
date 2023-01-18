@@ -71,14 +71,41 @@ private class ChangeFeedBatch
 
         if (metadataLog.get(0).isDefined) {
           val offsetJson = metadataLog.get(0).get
-          ChangeFeedOffset.fromJson(offsetJson).changeFeedState
+
+          log.logDebug(s"Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+            s"-> offset: '$offsetJson'.")
+
+          val changeFeedStateBase64 = ChangeFeedOffset.fromJson(offsetJson).changeFeedState
+          val expectedContainerResourceId = container.read().block().getProperties.getResourceId
+          val offsetIsValid = SparkBridgeImplementationInternal.validateCollectionRidOfChangeFeedState(
+            changeFeedStateBase64,
+            expectedContainerResourceId,
+            changeFeedConfig.ignoreOffsetWhenInvalid
+          )
+
+          if (offsetIsValid) {
+            changeFeedStateBase64
+          } else {
+            val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
+              container, changeFeedConfig, partitioningConfig, None)
+            log.logWarning(s"Invalid Start offset retrieved from file location '$startOffsetLocation' " +
+              s"for batchId: $batchId -> New offset retrieved from service: '$newOffsetJson'.")
+
+            newOffsetJson
+          }
         } else {
-          val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-            container, changeFeedConfig, partitioningConfig, None)
+          val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+          log.logDebug(s"No Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+            s"-> offset retrieved from service: '$newOffsetJson'.")
+
           newOffsetJson
         }
       } else {
-        CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+        val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+        log.logDebug(s"No offset file location provided for batchId: $batchId " +
+          s"-> offset retrieved from service: '$newOffsetJson'.")
+
+        newOffsetJson
       }
 
       // Calculates the Input partitions based on start Lsn and latest Lsn
@@ -102,7 +129,26 @@ private class ChangeFeedBatch
           assertNotNull(session, "session"),
           assertNotNullOrEmpty(latestOffsetLocation, "latestOffset checkpointLocation"))
 
-        metadataLog.add(0, latestOffset.json())
+        val latestOffsetJson = latestOffset.json()
+        log.logDebug(s"Latest offset for batchId: $batchId -> $latestOffsetJson")
+        if (!metadataLog.add(0, latestOffsetJson)) {
+          val existingLatestOffset = metadataLog.get(0).get
+
+          val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
+            s"-> existing latestOffset: '$existingLatestOffset' failed to persist " +
+            s"new latestOffset: '$latestOffsetJson'."
+
+          if (existingLatestOffset != latestOffsetJson) {
+            log.logError(msg)
+
+            throw new IllegalStateException(msg)
+          } else {
+            log.logDebug(msg)
+          }
+        } else {
+          log.logDebug(s"Successfully updated latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
+            s"-> existing latestOffset: 'n/a', new latestOffset: '$latestOffsetJson'.")
+        }
       }
 
       // Latest offset above has the EndLsn specified based on the point-in-time latest offset

@@ -18,7 +18,7 @@ public interface IntegrationAccountPartners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountPartner> list(String resourceGroupName, String integrationAccountName);
 
@@ -33,10 +33,25 @@ public interface IntegrationAccountPartners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountPartner> list(
         String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+
+    /**
+     * Gets an integration account partner.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param partnerName The integration account partner name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration account partner along with {@link Response}.
+     */
+    Response<IntegrationAccountPartner> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String partnerName, Context context);
 
     /**
      * Gets an integration account partner.
@@ -52,7 +67,7 @@ public interface IntegrationAccountPartners {
     IntegrationAccountPartner get(String resourceGroupName, String integrationAccountName, String partnerName);
 
     /**
-     * Gets an integration account partner.
+     * Deletes an integration account partner.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -61,9 +76,9 @@ public interface IntegrationAccountPartners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return the {@link Response}.
      */
-    Response<IntegrationAccountPartner> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String integrationAccountName, String partnerName, Context context);
 
     /**
@@ -79,19 +94,24 @@ public interface IntegrationAccountPartners {
     void delete(String resourceGroupName, String integrationAccountName, String partnerName);
 
     /**
-     * Deletes an integration account partner.
+     * Get the content callback url.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param partnerName The integration account partner name.
+     * @param listContentCallbackUrl The callback url parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the content callback url along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String partnerName, Context context);
+    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String partnerName,
+        GetCallbackUrlParameters listContentCallbackUrl,
+        Context context);
 
     /**
      * Get the content callback url.
@@ -112,33 +132,13 @@ public interface IntegrationAccountPartners {
         GetCallbackUrlParameters listContentCallbackUrl);
 
     /**
-     * Get the content callback url.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param partnerName The integration account partner name.
-     * @param listContentCallbackUrl The callback url parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String partnerName,
-        GetCallbackUrlParameters listContentCallbackUrl,
-        Context context);
-
-    /**
      * Gets an integration account partner.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return an integration account partner along with {@link Response}.
      */
     IntegrationAccountPartner getById(String id);
 
@@ -150,7 +150,7 @@ public interface IntegrationAccountPartners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return an integration account partner along with {@link Response}.
      */
     Response<IntegrationAccountPartner> getByIdWithResponse(String id, Context context);
 
@@ -172,7 +172,7 @@ public interface IntegrationAccountPartners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

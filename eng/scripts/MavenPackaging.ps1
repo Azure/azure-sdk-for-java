@@ -76,7 +76,6 @@ function Get-SonaTypeProfileID([string]$GroupID) {
   $sonaTypeProfileID = switch -wildcard ($GroupID)
   {
     "com.azure*"                     { "88192f04117501" }
-    "com.microsoft"                  { "108eda13eb3910" }
     "com.microsoft.azure*"           { "534d15ee3800f4" }
     "com.microsoft.commondatamodel*" { "36ba35bb1eff8"  }
     "com.microsoft.rest*"            { "66eef5eb9b85bd" }

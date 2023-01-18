@@ -31,7 +31,7 @@ public final class ImagesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"fhjxakvvjgs\",\"publisher\":\"r\",\"offer\":\"lmywwtkgkxnyed\",\"sku\":\"gyvudtjuewbc\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"whcjyxcc\"},\"id\":\"vpayakkudzpx\",\"name\":\"wjplma\",\"type\":\"stcyohpfkyrkdbd\"}";
+            "{\"properties\":{\"description\":\"rvkwc\",\"publisher\":\"ql\",\"offer\":\"x\",\"sku\":\"czheyd\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"NotSpecified\"},\"id\":\"xmaehvbbxu\",\"name\":\"iplt\",\"type\":\"n\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class ImagesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Image response =
-            manager.images().getWithResponse("dmligovibrxk", "mloazuru", "cbgoor", "te", Context.NONE).getValue();
+            manager.images().getWithResponse("zuo", "ejwcwwqiok", "ssxmojms", "p", Context.NONE).getValue();
     }
 }

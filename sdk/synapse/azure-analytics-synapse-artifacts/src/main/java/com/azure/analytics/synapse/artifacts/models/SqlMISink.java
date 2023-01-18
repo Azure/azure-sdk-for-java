@@ -52,6 +52,9 @@ public final class SqlMISink extends CopySink {
     @JsonProperty(value = "tableOption")
     private Object tableOption;
 
+    /** Creates an instance of SqlMISink class. */
+    public SqlMISink() {}
+
     /**
      * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
      * resultType string).

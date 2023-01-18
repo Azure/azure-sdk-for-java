@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LiveOutputs Get. */
 public final class LiveOutputsGetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-list-by-name.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/liveoutput-list-by-name.json
      */
     /**
      * Sample code: Get a LiveOutput by name.
@@ -19,6 +17,7 @@ public final class LiveOutputsGetSamples {
     public static void getALiveOutputByName(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .liveOutputs()
-            .getWithResponse("mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1", Context.NONE);
+            .getWithResponse(
+                "mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1", com.azure.core.util.Context.NONE);
     }
 }

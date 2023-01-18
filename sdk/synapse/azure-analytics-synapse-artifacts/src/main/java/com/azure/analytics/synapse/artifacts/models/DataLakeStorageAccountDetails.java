@@ -22,6 +22,9 @@ public final class DataLakeStorageAccountDetails {
     @JsonProperty(value = "filesystem")
     private String filesystem;
 
+    /** Creates an instance of DataLakeStorageAccountDetails class. */
+    public DataLakeStorageAccountDetails() {}
+
     /**
      * Get the accountUrl property: Account URL.
      *

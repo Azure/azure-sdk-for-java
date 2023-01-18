@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateEndpointConnectionStatus. */
+/** Gets or sets the status. */
 public final class PrivateEndpointConnectionStatus extends ExpandableStringEnum<PrivateEndpointConnectionStatus> {
     /** Static value Pending for PrivateEndpointConnectionStatus. */
     public static final PrivateEndpointConnectionStatus PENDING = fromString("Pending");

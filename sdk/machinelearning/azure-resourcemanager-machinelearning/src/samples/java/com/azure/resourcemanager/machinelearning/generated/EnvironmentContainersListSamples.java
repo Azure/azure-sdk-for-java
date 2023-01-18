@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentContainers List. */
 public final class EnvironmentContainersListSamples {
     /*
@@ -18,6 +16,8 @@ public final class EnvironmentContainersListSamples {
      */
     public static void listEnvironmentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.environmentContainers().list("testrg123", "testworkspace", null, null, Context.NONE);
+        manager
+            .environmentContainers()
+            .list("testrg123", "testworkspace", null, null, com.azure.core.util.Context.NONE);
     }
 }

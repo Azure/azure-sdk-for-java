@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ContainerWorkingDirectory. */
+/** A flag to indicate where the container task working directory is. The default is 'taskWorkingDirectory'. */
 public enum ContainerWorkingDirectory {
     /** Enum value TaskWorkingDirectory. */
     TASK_WORKING_DIRECTORY("TaskWorkingDirectory"),
@@ -30,6 +30,9 @@ public enum ContainerWorkingDirectory {
      */
     @JsonCreator
     public static ContainerWorkingDirectory fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ContainerWorkingDirectory[] items = ContainerWorkingDirectory.values();
         for (ContainerWorkingDirectory item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ContainerWorkingDirectory {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

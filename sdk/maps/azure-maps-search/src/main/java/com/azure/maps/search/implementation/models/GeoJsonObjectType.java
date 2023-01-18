@@ -7,7 +7,10 @@ package com.azure.maps.search.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for GeoJsonObjectType. */
+/**
+ * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+ * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+ */
 public enum GeoJsonObjectType {
     /** Enum value Point. */
     GEO_JSON_POINT("Point"),
@@ -51,6 +54,9 @@ public enum GeoJsonObjectType {
      */
     @JsonCreator
     public static GeoJsonObjectType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         GeoJsonObjectType[] items = GeoJsonObjectType.values();
         for (GeoJsonObjectType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +66,7 @@ public enum GeoJsonObjectType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

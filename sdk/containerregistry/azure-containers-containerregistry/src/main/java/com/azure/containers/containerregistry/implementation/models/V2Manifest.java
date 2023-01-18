@@ -30,6 +30,9 @@ public final class V2Manifest extends Manifest {
     @JsonProperty(value = "layers")
     private List<OciBlobDescriptor> layers;
 
+    /** Creates an instance of V2Manifest class. */
+    public V2Manifest() {}
+
     /**
      * Get the mediaType property: Media type for this Manifest.
      *
@@ -87,6 +90,13 @@ public final class V2Manifest extends Manifest {
      */
     public V2Manifest setLayers(List<OciBlobDescriptor> layers) {
         this.layers = layers;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public V2Manifest setSchemaVersion(Integer schemaVersion) {
+        super.setSchemaVersion(schemaVersion);
         return this;
     }
 }

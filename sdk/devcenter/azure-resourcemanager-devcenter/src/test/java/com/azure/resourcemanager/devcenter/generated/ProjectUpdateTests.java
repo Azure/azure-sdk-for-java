@@ -17,27 +17,27 @@ public final class ProjectUpdateTests {
         ProjectUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"devCenterId\":\"atqxho\",\"description\":\"geablgphuticndvk\"},\"tags\":{\"k\":\"wyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"},\"location\":\"pnddhsgcbacphejk\"}")
+                    "{\"properties\":{\"devCenterId\":\"rbnwbxgjvtbvpy\",\"description\":\"zdn\"},\"tags\":{\"qfprwzwbn\":\"qguhmuo\"},\"location\":\"itnwuizgazxufi\"}")
                 .toObject(ProjectUpdate.class);
-        Assertions.assertEquals("wyiftyhxhur", model.tags().get("k"));
-        Assertions.assertEquals("pnddhsgcbacphejk", model.location());
-        Assertions.assertEquals("atqxho", model.devCenterId());
-        Assertions.assertEquals("geablgphuticndvk", model.description());
+        Assertions.assertEquals("qguhmuo", model.tags().get("qfprwzwbn"));
+        Assertions.assertEquals("itnwuizgazxufi", model.location());
+        Assertions.assertEquals("rbnwbxgjvtbvpy", model.devCenterId());
+        Assertions.assertEquals("zdn", model.description());
     }
 
     @Test
     public void testSerialize() {
         ProjectUpdate model =
             new ProjectUpdate()
-                .withTags(mapOf("k", "wyiftyhxhur", "kjfkg", "tyxolniwpwc", "plwckbas", "awxklr"))
-                .withLocation("pnddhsgcbacphejk")
-                .withDevCenterId("atqxho")
-                .withDescription("geablgphuticndvk");
+                .withTags(mapOf("qfprwzwbn", "qguhmuo"))
+                .withLocation("itnwuizgazxufi")
+                .withDevCenterId("rbnwbxgjvtbvpy")
+                .withDescription("zdn");
         model = BinaryData.fromObject(model).toObject(ProjectUpdate.class);
-        Assertions.assertEquals("wyiftyhxhur", model.tags().get("k"));
-        Assertions.assertEquals("pnddhsgcbacphejk", model.location());
-        Assertions.assertEquals("atqxho", model.devCenterId());
-        Assertions.assertEquals("geablgphuticndvk", model.description());
+        Assertions.assertEquals("qguhmuo", model.tags().get("qfprwzwbn"));
+        Assertions.assertEquals("itnwuizgazxufi", model.location());
+        Assertions.assertEquals("rbnwbxgjvtbvpy", model.devCenterId());
+        Assertions.assertEquals("zdn", model.description());
     }
 
     @SuppressWarnings("unchecked")

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the properties for a TagRules resource. */
 @Fluent
 public final class MonitoringTagRulesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoringTagRulesProperties.class);
-
     /*
      * Flag specifying if the resource provisioning state as tracked by ARM.
      */
@@ -32,6 +28,10 @@ public final class MonitoringTagRulesProperties {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of MonitoringTagRulesProperties class. */
+    public MonitoringTagRulesProperties() {
+    }
 
     /**
      * Get the provisioningState property: Flag specifying if the resource provisioning state as tracked by ARM.

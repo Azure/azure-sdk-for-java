@@ -20,6 +20,15 @@ public final class FeaturizationMode extends ExpandableStringEnum<FeaturizationM
     public static final FeaturizationMode OFF = fromString("Off");
 
     /**
+     * Creates a new instance of FeaturizationMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FeaturizationMode() {
+    }
+
+    /**
      * Creates or finds a FeaturizationMode from its string representation.
      *
      * @param name a name to look for.

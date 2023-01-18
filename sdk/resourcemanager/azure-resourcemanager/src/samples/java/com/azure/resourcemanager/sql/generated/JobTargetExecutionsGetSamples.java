@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for JobTargetExecutions Get. */
 public final class JobTargetExecutionsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/GetJobExecutionTarget.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobExecutionTarget.json
      */
     /**
      * Sample code: Get a job step target execution.
@@ -28,7 +28,7 @@ public final class JobTargetExecutionsGetSamples {
                 "server1",
                 "agent1",
                 "job1",
-                UUID.fromString("5555-6666-7777-8888-999999999999"),
+                UUID.fromString("5A86BF65-43AC-F258-2524-9E92992F97CA"),
                 "step1",
                 UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
                 Context.NONE);

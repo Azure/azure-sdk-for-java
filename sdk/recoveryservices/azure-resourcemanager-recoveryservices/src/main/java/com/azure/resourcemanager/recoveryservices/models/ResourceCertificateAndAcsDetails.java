@@ -34,6 +34,10 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
     @JsonProperty(value = "globalAcsRPRealm", required = true)
     private String globalAcsRPRealm;
 
+    /** Creates an instance of ResourceCertificateAndAcsDetails class. */
+    public ResourceCertificateAndAcsDetails() {
+    }
+
     /**
      * Get the globalAcsNamespace property: ACS namespace name - tenant for our service.
      *

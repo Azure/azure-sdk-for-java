@@ -14,12 +14,15 @@ import com.azure.resourcemanager.dataprotection.models.PolicyParameters;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
+import com.azure.resourcemanager.dataprotection.models.ValidationType;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for BackupInstances CreateOrUpdate. */
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/PutBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/BackupInstanceOperations/PutBackupInstance.json
      */
     /**
      * Sample code: Create BackupInstance.
@@ -30,13 +33,14 @@ public final class BackupInstancesCreateOrUpdateSamples {
         manager
             .backupInstances()
             .define("testInstance1")
-            .withExistingBackupVault("PratikPrivatePreviewVault1", "000pikumar")
+            .withExistingBackupVault("000pikumar", "PratikPrivatePreviewVault1")
+            .withTags(mapOf("key1", "val1"))
             .withProperties(
                 new BackupInstance()
                     .withFriendlyName("harshitbi2")
                     .withDataSourceInfo(
                         new Datasource()
-                            .withDatasourceType("OssDB")
+                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
                             .withObjectType("Datasource")
                             .withResourceId(
                                 "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
@@ -46,7 +50,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
                             .withResourceUri(""))
                     .withDataSourceSetInfo(
                         new DatasourceSet()
-                            .withDatasourceType("OssDB")
+                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
                             .withObjectType("DatasourceSet")
                             .withResourceId(
                                 "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
@@ -73,7 +77,19 @@ public final class BackupInstancesCreateOrUpdateSamples {
                                 new SecretStoreResource()
                                     .withUri("https://samplevault.vault.azure.net/secrets/credentials")
                                     .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
+                    .withValidationType(ValidationType.SHALLOW_VALIDATION)
                     .withObjectType("BackupInstance"))
             .create();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -4,11 +4,12 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ErrorResponse model. */
-@Fluent
+/** ErrorResponse contains code and message that shows the error information. */
+@Immutable
 public final class ErrorResponse {
     /*
      * The error code.
@@ -23,6 +24,20 @@ public final class ErrorResponse {
     private String message;
 
     /**
+     * Creates an instance of ErrorResponse class.
+     *
+     * @param code the code value to set.
+     * @param message the message value to set.
+     */
+    @JsonCreator
+    public ErrorResponse(
+            @JsonProperty(value = "code", required = true) String code,
+            @JsonProperty(value = "message", required = true) String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    /**
      * Get the code property: The error code.
      *
      * @return the code value.
@@ -32,33 +47,11 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the code property: The error code.
-     *
-     * @param code the code value to set.
-     * @return the ErrorResponse object itself.
-     */
-    public ErrorResponse setCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message property: The message explaining the error reported by the service.
      *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Set the message property: The message explaining the error reported by the service.
-     *
-     * @param message the message value to set.
-     * @return the ErrorResponse object itself.
-     */
-    public ErrorResponse setMessage(String message) {
-        this.message = message;
-        return this;
     }
 }

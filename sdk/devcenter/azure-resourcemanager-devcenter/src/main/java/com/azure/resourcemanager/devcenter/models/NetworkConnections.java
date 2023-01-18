@@ -163,13 +163,11 @@ public interface NetworkConnections {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> runHealthChecksWithResponse(String resourceGroupName, String networkConnectionName, Context context);
+    void runHealthChecks(String resourceGroupName, String networkConnectionName);
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
@@ -177,11 +175,12 @@ public interface NetworkConnections {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void runHealthChecks(String resourceGroupName, String networkConnectionName);
+    void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context);
 
     /**
      * Gets a network connection resource.

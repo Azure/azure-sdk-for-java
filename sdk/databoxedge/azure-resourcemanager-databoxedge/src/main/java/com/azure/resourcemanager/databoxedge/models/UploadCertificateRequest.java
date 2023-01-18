@@ -5,28 +5,31 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.databoxedge.fluent.models.RawCertificateData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The upload certificate request. */
-@JsonFlatten
 @Fluent
-public class UploadCertificateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UploadCertificateRequest.class);
-
+public final class UploadCertificateRequest {
     /*
-     * The authentication type.
+     * The Base 64 encoded certificate raw data.
      */
-    @JsonProperty(value = "properties.authenticationType")
-    private AuthenticationType authenticationType;
+    @JsonProperty(value = "properties", required = true)
+    private RawCertificateData innerProperties = new RawCertificateData();
 
-    /*
-     * The base64 encoded certificate raw data.
+    /** Creates an instance of UploadCertificateRequest class. */
+    public UploadCertificateRequest() {
+    }
+
+    /**
+     * Get the innerProperties property: The Base 64 encoded certificate raw data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.certificate", required = true)
-    private String certificate;
+    private RawCertificateData innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the authenticationType property: The authentication type.
@@ -34,7 +37,7 @@ public class UploadCertificateRequest {
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
-        return this.authenticationType;
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationType();
     }
 
     /**
@@ -44,7 +47,10 @@ public class UploadCertificateRequest {
      * @return the UploadCertificateRequest object itself.
      */
     public UploadCertificateRequest withAuthenticationType(AuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RawCertificateData();
+        }
+        this.innerProperties().withAuthenticationType(authenticationType);
         return this;
     }
 
@@ -54,7 +60,7 @@ public class UploadCertificateRequest {
      * @return the certificate value.
      */
     public String certificate() {
-        return this.certificate;
+        return this.innerProperties() == null ? null : this.innerProperties().certificate();
     }
 
     /**
@@ -64,7 +70,10 @@ public class UploadCertificateRequest {
      * @return the UploadCertificateRequest object itself.
      */
     public UploadCertificateRequest withCertificate(String certificate) {
-        this.certificate = certificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RawCertificateData();
+        }
+        this.innerProperties().withCertificate(certificate);
         return this;
     }
 
@@ -74,11 +83,15 @@ public class UploadCertificateRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (certificate() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property certificate in model UploadCertificateRequest"));
+                        "Missing required property innerProperties in model UploadCertificateRequest"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UploadCertificateRequest.class);
 }

@@ -5,12 +5,21 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 import java.util.UUID;
 
 /** Azure Active Directory identity configuration for a resource. */
 @Fluent
 public class ResourceIdentity {
+    /*
+     * The resource ids of the user assigned identities to use
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserIdentity> userAssignedIdentities;
+
     /*
      * The Azure Active Directory principal id.
      */
@@ -18,9 +27,8 @@ public class ResourceIdentity {
     private UUID principalId;
 
     /*
-     * The identity type. Set this to 'SystemAssigned' in order to
-     * automatically create and assign an Azure Active Directory principal for
-     * the resource.
+     * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
+     * Directory principal for the resource.
      */
     @JsonProperty(value = "type")
     private IdentityType type;
@@ -30,6 +38,30 @@ public class ResourceIdentity {
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
+
+    /** Creates an instance of ResourceIdentity class. */
+    public ResourceIdentity() {
+    }
+
+    /**
+     * Get the userAssignedIdentities property: The resource ids of the user assigned identities to use.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The resource ids of the user assigned identities to use.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ResourceIdentity object itself.
+     */
+    public ResourceIdentity withUserAssignedIdentities(Map<String, UserIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
 
     /**
      * Get the principalId property: The Azure Active Directory principal id.
@@ -77,5 +109,15 @@ public class ResourceIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

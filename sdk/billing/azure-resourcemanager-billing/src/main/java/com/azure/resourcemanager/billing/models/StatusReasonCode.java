@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StatusReasonCode. */
+/** Reason for the specified billing profile status. */
 public final class StatusReasonCode extends ExpandableStringEnum<StatusReasonCode> {
     /** Static value PastDue for StatusReasonCode. */
     public static final StatusReasonCode PAST_DUE = fromString("PastDue");
@@ -18,6 +18,15 @@ public final class StatusReasonCode extends ExpandableStringEnum<StatusReasonCod
 
     /** Static value SpendingLimitExpired for StatusReasonCode. */
     public static final StatusReasonCode SPENDING_LIMIT_EXPIRED = fromString("SpendingLimitExpired");
+
+    /**
+     * Creates a new instance of StatusReasonCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StatusReasonCode() {
+    }
 
     /**
      * Creates or finds a StatusReasonCode from its string representation.
@@ -30,7 +39,11 @@ public final class StatusReasonCode extends ExpandableStringEnum<StatusReasonCod
         return fromString(name, StatusReasonCode.class);
     }
 
-    /** @return known StatusReasonCode values. */
+    /**
+     * Gets known StatusReasonCode values.
+     *
+     * @return known StatusReasonCode values.
+     */
     public static Collection<StatusReasonCode> values() {
         return values(StatusReasonCode.class);
     }

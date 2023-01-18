@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManifestListAttributes {
     /*
-     * The MIME type of the referenced object. This will generally be
-     * application/vnd.docker.image.manifest.v2+json, but it could also be
-     * application/vnd.docker.image.manifest.v1+json
+     * The MIME type of the referenced object. This will generally be application/vnd.docker.image.manifest.v2+json,
+     * but it could also be application/vnd.docker.image.manifest.v1+json
      */
     @JsonProperty(value = "mediaType")
     private String mediaType;
@@ -25,19 +24,20 @@ public final class ManifestListAttributes {
     private Long size;
 
     /*
-     * The digest of the content, as defined by the Registry V2 HTTP API
-     * Specification
+     * The digest of the content, as defined by the Registry V2 HTTP API Specification
      */
     @JsonProperty(value = "digest")
     private String digest;
 
     /*
-     * The platform object describes the platform which the image in the
-     * manifest runs on. A full list of valid operating system and architecture
-     * values are listed in the Go language documentation for $GOOS and $GOARCH
+     * The platform object describes the platform which the image in the manifest runs on. A full list of valid
+     * operating system and architecture values are listed in the Go language documentation for $GOOS and $GOARCH
      */
     @JsonProperty(value = "platform")
     private Platform platform;
+
+    /** Creates an instance of ManifestListAttributes class. */
+    public ManifestListAttributes() {}
 
     /**
      * Get the mediaType property: The MIME type of the referenced object. This will generally be

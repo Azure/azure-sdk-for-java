@@ -16,8 +16,8 @@ public final class AzureTrafficCollectorPropertiesFormat {
     /*
      * Collector Policies for Azure Traffic Collector.
      */
-    @JsonProperty(value = "collectorPolicies")
-    private List<CollectorPolicyInner> collectorPolicies;
+    @JsonProperty(value = "collectorPolicies", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ResourceReference> collectorPolicies;
 
     /*
      * The virtualHub to which the Azure Traffic Collector belongs.
@@ -31,24 +31,17 @@ public final class AzureTrafficCollectorPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of AzureTrafficCollectorPropertiesFormat class. */
+    public AzureTrafficCollectorPropertiesFormat() {
+    }
+
     /**
      * Get the collectorPolicies property: Collector Policies for Azure Traffic Collector.
      *
      * @return the collectorPolicies value.
      */
-    public List<CollectorPolicyInner> collectorPolicies() {
+    public List<ResourceReference> collectorPolicies() {
         return this.collectorPolicies;
-    }
-
-    /**
-     * Set the collectorPolicies property: Collector Policies for Azure Traffic Collector.
-     *
-     * @param collectorPolicies the collectorPolicies value to set.
-     * @return the AzureTrafficCollectorPropertiesFormat object itself.
-     */
-    public AzureTrafficCollectorPropertiesFormat withCollectorPolicies(List<CollectorPolicyInner> collectorPolicies) {
-        this.collectorPolicies = collectorPolicies;
-        return this;
     }
 
     /**

@@ -20,6 +20,15 @@ public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum
     public static final GoogleBigQueryAuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
 
     /**
+     * Creates a new instance of GoogleBigQueryAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GoogleBigQueryAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a GoogleBigQueryAuthenticationType from its string representation.
      *
      * @param name a name to look for.

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import com.azure.resourcemanager.machinelearning.models.TritonModelJobOutput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TritonModelJobOutputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TritonModelJobOutput model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class TritonModelJobOutputTests {
         Assertions.assertEquals("vkolrupjovmo", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TritonModelJobOutput model =
             new TritonModelJobOutput()
                 .withDescription("ayeb")

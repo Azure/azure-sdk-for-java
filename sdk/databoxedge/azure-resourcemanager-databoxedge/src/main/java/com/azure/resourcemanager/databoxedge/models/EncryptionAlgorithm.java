@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionAlgorithm. */
+/** The algorithm used to encrypt "Value". */
 public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAlgorithm> {
     /** Static value None for EncryptionAlgorithm. */
     public static final EncryptionAlgorithm NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
 
     /** Static value RSAES_PKCS1_v_1_5 for EncryptionAlgorithm. */
     public static final EncryptionAlgorithm RSAES_PKCS1_V_1_5 = fromString("RSAES_PKCS1_v_1_5");
+
+    /**
+     * Creates a new instance of EncryptionAlgorithm value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionAlgorithm() {
+    }
 
     /**
      * Creates or finds a EncryptionAlgorithm from its string representation.
@@ -30,7 +39,11 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
         return fromString(name, EncryptionAlgorithm.class);
     }
 
-    /** @return known EncryptionAlgorithm values. */
+    /**
+     * Gets known EncryptionAlgorithm values.
+     *
+     * @return known EncryptionAlgorithm values.
+     */
     public static Collection<EncryptionAlgorithm> values() {
         return values(EncryptionAlgorithm.class);
     }
