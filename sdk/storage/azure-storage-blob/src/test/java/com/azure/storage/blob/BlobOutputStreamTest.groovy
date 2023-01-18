@@ -229,15 +229,14 @@ class BlobOutputStreamTest extends APISpec {
         def outputStream = appendBlobClient.getBlobOutputStream()
         outputStream.write(data)
         outputStream.close()
-        // assert that current stream is
+
+        then:
         convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
 
+        when:
         def data2 = getRandomByteArray(FOUR_MB)
 
         def outputStream2 = appendBlobClient.getBlobOutputStream(true)
-//        for (int i = 0; i != 4; i++) {
-//            outputStream2.write(Arrays.copyOfRange(data2, i * FOUR_MB, ((i + 1) * FOUR_MB)))
-//        }
         outputStream2.write(data2)
         outputStream2.close()
 

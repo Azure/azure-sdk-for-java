@@ -122,7 +122,6 @@ public final class AppendBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         AppendBlobRequestConditions requestConditions = null;
         if (!overwrite) {
-            // fix logic to create a new blob
             if (exists()) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
