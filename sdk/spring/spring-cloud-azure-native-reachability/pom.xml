@@ -154,13 +154,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.cloud.actuator.autoconfigure</Automatic-Module-Name>
-            </manifestEntries>
-          </archive>
-        </configuration>
         <!-- START: Empty Java Doc & Sources -->
         <!-- The following code will generate an empty javadoc/sources with just a README.md. This is necessary
              to pass the required checks on Maven. The way this works is by setting the classesDirectory
