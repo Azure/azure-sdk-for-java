@@ -9,8 +9,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryVal
 /** An immutable client-side representation of ClientDiscoveryValueForSingleApi. */
 public interface ClientDiscoveryValueForSingleApi {
     /**
-     * Gets the display property: ClientDiscoveryDisplay Contains the localized display information for this particular
-     * operation.
+     * Gets the display property: ClientDiscoveryDisplay
+     *
+     * <p>Contains the localized display information for this particular operation.
      *
      * @return the display value.
      */
@@ -39,7 +40,9 @@ public interface ClientDiscoveryValueForSingleApi {
     String origin();
 
     /**
-     * Gets the properties property: ClientDiscoveryForProperties Properties for the given operation.
+     * Gets the properties property: ClientDiscoveryForProperties
+     *
+     * <p>Properties for the given operation.
      *
      * @return the properties value.
      */
