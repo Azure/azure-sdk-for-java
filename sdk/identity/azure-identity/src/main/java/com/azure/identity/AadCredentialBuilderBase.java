@@ -134,6 +134,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * @see HttpClientOptions
      * @return An updated instance of this builder with the client options configured.
      */
+    @SuppressWarnings("unchecked")
     public T clientOptions(ClientOptions clientOptions) {
         identityClientOptions.setClientOptions(clientOptions);
         return (T) this;
@@ -154,6 +155,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * and from the service.
      * @return An updated instance of this builder with the Http log options configured.
      */
+    @SuppressWarnings("unchecked")
     public T httpLogOptions(HttpLogOptions logOptions) {
         identityClientOptions.setHttpLogOptions(logOptions);
         return (T) this;
@@ -169,6 +171,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with the retry policy configured.
      */
+    @SuppressWarnings("unchecked")
     public T retryPolicy(RetryPolicy retryPolicy) {
         identityClientOptions.setRetryPolicy(retryPolicy);
         return (T) this;
@@ -189,6 +192,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      * @return An updated instance of this builder with the retry options configured.
      */
+    @SuppressWarnings("unchecked")
     public T retryOptions(RetryOptions retryOptions) {
         identityClientOptions.setRetryOptions(retryOptions);
         return (T) this;
