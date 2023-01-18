@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.models.OperationDisplay;
 import com.azure.resourcemanager.purview.models.OperationMetaServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation resource. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Properties on the operation
      */
@@ -45,6 +41,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "properties")
     private OperationProperties innerProperties;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the display property: Properties on the operation.
