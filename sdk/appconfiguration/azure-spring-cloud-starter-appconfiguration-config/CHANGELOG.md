@@ -1,6 +1,7 @@
 # Release History
 
-## 2.10.1 (2023-01-17)
+## 2.11.0 (2023-01-17)
+Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5
 
 ### Features Added
 
