@@ -13,7 +13,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  * */
 public final class ProactiveContainerInitConfigBuilder {
 
-    private static final int MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS = 2;
+    private static final int MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS = 5;
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private int numProactiveConnectionRegions;
 

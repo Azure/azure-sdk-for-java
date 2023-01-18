@@ -134,10 +134,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                                     false,
                                     null));
 
-            // 1. Extract all preferred read regions to proactively connect to
-            // 2. Resolve partition addresses for one read region, then mark read region as unavailable
-            // 3. This will force resolveAsync to use the next preferred read region
-            // 4. This way we can verify that connections have been opened to all replicas across all proactive
+            // 1. Extract all preferred read regions to proactively connect to.
+            // 2. Obtain partition addresses for a container for one read region, then mark that read region as unavailable.
+            // 3. This will force resolveAsync to use the next preferred read region in the next invocation.
+            // 4. This way we can verify that connections have been opened to all replicas across all proactive connection regions.
             for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
                 Flux.zip(asyncContainerFlux, partitionKeyRangeFlux)
                         .flatMapIterable(containerToPartitionKeyRanges -> {
@@ -237,10 +237,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                                     false,
                                     null));
 
-            // 1. Extract all preferred read regions to proactively connect to
-            // 2. Resolve partition addresses for one read region, then mark read region as unavailable
-            // 3. This will force resolveAsync to use the next preferred read region
-            // 4. This way we can verify that connections have been opened to all replicas across all proactive
+            // 1. Extract all preferred read regions to proactively connect to.
+            // 2. Obtain partition addresses for a container for one read region, then mark that read region as unavailable.
+            // 3. This will force resolveAsync to use the next preferred read region in the next invocation.
+            // 4. This way we can verify that connections have been opened to all replicas across all proactive connection regions.
             for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
                 Mono.zip(asyncContainerMono, partitionKeyRangeMono)
                         .flatMapIterable(containerToPartitionKeyRanges -> {

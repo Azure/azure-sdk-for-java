@@ -3,15 +3,20 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
  * Encapsulates the container link associated with the container.
  * */
 public final class CosmosContainerIdentity {
 
+    private final String databaseName;
+    private final String containerName;
     private final String containerLink;
 
 
@@ -23,14 +28,11 @@ public final class CosmosContainerIdentity {
      * */
     public CosmosContainerIdentity(String databaseName, String containerName) {
 
-        if (Strings.isNullOrWhiteSpace(databaseName)) {
-            throw new IllegalArgumentException("databaseName is either null or empty");
-        }
+        checkArgument(!Strings.isNullOrWhiteSpace(databaseName), "databaseName should not be null nor empty");
+        checkArgument(!Strings.isNullOrWhiteSpace(containerName), "containerName should not be null nor empty");
 
-        if (Strings.isNullOrWhiteSpace(containerName)) {
-            throw new IllegalArgumentException("containerName is either null or empty");
-        }
-
+        this.databaseName = databaseName;
+        this.containerName = containerName;
         String databaseLink = Utils.joinPath(Paths.DATABASES_ROOT, databaseName);
         this.containerLink = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT) + containerName;
     }
@@ -43,4 +45,21 @@ public final class CosmosContainerIdentity {
     public String getContainerLink() {
         return containerLink;
     }
+
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosContainerIdentityHelper.setCosmosContainerIdentityAccessor(new ImplementationBridgeHelpers
+                .CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor() {
+            @Override
+            public String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity) {
+                return cosmosContainerIdentity.databaseName;
+            }
+
+            @Override
+            public String getContainerName(CosmosContainerIdentity cosmosContainerIdentity) {
+                return cosmosContainerIdentity.containerName;
+            }
+        });
+    }
+
+    static { initialize(); }
 }

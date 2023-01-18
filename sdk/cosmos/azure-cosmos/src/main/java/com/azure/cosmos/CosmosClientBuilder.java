@@ -693,7 +693,7 @@ public class CosmosClientBuilder implements
     /**
      * Sets the {@link ProactiveContainerInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link ProactiveContainerInitConfig#getCosmosContainerIdentities()} to replicas
-     * obtained from the first {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} preferred regions.
+     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()}.
      *
      * <p>
      *     Use the {@link ProactiveContainerInitConfigBuilder} class to instantiate {@link ProactiveContainerInitConfig} class

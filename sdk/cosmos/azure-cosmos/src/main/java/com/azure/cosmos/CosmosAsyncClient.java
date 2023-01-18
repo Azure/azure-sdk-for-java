@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
@@ -89,6 +88,8 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
     private final ProactiveContainerInitConfig proactiveContainerInitConfig;
+    private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
+            ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -596,17 +597,35 @@ public final class CosmosAsyncClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
-    List<OpenConnectionResponse> openConnectionsAndInitCaches() {
-        return openConnectionsAndInitCachesInternal().block();
+    void openConnectionsAndInitCaches() {
+        blockListVoidResponse(openConnectionsAndInitCachesInternal());
     }
 
-    private Mono<List<OpenConnectionResponse>> openConnectionsAndInitCachesInternal() {
+    private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
         if (this.proactiveContainerInitConfig != null) {
-            return this.asyncDocumentClient
-                    .openConnectionsAndInitCaches(this.proactiveContainerInitConfig)
+            return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
+                    .flatMap(cosmosContainerIdentity -> Mono.just(this
+                            .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
+                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity)))
+                    )
+                    .flatMap(cosmosAsyncContainer -> cosmosAsyncContainer.openConnectionsAndInitCaches(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions()))
                     .collectList();
         }
-        return Mono.just(new ArrayList<>());
+        return Mono.empty();
+    }
+
+    private void blockListVoidResponse(Mono<List<Void>> voidListMono) {
+        try {
+            voidListMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw Exceptions.propagate(throwable);
+            }
+        }
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
@@ -673,6 +692,8 @@ public final class CosmosAsyncClient implements Closeable {
             database.getId(),
             this.serviceEndpoint);
     }
+
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//

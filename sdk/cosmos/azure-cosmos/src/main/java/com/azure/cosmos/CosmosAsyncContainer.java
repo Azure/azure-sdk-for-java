@@ -518,7 +518,7 @@ public class CosmosAsyncContainer {
         List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
         boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
 
-        checkArgument(numProactiveConnectionRegions >= 1, "no. of proactive connection regions should be greater than 1");
+        checkArgument(numProactiveConnectionRegions > 0, "no. of proactive connection regions should be greater than 0");
 
         if (numProactiveConnectionRegions > 1) {
             checkArgument(endpointDiscoveryEnabled, "endpoint discovery should be enabled when no. " +
