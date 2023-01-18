@@ -1,6 +1,10 @@
 # Spring Cloud Azure Native Reachability client library for Java
 
-Hey, if you want to use Spring Boot 3 and Spring Cloud Azure 5.x to build a native image, you can add this `spring-cloud-azure-native-reachability:5.0.0-beta.1` to your dependencies, but please note this native support is not GA ready, it is still in beta support, so please expect breaking changes in further.
+This library provides the reachability metadata for Spring Cloud Azure libraries when using with Spring Boot 3. To build a native executable, you can add this `spring-cloud-azure-native-reachability` to your dependencies. 
+
+**NOTE**: Please do note that this library is not GA ready, it is still in beta support, so please expect breaking changes in future. And once the AOT support is ready, this libray will be deprecated, and all the reachability metadata will be incorporated into each Spring Cloud Azure library's source code directly. 
+
+
 
 ## Getting started
 
@@ -95,7 +99,7 @@ documentation.
     </build>
     ```
 
-  Add the below gradle configuration to your *build.gradle* file:
+  Or the below gradle configuration to your *build.gradle* file:
 
     ```groovy
     graalvmNative {
