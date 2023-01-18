@@ -810,7 +810,12 @@
         "Dspotbugs",
         "JPMS",
         "nimbusds",
-        "Pdev",
+        "Pdev"
+      ]
+    },
+	{
+      "filename": "sdk/spring/**/**.md",
+      "words": [
         "Pnative",
         "Djava"
       ]
