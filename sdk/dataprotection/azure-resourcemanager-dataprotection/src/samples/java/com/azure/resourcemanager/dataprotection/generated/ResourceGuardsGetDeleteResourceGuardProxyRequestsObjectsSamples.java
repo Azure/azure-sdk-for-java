@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuards GetDeleteResourceGuardProxyRequestsObjects. */
 public final class ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
@@ -20,6 +18,7 @@ public final class ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsSampl
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager
             .resourceGuards()
-            .getDeleteResourceGuardProxyRequestsObjects("SampleResourceGroup", "swaggerExample", Context.NONE);
+            .getDeleteResourceGuardProxyRequestsObjects(
+                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

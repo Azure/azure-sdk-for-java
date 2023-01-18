@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResourceInner;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
+import com.azure.resourcemanager.dataprotection.models.PatchBackupVaultInput;
 import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
@@ -68,6 +69,10 @@ public final class ResourceGuardResourceImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ResourceGuardResourceInner innerModel() {
@@ -207,6 +212,11 @@ public final class ResourceGuardResourceImpl
 
     public ResourceGuardResourceImpl withProperties(ResourceGuard properties) {
         this.innerModel().withProperties(properties);
+        return this;
+    }
+
+    public ResourceGuardResourceImpl withProperties(PatchBackupVaultInput properties) {
+        this.updateParameters.withProperties(properties);
         return this;
     }
 
