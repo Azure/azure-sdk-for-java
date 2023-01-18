@@ -14,6 +14,18 @@ public interface PeerAsns {
      * Gets the peer ASN with the specified name under the given subscription.
      *
      * @param peerAsnName The peer ASN name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the peer ASN with the specified name under the given subscription along with {@link Response}.
+     */
+    Response<PeerAsn> getWithResponse(String peerAsnName, Context context);
+
+    /**
+     * Gets the peer ASN with the specified name under the given subscription.
+     *
+     * @param peerAsnName The peer ASN name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -22,16 +34,16 @@ public interface PeerAsns {
     PeerAsn get(String peerAsnName);
 
     /**
-     * Gets the peer ASN with the specified name under the given subscription.
+     * Deletes an existing peer ASN with the specified name under the given subscription.
      *
      * @param peerAsnName The peer ASN name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the {@link Response}.
      */
-    Response<PeerAsn> getWithResponse(String peerAsnName, Context context);
+    Response<Void> deleteWithResponse(String peerAsnName, Context context);
 
     /**
      * Deletes an existing peer ASN with the specified name under the given subscription.
@@ -44,23 +56,11 @@ public interface PeerAsns {
     void delete(String peerAsnName);
 
     /**
-     * Deletes an existing peer ASN with the specified name under the given subscription.
-     *
-     * @param peerAsnName The peer ASN name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String peerAsnName, Context context);
-
-    /**
      * Lists all of the peer ASNs under the given subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeerAsn> list();
 
@@ -71,7 +71,7 @@ public interface PeerAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeerAsn> list(Context context);
 
@@ -82,7 +82,7 @@ public interface PeerAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the peer ASN with the specified name under the given subscription along with {@link Response}.
      */
     PeerAsn getById(String id);
 
@@ -94,7 +94,7 @@ public interface PeerAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the peer ASN with the specified name under the given subscription along with {@link Response}.
      */
     Response<PeerAsn> getByIdWithResponse(String id, Context context);
 
@@ -116,7 +116,7 @@ public interface PeerAsns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
