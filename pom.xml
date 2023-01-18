@@ -178,5 +178,6 @@
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/webpubsub</module>
     <module>sdk/workloads</module>
+    <module>sdk/openai</module>
   </modules>
 </project>
