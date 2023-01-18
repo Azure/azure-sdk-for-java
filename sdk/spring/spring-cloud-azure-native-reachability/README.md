@@ -2,9 +2,7 @@
 
 This library provides the reachability metadata for Spring Cloud Azure libraries when using with Spring Boot 3. To build a native executable, you can add this `spring-cloud-azure-native-reachability` to your dependencies. 
 
-**NOTE**: Please do note that this library is not GA ready, it is still in beta support, so please expect breaking changes in future. And once the AOT support is ready, this libray will be deprecated, and all the reachability metadata will be incorporated into each Spring Cloud Azure library's source code directly. 
-
-
+**NOTE**: Please do note that this library is not GA ready, it is still in beta support, so please expect breaking changes in the future. And once the AOT support is ready, this library will be deprecated, and all the reachability metadata will be incorporated into each Spring Cloud Azure library's source code directly. 
 
 ## Getting started
 
@@ -105,12 +103,12 @@ documentation.
     graalvmNative {
       binaries {
         main {
-          buildArgs('-Djava.security.properties=' + file("$rootDir/custom.security").absolutePath)
+          buildArgs('-Djava.security.properties=' + file("src/main/resources/custom.security").absolutePath)
         }
-      }  
+      }
     }
     bootRun {
-      systemProperty("java.security.properties", file("$rootDir/custom.security").absolutePath)
+      systemProperty("java.security.properties", file("src/main/resources/custom.security").absolutePath)
       systemProperty('spring.aot.enabled', 'true')
     }
     ```
