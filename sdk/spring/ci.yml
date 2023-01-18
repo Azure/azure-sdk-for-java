@@ -86,7 +86,7 @@ parameters:
 - name: release_springcloudazurenativereachability
   displayName: 'spring-cloud-azure-native-reachability'
   type: boolean
-  default: true
+  default: false
 - name: release_springcloudazurestarter
   displayName: 'spring-cloud-azure-starter'
   type: boolean
