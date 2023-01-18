@@ -47,14 +47,14 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
     }
 
     private String buildFqdnFromNamespace() {
-        if (namespace == null || domainName == null) {
+        if (namespace == null || getDomainName() == null) {
             return null;
         }
-        return this.namespace + "." + domainName;
+        return this.namespace + "." + getDomainName();
     }
 
     public String getDomainName() {
-        return domainName;
+        return this.domainName == null ? this.getProfile().getEnvironment().getServiceBusDomainName() : domainName;
     }
 
     public void setDomainName(String domainName) {

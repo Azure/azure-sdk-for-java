@@ -8,6 +8,7 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.configuration.TestCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.configuration.TestEventHubsRecordMessageListener;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
@@ -81,7 +82,8 @@ class AzureEventHubsProcessorClientConfigurationTests {
             .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
             .withBean(MessageListener.class, TestEventHubsRecordMessageListener::new)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.namespace=test-namespace",
                 "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",
