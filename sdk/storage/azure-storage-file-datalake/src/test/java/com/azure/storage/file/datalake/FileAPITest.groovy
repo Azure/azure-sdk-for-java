@@ -2769,7 +2769,7 @@ class FileAPITest extends APISpec {
     def "Flush data min"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize, true)
+        fc.flush(data.defaultDataSize)
 
         then:
         notThrown(DataLakeStorageException)

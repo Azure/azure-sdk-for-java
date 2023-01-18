@@ -1183,7 +1183,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Flushes (writes) data previously appended to the file through a call to append.
      * The previously uploaded data must be contiguous.
-     * <p>By default this method will not overwrite existing data.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1204,7 +1203,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> flush(long position) {
-        return flush(position, false);
+        return flushWithResponse(position, false, false, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
