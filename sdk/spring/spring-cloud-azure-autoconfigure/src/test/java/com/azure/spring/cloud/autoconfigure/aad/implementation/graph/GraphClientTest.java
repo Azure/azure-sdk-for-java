@@ -12,8 +12,13 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.client.ExpectedCount;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,8 +27,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 
-@ExtendWith({ OutputCaptureExtension.class})
+@ExtendWith({ OutputCaptureExtension.class })
 class GraphClientTest {
 
     @Test
@@ -42,12 +49,39 @@ class GraphClientTest {
     }
 
     @Test
-    void testGetGroupInformationWithRestClientException(CapturedOutput capturedOutput) {
+    void testGetGroupInformationWithNotFoundError(CapturedOutput capturedOutput) {
+
         AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
-        when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
-        GraphClient graphClient = new GraphClient(properties, new RestTemplateBuilder());
+        when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/newurl1");
+        RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
+        RestTemplate operations = mock(RestTemplate.class);
+        when(restTemplateBuilder.build()).thenReturn(operations);
+        GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
+        when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenThrow(HttpClientErrorException.NotFound.class);
         graphClient.getGroupInformation("fake-accesstoken");
         String allOutput = capturedOutput.getAll();
-        assertTrue(allOutput.contains("Can not get group information from graph server."));
+        assertTrue(allOutput.contains("Can not get group information from graph server.")
+            && allOutput.contains("org.springframework.web.client.HttpClientErrorException$NotFound"));
     }
+
+    @Test
+    void testGetGroupInformationWithInternalServerError(CapturedOutput capturedOutput) throws URISyntaxException {
+
+        RestTemplate restTemplate = new RestTemplate();
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
+        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
+        RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
+        when(restTemplateBuilder.build()).thenReturn(restTemplate);
+        GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
+        MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
+        mockServer
+            .expect(ExpectedCount.once(), requestTo(new URI("http://localhost:8080/v1.0/me/memberOf")))
+            .andRespond(withServerError());
+        graphClient.getGroupInformation("fake-accesstoken");
+        String allOutput = capturedOutput.getAll();
+        assertTrue(allOutput.contains("Can not get group information from graph server.")
+            && allOutput.contains("org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 "
+            + "Internal Server Error"));
+    }
+
 }
