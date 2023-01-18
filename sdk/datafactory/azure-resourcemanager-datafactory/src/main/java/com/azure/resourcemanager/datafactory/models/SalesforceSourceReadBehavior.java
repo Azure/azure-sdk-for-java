@@ -17,6 +17,15 @@ public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<Sal
     public static final SalesforceSourceReadBehavior QUERY_ALL = fromString("QueryAll");
 
     /**
+     * Creates a new instance of SalesforceSourceReadBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SalesforceSourceReadBehavior() {
+    }
+
+    /**
      * Creates or finds a SalesforceSourceReadBehavior from its string representation.
      *
      * @param name a name to look for.

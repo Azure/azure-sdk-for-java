@@ -15,6 +15,15 @@ public final class SparkJobReferenceType extends ExpandableStringEnum<SparkJobRe
         fromString("SparkJobDefinitionReference");
 
     /**
+     * Creates a new instance of SparkJobReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkJobReferenceType() {
+    }
+
+    /**
      * Creates or finds a SparkJobReferenceType from its string representation.
      *
      * @param name a name to look for.

@@ -20,6 +20,15 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
     public static final HDInsightActivityDebugInfoOption FAILURE = fromString("Failure");
 
     /**
+     * Creates a new instance of HDInsightActivityDebugInfoOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HDInsightActivityDebugInfoOption() {
+    }
+
+    /**
      * Creates or finds a HDInsightActivityDebugInfoOption from its string representation.
      *
      * @param name a name to look for.
