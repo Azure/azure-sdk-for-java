@@ -799,7 +799,7 @@
       ]
     },
     {
-      "filename": "sdk/spring/**.md",
+      "filename": "sdk/spring/**/*.md",
       "words": [
         "AADB",
         "Dcheckstyle",
@@ -811,7 +811,9 @@
         "Dspotbugs",
         "JPMS",
         "nimbusds",
-        "Pdev"
+        "Pdev",
+        "Pnative",
+        "Djava"
       ]
     },
     {
