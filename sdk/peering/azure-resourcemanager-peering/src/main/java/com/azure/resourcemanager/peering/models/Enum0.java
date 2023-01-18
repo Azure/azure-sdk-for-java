@@ -17,6 +17,15 @@ public final class Enum0 extends ExpandableStringEnum<Enum0> {
     public static final Enum0 UNAVAILABLE = fromString("Unavailable");
 
     /**
+     * Creates a new instance of Enum0 value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Enum0() {
+    }
+
+    /**
      * Creates or finds a Enum0 from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class Enum0 extends ExpandableStringEnum<Enum0> {
         return fromString(name, Enum0.class);
     }
 
-    /** @return known Enum0 values. */
+    /**
+     * Gets known Enum0 values.
+     *
+     * @return known Enum0 values.
+     */
     public static Collection<Enum0> values() {
         return values(Enum0.class);
     }

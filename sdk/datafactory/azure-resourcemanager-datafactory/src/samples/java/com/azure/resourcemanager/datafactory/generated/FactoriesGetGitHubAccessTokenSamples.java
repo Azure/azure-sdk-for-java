@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.GitHubAccessTokenRequest;
 
 /** Samples for Factories GetGitHubAccessToken. */
@@ -27,6 +26,6 @@ public final class FactoriesGetGitHubAccessTokenSamples {
                     .withGitHubAccessCode("fakeTokenPlaceholder")
                     .withGitHubClientId("some")
                     .withGitHubAccessTokenBaseUrl("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

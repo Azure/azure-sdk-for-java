@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupRecoveryPointResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** AzureBackupRecoveryPointResourceList Azure backup recoveryPoint resource list. */
+/**
+ * AzureBackupRecoveryPointResourceList
+ *
+ * <p>Azure backup recoveryPoint resource list.
+ */
 @Fluent
 public final class AzureBackupRecoveryPointResourceList extends DppResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRecoveryPointResourceList.class);
-
     /*
      * List of resources.
      */
     @JsonProperty(value = "value")
     private List<AzureBackupRecoveryPointResourceInner> value;
+
+    /** Creates an instance of AzureBackupRecoveryPointResourceList class. */
+    public AzureBackupRecoveryPointResourceList() {
+    }
 
     /**
      * Get the value property: List of resources.

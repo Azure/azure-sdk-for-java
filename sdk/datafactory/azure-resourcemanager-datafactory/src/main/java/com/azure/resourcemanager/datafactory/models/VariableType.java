@@ -20,6 +20,15 @@ public final class VariableType extends ExpandableStringEnum<VariableType> {
     public static final VariableType ARRAY = fromString("Array");
 
     /**
+     * Creates a new instance of VariableType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VariableType() {
+    }
+
+    /**
      * Creates or finds a VariableType from its string representation.
      *
      * @param name a name to look for.

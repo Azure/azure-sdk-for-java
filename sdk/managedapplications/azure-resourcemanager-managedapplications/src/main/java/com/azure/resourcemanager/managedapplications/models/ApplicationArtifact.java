@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed application artifact. */
 @Fluent
 public final class ApplicationArtifact {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationArtifact.class);
-
     /*
      * The managed application artifact name.
      */
@@ -31,6 +27,10 @@ public final class ApplicationArtifact {
      */
     @JsonProperty(value = "type")
     private ApplicationArtifactType type;
+
+    /** Creates an instance of ApplicationArtifact class. */
+    public ApplicationArtifact() {
+    }
 
     /**
      * Get the name property: The managed application artifact name.

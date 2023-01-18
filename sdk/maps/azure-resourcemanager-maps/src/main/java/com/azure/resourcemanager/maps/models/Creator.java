@@ -7,6 +7,7 @@ package com.azure.resourcemanager.maps.models;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
+import com.azure.resourcemanager.maps.fluent.models.CreatorProperties;
 import java.util.Map;
 
 /** An immutable client-side representation of Creator. */
@@ -66,6 +67,13 @@ public interface Creator {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.maps.fluent.models.CreatorInner object.
@@ -208,7 +216,7 @@ public interface Creator {
              * @param storageUnits The storage units to be allocated. Integer values from 1 to 100, inclusive.
              * @return the next definition stage.
              */
-            Update withStorageUnits(Integer storageUnits);
+            Update withStorageUnits(int storageUnits);
         }
     }
     /**

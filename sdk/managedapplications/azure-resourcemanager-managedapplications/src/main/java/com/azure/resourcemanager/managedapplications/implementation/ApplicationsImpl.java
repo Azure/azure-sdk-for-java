@@ -13,10 +13,9 @@ import com.azure.resourcemanager.managedapplications.fluent.ApplicationsClient;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.managedapplications.models.Application;
 import com.azure.resourcemanager.managedapplications.models.Applications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplicationsImpl implements Applications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationsImpl.class);
 
     private final ApplicationsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class ApplicationsImpl implements Applications {
         this.serviceManager = serviceManager;
     }
 
-    public Application getByResourceGroup(String resourceGroupName, String applicationName) {
-        ApplicationInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, applicationName);
-        if (inner != null) {
-            return new ApplicationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Application> getByResourceGroupWithResponse(
         String resourceGroupName, String applicationName, Context context) {
         Response<ApplicationInner> inner =
@@ -48,6 +38,15 @@ public final class ApplicationsImpl implements Applications {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Application getByResourceGroup(String resourceGroupName, String applicationName) {
+        ApplicationInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, applicationName);
+        if (inner != null) {
+            return new ApplicationImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -81,15 +80,6 @@ public final class ApplicationsImpl implements Applications {
         return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
-    public Application getById(String applicationId) {
-        ApplicationInner inner = this.serviceClient().getById(applicationId);
-        if (inner != null) {
-            return new ApplicationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Application> getByIdWithResponse(String applicationId, Context context) {
         Response<ApplicationInner> inner = this.serviceClient().getByIdWithResponse(applicationId, context);
         if (inner != null) {
@@ -98,6 +88,15 @@ public final class ApplicationsImpl implements Applications {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Application getById(String applicationId) {
+        ApplicationInner inner = this.serviceClient().getById(applicationId);
+        if (inner != null) {
+            return new ApplicationImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -129,15 +128,6 @@ public final class ApplicationsImpl implements Applications {
         }
     }
 
-    public Application updateById(String applicationId) {
-        ApplicationInner inner = this.serviceClient().updateById(applicationId);
-        if (inner != null) {
-            return new ApplicationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Application> updateByIdWithResponse(
         String applicationId, ApplicationInner parameters, Context context) {
         Response<ApplicationInner> inner =
@@ -148,6 +138,15 @@ public final class ApplicationsImpl implements Applications {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Application updateById(String applicationId) {
+        ApplicationInner inner = this.serviceClient().updateById(applicationId);
+        if (inner != null) {
+            return new ApplicationImpl(inner, this.manager());
         } else {
             return null;
         }
