@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
@@ -152,7 +153,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .replicasOfPartitions(partitionKeyRangeIds)
                 .build();
 
-            validateSuccess(addresses, validator, httpClientWrapper, TIMEOUT);
+            validateSuccess(addresses, validator, httpClientWrapper, req, i, TIMEOUT);
         }
     }
 
@@ -191,7 +192,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .replicasOfSamePartition()
                 .build();
 
-            validateSuccess(addresses, validator, httpClientWrapper, TIMEOUT);
+            validateSuccess(addresses, validator, httpClientWrapper, req, i, TIMEOUT);
         }
     }
 
@@ -1290,6 +1291,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     public static void validateSuccess(Mono<List<Address>> observable,
                                        PartitionReplicasAddressesValidator validator,
                                        HttpClientUnderTestWrapper httpClient,
+                                       RxDocumentServiceRequest serviceRequest,
+                                       int requestIndex,
                                        long timeout) {
         TestSubscriber<List<Address>> testSubscriber = new TestSubscriber<>();
         observable.subscribe(testSubscriber);
@@ -1299,7 +1302,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         testSubscriber.assertValueCount(1);
         validator.validate(testSubscriber.values().get(0));
         // Verifying activity id is being set in header on address call to gateway.
-        assertThat(httpClient.capturedRequests.get(0).headers().value(HttpConstants.HttpHeaders.ACTIVITY_ID)).isNotNull();
+        String addressResolutionActivityId =
+            BridgeInternal.getClientSideRequestStatics(serviceRequest.requestContext.cosmosDiagnostics).getAddressResolutionStatistics().keySet().iterator().next();
+        assertThat(httpClient.capturedRequests.get(requestIndex).headers().value(HttpConstants.HttpHeaders.ACTIVITY_ID)).isNotNull();
+        assertThat(httpClient.capturedRequests.get(requestIndex).headers().value(HttpConstants.HttpHeaders.ACTIVITY_ID)).isEqualTo(addressResolutionActivityId);
     }
 
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
