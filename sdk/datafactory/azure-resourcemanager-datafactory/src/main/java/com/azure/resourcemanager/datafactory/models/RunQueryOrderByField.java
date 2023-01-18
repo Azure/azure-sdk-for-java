@@ -42,6 +42,15 @@ public final class RunQueryOrderByField extends ExpandableStringEnum<RunQueryOrd
     public static final RunQueryOrderByField TRIGGER_RUN_TIMESTAMP = fromString("TriggerRunTimestamp");
 
     /**
+     * Creates a new instance of RunQueryOrderByField value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunQueryOrderByField() {
+    }
+
+    /**
      * Creates or finds a RunQueryOrderByField from its string representation.
      *
      * @param name a name to look for.

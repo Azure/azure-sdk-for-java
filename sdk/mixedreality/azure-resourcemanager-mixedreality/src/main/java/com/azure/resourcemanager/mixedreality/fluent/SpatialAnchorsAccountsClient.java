@@ -20,7 +20,7 @@ public interface SpatialAnchorsAccountsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> list();
@@ -32,7 +32,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> list(Context context);
@@ -44,7 +44,7 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> listByResourceGroup(String resourceGroupName);
@@ -57,10 +57,24 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SpatialAnchorsAccountInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Delete a Spatial Anchors Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * Delete a Spatial Anchors Account.
@@ -75,7 +89,7 @@ public interface SpatialAnchorsAccountsClient {
     void delete(String resourceGroupName, String accountName);
 
     /**
-     * Delete a Spatial Anchors Account.
+     * Retrieve a Spatial Anchors Account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
@@ -83,10 +97,11 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<SpatialAnchorsAccountInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieve a Spatial Anchors Account.
@@ -102,19 +117,23 @@ public interface SpatialAnchorsAccountsClient {
     SpatialAnchorsAccountInner getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Retrieve a Spatial Anchors Account.
+     * Updating a Spatial Anchors Account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
+     * @param spatialAnchorsAccount Spatial Anchors Account parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SpatialAnchorsAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<SpatialAnchorsAccountInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        SpatialAnchorsAccountInner spatialAnchorsAccount,
+        Context context);
 
     /**
      * Updating a Spatial Anchors Account.
@@ -132,7 +151,7 @@ public interface SpatialAnchorsAccountsClient {
         String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount);
 
     /**
-     * Updating a Spatial Anchors Account.
+     * Creating or Updating a Spatial Anchors Account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
@@ -141,10 +160,10 @@ public interface SpatialAnchorsAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SpatialAnchorsAccountInner> updateWithResponse(
+    Response<SpatialAnchorsAccountInner> createWithResponse(
         String resourceGroupName,
         String accountName,
         SpatialAnchorsAccountInner spatialAnchorsAccount,
@@ -166,23 +185,18 @@ public interface SpatialAnchorsAccountsClient {
         String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount);
 
     /**
-     * Creating or Updating a Spatial Anchors Account.
+     * List Both of the 2 Keys of a Spatial Anchors Account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
-     * @param spatialAnchorsAccount Spatial Anchors Account parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return developer Keys of account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SpatialAnchorsAccountInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        SpatialAnchorsAccountInner spatialAnchorsAccount,
-        Context context);
+    Response<AccountKeysInner> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * List Both of the 2 Keys of a Spatial Anchors Account.
@@ -198,18 +212,20 @@ public interface SpatialAnchorsAccountsClient {
     AccountKeysInner listKeys(String resourceGroupName, String accountName);
 
     /**
-     * List Both of the 2 Keys of a Spatial Anchors Account.
+     * Regenerate specified Key of a Spatial Anchors Account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
+     * @param regenerate Required information for key regeneration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountKeysInner> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<AccountKeysInner> regenerateKeysWithResponse(
+        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context);
 
     /**
      * Regenerate specified Key of a Spatial Anchors Account.
@@ -225,20 +241,4 @@ public interface SpatialAnchorsAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccountKeysInner regenerateKeys(
         String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate);
-
-    /**
-     * Regenerate specified Key of a Spatial Anchors Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param regenerate Required information for key regeneration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context);
 }
