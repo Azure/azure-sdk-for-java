@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.StoragePerfUtils;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.perf.core.DirectoryTest;
@@ -16,7 +17,6 @@ import java.util.UUID;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
-    private static final int DEFAULT_BUFFER_SIZE = 16 * 1024 * 1024;
     private static final String FILE_NAME = "perfstress-filev11-" + UUID.randomUUID();
 
     protected final DataLakeFileClient dataLakeFileClient;
@@ -32,9 +32,7 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
         dataLakeFileClient = dataLakeDirectoryClient.getFileClient(FILE_NAME);
         dataLakeFileAsyncClient = dataLakeDirectoryAsyncClient.getFileAsyncClient(FILE_NAME);
 
-        // Dynamically determine the buffer size to be the minimum of 2 * the download size or 16MB.
-        // This reduces heap allocations when running smaller tests.
-        this.bufferSize = (int) Math.min(2 * options.getSize(), DEFAULT_BUFFER_SIZE);
+        this.bufferSize = StoragePerfUtils.getDynamicDownloadBufferSize(options.getSize());
         this.buffer = new byte[bufferSize];
     }
 

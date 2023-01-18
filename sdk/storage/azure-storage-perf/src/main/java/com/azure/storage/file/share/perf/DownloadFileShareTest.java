@@ -5,6 +5,7 @@ package com.azure.storage.file.share.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.StoragePerfUtils;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
@@ -17,7 +18,6 @@ import java.util.UUID;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
-    private static final int DEFAULT_BUFFER_SIZE = 16 * 1024 * 1024;
 
     protected final ShareFileClient shareFileClient;
     protected final ShareFileAsyncClient shareFileAsyncClient;
@@ -33,9 +33,7 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
         shareFileClient = shareDirectoryClient.getFileClient(fileName);
         shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);
 
-        // Dynamically determine the buffer size to be the minimum of 2 * the download size or 16MB.
-        // This reduces heap allocations when running smaller tests.
-        this.bufferSize = (int) Math.min(2 * options.getSize(), DEFAULT_BUFFER_SIZE);
+        this.bufferSize = StoragePerfUtils.getDynamicDownloadBufferSize(options.getSize());
         this.buffer = new byte[bufferSize];
     }
 

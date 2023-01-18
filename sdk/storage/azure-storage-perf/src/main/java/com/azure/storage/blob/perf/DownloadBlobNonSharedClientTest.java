@@ -4,6 +4,7 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
+import com.azure.storage.StoragePerfUtils;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -13,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.io.OutputStream;
 
 public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPerfStressOptions> {
-    private static final int DEFAULT_BUFFER_SIZE = 16 * 1024 * 1024;
     String blobName = "downloadTest";
 
     private final OutputStream devNull = new NullOutputStream();
@@ -23,9 +23,8 @@ public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPe
 
     public DownloadBlobNonSharedClientTest(BlobPerfStressOptions options) {
         super(options);
-        // Dynamically determine the buffer size to be the minimum of 2 * the download size or 16MB.
-        // This reduces heap allocations when running smaller tests.
-        this.bufferSize = (int) Math.min(2 * options.getSize(), DEFAULT_BUFFER_SIZE);
+
+        this.bufferSize = StoragePerfUtils.getDynamicDownloadBufferSize(options.getSize());
         this.buffer = new byte[bufferSize];
     }
 
