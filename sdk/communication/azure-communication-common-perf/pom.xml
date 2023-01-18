@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-perf-test-parent</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
     <relativePath>../../parents/azure-perf-test-parent</relativePath>
   </parent>
 
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.3.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
