@@ -1,7 +1,8 @@
 # Troubleshooting App Configuration issues
 
 This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure 
-App Configuration Java client library, and mitigation steps to resolve these errors.
+App Configuration Java client library, and mitigation steps to resolve these errors. The frequently asked question can 
+be found in [FAQ][faq].
 
 ## Table of Contents
 
@@ -83,8 +84,6 @@ If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application
 dependency version conflict. Please take a look at [troubleshooting dependency version conflicts](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict) for more information on
 why this happens and [ways to mitigate this issue](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
 
-## Troubleshooting Issues By Response Code
-
 
 ## Get additional help
 
@@ -93,3 +92,4 @@ Additional information on ways to reach out for support can be found in the [SUP
 <!-- Links -->
 [configuration_client]: https://learn.microsoft.com/java/api/com.azure.data.appconfiguration.configurationclient?view=azure-java-stable
 [configuration_client_builder]: https://learn.microsoft.com/java/api/com.azure.data.appconfiguration.configurationclientbuilder?view=azure-java-stable
+[faq]: https://learn.microsoft.com/azure/azure-app-configuration/faq
