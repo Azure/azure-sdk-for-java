@@ -1,14 +1,13 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.2 (2023-01-18)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.35.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.2`.
 
 ## 1.1.1 (2022-11-16)
 
