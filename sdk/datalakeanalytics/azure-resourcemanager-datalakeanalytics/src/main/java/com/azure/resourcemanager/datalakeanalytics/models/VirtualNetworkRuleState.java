@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for VirtualNetworkRuleState. */
+/** The current state of the VirtualNetworkRule for this account. */
 public enum VirtualNetworkRuleState {
     /** Enum value Active. */
     ACTIVE("Active"),
@@ -33,6 +33,9 @@ public enum VirtualNetworkRuleState {
      */
     @JsonCreator
     public static VirtualNetworkRuleState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         VirtualNetworkRuleState[] items = VirtualNetworkRuleState.values();
         for (VirtualNetworkRuleState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum VirtualNetworkRuleState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

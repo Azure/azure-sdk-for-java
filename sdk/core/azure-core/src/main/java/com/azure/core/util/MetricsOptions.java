@@ -25,7 +25,7 @@ public class MetricsOptions {
     }
     /**
      * Attempts to load metrics options from the configuration.
-     *
+     * <p>
      * {@code null} will be returned if no metric options are found in the environment.
      *
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If

@@ -40,6 +40,10 @@ public final class MetricBaselinesProperties {
     @JsonProperty(value = "baselines", required = true)
     private List<TimeSeriesBaseline> baselines;
 
+    /** Creates an instance of MetricBaselinesProperties class. */
+    public MetricBaselinesProperties() {
+    }
+
     /**
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally

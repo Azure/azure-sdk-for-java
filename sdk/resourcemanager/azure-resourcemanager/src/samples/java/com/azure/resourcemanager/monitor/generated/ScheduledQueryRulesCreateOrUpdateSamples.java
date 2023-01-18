@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.monitor.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.monitor.fluent.models.LogSearchRuleResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.ScheduledQueryRuleResourceInner;
+import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
-import com.azure.resourcemanager.monitor.models.AlertingAction;
-import com.azure.resourcemanager.monitor.models.AzNsActionGroup;
-import com.azure.resourcemanager.monitor.models.ConditionalOperator;
-import com.azure.resourcemanager.monitor.models.Criteria;
-import com.azure.resourcemanager.monitor.models.Enabled;
-import com.azure.resourcemanager.monitor.models.LogMetricTrigger;
-import com.azure.resourcemanager.monitor.models.LogToMetricAction;
-import com.azure.resourcemanager.monitor.models.MetricTriggerType;
-import com.azure.resourcemanager.monitor.models.QueryType;
-import com.azure.resourcemanager.monitor.models.Schedule;
-import com.azure.resourcemanager.monitor.models.Source;
-import com.azure.resourcemanager.monitor.models.TriggerCondition;
+import com.azure.resourcemanager.monitor.models.Condition;
+import com.azure.resourcemanager.monitor.models.ConditionFailingPeriods;
+import com.azure.resourcemanager.monitor.models.ConditionOperator;
+import com.azure.resourcemanager.monitor.models.Dimension;
+import com.azure.resourcemanager.monitor.models.DimensionOperator;
+import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
+import com.azure.resourcemanager.monitor.models.TimeAggregation;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,51 +23,14 @@ import java.util.Map;
 /** Samples for ScheduledQueryRules CreateOrUpdate. */
 public final class ScheduledQueryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/createOrUpdateScheduledQueryRule-LogToMetricAction.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRuleSubscription.json
      */
     /**
-     * Sample code: Create or Update rule - LogToMetricAction.
+     * Sample code: Create or update a scheduled query rule on Subscription.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateRuleLogToMetricAction(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getScheduledQueryRules()
-            .createOrUpdateWithResponse(
-                "alertsweu",
-                "logtometricfoo",
-                new LogSearchRuleResourceInner()
-                    .withLocation("West Europe")
-                    .withTags(mapOf())
-                    .withDescription("log to metric description")
-                    .withEnabled(Enabled.TRUE)
-                    .withSource(
-                        new Source()
-                            .withDataSourceId(
-                                "/subscriptions/af52d502-a447-4bc6-8cb7-4780fbb00490/resourceGroups/alertsweu/providers/Microsoft.OperationalInsights/workspaces/alertsweu"))
-                    .withAction(
-                        new LogToMetricAction()
-                            .withCriteria(
-                                Arrays
-                                    .asList(
-                                        new Criteria()
-                                            .withMetricName("Average_% Idle Time")
-                                            .withDimensions(Arrays.asList())))),
-                Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/createOrUpdateScheduledQueryRuleswithCrossResource.json
-     */
-    /**
-     * Sample code: Create or Update rule - AlertingAction with Cross-Resource.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createOrUpdateRuleAlertingActionWithCrossResource(
+    public static void createOrUpdateAScheduledQueryRuleOnSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .diagnosticSettings()
@@ -78,89 +38,184 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
             .serviceClient()
             .getScheduledQueryRules()
             .createOrUpdateWithResponse(
-                "Rac46PostSwapRG",
-                "SampleCrossResourceAlert",
-                new LogSearchRuleResourceInner()
+                "QueryResourceGroupName",
+                "perf",
+                new ScheduledQueryRuleResourceInner()
                     .withLocation("eastus")
-                    .withTags(mapOf())
-                    .withDescription("Sample Cross Resource alert")
-                    .withEnabled(Enabled.TRUE)
-                    .withSource(
-                        new Source()
-                            .withQuery("union requests, workspace(\"sampleWorkspace\").Update")
-                            .withAuthorizedResources(
+                    .withDescription("Performance rule")
+                    .withSeverity(AlertSeverity.FOUR)
+                    .withEnabled(true)
+                    .withScopes(Arrays.asList("/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147"))
+                    .withEvaluationFrequency(Duration.parse("PT5M"))
+                    .withWindowSize(Duration.parse("PT10M"))
+                    .withTargetResourceTypes(Arrays.asList("Microsoft.Compute/virtualMachines"))
+                    .withCriteria(
+                        new ScheduledQueryRuleCriteria()
+                            .withAllOf(
                                 Arrays
                                     .asList(
-                                        "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.OperationalInsights/workspaces/sampleWorkspace",
-                                        "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/microsoft.insights/components/sampleAI"))
-                            .withDataSourceId(
-                                "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/microsoft.insights/components/sampleAI")
-                            .withQueryType(QueryType.RESULT_COUNT))
-                    .withSchedule(new Schedule().withFrequencyInMinutes(60).withTimeWindowInMinutes(60))
-                    .withAction(
-                        new AlertingAction()
-                            .withSeverity(AlertSeverity.THREE)
-                            .withAznsAction(
-                                new AzNsActionGroup()
-                                    .withActionGroup(
-                                        Arrays
-                                            .asList(
-                                                "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/microsoft.insights/actiongroups/test-ag"))
-                                    .withEmailSubject("Cross Resource Mail!!"))
-                            .withTrigger(
-                                new TriggerCondition()
-                                    .withThresholdOperator(ConditionalOperator.GREATER_THAN)
-                                    .withThreshold(5000.0))),
+                                        new Condition()
+                                            .withQuery("Perf | where ObjectName == \"Processor\"")
+                                            .withTimeAggregation(TimeAggregation.AVERAGE)
+                                            .withMetricMeasureColumn("% Processor Time")
+                                            .withResourceIdColumn("resourceId")
+                                            .withDimensions(
+                                                Arrays
+                                                    .asList(
+                                                        new Dimension()
+                                                            .withName("ComputerIp")
+                                                            .withOperator(DimensionOperator.EXCLUDE)
+                                                            .withValues(Arrays.asList("192.168.1.1")),
+                                                        new Dimension()
+                                                            .withName("OSType")
+                                                            .withOperator(DimensionOperator.INCLUDE)
+                                                            .withValues(Arrays.asList("*"))))
+                                            .withOperator(ConditionOperator.GREATER_THAN)
+                                            .withThreshold(70.0D)
+                                            .withFailingPeriods(
+                                                new ConditionFailingPeriods()
+                                                    .withNumberOfEvaluationPeriods(1L)
+                                                    .withMinFailingPeriodsToAlert(1L)))))
+                    .withMuteActionsDuration(Duration.parse("PT30M"))
+                    .withActions(
+                        new Actions()
+                            .withActionGroups(
+                                Arrays
+                                    .asList(
+                                        "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
+                            .withCustomProperties(mapOf("key11", "value11", "key12", "value12")))
+                    .withCheckWorkspaceAlertsStorageConfigured(true)
+                    .withSkipQueryValidation(true)
+                    .withAutoMitigate(true),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/createOrUpdateScheduledQueryRules.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
      */
     /**
-     * Sample code: Create or Update rule - AlertingAction.
+     * Sample code: Create or update a scheduled query rule on Resource group(s).
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateRuleAlertingAction(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void createOrUpdateAScheduledQueryRuleOnResourceGroupS(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .diagnosticSettings()
             .manager()
             .serviceClient()
             .getScheduledQueryRules()
             .createOrUpdateWithResponse(
-                "Rac46PostSwapRG",
-                "logalertfoo",
-                new LogSearchRuleResourceInner()
+                "QueryResourceGroupName",
+                "heartbeat",
+                new ScheduledQueryRuleResourceInner()
                     .withLocation("eastus")
-                    .withTags(mapOf())
-                    .withDescription("log alert description")
-                    .withEnabled(Enabled.TRUE)
-                    .withSource(
-                        new Source()
-                            .withQuery("Heartbeat | summarize AggregatedValue = count() by bin(TimeGenerated, 5m)")
-                            .withDataSourceId(
-                                "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.OperationalInsights/workspaces/sampleWorkspace")
-                            .withQueryType(QueryType.RESULT_COUNT))
-                    .withSchedule(new Schedule().withFrequencyInMinutes(15).withTimeWindowInMinutes(15))
-                    .withAction(
-                        new AlertingAction()
-                            .withSeverity(AlertSeverity.ONE)
-                            .withAznsAction(
-                                new AzNsActionGroup()
-                                    .withActionGroup(Arrays.asList())
-                                    .withEmailSubject("Email Header")
-                                    .withCustomWebhookPayload("{}"))
-                            .withTrigger(
-                                new TriggerCondition()
-                                    .withThresholdOperator(ConditionalOperator.GREATER_THAN)
-                                    .withThreshold(3.0)
-                                    .withMetricTrigger(
-                                        new LogMetricTrigger()
-                                            .withThresholdOperator(ConditionalOperator.GREATER_THAN)
-                                            .withThreshold(5.0D)
-                                            .withMetricTriggerType(MetricTriggerType.CONSECUTIVE)
-                                            .withMetricColumn("Computer")))),
+                    .withDescription("Health check rule")
+                    .withSeverity(AlertSeverity.FOUR)
+                    .withEnabled(true)
+                    .withScopes(
+                        Arrays
+                            .asList(
+                                "/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147/resourceGroups/scopeResourceGroup1"))
+                    .withEvaluationFrequency(Duration.parse("PT5M"))
+                    .withWindowSize(Duration.parse("PT10M"))
+                    .withTargetResourceTypes(Arrays.asList("Microsoft.Compute/virtualMachines"))
+                    .withCriteria(
+                        new ScheduledQueryRuleCriteria()
+                            .withAllOf(
+                                Arrays
+                                    .asList(
+                                        new Condition()
+                                            .withQuery("Heartbeat")
+                                            .withTimeAggregation(TimeAggregation.COUNT)
+                                            .withDimensions(Arrays.asList())
+                                            .withOperator(ConditionOperator.GREATER_THAN)
+                                            .withThreshold(360.0D)
+                                            .withFailingPeriods(
+                                                new ConditionFailingPeriods()
+                                                    .withNumberOfEvaluationPeriods(1L)
+                                                    .withMinFailingPeriodsToAlert(1L)))))
+                    .withMuteActionsDuration(Duration.parse("PT30M"))
+                    .withActions(
+                        new Actions()
+                            .withActionGroups(
+                                Arrays
+                                    .asList(
+                                        "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
+                            .withCustomProperties(mapOf("key11", "value11", "key12", "value12")))
+                    .withCheckWorkspaceAlertsStorageConfigured(true)
+                    .withSkipQueryValidation(true)
+                    .withAutoMitigate(true),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRule.json
+     */
+    /**
+     * Sample code: Create or update a scheduled query rule for Single Resource.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateAScheduledQueryRuleForSingleResource(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
+            .createOrUpdateWithResponse(
+                "QueryResourceGroupName",
+                "perf",
+                new ScheduledQueryRuleResourceInner()
+                    .withLocation("eastus")
+                    .withDescription("Performance rule")
+                    .withSeverity(AlertSeverity.FOUR)
+                    .withEnabled(true)
+                    .withScopes(
+                        Arrays
+                            .asList(
+                                "/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147/resourceGroups/scopeResourceGroup1/providers/Microsoft.Compute/virtualMachines/vm1"))
+                    .withEvaluationFrequency(Duration.parse("PT5M"))
+                    .withWindowSize(Duration.parse("PT10M"))
+                    .withCriteria(
+                        new ScheduledQueryRuleCriteria()
+                            .withAllOf(
+                                Arrays
+                                    .asList(
+                                        new Condition()
+                                            .withQuery("Perf | where ObjectName == \"Processor\"")
+                                            .withTimeAggregation(TimeAggregation.AVERAGE)
+                                            .withMetricMeasureColumn("% Processor Time")
+                                            .withResourceIdColumn("resourceId")
+                                            .withDimensions(
+                                                Arrays
+                                                    .asList(
+                                                        new Dimension()
+                                                            .withName("ComputerIp")
+                                                            .withOperator(DimensionOperator.EXCLUDE)
+                                                            .withValues(Arrays.asList("192.168.1.1")),
+                                                        new Dimension()
+                                                            .withName("OSType")
+                                                            .withOperator(DimensionOperator.INCLUDE)
+                                                            .withValues(Arrays.asList("*"))))
+                                            .withOperator(ConditionOperator.GREATER_THAN)
+                                            .withThreshold(70.0D)
+                                            .withFailingPeriods(
+                                                new ConditionFailingPeriods()
+                                                    .withNumberOfEvaluationPeriods(1L)
+                                                    .withMinFailingPeriodsToAlert(1L)))))
+                    .withMuteActionsDuration(Duration.parse("PT30M"))
+                    .withActions(
+                        new Actions()
+                            .withActionGroups(
+                                Arrays
+                                    .asList(
+                                        "/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup"))
+                            .withCustomProperties(mapOf("key11", "value11", "key12", "value12")))
+                    .withCheckWorkspaceAlertsStorageConfigured(true)
+                    .withSkipQueryValidation(true)
+                    .withAutoMitigate(true),
                 Context.NONE);
     }
 

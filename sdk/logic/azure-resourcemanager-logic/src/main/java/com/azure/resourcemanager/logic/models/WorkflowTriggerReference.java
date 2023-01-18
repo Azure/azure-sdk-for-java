@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The workflow trigger reference. */
 @Fluent
 public final class WorkflowTriggerReference extends ResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggerReference.class);
-
     /*
      * The workflow name.
      */
@@ -25,6 +21,10 @@ public final class WorkflowTriggerReference extends ResourceReference {
      */
     @JsonProperty(value = "triggerName")
     private String triggerName;
+
+    /** Creates an instance of WorkflowTriggerReference class. */
+    public WorkflowTriggerReference() {
+    }
 
     /**
      * Get the flowName property: The workflow name.

@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hanaonazure.fluent.HanaInstancesClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HanaInstancesClient. */
 public final class HanaInstancesClientImpl implements HanaInstancesClient {
-    private final ClientLogger logger = new ClientLogger(HanaInstancesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final HanaInstancesService service;
 
@@ -69,7 +66,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "HanaManagementClient")
-    private interface HanaInstancesService {
+    public interface HanaInstancesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/hanaInstances")
         @ExpectedResponses({200})
@@ -224,12 +221,15 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
+     * Gets a list of SAP HANA instances in the specified subscription.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listSinglePageAsync() {
@@ -269,14 +269,17 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
+     * Gets a list of SAP HANA instances in the specified subscription.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listSinglePageAsync(Context context) {
@@ -313,12 +316,14 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
+     * Gets a list of SAP HANA instances in the specified subscription.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HanaInstanceInner> listAsync() {
@@ -326,14 +331,16 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
+     * Gets a list of SAP HANA instances in the specified subscription.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HanaInstanceInner> listAsync(Context context) {
@@ -342,12 +349,15 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
+     * Gets a list of SAP HANA instances in the specified subscription.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HanaInstanceInner> list() {
@@ -355,14 +365,17 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
+     * Gets a list of SAP HANA instances in the specified subscription.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HanaInstanceInner> list(Context context) {
@@ -370,14 +383,17 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
      *
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -422,7 +438,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
      *
      * @param resourceGroupName Name of the resource group.
@@ -430,7 +448,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listByResourceGroupSinglePageAsync(
@@ -473,14 +492,17 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
      *
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HanaInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -490,7 +512,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
      *
      * @param resourceGroupName Name of the resource group.
@@ -498,7 +522,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HanaInstanceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -508,14 +533,17 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
      *
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HanaInstanceInner> listByResourceGroup(String resourceGroupName) {
@@ -523,7 +551,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     *
+     * <p>Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
      *
      * @param resourceGroupName Name of the resource group.
@@ -531,7 +561,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HanaInstanceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -539,14 +570,17 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Gets properties of a SAP HANA instance.
+     *
+     * <p>Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HanaInstanceInner>> getByResourceGroupWithResponseAsync(
@@ -588,7 +622,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Gets properties of a SAP HANA instance.
+     *
+     * <p>Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -596,7 +632,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HanaInstanceInner>> getByResourceGroupWithResponseAsync(
@@ -635,30 +672,48 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Gets properties of a SAP HANA instance.
+     *
+     * <p>Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HanaInstanceInner> getByResourceGroupAsync(String resourceGroupName, String hanaInstanceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, hanaInstanceName)
-            .flatMap(
-                (Response<HanaInstanceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Gets properties of a SAP HANA instance.
+     *
+     * <p>Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name along
+     *     with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HanaInstanceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String hanaInstanceName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, hanaInstanceName, context).block();
+    }
+
+    /**
+     * Gets properties of a SAP HANA instance.
+     *
+     * <p>Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -669,28 +724,13 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HanaInstanceInner getByResourceGroup(String resourceGroupName, String hanaInstanceName) {
-        return getByResourceGroupAsync(resourceGroupName, hanaInstanceName).block();
+        return getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, Context.NONE).getValue();
     }
 
     /**
-     * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
      *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HanaInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String hanaInstanceName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, hanaInstanceName, context).block();
-    }
-
-    /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -698,7 +738,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return hANA instance info on Azure (ARM properties and HANA properties) along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -747,7 +788,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -756,7 +799,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return hANA instance info on Azure (ARM properties and HANA properties) along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -802,7 +846,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -810,9 +856,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return the {@link PollerFlux} for polling of hANA instance info on Azure (ARM properties and HANA properties).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreateAsync(
         String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -820,11 +866,17 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
         return this
             .client
             .<HanaInstanceInner, HanaInstanceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), HanaInstanceInner.class, HanaInstanceInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                HanaInstanceInner.class,
+                HanaInstanceInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -833,9 +885,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return the {@link PollerFlux} for polling of hANA instance info on Azure (ARM properties and HANA properties).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreateAsync(
         String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter, Context context) {
         context = this.client.mergeContext(context);
@@ -848,7 +900,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -856,16 +910,18 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return the {@link SyncPoller} for polling of hANA instance info on Azure (ARM properties and HANA properties).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreate(
         String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter) {
-        return beginCreateAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter).getSyncPoller();
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -874,16 +930,20 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return the {@link SyncPoller} for polling of hANA instance info on Azure (ARM properties and HANA properties).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreate(
         String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter, Context context) {
-        return beginCreateAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, hanaInstanceName, hanaInstanceParameter, context)
+            .getSyncPoller();
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -891,7 +951,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return hANA instance info on Azure (ARM properties and HANA properties) on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HanaInstanceInner> createAsync(
@@ -902,7 +963,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -911,7 +974,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return hANA instance info on Azure (ARM properties and HANA properties) on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HanaInstanceInner> createAsync(
@@ -922,7 +986,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -939,7 +1005,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Creates a SAP HANA instance.
+     *
+     * <p>Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -957,14 +1025,16 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1006,7 +1076,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1014,7 +1086,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1053,25 +1125,30 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hanaInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hanaInstanceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1079,9 +1156,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hanaInstanceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1092,22 +1169,26 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hanaInstanceName) {
-        return beginDeleteAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1115,23 +1196,25 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hanaInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hanaInstanceName) {
@@ -1141,7 +1224,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1149,7 +1234,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hanaInstanceName, Context context) {
@@ -1159,7 +1244,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1173,7 +1260,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
+     * Deletes a SAP HANA instance.
+     *
+     * <p>Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1188,7 +1277,10 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Patches the Tags field of a SAP HANA instance.
+     *
+     * <p>Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance
+     * name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1196,7 +1288,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return hANA instance info on Azure (ARM properties and HANA properties) along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HanaInstanceInner>> updateWithResponseAsync(
@@ -1244,7 +1337,10 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Patches the Tags field of a SAP HANA instance.
+     *
+     * <p>Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance
+     * name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1253,7 +1349,8 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return hANA instance info on Azure (ARM properties and HANA properties) along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HanaInstanceInner>> updateWithResponseAsync(
@@ -1298,7 +1395,10 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     }
 
     /**
-     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Patches the Tags field of a SAP HANA instance.
+     *
+     * <p>Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance
+     * name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1306,23 +1406,41 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return hANA instance info on Azure (ARM properties and HANA properties) on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName, Tags tagsParameter) {
         return updateWithResponseAsync(resourceGroupName, hanaInstanceName, tagsParameter)
-            .flatMap(
-                (Response<HanaInstanceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * Patches the Tags field of a SAP HANA instance.
+     *
+     * <p>Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance
+     * name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param tagsParameter Request body that only contains the new Tags field.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hANA instance info on Azure (ARM properties and HANA properties) along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HanaInstanceInner> updateWithResponse(
+        String resourceGroupName, String hanaInstanceName, Tags tagsParameter, Context context) {
+        return updateWithResponseAsync(resourceGroupName, hanaInstanceName, tagsParameter, context).block();
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     *
+     * <p>Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance
+     * name.
      *
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
@@ -1334,25 +1452,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HanaInstanceInner update(String resourceGroupName, String hanaInstanceName, Tags tagsParameter) {
-        return updateAsync(resourceGroupName, hanaInstanceName, tagsParameter).block();
-    }
-
-    /**
-     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param tagsParameter Request body that only contains the new Tags field.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HanaInstanceInner> updateWithResponse(
-        String resourceGroupName, String hanaInstanceName, Tags tagsParameter, Context context) {
-        return updateWithResponseAsync(resourceGroupName, hanaInstanceName, tagsParameter, context).block();
+        return updateWithResponse(resourceGroupName, hanaInstanceName, tagsParameter, Context.NONE).getValue();
     }
 
     /**
@@ -1363,7 +1463,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -1413,7 +1513,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -1459,14 +1559,15 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String hanaInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, hanaInstanceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1478,9 +1579,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String hanaInstanceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1498,11 +1599,11 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hanaInstanceName) {
-        return beginRestartAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
     }
 
     /**
@@ -1514,12 +1615,12 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String hanaInstanceName, Context context) {
-        return beginRestartAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
     }
 
     /**
@@ -1530,7 +1631,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(String resourceGroupName, String hanaInstanceName) {
@@ -1548,7 +1649,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(String resourceGroupName, String hanaInstanceName, Context context) {
@@ -1594,7 +1695,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String hanaInstanceName) {
@@ -1643,7 +1744,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1689,14 +1790,15 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String hanaInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, hanaInstanceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1708,9 +1810,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String hanaInstanceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1728,11 +1830,11 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String hanaInstanceName) {
-        return beginStartAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
     }
 
     /**
@@ -1744,12 +1846,12 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String hanaInstanceName, Context context) {
-        return beginStartAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
     }
 
     /**
@@ -1760,7 +1862,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String hanaInstanceName) {
@@ -1778,7 +1880,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String hanaInstanceName, Context context) {
@@ -1824,7 +1926,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> shutdownWithResponseAsync(
@@ -1874,7 +1976,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> shutdownWithResponseAsync(
@@ -1920,14 +2022,15 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginShutdownAsync(String resourceGroupName, String hanaInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = shutdownWithResponseAsync(resourceGroupName, hanaInstanceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1939,9 +2042,9 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginShutdownAsync(
         String resourceGroupName, String hanaInstanceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1959,11 +2062,11 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginShutdown(String resourceGroupName, String hanaInstanceName) {
-        return beginShutdownAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
+        return this.beginShutdownAsync(resourceGroupName, hanaInstanceName).getSyncPoller();
     }
 
     /**
@@ -1975,12 +2078,12 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginShutdown(
         String resourceGroupName, String hanaInstanceName, Context context) {
-        return beginShutdownAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
+        return this.beginShutdownAsync(resourceGroupName, hanaInstanceName, context).getSyncPoller();
     }
 
     /**
@@ -1991,7 +2094,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> shutdownAsync(String resourceGroupName, String hanaInstanceName) {
@@ -2009,7 +2112,7 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> shutdownAsync(String resourceGroupName, String hanaInstanceName, Context context) {
@@ -2050,11 +2153,13 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List HANA Instances operation.
+     * @return the response from the List HANA Instances operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2085,12 +2190,14 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List HANA Instances operation.
+     * @return the response from the List HANA Instances operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2121,11 +2228,13 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List HANA Instances operation.
+     * @return the response from the List HANA Instances operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2157,12 +2266,14 @@ public final class HanaInstancesClientImpl implements HanaInstancesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List HANA Instances operation.
+     * @return the response from the List HANA Instances operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HanaInstanceInner>> listByResourceGroupNextSinglePageAsync(

@@ -31,6 +31,10 @@ public class Codec {
     @JsonProperty(value = "label")
     private String label;
 
+    /** Creates an instance of Codec class. */
+    public Codec() {
+    }
+
     /**
      * Get the label property: An optional label for the codec. The label can be used to control muxing behavior.
      *

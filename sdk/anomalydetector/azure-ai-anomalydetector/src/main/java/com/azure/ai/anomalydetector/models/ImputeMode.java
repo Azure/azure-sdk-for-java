@@ -39,7 +39,11 @@ public final class ImputeMode extends ExpandableStringEnum<ImputeMode> {
         return fromString(name, ImputeMode.class);
     }
 
-    /** @return known ImputeMode values. */
+    /**
+     * Gets known ImputeMode values.
+     *
+     * @return known ImputeMode values.
+     */
     public static Collection<ImputeMode> values() {
         return values(ImputeMode.class);
     }

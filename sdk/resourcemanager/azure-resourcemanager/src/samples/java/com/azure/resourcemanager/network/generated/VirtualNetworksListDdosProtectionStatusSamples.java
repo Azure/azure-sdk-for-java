@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualNetworks ListDdosProtectionStatus. */
 public final class VirtualNetworksListDdosProtectionStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGetDdosProtectionStatus.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGetDdosProtectionStatus.json
      */
     /**
      * Sample code: Get Ddos Protection Status of a Virtual Network.

@@ -318,7 +318,7 @@ public final class WeatherClient {
      * 
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
-     * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;, 
+     * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
      *     null, null, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_conditions -->
@@ -364,7 +364,7 @@ public final class WeatherClient {
      * 
      * <!-- src_embed com.azure.maps.weather.sync.get_current_conditions -->
      * <pre>
-     * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;, 
+     * client.getCurrentConditions&#40;new GeoPosition&#40;-122.125679, 47.641268&#41;,
      *     null, null, null, null&#41;;
      * </pre>
      * <!-- end com.azure.maps.weather.sync.get_current_conditions -->

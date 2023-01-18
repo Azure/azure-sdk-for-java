@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerBlobAuditingPolicies ListByServer. */
 public final class ServerBlobAuditingPoliciesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerAuditingSettingsList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAuditingSettingsList.json
      */
     /**
      * Sample code: List auditing settings of a server.

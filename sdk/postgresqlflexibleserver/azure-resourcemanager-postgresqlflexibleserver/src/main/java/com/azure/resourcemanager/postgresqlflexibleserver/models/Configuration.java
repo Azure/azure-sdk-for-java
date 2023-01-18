@@ -32,7 +32,7 @@ public interface Configuration {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -79,6 +79,48 @@ public interface Configuration {
      * @return the source value.
      */
     String source();
+
+    /**
+     * Gets the isDynamicConfig property: Configuration dynamic or static.
+     *
+     * @return the isDynamicConfig value.
+     */
+    Boolean isDynamicConfig();
+
+    /**
+     * Gets the isReadOnly property: Configuration read-only or not.
+     *
+     * @return the isReadOnly value.
+     */
+    Boolean isReadOnly();
+
+    /**
+     * Gets the isConfigPendingRestart property: Configuration is pending restart or not.
+     *
+     * @return the isConfigPendingRestart value.
+     */
+    Boolean isConfigPendingRestart();
+
+    /**
+     * Gets the unit property: Configuration unit.
+     *
+     * @return the unit value.
+     */
+    String unit();
+
+    /**
+     * Gets the documentationLink property: Configuration documentation link.
+     *
+     * @return the documentationLink value.
+     */
+    String documentationLink();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner object.

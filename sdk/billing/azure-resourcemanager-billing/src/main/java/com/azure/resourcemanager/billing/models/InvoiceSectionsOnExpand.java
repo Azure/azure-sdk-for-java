@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,13 +15,9 @@ import java.util.List;
  */
 @Fluent
 public final class InvoiceSectionsOnExpand {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionsOnExpand.class);
-
     /*
-     * Indicates whether there are more invoice sections than the ones listed
-     * in this collection. The collection lists a maximum of 50 invoice
-     * sections. To get all invoice sections, use the list invoice sections
-     * API.
+     * Indicates whether there are more invoice sections than the ones listed in this collection. The collection lists
+     * a maximum of 50 invoice sections. To get all invoice sections, use the list invoice sections API.
      */
     @JsonProperty(value = "hasMoreResults", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasMoreResults;
@@ -33,6 +27,10 @@ public final class InvoiceSectionsOnExpand {
      */
     @JsonProperty(value = "value")
     private List<InvoiceSectionInner> value;
+
+    /** Creates an instance of InvoiceSectionsOnExpand class. */
+    public InvoiceSectionsOnExpand() {
+    }
 
     /**
      * Get the hasMoreResults property: Indicates whether there are more invoice sections than the ones listed in this

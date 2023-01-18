@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.PoliciesClient;
 import com.azure.resourcemanager.billing.fluent.models.CustomerPolicyInner;
 import com.azure.resourcemanager.billing.fluent.models.PolicyInner;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PoliciesClient. */
 public final class PoliciesClientImpl implements PoliciesClient {
-    private final ClientLogger logger = new ClientLogger(PoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PoliciesService service;
 
@@ -55,7 +52,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface PoliciesService {
+    public interface PoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
@@ -124,7 +121,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> getByBillingProfileWithResponseAsync(
@@ -169,7 +166,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> getByBillingProfileWithResponseAsync(
@@ -205,19 +202,30 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PolicyInner> getByBillingProfileAsync(String billingAccountName, String billingProfileName) {
         return getByBillingProfileWithResponseAsync(billingAccountName, billingProfileName)
-            .flatMap(
-                (Response<PolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyInner> getByBillingProfileWithResponse(
+        String billingAccountName, String billingProfileName, Context context) {
+        return getByBillingProfileWithResponseAsync(billingAccountName, billingProfileName, context).block();
     }
 
     /**
@@ -233,25 +241,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner getByBillingProfile(String billingAccountName, String billingProfileName) {
-        return getByBillingProfileAsync(billingAccountName, billingProfileName).block();
-    }
-
-    /**
-     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
-     * type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyInner> getByBillingProfileWithResponse(
-        String billingAccountName, String billingProfileName, Context context) {
-        return getByBillingProfileWithResponseAsync(billingAccountName, billingProfileName, context).block();
+        return getByBillingProfileWithResponse(billingAccountName, billingProfileName, Context.NONE).getValue();
     }
 
     /**
@@ -264,7 +254,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> updateWithResponseAsync(
@@ -316,7 +306,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> updateWithResponseAsync(
@@ -364,20 +354,32 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PolicyInner> updateAsync(
         String billingAccountName, String billingProfileName, PolicyInner parameters) {
         return updateWithResponseAsync(billingAccountName, billingProfileName, parameters)
-            .flatMap(
-                (Response<PolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param parameters Request parameters that are provided to the update policies operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyInner> updateWithResponse(
+        String billingAccountName, String billingProfileName, PolicyInner parameters, Context context) {
+        return updateWithResponseAsync(billingAccountName, billingProfileName, parameters, context).block();
     }
 
     /**
@@ -394,26 +396,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyInner update(String billingAccountName, String billingProfileName, PolicyInner parameters) {
-        return updateAsync(billingAccountName, billingProfileName, parameters).block();
-    }
-
-    /**
-     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
-     * type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param parameters Request parameters that are provided to the update policies operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyInner> updateWithResponse(
-        String billingAccountName, String billingProfileName, PolicyInner parameters, Context context) {
-        return updateWithResponseAsync(billingAccountName, billingProfileName, parameters, context).block();
+        return updateWithResponse(billingAccountName, billingProfileName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -425,7 +408,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> getByCustomerWithResponseAsync(
@@ -464,7 +447,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> getByCustomerWithResponseAsync(
@@ -498,19 +481,30 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomerPolicyInner> getByCustomerAsync(String billingAccountName, String customerName) {
         return getByCustomerWithResponseAsync(billingAccountName, customerName)
-            .flatMap(
-                (Response<CustomerPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the customer's Policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomerPolicyInner> getByCustomerWithResponse(
+        String billingAccountName, String customerName, Context context) {
+        return getByCustomerWithResponseAsync(billingAccountName, customerName, context).block();
     }
 
     /**
@@ -526,25 +520,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomerPolicyInner getByCustomer(String billingAccountName, String customerName) {
-        return getByCustomerAsync(billingAccountName, customerName).block();
-    }
-
-    /**
-     * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
-     * Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomerPolicyInner> getByCustomerWithResponse(
-        String billingAccountName, String customerName, Context context) {
-        return getByCustomerWithResponseAsync(billingAccountName, customerName, context).block();
+        return getByCustomerWithResponse(billingAccountName, customerName, Context.NONE).getValue();
     }
 
     /**
@@ -557,7 +533,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> updateCustomerWithResponseAsync(
@@ -608,7 +584,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> updateCustomerWithResponseAsync(
@@ -649,20 +625,32 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomerPolicyInner> updateCustomerAsync(
         String billingAccountName, String customerName, CustomerPolicyInner parameters) {
         return updateCustomerWithResponseAsync(billingAccountName, customerName, parameters)
-            .flatMap(
-                (Response<CustomerPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters Request parameters that are provided to the update policies operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the customer's Policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomerPolicyInner> updateCustomerWithResponse(
+        String billingAccountName, String customerName, CustomerPolicyInner parameters, Context context) {
+        return updateCustomerWithResponseAsync(billingAccountName, customerName, parameters, context).block();
     }
 
     /**
@@ -680,25 +668,6 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomerPolicyInner updateCustomer(
         String billingAccountName, String customerName, CustomerPolicyInner parameters) {
-        return updateCustomerAsync(billingAccountName, customerName, parameters).block();
-    }
-
-    /**
-     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
-     * Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
-     * @param parameters Request parameters that are provided to the update policies operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomerPolicyInner> updateCustomerWithResponse(
-        String billingAccountName, String customerName, CustomerPolicyInner parameters, Context context) {
-        return updateCustomerWithResponseAsync(billingAccountName, customerName, parameters, context).block();
+        return updateCustomerWithResponse(billingAccountName, customerName, parameters, Context.NONE).getValue();
     }
 }

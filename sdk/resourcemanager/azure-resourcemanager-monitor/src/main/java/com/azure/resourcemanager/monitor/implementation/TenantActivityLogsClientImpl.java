@@ -55,7 +55,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientTenantA")
-    private interface TenantActivityLogsService {
+    public interface TenantActivityLogsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Insights/eventtypes/management/values")
         @ExpectedResponses({200})

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ContainerType;
 import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentLogsRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentLogsRequest model =
             BinaryData
                 .fromString("{\"containerType\":\"StorageInitializer\",\"tail\":304740778}")
@@ -21,8 +20,8 @@ public final class DeploymentLogsRequestTests {
         Assertions.assertEquals(304740778, model.tail());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentLogsRequest model =
             new DeploymentLogsRequest().withContainerType(ContainerType.STORAGE_INITIALIZER).withTail(304740778);
         model = BinaryData.fromObject(model).toObject(DeploymentLogsRequest.class);

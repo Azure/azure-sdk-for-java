@@ -24,6 +24,10 @@ public final class PacketCoreControlPlaneVersionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PacketCoreControlPlaneVersionListResult class. */
+    public PacketCoreControlPlaneVersionListResult() {
+    }
+
     /**
      * Get the value property: A list of supported packet core control plane versions.
      *

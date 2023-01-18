@@ -29,6 +29,15 @@ public final class JobOutputType extends ExpandableStringEnum<JobOutputType> {
     public static final JobOutputType TRITON_MODEL = fromString("triton_model");
 
     /**
+     * Creates a new instance of JobOutputType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobOutputType() {
+    }
+
+    /**
      * Creates or finds a JobOutputType from its string representation.
      *
      * @param name a name to look for.

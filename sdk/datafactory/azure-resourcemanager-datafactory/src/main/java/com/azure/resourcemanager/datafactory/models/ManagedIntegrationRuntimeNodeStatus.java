@@ -24,6 +24,15 @@ public final class ManagedIntegrationRuntimeNodeStatus
     public static final ManagedIntegrationRuntimeNodeStatus UNAVAILABLE = fromString("Unavailable");
 
     /**
+     * Creates a new instance of ManagedIntegrationRuntimeNodeStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedIntegrationRuntimeNodeStatus() {
+    }
+
+    /**
      * Creates or finds a ManagedIntegrationRuntimeNodeStatus from its string representation.
      *
      * @param name a name to look for.

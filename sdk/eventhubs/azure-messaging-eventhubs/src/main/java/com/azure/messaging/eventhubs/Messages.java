@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.CoreUtils;
+
 import java.util.Map;
 
 /**
@@ -23,6 +24,11 @@ public enum Messages {
      * Encoding type not supported message.
      */
     public static final String ENCODING_TYPE_NOT_SUPPORTED = getMessage("ENCODING_TYPE_NOT_SUPPORTED");
+
+    /**
+     * Encoder is not supported message.
+     */
+    public static final String ENCODING_TYPE_NOT_SUPPORTED_ENCODER = getMessage("ENCODING_TYPE_NOT_SUPPORTED_ENCODER");
 
     /**
      * Process span scope type error message.

@@ -14,6 +14,10 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Media.Mp4Format")
 @Fluent
 public final class Mp4Format extends MultiBitrateFormat {
+    /** Creates an instance of Mp4Format class. */
+    public Mp4Format() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public Mp4Format withOutputFiles(List<OutputFile> outputFiles) {

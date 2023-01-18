@@ -17,6 +17,10 @@ public final class Hls {
     @JsonProperty(value = "fragmentsPerTsSegment")
     private Integer fragmentsPerTsSegment;
 
+    /** Creates an instance of Hls class. */
+    public Hls() {
+    }
+
     /**
      * Get the fragmentsPerTsSegment property: The number of fragments in an HTTP Live Streaming (HLS) TS segment in the
      * output of the live event. This value does not affect the packing ratio for HLS CMAF output.

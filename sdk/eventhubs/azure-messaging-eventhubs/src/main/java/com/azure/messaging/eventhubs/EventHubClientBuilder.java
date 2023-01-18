@@ -53,6 +53,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
@@ -221,7 +222,7 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Sets the credential information given a connection string to the Event Hub instance.
+     * Sets the credential information given a connection string to the Event Hub instance or the Event Hubs namespace.
      *
      * <p>
      * If the connection string is copied from the Event Hubs namespace, it will likely not contain the name to the
@@ -234,20 +235,34 @@ public class EventHubClientBuilder implements
      * from that Event Hub will result in a connection string that contains the name.
      * </p>
      *
-     * @param connectionString The connection string to use for connecting to the Event Hub instance. It is expected
-     *     that the Event Hub name and the shared access key properties are contained in this connection string.
+     * @param connectionString The connection string to use for connecting to the Event Hub instance or Event Hubs
+     *     instance. It is expected that the Event Hub name and the shared access key properties are contained in this
+     *     connection string.
      *
      * @return The updated {@link EventHubClientBuilder} object.
-     * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code
-     *     connectionString} does not contain the "EntityPath" key, which is the name of the Event Hub instance.
+     * @throws IllegalArgumentException if {@code connectionString} is null or empty. If {@code fullyQualifiedNamespace}
+     *     in the connection string is null.
+     * @throws NullPointerException if a credential could not be extracted
      * @throws AzureException If the shared access signature token credential could not be created using the
      *     connection string.
      */
     @Override
     public EventHubClientBuilder connectionString(String connectionString) {
-        ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        TokenCredential tokenCredential = getTokenCredential(properties);
-        return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
+        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(properties.getEndpoint().getHost(),
+            "'fullyQualifiedNamespace' cannot be null.");
+        this.credentials = getTokenCredential(properties);
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        }
+
+        if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())) {
+            this.eventHubName = properties.getEntityPath();
+        }
+
+        return this;
     }
 
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
@@ -403,13 +418,6 @@ public class EventHubClientBuilder implements
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
         return this;
-    }
-
-    private String getEventHubName() {
-        if (CoreUtils.isNullOrEmpty(eventHubName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
-        }
-        return eventHubName;
     }
 
     /**
@@ -714,7 +722,7 @@ public class EventHubClientBuilder implements
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
-     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.  Or, if the {@code eventHubName} has not been set.
      */
     public EventHubConsumerAsyncClient buildAsyncConsumerClient() {
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
@@ -733,7 +741,7 @@ public class EventHubClientBuilder implements
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
-     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.  Or, if the {@code eventHubName} has not been set.
      */
     public EventHubConsumerClient buildConsumerClient() {
         return buildClient().createConsumer(consumerGroup, prefetchCount);
@@ -747,6 +755,7 @@ public class EventHubClientBuilder implements
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     Or, if the {@code eventHubName} has not been set.
      */
     public EventHubProducerAsyncClient buildAsyncProducerClient() {
         return buildAsyncClient().createProducer();
@@ -760,6 +769,7 @@ public class EventHubClientBuilder implements
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     Or, if the {@code eventHubName} has not been set.
      */
     public EventHubProducerClient buildProducerClient() {
         return buildClient().createProducer();
@@ -786,7 +796,8 @@ public class EventHubClientBuilder implements
      * @return A new {@link EventHubAsyncClient} instance with all the configured options.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      *     #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
-     *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}. Or, if the
+     *     {@code eventHubName} has not been set.
      */
     EventHubAsyncClient buildAsyncClient() {
         if (retryOptions == null) {
@@ -898,6 +909,13 @@ public class EventHubClientBuilder implements
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
+        final Supplier<String> getEventHubName = () -> {
+            if (CoreUtils.isNullOrEmpty(eventHubName)) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            }
+            return eventHubName;
+        };
+
         final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
             sink.onRequest(request -> {
 
@@ -921,7 +939,7 @@ public class EventHubClientBuilder implements
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, getEventHubName(), provider, handlerProvider, tokenManagerProvider,
+                    connectionOptions, getEventHubName.get(), provider, handlerProvider, tokenManagerProvider,
                     messageSerializer);
 
                 sink.next(connection);
@@ -929,7 +947,7 @@ public class EventHubClientBuilder implements
         });
 
         return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), getEventHubName(), connectionOptions.getRetry()));
+            connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
     }
 
     private ConnectionOptions getConnectionOptions() {

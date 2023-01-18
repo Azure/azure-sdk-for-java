@@ -17,6 +17,10 @@ public final class DataContainer {
     @JsonProperty(value = "workspace", required = true)
     private WorkspaceInfo workspace;
 
+    /** Creates an instance of DataContainer class. */
+    public DataContainer() {
+    }
+
     /**
      * Get the workspace property: Log Analytics workspace information.
      *

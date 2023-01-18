@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
-            <version>3.1.8</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
+            <version>3.1.9</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
         </dependency>
     </dependencies>
 </project>

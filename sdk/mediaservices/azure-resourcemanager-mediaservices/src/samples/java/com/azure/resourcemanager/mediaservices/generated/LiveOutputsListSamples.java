@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LiveOutputs List. */
 public final class LiveOutputsListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-list-all.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/liveoutput-list-all.json
      */
     /**
      * Sample code: List all LiveOutputs.
@@ -17,6 +15,8 @@ public final class LiveOutputsListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listAllLiveOutputs(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.liveOutputs().list("mediaresources", "slitestmedia10", "myLiveEvent1", Context.NONE);
+        manager
+            .liveOutputs()
+            .list("mediaresources", "slitestmedia10", "myLiveEvent1", com.azure.core.util.Context.NONE);
     }
 }

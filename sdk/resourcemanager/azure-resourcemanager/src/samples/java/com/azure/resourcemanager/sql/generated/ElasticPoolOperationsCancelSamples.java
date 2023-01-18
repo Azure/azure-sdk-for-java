@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for ElasticPoolOperations Cancel. */
 public final class ElasticPoolOperationsCancelSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/CancelElasticPoolOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelElasticPoolOperation.json
      */
     /**
      * Sample code: Cancel the elastic pool management operation.

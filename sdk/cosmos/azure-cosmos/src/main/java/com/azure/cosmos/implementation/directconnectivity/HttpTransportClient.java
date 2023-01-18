@@ -91,6 +91,9 @@ public class HttpTransportClient extends TransportClient {
         // Set requested API version header for version enforcement.
         this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL, HttpConstants.HeaderValues.NO_CACHE);
+        this.defaultHeaders.put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
         if (userAgent == null) {
             userAgent = new UserAgentContainer();

@@ -5,22 +5,31 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.AddDataLakeStoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to add a new Data Lake Store account. */
-@JsonFlatten
 @Fluent
-public class AddDataLakeStoreParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddDataLakeStoreParameters.class);
-
+public final class AddDataLakeStoreParameters {
     /*
-     * The optional suffix for the Data Lake Store account.
+     * The Data Lake Store account properties to use when adding a new Data Lake Store account.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    @JsonProperty(value = "properties")
+    private AddDataLakeStoreProperties innerProperties;
+
+    /** Creates an instance of AddDataLakeStoreParameters class. */
+    public AddDataLakeStoreParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The Data Lake Store account properties to use when adding a new Data Lake Store
+     * account.
+     *
+     * @return the innerProperties value.
+     */
+    private AddDataLakeStoreProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the suffix property: The optional suffix for the Data Lake Store account.
@@ -28,7 +37,7 @@ public class AddDataLakeStoreParameters {
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
@@ -38,7 +47,10 @@ public class AddDataLakeStoreParameters {
      * @return the AddDataLakeStoreParameters object itself.
      */
     public AddDataLakeStoreParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AddDataLakeStoreProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
@@ -48,5 +60,8 @@ public class AddDataLakeStoreParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -6,6 +6,8 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.DelegationProperties;
+import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
@@ -52,7 +54,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     private String cloudInitConfiguration;
 
     /*
-     * VirtualAppliance ASN.
+     * VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are not supported.
      */
     @JsonProperty(value = "virtualApplianceAsn")
     private Long virtualApplianceAsn;
@@ -86,6 +88,24 @@ public final class NetworkVirtualAppliancePropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * The deployment type. PartnerManaged for the SaaS NVA
+     */
+    @JsonProperty(value = "deploymentType", access = JsonProperty.Access.WRITE_ONLY)
+    private String deploymentType;
+
+    /*
+     * The delegation for the Virtual Appliance
+     */
+    @JsonProperty(value = "delegation")
+    private DelegationProperties delegation;
+
+    /*
+     * The delegation for the Virtual Appliance
+     */
+    @JsonProperty(value = "partnerManagedResource")
+    private PartnerManagedResourceProperties partnerManagedResource;
 
     /** Creates an instance of NetworkVirtualAppliancePropertiesFormat class. */
     public NetworkVirtualAppliancePropertiesFormat() {
@@ -203,7 +223,8 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     }
 
     /**
-     * Get the virtualApplianceAsn property: VirtualAppliance ASN.
+     * Get the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
+     * not supported.
      *
      * @return the virtualApplianceAsn value.
      */
@@ -212,7 +233,8 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     }
 
     /**
-     * Set the virtualApplianceAsn property: VirtualAppliance ASN.
+     * Set the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
+     * not supported.
      *
      * @param virtualApplianceAsn the virtualApplianceAsn value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
@@ -279,6 +301,56 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     }
 
     /**
+     * Get the deploymentType property: The deployment type. PartnerManaged for the SaaS NVA.
+     *
+     * @return the deploymentType value.
+     */
+    public String deploymentType() {
+        return this.deploymentType;
+    }
+
+    /**
+     * Get the delegation property: The delegation for the Virtual Appliance.
+     *
+     * @return the delegation value.
+     */
+    public DelegationProperties delegation() {
+        return this.delegation;
+    }
+
+    /**
+     * Set the delegation property: The delegation for the Virtual Appliance.
+     *
+     * @param delegation the delegation value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat withDelegation(DelegationProperties delegation) {
+        this.delegation = delegation;
+        return this;
+    }
+
+    /**
+     * Get the partnerManagedResource property: The delegation for the Virtual Appliance.
+     *
+     * @return the partnerManagedResource value.
+     */
+    public PartnerManagedResourceProperties partnerManagedResource() {
+        return this.partnerManagedResource;
+    }
+
+    /**
+     * Set the partnerManagedResource property: The delegation for the Virtual Appliance.
+     *
+     * @param partnerManagedResource the partnerManagedResource value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat withPartnerManagedResource(
+        PartnerManagedResourceProperties partnerManagedResource) {
+        this.partnerManagedResource = partnerManagedResource;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -289,6 +361,12 @@ public final class NetworkVirtualAppliancePropertiesFormat {
         }
         if (virtualApplianceNics() != null) {
             virtualApplianceNics().forEach(e -> e.validate());
+        }
+        if (delegation() != null) {
+            delegation().validate();
+        }
+        if (partnerManagedResource() != null) {
+            partnerManagedResource().validate();
         }
     }
 }

@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.EnvironmentsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EnvironmentsClient. */
 public final class EnvironmentsClientImpl implements EnvironmentsClient {
-    private final ClientLogger logger = new ClientLogger(EnvironmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EnvironmentsService service;
 
@@ -68,7 +65,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientEnv")
-    private interface EnvironmentsService {
+    public interface EnvironmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs"
@@ -184,7 +181,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DtlEnvironmentInner>> listSinglePageAsync(
@@ -261,7 +259,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DtlEnvironmentInner>> listSinglePageAsync(
@@ -335,7 +334,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DtlEnvironmentInner> listAsync(
@@ -360,7 +359,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DtlEnvironmentInner> listAsync(String resourceGroupName, String labName, String username) {
@@ -387,7 +386,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DtlEnvironmentInner> listAsync(
@@ -413,7 +412,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DtlEnvironmentInner> list(String resourceGroupName, String labName, String username) {
@@ -438,7 +437,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DtlEnvironmentInner> list(
@@ -465,7 +464,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment.
+     * @return environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DtlEnvironmentInner>> getWithResponseAsync(
@@ -526,7 +525,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment.
+     * @return environment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DtlEnvironmentInner>> getWithResponseAsync(
@@ -579,24 +578,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the environment.
-     * @param expand Specify the $expand query. Example: 'properties($select=deploymentProperties)'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment.
+     * @return environment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DtlEnvironmentInner> getAsync(
-        String resourceGroupName, String labName, String username, String name, String expand) {
+    private Mono<DtlEnvironmentInner> getAsync(String resourceGroupName, String labName, String username, String name) {
+        final String expand = null;
         return getWithResponseAsync(resourceGroupName, labName, username, name, expand)
-            .flatMap(
-                (Response<DtlEnvironmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -606,23 +597,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the environment.
+     * @param expand Specify the $expand query. Example: 'properties($select=deploymentProperties)'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment.
+     * @return environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DtlEnvironmentInner> getAsync(String resourceGroupName, String labName, String username, String name) {
-        final String expand = null;
-        return getWithResponseAsync(resourceGroupName, labName, username, name, expand)
-            .flatMap(
-                (Response<DtlEnvironmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<DtlEnvironmentInner> getWithResponse(
+        String resourceGroupName, String labName, String username, String name, String expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, labName, username, name, expand, context).block();
     }
 
     /**
@@ -640,27 +625,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DtlEnvironmentInner get(String resourceGroupName, String labName, String username, String name) {
         final String expand = null;
-        return getAsync(resourceGroupName, labName, username, name, expand).block();
-    }
-
-    /**
-     * Get environment.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param name The name of the environment.
-     * @param expand Specify the $expand query. Example: 'properties($select=deploymentProperties)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DtlEnvironmentInner> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context) {
-        return getWithResponseAsync(resourceGroupName, labName, username, name, expand, context).block();
+        return getWithResponse(resourceGroupName, labName, username, name, expand, Context.NONE).getValue();
     }
 
     /**
@@ -674,7 +639,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -740,7 +706,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -807,9 +774,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return the {@link PollerFlux} for polling of an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -821,7 +788,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
                 this.client.getHttpPipeline(),
                 DtlEnvironmentInner.class,
                 DtlEnvironmentInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -836,9 +803,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return the {@link PollerFlux} for polling of an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String labName,
@@ -866,12 +833,14 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment) {
-        return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, dtlEnvironment).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, dtlEnvironment)
+            .getSyncPoller();
     }
 
     /**
@@ -886,9 +855,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String labName,
@@ -896,7 +865,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
         String name,
         DtlEnvironmentInner dtlEnvironment,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, dtlEnvironment, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, dtlEnvironment, context)
             .getSyncPoller();
     }
 
@@ -911,7 +881,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DtlEnvironmentInner> createOrUpdateAsync(
@@ -933,7 +903,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DtlEnvironmentInner> createOrUpdateAsync(
@@ -1002,7 +972,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1061,7 +1031,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1116,15 +1086,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, username, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1138,9 +1109,9 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1161,12 +1132,12 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name) {
-        return beginDeleteAsync(resourceGroupName, labName, username, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, labName, username, name).getSyncPoller();
     }
 
     /**
@@ -1180,12 +1151,12 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, labName, username, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, labName, username, name, context).getSyncPoller();
     }
 
     /**
@@ -1198,7 +1169,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String labName, String username, String name) {
@@ -1218,7 +1189,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1272,7 +1243,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DtlEnvironmentInner>> updateWithResponseAsync(
@@ -1338,7 +1310,8 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DtlEnvironmentInner>> updateWithResponseAsync(
@@ -1405,20 +1378,38 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DtlEnvironmentInner> updateAsync(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentFragment dtlEnvironment) {
         return updateWithResponseAsync(resourceGroupName, labName, username, name, dtlEnvironment)
-            .flatMap(
-                (Response<DtlEnvironmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Allows modifying tags of environments. All other properties will be ignored.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param name The name of the environment.
+     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment, which is essentially an ARM template deployment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DtlEnvironmentInner> updateWithResponse(
+        String resourceGroupName,
+        String labName,
+        String username,
+        String name,
+        DtlEnvironmentFragment dtlEnvironment,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, labName, username, name, dtlEnvironment, context).block();
     }
 
     /**
@@ -1437,42 +1428,19 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DtlEnvironmentInner update(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentFragment dtlEnvironment) {
-        return updateAsync(resourceGroupName, labName, username, name, dtlEnvironment).block();
-    }
-
-    /**
-     * Allows modifying tags of environments. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param name The name of the environment.
-     * @param dtlEnvironment An environment, which is essentially an ARM template deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DtlEnvironmentInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DtlEnvironmentFragment dtlEnvironment,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, labName, username, name, dtlEnvironment, context).block();
+        return updateWithResponse(resourceGroupName, labName, username, name, dtlEnvironment, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DtlEnvironmentInner>> listNextSinglePageAsync(String nextLink) {
@@ -1503,12 +1471,14 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DtlEnvironmentInner>> listNextSinglePageAsync(String nextLink, Context context) {

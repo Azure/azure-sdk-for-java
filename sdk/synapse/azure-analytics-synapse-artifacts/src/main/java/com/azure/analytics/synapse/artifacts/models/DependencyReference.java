@@ -23,4 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             value = SelfDependencyTumblingWindowTriggerReference.class)
 })
 @Immutable
-public class DependencyReference {}
+public class DependencyReference {
+    /** Creates an instance of DependencyReference class. */
+    public DependencyReference() {}
+}

@@ -301,8 +301,6 @@ public final class BatchDeploymentsCreateOrUpdateSamples {
 ### BatchDeployments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchDeployments Delete. */
 public final class BatchDeploymentsDeleteSamples {
     /*
@@ -316,7 +314,12 @@ public final class BatchDeploymentsDeleteSamples {
     public static void deleteBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .batchDeployments()
-            .delete("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE);
+            .delete(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -324,8 +327,6 @@ public final class BatchDeploymentsDeleteSamples {
 ### BatchDeployments_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchDeployments Get. */
 public final class BatchDeploymentsGetSamples {
     /*
@@ -339,7 +340,12 @@ public final class BatchDeploymentsGetSamples {
     public static void getBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .batchDeployments()
-            .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE);
+            .getWithResponse(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -347,8 +353,6 @@ public final class BatchDeploymentsGetSamples {
 ### BatchDeployments_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchDeployments List. */
 public final class BatchDeploymentsListSamples {
     /*
@@ -362,7 +366,8 @@ public final class BatchDeploymentsListSamples {
     public static void listBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .batchDeployments()
-            .list("test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, Context.NONE);
+            .list(
+                "test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -370,7 +375,6 @@ public final class BatchDeploymentsListSamples {
 ### BatchDeployments_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.BatchDeployment;
 import com.azure.resourcemanager.machinelearning.models.PartialBatchDeployment;
 import java.util.HashMap;
@@ -390,7 +394,12 @@ public final class BatchDeploymentsUpdateSamples {
         BatchDeployment resource =
             manager
                 .batchDeployments()
-                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE)
+                .getWithResponse(
+                    "test-rg",
+                    "my-aml-workspace",
+                    "testEndpointName",
+                    "testDeploymentName",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -481,8 +490,6 @@ public final class BatchEndpointsCreateOrUpdateSamples {
 ### BatchEndpoints_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchEndpoints Delete. */
 public final class BatchEndpointsDeleteSamples {
     /*
@@ -494,7 +501,9 @@ public final class BatchEndpointsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.batchEndpoints().delete("resourceGroup-1234", "testworkspace", "testBatchEndpoint", Context.NONE);
+        manager
+            .batchEndpoints()
+            .delete("resourceGroup-1234", "testworkspace", "testBatchEndpoint", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -502,8 +511,6 @@ public final class BatchEndpointsDeleteSamples {
 ### BatchEndpoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchEndpoints Get. */
 public final class BatchEndpointsGetSamples {
     /*
@@ -515,7 +522,9 @@ public final class BatchEndpointsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.batchEndpoints().getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .batchEndpoints()
+            .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -523,8 +532,6 @@ public final class BatchEndpointsGetSamples {
 ### BatchEndpoints_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchEndpoints List. */
 public final class BatchEndpointsListSamples {
     /*
@@ -536,7 +543,7 @@ public final class BatchEndpointsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.batchEndpoints().list("test-rg", "my-aml-workspace", 1, null, Context.NONE);
+        manager.batchEndpoints().list("test-rg", "my-aml-workspace", 1, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -544,8 +551,6 @@ public final class BatchEndpointsListSamples {
 ### BatchEndpoints_ListKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchEndpoints ListKeys. */
 public final class BatchEndpointsListKeysSamples {
     /*
@@ -557,7 +562,9 @@ public final class BatchEndpointsListKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listKeysBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.batchEndpoints().listKeysWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .batchEndpoints()
+            .listKeysWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -566,7 +573,6 @@ public final class BatchEndpointsListKeysSamples {
 
 ```java
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.machinelearning.models.BatchEndpoint;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
@@ -590,7 +596,7 @@ public final class BatchEndpointsUpdateSamples {
         BatchEndpoint resource =
             manager
                 .batchEndpoints()
-                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE)
+                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -666,8 +672,6 @@ public final class CodeContainersCreateOrUpdateSamples {
 ### CodeContainers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CodeContainers Delete. */
 public final class CodeContainersDeleteSamples {
     /*
@@ -679,7 +683,9 @@ public final class CodeContainersDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteCodeContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeContainers().deleteWithResponse("testrg123", "testworkspace", "testContainer", Context.NONE);
+        manager
+            .codeContainers()
+            .deleteWithResponse("testrg123", "testworkspace", "testContainer", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -687,8 +693,6 @@ public final class CodeContainersDeleteSamples {
 ### CodeContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CodeContainers Get. */
 public final class CodeContainersGetSamples {
     /*
@@ -700,7 +704,9 @@ public final class CodeContainersGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getCodeContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeContainers().getWithResponse("testrg123", "testworkspace", "testContainer", Context.NONE);
+        manager
+            .codeContainers()
+            .getWithResponse("testrg123", "testworkspace", "testContainer", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -708,8 +714,6 @@ public final class CodeContainersGetSamples {
 ### CodeContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CodeContainers List. */
 public final class CodeContainersListSamples {
     /*
@@ -721,7 +725,7 @@ public final class CodeContainersListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listCodeContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeContainers().list("testrg123", "testworkspace", null, Context.NONE);
+        manager.codeContainers().list("testrg123", "testworkspace", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -775,8 +779,6 @@ public final class CodeVersionsCreateOrUpdateSamples {
 ### CodeVersions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CodeVersions Delete. */
 public final class CodeVersionsDeleteSamples {
     /*
@@ -788,7 +790,9 @@ public final class CodeVersionsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .codeVersions()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -796,8 +800,6 @@ public final class CodeVersionsDeleteSamples {
 ### CodeVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CodeVersions Get. */
 public final class CodeVersionsGetSamples {
     /*
@@ -809,7 +811,9 @@ public final class CodeVersionsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .codeVersions()
+            .getWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -817,8 +821,6 @@ public final class CodeVersionsGetSamples {
 ### CodeVersions_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CodeVersions List. */
 public final class CodeVersionsListSamples {
     /*
@@ -830,7 +832,9 @@ public final class CodeVersionsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeVersions().list("test-rg", "my-aml-workspace", "string", "string", 1, null, Context.NONE);
+        manager
+            .codeVersions()
+            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -882,8 +886,6 @@ public final class ComponentContainersCreateOrUpdateSamples {
 ### ComponentContainers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ComponentContainers Delete. */
 public final class ComponentContainersDeleteSamples {
     /*
@@ -896,7 +898,9 @@ public final class ComponentContainersDeleteSamples {
      */
     public static void deleteComponentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.componentContainers().deleteWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager
+            .componentContainers()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -904,8 +908,6 @@ public final class ComponentContainersDeleteSamples {
 ### ComponentContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ComponentContainers Get. */
 public final class ComponentContainersGetSamples {
     /*
@@ -917,7 +919,9 @@ public final class ComponentContainersGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getComponentContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.componentContainers().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager
+            .componentContainers()
+            .getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -925,8 +929,6 @@ public final class ComponentContainersGetSamples {
 ### ComponentContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ComponentContainers List. */
 public final class ComponentContainersListSamples {
     /*
@@ -939,7 +941,7 @@ public final class ComponentContainersListSamples {
      */
     public static void listComponentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.componentContainers().list("test-rg", "my-aml-workspace", null, null, Context.NONE);
+        manager.componentContainers().list("test-rg", "my-aml-workspace", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1002,8 +1004,6 @@ public final class ComponentVersionsCreateOrUpdateSamples {
 ### ComponentVersions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ComponentVersions Delete. */
 public final class ComponentVersionsDeleteSamples {
     /*
@@ -1016,7 +1016,9 @@ public final class ComponentVersionsDeleteSamples {
      */
     public static void deleteComponentVersion(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.componentVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .componentVersions()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1024,8 +1026,6 @@ public final class ComponentVersionsDeleteSamples {
 ### ComponentVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ComponentVersions Get. */
 public final class ComponentVersionsGetSamples {
     /*
@@ -1037,7 +1037,9 @@ public final class ComponentVersionsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getComponentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.componentVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .componentVersions()
+            .getWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1045,8 +1047,6 @@ public final class ComponentVersionsGetSamples {
 ### ComponentVersions_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ComponentVersions List. */
 public final class ComponentVersionsListSamples {
     /*
@@ -1060,7 +1060,7 @@ public final class ComponentVersionsListSamples {
     public static void listComponentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .componentVersions()
-            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, null, Context.NONE);
+            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1360,7 +1360,6 @@ public final class ComputeCreateOrUpdateSamples {
 ### Compute_Delete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.UnderlyingResourceAction;
 
 /** Samples for Compute Delete. */
@@ -1376,7 +1375,12 @@ public final class ComputeDeleteSamples {
     public static void deleteCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
-            .delete("testrg123", "workspaces123", "compute123", UnderlyingResourceAction.DELETE, Context.NONE);
+            .delete(
+                "testrg123",
+                "workspaces123",
+                "compute123",
+                UnderlyingResourceAction.DELETE,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1384,8 +1388,6 @@ public final class ComputeDeleteSamples {
 ### Compute_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Compute Get. */
 public final class ComputeGetSamples {
     /*
@@ -1397,7 +1399,9 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAAKSCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1409,7 +1413,9 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAKubernetesCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1421,7 +1427,9 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAnComputeInstance(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1433,7 +1441,9 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAAMLCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1441,8 +1451,6 @@ public final class ComputeGetSamples {
 ### Compute_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Compute List. */
 public final class ComputeListSamples {
     /*
@@ -1454,7 +1462,7 @@ public final class ComputeListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getComputes(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().list("testrg123", "workspaces123", null, Context.NONE);
+        manager.computes().list("testrg123", "workspaces123", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1462,8 +1470,6 @@ public final class ComputeListSamples {
 ### Compute_ListKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Compute ListKeys. */
 public final class ComputeListKeysSamples {
     /*
@@ -1475,7 +1481,9 @@ public final class ComputeListKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listAKSComputeKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().listKeysWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .listKeysWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1483,8 +1491,6 @@ public final class ComputeListKeysSamples {
 ### Compute_ListNodes
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Compute ListNodes. */
 public final class ComputeListNodesSamples {
     /*
@@ -1497,7 +1503,7 @@ public final class ComputeListNodesSamples {
      */
     public static void getComputeNodesInformationForACompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().listNodes("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager.computes().listNodes("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1505,8 +1511,6 @@ public final class ComputeListNodesSamples {
 ### Compute_Restart
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Compute Restart. */
 public final class ComputeRestartSamples {
     /*
@@ -1519,7 +1523,7 @@ public final class ComputeRestartSamples {
      */
     public static void restartComputeInstanceCompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().restart("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager.computes().restart("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1527,8 +1531,6 @@ public final class ComputeRestartSamples {
 ### Compute_Start
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Compute Start. */
 public final class ComputeStartSamples {
     /*
@@ -1541,7 +1543,7 @@ public final class ComputeStartSamples {
      */
     public static void startComputeInstanceCompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().start("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager.computes().start("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1549,8 +1551,6 @@ public final class ComputeStartSamples {
 ### Compute_Stop
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Compute Stop. */
 public final class ComputeStopSamples {
     /*
@@ -1563,7 +1563,7 @@ public final class ComputeStopSamples {
      */
     public static void stopComputeInstanceCompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().stop("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager.computes().stop("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1571,7 +1571,6 @@ public final class ComputeStopSamples {
 ### Compute_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.ComputeResource;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettings;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettingsInformation;
@@ -1590,7 +1589,10 @@ public final class ComputeUpdateSamples {
     public static void updateAAmlComputeCompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         ComputeResource resource =
-            manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE).getValue();
+            manager
+                .computes()
+                .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withProperties(
@@ -1654,8 +1656,6 @@ public final class DataContainersCreateOrUpdateSamples {
 ### DataContainers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataContainers Delete. */
 public final class DataContainersDeleteSamples {
     /*
@@ -1667,7 +1667,9 @@ public final class DataContainersDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.dataContainers().deleteWithResponse("testrg123", "workspace123", "datacontainer123", Context.NONE);
+        manager
+            .dataContainers()
+            .deleteWithResponse("testrg123", "workspace123", "datacontainer123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1675,8 +1677,6 @@ public final class DataContainersDeleteSamples {
 ### DataContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataContainers Get. */
 public final class DataContainersGetSamples {
     /*
@@ -1688,7 +1688,9 @@ public final class DataContainersGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.dataContainers().getWithResponse("testrg123", "workspace123", "datacontainer123", Context.NONE);
+        manager
+            .dataContainers()
+            .getWithResponse("testrg123", "workspace123", "datacontainer123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1696,8 +1698,6 @@ public final class DataContainersGetSamples {
 ### DataContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataContainers List. */
 public final class DataContainersListSamples {
     /*
@@ -1709,7 +1709,7 @@ public final class DataContainersListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.dataContainers().list("testrg123", "workspace123", null, null, Context.NONE);
+        manager.dataContainers().list("testrg123", "workspace123", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1763,8 +1763,6 @@ public final class DataVersionsCreateOrUpdateSamples {
 ### DataVersions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataVersions Delete. */
 public final class DataVersionsDeleteSamples {
     /*
@@ -1776,7 +1774,9 @@ public final class DataVersionsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteDataVersionBase(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.dataVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .dataVersions()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1784,8 +1784,6 @@ public final class DataVersionsDeleteSamples {
 ### DataVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataVersions Get. */
 public final class DataVersionsGetSamples {
     /*
@@ -1797,7 +1795,9 @@ public final class DataVersionsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getDataVersionBase(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.dataVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .dataVersions()
+            .getWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1805,8 +1805,6 @@ public final class DataVersionsGetSamples {
 ### DataVersions_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataVersions List. */
 public final class DataVersionsListSamples {
     /*
@@ -1820,7 +1818,16 @@ public final class DataVersionsListSamples {
     public static void listDataVersionBase(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .dataVersions()
-            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, "string", null, Context.NONE);
+            .list(
+                "test-rg",
+                "my-aml-workspace",
+                "string",
+                "string",
+                1,
+                null,
+                "string",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1981,8 +1988,6 @@ public final class DatastoresCreateOrUpdateSamples {
 ### Datastores_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Datastores Delete. */
 public final class DatastoresDeleteSamples {
     /*
@@ -1994,7 +1999,9 @@ public final class DatastoresDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteDatastore(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.datastores().deleteWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager
+            .datastores()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2002,8 +2009,6 @@ public final class DatastoresDeleteSamples {
 ### Datastores_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Datastores Get. */
 public final class DatastoresGetSamples {
     /*
@@ -2015,7 +2020,7 @@ public final class DatastoresGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getDatastore(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.datastores().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.datastores().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2023,7 +2028,6 @@ public final class DatastoresGetSamples {
 ### Datastores_List
 
 ```java
-import com.azure.core.util.Context;
 import java.util.Arrays;
 
 /** Samples for Datastores List. */
@@ -2049,7 +2053,7 @@ public final class DatastoresListSamples {
                 "string",
                 "string",
                 false,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2057,8 +2061,6 @@ public final class DatastoresListSamples {
 ### Datastores_ListSecrets
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Datastores ListSecrets. */
 public final class DatastoresListSecretsSamples {
     /*
@@ -2070,7 +2072,9 @@ public final class DatastoresListSecretsSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getDatastoreSecrets(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.datastores().listSecretsWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager
+            .datastores()
+            .listSecretsWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2124,8 +2128,6 @@ public final class EnvironmentContainersCreateOrUpdateSamples {
 ### EnvironmentContainers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentContainers Delete. */
 public final class EnvironmentContainersDeleteSamples {
     /*
@@ -2138,7 +2140,9 @@ public final class EnvironmentContainersDeleteSamples {
      */
     public static void deleteEnvironmentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.environmentContainers().deleteWithResponse("testrg123", "testworkspace", "testContainer", Context.NONE);
+        manager
+            .environmentContainers()
+            .deleteWithResponse("testrg123", "testworkspace", "testContainer", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2146,8 +2150,6 @@ public final class EnvironmentContainersDeleteSamples {
 ### EnvironmentContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentContainers Get. */
 public final class EnvironmentContainersGetSamples {
     /*
@@ -2160,7 +2162,9 @@ public final class EnvironmentContainersGetSamples {
      */
     public static void getEnvironmentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.environmentContainers().getWithResponse("testrg123", "testworkspace", "testEnvironment", Context.NONE);
+        manager
+            .environmentContainers()
+            .getWithResponse("testrg123", "testworkspace", "testEnvironment", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2168,8 +2172,6 @@ public final class EnvironmentContainersGetSamples {
 ### EnvironmentContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentContainers List. */
 public final class EnvironmentContainersListSamples {
     /*
@@ -2182,7 +2184,9 @@ public final class EnvironmentContainersListSamples {
      */
     public static void listEnvironmentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.environmentContainers().list("testrg123", "testworkspace", null, null, Context.NONE);
+        manager
+            .environmentContainers()
+            .list("testrg123", "testworkspace", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2250,8 +2254,6 @@ public final class EnvironmentVersionsCreateOrUpdateSamples {
 ### EnvironmentVersions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentVersions Delete. */
 public final class EnvironmentVersionsDeleteSamples {
     /*
@@ -2266,7 +2268,7 @@ public final class EnvironmentVersionsDeleteSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentVersions()
-            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2274,8 +2276,6 @@ public final class EnvironmentVersionsDeleteSamples {
 ### EnvironmentVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentVersions Get. */
 public final class EnvironmentVersionsGetSamples {
     /*
@@ -2287,7 +2287,9 @@ public final class EnvironmentVersionsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getEnvironmentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.environmentVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .environmentVersions()
+            .getWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2295,8 +2297,6 @@ public final class EnvironmentVersionsGetSamples {
 ### EnvironmentVersions_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentVersions List. */
 public final class EnvironmentVersionsListSamples {
     /*
@@ -2311,7 +2311,7 @@ public final class EnvironmentVersionsListSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentVersions()
-            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, null, Context.NONE);
+            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2319,8 +2319,6 @@ public final class EnvironmentVersionsListSamples {
 ### Jobs_Cancel
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Jobs Cancel. */
 public final class JobsCancelSamples {
     /*
@@ -2332,7 +2330,7 @@ public final class JobsCancelSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void cancelJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().cancel("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().cancel("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2629,8 +2627,6 @@ public final class JobsCreateOrUpdateSamples {
 ### Jobs_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Jobs Delete. */
 public final class JobsDeleteSamples {
     /*
@@ -2642,7 +2638,7 @@ public final class JobsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().delete("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().delete("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2650,8 +2646,6 @@ public final class JobsDeleteSamples {
 ### Jobs_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Jobs Get. */
 public final class JobsGetSamples {
     /*
@@ -2663,7 +2657,7 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getCommandJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -2675,7 +2669,7 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAutoMLJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -2687,7 +2681,7 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getSweepJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -2699,7 +2693,7 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getPipelineJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2707,8 +2701,6 @@ public final class JobsGetSamples {
 ### Jobs_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Jobs List. */
 public final class JobsListSamples {
     /*
@@ -2720,7 +2712,9 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listCommandJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, "string", "string", null, Context.NONE);
+        manager
+            .jobs()
+            .list("test-rg", "my-aml-workspace", null, "string", "string", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -2732,7 +2726,9 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listPipelineJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, "string", "string", null, Context.NONE);
+        manager
+            .jobs()
+            .list("test-rg", "my-aml-workspace", null, "string", "string", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -2744,7 +2740,9 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listSweepJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, "string", "string", null, Context.NONE);
+        manager
+            .jobs()
+            .list("test-rg", "my-aml-workspace", null, "string", "string", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -2756,7 +2754,7 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listAutoMLJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, null, null, null, Context.NONE);
+        manager.jobs().list("test-rg", "my-aml-workspace", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2807,8 +2805,6 @@ public final class ModelContainersCreateOrUpdateSamples {
 ### ModelContainers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ModelContainers Delete. */
 public final class ModelContainersDeleteSamples {
     /*
@@ -2820,7 +2816,9 @@ public final class ModelContainersDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.modelContainers().deleteWithResponse("testrg123", "workspace123", "testContainer", Context.NONE);
+        manager
+            .modelContainers()
+            .deleteWithResponse("testrg123", "workspace123", "testContainer", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2828,8 +2826,6 @@ public final class ModelContainersDeleteSamples {
 ### ModelContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ModelContainers Get. */
 public final class ModelContainersGetSamples {
     /*
@@ -2841,7 +2837,9 @@ public final class ModelContainersGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.modelContainers().getWithResponse("testrg123", "workspace123", "testContainer", Context.NONE);
+        manager
+            .modelContainers()
+            .getWithResponse("testrg123", "workspace123", "testContainer", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2849,8 +2847,6 @@ public final class ModelContainersGetSamples {
 ### ModelContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ModelContainers List. */
 public final class ModelContainersListSamples {
     /*
@@ -2862,7 +2858,7 @@ public final class ModelContainersListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.modelContainers().list("testrg123", "workspace123", null, null, null, Context.NONE);
+        manager.modelContainers().list("testrg123", "workspace123", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2919,8 +2915,6 @@ public final class ModelVersionsCreateOrUpdateSamples {
 ### ModelVersions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ModelVersions Delete. */
 public final class ModelVersionsDeleteSamples {
     /*
@@ -2932,7 +2926,9 @@ public final class ModelVersionsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteModelVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.modelVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .modelVersions()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2940,8 +2936,6 @@ public final class ModelVersionsDeleteSamples {
 ### ModelVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ModelVersions Get. */
 public final class ModelVersionsGetSamples {
     /*
@@ -2953,7 +2947,9 @@ public final class ModelVersionsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getModelVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.modelVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .modelVersions()
+            .getWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2961,8 +2957,6 @@ public final class ModelVersionsGetSamples {
 ### ModelVersions_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ModelVersions List. */
 public final class ModelVersionsListSamples {
     /*
@@ -2990,7 +2984,7 @@ public final class ModelVersionsListSamples {
                 "string",
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3161,8 +3155,6 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
 ### OnlineDeployments_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments Delete. */
 public final class OnlineDeploymentsDeleteSamples {
     /*
@@ -3175,7 +3167,9 @@ public final class OnlineDeploymentsDeleteSamples {
      */
     public static void deleteOnlineDeployment(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineDeployments().delete("testrg123", "workspace123", "testEndpoint", "testDeployment", Context.NONE);
+        manager
+            .onlineDeployments()
+            .delete("testrg123", "workspace123", "testEndpoint", "testDeployment", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3183,8 +3177,6 @@ public final class OnlineDeploymentsDeleteSamples {
 ### OnlineDeployments_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments Get. */
 public final class OnlineDeploymentsGetSamples {
     /*
@@ -3199,7 +3191,12 @@ public final class OnlineDeploymentsGetSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE);
+            .getWithResponse(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -3214,7 +3211,12 @@ public final class OnlineDeploymentsGetSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE);
+            .getWithResponse(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3222,7 +3224,6 @@ public final class OnlineDeploymentsGetSamples {
 ### OnlineDeployments_GetLogs
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.ContainerType;
 import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
 
@@ -3246,7 +3247,7 @@ public final class OnlineDeploymentsGetLogsSamples {
                 "testEndpoint",
                 "testDeployment",
                 new DeploymentLogsRequest().withContainerType(ContainerType.STORAGE_INITIALIZER).withTail(0),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3254,8 +3255,6 @@ public final class OnlineDeploymentsGetLogsSamples {
 ### OnlineDeployments_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments List. */
 public final class OnlineDeploymentsListSamples {
     /*
@@ -3269,7 +3268,8 @@ public final class OnlineDeploymentsListSamples {
     public static void listOnlineDeployments(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .list("test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, Context.NONE);
+            .list(
+                "test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3277,8 +3277,6 @@ public final class OnlineDeploymentsListSamples {
 ### OnlineDeployments_ListSkus
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments ListSkus. */
 public final class OnlineDeploymentsListSkusSamples {
     /*
@@ -3293,7 +3291,14 @@ public final class OnlineDeploymentsListSkusSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .listSkus("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", 1, null, Context.NONE);
+            .listSkus(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                1,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -3308,7 +3313,14 @@ public final class OnlineDeploymentsListSkusSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .listSkus("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", 1, null, Context.NONE);
+            .listSkus(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                1,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3316,7 +3328,6 @@ public final class OnlineDeploymentsListSkusSamples {
 ### OnlineDeployments_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.OnlineDeployment;
 import com.azure.resourcemanager.machinelearning.models.PartialSku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
@@ -3338,7 +3349,12 @@ public final class OnlineDeploymentsUpdateSamples {
         OnlineDeployment resource =
             manager
                 .onlineDeployments()
-                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE)
+                .getWithResponse(
+                    "test-rg",
+                    "my-aml-workspace",
+                    "testEndpointName",
+                    "testDeploymentName",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -3366,7 +3382,12 @@ public final class OnlineDeploymentsUpdateSamples {
         OnlineDeployment resource =
             manager
                 .onlineDeployments()
-                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE)
+                .getWithResponse(
+                    "test-rg",
+                    "my-aml-workspace",
+                    "testEndpointName",
+                    "testDeploymentName",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -3463,8 +3484,6 @@ public final class OnlineEndpointsCreateOrUpdateSamples {
 ### OnlineEndpoints_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineEndpoints Delete. */
 public final class OnlineEndpointsDeleteSamples {
     /*
@@ -3476,7 +3495,9 @@ public final class OnlineEndpointsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteOnlineEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineEndpoints().delete("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .onlineEndpoints()
+            .delete("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3484,8 +3505,6 @@ public final class OnlineEndpointsDeleteSamples {
 ### OnlineEndpoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineEndpoints Get. */
 public final class OnlineEndpointsGetSamples {
     /*
@@ -3497,7 +3516,9 @@ public final class OnlineEndpointsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getOnlineEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineEndpoints().getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .onlineEndpoints()
+            .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3505,8 +3526,6 @@ public final class OnlineEndpointsGetSamples {
 ### OnlineEndpoints_GetToken
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineEndpoints GetToken. */
 public final class OnlineEndpointsGetTokenSamples {
     /*
@@ -3519,7 +3538,9 @@ public final class OnlineEndpointsGetTokenSamples {
      */
     public static void getTokenOnlineEndpoint(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineEndpoints().getTokenWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .onlineEndpoints()
+            .getTokenWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3527,7 +3548,6 @@ public final class OnlineEndpointsGetTokenSamples {
 ### OnlineEndpoints_List
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.EndpointComputeType;
 import com.azure.resourcemanager.machinelearning.models.OrderString;
 
@@ -3554,7 +3574,7 @@ public final class OnlineEndpointsListSamples {
                 "string",
                 "string",
                 OrderString.CREATED_AT_DESC,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3562,8 +3582,6 @@ public final class OnlineEndpointsListSamples {
 ### OnlineEndpoints_ListKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for OnlineEndpoints ListKeys. */
 public final class OnlineEndpointsListKeysSamples {
     /*
@@ -3576,7 +3594,9 @@ public final class OnlineEndpointsListKeysSamples {
      */
     public static void listKeysOnlineEndpoint(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineEndpoints().listKeysWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .onlineEndpoints()
+            .listKeysWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3584,7 +3604,6 @@ public final class OnlineEndpointsListKeysSamples {
 ### OnlineEndpoints_RegenerateKeys
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.KeyType;
 import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRequest;
 
@@ -3607,7 +3626,7 @@ public final class OnlineEndpointsRegenerateKeysSamples {
                 "my-aml-workspace",
                 "testEndpointName",
                 new RegenerateEndpointKeysRequest().withKeyType(KeyType.PRIMARY).withKeyValue("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3616,7 +3635,6 @@ public final class OnlineEndpointsRegenerateKeysSamples {
 
 ```java
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.machinelearning.models.OnlineEndpoint;
@@ -3640,7 +3658,7 @@ public final class OnlineEndpointsUpdateSamples {
         OnlineEndpoint resource =
             manager
                 .onlineEndpoints()
-                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE)
+                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -3673,8 +3691,6 @@ public final class OnlineEndpointsUpdateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -3686,7 +3702,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void operationsList(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3725,8 +3741,6 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
 ### PrivateEndpointConnections_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
@@ -3741,7 +3755,8 @@ public final class PrivateEndpointConnectionsDeleteSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .privateEndpointConnections()
-            .deleteWithResponse("rg-1234", "testworkspace", "{privateEndpointConnectionName}", Context.NONE);
+            .deleteWithResponse(
+                "rg-1234", "testworkspace", "{privateEndpointConnectionName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3749,8 +3764,6 @@ public final class PrivateEndpointConnectionsDeleteSamples {
 ### PrivateEndpointConnections_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
@@ -3765,7 +3778,8 @@ public final class PrivateEndpointConnectionsGetSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .privateEndpointConnections()
-            .getWithResponse("rg-1234", "testworkspace", "{privateEndpointConnectionName}", Context.NONE);
+            .getWithResponse(
+                "rg-1234", "testworkspace", "{privateEndpointConnectionName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3773,8 +3787,6 @@ public final class PrivateEndpointConnectionsGetSamples {
 ### PrivateEndpointConnections_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
@@ -3787,7 +3799,7 @@ public final class PrivateEndpointConnectionsListSamples {
      */
     public static void storageAccountListPrivateEndpointConnections(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.privateEndpointConnections().list("rg-1234", "testworkspace", Context.NONE);
+        manager.privateEndpointConnections().list("rg-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3795,8 +3807,6 @@ public final class PrivateEndpointConnectionsListSamples {
 ### PrivateLinkResources_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources List. */
 public final class PrivateLinkResourcesListSamples {
     /*
@@ -3809,7 +3819,7 @@ public final class PrivateLinkResourcesListSamples {
      */
     public static void workspaceListPrivateLinkResources(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.privateLinkResources().listWithResponse("rg-1234", "testworkspace", Context.NONE);
+        manager.privateLinkResources().listWithResponse("rg-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3817,8 +3827,6 @@ public final class PrivateLinkResourcesListSamples {
 ### Quotas_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Quotas List. */
 public final class QuotasListSamples {
     /*
@@ -3831,7 +3839,7 @@ public final class QuotasListSamples {
      */
     public static void listWorkspaceQuotasByVMFamily(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.quotas().list("eastus", Context.NONE);
+        manager.quotas().list("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3839,7 +3847,6 @@ public final class QuotasListSamples {
 ### Quotas_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.QuotaBaseProperties;
 import com.azure.resourcemanager.machinelearning.models.QuotaUnit;
 import com.azure.resourcemanager.machinelearning.models.QuotaUpdateParameters;
@@ -3876,7 +3883,7 @@ public final class QuotasUpdateSamples {
                                     .withType("Microsoft.MachineLearningServices/workspaces/quotas")
                                     .withLimit(200L)
                                     .withUnit(QuotaUnit.COUNT))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3950,8 +3957,6 @@ public final class SchedulesCreateOrUpdateSamples {
 ### Schedules_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Schedules Delete. */
 public final class SchedulesDeleteSamples {
     /*
@@ -3963,7 +3968,7 @@ public final class SchedulesDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteSchedule(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.schedules().delete("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.schedules().delete("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3971,8 +3976,6 @@ public final class SchedulesDeleteSamples {
 ### Schedules_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Schedules Get. */
 public final class SchedulesGetSamples {
     /*
@@ -3984,7 +3987,7 @@ public final class SchedulesGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getSchedule(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.schedules().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.schedules().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3992,8 +3995,6 @@ public final class SchedulesGetSamples {
 ### Schedules_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Schedules List. */
 public final class SchedulesListSamples {
     /*
@@ -4005,7 +4006,7 @@ public final class SchedulesListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listSchedules(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.schedules().list("test-rg", "my-aml-workspace", null, null, Context.NONE);
+        manager.schedules().list("test-rg", "my-aml-workspace", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4013,8 +4014,6 @@ public final class SchedulesListSamples {
 ### Usages_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
@@ -4026,7 +4025,7 @@ public final class UsagesListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listUsages(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.usages().list("eastus", Context.NONE);
+        manager.usages().list("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4034,8 +4033,6 @@ public final class UsagesListSamples {
 ### VirtualMachineSizes_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineSizes List. */
 public final class VirtualMachineSizesListSamples {
     /*
@@ -4047,7 +4044,7 @@ public final class VirtualMachineSizesListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listVMSizes(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.virtualMachineSizes().listWithResponse("eastus", Context.NONE);
+        manager.virtualMachineSizes().listWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4086,8 +4083,6 @@ public final class WorkspaceConnectionsCreateSamples {
 ### WorkspaceConnections_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceConnections Delete. */
 public final class WorkspaceConnectionsDeleteSamples {
     /*
@@ -4102,7 +4097,7 @@ public final class WorkspaceConnectionsDeleteSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaceConnections()
-            .deleteWithResponse("resourceGroup-1", "workspace-1", "connection-1", Context.NONE);
+            .deleteWithResponse("resourceGroup-1", "workspace-1", "connection-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4110,8 +4105,6 @@ public final class WorkspaceConnectionsDeleteSamples {
 ### WorkspaceConnections_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceConnections Get. */
 public final class WorkspaceConnectionsGetSamples {
     /*
@@ -4124,7 +4117,9 @@ public final class WorkspaceConnectionsGetSamples {
      */
     public static void getWorkspaceConnection(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaceConnections().getWithResponse("resourceGroup-1", "workspace-1", "connection-1", Context.NONE);
+        manager
+            .workspaceConnections()
+            .getWithResponse("resourceGroup-1", "workspace-1", "connection-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4132,8 +4127,6 @@ public final class WorkspaceConnectionsGetSamples {
 ### WorkspaceConnections_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceConnections List. */
 public final class WorkspaceConnectionsListSamples {
     /*
@@ -4148,7 +4141,12 @@ public final class WorkspaceConnectionsListSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaceConnections()
-            .list("resourceGroup-1", "workspace-1", "www.facebook.com", "ContainerRegistry", Context.NONE);
+            .list(
+                "resourceGroup-1",
+                "workspace-1",
+                "www.facebook.com",
+                "ContainerRegistry",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4156,8 +4154,6 @@ public final class WorkspaceConnectionsListSamples {
 ### WorkspaceFeatures_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceFeatures List. */
 public final class WorkspaceFeaturesListSamples {
     /*
@@ -4169,7 +4165,7 @@ public final class WorkspaceFeaturesListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceFeatures(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaceFeatures().list("myResourceGroup", "testworkspace", Context.NONE);
+        manager.workspaceFeatures().list("myResourceGroup", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4265,8 +4261,6 @@ public final class WorkspacesCreateOrUpdateSamples {
 ### Workspaces_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces Delete. */
 public final class WorkspacesDeleteSamples {
     /*
@@ -4278,7 +4272,7 @@ public final class WorkspacesDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().delete("workspace-1234", "testworkspace", Context.NONE);
+        manager.workspaces().delete("workspace-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4286,7 +4280,6 @@ public final class WorkspacesDeleteSamples {
 ### Workspaces_Diagnose
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.DiagnoseRequestProperties;
 import com.azure.resourcemanager.machinelearning.models.DiagnoseWorkspaceParameters;
 import java.util.HashMap;
@@ -4320,7 +4313,7 @@ public final class WorkspacesDiagnoseSamples {
                             .withContainerRegistry(mapOf())
                             .withApplicationInsights(mapOf())
                             .withOthers(mapOf())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")
@@ -4339,8 +4332,6 @@ public final class WorkspacesDiagnoseSamples {
 ### Workspaces_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces GetByResourceGroup. */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
@@ -4352,7 +4343,9 @@ public final class WorkspacesGetByResourceGroupSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().getByResourceGroupWithResponse("workspace-1234", "testworkspace", Context.NONE);
+        manager
+            .workspaces()
+            .getByResourceGroupWithResponse("workspace-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4360,8 +4353,6 @@ public final class WorkspacesGetByResourceGroupSamples {
 ### Workspaces_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces List. */
 public final class WorkspacesListSamples {
     /*
@@ -4374,7 +4365,7 @@ public final class WorkspacesListSamples {
      */
     public static void getWorkspacesBySubscription(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().list(null, Context.NONE);
+        manager.workspaces().list(null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4382,8 +4373,6 @@ public final class WorkspacesListSamples {
 ### Workspaces_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListByResourceGroup. */
 public final class WorkspacesListByResourceGroupSamples {
     /*
@@ -4396,7 +4385,7 @@ public final class WorkspacesListByResourceGroupSamples {
      */
     public static void getWorkspacesByResourceGroup(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listByResourceGroup("workspace-1234", null, Context.NONE);
+        manager.workspaces().listByResourceGroup("workspace-1234", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4404,8 +4393,6 @@ public final class WorkspacesListByResourceGroupSamples {
 ### Workspaces_ListKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListKeys. */
 public final class WorkspacesListKeysSamples {
     /*
@@ -4417,7 +4404,7 @@ public final class WorkspacesListKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listKeysWithResponse("testrg123", "workspaces123", Context.NONE);
+        manager.workspaces().listKeysWithResponse("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4425,8 +4412,6 @@ public final class WorkspacesListKeysSamples {
 ### Workspaces_ListNotebookAccessToken
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListNotebookAccessToken. */
 public final class WorkspacesListNotebookAccessTokenSamples {
     /*
@@ -4438,7 +4423,9 @@ public final class WorkspacesListNotebookAccessTokenSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listNotebookAccessTokenWithResponse("workspace-1234", "testworkspace", Context.NONE);
+        manager
+            .workspaces()
+            .listNotebookAccessTokenWithResponse("workspace-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4446,8 +4433,6 @@ public final class WorkspacesListNotebookAccessTokenSamples {
 ### Workspaces_ListNotebookKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListNotebookKeys. */
 public final class WorkspacesListNotebookKeysSamples {
     /*
@@ -4459,7 +4444,9 @@ public final class WorkspacesListNotebookKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listNotebookKeysWithResponse("testrg123", "workspaces123", Context.NONE);
+        manager
+            .workspaces()
+            .listNotebookKeysWithResponse("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4467,8 +4454,6 @@ public final class WorkspacesListNotebookKeysSamples {
 ### Workspaces_ListOutboundNetworkDependenciesEndpoints
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListOutboundNetworkDependenciesEndpoints. */
 public final class WorkspacesListOutboundNetworkDependenciesEndpointsSamples {
     /*
@@ -4483,7 +4468,8 @@ public final class WorkspacesListOutboundNetworkDependenciesEndpointsSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaces()
-            .listOutboundNetworkDependenciesEndpointsWithResponse("workspace-1234", "testworkspace", Context.NONE);
+            .listOutboundNetworkDependenciesEndpointsWithResponse(
+                "workspace-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4491,8 +4477,6 @@ public final class WorkspacesListOutboundNetworkDependenciesEndpointsSamples {
 ### Workspaces_ListStorageAccountKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListStorageAccountKeys. */
 public final class WorkspacesListStorageAccountKeysSamples {
     /*
@@ -4504,7 +4488,9 @@ public final class WorkspacesListStorageAccountKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listStorageAccountKeysWithResponse("testrg123", "workspaces123", Context.NONE);
+        manager
+            .workspaces()
+            .listStorageAccountKeysWithResponse("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4512,8 +4498,6 @@ public final class WorkspacesListStorageAccountKeysSamples {
 ### Workspaces_PrepareNotebook
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces PrepareNotebook. */
 public final class WorkspacesPrepareNotebookSamples {
     /*
@@ -4525,7 +4509,7 @@ public final class WorkspacesPrepareNotebookSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void prepareNotebook(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().prepareNotebook("testrg123", "workspaces123", Context.NONE);
+        manager.workspaces().prepareNotebook("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4533,8 +4517,6 @@ public final class WorkspacesPrepareNotebookSamples {
 ### Workspaces_ResyncKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ResyncKeys. */
 public final class WorkspacesResyncKeysSamples {
     /*
@@ -4546,7 +4528,7 @@ public final class WorkspacesResyncKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void resyncWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().resyncKeys("testrg123", "workspaces123", Context.NONE);
+        manager.workspaces().resyncKeys("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4554,7 +4536,6 @@ public final class WorkspacesResyncKeysSamples {
 ### Workspaces_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.models.PublicNetworkAccess;
 import com.azure.resourcemanager.machinelearning.models.Workspace;
 
@@ -4572,7 +4553,7 @@ public final class WorkspacesUpdateSamples {
         Workspace resource =
             manager
                 .workspaces()
-                .getByResourceGroupWithResponse("workspace-1234", "testworkspace", Context.NONE)
+                .getByResourceGroupWithResponse("workspace-1234", "testworkspace", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

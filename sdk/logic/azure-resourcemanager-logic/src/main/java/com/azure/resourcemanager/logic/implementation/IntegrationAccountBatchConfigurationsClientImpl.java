@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationAccountBatchConfigurationsClient;
 import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
 import com.azure.resourcemanager.logic.models.BatchConfigurationCollection;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationAccountBatchConfigurationsClientImpl
     implements IntegrationAccountBatchConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationAccountBatchConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationAccountBatchConfigurationsService service;
 
@@ -69,7 +66,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface IntegrationAccountBatchConfigurationsService {
+    public interface IntegrationAccountBatchConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
@@ -143,7 +140,8 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BatchConfigurationInner>> listSinglePageAsync(
@@ -198,7 +196,8 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BatchConfigurationInner>> listSinglePageAsync(
@@ -249,7 +248,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BatchConfigurationInner> listAsync(String resourceGroupName, String integrationAccountName) {
@@ -265,7 +264,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BatchConfigurationInner> listAsync(
@@ -281,7 +280,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchConfigurationInner> list(String resourceGroupName, String integrationAccountName) {
@@ -297,7 +296,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchConfigurationInner> list(
@@ -314,7 +313,8 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
+     * @return a batch configuration for an integration account along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BatchConfigurationInner>> getWithResponseAsync(
@@ -372,7 +372,8 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
+     * @return a batch configuration for an integration account along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BatchConfigurationInner>> getWithResponseAsync(
@@ -426,20 +427,31 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
+     * @return a batch configuration for an integration account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BatchConfigurationInner> getAsync(
         String resourceGroupName, String integrationAccountName, String batchConfigurationName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, batchConfigurationName)
-            .flatMap(
-                (Response<BatchConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a batch configuration for an integration account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param batchConfigurationName The batch configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch configuration for an integration account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BatchConfigurationInner> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, integrationAccountName, batchConfigurationName, context).block();
     }
 
     /**
@@ -456,25 +468,8 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchConfigurationInner get(
         String resourceGroupName, String integrationAccountName, String batchConfigurationName) {
-        return getAsync(resourceGroupName, integrationAccountName, batchConfigurationName).block();
-    }
-
-    /**
-     * Get a batch configuration for an integration account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param batchConfigurationName The batch configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BatchConfigurationInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, integrationAccountName, batchConfigurationName, context).block();
+        return getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -487,7 +482,8 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the batch configuration resource definition.
+     * @return the batch configuration resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BatchConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -556,7 +552,8 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the batch configuration resource definition.
+     * @return the batch configuration resource definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BatchConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -622,7 +619,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the batch configuration resource definition.
+     * @return the batch configuration resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BatchConfigurationInner> createOrUpdateAsync(
@@ -632,14 +629,32 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
         BatchConfigurationInner batchConfiguration) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, integrationAccountName, batchConfigurationName, batchConfiguration)
-            .flatMap(
-                (Response<BatchConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a batch configuration for an integration account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param batchConfigurationName The batch configuration name.
+     * @param batchConfiguration The batch configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the batch configuration resource definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BatchConfigurationInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String batchConfigurationName,
+        BatchConfigurationInner batchConfiguration,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, integrationAccountName, batchConfigurationName, batchConfiguration, context)
+            .block();
     }
 
     /**
@@ -660,34 +675,9 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
         String integrationAccountName,
         String batchConfigurationName,
         BatchConfigurationInner batchConfiguration) {
-        return createOrUpdateAsync(
-                resourceGroupName, integrationAccountName, batchConfigurationName, batchConfiguration)
-            .block();
-    }
-
-    /**
-     * Create or update a batch configuration for an integration account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param batchConfigurationName The batch configuration name.
-     * @param batchConfiguration The batch configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the batch configuration resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BatchConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String batchConfigurationName,
-        BatchConfigurationInner batchConfiguration,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, integrationAccountName, batchConfigurationName, batchConfiguration, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, integrationAccountName, batchConfigurationName, batchConfiguration, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -699,7 +689,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -757,7 +747,7 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -811,13 +801,32 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
         String resourceGroupName, String integrationAccountName, String batchConfigurationName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, batchConfigurationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a batch configuration for an integration account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param batchConfigurationName The batch configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, integrationAccountName, batchConfigurationName, context)
+            .block();
     }
 
     /**
@@ -832,25 +841,6 @@ public final class IntegrationAccountBatchConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String integrationAccountName, String batchConfigurationName) {
-        deleteAsync(resourceGroupName, integrationAccountName, batchConfigurationName).block();
-    }
-
-    /**
-     * Delete a batch configuration for an integration account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param batchConfigurationName The batch configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, integrationAccountName, batchConfigurationName, context)
-            .block();
+        deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE);
     }
 }

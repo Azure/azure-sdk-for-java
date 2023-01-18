@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.peering.models.CheckServiceProviderAvailabilityInput;
 import com.azure.resourcemanager.peering.models.Enum0;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    private final ClientLogger logger = new ClientLogger(ResourceProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceProvidersService service;
 
@@ -55,7 +52,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/CheckServiceProviderAvailability")
         @ExpectedResponses({200})
@@ -77,7 +74,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Enum0>> checkServiceProviderAvailabilityWithResponseAsync(
@@ -126,7 +123,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Enum0>> checkServiceProviderAvailabilityWithResponseAsync(
@@ -171,20 +168,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Enum0> checkServiceProviderAvailabilityAsync(
         CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput) {
         return checkServiceProviderAvailabilityWithResponseAsync(checkServiceProviderAvailabilityInput)
-            .flatMap(
-                (Response<Enum0> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Checks if the peering service provider is present within 1000 miles of customer's location.
+     *
+     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
+     *     location and service provider.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Enum0> checkServiceProviderAvailabilityWithResponse(
+        CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput, Context context) {
+        return checkServiceProviderAvailabilityWithResponseAsync(checkServiceProviderAvailabilityInput, context)
+            .block();
     }
 
     /**
@@ -200,24 +208,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Enum0 checkServiceProviderAvailability(
         CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput) {
-        return checkServiceProviderAvailabilityAsync(checkServiceProviderAvailabilityInput).block();
-    }
-
-    /**
-     * Checks if the peering service provider is present within 1000 miles of customer's location.
-     *
-     * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
-     *     location and service provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Enum0> checkServiceProviderAvailabilityWithResponse(
-        CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput, Context context) {
-        return checkServiceProviderAvailabilityWithResponseAsync(checkServiceProviderAvailabilityInput, context)
-            .block();
+        return checkServiceProviderAvailabilityWithResponse(checkServiceProviderAvailabilityInput, Context.NONE)
+            .getValue();
     }
 }

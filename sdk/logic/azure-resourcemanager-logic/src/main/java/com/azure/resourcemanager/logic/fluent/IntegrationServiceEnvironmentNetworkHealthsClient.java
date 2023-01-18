@@ -21,6 +21,21 @@ public interface IntegrationServiceEnvironmentNetworkHealthsClient {
      *
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration service environment network health along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner>> getWithResponse(
+        String resourceGroup, String integrationServiceEnvironmentName, Context context);
+
+    /**
+     * Gets the integration service environment network health.
+     *
+     * @param resourceGroup The resource group.
+     * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -29,19 +44,4 @@ public interface IntegrationServiceEnvironmentNetworkHealthsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner> get(
         String resourceGroup, String integrationServiceEnvironmentName);
-
-    /**
-     * Gets the integration service environment network health.
-     *
-     * @param resourceGroup The resource group.
-     * @param integrationServiceEnvironmentName The integration service environment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment network health.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner>> getWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context);
 }

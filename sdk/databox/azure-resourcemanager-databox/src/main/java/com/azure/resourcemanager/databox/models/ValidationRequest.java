@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,14 +22,15 @@ import java.util.List;
 @JsonSubTypes({@JsonSubTypes.Type(name = "JobCreationValidation", value = CreateJobValidations.class)})
 @Fluent
 public class ValidationRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationRequest.class);
-
     /*
-     * List of request details contain validationType and its request as key
-     * and value respectively.
+     * List of request details contain validationType and its request as key and value respectively.
      */
     @JsonProperty(value = "individualRequestDetails", required = true)
     private List<ValidationInputRequest> individualRequestDetails;
+
+    /** Creates an instance of ValidationRequest class. */
+    public ValidationRequest() {
+    }
 
     /**
      * Get the individualRequestDetails property: List of request details contain validationType and its request as key
@@ -61,7 +61,7 @@ public class ValidationRequest {
      */
     public void validate() {
         if (individualRequestDetails() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property individualRequestDetails in model ValidationRequest"));
@@ -69,4 +69,6 @@ public class ValidationRequest {
             individualRequestDetails().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidationRequest.class);
 }

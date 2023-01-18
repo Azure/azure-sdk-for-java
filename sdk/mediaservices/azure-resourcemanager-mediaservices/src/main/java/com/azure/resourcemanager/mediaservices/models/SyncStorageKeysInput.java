@@ -16,6 +16,10 @@ public final class SyncStorageKeysInput {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of SyncStorageKeysInput class. */
+    public SyncStorageKeysInput() {
+    }
+
     /**
      * Get the id property: The ID of the storage account resource.
      *

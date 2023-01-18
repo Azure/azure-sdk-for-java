@@ -25,6 +25,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -350,6 +351,16 @@ public abstract class RestProxyBase {
             exceptionMessage.append("(empty body)");
         } else {
             exceptionMessage.append("\"").append(new String(responseContent, StandardCharsets.UTF_8)).append("\"");
+        }
+
+        // If the decoded response content is on of these exception types there was a failure in creating the actual
+        // exception body type. In this case return an HttpResponseException to maintain the exception having a
+        // reference to the HttpResponse and information about what caused the deserialization failure.
+        if (responseDecodedContent instanceof IOException
+            || responseDecodedContent instanceof MalformedValueException
+            || responseDecodedContent instanceof IllegalStateException) {
+            return new HttpResponseException(exceptionMessage.toString(), httpResponse,
+                (Throwable) responseDecodedContent);
         }
 
         // For HttpResponseException types that exist in azure-core, call the constructor directly.

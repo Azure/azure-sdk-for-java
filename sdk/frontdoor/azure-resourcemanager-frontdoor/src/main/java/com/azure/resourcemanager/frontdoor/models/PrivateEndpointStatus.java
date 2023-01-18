@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateEndpointStatus. */
+/** The Approval status for the connection to the Private Link. */
 public final class PrivateEndpointStatus extends ExpandableStringEnum<PrivateEndpointStatus> {
     /** Static value Pending for PrivateEndpointStatus. */
     public static final PrivateEndpointStatus PENDING = fromString("Pending");
@@ -26,6 +26,15 @@ public final class PrivateEndpointStatus extends ExpandableStringEnum<PrivateEnd
     public static final PrivateEndpointStatus TIMEOUT = fromString("Timeout");
 
     /**
+     * Creates a new instance of PrivateEndpointStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class PrivateEndpointStatus extends ExpandableStringEnum<PrivateEnd
         return fromString(name, PrivateEndpointStatus.class);
     }
 
-    /** @return known PrivateEndpointStatus values. */
+    /**
+     * Gets known PrivateEndpointStatus values.
+     *
+     * @return known PrivateEndpointStatus values.
+     */
     public static Collection<PrivateEndpointStatus> values() {
         return values(PrivateEndpointStatus.class);
     }

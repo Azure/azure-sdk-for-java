@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwins GetByResourceGroup. */
 public final class DigitalTwinsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsGet_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsGet_WithIdentity_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource with identity.
@@ -22,7 +22,7 @@ public final class DigitalTwinsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsGet_WithPrivateEndpointConnection_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsGet_WithPrivateEndpointConnection_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource with a private endpoint connection.
@@ -35,7 +35,7 @@ public final class DigitalTwinsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsGet_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource.

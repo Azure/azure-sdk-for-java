@@ -22,6 +22,9 @@ public final class LinkConnectionTargetDatabase {
     @JsonProperty(value = "typeProperties")
     private LinkConnectionTargetDatabaseTypeProperties typeProperties;
 
+    /** Creates an instance of LinkConnectionTargetDatabase class. */
+    public LinkConnectionTargetDatabase() {}
+
     /**
      * Get the linkedService property: Linked service reference.
      *

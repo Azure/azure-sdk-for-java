@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -27,6 +28,7 @@ import com.azure.monitor.ingestion.models.UploadLogsStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -98,23 +100,21 @@ public class LogsIngestionClientTest extends TestBase {
     }
 
     @Test
+    public void testUploadLogsAsync() {
+        List<Object> logs = getObjects(10);
+        LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
+        StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
+            .assertNext(result -> assertEquals(UploadLogsStatus.SUCCESS, result.getStatus()))
+            .verifyComplete();
+    }
+
+    @Test
     public void testUploadLogsInBatches() {
         List<Object> logs = getObjects(10000);
 
         AtomicInteger count = new AtomicInteger();
         LogsIngestionClient client = clientBuilder
-                .addPolicy(new HttpPipelinePolicy() {
-                    @Override
-                    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                        count.incrementAndGet();
-                        return next.process();
-                    }
-
-                    @Override
-                    public HttpPipelinePosition getPipelinePosition() {
-                        return HttpPipelinePosition.PER_CALL;
-                    }
-                })
+                .addPolicy(new BatchCountPolicy(count))
                 .buildClient();
         UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(UploadLogsStatus.SUCCESS, result.getStatus());
@@ -122,32 +122,28 @@ public class LogsIngestionClientTest extends TestBase {
     }
 
     @Test
+    public void testUploadLogsInBatchesAsync() {
+        List<Object> logs = getObjects(10000);
+
+        AtomicInteger count = new AtomicInteger();
+        LogsIngestionAsyncClient client = clientBuilder
+            .addPolicy(new BatchCountPolicy(count))
+            .buildAsyncClient();
+
+        StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
+            .assertNext(result -> assertEquals(UploadLogsStatus.SUCCESS, result.getStatus()))
+            .verifyComplete();
+
+        assertEquals(2, count.get());
+    }
+
+    @Test
     public void testUploadLogsPartialFailure() {
         List<Object> logs = getObjects(100000);
-        AtomicBoolean changeDcrId = new AtomicBoolean();
         AtomicInteger count = new AtomicInteger();
 
         LogsIngestionClient client = clientBuilder
-                .addPolicy(new HttpPipelinePolicy() {
-                    @Override
-                    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                        count.incrementAndGet();
-                        if (changeDcrId.get()) {
-                            String url = context.getHttpRequest().getUrl().toString()
-                                    .replace(dataCollectionRuleId, "dcr-id");
-                            context.getHttpRequest().setUrl(url);
-                            changeDcrId.set(false);
-                            return next.process();
-                        }
-                        changeDcrId.set(true);
-                        return next.process();
-                    }
-
-                    @Override
-                    public HttpPipelinePosition getPipelinePosition() {
-                        return HttpPipelinePosition.PER_CALL;
-                    }
-                })
+                .addPolicy(new PartialFailurePolicy(count))
                 .buildClient();
 
         UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, logs);
@@ -158,12 +154,42 @@ public class LogsIngestionClientTest extends TestBase {
     }
 
     @Test
+    public void testUploadLogsPartialFailureAsync() {
+        List<Object> logs = getObjects(100000);
+        AtomicInteger count = new AtomicInteger();
+
+        LogsIngestionAsyncClient client = clientBuilder
+            .addPolicy(new PartialFailurePolicy(count))
+            .buildAsyncClient();
+
+        StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
+            .assertNext(result -> {
+                assertEquals(UploadLogsStatus.PARTIAL_FAILURE, result.getStatus());
+                assertEquals(5, result.getErrors().size());
+                result.getErrors().stream().forEach(error -> assertEquals("NotFound", error.getResponseError().getCode()));
+            })
+            .verifyComplete();
+
+        assertEquals(11, count.get());
+    }
+
+    @Test
     public void testUploadLogsProtocolMethod() {
         List<Object> logs = getObjects(10);
         LogsIngestionClient client = clientBuilder.buildClient();
         Response<Void> response = client.uploadWithResponse(dataCollectionRuleId, streamName,
                 BinaryData.fromObject(logs), new RequestOptions().setHeader("Content-Encoding", "gzip"));
         assertEquals(204, response.getStatusCode());
+    }
+
+    @Test
+    public void testUploadLogsProtocolMethodAsync() {
+        List<Object> logs = getObjects(10);
+        LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
+        StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
+            BinaryData.fromObject(logs), new RequestOptions().setHeader("Content-Encoding", "gzip")))
+                .assertNext(response -> assertEquals(204, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
@@ -177,6 +203,16 @@ public class LogsIngestionClientTest extends TestBase {
         assertEquals(413, responseException.getResponse().getStatusCode());
     }
 
+    @Test
+    public void testUploadLargeLogsProtocolMethodAsync() {
+        List<Object> logs = getObjects(1000000);
+        LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
+        StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
+                BinaryData.fromObject(logs), new RequestOptions()))
+            .verifyErrorMatches(responseException -> (responseException instanceof HttpResponseException)
+                && ((HttpResponseException) responseException).getResponse().getStatusCode() == 413);
+    }
+
     private List<Object> getObjects(int logsCount) {
         List<Object> logs = new ArrayList<>();
 
@@ -188,5 +224,67 @@ public class LogsIngestionClientTest extends TestBase {
             logs.add(logData);
         }
         return logs;
+    }
+
+    private static class BatchCountPolicy implements HttpPipelinePolicy {
+        private final AtomicInteger counter;
+
+        BatchCountPolicy(AtomicInteger counter) {
+            this.counter = counter;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            counter.incrementAndGet();
+            return next.process();
+        }
+
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            counter.incrementAndGet();
+            return next.processSync();
+        }
+
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_CALL;
+        }
+    }
+
+    private class PartialFailurePolicy implements HttpPipelinePolicy {
+        private final AtomicInteger counter;
+        private final AtomicBoolean changeDcrId = new AtomicBoolean();
+
+        PartialFailurePolicy(AtomicInteger counter) {
+            this.counter = counter;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            process(context);
+            return next.process();
+        }
+
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            process(context);
+            return next.processSync();
+        }
+
+        private void process(HttpPipelineCallContext context) {
+            counter.incrementAndGet();
+            if (changeDcrId.get()) {
+                String url = context.getHttpRequest().getUrl().toString()
+                    .replace(dataCollectionRuleId, "dcr-id");
+                context.getHttpRequest().setUrl(url);
+                changeDcrId.set(false);
+            } else {
+                changeDcrId.set(true);
+            }
+        }
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_CALL;
+        }
     }
 }

@@ -58,7 +58,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface QuotasService {
+    public interface QuotasService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}"

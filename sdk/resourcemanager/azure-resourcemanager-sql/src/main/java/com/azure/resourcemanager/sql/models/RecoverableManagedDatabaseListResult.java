@@ -24,6 +24,10 @@ public final class RecoverableManagedDatabaseListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RecoverableManagedDatabaseListResult class. */
+    public RecoverableManagedDatabaseListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

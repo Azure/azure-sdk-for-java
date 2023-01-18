@@ -4,11 +4,12 @@
 
 package com.azure.resourcemanager.recoveryservices.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Private Endpoint Connection Response Properties. */
-@Immutable
+@Fluent
 public final class PrivateEndpointConnection {
     /*
      * Gets or sets provisioning state of the private endpoint connection.
@@ -17,8 +18,7 @@ public final class PrivateEndpointConnection {
     private ProvisioningState provisioningState;
 
     /*
-     * The Private Endpoint network resource that is linked to the Private
-     * Endpoint connection.
+     * The Private Endpoint network resource that is linked to the Private Endpoint connection.
      */
     @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpoint privateEndpoint;
@@ -28,6 +28,16 @@ public final class PrivateEndpointConnection {
      */
     @JsonProperty(value = "privateLinkServiceConnectionState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /*
+     * Group Ids for the Private Endpoint
+     */
+    @JsonProperty(value = "groupIds")
+    private List<VaultSubResourceType> groupIds;
+
+    /** Creates an instance of PrivateEndpointConnection class. */
+    public PrivateEndpointConnection() {
+    }
 
     /**
      * Get the provisioningState property: Gets or sets provisioning state of the private endpoint connection.
@@ -55,6 +65,26 @@ public final class PrivateEndpointConnection {
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
         return this.privateLinkServiceConnectionState;
+    }
+
+    /**
+     * Get the groupIds property: Group Ids for the Private Endpoint.
+     *
+     * @return the groupIds value.
+     */
+    public List<VaultSubResourceType> groupIds() {
+        return this.groupIds;
+    }
+
+    /**
+     * Set the groupIds property: Group Ids for the Private Endpoint.
+     *
+     * @param groupIds the groupIds value to set.
+     * @return the PrivateEndpointConnection object itself.
+     */
+    public PrivateEndpointConnection withGroupIds(List<VaultSubResourceType> groupIds) {
+        this.groupIds = groupIds;
+        return this;
     }
 
     /**

@@ -122,6 +122,13 @@ public interface NotificationChannel {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.NotificationChannelInner object.
      *
      * @return the inner object.
@@ -316,21 +323,21 @@ public interface NotificationChannel {
      * Send notification to provided channel.
      *
      * @param notifyParameters Properties for generating a Notification.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
-    void notify(NotifyParameters notifyParameters);
+    Response<Void> notifyWithResponse(NotifyParameters notifyParameters, Context context);
 
     /**
      * Send notification to provided channel.
      *
      * @param notifyParameters Properties for generating a Notification.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> notifyWithResponse(NotifyParameters notifyParameters, Context context);
+    void notify(NotifyParameters notifyParameters);
 }

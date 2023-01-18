@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.maps.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Immutable
 public final class MapsAccountKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsAccountKeysInner.class);
-
     /*
      * The last updated date and time of the primary key.
      */
@@ -40,6 +36,10 @@ public final class MapsAccountKeysInner {
      */
     @JsonProperty(value = "secondaryKeyLastUpdated", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKeyLastUpdated;
+
+    /** Creates an instance of MapsAccountKeysInner class. */
+    public MapsAccountKeysInner() {
+    }
 
     /**
      * Get the primaryKeyLastUpdated property: The last updated date and time of the primary key.

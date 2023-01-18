@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A Policy. */
-@Immutable
+@Fluent
 public final class PolicyFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyFragment.class);
+    /** Creates an instance of PolicyFragment class. */
+    public PolicyFragment() {
+    }
 
     /** {@inheritDoc} */
     @Override

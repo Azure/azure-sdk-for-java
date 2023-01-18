@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the enrollment account. */
 @Immutable
 public final class EnrollmentAccountSummaryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccountSummaryProperties.class);
-
     /*
      * The account owner's principal name.
      */
     @JsonProperty(value = "principalName", access = JsonProperty.Access.WRITE_ONLY)
     private String principalName;
+
+    /** Creates an instance of EnrollmentAccountSummaryProperties class. */
+    public EnrollmentAccountSummaryProperties() {
+    }
 
     /**
      * Get the principalName property: The account owner's principal name.

@@ -23,6 +23,15 @@ public final class KeyVaultNetworkAccessTypes extends ExpandableStringEnum<KeyVa
     public static final KeyVaultNetworkAccessTypes PRIVATE = fromString("Private");
 
     /**
+     * Creates a new instance of KeyVaultNetworkAccessTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyVaultNetworkAccessTypes() {
+    }
+
+    /**
      * Creates or finds a KeyVaultNetworkAccessTypes from its string representation.
      *
      * @param name a name to look for.

@@ -4,35 +4,48 @@
 
 package com.azure.resourcemanager.mobilenetwork.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CoreNetworkType. */
-public final class CoreNetworkType extends ExpandableStringEnum<CoreNetworkType> {
-    /** Static value 5GC for CoreNetworkType. */
-    public static final CoreNetworkType FIVE_GC = fromString("5GC");
+/** The core network technology generation (5G core or EPC / 4G core). */
+public enum CoreNetworkType {
+    /** Enum value 5GC. */
+    FIVE_GC("5GC"),
 
-    /** Static value EPC for CoreNetworkType. */
-    public static final CoreNetworkType EPC = fromString("EPC");
+    /** Enum value EPC. */
+    EPC("EPC");
 
-    /**
-     * Creates or finds a CoreNetworkType from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding CoreNetworkType.
-     */
-    @JsonCreator
-    public static CoreNetworkType fromString(String name) {
-        return fromString(name, CoreNetworkType.class);
+    /** The actual serialized value for a CoreNetworkType instance. */
+    private final String value;
+
+    CoreNetworkType(String value) {
+        this.value = value;
     }
 
     /**
-     * Gets known CoreNetworkType values.
+     * Parses a serialized value to a CoreNetworkType instance.
      *
-     * @return known CoreNetworkType values.
+     * @param value the serialized value to parse.
+     * @return the parsed CoreNetworkType object, or null if unable to parse.
      */
-    public static Collection<CoreNetworkType> values() {
-        return values(CoreNetworkType.class);
+    @JsonCreator
+    public static CoreNetworkType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        CoreNetworkType[] items = CoreNetworkType.values();
+        for (CoreNetworkType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

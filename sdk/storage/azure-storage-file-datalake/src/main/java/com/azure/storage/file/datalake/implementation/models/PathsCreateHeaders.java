@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -69,6 +70,18 @@ public final class PathsCreateHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
+            HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+            HttpHeaderName.fromString("x-ms-request-server-encrypted");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsCreateHeaders class.
@@ -76,24 +89,24 @@ public final class PathsCreateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsCreateHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.eTag = rawHeaders.getValue("ETag");
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        String contentLength = rawHeaders.getValue("Content-Length");
+        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsContinuation = rawHeaders.getValue("x-ms-continuation");
-        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
+        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        String date = rawHeaders.getValue("Date");
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

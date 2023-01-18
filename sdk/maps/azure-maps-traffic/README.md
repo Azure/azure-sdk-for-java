@@ -99,13 +99,14 @@ System.out.println("Get Traffic Flow Tile:");
 // options
 client.getTrafficFlowTile(
     new TrafficFlowTileOptions()
-        .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY).setFormat(TileFormat.PNG).setZoom(10));
+        .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY).setFormat(TileFormat.PNG).setZoom(10)
+        .setTileIndex(new TileIndex().setX(1022).setY(680)));
 
 // complete
 client.getTrafficFlowTile(
     new TrafficFlowTileOptions()
         .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY).setFormat(TileFormat.PNG).setZoom(10)
-        .setTileIndex(new TileIndex().setX(2044).setY(1360)).setThickness(10));
+        .setTileIndex(new TileIndex().setX(1022).setY(680)).setThickness(10));
 ```
 
 Get Traffic Incident Detail
@@ -137,7 +138,7 @@ System.out.println("Get Traffic Incident Tile:");
 client.getTrafficIncidentTile(
     new TrafficIncidentTileOptions()
         .setFormat(TileFormat.PNG).setTrafficIncidentTileStyle(TrafficIncidentTileStyle.S3)
-        .setZoom(10));
+        .setZoom(10).setTileIndex(new TileIndex().setX(1022).setY(680)));
 
 // complete
 client.getTrafficIncidentTile(
@@ -148,7 +149,7 @@ client.getTrafficIncidentTile(
 
 Get Traffic Incident Viewport
 ```java com.azure.maps.traffic.sync.get_traffic_incident_viewport
-System.out.println("Get Traffic Incident Tile:");
+System.out.println("Get Traffic Incident Viewport:");
 
 // options
 client.getTrafficIncidentViewport(

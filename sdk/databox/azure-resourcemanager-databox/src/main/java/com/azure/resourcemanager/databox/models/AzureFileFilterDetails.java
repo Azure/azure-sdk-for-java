@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Filter details to transfer Azure files. */
 @Fluent
 public final class AzureFileFilterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileFilterDetails.class);
-
     /*
      * Prefix list of the Azure files to be transferred.
      */
@@ -32,6 +28,10 @@ public final class AzureFileFilterDetails {
      */
     @JsonProperty(value = "fileShareList")
     private List<String> fileShareList;
+
+    /** Creates an instance of AzureFileFilterDetails class. */
+    public AzureFileFilterDetails() {
+    }
 
     /**
      * Get the filePrefixList property: Prefix list of the Azure files to be transferred.

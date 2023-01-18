@@ -37,6 +37,9 @@ public class SnowflakeLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SnowflakeLinkedService class. */
+    public SnowflakeLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string of snowflake. Type: string, SecureString.
      *

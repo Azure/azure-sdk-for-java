@@ -67,7 +67,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VirtualNetworkGatewayNatRulesService {
+    public interface VirtualNetworkGatewayNatRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -183,7 +183,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -242,7 +242,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -360,7 +360,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -431,7 +431,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -698,7 +698,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -756,7 +756,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -957,7 +957,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
                     new IllegalArgumentException(
                         "Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1020,7 +1020,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
                     new IllegalArgumentException(
                         "Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

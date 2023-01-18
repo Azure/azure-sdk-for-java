@@ -424,9 +424,6 @@ public class ChangeFeedStateTest {
             expectedHeaders.put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
         } else {
             expectedHeaders.put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED);
-            expectedHeaders.put(
-                HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
-                HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
         }
 
         RxDocumentServiceRequest serviceRequest =

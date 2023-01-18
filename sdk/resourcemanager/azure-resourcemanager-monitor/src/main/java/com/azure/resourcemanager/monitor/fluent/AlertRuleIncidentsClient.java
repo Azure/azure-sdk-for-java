@@ -50,20 +50,6 @@ public interface AlertRuleIncidentsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param incidentName The name of the incident to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident associated to an alert rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IncidentInner get(String resourceGroupName, String ruleName, String incidentName);
-
-    /**
-     * Gets an incident associated to an alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param incidentName The name of the incident to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -73,6 +59,20 @@ public interface AlertRuleIncidentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IncidentInner> getWithResponse(
         String resourceGroupName, String ruleName, String incidentName, Context context);
+
+    /**
+     * Gets an incident associated to an alert rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param incidentName The name of the incident to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an incident associated to an alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IncidentInner get(String resourceGroupName, String ruleName, String incidentName);
 
     /**
      * Gets a list of incidents associated to an alert rule.

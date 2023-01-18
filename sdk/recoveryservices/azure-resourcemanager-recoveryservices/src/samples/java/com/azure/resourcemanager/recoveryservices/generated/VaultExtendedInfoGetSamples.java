@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VaultExtendedInfo Get. */
 public final class VaultExtendedInfoGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/GETVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/GETVaultExtendedInfo.json
      */
     /**
      * Sample code: Get ExtendedInfo of Resource.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Disks GetByResourceGroup. */
 public final class DisksGetByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class DisksGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDisks()
-            .getByResourceGroupWithResponse("myResourceGroup", "myManagedDisk", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myManagedDisk", com.azure.core.util.Context.NONE);
     }
 }

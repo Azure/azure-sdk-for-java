@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneVersionInner;
+import java.util.List;
 
 /** An immutable client-side representation of PacketCoreControlPlaneVersion. */
 public interface PacketCoreControlPlaneVersion {
@@ -45,19 +46,11 @@ public interface PacketCoreControlPlaneVersion {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the versionState property: The state of this packet core control plane version.
+     * Gets the platforms property: Platform specific packet core control plane version properties.
      *
-     * @return the versionState value.
+     * @return the platforms value.
      */
-    VersionState versionState();
-
-    /**
-     * Gets the recommendedVersion property: Indicates whether this is the recommended version to use for new packet
-     * core control plane deployments.
-     *
-     * @return the recommendedVersion value.
-     */
-    RecommendedVersion recommendedVersion();
+    List<Platform> platforms();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneVersionInner object.

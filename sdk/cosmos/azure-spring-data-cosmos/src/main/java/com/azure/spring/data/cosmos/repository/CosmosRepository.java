@@ -3,6 +3,8 @@
 
 package com.azure.spring.data.cosmos.repository;
 
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -35,6 +37,33 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
     void deleteById(ID id, PartitionKey partitionKey);
+
+    /**
+     * Patches an entity by its id and partition key with CosmosPatchItemRequestOptions
+     *
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param patchOperations must not be {@literal null}, max operations is 10
+     * @param <S> type class of domain type
+     * @return the patched entity
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
+     */
+    <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations);
+
+    /**
+     * Patches an entity by its id and partition key with CosmosPatchItemRequestOptions
+     *
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param patchOperations must not be {@literal null}, max operations is 10
+     * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param <S> type class of domain type
+     * @return the patched entity
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
+     */
+    <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
 
     /**
      * Returns list of items in a specific partition

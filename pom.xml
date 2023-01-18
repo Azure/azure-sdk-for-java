@@ -34,6 +34,7 @@
     <module>sdk/batch</module>
     <module>sdk/batchai</module>
     <module>sdk/billing</module>
+    <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
@@ -94,12 +95,11 @@
     <module>sdk/imagebuilder</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iothub</module>
-    <module>sdk/jdbc</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
-    <module>sdk/loadtestservice</module>
+    <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
     <module>sdk/logz</module>
@@ -137,6 +137,7 @@
     <module>sdk/quota</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/recoveryservicesbackup</module>
+    <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
@@ -154,6 +155,7 @@
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>
+    <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>

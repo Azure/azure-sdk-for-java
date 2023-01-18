@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Base for all lists of V2 resources. */
 @Fluent
 public final class DppBaseResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppBaseResourceList.class);
-
     /*
      * List of Dpp resources.
      */
@@ -23,11 +19,14 @@ public final class DppBaseResourceList {
     private List<DppBaseResourceInner> value;
 
     /*
-     * The uri to fetch the next page of resources. Call ListNext() fetches
-     * next page of resources.
+     * The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DppBaseResourceList class. */
+    public DppBaseResourceList() {
+    }
 
     /**
      * Get the value property: List of Dpp resources.

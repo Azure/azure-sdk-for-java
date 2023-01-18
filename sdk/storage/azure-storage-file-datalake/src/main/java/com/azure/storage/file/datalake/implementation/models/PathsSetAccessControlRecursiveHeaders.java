@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,6 +46,12 @@ public final class PathsSetAccessControlRecursiveHeaders {
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsSetAccessControlRecursiveHeaders class.
@@ -52,14 +59,14 @@ public final class PathsSetAccessControlRecursiveHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsSetAccessControlRecursiveHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsContinuation = rawHeaders.getValue("x-ms-continuation");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
     }
 
     /**

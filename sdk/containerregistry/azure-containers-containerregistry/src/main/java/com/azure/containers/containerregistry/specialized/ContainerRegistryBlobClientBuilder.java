@@ -358,7 +358,14 @@ public final class ContainerRegistryBlobClientBuilder implements
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      */
     public ContainerRegistryBlobClient buildClient() {
-        return new ContainerRegistryBlobClient(buildAsyncClient());
+        Objects.requireNonNull(endpoint, "'endpoint' can't be null");
+
+        // Service version
+        ContainerRegistryServiceVersion serviceVersion = (version != null)
+            ? version
+            : ContainerRegistryServiceVersion.getLatest();
+
+        return new ContainerRegistryBlobClient(repositoryName, getHttpPipeline(), endpoint, serviceVersion.getVersion());
     }
 
     private HttpPipeline getHttpPipeline() {

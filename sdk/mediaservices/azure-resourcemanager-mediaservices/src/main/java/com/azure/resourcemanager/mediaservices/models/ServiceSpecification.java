@@ -23,6 +23,10 @@ public final class ServiceSpecification {
     @JsonProperty(value = "metricSpecifications", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricSpecification> metricSpecifications;
 
+    /** Creates an instance of ServiceSpecification class. */
+    public ServiceSpecification() {
+    }
+
     /**
      * Get the logSpecifications property: List of log specifications.
      *

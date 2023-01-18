@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SearchAddressResultType. */
+/** One of: * POI * Street * Geography * Point Address * Address Range * Cross Street. */
 public final class SearchAddressResultType extends ExpandableStringEnum<SearchAddressResultType> {
     /** Static value POI for SearchAddressResultType. */
     public static final SearchAddressResultType POI = fromString("POI");
