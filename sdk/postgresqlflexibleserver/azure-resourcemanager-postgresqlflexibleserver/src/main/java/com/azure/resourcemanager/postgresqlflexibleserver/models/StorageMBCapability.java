@@ -6,7 +6,6 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** storage size in MB capability. */
 @Immutable
@@ -28,12 +27,6 @@ public final class StorageMBCapability {
      */
     @JsonProperty(value = "storageSizeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Long storageSizeMB;
-
-    /*
-     * The supportedUpgradableTierList property.
-     */
-    @JsonProperty(value = "supportedUpgradableTierList", access = JsonProperty.Access.WRITE_ONLY)
-    private List<StorageTierCapability> supportedUpgradableTierList;
 
     /*
      * The status
@@ -73,15 +66,6 @@ public final class StorageMBCapability {
     }
 
     /**
-     * Get the supportedUpgradableTierList property: The supportedUpgradableTierList property.
-     *
-     * @return the supportedUpgradableTierList value.
-     */
-    public List<StorageTierCapability> supportedUpgradableTierList() {
-        return this.supportedUpgradableTierList;
-    }
-
-    /**
      * Get the status property: The status.
      *
      * @return the status value.
@@ -96,8 +80,5 @@ public final class StorageMBCapability {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (supportedUpgradableTierList() != null) {
-            supportedUpgradableTierList().forEach(e -> e.validate());
-        }
     }
 }

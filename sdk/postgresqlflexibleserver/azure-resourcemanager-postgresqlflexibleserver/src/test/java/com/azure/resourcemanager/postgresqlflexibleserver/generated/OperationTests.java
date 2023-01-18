@@ -14,7 +14,7 @@ public final class OperationTests {
         Operation model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gmtsavjcbpwxqpsr\",\"display\":{\"provider\":\"tguvriuhp\",\"resource\":\"mdyvxqtayriw\",\"operation\":\"oyq\",\"description\":\"xrmcqibycnojvk\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"hpvgqz\":\"datazvahapjy\"}}")
+                    "{\"name\":\"e\",\"display\":{\"provider\":\"zvdudgwdslfhotwm\",\"resource\":\"npwlbjnpg\",\"operation\":\"ftadehxnltyfs\",\"description\":\"pusuesn\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"qvudwxdndnvowgu\":\"datavorxzdmohct\"}}")
                 .toObject(Operation.class);
         Assertions.assertEquals(false, model.isDataAction());
     }

@@ -45,53 +45,11 @@ public interface PostgreSqlManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the AdministratorsClient object to access its operations.
+     * Gets the ServersClient object to access its operations.
      *
-     * @return the AdministratorsClient object.
+     * @return the ServersClient object.
      */
-    AdministratorsClient getAdministrators();
-
-    /**
-     * Gets the BackupsClient object to access its operations.
-     *
-     * @return the BackupsClient object.
-     */
-    BackupsClient getBackups();
-
-    /**
-     * Gets the LocationBasedCapabilitiesClient object to access its operations.
-     *
-     * @return the LocationBasedCapabilitiesClient object.
-     */
-    LocationBasedCapabilitiesClient getLocationBasedCapabilities();
-
-    /**
-     * Gets the CheckNameAvailabilitiesClient object to access its operations.
-     *
-     * @return the CheckNameAvailabilitiesClient object.
-     */
-    CheckNameAvailabilitiesClient getCheckNameAvailabilities();
-
-    /**
-     * Gets the CheckNameAvailabilityWithLocationsClient object to access its operations.
-     *
-     * @return the CheckNameAvailabilityWithLocationsClient object.
-     */
-    CheckNameAvailabilityWithLocationsClient getCheckNameAvailabilityWithLocations();
-
-    /**
-     * Gets the ConfigurationsClient object to access its operations.
-     *
-     * @return the ConfigurationsClient object.
-     */
-    ConfigurationsClient getConfigurations();
-
-    /**
-     * Gets the DatabasesClient object to access its operations.
-     *
-     * @return the DatabasesClient object.
-     */
-    DatabasesClient getDatabases();
+    ServersClient getServers();
 
     /**
      * Gets the FirewallRulesClient object to access its operations.
@@ -101,11 +59,32 @@ public interface PostgreSqlManagementClient {
     FirewallRulesClient getFirewallRules();
 
     /**
-     * Gets the ServersClient object to access its operations.
+     * Gets the ConfigurationsClient object to access its operations.
      *
-     * @return the ServersClient object.
+     * @return the ConfigurationsClient object.
      */
-    ServersClient getServers();
+    ConfigurationsClient getConfigurations();
+
+    /**
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilitiesClient object.
+     */
+    CheckNameAvailabilitiesClient getCheckNameAvailabilities();
+
+    /**
+     * Gets the LocationBasedCapabilitiesClient object to access its operations.
+     *
+     * @return the LocationBasedCapabilitiesClient object.
+     */
+    LocationBasedCapabilitiesClient getLocationBasedCapabilities();
+
+    /**
+     * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
+     *
+     * @return the VirtualNetworkSubnetUsagesClient object.
+     */
+    VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -115,23 +94,16 @@ public interface PostgreSqlManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the DatabasesClient object to access its operations.
+     *
+     * @return the DatabasesClient object.
+     */
+    DatabasesClient getDatabases();
+
+    /**
      * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
      *
      * @return the GetPrivateDnsZoneSuffixesClient object.
      */
     GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes();
-
-    /**
-     * Gets the ReplicasClient object to access its operations.
-     *
-     * @return the ReplicasClient object.
-     */
-    ReplicasClient getReplicas();
-
-    /**
-     * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
-     *
-     * @return the VirtualNetworkSubnetUsagesClient object.
-     */
-    VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages();
 }

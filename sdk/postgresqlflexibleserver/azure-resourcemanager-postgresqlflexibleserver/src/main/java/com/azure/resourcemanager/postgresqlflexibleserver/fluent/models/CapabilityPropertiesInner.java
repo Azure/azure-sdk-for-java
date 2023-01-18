@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.FastProvisioningEditionCapability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServerEditionCapability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HyperscaleNodeEditionCapability;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,12 +18,6 @@ public final class CapabilityPropertiesInner {
      */
     @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
     private String zone;
-
-    /*
-     * Supported high availability mode
-     */
-    @JsonProperty(value = "supportedHAMode", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> supportedHAMode;
 
     /*
      * A value indicating whether a new server in this region can have geo-backups to paired region.
@@ -57,16 +50,10 @@ public final class CapabilityPropertiesInner {
     private List<HyperscaleNodeEditionCapability> supportedHyperscaleNodeEditions;
 
     /*
-     * A value indicating whether fast provisioning is supported in this region.
+     * Supported high availability mode
      */
-    @JsonProperty(value = "fastProvisioningSupported", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean fastProvisioningSupported;
-
-    /*
-     * The supportedFastProvisioningEditions property.
-     */
-    @JsonProperty(value = "supportedFastProvisioningEditions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<FastProvisioningEditionCapability> supportedFastProvisioningEditions;
+    @JsonProperty(value = "supportedHAMode", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> supportedHAMode;
 
     /*
      * The status
@@ -85,15 +72,6 @@ public final class CapabilityPropertiesInner {
      */
     public String zone() {
         return this.zone;
-    }
-
-    /**
-     * Get the supportedHAMode property: Supported high availability mode.
-     *
-     * @return the supportedHAMode value.
-     */
-    public List<String> supportedHAMode() {
-        return this.supportedHAMode;
     }
 
     /**
@@ -145,22 +123,12 @@ public final class CapabilityPropertiesInner {
     }
 
     /**
-     * Get the fastProvisioningSupported property: A value indicating whether fast provisioning is supported in this
-     * region.
+     * Get the supportedHAMode property: Supported high availability mode.
      *
-     * @return the fastProvisioningSupported value.
+     * @return the supportedHAMode value.
      */
-    public Boolean fastProvisioningSupported() {
-        return this.fastProvisioningSupported;
-    }
-
-    /**
-     * Get the supportedFastProvisioningEditions property: The supportedFastProvisioningEditions property.
-     *
-     * @return the supportedFastProvisioningEditions value.
-     */
-    public List<FastProvisioningEditionCapability> supportedFastProvisioningEditions() {
-        return this.supportedFastProvisioningEditions;
+    public List<String> supportedHAMode() {
+        return this.supportedHAMode;
     }
 
     /**
@@ -183,9 +151,6 @@ public final class CapabilityPropertiesInner {
         }
         if (supportedHyperscaleNodeEditions() != null) {
             supportedHyperscaleNodeEditions().forEach(e -> e.validate());
-        }
-        if (supportedFastProvisioningEditions() != null) {
-            supportedFastProvisioningEditions().forEach(e -> e.validate());
         }
     }
 }

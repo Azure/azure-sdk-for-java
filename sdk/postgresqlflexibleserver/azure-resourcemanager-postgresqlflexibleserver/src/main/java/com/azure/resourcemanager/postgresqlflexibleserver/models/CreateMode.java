@@ -22,12 +22,6 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /** Static value PointInTimeRestore for CreateMode. */
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
-    /** Static value GeoRestore for CreateMode. */
-    public static final CreateMode GEO_RESTORE = fromString("GeoRestore");
-
-    /** Static value Replica for CreateMode. */
-    public static final CreateMode REPLICA = fromString("Replica");
-
     /**
      * Creates a new instance of CreateMode value.
      *

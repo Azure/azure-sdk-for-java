@@ -56,6 +56,6 @@ public final class ServersDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.servers().delete("judpfrxt", "thzvaytdwkqbrqu", com.azure.core.util.Context.NONE);
+        manager.servers().delete("kiiuxhqyudxor", "qn", com.azure.core.util.Context.NONE);
     }
 }

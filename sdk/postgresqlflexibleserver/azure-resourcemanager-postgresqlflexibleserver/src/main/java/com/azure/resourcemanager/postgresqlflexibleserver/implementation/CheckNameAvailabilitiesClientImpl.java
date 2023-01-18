@@ -24,7 +24,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvailabilityInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityRequest;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilityRequest;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CheckNameAvailabilitiesClient. */
@@ -62,7 +62,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CheckNameAvailabilityRequest nameAvailabilityRequest,
+            @BodyParam("application/json") NameAvailabilityRequest nameAvailabilityRequest,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -79,7 +79,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
-        CheckNameAvailabilityRequest nameAvailabilityRequest) {
+        NameAvailabilityRequest nameAvailabilityRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -127,7 +127,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
+        NameAvailabilityRequest nameAvailabilityRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -169,7 +169,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @return represents a resource name availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityInner> executeAsync(CheckNameAvailabilityRequest nameAvailabilityRequest) {
+    private Mono<NameAvailabilityInner> executeAsync(NameAvailabilityRequest nameAvailabilityRequest) {
         return executeWithResponseAsync(nameAvailabilityRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -185,7 +185,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityInner> executeWithResponse(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
+        NameAvailabilityRequest nameAvailabilityRequest, Context context) {
         return executeWithResponseAsync(nameAvailabilityRequest, context).block();
     }
 
@@ -199,7 +199,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @return represents a resource name availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityInner execute(CheckNameAvailabilityRequest nameAvailabilityRequest) {
+    public NameAvailabilityInner execute(NameAvailabilityRequest nameAvailabilityRequest) {
         return executeWithResponse(nameAvailabilityRequest, Context.NONE).getValue();
     }
 }

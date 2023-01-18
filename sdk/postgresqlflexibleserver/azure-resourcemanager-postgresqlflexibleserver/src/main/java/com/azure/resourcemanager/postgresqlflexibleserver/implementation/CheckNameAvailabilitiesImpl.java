@@ -11,8 +11,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilities;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailability;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilityRequest;
 
 public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilities {
     private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilitiesImpl.class);
@@ -29,7 +29,7 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
     }
 
     public Response<NameAvailability> executeWithResponse(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
+        NameAvailabilityRequest nameAvailabilityRequest, Context context) {
         Response<NameAvailabilityInner> inner =
             this.serviceClient().executeWithResponse(nameAvailabilityRequest, context);
         if (inner != null) {
@@ -43,7 +43,7 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         }
     }
 
-    public NameAvailability execute(CheckNameAvailabilityRequest nameAvailabilityRequest) {
+    public NameAvailability execute(NameAvailabilityRequest nameAvailabilityRequest) {
         NameAvailabilityInner inner = this.serviceClient().execute(nameAvailabilityRequest);
         if (inner != null) {
             return new NameAvailabilityImpl(inner, this.manager());

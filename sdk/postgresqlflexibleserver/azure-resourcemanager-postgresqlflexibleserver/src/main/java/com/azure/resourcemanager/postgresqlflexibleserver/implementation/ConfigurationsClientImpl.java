@@ -33,7 +33,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationForUpdate;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -100,7 +99,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/flexibleServers/{serverName}/configurations/{configurationName}")
-        @ExpectedResponses({200, 201, 202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
@@ -109,7 +108,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("configurationName") String configurationName,
-            @BodyParam("application/json") ConfigurationForUpdate parameters,
+            @BodyParam("application/json") ConfigurationInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -117,7 +116,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/flexibleServers/{serverName}/configurations/{configurationName}")
-        @ExpectedResponses({200, 201, 202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> put(
             @HostParam("$host") String endpoint,
@@ -496,7 +495,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
+        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -561,7 +560,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         String resourceGroupName,
         String serverName,
         String configurationName,
-        ConfigurationForUpdate parameters,
+        ConfigurationInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -620,7 +619,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
+        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, serverName, configurationName, parameters);
         return this
@@ -651,7 +650,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         String resourceGroupName,
         String serverName,
         String configurationName,
-        ConfigurationForUpdate parameters,
+        ConfigurationInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -676,7 +675,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
+        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters).getSyncPoller();
     }
 
@@ -698,7 +697,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         String resourceGroupName,
         String serverName,
         String configurationName,
-        ConfigurationForUpdate parameters,
+        ConfigurationInner parameters,
         Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters, context)
@@ -719,7 +718,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationInner> updateAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
+        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         return beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -743,7 +742,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         String resourceGroupName,
         String serverName,
         String configurationName,
-        ConfigurationForUpdate parameters,
+        ConfigurationInner parameters,
         Context context) {
         return beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters, context)
             .last()
@@ -764,7 +763,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationInner update(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
+        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         return updateAsync(resourceGroupName, serverName, configurationName, parameters).block();
     }
 
@@ -786,7 +785,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         String resourceGroupName,
         String serverName,
         String configurationName,
-        ConfigurationForUpdate parameters,
+        ConfigurationInner parameters,
         Context context) {
         return updateAsync(resourceGroupName, serverName, configurationName, parameters, context).block();
     }

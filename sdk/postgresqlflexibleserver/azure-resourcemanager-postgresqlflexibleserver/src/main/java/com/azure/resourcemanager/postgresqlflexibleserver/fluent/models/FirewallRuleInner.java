@@ -20,7 +20,7 @@ public final class FirewallRuleInner extends ProxyResource {
     private FirewallRuleProperties innerProperties = new FirewallRuleProperties();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The system metadata relating to this resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -39,7 +39,7 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: The system metadata relating to this resource.
      *
      * @return the systemData value.
      */

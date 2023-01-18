@@ -16,9 +16,6 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
     /** Static value ZoneRedundant for HighAvailabilityMode. */
     public static final HighAvailabilityMode ZONE_REDUNDANT = fromString("ZoneRedundant");
 
-    /** Static value SameZone for HighAvailabilityMode. */
-    public static final HighAvailabilityMode SAME_ZONE = fromString("SameZone");
-
     /**
      * Creates a new instance of HighAvailabilityMode value.
      *

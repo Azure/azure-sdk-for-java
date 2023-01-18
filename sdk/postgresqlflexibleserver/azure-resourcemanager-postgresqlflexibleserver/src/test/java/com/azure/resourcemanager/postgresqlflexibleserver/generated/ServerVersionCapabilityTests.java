@@ -13,7 +13,7 @@ public final class ServerVersionCapabilityTests {
         ServerVersionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ufizuckyf\",\"supportedVersionsToUpgrade\":[\"fidfvzw\",\"zuhtymwisdkfthwx\",\"nteiwaopv\"],\"supportedVcores\":[{\"name\":\"c\",\"vCores\":4465069614160015486,\"supportedIops\":7874706781697000309,\"supportedMemoryPerVcoreMB\":4484717766489487799,\"status\":\"pymzidnsezcxtbzs\"},{\"name\":\"yc\",\"vCores\":7851183931824744763,\"supportedIops\":4763393061757508617,\"supportedMemoryPerVcoreMB\":190971854068748515,\"status\":\"iachbo\"}],\"status\":\"flnrosfqpteehzz\"}")
+                    "{\"name\":\"wzjeiach\",\"supportedVcores\":[{\"name\":\"flnrosfqpteehzz\",\"vCores\":3484432120789784675,\"supportedIops\":3675412645754228975,\"supportedMemoryPerVcoreMB\":298200283575892890,\"status\":\"pvswjdkirso\"},{\"name\":\"qxhcrmn\",\"vCores\":661111027301241875,\"supportedIops\":2421996670238280312,\"supportedMemoryPerVcoreMB\":1898861931840204238,\"status\":\"ifiyipjxsqwpgrj\"}],\"status\":\"norcjxvsnbyxqab\"}")
                 .toObject(ServerVersionCapability.class);
     }
 

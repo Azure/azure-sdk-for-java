@@ -14,26 +14,26 @@ public final class MaintenanceWindowTests {
         MaintenanceWindow model =
             BinaryData
                 .fromString(
-                    "{\"customWindow\":\"lo\",\"startHour\":660644635,\"startMinute\":636252983,\"dayOfWeek\":1073138726}")
+                    "{\"customWindow\":\"rbt\",\"startHour\":1897001244,\"startMinute\":332258178,\"dayOfWeek\":1110459096}")
                 .toObject(MaintenanceWindow.class);
-        Assertions.assertEquals("lo", model.customWindow());
-        Assertions.assertEquals(660644635, model.startHour());
-        Assertions.assertEquals(636252983, model.startMinute());
-        Assertions.assertEquals(1073138726, model.dayOfWeek());
+        Assertions.assertEquals("rbt", model.customWindow());
+        Assertions.assertEquals(1897001244, model.startHour());
+        Assertions.assertEquals(332258178, model.startMinute());
+        Assertions.assertEquals(1110459096, model.dayOfWeek());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceWindow model =
             new MaintenanceWindow()
-                .withCustomWindow("lo")
-                .withStartHour(660644635)
-                .withStartMinute(636252983)
-                .withDayOfWeek(1073138726);
+                .withCustomWindow("rbt")
+                .withStartHour(1897001244)
+                .withStartMinute(332258178)
+                .withDayOfWeek(1110459096);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindow.class);
-        Assertions.assertEquals("lo", model.customWindow());
-        Assertions.assertEquals(660644635, model.startHour());
-        Assertions.assertEquals(636252983, model.startMinute());
-        Assertions.assertEquals(1073138726, model.dayOfWeek());
+        Assertions.assertEquals("rbt", model.customWindow());
+        Assertions.assertEquals(1897001244, model.startHour());
+        Assertions.assertEquals(332258178, model.startMinute());
+        Assertions.assertEquals(1110459096, model.dayOfWeek());
     }
 }

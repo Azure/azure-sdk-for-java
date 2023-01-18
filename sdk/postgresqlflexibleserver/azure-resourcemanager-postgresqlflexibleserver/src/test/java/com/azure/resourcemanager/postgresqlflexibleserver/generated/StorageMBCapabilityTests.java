@@ -13,7 +13,7 @@ public final class StorageMBCapabilityTests {
         StorageMBCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gzjaoyfhrtxilne\",\"supportedIops\":7928784198213019505,\"storageSizeMB\":186603150154642680,\"supportedUpgradableTierList\":[{\"name\":\"uvfqawrlyxwj\",\"tierName\":\"prbnwbxgjvtbv\",\"iops\":7661305214436261701,\"isBaseline\":true,\"status\":\"rujqg\"}],\"status\":\"muouqfp\"}")
+                    "{\"name\":\"ymzidn\",\"supportedIops\":6857493203334050846,\"storageSizeMB\":1635324666273649055,\"status\":\"sgfyccsnew\"}")
                 .toObject(StorageMBCapability.class);
     }
 

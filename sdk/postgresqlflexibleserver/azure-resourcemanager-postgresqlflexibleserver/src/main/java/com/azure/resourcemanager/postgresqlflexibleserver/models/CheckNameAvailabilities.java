@@ -19,8 +19,7 @@ public interface CheckNameAvailabilities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a resource name availability along with {@link Response}.
      */
-    Response<NameAvailability> executeWithResponse(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
+    Response<NameAvailability> executeWithResponse(NameAvailabilityRequest nameAvailabilityRequest, Context context);
 
     /**
      * Check the availability of name for resource.
@@ -31,5 +30,5 @@ public interface CheckNameAvailabilities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a resource name availability.
      */
-    NameAvailability execute(CheckNameAvailabilityRequest nameAvailabilityRequest);
+    NameAvailability execute(NameAvailabilityRequest nameAvailabilityRequest);
 }

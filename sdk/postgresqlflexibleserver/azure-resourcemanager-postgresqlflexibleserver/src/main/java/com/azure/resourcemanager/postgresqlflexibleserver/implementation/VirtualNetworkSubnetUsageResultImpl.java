@@ -22,6 +22,14 @@ public final class VirtualNetworkSubnetUsageResultImpl implements VirtualNetwork
         this.serviceManager = serviceManager;
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
+    }
+
     public List<DelegatedSubnetUsage> delegatedSubnetsUsage() {
         List<DelegatedSubnetUsage> inner = this.innerModel().delegatedSubnetsUsage();
         if (inner != null) {
@@ -29,14 +37,6 @@ public final class VirtualNetworkSubnetUsageResultImpl implements VirtualNetwork
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public String subscriptionId() {
-        return this.innerModel().subscriptionId();
     }
 
     public VirtualNetworkSubnetUsageResultInner innerModel() {

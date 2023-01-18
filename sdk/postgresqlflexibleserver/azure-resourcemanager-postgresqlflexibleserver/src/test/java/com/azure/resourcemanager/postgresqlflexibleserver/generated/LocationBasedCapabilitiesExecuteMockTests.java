@@ -31,7 +31,7 @@ public final class LocationBasedCapabilitiesExecuteMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"zone\":\"qlfmmdnbb\",\"supportedHAMode\":[\"pswiydmcwyh\",\"dxssadbzm\",\"vdfznudaodvxzb\"],\"geoBackupSupported\":true,\"zoneRedundantHaSupported\":true,\"zoneRedundantHaAndGeoBackupSupported\":true,\"supportedFlexibleServerEditions\":[{\"name\":\"bhhxsrzdzuc\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"status\":\"t\"},{\"name\":\"vfiwjmygtdss\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"status\":\"eriofzpyqs\"},{\"name\":\"wab\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"status\":\"szhedplvw\"}],\"supportedHyperscaleNodeEditions\":[{\"name\":\"mwmbes\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"pjflcxogao\"},{\"name\":\"nzmnsikvm\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"l\"},{\"name\":\"zxmhhvhgu\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"dagxtibqd\"}],\"fastProvisioningSupported\":false,\"supportedFastProvisioningEditions\":[{\"supportedSku\":\"bogqxndlkzgxhu\",\"supportedStorageGb\":621942409607693787,\"supportedServerVersions\":\"podxunkb\"},{\"supportedSku\":\"xmubyyntwlrbq\",\"supportedStorageGb\":8060447161666090820,\"supportedServerVersions\":\"vseotgqrl\"},{\"supportedSku\":\"muwlauwzizxbm\",\"supportedStorageGb\":9118429342651119617,\"supportedServerVersions\":\"fuzmuvpbtt\"},{\"supportedSku\":\"morppxebmnzbtbh\",\"supportedStorageGb\":4679929570751619388,\"supportedServerVersions\":\"fgohdneuelfphs\"}],\"status\":\"htozfikdow\"}]}";
+            "{\"value\":[{\"zone\":\"pycanuzbpz\",\"geoBackupSupported\":true,\"zoneRedundantHaSupported\":false,\"zoneRedundantHaAndGeoBackupSupported\":false,\"supportedFlexibleServerEditions\":[{\"name\":\"wbme\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"status\":\"jusrtslhspk\"}],\"supportedHyperscaleNodeEditions\":[{\"name\":\"aofmxagkvtme\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"vljua\"},{\"name\":\"quhcdhmduala\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"mwsrcrgvxpvgo\"},{\"name\":\"lf\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"beldawkzbaliourq\"}],\"supportedHAMode\":[\"auhashsfwx\",\"sowzxcugi\",\"jooxdjebw\"],\"status\":\"cwwfvovbvme\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class LocationBasedCapabilitiesExecuteMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CapabilityProperties> response =
-            manager.locationBasedCapabilities().execute("aolps", com.azure.core.util.Context.NONE);
+            manager.locationBasedCapabilities().execute("hrxsbk", com.azure.core.util.Context.NONE);
     }
 }

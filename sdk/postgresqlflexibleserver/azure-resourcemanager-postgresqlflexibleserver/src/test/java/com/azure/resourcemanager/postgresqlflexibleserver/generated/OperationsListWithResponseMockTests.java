@@ -31,7 +31,7 @@ public final class OperationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"altol\",\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"pfuvglsbjjca\":\"datawcsdbnwdcfhucq\",\"t\":\"datavxb\",\"mr\":\"dataudutnco\",\"f\":\"dataxqtvcofu\"}},{\"name\":\"kgjubgdknnqvsazn\",\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"uetae\":\"datagsahmkycgrauw\",\"movsmzlxwabmqoe\":\"datauruv\",\"vtpuqujmqlgk\":\"datakif\"}},{\"name\":\"tndoaongbjc\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"twwaezkojvdcpzf\":\"dataed\"}}],\"nextLink\":\"ouicybxarzgszu\"}";
+            "{\"value\":[{\"name\":\"y\",\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"tdhxujznbmpowuwp\":\"datahjdauwhvylwz\",\"obbc\":\"datazqlveualupjmkhf\"}},{\"name\":\"s\",\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"c\":\"databpbewtghfgb\",\"gibtnm\":\"datawxzvlvqhjkb\",\"j\":\"dataiebwwaloayqcgwrt\",\"yzm\":\"datazg\"}},{\"name\":\"xongmtsavjcbpwxq\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"yvxqtayriwwroy\":\"datauvriuhprwm\",\"bycnojvkn\":\"databexrmcq\",\"qsgzvahapj\":\"datae\"}},{\"name\":\"hpvgqz\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"awjvzunluthnnp\":\"datalmwlxkvugfhzo\",\"jzuaejxdultskzbb\":\"datanxipeil\",\"wozuhkf\":\"datadzumveekg\",\"uusdttouwa\":\"databsjyofdx\"}}],\"nextLink\":\"ekqvkeln\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class OperationsListWithResponseMockTests {
         OperationListResult response =
             manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(true, response.value().get(0).isDataAction());
-        Assertions.assertEquals("ouicybxarzgszu", response.nextLink());
+        Assertions.assertEquals(false, response.value().get(0).isDataAction());
+        Assertions.assertEquals("ekqvkeln", response.nextLink());
     }
 }

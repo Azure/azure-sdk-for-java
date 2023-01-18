@@ -61,8 +61,8 @@ public final class ServersRestartMockTests {
         manager
             .servers()
             .restart(
-                "lyls",
-                "xkqjnsjervt",
+                "y",
+                "osvexcsonpclhoc",
                 new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.FORCED_FAILOVER),
                 com.azure.core.util.Context.NONE);
     }

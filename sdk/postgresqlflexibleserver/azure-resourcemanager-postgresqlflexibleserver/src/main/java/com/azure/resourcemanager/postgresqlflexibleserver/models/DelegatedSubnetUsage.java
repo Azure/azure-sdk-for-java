@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class DelegatedSubnetUsage {
     /*
-     * Name of the delegated subnet for which IP addresses are in use
+     * name of the subnet
      */
     @JsonProperty(value = "subnetName", access = JsonProperty.Access.WRITE_ONLY)
     private String subnetName;
 
     /*
-     * Number of IP addresses used by the delegated subnet
+     * Number of used delegated subnets
      */
     @JsonProperty(value = "usage", access = JsonProperty.Access.WRITE_ONLY)
     private Long usage;
@@ -27,7 +27,7 @@ public final class DelegatedSubnetUsage {
     }
 
     /**
-     * Get the subnetName property: Name of the delegated subnet for which IP addresses are in use.
+     * Get the subnetName property: name of the subnet.
      *
      * @return the subnetName value.
      */
@@ -36,7 +36,7 @@ public final class DelegatedSubnetUsage {
     }
 
     /**
-     * Get the usage property: Number of IP addresses used by the delegated subnet.
+     * Get the usage property: Number of used delegated subnets.
      *
      * @return the usage value.
      */

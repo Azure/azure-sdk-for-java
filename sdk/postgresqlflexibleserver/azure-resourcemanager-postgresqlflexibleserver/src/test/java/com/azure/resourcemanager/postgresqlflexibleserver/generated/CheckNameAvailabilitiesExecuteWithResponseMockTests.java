@@ -12,13 +12,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityReason;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailability;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilityRequest;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -33,7 +31,7 @@ public final class CheckNameAvailabilitiesExecuteWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"name\":\"c\",\"type\":\"fwdsj\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"tiiswacffg\"}";
+            "{\"message\":\"vwfudwpzntxhd\",\"nameAvailable\":true,\"name\":\"qj\",\"type\":\"ck\",\"reason\":\"AlreadyExists\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,12 +63,8 @@ public final class CheckNameAvailabilitiesExecuteWithResponseMockTests {
             manager
                 .checkNameAvailabilities()
                 .executeWithResponse(
-                    new CheckNameAvailabilityRequest().withName("uuvxz").withType("lvithhqzonosgg"),
+                    new NameAvailabilityRequest().withName("tcc").withType("yudxytlmoy"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
-
-        Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("tiiswacffg", response.message());
     }
 }

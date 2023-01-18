@@ -7,7 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 /** Samples for Databases Create. */
 public final class DatabasesCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabaseCreate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/DatabaseCreate.json
      */
     /**
      * Sample code: Create a database.

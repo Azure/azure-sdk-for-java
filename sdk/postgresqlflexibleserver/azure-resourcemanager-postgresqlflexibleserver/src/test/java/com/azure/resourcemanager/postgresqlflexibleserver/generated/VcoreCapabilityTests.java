@@ -13,7 +13,7 @@ public final class VcoreCapabilityTests {
         VcoreCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"pyqr\",\"vCores\":298200283575892890,\"supportedIops\":2996229806276970298,\"supportedMemoryPerVcoreMB\":4254467677090741872,\"status\":\"kirsoodqxhc\"}")
+                    "{\"name\":\"ocpcy\",\"vCores\":5770924139957385488,\"supportedIops\":8690617744614156568,\"supportedMemoryPerVcoreMB\":5870721365546095663,\"status\":\"gpbtoqcjmklj\"}")
                 .toObject(VcoreCapability.class);
     }
 

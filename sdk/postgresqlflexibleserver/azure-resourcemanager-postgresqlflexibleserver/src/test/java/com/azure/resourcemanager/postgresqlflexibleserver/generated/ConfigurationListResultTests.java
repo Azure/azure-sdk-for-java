@@ -16,11 +16,11 @@ public final class ConfigurationListResultTests {
         ConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"cocpecfvmmcoofsx\",\"description\":\"evgbmqjq\",\"defaultValue\":\"c\",\"dataType\":\"Integer\",\"allowedValues\":\"vkwlzuvccfwnf\",\"source\":\"acfi\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"qgtz\",\"documentationLink\":\"pnqbqqwxrjfe\"},\"id\":\"lnwsubisn\",\"name\":\"ampmngnz\",\"type\":\"c\"},{\"properties\":{\"value\":\"wooc\",\"description\":\"bonqvpkvlrxnjeas\",\"defaultValue\":\"pheoflokeyy\",\"dataType\":\"Boolean\",\"allowedValues\":\"bdlwtgrhpdjpj\",\"source\":\"asxazjpqyegualhb\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"v\",\"documentationLink\":\"dgwdslfhot\"},\"id\":\"cynpwlbjnp\",\"name\":\"acfta\",\"type\":\"ehxnltyfsop\"},{\"properties\":{\"value\":\"uesnzwdejbavo\",\"description\":\"zdmohctbqvu\",\"defaultValue\":\"xdn\",\"dataType\":\"Boolean\",\"allowedValues\":\"w\",\"source\":\"jjugwdkcglhslaz\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"ixhbkuofqweykhm\",\"documentationLink\":\"evfyexfwhybcib\"},\"id\":\"vdcsitynn\",\"name\":\"amdecte\",\"type\":\"f\"},{\"properties\":{\"value\":\"cj\",\"description\":\"pvhez\",\"defaultValue\":\"gqhcjrefovg\",\"dataType\":\"Boolean\",\"allowedValues\":\"leyyvx\",\"source\":\"jpkcattpng\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"pjhvmdajvnys\",\"documentationLink\":\"nqecanoaeup\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"}],\"nextLink\":\"puozmyzydag\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"nhsjcnyej\",\"description\":\"ryhtnapczwlokjy\",\"defaultValue\":\"kkvnipjox\",\"dataType\":\"Numeric\",\"allowedValues\":\"hgejspodma\",\"source\":\"zyde\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"xinpmqnjaq\",\"documentationLink\":\"xj\"},\"id\":\"r\",\"name\":\"zvcputegjvwmfda\",\"type\":\"scmdvpjhulsuu\"},{\"properties\":{\"value\":\"jozkrwfndiod\",\"description\":\"slwejdpvw\",\"defaultValue\":\"oqpsoa\",\"dataType\":\"Numeric\",\"allowedValues\":\"zakljlahbc\",\"source\":\"ffdfdosygexpa\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"zjhcrzevdphlx\",\"documentationLink\":\"lthqtrgqjbp\"},\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"tfell\",\"type\":\"wfzitonpeqfpjk\"}],\"nextLink\":\"xofpdvhpfxxypi\"}")
                 .toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("cocpecfvmmcoofsx", model.value().get(0).value());
-        Assertions.assertEquals("acfi", model.value().get(0).source());
-        Assertions.assertEquals("puozmyzydag", model.nextLink());
+        Assertions.assertEquals("nhsjcnyej", model.value().get(0).value());
+        Assertions.assertEquals("zyde", model.value().get(0).source());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,14 +30,12 @@ public final class ConfigurationListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new ConfigurationInner().withValue("cocpecfvmmcoofsx").withSource("acfi"),
-                            new ConfigurationInner().withValue("wooc").withSource("asxazjpqyegualhb"),
-                            new ConfigurationInner().withValue("uesnzwdejbavo").withSource("jjugwdkcglhslaz"),
-                            new ConfigurationInner().withValue("cj").withSource("jpkcattpng")))
-                .withNextLink("puozmyzydag");
+                            new ConfigurationInner().withValue("nhsjcnyej").withSource("zyde"),
+                            new ConfigurationInner().withValue("jozkrwfndiod").withSource("ffdfdosygexpa")))
+                .withNextLink("xofpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("cocpecfvmmcoofsx", model.value().get(0).value());
-        Assertions.assertEquals("acfi", model.value().get(0).source());
-        Assertions.assertEquals("puozmyzydag", model.nextLink());
+        Assertions.assertEquals("nhsjcnyej", model.value().get(0).value());
+        Assertions.assertEquals("zyde", model.value().get(0).source());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.nextLink());
     }
 }

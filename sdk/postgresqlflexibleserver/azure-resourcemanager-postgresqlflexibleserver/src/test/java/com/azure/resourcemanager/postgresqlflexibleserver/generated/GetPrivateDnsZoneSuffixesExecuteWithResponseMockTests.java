@@ -29,7 +29,7 @@ public final class GetPrivateDnsZoneSuffixesExecuteWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "\"oxciqopidoamcio\"";
+        String responseStr = "\"ohxcrsbfova\"";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class GetPrivateDnsZoneSuffixesExecuteWithResponseMockTests {
         String response =
             manager.getPrivateDnsZoneSuffixes().executeWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("oxciqopidoamcio", response);
+        Assertions.assertEquals("ohxcrsbfova", response);
     }
 }

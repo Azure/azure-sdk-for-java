@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvailabilityInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityRequest;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilityRequest;
 
 /** An instance of this class provides access to all the operations defined in CheckNameAvailabilitiesClient. */
 public interface CheckNameAvailabilitiesClient {
@@ -25,7 +25,7 @@ public interface CheckNameAvailabilitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NameAvailabilityInner> executeWithResponse(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
+        NameAvailabilityRequest nameAvailabilityRequest, Context context);
 
     /**
      * Check the availability of name for resource.
@@ -37,5 +37,5 @@ public interface CheckNameAvailabilitiesClient {
      * @return represents a resource name availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NameAvailabilityInner execute(CheckNameAvailabilityRequest nameAvailabilityRequest);
+    NameAvailabilityInner execute(NameAvailabilityRequest nameAvailabilityRequest);
 }

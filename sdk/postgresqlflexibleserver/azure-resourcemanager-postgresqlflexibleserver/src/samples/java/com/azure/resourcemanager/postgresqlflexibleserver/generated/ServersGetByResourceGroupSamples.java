@@ -7,7 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 /** Samples for Servers GetByResourceGroup. */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerGet.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerGet.json
      */
     /**
      * Sample code: ServerGet.
@@ -19,7 +19,7 @@ public final class ServersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerGetWithVnet.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerGetWithVnet.json
      */
     /**
      * Sample code: ServerGetWithVnet.

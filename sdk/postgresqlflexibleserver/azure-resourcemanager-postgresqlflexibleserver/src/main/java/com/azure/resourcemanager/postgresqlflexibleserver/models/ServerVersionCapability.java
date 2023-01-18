@@ -18,12 +18,6 @@ public final class ServerVersionCapability {
     private String name;
 
     /*
-     * Supported servers versions to upgrade
-     */
-    @JsonProperty(value = "supportedVersionsToUpgrade", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> supportedVersionsToUpgrade;
-
-    /*
      * The supportedVcores property.
      */
     @JsonProperty(value = "supportedVcores", access = JsonProperty.Access.WRITE_ONLY)
@@ -46,15 +40,6 @@ public final class ServerVersionCapability {
      */
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Get the supportedVersionsToUpgrade property: Supported servers versions to upgrade.
-     *
-     * @return the supportedVersionsToUpgrade value.
-     */
-    public List<String> supportedVersionsToUpgrade() {
-        return this.supportedVersionsToUpgrade;
     }
 
     /**

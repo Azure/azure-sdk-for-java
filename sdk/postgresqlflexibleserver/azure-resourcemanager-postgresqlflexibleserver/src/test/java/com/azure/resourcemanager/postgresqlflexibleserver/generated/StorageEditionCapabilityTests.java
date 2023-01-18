@@ -13,7 +13,7 @@ public final class StorageEditionCapabilityTests {
         StorageEditionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"qktapspwgcuert\",\"supportedStorageMB\":[{\"name\":\"o\",\"supportedIops\":1712101311057870325,\"storageSizeMB\":4117897998779209947,\"supportedUpgradableTierList\":[],\"status\":\"bjf\"},{\"name\":\"gmbmbexppbh\",\"supportedIops\":7863810899973495328,\"storageSizeMB\":3040729179005507255,\"supportedUpgradableTierList\":[],\"status\":\"s\"}],\"status\":\"gbquxigj\"}")
+                    "{\"name\":\"fidfvzw\",\"supportedStorageMB\":[{\"name\":\"tymw\",\"supportedIops\":1702945430371192394,\"storageSizeMB\":9204546244351616694,\"status\":\"xmnteiwaop\"}],\"status\":\"mijcmmxdcufufs\"}")
                 .toObject(StorageEditionCapability.class);
     }
 

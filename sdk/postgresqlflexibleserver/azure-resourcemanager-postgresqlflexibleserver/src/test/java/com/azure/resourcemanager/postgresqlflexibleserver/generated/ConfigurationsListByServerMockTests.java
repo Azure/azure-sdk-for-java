@@ -32,7 +32,7 @@ public final class ConfigurationsListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"value\":\"pcjwv\",\"description\":\"dldwmgxc\",\"defaultValue\":\"slpmutwuo\",\"dataType\":\"Numeric\",\"allowedValues\":\"khjwn\",\"source\":\"qsluicp\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"mbmpaxmodfvuefy\",\"documentationLink\":\"bpfvm\"},\"id\":\"hrfou\",\"name\":\"ft\",\"type\":\"akcp\"}]}";
+            "{\"value\":[{\"properties\":{\"value\":\"debfqkkrbmpukgri\",\"description\":\"lzlfbxzpuz\",\"defaultValue\":\"ispnqzahmgkbrp\",\"dataType\":\"Numeric\",\"allowedValues\":\"ibnuqqkpik\",\"source\":\"rgvtqag\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"gg\",\"documentationLink\":\"bfs\"},\"id\":\"rbu\",\"name\":\"rcvpnazzmhjrunmp\",\"type\":\"ttdbhrbnl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class ConfigurationsListByServerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Configuration> response =
-            manager.configurations().listByServer("pkeqdcvdrhvoo", "sotbob", com.azure.core.util.Context.NONE);
+            manager.configurations().listByServer("mxnehmp", "ec", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pcjwv", response.iterator().next().value());
-        Assertions.assertEquals("qsluicp", response.iterator().next().source());
+        Assertions.assertEquals("debfqkkrbmpukgri", response.iterator().next().value());
+        Assertions.assertEquals("rgvtqag", response.iterator().next().source());
     }
 }

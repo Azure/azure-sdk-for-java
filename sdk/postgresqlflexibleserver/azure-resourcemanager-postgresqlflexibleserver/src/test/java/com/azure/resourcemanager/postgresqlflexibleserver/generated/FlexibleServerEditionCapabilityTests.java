@@ -13,7 +13,7 @@ public final class FlexibleServerEditionCapabilityTests {
         FlexibleServerEditionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"qduujitcjczdz\",\"supportedStorageEditions\":[{\"name\":\"hkr\",\"supportedStorageMB\":[],\"status\":\"ppdsbdkvwrwj\"},{\"name\":\"usnhutje\",\"supportedStorageMB\":[],\"status\":\"ldhugjzzdatqxh\"}],\"supportedServerVersions\":[{\"name\":\"eablg\",\"supportedVersionsToUpgrade\":[\"ti\",\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\"],\"supportedVcores\":[],\"status\":\"iawxklry\"},{\"name\":\"wckbasyypnd\",\"supportedVersionsToUpgrade\":[\"gcbacphejkot\",\"nqgoulzndli\"],\"supportedVcores\":[],\"status\":\"kgfg\"},{\"name\":\"madgakeqsrxyb\",\"supportedVersionsToUpgrade\":[\"e\",\"qytbciq\",\"ouf\",\"mmnkzsmodmgl\"],\"supportedVcores\":[],\"status\":\"b\"}],\"status\":\"tmut\"}")
+                    "{\"name\":\"jvtbvpyss\",\"supportedStorageEditions\":[{\"name\":\"uj\",\"supportedStorageMB\":[],\"status\":\"muouqfp\"}],\"supportedServerVersions\":[{\"name\":\"bngui\",\"supportedVcores\":[],\"status\":\"izgazxu\"}],\"status\":\"zuckyfi\"}")
                 .toObject(FlexibleServerEditionCapability.class);
     }
 

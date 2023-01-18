@@ -15,20 +15,20 @@ public final class HighAvailabilityTests {
         HighAvailability model =
             BinaryData
                 .fromString(
-                    "{\"mode\":\"SameZone\",\"state\":\"FailingOver\",\"standbyAvailabilityZone\":\"xvnmicykvceov\"}")
+                    "{\"mode\":\"ZoneRedundant\",\"state\":\"RemovingStandby\",\"standbyAvailabilityZone\":\"zlobcufpd\"}")
                 .toObject(HighAvailability.class);
-        Assertions.assertEquals(HighAvailabilityMode.SAME_ZONE, model.mode());
-        Assertions.assertEquals("xvnmicykvceov", model.standbyAvailabilityZone());
+        Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
+        Assertions.assertEquals("zlobcufpd", model.standbyAvailabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HighAvailability model =
             new HighAvailability()
-                .withMode(HighAvailabilityMode.SAME_ZONE)
-                .withStandbyAvailabilityZone("xvnmicykvceov");
+                .withMode(HighAvailabilityMode.ZONE_REDUNDANT)
+                .withStandbyAvailabilityZone("zlobcufpd");
         model = BinaryData.fromObject(model).toObject(HighAvailability.class);
-        Assertions.assertEquals(HighAvailabilityMode.SAME_ZONE, model.mode());
-        Assertions.assertEquals("xvnmicykvceov", model.standbyAvailabilityZone());
+        Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
+        Assertions.assertEquals("zlobcufpd", model.standbyAvailabilityZone());
     }
 }

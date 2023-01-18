@@ -12,7 +12,7 @@ public final class NodeTypeCapabilityTests {
     public void testDeserialize() throws Exception {
         NodeTypeCapability model =
             BinaryData
-                .fromString("{\"name\":\"uigdtopbobjog\",\"nodeType\":\"e\",\"status\":\"a\"}")
+                .fromString("{\"name\":\"ndei\",\"nodeType\":\"twnpzaoqvuhrhcf\",\"status\":\"yd\"}")
                 .toObject(NodeTypeCapability.class);
     }
 

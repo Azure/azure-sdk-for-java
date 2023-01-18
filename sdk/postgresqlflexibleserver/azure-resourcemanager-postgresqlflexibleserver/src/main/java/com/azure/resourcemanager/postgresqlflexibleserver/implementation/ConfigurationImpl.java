@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationDataType;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationForUpdate;
 
 public final class ConfigurationImpl implements Configuration, Configuration.Definition, Configuration.Update {
     private ConfigurationInner innerObject;
@@ -94,8 +93,6 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
 
     private String configurationName;
 
-    private ConfigurationForUpdate updateParameters;
-
     public ConfigurationImpl withExistingFlexibleServer(String resourceGroupName, String serverName) {
         this.resourceGroupName = resourceGroupName;
         this.serverName = serverName;
@@ -128,7 +125,6 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public ConfigurationImpl update() {
-        this.updateParameters = new ConfigurationForUpdate();
         return this;
     }
 
@@ -137,7 +133,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
             serviceManager
                 .serviceClient()
                 .getConfigurations()
-                .update(resourceGroupName, serverName, configurationName, updateParameters, Context.NONE);
+                .update(resourceGroupName, serverName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -146,7 +142,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
             serviceManager
                 .serviceClient()
                 .getConfigurations()
-                .update(resourceGroupName, serverName, configurationName, updateParameters, context);
+                .update(resourceGroupName, serverName, configurationName, this.innerModel(), context);
         return this;
     }
 
@@ -181,26 +177,12 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public ConfigurationImpl withValue(String value) {
-        if (isInCreateMode()) {
-            this.innerModel().withValue(value);
-            return this;
-        } else {
-            this.updateParameters.withValue(value);
-            return this;
-        }
+        this.innerModel().withValue(value);
+        return this;
     }
 
     public ConfigurationImpl withSource(String source) {
-        if (isInCreateMode()) {
-            this.innerModel().withSource(source);
-            return this;
-        } else {
-            this.updateParameters.withSource(source);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.innerModel().withSource(source);
+        return this;
     }
 }

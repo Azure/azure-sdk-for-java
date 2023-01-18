@@ -13,7 +13,7 @@ public final class CapabilitiesListResultTests {
         CapabilitiesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"zone\":\"wyahuxinpmqnja\",\"supportedHAMode\":[\"xj\",\"prozvcputegjvwmf\",\"atscmd\",\"pjhulsuuvmkj\"],\"geoBackupSupported\":false,\"zoneRedundantHaSupported\":true,\"zoneRedundantHaAndGeoBackupSupported\":true,\"supportedFlexibleServerEditions\":[],\"supportedHyperscaleNodeEditions\":[],\"fastProvisioningSupported\":true,\"supportedFastProvisioningEditions\":[],\"status\":\"ej\"}],\"nextLink\":\"vwryoqpso\"}")
+                    "{\"value\":[{\"zone\":\"kao\",\"geoBackupSupported\":true,\"zoneRedundantHaSupported\":true,\"zoneRedundantHaAndGeoBackupSupported\":false,\"supportedFlexibleServerEditions\":[],\"supportedHyperscaleNodeEditions\":[],\"supportedHAMode\":[\"k\",\"tyxolniwpwc\",\"kjfkg\",\"awxklr\"],\"status\":\"lwckbasyypnddhs\"},{\"zone\":\"bacphejko\",\"geoBackupSupported\":true,\"zoneRedundantHaSupported\":false,\"zoneRedundantHaAndGeoBackupSupported\":true,\"supportedFlexibleServerEditions\":[],\"supportedHyperscaleNodeEditions\":[],\"supportedHAMode\":[\"kwy\"],\"status\":\"gfgibm\"}],\"nextLink\":\"gakeqsr\"}")
                 .toObject(CapabilitiesListResult.class);
     }
 

@@ -22,10 +22,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.AdministratorsClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.BackupsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CheckNameAvailabilitiesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CheckNameAvailabilityWithLocationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DatabasesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FirewallRulesClient;
@@ -33,7 +30,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.GetPrivateDnsZo
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.OperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
 import java.io.IOException;
@@ -120,88 +116,16 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.defaultPollInterval;
     }
 
-    /** The AdministratorsClient object to access its operations. */
-    private final AdministratorsClient administrators;
+    /** The ServersClient object to access its operations. */
+    private final ServersClient servers;
 
     /**
-     * Gets the AdministratorsClient object to access its operations.
+     * Gets the ServersClient object to access its operations.
      *
-     * @return the AdministratorsClient object.
+     * @return the ServersClient object.
      */
-    public AdministratorsClient getAdministrators() {
-        return this.administrators;
-    }
-
-    /** The BackupsClient object to access its operations. */
-    private final BackupsClient backups;
-
-    /**
-     * Gets the BackupsClient object to access its operations.
-     *
-     * @return the BackupsClient object.
-     */
-    public BackupsClient getBackups() {
-        return this.backups;
-    }
-
-    /** The LocationBasedCapabilitiesClient object to access its operations. */
-    private final LocationBasedCapabilitiesClient locationBasedCapabilities;
-
-    /**
-     * Gets the LocationBasedCapabilitiesClient object to access its operations.
-     *
-     * @return the LocationBasedCapabilitiesClient object.
-     */
-    public LocationBasedCapabilitiesClient getLocationBasedCapabilities() {
-        return this.locationBasedCapabilities;
-    }
-
-    /** The CheckNameAvailabilitiesClient object to access its operations. */
-    private final CheckNameAvailabilitiesClient checkNameAvailabilities;
-
-    /**
-     * Gets the CheckNameAvailabilitiesClient object to access its operations.
-     *
-     * @return the CheckNameAvailabilitiesClient object.
-     */
-    public CheckNameAvailabilitiesClient getCheckNameAvailabilities() {
-        return this.checkNameAvailabilities;
-    }
-
-    /** The CheckNameAvailabilityWithLocationsClient object to access its operations. */
-    private final CheckNameAvailabilityWithLocationsClient checkNameAvailabilityWithLocations;
-
-    /**
-     * Gets the CheckNameAvailabilityWithLocationsClient object to access its operations.
-     *
-     * @return the CheckNameAvailabilityWithLocationsClient object.
-     */
-    public CheckNameAvailabilityWithLocationsClient getCheckNameAvailabilityWithLocations() {
-        return this.checkNameAvailabilityWithLocations;
-    }
-
-    /** The ConfigurationsClient object to access its operations. */
-    private final ConfigurationsClient configurations;
-
-    /**
-     * Gets the ConfigurationsClient object to access its operations.
-     *
-     * @return the ConfigurationsClient object.
-     */
-    public ConfigurationsClient getConfigurations() {
-        return this.configurations;
-    }
-
-    /** The DatabasesClient object to access its operations. */
-    private final DatabasesClient databases;
-
-    /**
-     * Gets the DatabasesClient object to access its operations.
-     *
-     * @return the DatabasesClient object.
-     */
-    public DatabasesClient getDatabases() {
-        return this.databases;
+    public ServersClient getServers() {
+        return this.servers;
     }
 
     /** The FirewallRulesClient object to access its operations. */
@@ -216,16 +140,52 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.firewallRules;
     }
 
-    /** The ServersClient object to access its operations. */
-    private final ServersClient servers;
+    /** The ConfigurationsClient object to access its operations. */
+    private final ConfigurationsClient configurations;
 
     /**
-     * Gets the ServersClient object to access its operations.
+     * Gets the ConfigurationsClient object to access its operations.
      *
-     * @return the ServersClient object.
+     * @return the ConfigurationsClient object.
      */
-    public ServersClient getServers() {
-        return this.servers;
+    public ConfigurationsClient getConfigurations() {
+        return this.configurations;
+    }
+
+    /** The CheckNameAvailabilitiesClient object to access its operations. */
+    private final CheckNameAvailabilitiesClient checkNameAvailabilities;
+
+    /**
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilitiesClient object.
+     */
+    public CheckNameAvailabilitiesClient getCheckNameAvailabilities() {
+        return this.checkNameAvailabilities;
+    }
+
+    /** The LocationBasedCapabilitiesClient object to access its operations. */
+    private final LocationBasedCapabilitiesClient locationBasedCapabilities;
+
+    /**
+     * Gets the LocationBasedCapabilitiesClient object to access its operations.
+     *
+     * @return the LocationBasedCapabilitiesClient object.
+     */
+    public LocationBasedCapabilitiesClient getLocationBasedCapabilities() {
+        return this.locationBasedCapabilities;
+    }
+
+    /** The VirtualNetworkSubnetUsagesClient object to access its operations. */
+    private final VirtualNetworkSubnetUsagesClient virtualNetworkSubnetUsages;
+
+    /**
+     * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
+     *
+     * @return the VirtualNetworkSubnetUsagesClient object.
+     */
+    public VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages() {
+        return this.virtualNetworkSubnetUsages;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -240,6 +200,18 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.operations;
     }
 
+    /** The DatabasesClient object to access its operations. */
+    private final DatabasesClient databases;
+
+    /**
+     * Gets the DatabasesClient object to access its operations.
+     *
+     * @return the DatabasesClient object.
+     */
+    public DatabasesClient getDatabases() {
+        return this.databases;
+    }
+
     /** The GetPrivateDnsZoneSuffixesClient object to access its operations. */
     private final GetPrivateDnsZoneSuffixesClient getPrivateDnsZoneSuffixes;
 
@@ -250,30 +222,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      */
     public GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes() {
         return this.getPrivateDnsZoneSuffixes;
-    }
-
-    /** The ReplicasClient object to access its operations. */
-    private final ReplicasClient replicas;
-
-    /**
-     * Gets the ReplicasClient object to access its operations.
-     *
-     * @return the ReplicasClient object.
-     */
-    public ReplicasClient getReplicas() {
-        return this.replicas;
-    }
-
-    /** The VirtualNetworkSubnetUsagesClient object to access its operations. */
-    private final VirtualNetworkSubnetUsagesClient virtualNetworkSubnetUsages;
-
-    /**
-     * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
-     *
-     * @return the VirtualNetworkSubnetUsagesClient object.
-     */
-    public VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages() {
-        return this.virtualNetworkSubnetUsages;
     }
 
     /**
@@ -298,20 +246,16 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-12-01";
-        this.administrators = new AdministratorsClientImpl(this);
-        this.backups = new BackupsClientImpl(this);
-        this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
-        this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
-        this.checkNameAvailabilityWithLocations = new CheckNameAvailabilityWithLocationsClientImpl(this);
-        this.configurations = new ConfigurationsClientImpl(this);
-        this.databases = new DatabasesClientImpl(this);
-        this.firewallRules = new FirewallRulesClientImpl(this);
+        this.apiVersion = "2021-06-01";
         this.servers = new ServersClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
-        this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
-        this.replicas = new ReplicasClientImpl(this);
+        this.firewallRules = new FirewallRulesClientImpl(this);
+        this.configurations = new ConfigurationsClientImpl(this);
+        this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
+        this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
         this.virtualNetworkSubnetUsages = new VirtualNetworkSubnetUsagesClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
+        this.databases = new DatabasesClientImpl(this);
+        this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
     }
 
     /**

@@ -56,6 +56,6 @@ public final class ServersStartMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.servers().start("dszue", "psbzkfzbeyvpn", com.azure.core.util.Context.NONE);
+        manager.servers().start("ev", "eggzfb", com.azure.core.util.Context.NONE);
     }
 }

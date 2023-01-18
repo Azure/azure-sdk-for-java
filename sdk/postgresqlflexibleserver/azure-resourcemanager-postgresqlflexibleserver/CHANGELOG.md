@@ -1,14 +1,148 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2023-01-18)
 
-### Features Added
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ReplicationRole` was removed
 
-### Other Changes
+* `models.StorageTierCapability` was removed
+
+* `models.ActiveDirectoryAdministrator$DefinitionStages` was removed
+
+* `models.DataEncryption` was removed
+
+* `models.ServerBackup` was removed
+
+* `models.AdministratorListResult` was removed
+
+* `models.CheckNameAvailabilityWithLocations` was removed
+
+* `models.Backups` was removed
+
+* `models.ActiveDirectoryAdministratorAdd` was removed
+
+* `models.CheckNameAvailabilityResponse` was removed
+
+* `models.Origin` was removed
+
+* `models.Administrators` was removed
+
+* `models.ConfigurationForUpdate` was removed
+
+* `models.ServerBackupListResult` was removed
+
+* `models.FastProvisioningEditionCapability` was removed
+
+* `models.PrincipalType` was removed
+
+* `models.UserIdentity` was removed
+
+* `models.ArmServerKeyType` was removed
+
+* `models.ActiveDirectoryAdministrator` was removed
+
+* `models.UserAssignedIdentity` was removed
+
+* `models.CheckNameAvailabilityRequest` was removed
+
+* `models.Replicas` was removed
+
+* `models.PasswordAuthEnum` was removed
+
+* `models.IdentityType` was removed
+
+* `models.CheckNameAvailabilityReason` was removed
+
+* `models.ActiveDirectoryAuthEnum` was removed
+
+* `models.ActiveDirectoryAdministrator$Definition` was removed
+
+* `models.AuthConfig` was removed
+
+#### `models.ServerVersionCapability` was modified
+
+* `supportedVersionsToUpgrade()` was removed
+
+#### `models.CheckNameAvailabilities` was modified
+
+* `execute(models.CheckNameAvailabilityRequest)` was removed
+* `executeWithResponse(models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was removed
+
+#### `models.StorageMBCapability` was modified
+
+* `supportedUpgradableTierList()` was removed
+
+#### `models.CapabilityProperties` was modified
+
+* `supportedFastProvisioningEditions()` was removed
+* `fastProvisioningSupported()` was removed
+
+#### `models.Server$Update` was modified
+
+* `withDataEncryption(models.DataEncryption)` was removed
+* `withAuthConfig(models.AuthConfig)` was removed
+* `withVersion(models.ServerVersion)` was removed
+* `withReplicationRole(models.ReplicationRole)` was removed
+* `withIdentity(models.UserAssignedIdentity)` was removed
+
+#### `models.NameAvailability` was modified
+
+* `models.CheckNameAvailabilityReason reason()` -> `models.Reason reason()`
+
+#### `models.Server` was modified
+
+* `identity()` was removed
+* `replicaCapacity()` was removed
+* `authConfig()` was removed
+* `replicationRole()` was removed
+* `dataEncryption()` was removed
+
+#### `models.ServerForUpdate` was modified
+
+* `identity()` was removed
+* `withAuthConfig(models.AuthConfig)` was removed
+* `authConfig()` was removed
+* `version()` was removed
+* `replicationRole()` was removed
+* `withReplicationRole(models.ReplicationRole)` was removed
+* `withIdentity(models.UserAssignedIdentity)` was removed
+* `withVersion(models.ServerVersion)` was removed
+* `withDataEncryption(models.DataEncryption)` was removed
+* `dataEncryption()` was removed
+
+#### `models.Server$Definition` was modified
+
+* `withAuthConfig(models.AuthConfig)` was removed
+* `withReplicaCapacity(java.lang.Integer)` was removed
+* `withDataEncryption(models.DataEncryption)` was removed
+* `withIdentity(models.UserAssignedIdentity)` was removed
+* `withReplicationRole(models.ReplicationRole)` was removed
+
+#### `PostgreSqlManager` was modified
+
+* `administrators()` was removed
+* `checkNameAvailabilityWithLocations()` was removed
+* `backups()` was removed
+* `replicas()` was removed
+
+### Features Added
+
+* `models.Reason` was added
+
+* `models.NameAvailabilityRequest` was added
+
+#### `models.CheckNameAvailabilities` was modified
+
+* `execute(models.NameAvailabilityRequest)` was added
+* `executeWithResponse(models.NameAvailabilityRequest,com.azure.core.util.Context)` was added
+
+#### `models.ServerForUpdate` was modified
+
+* `withLocation(java.lang.String)` was added
+* `location()` was added
 
 ## 1.0.0-beta.5 (2023-01-11)
 

@@ -24,10 +24,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.AdministratorsImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.BackupsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CheckNameAvailabilitiesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.CheckNameAvailabilityWithLocationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ConfigurationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.DatabasesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.FirewallRulesImpl;
@@ -35,20 +32,15 @@ import com.azure.resourcemanager.postgresqlflexibleserver.implementation.GetPriv
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.LocationBasedCapabilitiesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.OperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PostgreSqlManagementClientBuilder;
-import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ReplicasImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualNetworkSubnetUsagesImpl;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Administrators;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Backups;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilities;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityWithLocations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configurations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Databases;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FirewallRules;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.GetPrivateDnsZoneSuffixes;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LocationBasedCapabilities;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Operations;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Replicas;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
 import java.time.Duration;
@@ -64,31 +56,23 @@ import java.util.stream.Collectors;
  * policies, log files and configurations with new business model.
  */
 public final class PostgreSqlManager {
-    private Administrators administrators;
-
-    private Backups backups;
-
-    private LocationBasedCapabilities locationBasedCapabilities;
-
-    private CheckNameAvailabilities checkNameAvailabilities;
-
-    private CheckNameAvailabilityWithLocations checkNameAvailabilityWithLocations;
-
-    private Configurations configurations;
-
-    private Databases databases;
+    private Servers servers;
 
     private FirewallRules firewallRules;
 
-    private Servers servers;
+    private Configurations configurations;
+
+    private CheckNameAvailabilities checkNameAvailabilities;
+
+    private LocationBasedCapabilities locationBasedCapabilities;
+
+    private VirtualNetworkSubnetUsages virtualNetworkSubnetUsages;
 
     private Operations operations;
 
+    private Databases databases;
+
     private GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes;
-
-    private Replicas replicas;
-
-    private VirtualNetworkSubnetUsages virtualNetworkSubnetUsages;
 
     private final PostgreSqlManagementClient clientObject;
 
@@ -255,7 +239,7 @@ public final class PostgreSqlManager {
                 .append("-")
                 .append("com.azure.resourcemanager.postgresqlflexibleserver")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -313,40 +297,39 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of Administrators. It manages ActiveDirectoryAdministrator.
+     * Gets the resource collection API of Servers. It manages Server.
      *
-     * @return Resource collection API of Administrators.
+     * @return Resource collection API of Servers.
      */
-    public Administrators administrators() {
-        if (this.administrators == null) {
-            this.administrators = new AdministratorsImpl(clientObject.getAdministrators(), this);
+    public Servers servers() {
+        if (this.servers == null) {
+            this.servers = new ServersImpl(clientObject.getServers(), this);
         }
-        return administrators;
+        return servers;
     }
 
     /**
-     * Gets the resource collection API of Backups.
+     * Gets the resource collection API of FirewallRules. It manages FirewallRule.
      *
-     * @return Resource collection API of Backups.
+     * @return Resource collection API of FirewallRules.
      */
-    public Backups backups() {
-        if (this.backups == null) {
-            this.backups = new BackupsImpl(clientObject.getBackups(), this);
+    public FirewallRules firewallRules() {
+        if (this.firewallRules == null) {
+            this.firewallRules = new FirewallRulesImpl(clientObject.getFirewallRules(), this);
         }
-        return backups;
+        return firewallRules;
     }
 
     /**
-     * Gets the resource collection API of LocationBasedCapabilities.
+     * Gets the resource collection API of Configurations. It manages Configuration.
      *
-     * @return Resource collection API of LocationBasedCapabilities.
+     * @return Resource collection API of Configurations.
      */
-    public LocationBasedCapabilities locationBasedCapabilities() {
-        if (this.locationBasedCapabilities == null) {
-            this.locationBasedCapabilities =
-                new LocationBasedCapabilitiesImpl(clientObject.getLocationBasedCapabilities(), this);
+    public Configurations configurations() {
+        if (this.configurations == null) {
+            this.configurations = new ConfigurationsImpl(clientObject.getConfigurations(), this);
         }
-        return locationBasedCapabilities;
+        return configurations;
     }
 
     /**
@@ -363,64 +346,29 @@ public final class PostgreSqlManager {
     }
 
     /**
-     * Gets the resource collection API of CheckNameAvailabilityWithLocations.
+     * Gets the resource collection API of LocationBasedCapabilities.
      *
-     * @return Resource collection API of CheckNameAvailabilityWithLocations.
+     * @return Resource collection API of LocationBasedCapabilities.
      */
-    public CheckNameAvailabilityWithLocations checkNameAvailabilityWithLocations() {
-        if (this.checkNameAvailabilityWithLocations == null) {
-            this.checkNameAvailabilityWithLocations =
-                new CheckNameAvailabilityWithLocationsImpl(clientObject.getCheckNameAvailabilityWithLocations(), this);
+    public LocationBasedCapabilities locationBasedCapabilities() {
+        if (this.locationBasedCapabilities == null) {
+            this.locationBasedCapabilities =
+                new LocationBasedCapabilitiesImpl(clientObject.getLocationBasedCapabilities(), this);
         }
-        return checkNameAvailabilityWithLocations;
+        return locationBasedCapabilities;
     }
 
     /**
-     * Gets the resource collection API of Configurations. It manages Configuration.
+     * Gets the resource collection API of VirtualNetworkSubnetUsages.
      *
-     * @return Resource collection API of Configurations.
+     * @return Resource collection API of VirtualNetworkSubnetUsages.
      */
-    public Configurations configurations() {
-        if (this.configurations == null) {
-            this.configurations = new ConfigurationsImpl(clientObject.getConfigurations(), this);
+    public VirtualNetworkSubnetUsages virtualNetworkSubnetUsages() {
+        if (this.virtualNetworkSubnetUsages == null) {
+            this.virtualNetworkSubnetUsages =
+                new VirtualNetworkSubnetUsagesImpl(clientObject.getVirtualNetworkSubnetUsages(), this);
         }
-        return configurations;
-    }
-
-    /**
-     * Gets the resource collection API of Databases. It manages Database.
-     *
-     * @return Resource collection API of Databases.
-     */
-    public Databases databases() {
-        if (this.databases == null) {
-            this.databases = new DatabasesImpl(clientObject.getDatabases(), this);
-        }
-        return databases;
-    }
-
-    /**
-     * Gets the resource collection API of FirewallRules. It manages FirewallRule.
-     *
-     * @return Resource collection API of FirewallRules.
-     */
-    public FirewallRules firewallRules() {
-        if (this.firewallRules == null) {
-            this.firewallRules = new FirewallRulesImpl(clientObject.getFirewallRules(), this);
-        }
-        return firewallRules;
-    }
-
-    /**
-     * Gets the resource collection API of Servers. It manages Server.
-     *
-     * @return Resource collection API of Servers.
-     */
-    public Servers servers() {
-        if (this.servers == null) {
-            this.servers = new ServersImpl(clientObject.getServers(), this);
-        }
-        return servers;
+        return virtualNetworkSubnetUsages;
     }
 
     /**
@@ -436,6 +384,18 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of Databases. It manages Database.
+     *
+     * @return Resource collection API of Databases.
+     */
+    public Databases databases() {
+        if (this.databases == null) {
+            this.databases = new DatabasesImpl(clientObject.getDatabases(), this);
+        }
+        return databases;
+    }
+
+    /**
      * Gets the resource collection API of GetPrivateDnsZoneSuffixes.
      *
      * @return Resource collection API of GetPrivateDnsZoneSuffixes.
@@ -446,31 +406,6 @@ public final class PostgreSqlManager {
                 new GetPrivateDnsZoneSuffixesImpl(clientObject.getGetPrivateDnsZoneSuffixes(), this);
         }
         return getPrivateDnsZoneSuffixes;
-    }
-
-    /**
-     * Gets the resource collection API of Replicas.
-     *
-     * @return Resource collection API of Replicas.
-     */
-    public Replicas replicas() {
-        if (this.replicas == null) {
-            this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
-        }
-        return replicas;
-    }
-
-    /**
-     * Gets the resource collection API of VirtualNetworkSubnetUsages.
-     *
-     * @return Resource collection API of VirtualNetworkSubnetUsages.
-     */
-    public VirtualNetworkSubnetUsages virtualNetworkSubnetUsages() {
-        if (this.virtualNetworkSubnetUsages == null) {
-            this.virtualNetworkSubnetUsages =
-                new VirtualNetworkSubnetUsagesImpl(clientObject.getVirtualNetworkSubnetUsages(), this);
-        }
-        return virtualNetworkSubnetUsages;
     }
 
     /**

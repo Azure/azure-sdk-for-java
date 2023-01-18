@@ -9,25 +9,18 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvai
 /** An immutable client-side representation of NameAvailability. */
 public interface NameAvailability {
     /**
-     * Gets the nameAvailable property: Indicates if the resource name is available.
-     *
-     * @return the nameAvailable value.
-     */
-    Boolean nameAvailable();
-
-    /**
-     * Gets the reason property: The reason why the given name is not available.
-     *
-     * @return the reason value.
-     */
-    CheckNameAvailabilityReason reason();
-
-    /**
-     * Gets the message property: Detailed reason why the given name is available.
+     * Gets the message property: Error Message.
      *
      * @return the message value.
      */
     String message();
+
+    /**
+     * Gets the nameAvailable property: Indicates whether the resource name is available.
+     *
+     * @return the nameAvailable value.
+     */
+    Boolean nameAvailable();
 
     /**
      * Gets the name property: name of the PostgreSQL server.
@@ -42,6 +35,13 @@ public interface NameAvailability {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the reason property: The name availability reason.
+     *
+     * @return the reason value.
+     */
+    Reason reason();
 
     /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvailabilityInner object.

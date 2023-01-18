@@ -13,25 +13,43 @@ import java.util.List;
 @Immutable
 public final class VirtualNetworkSubnetUsageResultInner {
     /*
-     * The delegatedSubnetsUsage property.
-     */
-    @JsonProperty(value = "delegatedSubnetsUsage", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DelegatedSubnetUsage> delegatedSubnetsUsage;
-
-    /*
-     * location of the delegated subnet usage
+     * The location the resource resides in.
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
-     * subscriptionId of the delegated subnet usage
+     * The subscription ID.
      */
     @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
+    /*
+     * The delegatedSubnetsUsage property.
+     */
+    @JsonProperty(value = "delegatedSubnetsUsage", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DelegatedSubnetUsage> delegatedSubnetsUsage;
+
     /** Creates an instance of VirtualNetworkSubnetUsageResultInner class. */
     public VirtualNetworkSubnetUsageResultInner() {
+    }
+
+    /**
+     * Get the location property: The location the resource resides in.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the subscriptionId property: The subscription ID.
+     *
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     /**
@@ -41,24 +59,6 @@ public final class VirtualNetworkSubnetUsageResultInner {
      */
     public List<DelegatedSubnetUsage> delegatedSubnetsUsage() {
         return this.delegatedSubnetsUsage;
-    }
-
-    /**
-     * Get the location property: location of the delegated subnet usage.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Get the subscriptionId property: subscriptionId of the delegated subnet usage.
-     *
-     * @return the subscriptionId value.
-     */
-    public String subscriptionId() {
-        return this.subscriptionId;
     }
 
     /**

@@ -13,16 +13,16 @@ public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Sku model =
-            BinaryData.fromString("{\"name\":\"zxbzpfzabglc\",\"tier\":\"GeneralPurpose\"}").toObject(Sku.class);
-        Assertions.assertEquals("zxbzpfzabglc", model.name());
-        Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, model.tier());
+            BinaryData.fromString("{\"name\":\"pbsphrupidgs\",\"tier\":\"MemoryOptimized\"}").toObject(Sku.class);
+        Assertions.assertEquals("pbsphrupidgs", model.name());
+        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName("zxbzpfzabglc").withTier(SkuTier.GENERAL_PURPOSE);
+        Sku model = new Sku().withName("pbsphrupidgs").withTier(SkuTier.MEMORY_OPTIMIZED);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("zxbzpfzabglc", model.name());
-        Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, model.tier());
+        Assertions.assertEquals("pbsphrupidgs", model.name());
+        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.tier());
     }
 }

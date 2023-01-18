@@ -6,7 +6,6 @@ package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilityProperties;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.FastProvisioningEditionCapability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServerEditionCapability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HyperscaleNodeEditionCapability;
 import java.util.Collections;
@@ -26,15 +25,6 @@ public final class CapabilityPropertiesImpl implements CapabilityProperties {
 
     public String zone() {
         return this.innerModel().zone();
-    }
-
-    public List<String> supportedHAMode() {
-        List<String> inner = this.innerModel().supportedHAMode();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public Boolean geoBackupSupported() {
@@ -67,12 +57,8 @@ public final class CapabilityPropertiesImpl implements CapabilityProperties {
         }
     }
 
-    public Boolean fastProvisioningSupported() {
-        return this.innerModel().fastProvisioningSupported();
-    }
-
-    public List<FastProvisioningEditionCapability> supportedFastProvisioningEditions() {
-        List<FastProvisioningEditionCapability> inner = this.innerModel().supportedFastProvisioningEditions();
+    public List<String> supportedHAMode() {
+        List<String> inner = this.innerModel().supportedHAMode();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

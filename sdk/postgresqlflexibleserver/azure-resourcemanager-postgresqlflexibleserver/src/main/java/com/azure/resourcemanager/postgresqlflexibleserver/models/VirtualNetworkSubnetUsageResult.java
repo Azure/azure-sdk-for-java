@@ -10,25 +10,25 @@ import java.util.List;
 /** An immutable client-side representation of VirtualNetworkSubnetUsageResult. */
 public interface VirtualNetworkSubnetUsageResult {
     /**
-     * Gets the delegatedSubnetsUsage property: The delegatedSubnetsUsage property.
-     *
-     * @return the delegatedSubnetsUsage value.
-     */
-    List<DelegatedSubnetUsage> delegatedSubnetsUsage();
-
-    /**
-     * Gets the location property: location of the delegated subnet usage.
+     * Gets the location property: The location the resource resides in.
      *
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the subscriptionId property: subscriptionId of the delegated subnet usage.
+     * Gets the subscriptionId property: The subscription ID.
      *
      * @return the subscriptionId value.
      */
     String subscriptionId();
+
+    /**
+     * Gets the delegatedSubnetsUsage property: The delegatedSubnetsUsage property.
+     *
+     * @return the delegatedSubnetsUsage value.
+     */
+    List<DelegatedSubnetUsage> delegatedSubnetsUsage();
 
     /**
      * Gets the inner

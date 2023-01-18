@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationForUpdate;
 
 /** An instance of this class provides access to all the operations defined in ConfigurationsClient. */
 public interface ConfigurationsClient {
@@ -87,7 +86,7 @@ public interface ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
@@ -107,7 +106,7 @@ public interface ConfigurationsClient {
         String resourceGroupName,
         String serverName,
         String configurationName,
-        ConfigurationForUpdate parameters,
+        ConfigurationInner parameters,
         Context context);
 
     /**
@@ -124,7 +123,7 @@ public interface ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfigurationInner update(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
@@ -144,7 +143,7 @@ public interface ConfigurationsClient {
         String resourceGroupName,
         String serverName,
         String configurationName,
-        ConfigurationForUpdate parameters,
+        ConfigurationInner parameters,
         Context context);
 
     /**
