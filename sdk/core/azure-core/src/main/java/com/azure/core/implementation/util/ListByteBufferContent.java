@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -14,6 +17,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+/**
+ * A {@link BinaryDataContent} implementation which is backed by a {@link List} of {@link ByteBuffer}.
+ */
 public class ListByteBufferContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(ListByteBufferContent.class);
 
