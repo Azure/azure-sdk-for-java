@@ -6,16 +6,12 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Resource information. */
 @Fluent
 public class GenericResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericResource.class);
-
     /*
      * ID of the resource that manages this resource.
      */
@@ -33,6 +29,10 @@ public class GenericResource extends Resource {
      */
     @JsonProperty(value = "identity")
     private Identity identity;
+
+    /** Creates an instance of GenericResource class. */
+    public GenericResource() {
+    }
 
     /**
      * Get the managedBy property: ID of the resource that manages this resource.

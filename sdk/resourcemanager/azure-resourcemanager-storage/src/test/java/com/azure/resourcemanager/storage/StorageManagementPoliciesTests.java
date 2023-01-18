@@ -7,16 +7,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.BlobTypes;
 import com.azure.resourcemanager.storage.models.DateAfterModification;
 import com.azure.resourcemanager.storage.models.Kind;
-import com.azure.resourcemanager.storage.models.LastAccessTimeTrackingPolicy;
 import com.azure.resourcemanager.storage.models.ManagementPolicies;
 import com.azure.resourcemanager.storage.models.ManagementPolicy;
 import com.azure.resourcemanager.storage.models.ManagementPolicyBaseBlob;
-import com.azure.resourcemanager.storage.models.Name;
 import com.azure.resourcemanager.storage.models.PolicyRule;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -281,7 +278,12 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         Assertions.assertEquals(StorageAccountSkuType.PREMIUM_LRS.name(), storageAccount.skuType().name());
         Assertions.assertEquals(Kind.BLOCK_BLOB_STORAGE, storageAccount.kind());
 
-        enableLastAccessTimeTrackingPolicy(saName);
+        // enable last access time tracking policy
+        storageManager.blobServices()
+            .define("managementPolicyTest")
+            .withExistingStorageAccount(rgName, saName)
+            .withLastAccessTimeTrackingPolicyEnabled()
+            .create();
 
         ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
         ManagementPolicy managementPolicy = managementPolicies.define("management-test")
@@ -348,21 +350,5 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null && rule.actionsOnBaseBlob().tierToHot().daysAfterLastAccessTimeGreaterThan() != null));
         Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null && rule.actionsOnBaseBlob().tierToCool().daysAfterLastAccessTimeGreaterThan() != null));
         Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null && rule.actionsOnBaseBlob().tierToArchive().daysAfterLastAccessTimeGreaterThan() != null));
-    }
-
-    private void enableLastAccessTimeTrackingPolicy(String saName) {
-        storageManager
-            .serviceClient()
-            .getBlobServices()
-            .setServiceProperties(rgName, saName, new BlobServicePropertiesInner()
-                .withIsVersioningEnabled(false)
-                .withLastAccessTimeTrackingPolicy(
-                    new LastAccessTimeTrackingPolicy()
-                        .withEnable(true)
-                        .withName(Name.ACCESS_TIME_TRACKING)
-                        .withTrackingGranularityInDays(1)
-                        .withBlobType(Collections.singletonList("blockBlob"))));
-
-        Assertions.assertTrue(storageManager.blobServices().getServicePropertiesAsync(rgName, saName).block().innerModel().lastAccessTimeTrackingPolicy().enable());
     }
 }

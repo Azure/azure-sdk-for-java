@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** log specifications for operation api. */
 @Fluent
 public final class OperationMetaLogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaLogSpecification.class);
-
     /*
      * blob duration of the log
      */
@@ -31,6 +27,10 @@ public final class OperationMetaLogSpecification {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of OperationMetaLogSpecification class. */
+    public OperationMetaLogSpecification() {
+    }
 
     /**
      * Get the blobDuration property: blob duration of the log.

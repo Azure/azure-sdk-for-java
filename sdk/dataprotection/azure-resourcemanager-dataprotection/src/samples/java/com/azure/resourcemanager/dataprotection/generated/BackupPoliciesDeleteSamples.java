@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BackupPolicies Delete. */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/DeleteBackupPolicy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/PolicyCRUD/DeleteBackupPolicy.json
      */
     /**
      * Sample code: Delete BackupPolicy.
@@ -17,6 +15,8 @@ public final class BackupPoliciesDeleteSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void deleteBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupPolicies().deleteWithResponse("PrivatePreviewVault", "000pikumar", "OSSDBPolicy", Context.NONE);
+        manager
+            .backupPolicies()
+            .deleteWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy", com.azure.core.util.Context.NONE);
     }
 }

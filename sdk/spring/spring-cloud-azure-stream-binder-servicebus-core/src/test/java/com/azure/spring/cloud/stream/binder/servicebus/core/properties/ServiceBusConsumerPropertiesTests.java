@@ -5,6 +5,8 @@ package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -109,8 +111,17 @@ class ServiceBusConsumerPropertiesTests {
     }
 
     @Test
+    void domainNameConfigureAsCloud() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(), consumerProperties.getDomainName());
+    }
+
+    @Test
     void customDomainNameShouldSet() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
         consumerProperties.setDomainName("new.servicebus.windows.net");
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", consumerProperties.getDomainName());
     }
 

@@ -20,6 +20,15 @@ public final class FactoryIdentityType extends ExpandableStringEnum<FactoryIdent
     public static final FactoryIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 
     /**
+     * Creates a new instance of FactoryIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FactoryIdentityType() {
+    }
+
+    /**
      * Creates or finds a FactoryIdentityType from its string representation.
      *
      * @param name a name to look for.

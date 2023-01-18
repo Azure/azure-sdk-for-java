@@ -35,6 +35,17 @@ public final class AddParticipantsOptions {
     private PhoneNumberIdentifier sourceCallerId;
 
     /**
+     * (Optional) The display name of the source that is associated with this invite operation when
+     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     */
+    private String sourceDisplayName;
+
+    /** (Optional) The identifier of the source of the call for this invite operation. If SourceDisplayName
+     * is not set, the display name of the source will be used by default when adding a PSTN participant or teams user.
+     */
+    private CommunicationIdentifier sourceIdentifier;
+
+    /**
      * The timeout to wait for the invited participant to pickup.
      * The maximum value of this is 180 seconds.
      */
@@ -69,7 +80,7 @@ public final class AddParticipantsOptions {
      *
      * @return the operationContext
      */
-    public String  getOperationContext() {
+    public String getOperationContext() {
         return operationContext;
     }
 
@@ -80,6 +91,24 @@ public final class AddParticipantsOptions {
      */
     public PhoneNumberIdentifier getSourceCallerId() {
         return sourceCallerId;
+    }
+
+    /**
+     * Get the sourceDisplayName.
+     *
+     * @return the source display name.
+     */
+    public String getSourceDisplayName() {
+        return sourceDisplayName;
+    }
+
+    /**
+     * Get the sourceIdentifier.
+     *
+     * @return the source identifier.
+     */
+    public CommunicationIdentifier getSourceIdentifier() {
+        return sourceIdentifier;
     }
 
     /**
@@ -131,6 +160,31 @@ public final class AddParticipantsOptions {
      */
     public AddParticipantsOptions setSourceCallerId(PhoneNumberIdentifier sourceCallerId) {
         this.sourceCallerId = sourceCallerId;
+        return this;
+    }
+
+    /**
+     * Set the sourceDisplayName.
+     *
+     * @param sourceDisplayName Set the display name of the source that is associated with this invite operation when
+     *      adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setSourceDisplayName(String sourceDisplayName) {
+        this.sourceDisplayName = sourceDisplayName;
+        return this;
+    }
+
+    /**
+     * Set the sourceIdentifier.
+     *
+     * @param sourceIdentifier Set the identifier of the source of the call for this invite operation. If
+     *                         SourceDisplayName is not set, the display name of the source will be used by default when
+     *                         adding a PSTN participant or teams user.
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setSourceIdentifier(CommunicationIdentifier sourceIdentifier) {
+        this.sourceIdentifier = sourceIdentifier;
         return this;
     }
 

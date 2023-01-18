@@ -417,18 +417,6 @@ public interface MediaService {
      * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void syncStorageKeys(SyncStorageKeysInput parameters);
-
-    /**
-     * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
-     * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -438,17 +426,16 @@ public interface MediaService {
     Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context);
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * Synchronizes Storage Account Keys
      *
-     * <p>List all the media edge policies associated with the Media Services account.
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters);
+    void syncStorageKeys(SyncStorageKeysInput parameters);
 
     /**
      * List the media edge policies associated with the Media Services account.
@@ -463,4 +450,17 @@ public interface MediaService {
      * @return the response body along with {@link Response}.
      */
     Response<EdgePolicies> listEdgePoliciesWithResponse(ListEdgePoliciesInput parameters, Context context);
+
+    /**
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
+     *
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters);
 }

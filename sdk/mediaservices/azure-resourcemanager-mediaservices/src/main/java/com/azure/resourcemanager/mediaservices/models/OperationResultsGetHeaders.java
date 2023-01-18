@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,6 +30,8 @@ public final class OperationResultsGetHeaders {
     @JsonProperty(value = "Location")
     private String location;
 
+    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of OperationResultsGetHeaders class.
@@ -36,9 +39,12 @@ public final class OperationResultsGetHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public OperationResultsGetHeaders(HttpHeaders rawHeaders) {
-        this.retryAfter = Integer.parseInt(rawHeaders.getValue("Retry-After"));
-        this.azureAsyncOperation = rawHeaders.getValue("Azure-AsyncOperation");
-        this.location = rawHeaders.getValue("Location");
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
     /**

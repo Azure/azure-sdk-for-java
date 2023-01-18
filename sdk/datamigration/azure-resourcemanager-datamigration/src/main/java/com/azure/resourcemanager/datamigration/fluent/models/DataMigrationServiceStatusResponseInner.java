@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service health status. */
 @Fluent
 public final class DataMigrationServiceStatusResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMigrationServiceStatusResponseInner.class);
-
     /*
      * The DMS instance agent version
      */
@@ -22,9 +18,8 @@ public final class DataMigrationServiceStatusResponseInner {
     private String agentVersion;
 
     /*
-     * The machine-readable status, such as 'Initializing', 'Offline',
-     * 'Online', 'Deploying', 'Deleting', 'Stopped', 'Stopping', 'Starting',
-     * 'FailedToStart', 'FailedToStop' or 'Failed'
+     * The machine-readable status, such as 'Initializing', 'Offline', 'Online', 'Deploying', 'Deleting', 'Stopped',
+     * 'Stopping', 'Starting', 'FailedToStart', 'FailedToStop' or 'Failed'
      */
     @JsonProperty(value = "status")
     private String status;
@@ -40,6 +35,10 @@ public final class DataMigrationServiceStatusResponseInner {
      */
     @JsonProperty(value = "supportedTaskTypes")
     private List<String> supportedTaskTypes;
+
+    /** Creates an instance of DataMigrationServiceStatusResponseInner class. */
+    public DataMigrationServiceStatusResponseInner() {
+    }
 
     /**
      * Get the agentVersion property: The DMS instance agent version.

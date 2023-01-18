@@ -6,18 +6,19 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AzureBackupRestoreWithRehydrationRequest AzureBackup Restore with Rehydration Request. */
+/**
+ * AzureBackupRestoreWithRehydrationRequest
+ *
+ * <p>AzureBackup Restore with Rehydration Request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureBackupRestoreWithRehydrationRequest")
 @Fluent
 public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupRecoveryPointBasedRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRestoreWithRehydrationRequest.class);
-
     /*
      * Priority to be used for rehydration. Values High or Standard
      */
@@ -29,6 +30,10 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
      */
     @JsonProperty(value = "rehydrationRetentionDuration", required = true)
     private String rehydrationRetentionDuration;
+
+    /** Creates an instance of AzureBackupRestoreWithRehydrationRequest class. */
+    public AzureBackupRestoreWithRehydrationRequest() {
+    }
 
     /**
      * Get the rehydrationPriority property: Priority to be used for rehydration. Values High or Standard.
@@ -92,6 +97,13 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupRestoreWithRehydrationRequest withSourceResourceId(String sourceResourceId) {
+        super.withSourceResourceId(sourceResourceId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -101,18 +113,20 @@ public final class AzureBackupRestoreWithRehydrationRequest extends AzureBackupR
     public void validate() {
         super.validate();
         if (rehydrationPriority() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rehydrationPriority in model"
                             + " AzureBackupRestoreWithRehydrationRequest"));
         }
         if (rehydrationRetentionDuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rehydrationRetentionDuration in model"
                             + " AzureBackupRestoreWithRehydrationRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRestoreWithRehydrationRequest.class);
 }

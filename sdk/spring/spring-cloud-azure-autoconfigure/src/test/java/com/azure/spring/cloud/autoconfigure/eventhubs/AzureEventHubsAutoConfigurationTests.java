@@ -7,6 +7,8 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
@@ -116,9 +118,32 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(properties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(3));
                 assertThat(properties.getClient().getTransportType()).isNull();
                 assertThat(properties.getConnectionString()).isEqualTo(CONNECTION_STRING);
+                assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE);
+                assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
+                assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
+    }
+
+    @Test
+    void configureEventHubsDomainNameOverrideGlobalDefault() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+
+        this.contextRunner
+                .withBean(AzureGlobalProperties.class, () -> azureProperties)
+                .withPropertyValues(
+                        "spring.cloud.azure.eventhubs.domain-name=servicebus.chinacloudapi.cn",
+                        "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
+                )
+                .run(context -> {
+                    assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                    final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                    assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+                    assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+                    assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName());
+                });
     }
 
     @Test

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for MaintenanceConfigurations list. */
 @Fluent
 public final class ListMaintenanceConfigurationsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListMaintenanceConfigurationsResult.class);
-
     /*
      * The list of maintenance Configurations
      */
     @JsonProperty(value = "value")
     private List<MaintenanceConfigurationInner> value;
+
+    /** Creates an instance of ListMaintenanceConfigurationsResult class. */
+    public ListMaintenanceConfigurationsResult() {
+    }
 
     /**
      * Get the value property: The list of maintenance Configurations.

@@ -20,6 +20,15 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
     public static final MetricUnit MILLISECONDS = fromString("Milliseconds");
 
     /**
+     * Creates a new instance of MetricUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricUnit() {
+    }
+
+    /**
      * Creates or finds a MetricUnit from its string representation.
      *
      * @param name a name to look for.

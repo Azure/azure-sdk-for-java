@@ -27,17 +27,6 @@ public final class OperationStatusesImpl implements OperationStatuses {
         this.serviceManager = serviceManager;
     }
 
-    public AssetTrackOperationStatus get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
-        AssetTrackOperationStatusInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
-        if (inner != null) {
-            return new AssetTrackOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AssetTrackOperationStatus> getWithResponse(
         String resourceGroupName,
         String accountName,
@@ -55,6 +44,17 @@ public final class OperationStatusesImpl implements OperationStatuses {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AssetTrackOperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AssetTrackOperationStatus get(
+        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+        AssetTrackOperationStatusInner inner =
+            this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
+        if (inner != null) {
+            return new AssetTrackOperationStatusImpl(inner, this.manager());
         } else {
             return null;
         }
