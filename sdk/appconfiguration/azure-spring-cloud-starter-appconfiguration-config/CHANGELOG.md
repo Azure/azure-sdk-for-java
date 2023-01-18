@@ -3,14 +3,8 @@
 ## 2.11.0 (2023-01-17)
 Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 - Updating to SDK 1.4.1 to fix sync token issue.
-
-### Other Changes
 
 ## 2.10.0 (2022-11-24)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.13, 2.7.0-2.7.5. (Note: 2.5.x (x>14), 2.6.y (y>13) and 2.7.z (z>5) should be supported, but they aren't tested with this release.)
