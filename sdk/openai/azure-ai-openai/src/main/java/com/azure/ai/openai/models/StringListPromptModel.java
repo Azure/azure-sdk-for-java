@@ -11,7 +11,7 @@ import java.util.List;
 /** The StringListPromptModel model. */
 @Immutable
 public final class StringListPromptModel extends PromptModelBase {
-    private List<String> value;
+    private final List<String> value;
 
     /**
      * Creates an instance of StringListPromptModel class.

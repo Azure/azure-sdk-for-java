@@ -11,7 +11,7 @@ import java.util.List;
 /** The StringListStopModel model. */
 @Immutable
 public final class StringListStopModel extends StopModelBase {
-    private List<String> value;
+    private final List<String> value;
 
     /**
      * Creates an instance of StringListStopModel class.

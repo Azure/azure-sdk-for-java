@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** The StringInputModel model. */
 @Immutable
 public final class StringInputModel extends InputModelBase {
-    private String value;
+    private final String value;
 
     /**
      * Creates an instance of StringInputModel class.

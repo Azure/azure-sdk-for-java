@@ -11,7 +11,7 @@ import java.util.List;
 /** The StringListInputModel model. */
 @Immutable
 public final class StringListInputModel extends InputModelBase {
-    private List<String> value;
+    private final List<String> value;
 
     /**
      * Creates an instance of StringListInputModel class.

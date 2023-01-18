@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** The StringPromptModel model. */
 @Immutable
 public final class StringPromptModel extends PromptModelBase {
-    private String value;
+    private final String value;
 
     /**
      * Creates an instance of StringPromptModel class.

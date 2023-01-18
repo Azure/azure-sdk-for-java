@@ -11,7 +11,7 @@ import java.util.List;
 /** The ListOfIntegerListInputModel model. */
 @Immutable
 public final class ListOfIntegerListInputModel extends InputModelBase {
-    private List<List<Integer>> value;
+    private final List<List<Integer>> value;
 
     /**
      * Creates an instance of ListOfIntegerListInputModel class.

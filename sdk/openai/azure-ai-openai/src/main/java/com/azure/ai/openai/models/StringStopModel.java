@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** The StringStopModel model. */
 @Immutable
 public final class StringStopModel extends StopModelBase {
-    private String value;
+    private final String value;
 
     /**
      * Creates an instance of StringStopModel class.
