@@ -1153,6 +1153,9 @@ public class ImplementationBridgeHelpers {
         }
 
         public static void setCosmosContainerIdentityAccessor(final CosmosContainerIdentityAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosContainerIdentityAccessor already initialized!");
             } else {

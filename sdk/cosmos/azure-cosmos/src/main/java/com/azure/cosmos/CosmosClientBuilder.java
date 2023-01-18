@@ -916,8 +916,8 @@ public class CosmosClientBuilder implements
         }
 
         if (proactiveContainerInitConfig != null) {
-            ifThrowIllegalArgException(preferredRegions == null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
-            ifThrowIllegalArgException(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions() > this.preferredRegions.size(), "no. of regions to proactively connect to " +
+            Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
+            Preconditions.checkArgument(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
                     "cannot be greater than the no.of preferred regions");
         }
 

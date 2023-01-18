@@ -474,7 +474,7 @@ public class CosmosAsyncContainer {
      */
     public Mono<Void> openConnectionsAndInitCaches() {
 
-        if(isInitialized.compareAndSet(false, true)) {
+        if (isInitialized.compareAndSet(false, true)) {
 
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(this.database.getId(), this.id);
             ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
