@@ -1,17 +1,18 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
-
-### Features Added
+## 1.16.2 (2023-01-18)
 
 ### Breaking Changes
 
-- Remove `messaging.eventhubs.checkpoints` counter and replace it with `messaging.eventhubs.checkpoint.duration` 
-  histogram that can be used to count checkpoint calls. 
-
-### Bugs Fixed
+- Remove `messaging.eventhubs.checkpoints` counter and replace it with `messaging.eventhubs.checkpoint.duration`
+  histogram that can be used to count checkpoint calls.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.1`.
+- Update `azure-storage-blob` dependency to `12.20.2`.
 
 ## 1.16.1 (2022-11-16)
 

@@ -17,6 +17,15 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
     public static final IntegrationRuntimeLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
     /**
+     * Creates a new instance of IntegrationRuntimeLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeLicenseType() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeLicenseType from its string representation.
      *
      * @param name a name to look for.

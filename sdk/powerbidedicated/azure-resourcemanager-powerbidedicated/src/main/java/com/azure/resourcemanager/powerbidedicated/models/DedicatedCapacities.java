@@ -7,20 +7,21 @@ package com.azure.resourcemanager.powerbidedicated.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.DedicatedCapacityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of Dedicated capacities resources. */
 @Fluent
 public final class DedicatedCapacities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCapacities.class);
-
     /*
      * An array of Dedicated capacities resources.
      */
     @JsonProperty(value = "value", required = true)
     private List<DedicatedCapacityInner> value;
+
+    /** Creates an instance of DedicatedCapacities class. */
+    public DedicatedCapacities() {
+    }
 
     /**
      * Get the value property: An array of Dedicated capacities resources.
@@ -49,11 +50,13 @@ public final class DedicatedCapacities {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model DedicatedCapacities"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DedicatedCapacities.class);
 }

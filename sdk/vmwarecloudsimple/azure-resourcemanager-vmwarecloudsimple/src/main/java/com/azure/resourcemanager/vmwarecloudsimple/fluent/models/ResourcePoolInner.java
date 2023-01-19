@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource pool model. */
-@JsonFlatten
 @Fluent
-public class ResourcePoolInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcePoolInner.class);
-
+public final class ResourcePoolInner {
     /*
      * resource pool id (privateCloudId:vsphereId)
      */
@@ -41,16 +36,20 @@ public class ResourcePoolInner {
     private String privateCloudId;
 
     /*
+     * Resource pool properties
+     */
+    @JsonProperty(value = "properties")
+    private ResourcePoolProperties innerProperties;
+
+    /*
      * {resourceProviderNamespace}/{resourceType}
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Hierarchical resource pool name
-     */
-    @JsonProperty(value = "properties.fullName", access = JsonProperty.Access.WRITE_ONLY)
-    private String fullName;
+    /** Creates an instance of ResourcePoolInner class. */
+    public ResourcePoolInner() {
+    }
 
     /**
      * Get the id property: resource pool id (privateCloudId:vsphereId).
@@ -100,6 +99,15 @@ public class ResourcePoolInner {
     }
 
     /**
+     * Get the innerProperties property: Resource pool properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ResourcePoolProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the type property: {resourceProviderNamespace}/{resourceType}.
      *
      * @return the type value.
@@ -114,7 +122,7 @@ public class ResourcePoolInner {
      * @return the fullName value.
      */
     public String fullName() {
-        return this.fullName;
+        return this.innerProperties() == null ? null : this.innerProperties().fullName();
     }
 
     /**
@@ -124,9 +132,14 @@ public class ResourcePoolInner {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model ResourcePoolInner"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourcePoolInner.class);
 }

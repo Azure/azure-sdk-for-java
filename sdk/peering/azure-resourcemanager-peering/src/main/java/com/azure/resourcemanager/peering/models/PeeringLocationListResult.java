@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.models.PeeringLocationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The paginated list of peering locations. */
 @Fluent
 public final class PeeringLocationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringLocationListResult.class);
-
     /*
      * The list of peering locations.
      */
@@ -27,6 +23,10 @@ public final class PeeringLocationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PeeringLocationListResult class. */
+    public PeeringLocationListResult() {
+    }
 
     /**
      * Get the value property: The list of peering locations.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mariadb.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SslEnforcementEnum. */
+/** Enable ssl enforcement or not when connect to server. */
 public enum SslEnforcementEnum {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +30,9 @@ public enum SslEnforcementEnum {
      */
     @JsonCreator
     public static SslEnforcementEnum fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SslEnforcementEnum[] items = SslEnforcementEnum.values();
         for (SslEnforcementEnum item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum SslEnforcementEnum {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeletedProtectionContainers List. */
 public final class DeletedProtectionContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/SoftDeletedContainers_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureStorage/SoftDeletedContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
@@ -20,6 +18,6 @@ public final class DeletedProtectionContainersListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .deletedProtectionContainers()
-            .list("testRg", "testVault", "backupManagementType eq 'AzureWorkload'", Context.NONE);
+            .list("testRg", "testVault", "backupManagementType eq 'AzureWorkload'", com.azure.core.util.Context.NONE);
     }
 }

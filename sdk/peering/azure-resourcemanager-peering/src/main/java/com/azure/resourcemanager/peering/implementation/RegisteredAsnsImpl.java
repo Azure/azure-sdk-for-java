@@ -13,10 +13,9 @@ import com.azure.resourcemanager.peering.fluent.RegisteredAsnsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredAsnInner;
 import com.azure.resourcemanager.peering.models.PeeringRegisteredAsn;
 import com.azure.resourcemanager.peering.models.RegisteredAsns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegisteredAsnsImpl implements RegisteredAsns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegisteredAsnsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegisteredAsnsImpl.class);
 
     private final RegisteredAsnsClient innerClient;
 
@@ -26,15 +25,6 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
         RegisteredAsnsClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PeeringRegisteredAsn get(String resourceGroupName, String peeringName, String registeredAsnName) {
-        PeeringRegisteredAsnInner inner = this.serviceClient().get(resourceGroupName, peeringName, registeredAsnName);
-        if (inner != null) {
-            return new PeeringRegisteredAsnImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PeeringRegisteredAsn> getWithResponse(
@@ -52,13 +42,22 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
         }
     }
 
-    public void delete(String resourceGroupName, String peeringName, String registeredAsnName) {
-        this.serviceClient().delete(resourceGroupName, peeringName, registeredAsnName);
+    public PeeringRegisteredAsn get(String resourceGroupName, String peeringName, String registeredAsnName) {
+        PeeringRegisteredAsnInner inner = this.serviceClient().get(resourceGroupName, peeringName, registeredAsnName);
+        if (inner != null) {
+            return new PeeringRegisteredAsnImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String peeringName, String registeredAsnName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, peeringName, registeredAsnName, context);
+    }
+
+    public void delete(String resourceGroupName, String peeringName, String registeredAsnName) {
+        this.serviceClient().delete(resourceGroupName, peeringName, registeredAsnName);
     }
 
     public PagedIterable<PeeringRegisteredAsn> listByPeering(String resourceGroupName, String peeringName) {
@@ -77,7 +76,7 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
     public PeeringRegisteredAsn getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,14 +84,14 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));
         }
         String registeredAsnName = Utils.getValueFromIdByName(id, "registeredAsns");
         if (registeredAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,7 +103,7 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
     public Response<PeeringRegisteredAsn> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,14 +111,14 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));
         }
         String registeredAsnName = Utils.getValueFromIdByName(id, "registeredAsns");
         if (registeredAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,26 +138,26 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));
         }
         String registeredAsnName = Utils.getValueFromIdByName(id, "registeredAsns");
         if (registeredAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'registeredAsns'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, peeringName, registeredAsnName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, peeringName, registeredAsnName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,14 +165,14 @@ public final class RegisteredAsnsImpl implements RegisteredAsns {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));
         }
         String registeredAsnName = Utils.getValueFromIdByName(id, "registeredAsns");
         if (registeredAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -5,23 +5,22 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.powerbidedicated.models.SkuDetailsForExistingResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object that represents enumerating SKUs for existing resources. */
 @Fluent
 public final class SkuEnumerationForExistingResourceResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SkuEnumerationForExistingResourceResultInner.class);
-
     /*
      * The collection of available SKUs for existing resources
      */
     @JsonProperty(value = "value")
     private List<SkuDetailsForExistingResource> value;
+
+    /** Creates an instance of SkuEnumerationForExistingResourceResultInner class. */
+    public SkuEnumerationForExistingResourceResultInner() {
+    }
 
     /**
      * Get the value property: The collection of available SKUs for existing resources.

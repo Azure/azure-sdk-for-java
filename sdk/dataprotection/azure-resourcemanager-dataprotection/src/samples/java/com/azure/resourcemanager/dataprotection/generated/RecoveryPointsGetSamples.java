@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RecoveryPoints Get. */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/BackupInstanceOperations/GetRecoveryPoint.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/BackupInstanceOperations/GetRecoveryPoint.json
      */
     /**
      * Sample code: Get Recovery Point.
@@ -20,10 +18,10 @@ public final class RecoveryPointsGetSamples {
         manager
             .recoveryPoints()
             .getWithResponse(
-                "PratikPrivatePreviewVault1",
                 "000pikumar",
+                "PratikPrivatePreviewVault1",
                 "testInstance1",
                 "7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

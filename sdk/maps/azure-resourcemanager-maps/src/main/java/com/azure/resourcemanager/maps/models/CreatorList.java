@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of Creator resources. */
 @Fluent
 public final class CreatorList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreatorList.class);
-
     /*
      * a Creator account.
      */
@@ -28,6 +24,10 @@ public final class CreatorList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of CreatorList class. */
+    public CreatorList() {
+    }
 
     /**
      * Get the value property: a Creator account.

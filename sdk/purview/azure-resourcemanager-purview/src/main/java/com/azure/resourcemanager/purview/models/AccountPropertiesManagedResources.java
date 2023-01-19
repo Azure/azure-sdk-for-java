@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Gets the resource identifiers of the managed resources. */
 @Immutable
 public final class AccountPropertiesManagedResources extends ManagedResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountPropertiesManagedResources.class);
+    /** Creates an instance of AccountPropertiesManagedResources class. */
+    public AccountPropertiesManagedResources() {
+    }
 
     /**
      * Validates the instance.

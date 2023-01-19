@@ -7,18 +7,14 @@ package com.azure.resourcemanager.storageimportexport.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.models.IdentityDetails;
 import com.azure.resourcemanager.storageimportexport.models.JobDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Contains the job information. */
 @Fluent
 public final class JobResponseInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobResponseInner.class);
-
     /*
      * SystemData of ImportExport Jobs.
      */
@@ -36,6 +32,10 @@ public final class JobResponseInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private IdentityDetails identity;
+
+    /** Creates an instance of JobResponseInner class. */
+    public JobResponseInner() {
+    }
 
     /**
      * Get the systemData property: SystemData of ImportExport Jobs.

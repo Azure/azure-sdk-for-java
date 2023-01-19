@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter to pass to ARM template. */
 @Fluent
 public final class ArmTemplateParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmTemplateParameter.class);
-
     /*
      * name of the parameter.
      */
@@ -25,6 +21,10 @@ public final class ArmTemplateParameter {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of ArmTemplateParameter class. */
+    public ArmTemplateParameter() {
+    }
 
     /**
      * Get the name property: name of the parameter.

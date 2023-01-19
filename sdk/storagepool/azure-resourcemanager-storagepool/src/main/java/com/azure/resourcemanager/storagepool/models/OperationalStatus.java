@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationalStatus. */
+/** Operational status of the resource. */
 public final class OperationalStatus extends ExpandableStringEnum<OperationalStatus> {
     /** Static value Invalid for OperationalStatus. */
     public static final OperationalStatus INVALID = fromString("Invalid");
@@ -35,6 +35,15 @@ public final class OperationalStatus extends ExpandableStringEnum<OperationalSta
     public static final OperationalStatus STOPPED_DEALLOCATED = fromString("Stopped (deallocated)");
 
     /**
+     * Creates a new instance of OperationalStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationalStatus() {
+    }
+
+    /**
      * Creates or finds a OperationalStatus from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class OperationalStatus extends ExpandableStringEnum<OperationalSta
         return fromString(name, OperationalStatus.class);
     }
 
-    /** @return known OperationalStatus values. */
+    /**
+     * Gets known OperationalStatus values.
+     *
+     * @return known OperationalStatus values.
+     */
     public static Collection<OperationalStatus> values() {
         return values(OperationalStatus.class);
     }
