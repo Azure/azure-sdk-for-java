@@ -113,7 +113,7 @@ public final class AppendBlobClient extends BlobClientBase {
     /**
      * Creates and opens an output stream to write data to the append blob. If overwrite is specified {@code true},
      * the existing blob will be deleted and recreated, should data exist on the blob. If overwrite is specified
-     * {@code false}, new data will get appended to the existing blob, if it exists.
+     * {@code false}, new data will get appended to the existing blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
