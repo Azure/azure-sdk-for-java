@@ -25,8 +25,9 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 class GraphClientTest {
 
-    private static final String FAKE_ACCESSTOKEN = "fake-accesstoken";
+    private static final String FAKE_ACCESS_TOKEN = "fake-accesstoken";
     private static final String FAKE_GRAPH_MEMBERSHIP_URI = "http://localhost:8080/v1.0/me/memberOf";
+
     @Test
     void testGetUserMembershipsCorrectly() throws JsonProcessingException {
         Memberships memberships = new Memberships(null, new ArrayList<>());
@@ -35,7 +36,7 @@ class GraphClientTest {
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withSuccess(new ObjectMapper().writeValueAsString(memberships), MediaType.APPLICATION_JSON));
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESSTOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertTrue(userMemberships.isPresent());
     }
@@ -47,7 +48,7 @@ class GraphClientTest {
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withNoContent());
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESSTOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertTrue(userMemberships.isEmpty());
     }
@@ -59,7 +60,7 @@ class GraphClientTest {
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESSTOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertTrue(userMemberships.isEmpty());
     }
@@ -71,7 +72,7 @@ class GraphClientTest {
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withServerError());
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESSTOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertTrue(userMemberships.isEmpty());
     }
