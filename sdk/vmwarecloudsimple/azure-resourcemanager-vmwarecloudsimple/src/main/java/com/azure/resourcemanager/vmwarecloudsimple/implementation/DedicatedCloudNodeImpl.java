@@ -11,6 +11,7 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudNode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.NodeStatus;
 import com.azure.resourcemanager.vmwarecloudsimple.models.PatchPayload;
 import com.azure.resourcemanager.vmwarecloudsimple.models.Sku;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -62,11 +63,11 @@ public final class DedicatedCloudNodeImpl
         return this.innerModel().cloudRackName();
     }
 
-    public Object created() {
+    public OffsetDateTime created() {
         return this.innerModel().created();
     }
 
-    public Integer nodesCount() {
+    public int nodesCount() {
         return this.innerModel().nodesCount();
     }
 
@@ -102,12 +103,12 @@ public final class DedicatedCloudNodeImpl
         return this.innerModel().vmwareClusterName();
     }
 
-    public String idPropertiesSkuDescriptionId() {
-        return this.innerModel().idPropertiesSkuDescriptionId();
+    public String idPropertiesId() {
+        return this.innerModel().idPropertiesId();
     }
 
-    public String namePropertiesSkuDescriptionName() {
-        return this.innerModel().namePropertiesSkuDescriptionName();
+    public String namePropertiesName() {
+        return this.innerModel().namePropertiesName();
     }
 
     public Region region() {
@@ -116,6 +117,10 @@ public final class DedicatedCloudNodeImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DedicatedCloudNodeInner innerModel() {
@@ -130,6 +135,8 @@ public final class DedicatedCloudNodeImpl
 
     private String dedicatedCloudNodeName;
 
+    private String createReferer;
+
     private PatchPayload updateDedicatedCloudNodeRequest;
 
     public DedicatedCloudNodeImpl withExistingResourceGroup(String resourceGroupName) {
@@ -142,7 +149,8 @@ public final class DedicatedCloudNodeImpl
             serviceManager
                 .serviceClient()
                 .getDedicatedCloudNodes()
-                .createOrUpdate(resourceGroupName, dedicatedCloudNodeName, this.innerModel(), Context.NONE);
+                .createOrUpdate(
+                    resourceGroupName, createReferer, dedicatedCloudNodeName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -151,7 +159,7 @@ public final class DedicatedCloudNodeImpl
             serviceManager
                 .serviceClient()
                 .getDedicatedCloudNodes()
-                .createOrUpdate(resourceGroupName, dedicatedCloudNodeName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, createReferer, dedicatedCloudNodeName, this.innerModel(), context);
         return this;
     }
 
@@ -160,6 +168,7 @@ public final class DedicatedCloudNodeImpl
         this.innerObject = new DedicatedCloudNodeInner();
         this.serviceManager = serviceManager;
         this.dedicatedCloudNodeName = name;
+        this.createReferer = null;
     }
 
     public DedicatedCloudNodeImpl update() {
@@ -247,7 +256,7 @@ public final class DedicatedCloudNodeImpl
         return this;
     }
 
-    public DedicatedCloudNodeImpl withNodesCount(Integer nodesCount) {
+    public DedicatedCloudNodeImpl withNodesCount(int nodesCount) {
         this.innerModel().withNodesCount(nodesCount);
         return this;
     }
@@ -262,13 +271,18 @@ public final class DedicatedCloudNodeImpl
         return this;
     }
 
-    public DedicatedCloudNodeImpl withIdPropertiesSkuDescriptionId(String idPropertiesSkuDescriptionId) {
-        this.innerModel().withIdPropertiesSkuDescriptionId(idPropertiesSkuDescriptionId);
+    public DedicatedCloudNodeImpl withIdPropertiesId(String idPropertiesId) {
+        this.innerModel().withIdPropertiesId(idPropertiesId);
         return this;
     }
 
-    public DedicatedCloudNodeImpl withNamePropertiesSkuDescriptionName(String namePropertiesSkuDescriptionName) {
-        this.innerModel().withNamePropertiesSkuDescriptionName(namePropertiesSkuDescriptionName);
+    public DedicatedCloudNodeImpl withNamePropertiesName(String namePropertiesName) {
+        this.innerModel().withNamePropertiesName(namePropertiesName);
+        return this;
+    }
+
+    public DedicatedCloudNodeImpl withReferer(String referer) {
+        this.createReferer = referer;
         return this;
     }
 
