@@ -313,6 +313,8 @@ org.revapi:revapi-java;0.26.1
 org.revapi:revapi-reporter-json;0.4.5
 org.revapi:revapi-maven-plugin;0.14.6
 org.sonatype.plugins:nexus-staging-maven-plugin;1.6.8
+org.testcontainers:testcontainers;1.17.6
+org.testcontainers:junit-jupiter;1.17.6
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
@@ -398,3 +400,6 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 
 # sdk\appconfiguration\azure-spring-cloud-test-appconfiguration-config\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
+
+# sdk\spring\spring-cloud-azure-service\pom.xml
+spring_redis.clients:jedis;3.8.0

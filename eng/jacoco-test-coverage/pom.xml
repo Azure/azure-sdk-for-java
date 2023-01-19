@@ -549,6 +549,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-redis</artifactId>
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-redis;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-keyvault-certificates</artifactId>
       <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;current} -->
     </dependency>
