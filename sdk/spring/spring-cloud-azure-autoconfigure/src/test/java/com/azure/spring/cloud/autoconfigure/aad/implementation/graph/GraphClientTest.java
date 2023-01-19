@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -31,6 +32,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 
 @ExtendWith({ OutputCaptureExtension.class })
+@Isolated("Run this by itself as it captures System.out")
 class GraphClientTest {
 
     @Test
