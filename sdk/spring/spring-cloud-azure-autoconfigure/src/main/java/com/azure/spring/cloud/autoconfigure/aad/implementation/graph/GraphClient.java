@@ -68,7 +68,7 @@ public class GraphClient {
         return groupInformation;
     }
 
-    private Optional<Memberships> getUserMemberships(String accessToken, String urlString) {
+    Optional<Memberships> getUserMemberships(String accessToken, String urlString) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);

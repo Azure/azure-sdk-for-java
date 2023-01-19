@@ -5,10 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.parallel.Isolated;
-import org.springframework.boot.test.system.CapturedOutput;
-import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,8 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -31,16 +27,17 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 
-@ExtendWith({ OutputCaptureExtension.class })
-@Isolated("Run this by itself as it captures System.out")
 class GraphClientTest {
+
+    private String accessToken = "fake-accesstoken";
+    private String graphMembershipUri = "fake-url";
 
     @Test
     void testGetGroupInformationCorrectly() {
         AadAuthenticationProperties properties = new AadAuthenticationProperties() {
             @Override
             public String getGraphMembershipUri() {
-                return "https://graph.microsoft.com/v1.0/me/memberOf";
+                return graphMembershipUri;
             }
         };
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
@@ -50,16 +47,16 @@ class GraphClientTest {
         when(restTemplateBuilder.build()).thenReturn(operations);
         GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
         when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenReturn(response);
-        GroupInformation groupInformation = graphClient.getGroupInformation("fake-accesstoken");
-        assertNotNull(groupInformation);
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(accessToken, graphMembershipUri);
+        assertTrue(userMemberships.isPresent());
     }
 
     @Test
-    void testGetGroupInformationWithBadHttpStatus(CapturedOutput capturedOutput) {
+    void testGetGroupInformationWithBadHttpStatus() {
         AadAuthenticationProperties properties = new AadAuthenticationProperties() {
             @Override
             public String getGraphMembershipUri() {
-                return "https://graph.microsoft.com/v1.0/me/memberOf";
+                return graphMembershipUri;
             }
         };
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
@@ -69,17 +66,16 @@ class GraphClientTest {
         when(restTemplateBuilder.build()).thenReturn(operations);
         GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
         when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenReturn(response);
-        graphClient.getGroupInformation("fake-accesstoken");
-        String allOutput = capturedOutput.getAll();
-        assertTrue(allOutput.contains("Response code [400 BAD_REQUEST] is not 200, the response body is"));
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(accessToken, graphMembershipUri);
+        assertTrue(userMemberships.isEmpty());
     }
 
     @Test
-    void testGetGroupInformationWithNotFoundError(CapturedOutput capturedOutput) {
+    void testGetGroupInformationWithNotFoundError() {
         AadAuthenticationProperties properties = new AadAuthenticationProperties() {
             @Override
             public String getGraphMembershipUri() {
-                return "https://graph.microsoft.com/v1.0/me/memberOf";
+                return graphMembershipUri;
             }
         };
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
@@ -87,14 +83,12 @@ class GraphClientTest {
         when(restTemplateBuilder.build()).thenReturn(operations);
         GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
         when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenThrow(HttpClientErrorException.NotFound.class);
-        graphClient.getGroupInformation("fake-accesstoken");
-        String allOutput = capturedOutput.getAll();
-        assertTrue(allOutput.contains("Can not get group information from graph server.")
-            && allOutput.contains("org.springframework.web.client.HttpClientErrorException$NotFound"));
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(accessToken, graphMembershipUri);
+        assertTrue(userMemberships.isEmpty());
     }
 
     @Test
-    void testGetGroupInformationWithInternalServerError(CapturedOutput capturedOutput) throws URISyntaxException {
+    void testGetGroupInformationWithInternalServerError() throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
         AadAuthenticationProperties properties = new AadAuthenticationProperties() {
             @Override
@@ -109,11 +103,9 @@ class GraphClientTest {
         mockServer
             .expect(ExpectedCount.once(), requestTo(new URI("http://localhost:8080/v1.0/me/memberOf")))
             .andRespond(withServerError());
-        graphClient.getGroupInformation("fake-accesstoken");
-        String allOutput = capturedOutput.getAll();
-        assertTrue(allOutput.contains("Can not get group information from graph server.")
-            && allOutput.contains("org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 "
-            + "Internal Server Error"));
+        Optional<Memberships> userMemberships =
+            graphClient.getUserMemberships(accessToken, "http://localhost:8080/v1.0/me/memberOf");
+        assertTrue(userMemberships.isEmpty());
     }
 
 }
