@@ -43,7 +43,6 @@ import com.azure.communication.callautomation.models.UnmuteAllParticipantsOption
 import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
@@ -404,7 +403,7 @@ public class CallConnectionAsync {
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationUserIdentifier targetParticipant) {
+    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationIdentifier targetParticipant) {
         return muteParticipantWithResponseInternal(new MuteParticipantOptions(targetParticipant), null)
             .flatMap(FluxUtil::toMono);
     }
@@ -447,7 +446,7 @@ public class CallConnectionAsync {
      * @return a MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResult> muteAllParticipantsAsync(CommunicationUserIdentifier requestInitiator) {
+    public Mono<MuteParticipantsResult> muteAllParticipantsAsync(CommunicationIdentifier requestInitiator) {
         MuteAllParticipantsOptions options = new MuteAllParticipantsOptions()
             .setRequestInitiator(requestInitiator);
         return muteAllParticipantsWithResponseInternal(options, null).flatMap(FluxUtil::toMono);
@@ -490,7 +489,7 @@ public class CallConnectionAsync {
      * @return An UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResult> unmuteParticipantAsync(CommunicationUserIdentifier targetParticipant) {
+    public Mono<UnmuteParticipantsResult> unmuteParticipantAsync(CommunicationIdentifier targetParticipant) {
         return unmuteParticipantWithResponseInternal(new UnmuteParticipantOptions(targetParticipant), null)
             .flatMap(FluxUtil::toMono);
     }

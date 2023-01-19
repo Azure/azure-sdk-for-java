@@ -21,7 +21,6 @@ import com.azure.communication.callautomation.models.UnmuteAllParticipantsOption
 import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -232,7 +231,7 @@ public class CallConnection {
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResult muteParticipant(CommunicationUserIdentifier targetParticipant) {
+    public MuteParticipantsResult muteParticipant(CommunicationIdentifier targetParticipant) {
         return callConnectionAsync.muteParticipantAsync(targetParticipant).block();
     }
 
@@ -254,7 +253,7 @@ public class CallConnection {
      * @return a MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResult muteAllParticipants(CommunicationUserIdentifier requestInitiator) {
+    public MuteParticipantsResult muteAllParticipants(CommunicationIdentifier requestInitiator) {
         return callConnectionAsync.muteAllParticipantsAsync(requestInitiator).block();
     }
 
@@ -276,7 +275,7 @@ public class CallConnection {
      * @return An UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResult unmuteParticipant(CommunicationUserIdentifier targetParticipant) {
+    public UnmuteParticipantsResult unmuteParticipant(CommunicationIdentifier targetParticipant) {
         return callConnectionAsync.unmuteParticipantAsync(targetParticipant).block();
     }
 
