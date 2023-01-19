@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.spark.cosmosclient
-
-import com.azure.cosmos.spark.{CosmosAccountConfig, CosmosAuthConfig, CosmosConstants, DiagnosticsConfig}
+package com.azure.cosmos.spark
 
 import java.lang.management.ManagementFactory
 
@@ -48,17 +46,17 @@ private[spark] object CosmosClientConfiguration {
       applicationName = s"$applicationName ${customApplicationNameSuffix.get}"
     }
 
-      CosmosClientConfiguration(
-          cosmosAccountConfig.endpoint,
-          cosmosAccountConfig.authConfig,
-          customApplicationNameSuffix,
-          applicationName,
-          cosmosAccountConfig.useGatewayMode,
-          useEventualConsistency,
-          enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
-          cosmosAccountConfig.disableTcpConnectionEndpointRediscovery,
-          diagnosticsConfig.clientTelemetryEndpoint,
-          cosmosAccountConfig.preferredRegionsList)
+    CosmosClientConfiguration(
+      cosmosAccountConfig.endpoint,
+      cosmosAccountConfig.authConfig,
+      customApplicationNameSuffix,
+      applicationName,
+      cosmosAccountConfig.useGatewayMode,
+      useEventualConsistency,
+      enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
+      cosmosAccountConfig.disableTcpConnectionEndpointRediscovery,
+      diagnosticsConfig.clientTelemetryEndpoint,
+      cosmosAccountConfig.preferredRegionsList)
   }
 
   private[this] def runtimeInformation(): Option[String] = {

@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
-import com.azure.cosmos.spark.cosmosclient.{CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient, CosmosClientConfiguration, CosmosClientProvider, CosmosSparkCatalogClient}
+import com.azure.cosmos.spark.catalog.{CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient, CosmosCatalogClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
 import com.azure.identity.ClientSecretCredentialBuilder
@@ -132,7 +132,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None =>
         val cosmosAsyncClient = createCosmosAsyncClient(cosmosClientConfiguration, cosmosClientStateHandle)
-        var sparkCatalogClient: CosmosSparkCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
+        var sparkCatalogClient: CosmosCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
 
         // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
         if (cosmosClientConfiguration.authConfig.isInstanceOf[CosmosAadAuthConfig]) {
@@ -142,16 +142,16 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                 CosmosCatalogManagementSDKClient(
                     aadAuthConfig.resourceGroupName,
                     aadAuthConfig.databaseAccountName,
-                    createCosmosManagementClient(aadAuthConfig))
+                    createCosmosManagementClient(aadAuthConfig),
+                    cosmosAsyncClient)
         }
 
         val epochNowInMs = Instant.now.toEpochMilli
         val owners = new TrieMap[OwnerInfo, Option[Boolean]]
         owners.put(ownerInfo, None)
 
-        val clientProvider = CosmosClientProvider(cosmosAsyncClient)
         val newClientCacheEntry = CosmosClientCacheMetadata(
-          clientProvider,
+          cosmosAsyncClient,
           sparkCatalogClient,
           cosmosClientConfiguration,
           new AtomicLong(epochNowInMs),
@@ -162,7 +162,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         )
 
         cache.putIfAbsent(cosmosClientConfiguration, newClientCacheEntry) match {
-          case None => new CacheItemImpl(clientProvider, sparkCatalogClient, newClientCacheEntry, ownerInfo)
+          case None => new CacheItemImpl(cosmosAsyncClient, sparkCatalogClient, newClientCacheEntry, ownerInfo)
           case Some(_) =>
             throw new ConcurrentModificationException("Should not reach here because its synchronized")
         }
@@ -379,14 +379,14 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] case class CosmosClientCacheMetadata
   (
-    cosmosClientProvider: CosmosClientProvider,
-    sparkCatalogClient: CosmosSparkCatalogClient,
-    clientConfig: CosmosClientConfiguration,
-    lastRetrieved: AtomicLong,
-    lastModified: AtomicLong,
-    created: AtomicLong,
-    refCount: AtomicLong,
-    owners: TrieMap[OwnerInfo, Option[Boolean]]
+      cosmosClient: CosmosAsyncClient,
+      sparkCatalogClient: CosmosCatalogClient,
+      clientConfig: CosmosClientConfiguration,
+      lastRetrieved: AtomicLong,
+      lastModified: AtomicLong,
+      created: AtomicLong,
+      refCount: AtomicLong,
+      owners: TrieMap[OwnerInfo, Option[Boolean]]
   ) {
     def createCacheItemForReuse(ownerInfo: OwnerInfo) : CacheItemImpl = {
       val nowInEpochMilli = Instant.now.toEpochMilli
@@ -395,11 +395,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       refCount.incrementAndGet()
       owners.putIfAbsent(ownerInfo, None)
 
-      new CacheItemImpl(cosmosClientProvider, sparkCatalogClient, this, ownerInfo)
+      new CacheItemImpl(cosmosClient, sparkCatalogClient, this, ownerInfo)
     }
 
     def closeClients() = {
-      cosmosClientProvider.cosmosAsyncClient.close()
+      cosmosClient.close()
       sparkCatalogClient.close()
     }
   }
@@ -440,15 +440,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] class CacheItemImpl
   (
-      val cosmosClientProvider: CosmosClientProvider,
-      val catalogClient: CosmosSparkCatalogClient,
+      val cosmosAsyncClient: CosmosAsyncClient,
+      val catalogClient: CosmosCatalogClient,
       val ref: CosmosClientCacheMetadata,
       val ownerInfo: OwnerInfo
   ) extends CosmosClientCacheItem with BasicLoggingTrait {
 
-    override def clientProvider: CosmosClientProvider = this.cosmosClientProvider
+    override def cosmosClient: CosmosAsyncClient = this.cosmosAsyncClient
 
-    override def sparkCatalogClient: CosmosSparkCatalogClient = this.catalogClient
+    override def sparkCatalogClient: CosmosCatalogClient = this.catalogClient
 
     override def context: String = this.ownerInfo.toString
 

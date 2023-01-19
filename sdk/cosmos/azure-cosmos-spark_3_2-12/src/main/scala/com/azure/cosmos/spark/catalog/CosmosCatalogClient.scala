@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.spark.cosmosclient
+package com.azure.cosmos.spark.catalog
 
 import java.util
 
-trait CosmosSparkCatalogClient {
+trait CosmosCatalogClient {
     def close()
-    def readAllDataBases(): Array[Array[String]]
+    def readAllDatabases(): Array[Array[String]]
     def readDatabase(databaseName: String): Unit
     def readDatabaseThroughput(databaseName:String): Map[String, String]
     def createDatabase(databaseName: String, metaData: Map[String, String]): Unit

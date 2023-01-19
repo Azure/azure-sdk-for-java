@@ -4,7 +4,6 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 
 import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.AtomicLong

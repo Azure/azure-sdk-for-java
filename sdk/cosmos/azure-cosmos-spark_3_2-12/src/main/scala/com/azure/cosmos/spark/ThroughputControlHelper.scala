@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
 
@@ -15,13 +14,12 @@ private object ThroughputControlHelper {
 
         val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
 
-        val client = cacheItem.clientProvider
-        val container = client.cosmosAsyncClient.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
+        val container = cacheItem.cosmosClient.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
 
         if (throughputControlConfigOpt.isDefined) {
             assert(throughputControlCacheItemOpt.isDefined)
             val throughputControlCacheItem = throughputControlCacheItemOpt.get
-            val throughputControlClient = throughputControlCacheItem.clientProvider
+            val throughputControlClient = throughputControlCacheItem.cosmosClient
             val throughputControlConfig = throughputControlConfigOpt.get
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
                 .groupName(throughputControlConfig.groupName)
@@ -34,7 +32,7 @@ private object ThroughputControlHelper {
                 groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
             }
 
-            val globalThroughputControlConfigBuilder = throughputControlClient.cosmosAsyncClient.createGlobalThroughputControlConfigBuilder(
+            val globalThroughputControlConfigBuilder = throughputControlClient.createGlobalThroughputControlConfigBuilder(
                 throughputControlConfig.globalControlDatabase,
                 throughputControlConfig.globalControlContainer)
 

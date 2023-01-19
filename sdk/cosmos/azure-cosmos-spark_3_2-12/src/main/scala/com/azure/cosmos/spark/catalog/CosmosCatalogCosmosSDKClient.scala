@@ -1,6 +1,10 @@
-package com.azure.cosmos.spark.cosmosclient
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import com.azure.cosmos.models._
+package com.azure.cosmos.spark.catalog
+
+import com.azure.cosmos.implementation.HttpConstants
+import com.azure.cosmos.models.{CosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, SparkModelBridgeInternal, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
@@ -16,12 +20,12 @@ import scala.collection.JavaConverters._
 
 // TODO: what is the difference of case class and class
 case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
-  extends CosmosSparkCatalogClient
+  extends CosmosCatalogClient
   with BasicLoggingTrait {
 
   override def close(): Unit = cosmosAsyncClient.close()
 
-  override def readAllDataBases(): Array[Array[String]] =
+  override def readAllDatabases(): Array[Array[String]] =
     cosmosAsyncClient
       .readAllDatabases()
       .toIterable
@@ -34,16 +38,22 @@ case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
   }
 
   override def createDatabase(databaseName: String, metaData: Map[String, String]): Unit = {
-    val throughputPropertiesOpt = getThroughputProperties(metaData)
-    throughputPropertiesOpt match {
-      case Some(throughputProperties) =>
-        logDebug(
-          s"creating database $databaseName with shared throughput ${throughputPropertiesOpt.get}")
-        cosmosAsyncClient.createDatabase(databaseName, throughputProperties).block()
-      case None =>
-        logDebug(s"creating database $databaseName")
-        cosmosAsyncClient.createDatabase(databaseName).block()
+    try {
+        val throughputPropertiesOpt = getThroughputProperties(metaData)
+        throughputPropertiesOpt match {
+            case Some(throughputProperties) =>
+                logDebug(
+                    s"creating database $databaseName with shared throughput ${throughputPropertiesOpt.get}")
+                cosmosAsyncClient.createDatabase(databaseName, throughputProperties).block()
+            case None =>
+                logDebug(s"creating database $databaseName")
+                cosmosAsyncClient.createDatabase(databaseName).block()
+        }
+    }  catch {
+        case e: CosmosException if e.getStatusCode == HttpConstants.StatusCodes.CONFLICT =>
+            throw new CosmosCatalogConflictException(e.toString)
     }
+
   }
 
   override def deleteDatabase(databaseName: String): Unit =
@@ -171,16 +181,15 @@ case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
       val throughput = cosmosAsyncClient.getDatabase(databaseName).readThroughput().block()
       toMap(throughput.getProperties)
     } catch {
-      case e: CosmosException if e.getStatusCode == 400 => Map[String, String]()
+        case e: CosmosException if e.getStatusCode == HttpConstants.StatusCodes.NOTFOUND =>
+            throw new CosmosCatalogNotFoundException(e.toString)
+        case e: CosmosException if e.getStatusCode == HttpConstants.StatusCodes.BADREQUEST => Map[String, String]()
       // not a shared throughput database account
     }
   }
 
   private def isNotFound(exception: CosmosException) =
     exception.getStatusCode == 404
-
-  private def alreadyExists(exception: CosmosException) =
-    exception.getStatusCode == 409
 
   override def readContainerMetadata(databaseName: String, containerName: String): Option[util.HashMap[String, String]] = {
     val container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)

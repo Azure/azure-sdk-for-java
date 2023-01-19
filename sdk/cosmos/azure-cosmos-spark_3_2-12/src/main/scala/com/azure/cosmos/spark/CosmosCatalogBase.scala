@@ -4,11 +4,11 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
+import com.azure.cosmos.spark.catalog.{CosmosCatalogConflictException, CosmosCatalogException, CosmosCatalogNotFoundException}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
-import org.apache.spark.sql.connector.catalog._
+import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, Table, TableCatalog, TableChange}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 import org.apache.spark.sql.types.StructType
@@ -113,13 +113,14 @@ class CosmosCatalogBase
                 Some(CosmosClientCache(
                     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
                     None,
-                    s"CosmosCatalog(name $catalogName).listNamespaces"))
+                    s"CosmosCatalog(name $catalogName).listNamespaces"
+                ))
             ))
             .to(cosmosClientCacheItems => {
                 cosmosClientCacheItems(0)
                     .get
                     .sparkCatalogClient
-                    .readAllDataBases()
+                    .readAllDatabases()
             })
     }
 
@@ -156,11 +157,11 @@ class CosmosCatalogBase
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(
-                    CosmosClientCache(
+                Some(CosmosClientCache(
                         CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
                         None,
-                        s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"))
+                        s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"
+                ))
             ))
             .to(clientCacheItems => {
                 try {
@@ -170,7 +171,7 @@ class CosmosCatalogBase
                         .readDatabaseThroughput(toCosmosDatabaseName(namespace.head))
                         .asJava
                 } catch {
-                    case e: CosmosException if isNotFound(e) =>
+                    case _: CosmosCatalogNotFoundException =>
                         throw new NoSuchNamespaceException(namespace)
                 }
             })
@@ -190,11 +191,11 @@ class CosmosCatalogBase
 
         Loan(
             List[Option[CosmosClientCacheItem]](
-                Some(
-                    CosmosClientCache(
+                Some(CosmosClientCache(
                         CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
                         None,
-                        s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"))
+                        s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"
+                ))
             ))
             .to(cosmosClientCacheItems => {
                 try {
@@ -203,7 +204,7 @@ class CosmosCatalogBase
                         .sparkCatalogClient
                         .createDatabase(databaseName, metadata.asScala.toMap)
                 } catch {
-                    case e: CosmosException if alreadyExists(e) =>
+                    case _: CosmosCatalogConflictException =>
                         throw new NamespaceAlreadyExistsException(namespace)
                 }
             })
@@ -266,8 +267,7 @@ class CosmosCatalogBase
             val cosmosTables =
                 Loan(
                     List[Option[CosmosClientCacheItem]](
-                        Some(
-                            CosmosClientCache(
+                        Some(CosmosClientCache(
                                 CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
                                 None,
                                 s"CosmosCatalog(name $catalogName).listTables([${namespace.mkString(", ")}])"

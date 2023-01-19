@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
+import com.azure.cosmos.spark
 
 import java.nio.charset.StandardCharsets
 import java.time.Instant
@@ -46,7 +46,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
   it should "create instance with valid parameters via apply in incremental mode" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -118,7 +118,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
   it should "create instance with valid parameters via apply in full fidelity mode" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -190,7 +190,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
   it should "withEndLsn honors the new end LSN" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -244,7 +244,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "clone the meta data for a new sub range" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -293,7 +293,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate weighted gap when document count per LSN is > 1" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -336,7 +336,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "weighted gap should be at least 1" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -379,7 +379,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate weighted gap when document count per LSN is < 1" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -422,7 +422,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate weighted gap when latestLsn==startLsn" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -465,7 +465,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate avg. document count per LSN correctly when there are no documents" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -508,7 +508,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate avg. document count per LSN correctly" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -568,7 +568,7 @@ class PartitionMetadataSpec extends UnitSpec {
   }
 
   it should "calculate avg. document count per LSN correctly when firstLsn was empty" in {
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,

@@ -6,7 +6,6 @@ import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.{IdAttributeName, RawJsonBodyAttributeName, TimestampAttributeName}
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -163,12 +162,12 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
         }
 
         val state = new CosmosClientMetadataCachesSnapshot()
-        state.serialize(clientCacheItems(0).get.clientProvider.cosmosAsyncClient)
+        state.serialize(clientCacheItems(0).get.cosmosClient)
 
         var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
         if (clientCacheItems(1).isDefined) {
           throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
-          throughputControlState.get.serialize(clientCacheItems(1).get.clientProvider.cosmosAsyncClient)
+          throughputControlState.get.serialize(clientCacheItems(1).get.cosmosClient)
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)

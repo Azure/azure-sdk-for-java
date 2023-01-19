@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
+import com.azure.cosmos.spark
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
 
 import java.time.Instant
@@ -77,7 +77,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
   it should "calculateEndLsn should have latestLsn >= startLsn when latestLsn==0 (no continuation)" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -140,7 +140,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
   it should "calculateEndLsn should return startLsn when lastLsn < startLsn (possible with replication lag)" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -203,7 +203,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
   it should "calculateEndLsn with readLimit should honor estimated lag" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -264,7 +264,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
   it should "calculateEndLsn with readLimit should proceed at least 1 LSN when there is any lag" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
@@ -341,7 +341,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
   it should "calculateEndLsn with readLimit should exceed weightedGap if totalWeighted gap < maxReadLimit" in {
 
-    val clientConfig = cosmosclient.CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,

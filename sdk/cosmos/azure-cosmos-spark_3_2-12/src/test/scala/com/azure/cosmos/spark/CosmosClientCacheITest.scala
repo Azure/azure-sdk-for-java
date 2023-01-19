@@ -4,7 +4,6 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.mockito.Mockito.mock
 
@@ -40,7 +39,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithoutPreferredRegions",
-        cosmosclient.CosmosClientConfiguration(
+        CosmosClientConfiguration(
             cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
             Some("SampleApplicationName"),
@@ -54,7 +53,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
-          cosmosclient.CosmosClientConfiguration(
+          CosmosClientConfiguration(
               cosmosEndpoint,
               CosmosMasterKeyAuthConfig(cosmosMasterKey),
               Some("SampleApplicationName"),
@@ -68,7 +67,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithOnePreferredRegion",
-        cosmosclient.CosmosClientConfiguration(
+        CosmosClientConfiguration(
             cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
             None,
@@ -82,7 +81,7 @@ class CosmosClientCacheITest
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
-        cosmosclient.CosmosClientConfiguration(
+        CosmosClientConfiguration(
           cosmosEndpoint,
             CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
@@ -100,7 +99,7 @@ class CosmosClientCacheITest
 
       val testCaseName = userConfigPair._1
       val userConfig = userConfigPair._2
-      val userConfigShallowCopy = cosmosclient.CosmosClientConfiguration(
+      val userConfigShallowCopy = CosmosClientConfiguration(
         userConfig.endpoint,
         userConfig.authConfig,
         userConfig.customApplicationNameSuffix,
@@ -128,15 +127,15 @@ class CosmosClientCacheITest
             Some(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
            ))
            .to(clients2 => {
-            clients2(0).get.clientProvider.cosmosAsyncClient should be theSameInstanceAs
-            clients(0).get.clientProvider.cosmosAsyncClient
+                clients2(0).get.cosmosClient should be theSameInstanceAs
+                clients(0).get.cosmosClient
 
-             val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
-             logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
-             ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
-             ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
-             ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-03") shouldEqual false
-             CosmosClientCache.purge(userConfig)
+                 val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
+                 logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
+                 ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
+                 ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
+                 ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-03") shouldEqual false
+                 CosmosClientCache.purge(userConfig)
            })
         })
     })
@@ -179,7 +178,7 @@ class CosmosClientCacheITest
      ))
      .to(clients => {
        clients(0).get shouldBe a[CosmosClientCacheItem]
-       clients(0).get.clientProvider.cosmosAsyncClient shouldBe a[CosmosAsyncClient]
+       clients(0).get.cosmosClient shouldBe a[CosmosAsyncClient]
        CosmosClientCache.purge(userConfig)
      })
   }

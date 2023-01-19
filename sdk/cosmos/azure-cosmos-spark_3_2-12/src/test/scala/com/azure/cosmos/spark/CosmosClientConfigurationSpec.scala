@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.cosmosclient.CosmosClientConfiguration
-
 import java.lang.management.ManagementFactory
 
 class CosmosClientConfigurationSpec extends UnitSpec {
