@@ -2189,6 +2189,7 @@
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientTelemetryConfigHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosContainerIdentityHelper"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>

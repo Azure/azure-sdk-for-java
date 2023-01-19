@@ -1146,7 +1146,7 @@ public class ImplementationBridgeHelpers {
 
             if (snapshot == null) {
                 logger.error("CosmosContainerIdentityAccessor is not initialized yet!");
-                System.exit(9924); // Using a unique status code here to help debug the issue.
+                System.exit(9725); // Using a unique status code here to help debug the issue.
             }
 
             return snapshot;
