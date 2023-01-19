@@ -53,7 +53,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
-    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobClient.class);
 
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
