@@ -4,11 +4,13 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -99,17 +101,18 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected String setupIndex(SearchIndex index) {
-        getSearchIndexClientBuilder().buildClient().createOrUpdateIndex(index);
+        getSearchIndexClientBuilder(true).buildClient().createOrUpdateIndex(index);
 
         return index.getName();
     }
 
-    protected SearchIndexClientBuilder getSearchIndexClientBuilder() {
+    protected SearchIndexClientBuilder getSearchIndexClientBuilder(boolean isSync) {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT);
-        builder.credential(new AzureKeyCredential(API_KEY));
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(isSync));
+
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
             addPolicies(builder);
             return builder;
         }
@@ -124,16 +127,18 @@ public abstract class SearchTestBase extends TestBase {
 
     }
 
-    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(HttpPipelinePolicy... policies) {
+    protected SearchIndexerClientBuilder getSearchIndexerClientBuilder(boolean isSync, HttpPipelinePolicy... policies) {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
-            .endpoint(ENDPOINT);
-        builder.credential(new AzureKeyCredential(API_KEY));
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(isSync));
+
+        addPolicies(builder, policies);
+
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            addPolicies(builder, policies);
             return builder;
         }
-        addPolicies(builder, policies);
+
         builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
@@ -164,14 +169,15 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected SearchClientBuilder getSearchClientBuilder(String indexName) {
+    protected SearchClientBuilder getSearchClientBuilder(String indexName, boolean isSync) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
-            .indexName(indexName);
+            .indexName(indexName)
+            .credential(new AzureKeyCredential(API_KEY))
+            .httpClient(getHttpClient(isSync));
 
-        builder.credential(new AzureKeyCredential(API_KEY));
         if (interceptorManager.isPlaybackMode()) {
-            return builder.httpClient(interceptorManager.getPlaybackClient());
+            return builder;
         }
 
         builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
@@ -181,6 +187,24 @@ public abstract class SearchTestBase extends TestBase {
         }
 
         return builder;
+    }
+
+    private HttpClient getHttpClient(boolean isSync) {
+        HttpClient httpClient = (interceptorManager.isPlaybackMode())
+            ? interceptorManager.getPlaybackClient()
+            : HttpClient.createDefault();
+
+        if (!isSync) {
+            httpClient = new AssertingHttpClientBuilder(httpClient)
+                .assertAsync()
+                // TODO (alzimmer): Remove skipRequest when next azure-core-test is released
+                .skipRequest((ignored1, ignored2) -> false)
+                .build();
+        }
+
+        // TODO (alzimmer): Add support for sync when sync stack is enabled.
+
+        return httpClient;
     }
 
     protected SearchIndex createTestIndex(String indexName) {

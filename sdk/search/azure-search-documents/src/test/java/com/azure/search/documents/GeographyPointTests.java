@@ -92,9 +92,8 @@ public class GeographyPointTests extends SearchTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        SearchClientBuilder builder = getSearchClientBuilder(INDEX_NAME);
-        searchClient = builder.buildClient();
-        searchAsyncClient = builder.buildAsyncClient();
+        searchClient = getSearchClientBuilder(INDEX_NAME, true).buildClient();
+        searchAsyncClient = getSearchClientBuilder(INDEX_NAME, false).buildAsyncClient();
     }
 
     @Test

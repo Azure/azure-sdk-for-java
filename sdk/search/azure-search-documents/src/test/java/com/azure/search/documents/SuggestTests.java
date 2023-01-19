@@ -83,11 +83,11 @@ public class SuggestTests extends SearchTestBase {
     }
 
     private SearchClient getClient(String indexName) {
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     private SearchAsyncClient getAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName).buildAsyncClient();
+        return getSearchClientBuilder(indexName, false).buildAsyncClient();
     }
 
     @Test

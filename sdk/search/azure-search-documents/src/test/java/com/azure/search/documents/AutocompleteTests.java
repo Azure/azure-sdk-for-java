@@ -54,9 +54,8 @@ public class AutocompleteTests extends SearchTestBase {
 
     @Override
     protected void beforeTest() {
-        SearchClientBuilder builder = getSearchClientBuilder(INDEX_NAME);
-        client = builder.buildClient();
-        asyncClient = builder.buildAsyncClient();
+        client = getSearchClientBuilder(INDEX_NAME, true).buildClient();
+        asyncClient = getSearchClientBuilder(INDEX_NAME, false).buildAsyncClient();
     }
 
     @AfterAll

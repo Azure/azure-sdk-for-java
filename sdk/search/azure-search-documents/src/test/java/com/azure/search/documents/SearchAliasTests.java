@@ -60,9 +60,8 @@ public class SearchAliasTests extends SearchTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        SearchIndexClientBuilder indexClientBuilder = getSearchIndexClientBuilder();
-        indexClient = indexClientBuilder.buildClient();
-        indexAsyncClient = indexClientBuilder.buildAsyncClient();
+        indexClient = getSearchIndexClientBuilder(true).buildClient();
+        indexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
     }
 
     @Override

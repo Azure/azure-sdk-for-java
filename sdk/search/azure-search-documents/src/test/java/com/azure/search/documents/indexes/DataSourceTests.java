@@ -62,9 +62,9 @@ public class DataSourceTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        SearchIndexerClientBuilder searchIndexerClientBuilder = getSearchIndexerClientBuilder();
-        asyncClient = searchIndexerClientBuilder.buildAsyncClient();
-        client = searchIndexerClientBuilder.buildClient();
+
+        asyncClient = getSearchIndexerClientBuilder(false).buildAsyncClient();
+        client = getSearchIndexerClientBuilder(true).buildClient();
     }
 
     @Override

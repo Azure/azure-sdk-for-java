@@ -17,21 +17,21 @@ public class SearchServiceTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionSync() {
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         validateServiceStatistics(serviceClient.getServiceStatistics());
     }
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder().buildAsyncClient().getServiceStatistics())
+        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatistics())
             .assertNext(SearchServiceTests::validateServiceStatistics)
             .verifyComplete();
     }
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponseSync() {
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(Context.NONE)
             .getValue();
@@ -40,14 +40,14 @@ public class SearchServiceTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponseAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder().buildAsyncClient().getServiceStatisticsWithResponse())
+        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse())
             .assertNext(response -> validateServiceStatistics(response.getValue()))
             .verifyComplete();
     }
 
     @Test
     public void getServiceStatsReturnsRequestIdSync() {
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(Context.NONE);
 
@@ -67,7 +67,7 @@ public class SearchServiceTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsRequestIdAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder().buildAsyncClient().getServiceStatisticsWithResponse())
+        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse())
             .assertNext(response -> {
                 /*
                  * The service will always return a request-id and will conditionally return client-request-id if

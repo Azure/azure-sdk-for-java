@@ -35,7 +35,7 @@ public class ContextRequestIdTests extends SearchTestBase {
 
     @Test
     public void searchClient() {
-        SearchClient client = getSearchClientBuilder("index")
+        SearchClient client = getSearchClientBuilder("index", true)
             .retryPolicy(RETRY_POLICY)
             .buildClient();
 
@@ -49,7 +49,7 @@ public class ContextRequestIdTests extends SearchTestBase {
 
     @Test
     public void searchAsyncClient() {
-        SearchAsyncClient client = getSearchClientBuilder("index")
+        SearchAsyncClient client = getSearchClientBuilder("index", false)
             .retryPolicy(RETRY_POLICY)
             .buildAsyncClient();
 
@@ -69,7 +69,7 @@ public class ContextRequestIdTests extends SearchTestBase {
 
     @Test
     public void searchIndexClient() {
-        SearchIndexClient client = getSearchIndexClientBuilder()
+        SearchIndexClient client = getSearchIndexClientBuilder(true)
             .retryPolicy(RETRY_POLICY)
             .buildClient();
 
@@ -83,7 +83,7 @@ public class ContextRequestIdTests extends SearchTestBase {
 
     @Test
     public void searchIndexAsyncClient() {
-        SearchIndexAsyncClient client = getSearchIndexClientBuilder()
+        SearchIndexAsyncClient client = getSearchIndexClientBuilder(false)
             .retryPolicy(RETRY_POLICY)
             .buildAsyncClient();
 
@@ -103,7 +103,7 @@ public class ContextRequestIdTests extends SearchTestBase {
 
     @Test
     public void searchIndexerClient() {
-        SearchIndexerClient client = getSearchIndexerClientBuilder()
+        SearchIndexerClient client = getSearchIndexerClientBuilder(true)
             .retryPolicy(RETRY_POLICY)
             .buildClient();
 
@@ -117,7 +117,7 @@ public class ContextRequestIdTests extends SearchTestBase {
 
     @Test
     public void searchIndexerAsyncClient() {
-        SearchIndexerAsyncClient client = getSearchIndexerClientBuilder()
+        SearchIndexerAsyncClient client = getSearchIndexerClientBuilder(false)
             .retryPolicy(RETRY_POLICY)
             .buildAsyncClient();
 

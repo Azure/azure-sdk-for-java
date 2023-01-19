@@ -72,9 +72,8 @@ public class SkillsetManagementTests extends SearchTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        SearchIndexerClientBuilder builder = getSearchIndexerClientBuilder();
-        client = builder.buildClient();
-        asyncClient = builder.buildAsyncClient();
+        client = getSearchIndexerClientBuilder(true).buildClient();
+        asyncClient = getSearchIndexerClientBuilder(false).buildAsyncClient();
     }
 
     @Override

@@ -30,9 +30,8 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        SearchIndexClientBuilder builder = getSearchIndexClientBuilder();
-        client = builder.buildClient();
-        asyncClient = builder.buildAsyncClient();
+        client = getSearchIndexClientBuilder(true).buildClient();
+        asyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
     }
 
     @Override

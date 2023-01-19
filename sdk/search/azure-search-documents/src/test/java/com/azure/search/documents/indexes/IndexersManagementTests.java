@@ -151,13 +151,11 @@ public class IndexersManagementTests extends SearchTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        SearchIndexerClientBuilder searchIndexerClientBuilder = getSearchIndexerClientBuilder();
-        searchIndexerClient = searchIndexerClientBuilder.buildClient();
-        searchIndexerAsyncClient = searchIndexerClientBuilder.buildAsyncClient();
+        searchIndexerClient = getSearchIndexerClientBuilder(true).buildClient();
+        searchIndexerAsyncClient = getSearchIndexerClientBuilder(false).buildAsyncClient();
 
-        SearchIndexClientBuilder searchIndexClientBuilder = getSearchIndexClientBuilder();
-        searchIndexClient = searchIndexClientBuilder.buildClient();
-        searchIndexAsyncClient = searchIndexClientBuilder.buildAsyncClient();
+        searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
     }
 
     @Override
@@ -434,7 +432,8 @@ public class IndexersManagementTests extends SearchTestBase {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
         // returning a well-known mock response
-        SearchIndexerClient mockStatusClient = getSearchIndexerClientBuilder(MOCK_STATUS_PIPELINE_POLICY).buildClient();
+        SearchIndexerClient mockStatusClient = getSearchIndexerClientBuilder(true, MOCK_STATUS_PIPELINE_POLICY)
+            .buildClient();
 
         mockStatusClient.createIndexer(indexer);
         indexersToDelete.add(indexer.getName());
@@ -456,7 +455,7 @@ public class IndexersManagementTests extends SearchTestBase {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
         // returning a well-known mock response
-        SearchIndexerAsyncClient mockStatusClient = getSearchIndexerClientBuilder(MOCK_STATUS_PIPELINE_POLICY)
+        SearchIndexerAsyncClient mockStatusClient = getSearchIndexerClientBuilder(false, MOCK_STATUS_PIPELINE_POLICY)
             .buildAsyncClient();
 
         mockStatusClient.createIndexer(indexer).block();

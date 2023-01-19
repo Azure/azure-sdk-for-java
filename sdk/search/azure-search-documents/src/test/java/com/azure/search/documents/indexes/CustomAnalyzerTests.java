@@ -116,9 +116,8 @@ public class CustomAnalyzerTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        SearchIndexClientBuilder searchIndexClientBuilder = getSearchIndexClientBuilder();
-        searchIndexAsyncClient = searchIndexClientBuilder.buildAsyncClient();
-        searchIndexClient = searchIndexClientBuilder.buildClient();
+        searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
     }
 
     @Override

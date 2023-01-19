@@ -108,7 +108,7 @@ public class SearchTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
-        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
@@ -132,25 +132,25 @@ public class SearchTests extends SearchTestBase {
     }
 
     private SearchClient getClient(String indexName) {
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     private SearchAsyncClient getAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName).buildAsyncClient();
+        return getSearchClientBuilder(indexName, false).buildAsyncClient();
     }
 
     private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, true).buildClient();
     }
 
     private SearchAsyncClient setupAsyncClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchClientBuilder(indexName).buildAsyncClient();
+        return getSearchClientBuilder(indexName, false).buildAsyncClient();
     }
 
     @Test
@@ -175,7 +175,8 @@ public class SearchTests extends SearchTestBase {
 
     private void badSearchSync(String searchText, SearchOptions searchOptions) {
         HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> getSearchClientBuilder(HOTEL_INDEX_NAME).buildClient().search(searchText, searchOptions, Context.NONE)
+            () -> getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search(searchText, searchOptions,
+                    Context.NONE)
                 .iterableByPage()
                 .iterator()
                 .next());
@@ -184,7 +185,8 @@ public class SearchTests extends SearchTestBase {
     }
 
     private void badSearchAsync(String searchText, SearchOptions searchOptions) {
-        StepVerifier.create(getSearchClientBuilder(HOTEL_INDEX_NAME).buildAsyncClient().search(searchText, searchOptions)
+        StepVerifier.create(getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient()
+                .search(searchText, searchOptions)
                 .byPage())
             .thenRequest(1)
             .verifyErrorSatisfies(throwable -> {
