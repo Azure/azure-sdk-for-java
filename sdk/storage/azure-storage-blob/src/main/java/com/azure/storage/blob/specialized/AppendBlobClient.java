@@ -53,7 +53,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
-    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobClient.class);
 
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
@@ -122,9 +122,6 @@ public final class AppendBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         AppendBlobRequestConditions requestConditions = null;
         if (!overwrite) {
-            if (exists()) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
-            }
             requestConditions = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         } else {
             // creating new blob to overwrite existing blob

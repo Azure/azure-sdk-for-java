@@ -8,6 +8,7 @@
 - Fixed bug where `BlobErrorCode.IncrementalCopyOfEarlierVersionSnapshotNotAllowed` was spelled incorrectly.
 
 ### Breaking Changes
+- `AppendBlobClient.getBlobOutputStream(boolean)` now appends to existing data if overwrite is specified `false`, and deletes and recreates a blob if overwrite is specified `true`.
 
 ### Bugs Fixed
 

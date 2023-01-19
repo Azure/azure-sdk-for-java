@@ -245,6 +245,34 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data2
     }
 
+    @LiveOnly
+    def "AppendBlob output stream overwrite false"() {
+        setup:
+        def data = getRandomByteArray(Constants.MB)
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
+
+        when:
+        def outputStream = appendBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
+
+        when:
+        def data2 = getRandomByteArray(Constants.MB)
+        outputStream = appendBlobClient.getBlobOutputStream(false)
+        outputStream.write(data2)
+        outputStream.close()
+
+        then:
+        def finalData = new byte[2 * Constants.MB]
+        System.arraycopy(data, 0, finalData, 0, data.length)
+        System.arraycopy(data2, 0, finalData, data.length, data2.length)
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == finalData
+    }
+
     def convertInputStreamToByteArray(InputStream inputStream) {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
