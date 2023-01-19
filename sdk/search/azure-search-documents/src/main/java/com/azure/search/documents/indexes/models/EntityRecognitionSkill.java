@@ -256,6 +256,27 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
         return setCategories((categories == null) ? null : java.util.Arrays.asList(categories));
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EntityRecognitionSkill setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityRecognitionSkill setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityRecognitionSkill setContext(String context) {
+        super.setContext(context);
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return (v1Skill != null) ? v1Skill.toJson(jsonWriter) : v3Skill.toJson(jsonWriter);

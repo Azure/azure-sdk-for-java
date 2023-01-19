@@ -26,6 +26,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
+import com.azure.search.documents.models.SearchAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -84,6 +85,7 @@ public final class SearchIndexClientBuilder implements
 
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
+    private SearchAudience audience;
 
     private SearchServiceVersion serviceVersion;
     private String endpoint;
@@ -143,7 +145,8 @@ public final class SearchIndexClientBuilder implements
         }
 
         HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
-            retryOptions, azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
+            retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient,
+            LOGGER);
 
         return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
@@ -189,6 +192,21 @@ public final class SearchIndexClientBuilder implements
     @Override
     public SearchIndexClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD).
+     * <p>
+     * The audience is not considered when using a {@link #credential(AzureKeyCredential) shared key}.
+     * <p>
+     * If {@code audience} is null the public cloud audience will be assumed.
+     *
+     * @param audience The Audience to use for authentication with Azure Active Directory (AAD).
+     * @return The updated SearchClientBuilder object.
+     */
+    public SearchIndexClientBuilder audience(SearchAudience audience) {
+        this.audience = audience;
         return this;
     }
 

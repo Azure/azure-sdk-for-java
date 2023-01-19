@@ -179,6 +179,27 @@ public final class SentimentSkill extends SearchIndexerSkill {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SentimentSkill setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentSkill setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentSkill setContext(String context) {
+        super.setContext(context);
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return (v1Skill != null) ? v1Skill.toJson(jsonWriter) : v3Skill.toJson(jsonWriter);

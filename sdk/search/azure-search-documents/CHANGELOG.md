@@ -53,7 +53,7 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
 - Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
-- 
+
 ## 11.5.1 (2022-10-12)
 
 ### Other Changes
@@ -63,7 +63,6 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
 - Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
-
 
 ## 11.6.0-beta.1 (2022-09-06)
 
@@ -124,7 +123,6 @@
 - Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
 - Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.19` to version `1.2.20`.
-
 
 ## 11.5.0-beta.11 (2022-07-01)
 

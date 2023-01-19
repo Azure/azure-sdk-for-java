@@ -174,7 +174,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <T> T com.azure.spring.data.cosmos.core.CosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
           "justification": "Spring interfaces are allowed to add methods."
-        },        
+        },
         {
           "ignore": true,
           "code": "java.method.addedToInterface",
@@ -186,7 +186,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::patch(java.lang.Object, com.azure.cosmos.models.PartitionKey, java.lang.Class<T>, com.azure.cosmos.models.CosmosPatchOperations)",
           "justification": "Spring interfaces are allowed to add methods."
-        },        
+        },
         {
           "ignore": true,
           "code": "java.method.addedToInterface",
@@ -204,7 +204,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <S extends T> S com.azure.spring.data.cosmos.repository.CosmosRepository<T, ID extends java.io.Serializable>::save(ID, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
           "justification": "Spring interfaces are allowed to add methods."
-        },                
+        },
         {
           "ignore": true,
           "code": "java.method.addedToInterface",
@@ -216,7 +216,7 @@
           "code": "java.method.addedToInterface",
           "new": "method <S extends T> reactor.core.publisher.Mono<S> com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository<T, K>::save(K, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
           "justification": "Spring interfaces are allowed to add methods."
-        },        
+        },
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
@@ -970,6 +970,12 @@
           "old": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
           "new": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
           "justification": "Previous constant value had a typo and was never functional."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*",
+          "justification": "Removing Jackson annotations from Search in transition to stream-style."
         }
       ]
     }
