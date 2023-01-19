@@ -5,23 +5,21 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response when errors occurred. */
-@JsonFlatten
 @Immutable
-public class ErrorResponse extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorResponse.class);
-
+public final class ErrorResponseError extends ManagementError {
     /*
      * Inner error object if present.
      */
-    @JsonProperty(value = "error.innererror", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private Object innererror;
+
+    /** Creates an instance of ErrorResponseError class. */
+    public ErrorResponseError() {
+    }
 
     /**
      * Get the innererror property: Inner error object if present.
