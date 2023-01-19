@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withNoContent;
@@ -50,7 +51,7 @@ class GraphClientTest {
 
         Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
-        assertTrue(userMemberships.isEmpty());
+        assertFalse(userMemberships.isPresent());
     }
 
     @Test
@@ -62,7 +63,7 @@ class GraphClientTest {
 
         Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
-        assertTrue(userMemberships.isEmpty());
+        assertFalse(userMemberships.isPresent());
     }
 
     @Test
@@ -74,7 +75,7 @@ class GraphClientTest {
 
         Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
-        assertTrue(userMemberships.isEmpty());
+        assertFalse(userMemberships.isPresent());
     }
 
 }
