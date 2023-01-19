@@ -25,6 +25,7 @@ public class HttpRequest {
     private URL url;
     private HttpHeaders headers;
     private BinaryData body;
+    private HttpRequestMetadata metadata;
 
     /**
      * Create a new HttpRequest instance.
@@ -279,6 +280,26 @@ public class HttpRequest {
     }
 
     /**
+     * Gets the metadata associated with this request.
+     *
+     * @return The metadata associated with this request.
+     */
+    public HttpRequestMetadata getMetadata() {
+        return metadata;
+    }
+
+    /**
+     * Gets the metadata associated with this request.
+     *
+     * @param metadata The metadata associated with this request.
+     * @return this HttpRequest
+     */
+    public HttpRequest setMetadata(HttpRequestMetadata metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Creates a copy of the request.
      * <p>
      * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
@@ -289,6 +310,7 @@ public class HttpRequest {
      */
     public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        return new HttpRequest(httpMethod, url, bufferedHeaders, body);
+        return new HttpRequest(httpMethod, url, bufferedHeaders, body)
+            .setMetadata(metadata.copy());
     }
 }

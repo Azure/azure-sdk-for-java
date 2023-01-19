@@ -15,6 +15,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -89,6 +90,12 @@ public abstract class RestProxyBase {
 
             Context context = methodParser.setContext(args);
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
+
+            request.setMetadata(new HttpRequestMetadata()
+                .setCallerMethod(methodParser.getFullyQualifiedMethodName())
+                .setResponseEagerlyRead(methodParser.isResponseEagerlyRead())
+                .setResponseBodyIgnored(methodParser.isResponseBodyIgnored())
+                .setHeadersEagerlyConverted(methodParser.isHeadersEagerlyConverted()));
 
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
 

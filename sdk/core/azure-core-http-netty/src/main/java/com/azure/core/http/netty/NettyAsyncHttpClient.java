@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestMetadata;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
@@ -132,9 +133,10 @@ class NettyAsyncHttpClient implements HttpClient {
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        boolean headersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        HttpRequestMetadata requestMetadata = request.getMetadata();
+        boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
+        boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
+        boolean headersEagerlyConverted = requestMetadata.isHeadersEagerlyConverted();
         long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
