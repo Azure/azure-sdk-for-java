@@ -37,8 +37,12 @@ class GraphClientTest {
 
     @Test
     void testGetGroupInformationCorrectly() {
-        AadAuthenticationProperties properties = new AadAuthenticationProperties();
-        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("https://graph.microsoft.com/");
+        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
+            @Override
+            public String getGraphMembershipUri() {
+                return "https://graph.microsoft.com/v1.0/me/memberOf";
+            }
+        };
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
         RestTemplate operations = mock(RestTemplate.class);
         Memberships memberships = new Memberships(null, new ArrayList<>());
@@ -52,8 +56,12 @@ class GraphClientTest {
 
     @Test
     void testGetGroupInformationWithBadHttpStatus(CapturedOutput capturedOutput) {
-        AadAuthenticationProperties properties = new AadAuthenticationProperties();
-        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("https://graph.microsoft.com/");
+        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
+            @Override
+            public String getGraphMembershipUri() {
+                return "https://graph.microsoft.com/v1.0/me/memberOf";
+            }
+        };
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
         RestTemplate operations = mock(RestTemplate.class);
         Memberships memberships = new Memberships(null, new ArrayList<>());
@@ -68,8 +76,12 @@ class GraphClientTest {
 
     @Test
     void testGetGroupInformationWithNotFoundError(CapturedOutput capturedOutput) {
-        AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
-        when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/newurl1");
+        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
+            @Override
+            public String getGraphMembershipUri() {
+                return "https://graph.microsoft.com/v1.0/me/memberOf";
+            }
+        };
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
         RestTemplate operations = mock(RestTemplate.class);
         when(restTemplateBuilder.build()).thenReturn(operations);
@@ -84,8 +96,12 @@ class GraphClientTest {
     @Test
     void testGetGroupInformationWithInternalServerError(CapturedOutput capturedOutput) throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
-        AadAuthenticationProperties properties = new AadAuthenticationProperties();
-        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
+        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
+            @Override
+            public String getGraphMembershipUri() {
+                return "http://localhost:8080/v1.0/me/memberOf";
+            }
+        };
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
         when(restTemplateBuilder.build()).thenReturn(restTemplate);
         GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
