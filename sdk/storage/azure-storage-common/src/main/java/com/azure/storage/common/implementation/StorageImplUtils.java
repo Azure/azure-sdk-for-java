@@ -18,6 +18,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -30,6 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -85,6 +87,8 @@ public class StorageImplUtils {
     private static final DateTimeFormatter NO_SECONDS_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
             .withLocale(Locale.ROOT);
+
+    private static final AtomicReference<Provider> HMAC_PROVIDER = new AtomicReference<>();
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -198,7 +202,15 @@ public class StorageImplUtils {
         }
 
         try {
-            Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
+            Provider provider = HMAC_PROVIDER.get();
+            Mac hmacSHA256;
+            if (provider != null) {
+                hmacSHA256 = Mac.getInstance("HmacSHA256", provider);
+            } else {
+                hmacSHA256 = Mac.getInstance("HmacSHA256");
+                HMAC_PROVIDER.compareAndSet(null, hmacSHA256.getProvider());
+            }
+
             hmacSHA256.init(new SecretKeySpec(key, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSHA256.doFinal(utf8Bytes));
