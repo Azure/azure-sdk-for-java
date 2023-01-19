@@ -299,7 +299,7 @@ private object CosmosAccountConfig {
     },
     helpMessage = "Cosmos DB Account Endpoint Uri")
 
-    private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
+  private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
       val url = new URL(accountEndpointUri)

@@ -30,7 +30,7 @@ class CosmosConfigSpec extends UnitSpec {
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
     endpointConfig.endpoint shouldEqual sampleProdEndpoint
-    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("xyz")
+    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual "xyz"
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true
@@ -49,7 +49,7 @@ class CosmosConfigSpec extends UnitSpec {
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
     endpointConfig.endpoint shouldEqual sampleProdEndpoint
-    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("xyz")
+    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual "xyz"
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true

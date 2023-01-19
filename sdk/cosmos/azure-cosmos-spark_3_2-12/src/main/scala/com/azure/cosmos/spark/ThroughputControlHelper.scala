@@ -19,7 +19,6 @@ private object ThroughputControlHelper {
         if (throughputControlConfigOpt.isDefined) {
             assert(throughputControlCacheItemOpt.isDefined)
             val throughputControlCacheItem = throughputControlCacheItemOpt.get
-            val throughputControlClient = throughputControlCacheItem.cosmosClient
             val throughputControlConfig = throughputControlConfigOpt.get
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
                 .groupName(throughputControlConfig.groupName)
@@ -32,7 +31,7 @@ private object ThroughputControlHelper {
                 groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
             }
 
-            val globalThroughputControlConfigBuilder = throughputControlClient.createGlobalThroughputControlConfigBuilder(
+            val globalThroughputControlConfigBuilder = throughputControlCacheItem.cosmosClient.createGlobalThroughputControlConfigBuilder(
                 throughputControlConfig.globalControlDatabase,
                 throughputControlConfig.globalControlContainer)
 

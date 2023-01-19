@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.rangeToNormalizedRange
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
-import com.azure.cosmos.spark._
+import com.azure.cosmos.spark.{ChangeFeedOffset, CosmosClientCache, CosmosClientCacheItem, CosmosClientConfiguration, CosmosConfig, CosmosContainerConfig, Loan}
 import com.azure.cosmos.{CosmosAsyncClient, SparkBridgeInternal}
 import org.apache.spark.sql.api.java.UDF2
 

@@ -4,4 +4,3 @@
 package com.azure.cosmos.spark.catalog
 
 class CosmosCatalogException(msg: String) extends RuntimeException(msg)
-

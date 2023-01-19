@@ -166,11 +166,16 @@ case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
   }
 
   override def deleteContainer(databaseName: String, containerName: String): Unit = {
-    cosmosAsyncClient
-      .getDatabase(databaseName)
-      .getContainer(containerName)
-      .delete()
-      .block()
+      try {
+          cosmosAsyncClient
+              .getDatabase(databaseName)
+              .getContainer(containerName)
+              .delete()
+              .block()
+      } catch {
+          case e: CosmosException if isNotFound(e) =>
+              throw new CosmosCatalogNotFoundException(e.toString)
+      }
   }
 
   override def readDatabaseThroughput(databaseName: String): Map[String, String] = {

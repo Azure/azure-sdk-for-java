@@ -1,23 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.cosmos.spark
 
 import java.lang.management.ManagementFactory
 
-private[spark] case class CosmosClientConfiguration
-(
-   endpoint: String,
-   authConfig: CosmosAuthConfig,
-   customApplicationNameSuffix: Option[String],
-   applicationName: String,
-   useGatewayMode: Boolean,
-   useEventualConsistency: Boolean,
-   enableClientTelemetry: Boolean,
-   disableTcpConnectionEndpointRediscovery: Boolean,
-   clientTelemetryEndpoint: Option[String],
-   preferredRegionsList: Option[Array[String]]
-)
+private[spark] case class CosmosClientConfiguration (
+                                                      endpoint: String,
+                                                      authConfig: CosmosAuthConfig,
+                                                      customApplicationNameSuffix: Option[String],
+                                                      applicationName: String,
+                                                      useGatewayMode: Boolean,
+                                                      useEventualConsistency: Boolean,
+                                                      enableClientTelemetry: Boolean,
+                                                      disableTcpConnectionEndpointRediscovery: Boolean,
+                                                      clientTelemetryEndpoint: Option[String],
+                                                      preferredRegionsList: Option[Array[String]])
 
 private[spark] object CosmosClientConfiguration {
   def apply(

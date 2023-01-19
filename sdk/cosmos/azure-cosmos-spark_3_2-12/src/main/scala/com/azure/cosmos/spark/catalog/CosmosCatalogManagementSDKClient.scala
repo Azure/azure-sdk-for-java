@@ -142,10 +142,16 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
   }
 
   override def deleteContainer(databaseName: String, containerName: String): Unit = {
-    cosmosManager
-      .serviceClient()
-      .getSqlResources()
-      .deleteSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName).block()
+      // TODO: Validate whether SDK will throw the above exception
+      try {
+          cosmosManager
+              .serviceClient()
+              .getSqlResources()
+              .deleteSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName).block()
+      } catch {
+          case e: ManagementException if isNotFound(e) =>
+              throw new CosmosCatalogNotFoundException(e.toString)
+      }
   }
 
   override def readDatabaseThroughput(databaseName: String): Map[String, String] = {

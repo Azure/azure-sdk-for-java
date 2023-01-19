@@ -83,7 +83,7 @@ class CosmosClientCacheITest
         "StandardCtorWithTwoPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
-            CosmosMasterKeyAuthConfig(cosmosMasterKey),
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
           "SampleApplicationName",
           useGatewayMode = true,
@@ -127,15 +127,15 @@ class CosmosClientCacheITest
             Some(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
            ))
            .to(clients2 => {
-                clients2(0).get.cosmosClient should be theSameInstanceAs
-                clients(0).get.cosmosClient
+            clients2(0).get.cosmosClient should be theSameInstanceAs
+            clients(0).get.cosmosClient
 
-                 val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
-                 logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
-                 ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
-                 ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
-                 ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-03") shouldEqual false
-                 CosmosClientCache.purge(userConfig)
+            val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
+            logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
+            ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
+            ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
+            ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-03") shouldEqual false
+            CosmosClientCache.purge(userConfig)
            })
         })
     })
