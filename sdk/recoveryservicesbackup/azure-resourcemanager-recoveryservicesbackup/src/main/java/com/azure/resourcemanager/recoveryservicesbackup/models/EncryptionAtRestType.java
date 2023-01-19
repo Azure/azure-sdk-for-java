@@ -20,6 +20,15 @@ public final class EncryptionAtRestType extends ExpandableStringEnum<EncryptionA
     public static final EncryptionAtRestType CUSTOMER_MANAGED = fromString("CustomerManaged");
 
     /**
+     * Creates a new instance of EncryptionAtRestType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionAtRestType() {
+    }
+
+    /**
      * Creates or finds a EncryptionAtRestType from its string representation.
      *
      * @param name a name to look for.

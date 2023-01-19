@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BackupProtectedItems List. */
 public final class BackupProtectedItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupProtectedItems_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/BackupProtectedItems_List.json
      */
     /**
      * Sample code: List protected items with backupManagementType filter as AzureIaasVm.
@@ -25,6 +23,6 @@ public final class BackupProtectedItemsListSamples {
                 "SwaggerTestRg",
                 "backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
