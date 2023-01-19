@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
@@ -20,10 +21,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
@@ -65,6 +63,8 @@ public final class IdentityClientOptions implements Cloneable {
     private HttpLogOptions httpLogOptions;
     private RetryOptions retryOptions;
     private RetryPolicy retryPolicy;
+    private List<HttpPipelinePolicy> perCallPolicies;
+    private List<HttpPipelinePolicy> perRetryPolicies;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -75,6 +75,8 @@ public final class IdentityClientOptions implements Cloneable {
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        perCallPolicies = new ArrayList<>();
+        perRetryPolicies = new ArrayList<>();
         additionallyAllowedTenants = new HashSet<>();
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
@@ -555,6 +557,42 @@ public final class IdentityClientOptions implements Cloneable {
      */
     public RetryPolicy getRetryPolicy() {
         return this.retryPolicy;
+    }
+
+    /**
+     * Add a per call policy.
+     * @param httpPipelinePolicy the http pipeline policy to add.
+     * @return the updated client options
+     */
+    public IdentityClientOptions addPerCallPolicy(HttpPipelinePolicy httpPipelinePolicy) {
+        this.perCallPolicies.add(httpPipelinePolicy);
+        return this;
+    }
+
+    /**
+     * Add a per retry policy.
+     * @param httpPipelinePolicy the retry policy to be added.
+     * @return the updated client options
+     */
+    public IdentityClientOptions addPerRetryPolicy(HttpPipelinePolicy httpPipelinePolicy) {
+        this.perRetryPolicies.add(httpPipelinePolicy);
+        return this;
+    }
+
+    /**
+     * Get the configured per retry policies.
+     * @return the per retry policies.
+     */
+    public List<HttpPipelinePolicy> getPerRetryPolicies() {
+        return this.perRetryPolicies;
+    }
+
+    /**
+     * Get the configured per call policies.
+     * @return the per call policies.
+     */
+    public List<HttpPipelinePolicy> getPerCallPolicies() {
+        return this.perCallPolicies;
     }
 
     IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
