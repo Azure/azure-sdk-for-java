@@ -21,11 +21,14 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
-
 /**
  * Options to configure the IdentityClient.
  */
@@ -641,6 +644,16 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    IdentityClientOptions setPerCallPolicies(List perCallPolicies) {
+        this.perCallPolicies = perCallPolicies;
+        return this;
+    }
+
+    IdentityClientOptions setPerRetryPolicies(List perRetryPolicies) {
+        this.perRetryPolicies = perRetryPolicies;
+        return this;
+    }
+
     /**
      * Loads the details from the specified Configuration Store.
      */
@@ -681,6 +694,8 @@ public final class IdentityClientOptions implements Cloneable {
             .setClientOptions(this.clientOptions)
             .setHttpLogOptions(this.httpLogOptions)
             .setRetryOptions(this.retryOptions)
-            .setRetryPolicy(this.retryPolicy);
+            .setRetryPolicy(this.retryPolicy)
+            .setPerCallPolicies(this.perCallPolicies)
+            .setPerRetryPolicies(this.perRetryPolicies);
     }
 }

@@ -8,7 +8,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
@@ -24,7 +28,7 @@ import java.util.function.Function;
  * @param <T> the type of the credential builder
  */
 public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> implements HttpTrait<T> {
-    private static final ClientLogger LOGGER = new ClientLogger(AadCredentialBuilderBase.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBase.class);
     IdentityClientOptions identityClientOptions;
 
     CredentialBuilderBase() {
@@ -215,6 +219,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -235,6 +240,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * @return An updated instance of this builder with the http pipeline set as specified.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T pipeline(HttpPipeline httpPipeline) {
         identityClientOptions.setHttpPipeline(httpPipeline);
         return (T) this;
