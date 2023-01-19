@@ -15,10 +15,9 @@ import com.azure.resourcemanager.storagepool.fluent.models.OutboundEnvironmentEn
 import com.azure.resourcemanager.storagepool.models.DiskPool;
 import com.azure.resourcemanager.storagepool.models.DiskPools;
 import com.azure.resourcemanager.storagepool.models.OutboundEnvironmentEndpoint;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DiskPoolsImpl implements DiskPools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolsImpl.class);
 
     private final DiskPoolsClient innerClient;
 
@@ -58,15 +57,6 @@ public final class DiskPoolsImpl implements DiskPools {
         this.serviceClient().delete(resourceGroupName, diskPoolName, context);
     }
 
-    public DiskPool getByResourceGroup(String resourceGroupName, String diskPoolName) {
-        DiskPoolInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, diskPoolName);
-        if (inner != null) {
-            return new DiskPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DiskPool> getByResourceGroupWithResponse(
         String resourceGroupName, String diskPoolName, Context context) {
         Response<DiskPoolInner> inner =
@@ -77,6 +67,15 @@ public final class DiskPoolsImpl implements DiskPools {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DiskPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DiskPool getByResourceGroup(String resourceGroupName, String diskPoolName) {
+        DiskPoolInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, diskPoolName);
+        if (inner != null) {
+            return new DiskPoolImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -123,7 +122,7 @@ public final class DiskPoolsImpl implements DiskPools {
     public DiskPool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class DiskPoolsImpl implements DiskPools {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
@@ -142,7 +141,7 @@ public final class DiskPoolsImpl implements DiskPools {
     public Response<DiskPool> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +149,7 @@ public final class DiskPoolsImpl implements DiskPools {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
@@ -161,7 +160,7 @@ public final class DiskPoolsImpl implements DiskPools {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class DiskPoolsImpl implements DiskPools {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
@@ -180,7 +179,7 @@ public final class DiskPoolsImpl implements DiskPools {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,7 +187,7 @@ public final class DiskPoolsImpl implements DiskPools {
         }
         String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
