@@ -112,7 +112,6 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the append blob.
-     * <p>
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
@@ -130,8 +129,7 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * Creates and opens an output stream to write data to the append blob.
      *
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
