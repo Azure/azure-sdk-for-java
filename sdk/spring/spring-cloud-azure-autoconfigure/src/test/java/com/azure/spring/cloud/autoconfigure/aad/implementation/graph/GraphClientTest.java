@@ -51,6 +51,22 @@ class GraphClientTest {
     }
 
     @Test
+    void testGetGroupInformationWithBadHttpStatus(CapturedOutput capturedOutput) {
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
+        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("https://graph.microsoft.com/");
+        RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
+        RestTemplate operations = mock(RestTemplate.class);
+        Memberships memberships = new Memberships(null, new ArrayList<>());
+        ResponseEntity<Memberships> response = new ResponseEntity<>(memberships, HttpStatus.BAD_REQUEST);
+        when(restTemplateBuilder.build()).thenReturn(operations);
+        GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
+        when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenReturn(response);
+        graphClient.getGroupInformation("fake-accesstoken");
+        String allOutput = capturedOutput.getAll();
+        assertTrue(allOutput.contains("Response code [400 BAD_REQUEST] is not 200, the response body is"));
+    }
+
+    @Test
     void testGetGroupInformationWithNotFoundError(CapturedOutput capturedOutput) {
         AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
         when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/newurl1");
