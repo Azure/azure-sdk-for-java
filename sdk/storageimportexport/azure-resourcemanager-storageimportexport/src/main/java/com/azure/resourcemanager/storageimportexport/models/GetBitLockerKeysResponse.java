@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.fluent.models.DriveBitLockerKeyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** GetBitLockerKeys response. */
 @Fluent
 public final class GetBitLockerKeysResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetBitLockerKeysResponse.class);
-
     /*
      * drive status
      */
     @JsonProperty(value = "value")
     private List<DriveBitLockerKeyInner> value;
+
+    /** Creates an instance of GetBitLockerKeysResponse class. */
+    public GetBitLockerKeysResponse() {
+    }
 
     /**
      * Get the value property: drive status.
