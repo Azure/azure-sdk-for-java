@@ -1,14 +1,25 @@
 # Release History
 
-## 4.14.0-beta.1 (Unreleased)
+## 4.14.0 (2023-01-19)
 
 ### Features Added
 
-### Breaking Changes
+- Added new System Events:
 
-### Bugs Fixed
-
-### Other Changes
+    - `Microsoft.ApiManagement.GatewayAPIAdded`
+    - `Microsoft.ApiManagement.GatewayAPIRemoved`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityCreated`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated`
+    - `Microsoft.ApiManagement.GatewayCreated`
+    - `Microsoft.ApiManagement.GatewayDeleted`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationCreated`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated`
+    - `Microsoft.ApiManagement.GatewayUpdated`
+    - `Microsoft.DataBox.CopyCompleted`
+    - `Microsoft.DataBox.CopyStarted`
+    - `Microsoft.DataBox.OrderCompleted`
 
 ## 4.13.1 (2023-01-13)
 
@@ -140,6 +151,8 @@
 #### Dependency Updates
 - Updated `azure-core` to `1.25.0`.
 - Updated `azure-core-http-netty` to `1.11.7`.
+
+## 4.14.0 (2022-01-19)
 
 ## 4.8.0 (2022-01-14)
 
