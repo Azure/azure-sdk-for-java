@@ -23,6 +23,9 @@ public final class OperatingHours {
     @JsonProperty(value = "timeRanges", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperatingHoursTimeRange> timeRanges;
 
+    /** Creates an instance of OperatingHours class. */
+    public OperatingHours() {}
+
     /**
      * Get the mode property: Value used in the request: none or "nextSevenDays".
      *

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.WidgetTypesClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.WidgetTypeResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.WidgetTypeResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.WidgetTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WidgetTypesImpl implements WidgetTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WidgetTypesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WidgetTypesImpl.class);
 
     private final WidgetTypesClient innerClient;
 
@@ -41,15 +40,6 @@ public final class WidgetTypesImpl implements WidgetTypes {
         return Utils.mapPage(inner, inner1 -> new WidgetTypeResourceFormatImpl(inner1, this.manager()));
     }
 
-    public WidgetTypeResourceFormat get(String resourceGroupName, String hubName, String widgetTypeName) {
-        WidgetTypeResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, widgetTypeName);
-        if (inner != null) {
-            return new WidgetTypeResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WidgetTypeResourceFormat> getWithResponse(
         String resourceGroupName, String hubName, String widgetTypeName, Context context) {
         Response<WidgetTypeResourceFormatInner> inner =
@@ -60,6 +50,15 @@ public final class WidgetTypesImpl implements WidgetTypes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WidgetTypeResourceFormatImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WidgetTypeResourceFormat get(String resourceGroupName, String hubName, String widgetTypeName) {
+        WidgetTypeResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, widgetTypeName);
+        if (inner != null) {
+            return new WidgetTypeResourceFormatImpl(inner, this.manager());
         } else {
             return null;
         }

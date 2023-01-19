@@ -21,39 +21,40 @@ public final class Platform {
     private String architecture;
 
     /*
-     * The os field specifies the operating system, for example linux or
-     * windows.
+     * The os field specifies the operating system, for example linux or windows.
      */
     @JsonProperty(value = "os")
     private String os;
 
     /*
-     * The optional os.version field specifies the operating system version,
-     * for example 10.0.10586.
+     * The optional os.version field specifies the operating system version, for example 10.0.10586.
      */
     @JsonProperty(value = "os.version")
     private String osVersion;
 
     /*
-     * The optional os.features field specifies an array of strings, each
-     * listing a required OS feature (for example on Windows win32k
+     * The optional os.features field specifies an array of strings, each listing a required OS feature (for example on
+     * Windows win32k
      */
     @JsonProperty(value = "os.features")
     private List<String> osFeatures;
 
     /*
-     * The optional variant field specifies a variant of the CPU, for example
-     * armv6l to specify a particular CPU variant of the ARM CPU.
+     * The optional variant field specifies a variant of the CPU, for example armv6l to specify a particular CPU
+     * variant of the ARM CPU.
      */
     @JsonProperty(value = "variant")
     private String variant;
 
     /*
-     * The optional features field specifies an array of strings, each listing
-     * a required CPU feature (for example sse4 or aes
+     * The optional features field specifies an array of strings, each listing a required CPU feature (for example sse4
+     * or aes
      */
     @JsonProperty(value = "features")
     private List<String> features;
+
+    /** Creates an instance of Platform class. */
+    public Platform() {}
 
     /**
      * Get the architecture property: Specifies the CPU architecture, for example amd64 or ppc64le.

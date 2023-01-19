@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceEnvironmentInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceEnvironmentInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceEnvironmentInfo model =
             BinaryData
                 .fromString("{\"name\":\"incqlhriswsl\",\"version\":\"iiovgqcgxu\"}")
@@ -20,8 +19,8 @@ public final class ComputeInstanceEnvironmentInfoTests {
         Assertions.assertEquals("iiovgqcgxu", model.version());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceEnvironmentInfo model =
             new ComputeInstanceEnvironmentInfo().withName("incqlhriswsl").withVersion("iiovgqcgxu");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceEnvironmentInfo.class);

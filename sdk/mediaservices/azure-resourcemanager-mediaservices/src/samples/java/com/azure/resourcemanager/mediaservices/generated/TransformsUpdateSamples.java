@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.BuiltInStandardEncoderPreset;
 import com.azure.resourcemanager.mediaservices.models.EncoderNamedPreset;
 import com.azure.resourcemanager.mediaservices.models.Priority;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for Transforms Update. */
 public final class TransformsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-update.json
      */
     /**
      * Sample code: Update a Transform.
@@ -26,7 +25,8 @@ public final class TransformsUpdateSamples {
         Transform resource =
             manager
                 .transforms()
-                .getWithResponse("contosoresources", "contosomedia", "transformToUpdate", Context.NONE)
+                .getWithResponse(
+                    "contosoresources", "contosomedia", "transformToUpdate", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

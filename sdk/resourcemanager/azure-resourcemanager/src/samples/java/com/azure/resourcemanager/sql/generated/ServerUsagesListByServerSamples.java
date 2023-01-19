@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerUsages ListByServer. */
 public final class ServerUsagesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ServerUsageMetricsList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerUsageList.json
      */
     /**
      * Sample code: List servers usages.

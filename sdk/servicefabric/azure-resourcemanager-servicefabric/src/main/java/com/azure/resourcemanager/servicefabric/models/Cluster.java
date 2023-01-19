@@ -344,6 +344,13 @@ public interface Cluster {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner object.
      *
      * @return the inner object.
@@ -1120,18 +1127,10 @@ public interface Cluster {
     Cluster refresh(Context context);
 
     /**
-     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
-     * version. If a target is given, it will provide the required path to get from the current cluster version to the
-     * target version.
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
-     */
-    UpgradableVersionPathResult listUpgradableVersions();
-
-    /**
-     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * <p>If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
      *
@@ -1140,8 +1139,22 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade along with {@link Response}.
      */
     Response<UpgradableVersionPathResult> listUpgradableVersionsWithResponse(
         UpgradableVersionsDescription versionsDescription, Context context);
+
+    /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     *
+     * <p>If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    UpgradableVersionPathResult listUpgradableVersions();
 }

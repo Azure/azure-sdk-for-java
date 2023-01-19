@@ -83,6 +83,10 @@ public final class ControllerImpl implements Controller, Controller.Definition, 
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ControllerInner innerModel() {
         return this.innerObject;
     }
@@ -175,18 +179,18 @@ public final class ControllerImpl implements Controller, Controller.Definition, 
         return this;
     }
 
-    public ControllerConnectionDetailsList listConnectionDetails(
-        ListConnectionDetailsParameters listConnectionDetailsParameters) {
-        return serviceManager
-            .controllers()
-            .listConnectionDetails(resourceGroupName, name, listConnectionDetailsParameters);
-    }
-
     public Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(
         ListConnectionDetailsParameters listConnectionDetailsParameters, Context context) {
         return serviceManager
             .controllers()
             .listConnectionDetailsWithResponse(resourceGroupName, name, listConnectionDetailsParameters, context);
+    }
+
+    public ControllerConnectionDetailsList listConnectionDetails(
+        ListConnectionDetailsParameters listConnectionDetailsParameters) {
+        return serviceManager
+            .controllers()
+            .listConnectionDetails(resourceGroupName, name, listConnectionDetailsParameters);
     }
 
     public ControllerImpl withRegion(Region location) {

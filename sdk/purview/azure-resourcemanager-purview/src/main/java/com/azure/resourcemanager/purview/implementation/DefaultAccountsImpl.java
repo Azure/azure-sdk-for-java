@@ -13,11 +13,10 @@ import com.azure.resourcemanager.purview.fluent.models.DefaultAccountPayloadInne
 import com.azure.resourcemanager.purview.models.DefaultAccountPayload;
 import com.azure.resourcemanager.purview.models.DefaultAccounts;
 import com.azure.resourcemanager.purview.models.ScopeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class DefaultAccountsImpl implements DefaultAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DefaultAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultAccountsImpl.class);
 
     private final DefaultAccountsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class DefaultAccountsImpl implements DefaultAccounts {
         DefaultAccountsClient innerClient, com.azure.resourcemanager.purview.PurviewManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public DefaultAccountPayload get(UUID scopeTenantId, ScopeType scopeType) {
-        DefaultAccountPayloadInner inner = this.serviceClient().get(scopeTenantId, scopeType);
-        if (inner != null) {
-            return new DefaultAccountPayloadImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DefaultAccountPayload> getWithResponse(
@@ -53,8 +43,8 @@ public final class DefaultAccountsImpl implements DefaultAccounts {
         }
     }
 
-    public DefaultAccountPayload set(DefaultAccountPayloadInner defaultAccountPayload) {
-        DefaultAccountPayloadInner inner = this.serviceClient().set(defaultAccountPayload);
+    public DefaultAccountPayload get(UUID scopeTenantId, ScopeType scopeType) {
+        DefaultAccountPayloadInner inner = this.serviceClient().get(scopeTenantId, scopeType);
         if (inner != null) {
             return new DefaultAccountPayloadImpl(inner, this.manager());
         } else {
@@ -77,12 +67,21 @@ public final class DefaultAccountsImpl implements DefaultAccounts {
         }
     }
 
-    public void remove(UUID scopeTenantId, ScopeType scopeType) {
-        this.serviceClient().remove(scopeTenantId, scopeType);
+    public DefaultAccountPayload set(DefaultAccountPayloadInner defaultAccountPayload) {
+        DefaultAccountPayloadInner inner = this.serviceClient().set(defaultAccountPayload);
+        if (inner != null) {
+            return new DefaultAccountPayloadImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> removeWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
         return this.serviceClient().removeWithResponse(scopeTenantId, scopeType, scope, context);
+    }
+
+    public void remove(UUID scopeTenantId, ScopeType scopeType) {
+        this.serviceClient().remove(scopeTenantId, scopeType);
     }
 
     private DefaultAccountsClient serviceClient() {

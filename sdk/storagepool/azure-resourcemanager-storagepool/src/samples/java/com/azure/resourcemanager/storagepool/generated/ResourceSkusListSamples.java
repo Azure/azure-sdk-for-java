@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceSkus List. */
 public final class ResourceSkusListSamples {
     /*
@@ -17,6 +15,6 @@ public final class ResourceSkusListSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolSkus(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.resourceSkus().list("eastus", Context.NONE);
+        manager.resourceSkus().list("eastus", com.azure.core.util.Context.NONE);
     }
 }

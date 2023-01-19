@@ -97,7 +97,7 @@ public class EventGridPublisherImplTests extends TestBase {
                 .setEventTime(OffsetDateTime.now())
         );
 
-        StepVerifier.create(egClient.publishEventsWithResponseAsync(getEndpoint(EVENTGRID_ENDPOINT), events))
+        StepVerifier.create(egClient.publishEventGridEventsWithResponseAsync(getEndpoint(EVENTGRID_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }
@@ -124,7 +124,7 @@ public class EventGridPublisherImplTests extends TestBase {
                 .setTime(OffsetDateTime.now())
         );
 
-        StepVerifier.create(egClient.publishCloudEventEventsWithResponseAsync(getEndpoint(CLOUD_ENDPOINT), events))
+        StepVerifier.create(egClient.publishCloudEventEventsWithResponseAsync(getEndpoint(CLOUD_ENDPOINT), events, null))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
             .verifyComplete();
     }

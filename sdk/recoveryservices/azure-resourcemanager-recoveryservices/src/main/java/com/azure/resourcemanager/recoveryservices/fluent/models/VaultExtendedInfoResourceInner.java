@@ -23,6 +23,10 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of VaultExtendedInfoResourceInner class. */
+    public VaultExtendedInfoResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Vault extended information.
      *

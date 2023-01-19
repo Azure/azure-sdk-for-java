@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines reference to a proxy resource. */
 @Fluent
 public class ProxyResourceReference extends AzureResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProxyResourceReference.class);
-
     /*
      * Gets the name of the proxy resource on the target side.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of ProxyResourceReference class. */
+    public ProxyResourceReference() {
+    }
 
     /**
      * Get the name property: Gets the name of the proxy resource on the target side.

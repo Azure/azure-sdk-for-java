@@ -43,21 +43,6 @@ public final class DataFlowDebugSessionClient {
      * Creates a data flow debug session.
      *
      * @param request Data flow debug session definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request) {
-        return this.serviceClient.createDataFlowDebugSession(request);
-    }
-
-    /**
-     * Creates a data flow debug session.
-     *
-     * @param request Data flow debug session definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -69,6 +54,21 @@ public final class DataFlowDebugSessionClient {
     public DataFlowDebugSessionsCreateDataFlowDebugSessionResponse createDataFlowDebugSessionWithResponse(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return this.serviceClient.createDataFlowDebugSessionWithResponse(request, context);
+    }
+
+    /**
+     * Creates a data flow debug session.
+     *
+     * @param request Data flow debug session definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request) {
+        return this.serviceClient.createDataFlowDebugSession(request);
     }
 
     /**
@@ -103,21 +103,6 @@ public final class DataFlowDebugSessionClient {
      * Add a data flow into debug session.
      *
      * @param request Data flow debug session definition with debug content.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddDataFlowToDebugSessionResponse addDataFlow(DataFlowDebugPackage request) {
-        return this.serviceClient.addDataFlow(request);
-    }
-
-    /**
-     * Add a data flow into debug session.
-     *
-     * @param request Data flow debug session definition with debug content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -132,17 +117,18 @@ public final class DataFlowDebugSessionClient {
     }
 
     /**
-     * Deletes a data flow debug session.
+     * Add a data flow into debug session.
      *
-     * @param request Data flow debug session definition for deletion.
+     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for starting data flow debug session.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataFlowDebugSession(DeleteDataFlowDebugSessionRequest request) {
-        this.serviceClient.deleteDataFlowDebugSession(request);
+    public AddDataFlowToDebugSessionResponse addDataFlow(DataFlowDebugPackage request) {
+        return this.serviceClient.addDataFlow(request);
     }
 
     /**
@@ -163,18 +149,17 @@ public final class DataFlowDebugSessionClient {
     }
 
     /**
-     * Execute a data flow debug command.
+     * Deletes a data flow debug session.
      *
-     * @param request Data flow debug command definition.
+     * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request) {
-        return this.serviceClient.executeCommand(request);
+    public void deleteDataFlowDebugSession(DeleteDataFlowDebugSessionRequest request) {
+        this.serviceClient.deleteDataFlowDebugSession(request);
     }
 
     /**
@@ -192,5 +177,20 @@ public final class DataFlowDebugSessionClient {
     public DataFlowDebugSessionsExecuteCommandResponse executeCommandWithResponse(
             DataFlowDebugCommandRequest request, Context context) {
         return this.serviceClient.executeCommandWithResponse(request, context);
+    }
+
+    /**
+     * Execute a data flow debug command.
+     *
+     * @param request Data flow debug command definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request) {
+        return this.serviceClient.executeCommand(request);
     }
 }

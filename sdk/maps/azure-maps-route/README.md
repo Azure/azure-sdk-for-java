@@ -80,14 +80,14 @@ RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
 
 // origins
 GeoPointCollection origins = new GeoPointCollection(Arrays.asList(
-    new GeoPoint(52.36006, 4.85106),
-    new GeoPoint(52.36187, 4.85056)
+    new GeoPoint(4.85106, 52.36006),
+    new GeoPoint(4.85056, 52.36187)
 ));
 
 // destinations
 GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(
-    new GeoPoint(52.36241, 4.85003),
-    new GeoPoint(52.50931, 13.42937)
+    new GeoPoint(4.85003, 52.36241),
+    new GeoPoint(13.42937, 52.50931)
 ));
 
 matrixQuery.setDestinations(destinations);
@@ -151,7 +151,7 @@ client.getRouteDirections(routeOptions,
 Get Route Range
 ```java com.azure.maps.search.sync.route_range
 System.out.println("Get route range");
-RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(5.86605, 50.97452), Duration.ofSeconds(6000));
+RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), Duration.ofSeconds(6000));
 client.getRouteRange(rangeOptions);
 ```
 

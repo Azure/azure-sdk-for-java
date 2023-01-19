@@ -44,7 +44,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         super(clientBuilder.contentResponseOnWriteEnabled(true));
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple", "emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -52,13 +52,13 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"simple", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void plainVanillaId() {
         TestScenario scenario = new TestScenario(
             "PlainVanillaId",
@@ -85,7 +85,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void containerIdWithUnicodeCharacter() {
         TestScenario scenario = new TestScenario(
             "ContainerIdWithUnicode鱀",
@@ -112,7 +112,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithWhitespaces() {
         TestScenario scenario = new TestScenario(
             "IdWithWhitespaces",
@@ -139,7 +139,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idStartingWithWhitespace() {
         TestScenario scenario = new TestScenario(
             "IdStartingWithWhitespace",
@@ -166,7 +166,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idStartingWithWhitespaces() {
         TestScenario scenario = new TestScenario(
             "IdStartingWithWhitespaces",
@@ -193,7 +193,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idEndingWithWhitespace() {
         TestScenario scenario = new TestScenario(
             "IdEndingWithWhitespace",
@@ -220,7 +220,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idEndingWithWhitespaces() {
         TestScenario scenario = new TestScenario(
             "IdEndingWithWhitespaces",
@@ -247,7 +247,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithUnicodeCharacters() {
         TestScenario scenario = new TestScenario(
             "IdWithUnicodeCharacters",
@@ -274,7 +274,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithAllowedSpecialCharacters() {
         TestScenario scenario = new TestScenario(
             "IdWithAllowedSpecialCharacters",
@@ -301,7 +301,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithBase64EncodedIdCharacters() {
         String base64EncodedId = "BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=";
         String safeBase64EncodedId = base64EncodedId.replace("/", "-");
@@ -331,7 +331,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idEndingWithPercentEncodedWhitespace() {
         TestScenario scenario = new TestScenario(
             "IdEndingWithPercentEncodedWhitespace",
@@ -358,7 +358,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithPercentEncodedSpecialChar() {
         TestScenario scenario = new TestScenario(
             "IdWithPercentEncodedSpecialChar",
@@ -385,7 +385,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithDisallowedCharQuestionMark() {
         TestScenario scenario = new TestScenario(
             "IdWithDisallowedCharQuestionMark",
@@ -413,7 +413,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     }
 
     @Ignore("Throws IllegalArgumentException instead of CosmosException")
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithDisallowedCharForwardSlash() {
         TestScenario scenario = new TestScenario(
             "IdWithDisallowedCharForwardSlash",
@@ -440,7 +440,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithDisallowedCharBackSlash() {
         TestScenario scenario = new TestScenario(
             "IdWithDisallowedCharBackSlash",
@@ -467,7 +467,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithDisallowedCharPoundSign() {
         TestScenario scenario = new TestScenario(
             "IdWithDisallowedCharPoundSign",
@@ -494,7 +494,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithCarriageReturn() {
         TestScenario scenario = new TestScenario(
             "IdWithCarriageReturn",
@@ -521,7 +521,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithTab() {
         TestScenario scenario = new TestScenario(
             "IdWithTab",
@@ -548,7 +548,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void idWithLineFeed() {
         TestScenario scenario = new TestScenario(
             "IdWithLineFeed",

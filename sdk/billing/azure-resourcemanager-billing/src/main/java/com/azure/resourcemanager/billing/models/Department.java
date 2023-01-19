@@ -6,22 +6,22 @@ package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.DepartmentProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A department. */
 @Fluent
 public final class Department extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Department.class);
-
     /*
      * A department.
      */
     @JsonProperty(value = "properties")
     private DepartmentProperties innerProperties;
+
+    /** Creates an instance of Department class. */
+    public Department() {
+    }
 
     /**
      * Get the innerProperties property: A department.

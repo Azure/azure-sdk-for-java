@@ -13,10 +13,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.VirtualMachineTemplate
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualMachineTemplateInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineTemplate;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineTemplates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineTemplatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineTemplatesImpl.class);
 
     private final VirtualMachineTemplatesClient innerClient;
 
@@ -42,15 +41,6 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
         return Utils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
     }
 
-    public VirtualMachineTemplate get(String regionId, String pcName, String virtualMachineTemplateName) {
-        VirtualMachineTemplateInner inner = this.serviceClient().get(regionId, pcName, virtualMachineTemplateName);
-        if (inner != null) {
-            return new VirtualMachineTemplateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualMachineTemplate> getWithResponse(
         String regionId, String pcName, String virtualMachineTemplateName, Context context) {
         Response<VirtualMachineTemplateInner> inner =
@@ -61,6 +51,15 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VirtualMachineTemplateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualMachineTemplate get(String regionId, String pcName, String virtualMachineTemplateName) {
+        VirtualMachineTemplateInner inner = this.serviceClient().get(regionId, pcName, virtualMachineTemplateName);
+        if (inner != null) {
+            return new VirtualMachineTemplateImpl(inner, this.manager());
         } else {
             return null;
         }

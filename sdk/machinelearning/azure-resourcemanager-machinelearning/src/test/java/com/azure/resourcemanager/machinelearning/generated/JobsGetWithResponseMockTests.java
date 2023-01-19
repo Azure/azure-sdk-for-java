@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.JobBase;
 import java.nio.ByteBuffer;
@@ -61,7 +60,10 @@ public final class JobsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JobBase response =
-            manager.jobs().getWithResponse("vktjhffecqkoq", "ouergaghp", "zxkpyehhfdyld", Context.NONE).getValue();
+            manager
+                .jobs()
+                .getWithResponse("vktjhffecqkoq", "ouergaghp", "zxkpyehhfdyld", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("my", response.properties().description());
         Assertions.assertEquals("px", response.properties().properties().get("jjtpdyzoutxfptof"));

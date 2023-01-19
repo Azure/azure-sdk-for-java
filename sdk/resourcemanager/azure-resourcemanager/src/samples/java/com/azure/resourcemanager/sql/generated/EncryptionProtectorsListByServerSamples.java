@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EncryptionProtectors ListByServer. */
 public final class EncryptionProtectorsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/EncryptionProtectorList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EncryptionProtectorList.json
      */
     /**
      * Sample code: List encryption protectors by server.

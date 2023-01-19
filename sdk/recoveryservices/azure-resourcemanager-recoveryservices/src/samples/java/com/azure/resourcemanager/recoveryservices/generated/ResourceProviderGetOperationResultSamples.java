@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceProvider GetOperationResult. */
 public final class ResourceProviderGetOperationResultSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/GetOperationResult.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/GetOperationResult.json
      */
     /**
      * Sample code: Get Operation Result.

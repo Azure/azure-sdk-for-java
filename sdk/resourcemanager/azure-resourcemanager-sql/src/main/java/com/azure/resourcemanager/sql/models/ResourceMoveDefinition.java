@@ -17,6 +17,10 @@ public final class ResourceMoveDefinition {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of ResourceMoveDefinition class. */
+    public ResourceMoveDefinition() {
+    }
+
     /**
      * Get the id property: The target ID for the resource.
      *

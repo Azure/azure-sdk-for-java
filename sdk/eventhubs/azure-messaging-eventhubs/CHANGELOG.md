@@ -1,14 +1,22 @@
 # Release History
 
-## 5.16.0-beta.1 (Unreleased)
+## 5.15.1 (2023-01-18)
 
 ### Features Added
 
-### Breaking Changes
+- Added support for setting different value types in `EventData.getProperties()`. [32518](https://github.com/Azure/azure-sdk-for-java/issues/32518)
 
 ### Bugs Fixed
 
+- Fixed ability to pass in namespace connection string in EventHubClientBuilder. ([#29536](https://github.com/Azure/azure-sdk-for-java/issues/29536))
+- Added retry for createBatch API as this API also makes network calls similar to its companion send API.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.35.0`.
+- Upgraded `azure-core-amqp` to `2.8.1`.
 
 ## 5.15.0 (2022-11-16)
 

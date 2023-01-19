@@ -15,11 +15,11 @@ import java.util.function.Supplier;
 
 /**
  * The default implementation of {@link ContinuablePagedFlux}.
- *
+ * <p>
  * This type is a Flux that provides the ability to operate on pages of type {@link ContinuablePage} and individual
  * items in such pages. This type supports user-provided continuation tokens, allowing for restarting from a
  * previously-retrieved continuation token.
- *
+ * <p>
  * The type is backed by the Page Retriever provider provided in it's constructor. The provider is expected to return
  * {@link PageRetriever} when called. The provider is invoked for each Subscription to this Flux. Given provider is
  * called per Subscription, the provider implementation can create one or more objects to store any state and Page

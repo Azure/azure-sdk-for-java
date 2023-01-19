@@ -4,7 +4,6 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.time.OffsetDateTime;
 
 /** A representation of the Azure SQL Server Key operations. */
 @Fluent
@@ -21,8 +20,6 @@ public interface SqlServerKeyOperations extends SqlChildrenOperations<SqlServerK
     interface SqlServerKeyOperationsDefinition
         extends SqlServerKeyOperations.DefinitionStages.WithSqlServer,
             SqlServerKeyOperations.DefinitionStages.WithServerKeyType,
-            SqlServerKeyOperations.DefinitionStages.WithThumbprint,
-            SqlServerKeyOperations.DefinitionStages.WithCreationDate,
             SqlServerKeyOperations.DefinitionStages.WithCreate {
     }
 
@@ -68,33 +65,9 @@ public interface SqlServerKeyOperations extends SqlChildrenOperations<SqlServerK
             SqlServerKeyOperations.DefinitionStages.WithCreate withAzureKeyVaultKey(String uri);
         }
 
-        /** The SQL Server Key definition to set the thumbprint. */
-        interface WithThumbprint {
-            /**
-             * Sets the thumbprint of the server key.
-             *
-             * @param thumbprint the thumbprint of the server key
-             * @return The next stage of the definition.
-             */
-            SqlServerKeyOperations.DefinitionStages.WithCreate withThumbprint(String thumbprint);
-        }
-
-        /** The SQL Server Key definition to set the server key creation date. */
-        interface WithCreationDate {
-            /**
-             * Sets the server key creation date.
-             *
-             * @param creationDate the server key creation date
-             * @return The next stage of the definition.
-             */
-            SqlServerKeyOperations.DefinitionStages.WithCreate withCreationDate(OffsetDateTime creationDate);
-        }
-
         /** The final stage of the SQL Server Key definition. */
         interface WithCreate
-            extends SqlServerKeyOperations.DefinitionStages.WithThumbprint,
-                SqlServerKeyOperations.DefinitionStages.WithCreationDate,
-                Creatable<SqlServerKey> {
+            extends Creatable<SqlServerKey> {
         }
     }
 

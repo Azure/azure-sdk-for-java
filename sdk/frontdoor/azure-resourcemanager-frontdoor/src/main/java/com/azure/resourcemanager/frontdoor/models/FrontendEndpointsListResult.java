@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class FrontendEndpointsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontendEndpointsListResult.class);
-
     /*
      * List of Frontend endpoints within a Front Door.
      */
@@ -30,6 +26,10 @@ public final class FrontendEndpointsListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of FrontendEndpointsListResult class. */
+    public FrontendEndpointsListResult() {
+    }
 
     /**
      * Get the value property: List of Frontend endpoints within a Front Door.

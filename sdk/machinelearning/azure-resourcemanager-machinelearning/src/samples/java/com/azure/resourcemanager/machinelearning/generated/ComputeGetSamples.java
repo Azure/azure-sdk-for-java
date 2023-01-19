@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Compute Get. */
 public final class ComputeGetSamples {
     /*
@@ -17,7 +15,9 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAAKSCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -29,7 +29,9 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAKubernetesCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,7 +43,9 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAnComputeInstance(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -53,6 +57,8 @@ public final class ComputeGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAAMLCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager
+            .computes()
+            .getWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }

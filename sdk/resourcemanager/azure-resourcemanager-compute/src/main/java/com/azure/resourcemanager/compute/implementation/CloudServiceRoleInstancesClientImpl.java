@@ -247,7 +247,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -304,7 +304,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -378,7 +378,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -396,7 +396,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginDeleteAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -508,7 +508,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -572,7 +572,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -686,7 +686,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -744,7 +744,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -849,7 +849,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -913,7 +913,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1071,7 +1071,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1128,7 +1128,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1202,7 +1202,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -1220,7 +1220,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginRestartAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1331,7 +1331,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1389,7 +1389,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1466,7 +1466,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -1485,7 +1485,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginReimageAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1601,7 +1601,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1660,7 +1660,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1740,7 +1740,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRebuild(
         String roleInstanceName, String resourceGroupName, String cloudServiceName) {
-        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
+        return this.beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName).getSyncPoller();
     }
 
     /**
@@ -1760,7 +1760,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRebuild(
         String roleInstanceName, String resourceGroupName, String cloudServiceName, Context context) {
-        return beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
+        return this.beginRebuildAsync(roleInstanceName, resourceGroupName, cloudServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1879,7 +1879,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/x-rdp";
         return FluxUtil
             .withContext(
@@ -1937,7 +1937,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-04";
+        final String apiVersion = "2022-09-04";
         final String accept = "application/x-rdp";
         context = this.client.mergeContext(context);
         return service

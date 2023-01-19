@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a database. */
 @Fluent
 public final class DatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseProperties.class);
-
     /*
      * The charset of the database.
      */
@@ -25,6 +21,10 @@ public final class DatabaseProperties {
      */
     @JsonProperty(value = "collation")
     private String collation;
+
+    /** Creates an instance of DatabaseProperties class. */
+    public DatabaseProperties() {
+    }
 
     /**
      * Get the charset property: The charset of the database.

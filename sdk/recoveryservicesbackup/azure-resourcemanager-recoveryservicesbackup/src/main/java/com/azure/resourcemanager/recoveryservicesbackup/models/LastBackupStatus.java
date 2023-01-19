@@ -23,6 +23,15 @@ public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatu
     public static final LastBackupStatus IRPENDING = fromString("IRPending");
 
     /**
+     * Creates a new instance of LastBackupStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LastBackupStatus() {
+    }
+
+    /**
      * Creates or finds a LastBackupStatus from its string representation.
      *
      * @param name a name to look for.

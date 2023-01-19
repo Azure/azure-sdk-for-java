@@ -3,75 +3,36 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.implementation.util.Providers;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.logging.ClientLogger;
 
-import java.util.Iterator;
 import java.util.Objects;
-import java.util.ServiceLoader;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 final class DefaultMeterProvider implements MeterProvider {
     private static final MeterProvider INSTANCE = new DefaultMeterProvider();
-    private static final RuntimeException ERROR;
-    private static final ClientLogger LOGGER = new ClientLogger(DefaultMeterProvider.class);
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
-    private static MeterProvider meterProvider;
+
+    private static final String NO_DEFAULT_PROVIDER = "A request was made to load the default MeterProvider provider "
+        + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
+        + "dependency on azure-core-metrics-opentelemetry or enabling instrumentation package.";
+
+    private static final Providers<MeterProvider, Meter> METER_PROVIDER = new Providers<>(MeterProvider.class, null, NO_DEFAULT_PROVIDER);
 
     private DefaultMeterProvider() {
     }
 
-    static {
-        // Use as classloader to load provider-configuration files and provider classes the classloader
-        // that loaded this class. In most cases this will be the System classloader.
-        // But this choice here provides additional flexibility in managed environments that control
-        // classloading differently (OSGi, Spring and others) and don't/ depend on the
-        // System classloader to load Meter classes.
-        ServiceLoader<MeterProvider> serviceLoader = ServiceLoader.load(MeterProvider.class, MeterProvider.class.getClassLoader());
-        Iterator<MeterProvider> iterator = serviceLoader.iterator();
-        if (iterator.hasNext()) {
-            meterProvider = iterator.next();
-
-            if (iterator.hasNext()) {
-                String allProviders = StreamSupport.stream(serviceLoader.spliterator(), false)
-                    .map(p -> p.getClass().getName())
-                    .collect(Collectors.joining(", "));
-
-                // TODO (lmolkova) add configuration to allow picking specific provider
-                String message = String.format("Expected only one MeterProvider on the classpath, but found multiple providers: %s. "
-                         + "Please pick one MeterProvider implementation and remove or exclude packages that bring other implementations", allProviders);
-
-                ERROR = new IllegalStateException(message);
-                LOGGER.error(message);
-            } else {
-                ERROR = null;
-                LOGGER.info("Found MeterProvider implementation on the classpath: {}", meterProvider.getClass().getName());
-            }
-        } else {
-            ERROR = null;
-        }
-    }
-
     static MeterProvider getInstance() {
-        if (ERROR != null) {
-            throw LOGGER.logThrowableAsError(ERROR);
-        }
-
         return INSTANCE;
     }
 
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        if (meterProvider != null && (options == null || options.isEnabled())) {
-            return meterProvider.createMeter(libraryName, libraryVersion, options);
-        }
-
-        return NoopMeter.INSTANCE;
+        return METER_PROVIDER.create(provider -> provider.createMeter(libraryName, libraryVersion, options),
+            NoopMeter.INSTANCE, null);
     }
 
     static final LongGauge NOOP_GAUGE = new LongGauge() {

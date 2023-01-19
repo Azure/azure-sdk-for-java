@@ -24,6 +24,15 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 
     /**
+     * Creates a new instance of LinuxVMGuestPatchAutomaticByPlatformRebootSetting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinuxVMGuestPatchAutomaticByPlatformRebootSetting() {
+    }
+
+    /**
      * Creates or finds a LinuxVMGuestPatchAutomaticByPlatformRebootSetting from its string representation.
      *
      * @param name a name to look for.

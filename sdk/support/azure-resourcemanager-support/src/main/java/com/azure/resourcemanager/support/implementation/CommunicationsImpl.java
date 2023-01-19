@@ -16,10 +16,9 @@ import com.azure.resourcemanager.support.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.support.models.CheckNameAvailabilityOutput;
 import com.azure.resourcemanager.support.models.CommunicationDetails;
 import com.azure.resourcemanager.support.models.Communications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CommunicationsImpl implements Communications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationsImpl.class);
 
     private final CommunicationsClient innerClient;
 
@@ -29,17 +28,6 @@ public final class CommunicationsImpl implements Communications {
         CommunicationsClient innerClient, com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameAvailabilityOutput checkNameAvailability(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
-        CheckNameAvailabilityOutputInner inner =
-            this.serviceClient().checkNameAvailability(supportTicketName, checkNameAvailabilityInput);
-        if (inner != null) {
-            return new CheckNameAvailabilityOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
@@ -59,6 +47,17 @@ public final class CommunicationsImpl implements Communications {
         }
     }
 
+    public CheckNameAvailabilityOutput checkNameAvailability(
+        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
+        CheckNameAvailabilityOutputInner inner =
+            this.serviceClient().checkNameAvailability(supportTicketName, checkNameAvailabilityInput);
+        if (inner != null) {
+            return new CheckNameAvailabilityOutputImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<CommunicationDetails> list(String supportTicketName) {
         PagedIterable<CommunicationDetailsInner> inner = this.serviceClient().list(supportTicketName);
         return Utils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
@@ -69,15 +68,6 @@ public final class CommunicationsImpl implements Communications {
         PagedIterable<CommunicationDetailsInner> inner =
             this.serviceClient().list(supportTicketName, top, filter, context);
         return Utils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
-    }
-
-    public CommunicationDetails get(String supportTicketName, String communicationName) {
-        CommunicationDetailsInner inner = this.serviceClient().get(supportTicketName, communicationName);
-        if (inner != null) {
-            return new CommunicationDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CommunicationDetails> getWithResponse(
@@ -95,10 +85,19 @@ public final class CommunicationsImpl implements Communications {
         }
     }
 
+    public CommunicationDetails get(String supportTicketName, String communicationName) {
+        CommunicationDetailsInner inner = this.serviceClient().get(supportTicketName, communicationName);
+        if (inner != null) {
+            return new CommunicationDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public CommunicationDetails getById(String id) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class CommunicationsImpl implements Communications {
         }
         String communicationName = Utils.getValueFromIdByName(id, "communications");
         if (communicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class CommunicationsImpl implements Communications {
     public Response<CommunicationDetails> getByIdWithResponse(String id, Context context) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,7 +125,7 @@ public final class CommunicationsImpl implements Communications {
         }
         String communicationName = Utils.getValueFromIdByName(id, "communications");
         if (communicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

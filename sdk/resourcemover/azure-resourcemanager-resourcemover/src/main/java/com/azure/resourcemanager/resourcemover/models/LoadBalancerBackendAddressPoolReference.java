@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.resourcemover.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 
 /** Defines reference to load balancer backend address pools. */
-@Immutable
+@Fluent
 public final class LoadBalancerBackendAddressPoolReference extends ProxyResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddressPoolReference.class);
+    /** Creates an instance of LoadBalancerBackendAddressPoolReference class. */
+    public LoadBalancerBackendAddressPoolReference() {
+    }
 
     /** {@inheritDoc} */
     @Override

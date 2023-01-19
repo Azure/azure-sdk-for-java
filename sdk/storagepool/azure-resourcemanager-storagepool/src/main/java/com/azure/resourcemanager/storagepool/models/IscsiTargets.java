@@ -18,7 +18,7 @@ public interface IscsiTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IscsiTarget> listByDiskPool(String resourceGroupName, String diskPoolName);
 
@@ -31,7 +31,7 @@ public interface IscsiTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IscsiTarget> listByDiskPool(String resourceGroupName, String diskPoolName, Context context);
 
@@ -66,6 +66,21 @@ public interface IscsiTargets {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an iSCSI Target along with {@link Response}.
+     */
+    Response<IscsiTarget> getWithResponse(
+        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context);
+
+    /**
+     * Get an iSCSI Target.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param diskPoolName The name of the Disk Pool.
+     * @param iscsiTargetName The name of the iSCSI Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -76,26 +91,11 @@ public interface IscsiTargets {
     /**
      * Get an iSCSI Target.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diskPoolName The name of the Disk Pool.
-     * @param iscsiTargetName The name of the iSCSI Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
-     */
-    Response<IscsiTarget> getWithResponse(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context);
-
-    /**
-     * Get an iSCSI Target.
-     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target along with {@link Response}.
      */
     IscsiTarget getById(String id);
 
@@ -107,7 +107,7 @@ public interface IscsiTargets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target along with {@link Response}.
      */
     Response<IscsiTarget> getByIdWithResponse(String id, Context context);
 

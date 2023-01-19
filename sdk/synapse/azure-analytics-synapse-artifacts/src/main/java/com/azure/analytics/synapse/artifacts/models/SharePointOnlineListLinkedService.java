@@ -53,6 +53,9 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SharePointOnlineListLinkedService class. */
+    public SharePointOnlineListLinkedService() {}
+
     /**
      * Get the siteUrl property: The URL of the SharePoint Online site. For example,
      * https://contoso.sharepoint.com/sites/siteName. Type: string (or Expression with resultType string).

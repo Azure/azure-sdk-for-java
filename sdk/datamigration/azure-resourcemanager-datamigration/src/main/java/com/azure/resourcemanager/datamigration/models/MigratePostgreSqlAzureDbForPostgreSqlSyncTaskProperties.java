@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,9 +17,6 @@ import java.util.List;
 @JsonTypeName("Migrate.PostgreSql.AzureDbForPostgreSql.Sync")
 @Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.class);
-
     /*
      * Task input
      */
@@ -33,6 +28,10 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties exten
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput> output;
+
+    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties class. */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties() {
+    }
 
     /**
      * Get the input property: Task input.

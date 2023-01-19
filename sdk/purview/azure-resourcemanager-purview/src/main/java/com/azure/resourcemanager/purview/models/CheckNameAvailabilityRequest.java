@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload for CheckNameAvailability API. */
 @Fluent
 public final class CheckNameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequest.class);
-
     /*
      * Resource name to verify for availability
      */
@@ -25,6 +21,10 @@ public final class CheckNameAvailabilityRequest {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    public CheckNameAvailabilityRequest() {
+    }
 
     /**
      * Get the name property: Resource name to verify for availability.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncGroups TriggerSync. */
 public final class SyncGroupsTriggerSyncSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncGroupTriggerSync.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupTriggerSync.json
      */
     /**
      * Sample code: Trigger a sync group synchronization.

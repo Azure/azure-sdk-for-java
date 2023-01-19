@@ -6,17 +6,13 @@ package com.azure.resourcemanager.attestation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.attestation.models.OperationsDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of supported operations. */
 @Fluent
 public final class OperationListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListInner.class);
-
     /*
      * The system metadata relating to this resource
      */
@@ -28,6 +24,10 @@ public final class OperationListInner {
      */
     @JsonProperty(value = "value")
     private List<OperationsDefinition> value;
+
+    /** Creates an instance of OperationListInner class. */
+    public OperationListInner() {
+    }
 
     /**
      * Get the systemData property: The system metadata relating to this resource.

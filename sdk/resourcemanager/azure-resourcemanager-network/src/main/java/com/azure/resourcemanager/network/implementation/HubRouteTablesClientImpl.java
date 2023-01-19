@@ -63,7 +63,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface HubRouteTablesService {
+    public interface HubRouteTablesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
@@ -186,7 +186,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -254,7 +254,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -508,7 +508,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -564,7 +564,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -666,7 +666,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -721,7 +721,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -918,7 +918,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -978,7 +978,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

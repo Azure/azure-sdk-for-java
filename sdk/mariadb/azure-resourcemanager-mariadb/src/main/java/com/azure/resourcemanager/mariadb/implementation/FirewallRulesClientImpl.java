@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mariadb.fluent.FirewallRulesClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
 public final class FirewallRulesClientImpl implements FirewallRulesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallRulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FirewallRulesService service;
 
@@ -66,10 +63,10 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MariaDBManagementCli")
-    private interface FirewallRulesService {
+    public interface FirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -86,7 +83,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -102,7 +99,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -118,7 +115,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/firewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -142,7 +139,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return represents a server firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -205,7 +202,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return represents a server firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -268,9 +265,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return the {@link PollerFlux} for polling of represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -278,7 +275,11 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         return this
             .client
             .<FirewallRuleInner, FirewallRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FirewallRuleInner.class, FirewallRuleInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                FirewallRuleInner.class,
+                FirewallRuleInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -292,9 +293,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return the {@link PollerFlux} for polling of represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -320,12 +321,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return the {@link SyncPoller} for polling of represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, firewallRuleName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, firewallRuleName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -339,16 +342,17 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return the {@link SyncPoller} for polling of represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         String firewallRuleName,
         FirewallRuleInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, firewallRuleName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, firewallRuleName, parameters, context)
             .getSyncPoller();
     }
 
@@ -362,7 +366,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return represents a server firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallRuleInner> createOrUpdateAsync(
@@ -383,7 +387,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return represents a server firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallRuleInner> createOrUpdateAsync(
@@ -447,7 +451,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -503,7 +507,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -555,16 +559,17 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String firewallRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, serverName, firewallRuleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -577,9 +582,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String firewallRuleName, Context context) {
         context = this.client.mergeContext(context);
@@ -599,12 +604,12 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String firewallRuleName) {
-        return beginDeleteAsync(resourceGroupName, serverName, firewallRuleName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, firewallRuleName).getSyncPoller();
     }
 
     /**
@@ -617,12 +622,12 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String firewallRuleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, firewallRuleName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, firewallRuleName, context).getSyncPoller();
     }
 
     /**
@@ -634,7 +639,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -653,7 +658,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -703,7 +708,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
@@ -759,7 +765,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
@@ -811,19 +818,30 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server firewall rule.
+     * @return information about a server firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallRuleInner> getAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         return getWithResponseAsync(resourceGroupName, serverName, firewallRuleName)
-            .flatMap(
-                (Response<FirewallRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets information about a server firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the server firewall rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a server firewall rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FirewallRuleInner> getWithResponse(
+        String resourceGroupName, String serverName, String firewallRuleName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, firewallRuleName, context).block();
     }
 
     /**
@@ -839,25 +857,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallRuleInner get(String resourceGroupName, String serverName, String firewallRuleName) {
-        return getAsync(resourceGroupName, serverName, firewallRuleName).block();
-    }
-
-    /**
-     * Gets information about a server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server firewall rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String serverName, String firewallRuleName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, firewallRuleName, context).block();
+        return getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE).getValue();
     }
 
     /**
@@ -868,7 +868,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByServerSinglePageAsync(
@@ -922,7 +922,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallRuleInner>> listByServerSinglePageAsync(
@@ -972,7 +972,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -988,7 +988,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FirewallRuleInner> listByServerAsync(
@@ -1004,7 +1004,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName) {
@@ -1020,7 +1020,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName, Context context) {

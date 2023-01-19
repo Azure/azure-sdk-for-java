@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DedicatedHostGroups List. */
 public final class DedicatedHostGroupsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_ListBySubscription_MaximumSet_Gen.
@@ -18,11 +16,16 @@ public final class DedicatedHostGroupsListSamples {
      */
     public static void dedicatedHostGroupsListBySubscriptionMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().list(Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroups_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_ListBySubscription_MinimumSet_Gen.
@@ -31,6 +34,11 @@ public final class DedicatedHostGroupsListSamples {
      */
     public static void dedicatedHostGroupsListBySubscriptionMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().list(Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

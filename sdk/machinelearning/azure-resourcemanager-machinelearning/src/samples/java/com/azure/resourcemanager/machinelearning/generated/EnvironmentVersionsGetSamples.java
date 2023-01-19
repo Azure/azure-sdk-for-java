@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentVersions Get. */
 public final class EnvironmentVersionsGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class EnvironmentVersionsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getEnvironmentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.environmentVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .environmentVersions()
+            .getWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }

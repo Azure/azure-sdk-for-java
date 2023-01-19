@@ -24,6 +24,10 @@ public final class SiteListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SiteListResult class. */
+    public SiteListResult() {
+    }
+
     /**
      * Get the value property: A list of sites in a mobile network.
      *

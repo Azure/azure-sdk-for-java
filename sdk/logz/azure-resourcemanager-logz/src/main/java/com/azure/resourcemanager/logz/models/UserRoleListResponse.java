@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.fluent.models.UserRoleResponseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for list of user's role for Logz.io account. */
 @Fluent
 public final class UserRoleListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserRoleListResponse.class);
-
     /*
      * List of user roles for Logz.io account.
      */
@@ -27,6 +23,10 @@ public final class UserRoleListResponse {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of UserRoleListResponse class. */
+    public UserRoleListResponse() {
+    }
 
     /**
      * Get the value property: List of user roles for Logz.io account.

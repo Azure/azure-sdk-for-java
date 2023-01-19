@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The specification for Customization Policy. */
 @Fluent
 public final class CustomizationSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationSpecification.class);
-
     /*
      * Customization Identity. It contains data about user and hostname
      */
@@ -26,6 +22,10 @@ public final class CustomizationSpecification {
      */
     @JsonProperty(value = "nicSettings")
     private List<CustomizationNicSetting> nicSettings;
+
+    /** Creates an instance of CustomizationSpecification class. */
+    public CustomizationSpecification() {
+    }
 
     /**
      * Get the identity property: Customization Identity. It contains data about user and hostname.

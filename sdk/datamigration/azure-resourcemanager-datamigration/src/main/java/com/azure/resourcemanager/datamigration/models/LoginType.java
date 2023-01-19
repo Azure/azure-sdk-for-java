@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoginType. */
+/** Enum mapping of SMO LoginType. */
 public final class LoginType extends ExpandableStringEnum<LoginType> {
     /** Static value WindowsUser for LoginType. */
     public static final LoginType WINDOWS_USER = fromString("WindowsUser");
@@ -32,6 +32,15 @@ public final class LoginType extends ExpandableStringEnum<LoginType> {
     public static final LoginType EXTERNAL_GROUP = fromString("ExternalGroup");
 
     /**
+     * Creates a new instance of LoginType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoginType() {
+    }
+
+    /**
      * Creates or finds a LoginType from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class LoginType extends ExpandableStringEnum<LoginType> {
         return fromString(name, LoginType.class);
     }
 
-    /** @return known LoginType values. */
+    /**
+     * Gets known LoginType values.
+     *
+     * @return known LoginType values.
+     */
     public static Collection<LoginType> values() {
         return values(LoginType.class);
     }

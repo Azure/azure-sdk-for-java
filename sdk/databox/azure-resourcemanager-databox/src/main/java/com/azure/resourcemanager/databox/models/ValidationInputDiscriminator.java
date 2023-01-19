@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ValidationInputDiscriminator. */
+/** Identifies the type of validation request. */
 public enum ValidationInputDiscriminator {
     /** Enum value ValidateAddress. */
     VALIDATE_ADDRESS("ValidateAddress"),
@@ -42,6 +42,9 @@ public enum ValidationInputDiscriminator {
      */
     @JsonCreator
     public static ValidationInputDiscriminator fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ValidationInputDiscriminator[] items = ValidationInputDiscriminator.values();
         for (ValidationInputDiscriminator item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum ValidationInputDiscriminator {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

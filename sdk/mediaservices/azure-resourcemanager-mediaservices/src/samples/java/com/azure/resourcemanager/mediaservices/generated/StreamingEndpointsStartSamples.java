@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StreamingEndpoints Start. */
 public final class StreamingEndpointsStartSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streamingendpoint-start.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/streamingendpoint-start.json
      */
     /**
      * Sample code: Start a streaming endpoint.
@@ -17,6 +15,8 @@ public final class StreamingEndpointsStartSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void startAStreamingEndpoint(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.streamingEndpoints().start("mediaresources", "slitestmedia10", "myStreamingEndpoint1", Context.NONE);
+        manager
+            .streamingEndpoints()
+            .start("mediaresources", "slitestmedia10", "myStreamingEndpoint1", com.azure.core.util.Context.NONE);
     }
 }

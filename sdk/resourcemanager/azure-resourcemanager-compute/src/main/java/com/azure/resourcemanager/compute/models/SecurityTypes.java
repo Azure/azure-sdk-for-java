@@ -20,6 +20,15 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     public static final SecurityTypes CONFIDENTIAL_VM = fromString("ConfidentialVM");
 
     /**
+     * Creates a new instance of SecurityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityTypes() {
+    }
+
+    /**
      * Creates or finds a SecurityTypes from its string representation.
      *
      * @param name a name to look for.

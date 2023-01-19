@@ -6,30 +6,30 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The workspace provider authorization. */
 @Fluent
 public final class WorkspaceProviderAuthorization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceProviderAuthorization.class);
-
     /*
-     * The provider's principal identifier. This is the identity that the
-     * provider will use to call ARM to manage the workspace resources.
+     * The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
+     * workspace resources.
      */
     @JsonProperty(value = "principalId", required = true)
     private UUID principalId;
 
     /*
-     * The provider's role definition identifier. This role will define all the
-     * permissions that the provider must have on the workspace's container
-     * resource group. This role definition cannot have permission to delete
-     * the resource group.
+     * The provider's role definition identifier. This role will define all the permissions that the provider must have
+     * on the workspace's container resource group. This role definition cannot have permission to delete the resource
+     * group.
      */
     @JsonProperty(value = "roleDefinitionId", required = true)
     private UUID roleDefinitionId;
+
+    /** Creates an instance of WorkspaceProviderAuthorization class. */
+    public WorkspaceProviderAuthorization() {
+    }
 
     /**
      * Get the principalId property: The provider's principal identifier. This is the identity that the provider will
@@ -84,16 +84,18 @@ public final class WorkspaceProviderAuthorization {
      */
     public void validate() {
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalId in model WorkspaceProviderAuthorization"));
         }
         if (roleDefinitionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property roleDefinitionId in model WorkspaceProviderAuthorization"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceProviderAuthorization.class);
 }

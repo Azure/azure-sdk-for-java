@@ -5,64 +5,29 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.databox.models.AddressValidationStatus;
-import com.azure.resourcemanager.databox.models.CloudError;
-import com.azure.resourcemanager.databox.models.ShippingAddress;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.databox.models.AddressValidationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Output of the address validation api. */
-@JsonFlatten
 @Immutable
-public class AddressValidationOutputInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressValidationOutputInner.class);
-
+public final class AddressValidationOutputInner {
     /*
-     * Error code and message of validation response.
+     * The address validation properties.
      */
-    @JsonProperty(value = "properties.error", access = JsonProperty.Access.WRITE_ONLY)
-    private CloudError error;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private AddressValidationProperties properties;
 
-    /*
-     * The address validation status.
-     */
-    @JsonProperty(value = "properties.validationStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private AddressValidationStatus validationStatus;
-
-    /*
-     * List of alternate addresses.
-     */
-    @JsonProperty(value = "properties.alternateAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ShippingAddress> alternateAddresses;
-
-    /**
-     * Get the error property: Error code and message of validation response.
-     *
-     * @return the error value.
-     */
-    public CloudError error() {
-        return this.error;
+    /** Creates an instance of AddressValidationOutputInner class. */
+    public AddressValidationOutputInner() {
     }
 
     /**
-     * Get the validationStatus property: The address validation status.
+     * Get the properties property: The address validation properties.
      *
-     * @return the validationStatus value.
+     * @return the properties value.
      */
-    public AddressValidationStatus validationStatus() {
-        return this.validationStatus;
-    }
-
-    /**
-     * Get the alternateAddresses property: List of alternate addresses.
-     *
-     * @return the alternateAddresses value.
-     */
-    public List<ShippingAddress> alternateAddresses() {
-        return this.alternateAddresses;
+    public AddressValidationProperties properties() {
+        return this.properties;
     }
 
     /**
@@ -71,11 +36,8 @@ public class AddressValidationOutputInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
-        if (alternateAddresses() != null) {
-            alternateAddresses().forEach(e -> e.validate());
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

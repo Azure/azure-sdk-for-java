@@ -23,6 +23,10 @@ public final class DigitalTwinsDescriptionInner extends DigitalTwinsResource {
     @JsonProperty(value = "properties")
     private DigitalTwinsProperties innerProperties;
 
+    /** Creates an instance of DigitalTwinsDescriptionInner class. */
+    public DigitalTwinsDescriptionInner() {
+    }
+
     /**
      * Get the innerProperties property: DigitalTwins instance properties.
      *

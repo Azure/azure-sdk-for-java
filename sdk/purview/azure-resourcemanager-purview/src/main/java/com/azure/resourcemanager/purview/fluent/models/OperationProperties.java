@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.models.OperationMetaServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** properties on meta info. */
 @Fluent
 public final class OperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationProperties.class);
-
     /*
      * meta service specification
      */
     @JsonProperty(value = "serviceSpecification")
     private OperationMetaServiceSpecification serviceSpecification;
+
+    /** Creates an instance of OperationProperties class. */
+    public OperationProperties() {
+    }
 
     /**
      * Get the serviceSpecification property: meta service specification.

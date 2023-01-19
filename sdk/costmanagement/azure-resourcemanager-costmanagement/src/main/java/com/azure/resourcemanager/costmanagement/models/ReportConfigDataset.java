@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The definition of data present in the report. */
 @Fluent
 public final class ReportConfigDataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportConfigDataset.class);
-
     /*
      * The granularity of rows in the report.
      */
@@ -24,24 +20,22 @@ public final class ReportConfigDataset {
     private ReportGranularityType granularity;
 
     /*
-     * Has configuration information for the data in the report. The
-     * configuration will be ignored if aggregation and grouping are provided.
+     * Has configuration information for the data in the report. The configuration will be ignored if aggregation and
+     * grouping are provided.
      */
     @JsonProperty(value = "configuration")
     private ReportConfigDatasetConfiguration configuration;
 
     /*
-     * Dictionary of aggregation expression to use in the report. The key of
-     * each item in the dictionary is the alias for the aggregated column.
-     * Report can have up to 2 aggregation clauses.
+     * Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias
+     * for the aggregated column. Report can have up to 2 aggregation clauses.
      */
     @JsonProperty(value = "aggregation")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ReportConfigAggregation> aggregation;
 
     /*
-     * Array of group by expression to use in the report. Report can have up to
-     * 2 group by clauses.
+     * Array of group by expression to use in the report. Report can have up to 2 group by clauses.
      */
     @JsonProperty(value = "grouping")
     private List<ReportConfigGrouping> grouping;
@@ -57,6 +51,10 @@ public final class ReportConfigDataset {
      */
     @JsonProperty(value = "filter")
     private ReportConfigFilter filter;
+
+    /** Creates an instance of ReportConfigDataset class. */
+    public ReportConfigDataset() {
+    }
 
     /**
      * Get the granularity property: The granularity of rows in the report.

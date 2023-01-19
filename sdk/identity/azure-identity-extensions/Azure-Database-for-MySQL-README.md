@@ -55,7 +55,7 @@ The package is not part of the `azure-sdk-bom` now, so it can only be included v
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-extensions</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -143,7 +143,7 @@ MySQL)[Azure Active Directory for authenticating with MySQL]
 
 ### Architecture
 
-This picture shows how the jdbc authentication plugin for MySQL authenticating with MSI.
+This picture shows how the jdbc authentication plugin for MySQL authenticating with managed identity.
 
 ![mysql_design.png](img/mysql_design.png)
 

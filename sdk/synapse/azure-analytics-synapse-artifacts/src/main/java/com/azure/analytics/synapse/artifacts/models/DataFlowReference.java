@@ -44,6 +44,9 @@ public final class DataFlowReference {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DataFlowReference class. */
+    public DataFlowReference() {}
+
     /**
      * Get the type property: Data flow reference type.
      *

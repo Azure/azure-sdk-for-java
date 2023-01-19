@@ -44,6 +44,9 @@ public final class SqlScript {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of SqlScript class. */
+    public SqlScript() {}
+
     /**
      * Get the description property: The description of the SQL script.
      *

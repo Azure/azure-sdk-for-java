@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataContainers List. */
 public final class DataContainersListSamples {
     /*
@@ -17,6 +15,6 @@ public final class DataContainersListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.dataContainers().list("testrg123", "workspace123", null, null, Context.NONE);
+        manager.dataContainers().list("testrg123", "workspace123", null, null, com.azure.core.util.Context.NONE);
     }
 }

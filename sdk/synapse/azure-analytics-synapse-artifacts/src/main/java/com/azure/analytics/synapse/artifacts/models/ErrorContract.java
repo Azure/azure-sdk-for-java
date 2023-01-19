@@ -22,6 +22,9 @@ public final class ErrorContract {
     @JsonProperty(value = "error")
     private ErrorResponse error;
 
+    /** Creates an instance of ErrorContract class. */
+    public ErrorContract() {}
+
     /**
      * Get the error property: Error Response
      *

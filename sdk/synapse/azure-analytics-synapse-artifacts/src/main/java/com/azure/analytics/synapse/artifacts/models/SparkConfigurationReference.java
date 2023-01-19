@@ -22,6 +22,9 @@ public final class SparkConfigurationReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
+    /** Creates an instance of SparkConfigurationReference class. */
+    public SparkConfigurationReference() {}
+
     /**
      * Get the type property: Spark configuration reference type.
      *

@@ -19,13 +19,15 @@ public interface AvailableBalancesClient {
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest Azure credit balance.
+     * @return the latest Azure credit balance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailableBalanceInner get(String billingAccountName, String billingProfileName);
+    Response<AvailableBalanceInner> getWithResponse(
+        String billingAccountName, String billingProfileName, Context context);
 
     /**
      * The available credit balance for a billing profile. This is the balance that can be used for pay now to settle
@@ -34,13 +36,11 @@ public interface AvailableBalancesClient {
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the latest Azure credit balance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AvailableBalanceInner> getWithResponse(
-        String billingAccountName, String billingProfileName, Context context);
+    AvailableBalanceInner get(String billingAccountName, String billingProfileName);
 }

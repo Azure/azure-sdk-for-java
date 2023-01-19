@@ -93,6 +93,9 @@ public final class PipelineRun {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of PipelineRun class. */
+    public PipelineRun() {}
+
     /**
      * Get the runId property: Identifier of a run.
      *

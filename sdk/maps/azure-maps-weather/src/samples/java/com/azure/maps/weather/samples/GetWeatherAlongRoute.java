@@ -6,9 +6,8 @@ package com.azure.maps.weather.samples;
 import java.util.Arrays;
 import java.util.List;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPosition;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.weather.WeatherAsyncClient;
 import com.azure.maps.weather.WeatherClient;
 import com.azure.maps.weather.WeatherClientBuilder;
@@ -17,23 +16,24 @@ import com.azure.maps.weather.models.Waypoint;
 public class GetWeatherAlongRoute {
     public static void main(String[] args) {
         // Authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        WeatherClient client = new WeatherClientBuilder() 
-            .credential(tokenCredential)
+        WeatherClient client = new WeatherClientBuilder()
+            .credential(keyCredential)
             .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
 
         // Get Weather Along Route -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-weather-along-route
-        // Weather along a route API returns hyper local (one kilometer or less), 
-        // up-to-the-minute weather nowcasts, weather hazard assessments, and notifications 
+        // Weather along a route API returns hyper local (one kilometer or less),
+        // up-to-the-minute weather nowcasts, weather hazard assessments, and notifications
         // along a route described as a sequence of waypoints.
+        System.out.println("Get Weather Along Route Sync Client");
         // BEGIN: com.azure.maps.weather.sync.get_weather_along_route
         List<Waypoint> waypoints = Arrays.asList(
             new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),
@@ -48,23 +48,24 @@ public class GetWeatherAlongRoute {
         // END: com.azure.maps.weather.sync.get_weather_along_route
 
         // Authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        AzureKeyCredential asyncClientKeyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
 
         WeatherAsyncClient asyncClient = new WeatherClientBuilder()
-            .credential(asyncClientTokenCredential)
+            .credential(asyncClientKeyCredential)
             .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildAsyncClient();
 
         // Get Weather Along Route -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-weather-along-route
-        // Weather along a route API returns hyper local (one kilometer or less), 
-        // up-to-the-minute weather nowcasts, weather hazard assessments, and notifications 
+        // Weather along a route API returns hyper local (one kilometer or less),
+        // up-to-the-minute weather nowcasts, weather hazard assessments, and notifications
         // along a route described as a sequence of waypoints.
+        System.out.println("Get Weather Along Route Async Client");
         // BEGIN: com.azure.maps.weather.async.get_weather_along_route
         List<Waypoint> waypointList = Arrays.asList(
             new Waypoint(new GeoPosition(-77.037, 38.907), 0.0),

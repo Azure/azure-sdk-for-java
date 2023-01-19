@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.support.fluent.SupportTicketsClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SupportTicketsClient. */
 public final class SupportTicketsClientImpl implements SupportTicketsClient {
-    private final ClientLogger logger = new ClientLogger(SupportTicketsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SupportTicketsService service;
 
@@ -70,7 +67,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportSupp")
-    private interface SupportTicketsService {
+    public interface SupportTicketsService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Support/checkNameAvailability")
         @ExpectedResponses({200})
@@ -153,7 +150,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
@@ -202,7 +200,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
@@ -247,20 +246,30 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(
         CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput)
-            .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
+     * support ticket creation for the selected subscription.
+     *
+     * @param checkNameAvailabilityInput Input to check.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+        return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput, context).block();
     }
 
     /**
@@ -276,41 +285,27 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityOutputInner checkNameAvailability(
         CheckNameAvailabilityInput checkNameAvailabilityInput) {
-        return checkNameAvailabilityAsync(checkNameAvailabilityInput).block();
+        return checkNameAvailabilityWithResponse(checkNameAvailabilityInput, Context.NONE).getValue();
     }
 
     /**
-     * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
-     * support ticket creation for the selected subscription.
-     *
-     * @param checkNameAvailabilityInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
-        return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput, context).block();
-    }
-
-    /**
-     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-     * _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-     * retrieve the next set of support tickets. &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months
-     * after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+     * _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged
+     * result with _nextLink_, using which you can retrieve the next set of support tickets.
+     * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
+     * created more than 18 months ago, a request for data might cause an error.
      *
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_ filter can only be used with
-     *     Equals ('eq') operator. For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and Greater
-     *     Than or Equals ('ge'). When using both filters, combine them using the logical 'AND'.
+     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
+     *     combine them using the logical 'AND'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportTicketDetailsInner>> listSinglePageAsync(Integer top, String filter) {
@@ -352,21 +347,24 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-     * _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-     * retrieve the next set of support tickets. &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months
-     * after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+     * _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged
+     * result with _nextLink_, using which you can retrieve the next set of support tickets.
+     * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
+     * created more than 18 months ago, a request for data might cause an error.
      *
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_ filter can only be used with
-     *     Equals ('eq') operator. For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and Greater
-     *     Than or Equals ('ge'). When using both filters, combine them using the logical 'AND'.
+     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
+     *     combine them using the logical 'AND'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportTicketDetailsInner>> listSinglePageAsync(
@@ -406,20 +404,23 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-     * _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-     * retrieve the next set of support tickets. &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months
-     * after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+     * _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged
+     * result with _nextLink_, using which you can retrieve the next set of support tickets.
+     * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
+     * created more than 18 months ago, a request for data might cause an error.
      *
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_ filter can only be used with
-     *     Equals ('eq') operator. For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and Greater
-     *     Than or Equals ('ge'). When using both filters, combine them using the logical 'AND'.
+     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
+     *     combine them using the logical 'AND'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportTicketDetailsInner> listAsync(Integer top, String filter) {
@@ -427,14 +428,16 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-     * _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-     * retrieve the next set of support tickets. &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months
-     * after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+     * _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged
+     * result with _nextLink_, using which you can retrieve the next set of support tickets.
+     * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
+     * created more than 18 months ago, a request for data might cause an error.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportTicketDetailsInner> listAsync() {
@@ -444,21 +447,24 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-     * _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-     * retrieve the next set of support tickets. &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months
-     * after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+     * _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged
+     * result with _nextLink_, using which you can retrieve the next set of support tickets.
+     * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
+     * created more than 18 months ago, a request for data might cause an error.
      *
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_ filter can only be used with
-     *     Equals ('eq') operator. For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and Greater
-     *     Than or Equals ('ge'). When using both filters, combine them using the logical 'AND'.
+     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
+     *     combine them using the logical 'AND'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportTicketDetailsInner> listAsync(Integer top, String filter, Context context) {
@@ -467,14 +473,16 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-     * _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-     * retrieve the next set of support tickets. &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months
-     * after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+     * _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged
+     * result with _nextLink_, using which you can retrieve the next set of support tickets.
+     * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
+     * created more than 18 months ago, a request for data might cause an error.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportTicketDetailsInner> list() {
@@ -484,21 +492,24 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     }
 
     /**
-     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-     * _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-     * retrieve the next set of support tickets. &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months
-     * after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     * Lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+     * _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged
+     * result with _nextLink_, using which you can retrieve the next set of support tickets.
+     * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
+     * created more than 18 months ago, a request for data might cause an error.
      *
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_ filter can only be used with
-     *     Equals ('eq') operator. For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and Greater
-     *     Than or Equals ('ge'). When using both filters, combine them using the logical 'AND'.
+     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
+     *     combine them using the logical 'AND'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportTicketDetailsInner> list(Integer top, String filter, Context context) {
@@ -513,7 +524,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ticket details for an Azure subscription.
+     * @return ticket details for an Azure subscription along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SupportTicketDetailsInner>> getWithResponseAsync(String supportTicketName) {
@@ -557,7 +569,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ticket details for an Azure subscription.
+     * @return ticket details for an Azure subscription along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SupportTicketDetailsInner>> getWithResponseAsync(String supportTicketName, Context context) {
@@ -597,19 +610,27 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ticket details for an Azure subscription.
+     * @return ticket details for an Azure subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SupportTicketDetailsInner> getAsync(String supportTicketName) {
-        return getWithResponseAsync(supportTicketName)
-            .flatMap(
-                (Response<SupportTicketDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(supportTicketName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
+     * creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+     *
+     * @param supportTicketName Support ticket name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ticket details for an Azure subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SupportTicketDetailsInner> getWithResponse(String supportTicketName, Context context) {
+        return getWithResponseAsync(supportTicketName, context).block();
     }
 
     /**
@@ -624,23 +645,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupportTicketDetailsInner get(String supportTicketName) {
-        return getAsync(supportTicketName).block();
-    }
-
-    /**
-     * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
-     * creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
-     * @param supportTicketName Support ticket name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ticket details for an Azure subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SupportTicketDetailsInner> getWithResponse(String supportTicketName, Context context) {
-        return getWithResponseAsync(supportTicketName, context).block();
+        return getWithResponse(supportTicketName, Context.NONE).getValue();
     }
 
     /**
@@ -656,7 +661,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SupportTicketDetailsInner>> updateWithResponseAsync(
@@ -713,7 +719,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SupportTicketDetailsInner>> updateWithResponseAsync(
@@ -766,20 +773,35 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return object that represents SupportTicketDetails resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SupportTicketDetailsInner> updateAsync(
         String supportTicketName, UpdateSupportTicket updateSupportTicket) {
         return updateWithResponseAsync(supportTicketName, updateSupportTicket)
-            .flatMap(
-                (Response<SupportTicketDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * This API allows you to update the severity level, ticket status, and your contact information in the support
+     * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
+     * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
+     * update by adding a new communication using the Communications API.&lt;br/&gt;&lt;br/&gt;Changing the ticket
+     * status to _closed_ is allowed only on an unassigned case. When an engineer is actively working on the ticket,
+     * send your ticket closure request by sending a note to your engineer.
+     *
+     * @param supportTicketName Support ticket name.
+     * @param updateSupportTicket UpdateSupportTicket object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that represents SupportTicketDetails resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SupportTicketDetailsInner> updateWithResponse(
+        String supportTicketName, UpdateSupportTicket updateSupportTicket, Context context) {
+        return updateWithResponseAsync(supportTicketName, updateSupportTicket, context).block();
     }
 
     /**
@@ -799,29 +821,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupportTicketDetailsInner update(String supportTicketName, UpdateSupportTicket updateSupportTicket) {
-        return updateAsync(supportTicketName, updateSupportTicket).block();
-    }
-
-    /**
-     * This API allows you to update the severity level, ticket status, and your contact information in the support
-     * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
-     * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
-     * update by adding a new communication using the Communications API.&lt;br/&gt;&lt;br/&gt;Changing the ticket
-     * status to _closed_ is allowed only on an unassigned case. When an engineer is actively working on the ticket,
-     * send your ticket closure request by sending a note to your engineer.
-     *
-     * @param supportTicketName Support ticket name.
-     * @param updateSupportTicket UpdateSupportTicket object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SupportTicketDetailsInner> updateWithResponse(
-        String supportTicketName, UpdateSupportTicket updateSupportTicket, Context context) {
-        return updateWithResponseAsync(supportTicketName, updateSupportTicket, context).block();
+        return updateWithResponse(supportTicketName, updateSupportTicket, Context.NONE).getValue();
     }
 
     /**
@@ -848,7 +848,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -918,7 +919,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -984,9 +986,9 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return the {@link PollerFlux} for polling of object that represents SupportTicketDetails resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner> beginCreateAsync(
         String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -998,7 +1000,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
                 this.client.getHttpPipeline(),
                 SupportTicketDetailsInner.class,
                 SupportTicketDetailsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1026,9 +1028,9 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return the {@link PollerFlux} for polling of object that represents SupportTicketDetails resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner> beginCreateAsync(
         String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1068,12 +1070,12 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return the {@link SyncPoller} for polling of object that represents SupportTicketDetails resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner> beginCreate(
         String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
-        return beginCreateAsync(supportTicketName, createSupportTicketParameters).getSyncPoller();
+        return this.beginCreateAsync(supportTicketName, createSupportTicketParameters).getSyncPoller();
     }
 
     /**
@@ -1101,12 +1103,12 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return the {@link SyncPoller} for polling of object that represents SupportTicketDetails resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner> beginCreate(
         String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context) {
-        return beginCreateAsync(supportTicketName, createSupportTicketParameters, context).getSyncPoller();
+        return this.beginCreateAsync(supportTicketName, createSupportTicketParameters, context).getSyncPoller();
     }
 
     /**
@@ -1133,7 +1135,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return object that represents SupportTicketDetails resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SupportTicketDetailsInner> createAsync(
@@ -1168,7 +1170,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents SupportTicketDetails resource.
+     * @return object that represents SupportTicketDetails resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SupportTicketDetailsInner> createAsync(
@@ -1246,11 +1248,13 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportTicketDetailsInner>> listNextSinglePageAsync(String nextLink) {
@@ -1281,12 +1285,14 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources.
+     * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportTicketDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact agreement content. */
 @Fluent
 public final class EdifactAgreementContent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactAgreementContent.class);
-
     /*
      * The EDIFACT one-way receive agreement.
      */
@@ -25,6 +22,10 @@ public final class EdifactAgreementContent {
      */
     @JsonProperty(value = "sendAgreement", required = true)
     private EdifactOneWayAgreement sendAgreement;
+
+    /** Creates an instance of EdifactAgreementContent class. */
+    public EdifactAgreementContent() {
+    }
 
     /**
      * Get the receiveAgreement property: The EDIFACT one-way receive agreement.
@@ -73,7 +74,7 @@ public final class EdifactAgreementContent {
      */
     public void validate() {
         if (receiveAgreement() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiveAgreement in model EdifactAgreementContent"));
@@ -81,7 +82,7 @@ public final class EdifactAgreementContent {
             receiveAgreement().validate();
         }
         if (sendAgreement() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sendAgreement in model EdifactAgreementContent"));
@@ -89,4 +90,6 @@ public final class EdifactAgreementContent {
             sendAgreement().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactAgreementContent.class);
 }

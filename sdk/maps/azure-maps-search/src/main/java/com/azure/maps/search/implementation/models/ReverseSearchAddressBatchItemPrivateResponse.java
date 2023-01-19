@@ -20,6 +20,9 @@ public final class ReverseSearchAddressBatchItemPrivateResponse extends ReverseS
     @JsonProperty(value = "error")
     private ErrorDetail error;
 
+    /** Creates an instance of ReverseSearchAddressBatchItemPrivateResponse class. */
+    public ReverseSearchAddressBatchItemPrivateResponse() {}
+
     /**
      * Get the error property: The error object.
      *

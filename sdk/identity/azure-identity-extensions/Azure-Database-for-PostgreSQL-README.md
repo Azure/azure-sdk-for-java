@@ -55,7 +55,7 @@ The package is not part of the `azure-sdk-bom` now, so it can only be included v
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-extensions</artifactId>
-    <version>1.0.0</version> 
+    <version>1.1.0</version> 
 </dependency>
 ```
 
@@ -145,13 +145,13 @@ PostgreSQL)[Use Azure Active Directory for authenticating with PostgreSQL]
 
 ### Architecture
 
-This picture shows how the jdbc authentication plugin for PostgreSQl authenticating with MSI.
+This picture shows how the jdbc authentication plugin for PostgreSQl authenticating with managed identity.
 
 ![postgresql_design.png](img/postgresql_design.png)
 
 1. The JDBC auth plugin will get an access token from Azure AD.
-2. The JDBC driver will take the token obtained from step 1 as the password ( `token as password`) to connect with the MySQL server.
-3. The MySQL server will check the access token and authenticate internally.
+2. The JDBC driver will take the token obtained from step 1 as the password ( `token as password`) to connect with the PostgreSQL server.
+3. The PostgreSQL server will check the access token and authenticate internally.
 
 ### Token as password
 

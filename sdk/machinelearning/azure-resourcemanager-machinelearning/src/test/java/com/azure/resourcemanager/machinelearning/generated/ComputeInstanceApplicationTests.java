@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceApplication;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceApplicationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceApplication model =
             BinaryData
                 .fromString("{\"displayName\":\"cyychunsjlp\",\"endpointUri\":\"twszhvvuic\"}")
@@ -20,8 +19,8 @@ public final class ComputeInstanceApplicationTests {
         Assertions.assertEquals("twszhvvuic", model.endpointUri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceApplication model =
             new ComputeInstanceApplication().withDisplayName("cyychunsjlp").withEndpointUri("twszhvvuic");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceApplication.class);

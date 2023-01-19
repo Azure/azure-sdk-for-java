@@ -31,6 +31,10 @@ public final class IisLogsDataSource {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of IisLogsDataSource class. */
+    public IisLogsDataSource() {
+    }
+
     /**
      * Get the streams property: IIS streams.
      *

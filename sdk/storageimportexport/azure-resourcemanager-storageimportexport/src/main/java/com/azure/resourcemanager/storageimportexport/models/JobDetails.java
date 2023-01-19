@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the job properties. */
 @Fluent
 public final class JobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobDetails.class);
-
     /*
-     * The resource identifier of the storage account where data will be
-     * imported to or exported from.
+     * The resource identifier of the storage account where data will be imported to or exported from.
      */
     @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
@@ -41,45 +36,40 @@ public final class JobDetails {
     private ReturnShipping returnShipping;
 
     /*
-     * Contains information about the Microsoft datacenter to which the drives
-     * should be shipped.
+     * Contains information about the Microsoft datacenter to which the drives should be shipped.
      */
     @JsonProperty(value = "shippingInformation")
     private ShippingInformation shippingInformation;
 
     /*
-     * Contains information about the package being shipped by the customer to
-     * the Microsoft data center.
+     * Contains information about the package being shipped by the customer to the Microsoft data center.
      */
     @JsonProperty(value = "deliveryPackage")
     private DeliveryPackageInformation deliveryPackage;
 
     /*
-     * Contains information about the package being shipped from the Microsoft
-     * data center to the customer to return the drives. The format is the same
-     * as the deliveryPackage property above. This property is not included if
-     * the drives have not yet been returned.
+     * Contains information about the package being shipped from the Microsoft data center to the customer to return
+     * the drives. The format is the same as the deliveryPackage property above. This property is not included if the
+     * drives have not yet been returned.
      */
     @JsonProperty(value = "returnPackage")
     private PackageInformation returnPackage;
 
     /*
-     * The virtual blob directory to which the copy logs and backups of drive
-     * manifest files (if enabled) will be stored.
+     * The virtual blob directory to which the copy logs and backups of drive manifest files (if enabled) will be
+     * stored.
      */
     @JsonProperty(value = "diagnosticsPath")
     private String diagnosticsPath;
 
     /*
-     * Default value is Error. Indicates whether error logging or verbose
-     * logging will be enabled.
+     * Default value is Error. Indicates whether error logging or verbose logging will be enabled.
      */
     @JsonProperty(value = "logLevel")
     private String logLevel;
 
     /*
-     * Default value is false. Indicates whether the manifest files on the
-     * drives should be copied to block blobs.
+     * Default value is false. Indicates whether the manifest files on the drives should be copied to block blobs.
      */
     @JsonProperty(value = "backupDriveManifest")
     private Boolean backupDriveManifest;
@@ -103,24 +93,23 @@ public final class JobDetails {
     private Long percentComplete;
 
     /*
-     * A blob path that points to a block blob containing a list of blob names
-     * that were not exported due to insufficient drive space. If all blobs
-     * were exported successfully, then this element is not included in the
+     * A blob path that points to a block blob containing a list of blob names that were not exported due to
+     * insufficient drive space. If all blobs were exported successfully, then this element is not included in the
      * response.
      */
     @JsonProperty(value = "incompleteBlobListUri")
     private String incompleteBlobListUri;
 
     /*
-     * List of up to ten drives that comprise the job. The drive list is a
-     * required element for an import job; it is not specified for export jobs.
+     * List of up to ten drives that comprise the job. The drive list is a required element for an import job; it is
+     * not specified for export jobs.
      */
     @JsonProperty(value = "driveList")
     private List<DriveStatus> driveList;
 
     /*
-     * A property containing information about the blobs to be exported for an
-     * export job. This property is included for export jobs only.
+     * A property containing information about the blobs to be exported for an export job. This property is included
+     * for export jobs only.
      */
     @JsonProperty(value = "export")
     private Export export;
@@ -136,6 +125,10 @@ public final class JobDetails {
      */
     @JsonProperty(value = "encryptionKey")
     private EncryptionKeyDetails encryptionKey;
+
+    /** Creates an instance of JobDetails class. */
+    public JobDetails() {
+    }
 
     /**
      * Get the storageAccountId property: The resource identifier of the storage account where data will be imported to

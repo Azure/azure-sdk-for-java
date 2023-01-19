@@ -22,6 +22,9 @@ public final class LinkConnectionRefreshStatus {
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
+    /** Creates an instance of LinkConnectionRefreshStatus class. */
+    public LinkConnectionRefreshStatus() {}
+
     /**
      * Get the refreshStatus property: Link connection refresh status.
      *

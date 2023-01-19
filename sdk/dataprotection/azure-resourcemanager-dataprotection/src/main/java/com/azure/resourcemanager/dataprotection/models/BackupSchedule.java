@@ -6,15 +6,16 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** BackupSchedule Schedule for backup. */
+/**
+ * BackupSchedule
+ *
+ * <p>Schedule for backup.
+ */
 @Fluent
 public final class BackupSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupSchedule.class);
-
     /*
      * ISO 8601 repeating time interval format
      */
@@ -26,6 +27,10 @@ public final class BackupSchedule {
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
+
+    /** Creates an instance of BackupSchedule class. */
+    public BackupSchedule() {
+    }
 
     /**
      * Get the repeatingTimeIntervals property: ISO 8601 repeating time interval format.
@@ -74,10 +79,12 @@ public final class BackupSchedule {
      */
     public void validate() {
         if (repeatingTimeIntervals() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property repeatingTimeIntervals in model BackupSchedule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupSchedule.class);
 }

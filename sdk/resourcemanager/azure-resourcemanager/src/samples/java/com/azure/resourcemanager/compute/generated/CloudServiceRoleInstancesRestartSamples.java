@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServiceRoleInstances Restart. */
 public final class CloudServiceRoleInstancesRestartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Restart.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceRoleInstance_Restart.json
      */
     /**
      * Sample code: Restart Cloud Service Role Instance.
@@ -22,6 +20,6 @@ public final class CloudServiceRoleInstancesRestartSamples {
             .manager()
             .serviceClient()
             .getCloudServiceRoleInstances()
-            .restart("{roleInstance-name}", "ConstosoRG", "{cs-name}", Context.NONE);
+            .restart("{roleInstance-name}", "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

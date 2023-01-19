@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.FqdnEndpoint;
 import com.azure.resourcemanager.machinelearning.models.FqdnEndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FqdnEndpointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FqdnEndpoint model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class FqdnEndpointTests {
         Assertions.assertEquals(883294723, model.endpointDetails().get(0).port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FqdnEndpoint model =
             new FqdnEndpoint()
                 .withDomainName("ievseotgqrllt")

@@ -63,6 +63,14 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
         return this.innerModel().systemData();
     }
 
+    public Sku sku() {
+        return this.innerModel().sku();
+    }
+
+    public ResourceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public TransferType transferType() {
         return this.innerModel().transferType();
     }
@@ -115,20 +123,16 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
         return this.innerModel().isCancellableWithoutFee();
     }
 
-    public Sku sku() {
-        return this.innerModel().sku();
-    }
-
-    public ResourceIdentity identity() {
-        return this.innerModel().identity();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public JobResourceInner innerModel() {
@@ -226,10 +230,6 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
         return this;
     }
 
-    public ShipmentPickUpResponse bookShipmentPickUp(ShipmentPickUpRequest shipmentPickUpRequest) {
-        return serviceManager.jobs().bookShipmentPickUp(resourceGroupName, jobName, shipmentPickUpRequest);
-    }
-
     public Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(
         ShipmentPickUpRequest shipmentPickUpRequest, Context context) {
         return serviceManager
@@ -237,12 +237,16 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
             .bookShipmentPickUpWithResponse(resourceGroupName, jobName, shipmentPickUpRequest, context);
     }
 
-    public void cancel(CancellationReason cancellationReason) {
-        serviceManager.jobs().cancel(resourceGroupName, jobName, cancellationReason);
+    public ShipmentPickUpResponse bookShipmentPickUp(ShipmentPickUpRequest shipmentPickUpRequest) {
+        return serviceManager.jobs().bookShipmentPickUp(resourceGroupName, jobName, shipmentPickUpRequest);
     }
 
     public Response<Void> cancelWithResponse(CancellationReason cancellationReason, Context context) {
         return serviceManager.jobs().cancelWithResponse(resourceGroupName, jobName, cancellationReason, context);
+    }
+
+    public void cancel(CancellationReason cancellationReason) {
+        serviceManager.jobs().cancel(resourceGroupName, jobName, cancellationReason);
     }
 
     public PagedIterable<UnencryptedCredentials> listCredentials() {
@@ -263,13 +267,13 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
         return this;
     }
 
-    public JobResourceImpl withTransferType(TransferType transferType) {
-        this.innerModel().withTransferType(transferType);
+    public JobResourceImpl withSku(Sku sku) {
+        this.innerModel().withSku(sku);
         return this;
     }
 
-    public JobResourceImpl withSku(Sku sku) {
-        this.innerModel().withSku(sku);
+    public JobResourceImpl withTransferType(TransferType transferType) {
+        this.innerModel().withTransferType(transferType);
         return this;
     }
 
@@ -279,6 +283,16 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
             return this;
         } else {
             this.updateJobResourceUpdateParameter.withTags(tags);
+            return this;
+        }
+    }
+
+    public JobResourceImpl withIdentity(ResourceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateJobResourceUpdateParameter.withIdentity(identity);
             return this;
         }
     }
@@ -296,16 +310,6 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
     public JobResourceImpl withDeliveryInfo(JobDeliveryInfo deliveryInfo) {
         this.innerModel().withDeliveryInfo(deliveryInfo);
         return this;
-    }
-
-    public JobResourceImpl withIdentity(ResourceIdentity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateJobResourceUpdateParameter.withIdentity(identity);
-            return this;
-        }
     }
 
     public JobResourceImpl withDetails(UpdateJobDetails details) {

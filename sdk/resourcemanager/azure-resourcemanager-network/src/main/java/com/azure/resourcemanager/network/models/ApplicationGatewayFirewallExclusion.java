@@ -111,19 +111,19 @@ public final class ApplicationGatewayFirewallExclusion {
                     new IllegalArgumentException(
                         "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
         }
-        if (selectorMatchOperator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectorMatchOperator in model"
-                            + " ApplicationGatewayFirewallExclusion"));
-        }
-        if (selector() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selector in model ApplicationGatewayFirewallExclusion"));
-        }
+//        if (selectorMatchOperator() == null) {
+//            throw LOGGER
+//                .logExceptionAsError(
+//                    new IllegalArgumentException(
+//                        "Missing required property selectorMatchOperator in model"
+//                            + " ApplicationGatewayFirewallExclusion"));
+//        }
+//        if (selector() == null) {
+//            throw LOGGER
+//                .logExceptionAsError(
+//                    new IllegalArgumentException(
+//                        "Missing required property selector in model ApplicationGatewayFirewallExclusion"));
+//        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayFirewallExclusion.class);

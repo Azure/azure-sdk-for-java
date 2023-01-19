@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMRunCommands Delete. */
 public final class VirtualMachineScaleSetVMRunCommandsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
      */
     /**
      * Sample code: Delete VirtualMachineScaleSet VM run command.
@@ -22,6 +20,6 @@ public final class VirtualMachineScaleSetVMRunCommandsDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMRunCommands()
-            .delete("myResourceGroup", "myvmScaleSet", "0", "myRunCommand", Context.NONE);
+            .delete("myResourceGroup", "myvmScaleSet", "0", "myRunCommand", com.azure.core.util.Context.NONE);
     }
 }

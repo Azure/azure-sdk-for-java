@@ -29,6 +29,9 @@ public final class RerunTumblingWindowTriggerActionParameters {
     @JsonProperty(value = "maxConcurrency", required = true)
     private int maxConcurrency;
 
+    /** Creates an instance of RerunTumblingWindowTriggerActionParameters class. */
+    public RerunTumblingWindowTriggerActionParameters() {}
+
     /**
      * Get the startTime property: The start time for the time period for which restatement is initiated. Only UTC time
      * is currently supported.

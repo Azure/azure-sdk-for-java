@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import com.azure.autorest.customization.ClassCustomization;
+import com.azure.autorest.customization.ConstructorCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
@@ -226,6 +227,9 @@ public class SearchCustomization extends Customization {
             .setParam("date", "The date in the format of yyyy-mm-dd represented by a string")
             .setParam("hour", "int representing the hour")
             .setParam("minute", "int representing the minute");
+
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public OperatingHoursTime()");
+        constructorCustomization.setModifier(2).addAnnotation("JsonCreator");
     }
 
     // Customizes the OperatingHoursTimeRange class
@@ -242,6 +246,9 @@ public class SearchCustomization extends Customization {
             .setDescription("OperatingHoursTimeRange constructor")
             .setParam("startTime", "The point in the next 7 days range when a given POI is being opened, or the beginning of the range if it was opened before the range.")
             .setParam("endTime", "The point in the next 7 days range when a given POI is being closed, or the beginning of the range if it was closed before the range.");
+
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public OperatingHoursTimeRange()");
+        constructorCustomization.setModifier(2).addAnnotation("JsonCreator");
 
         classCustomization.removeMethod("getStartTime");
         classCustomization.removeMethod("getEndTime");
@@ -328,12 +335,12 @@ public class SearchCustomization extends Customization {
         .getJavadoc()
         .setDescription("@param geometry this is geometry id");
 
-        classCustomization.addConstructor(
-            "public DataSource() {\n" +
-            "   // Empty Constructor\n" +
-            "}")
-        .getJavadoc()
-        .setDescription("Constructor");
+        // classCustomization.addConstructor(
+        //     "public DataSource() {\n" +
+        //     "   // Empty Constructor\n" +
+        //     "}")
+        // .getJavadoc()
+        // .setDescription("Constructor");
 
         // get geometry
         classCustomization.removeMethod("getGeometry");
