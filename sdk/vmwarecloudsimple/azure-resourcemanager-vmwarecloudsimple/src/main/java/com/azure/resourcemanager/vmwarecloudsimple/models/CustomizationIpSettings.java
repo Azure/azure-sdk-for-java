@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CustomizationIpSettings model. */
 @Fluent
 public final class CustomizationIpSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationIpSettings.class);
-
     /*
      * The list of gateways
      */
@@ -32,6 +28,10 @@ public final class CustomizationIpSettings {
      */
     @JsonProperty(value = "subnetMask")
     private String subnetMask;
+
+    /** Creates an instance of CustomizationIpSettings class. */
+    public CustomizationIpSettings() {
+    }
 
     /**
      * Get the gateway property: The list of gateways.
