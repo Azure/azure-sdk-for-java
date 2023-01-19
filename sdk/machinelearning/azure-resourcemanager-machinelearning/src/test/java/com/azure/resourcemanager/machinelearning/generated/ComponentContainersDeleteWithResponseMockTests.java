@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -59,6 +58,7 @@ public final class ComponentContainersDeleteWithResponseMockTests {
 
         manager
             .componentContainers()
-            .deleteWithResponse("tpuwnnohmmzngocf", "juypwyiulaynosu", "kfhaxttpfsmwgsgh", Context.NONE);
+            .deleteWithResponse(
+                "tpuwnnohmmzngocf", "juypwyiulaynosu", "kfhaxttpfsmwgsgh", com.azure.core.util.Context.NONE);
     }
 }

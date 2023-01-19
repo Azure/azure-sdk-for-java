@@ -29,6 +29,15 @@ public final class NodeState extends ExpandableStringEnum<NodeState> {
     public static final NodeState PREEMPTED = fromString("preempted");
 
     /**
+     * Creates a new instance of NodeState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NodeState() {
+    }
+
+    /**
      * Creates or finds a NodeState from its string representation.
      *
      * @param name a name to look for.

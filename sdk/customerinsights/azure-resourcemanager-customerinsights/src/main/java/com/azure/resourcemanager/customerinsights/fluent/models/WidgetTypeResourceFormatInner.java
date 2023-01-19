@@ -5,73 +5,32 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The WidgetTypeResourceFormat. */
-@JsonFlatten
 @Fluent
-public class WidgetTypeResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WidgetTypeResourceFormatInner.class);
-
+public final class WidgetTypeResourceFormatInner extends ProxyResource {
     /*
-     * Name of the widget type.
+     * Definition of WidgetType.
      */
-    @JsonProperty(value = "properties.widgetTypeName", access = JsonProperty.Access.WRITE_ONLY)
-    private String widgetTypeName;
+    @JsonProperty(value = "properties")
+    private WidgetType innerProperties;
 
-    /*
-     * Definition for widget type.
-     */
-    @JsonProperty(value = "properties.definition")
-    private String definition;
+    /** Creates an instance of WidgetTypeResourceFormatInner class. */
+    public WidgetTypeResourceFormatInner() {
+    }
 
-    /*
-     * Description for widget type.
+    /**
+     * Get the innerProperties property: Definition of WidgetType.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Localized display name for the widget type.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
-
-    /*
-     * The image URL.
-     */
-    @JsonProperty(value = "properties.imageUrl")
-    private String imageUrl;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * The widget version.
-     */
-    @JsonProperty(value = "properties.widgetVersion")
-    private String widgetVersion;
-
-    /*
-     * Date time when widget type was last modified.
-     */
-    @JsonProperty(value = "properties.changed", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changed;
-
-    /*
-     * Date time when widget type was created.
-     */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
+    private WidgetType innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the widgetTypeName property: Name of the widget type.
@@ -79,7 +38,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the widgetTypeName value.
      */
     public String widgetTypeName() {
-        return this.widgetTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().widgetTypeName();
     }
 
     /**
@@ -88,7 +47,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the definition value.
      */
     public String definition() {
-        return this.definition;
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
     }
 
     /**
@@ -98,7 +57,10 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the WidgetTypeResourceFormatInner object itself.
      */
     public WidgetTypeResourceFormatInner withDefinition(String definition) {
-        this.definition = definition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WidgetType();
+        }
+        this.innerProperties().withDefinition(definition);
         return this;
     }
 
@@ -108,7 +70,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -118,7 +80,10 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the WidgetTypeResourceFormatInner object itself.
      */
     public WidgetTypeResourceFormatInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WidgetType();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -128,7 +93,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -138,7 +103,10 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the WidgetTypeResourceFormatInner object itself.
      */
     public WidgetTypeResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WidgetType();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -148,7 +116,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the imageUrl value.
      */
     public String imageUrl() {
-        return this.imageUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().imageUrl();
     }
 
     /**
@@ -158,7 +126,10 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the WidgetTypeResourceFormatInner object itself.
      */
     public WidgetTypeResourceFormatInner withImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WidgetType();
+        }
+        this.innerProperties().withImageUrl(imageUrl);
         return this;
     }
 
@@ -168,7 +139,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -177,7 +148,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the widgetVersion value.
      */
     public String widgetVersion() {
-        return this.widgetVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().widgetVersion();
     }
 
     /**
@@ -187,7 +158,10 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the WidgetTypeResourceFormatInner object itself.
      */
     public WidgetTypeResourceFormatInner withWidgetVersion(String widgetVersion) {
-        this.widgetVersion = widgetVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WidgetType();
+        }
+        this.innerProperties().withWidgetVersion(widgetVersion);
         return this;
     }
 
@@ -197,7 +171,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the changed value.
      */
     public OffsetDateTime changed() {
-        return this.changed;
+        return this.innerProperties() == null ? null : this.innerProperties().changed();
     }
 
     /**
@@ -206,7 +180,7 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -215,5 +189,8 @@ public class WidgetTypeResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

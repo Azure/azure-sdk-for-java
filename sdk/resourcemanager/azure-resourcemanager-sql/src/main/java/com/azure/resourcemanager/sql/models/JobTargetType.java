@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobTargetType. */
+/** The type of the target. */
 public final class JobTargetType extends ExpandableStringEnum<JobTargetType> {
     /** Static value TargetGroup for JobTargetType. */
     public static final JobTargetType TARGET_GROUP = fromString("TargetGroup");

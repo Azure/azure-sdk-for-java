@@ -68,6 +68,9 @@ public class WebActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.connectVia")
     private IntegrationRuntimeReference connectVia;
 
+    /** Creates an instance of WebActivity class. */
+    public WebActivity() {}
+
     /**
      * Get the method property: Rest API method for target endpoint.
      *

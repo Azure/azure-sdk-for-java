@@ -23,6 +23,9 @@ public final class TriggerRunsQueryResponse {
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
+    /** Creates an instance of TriggerRunsQueryResponse class. */
+    public TriggerRunsQueryResponse() {}
+
     /**
      * Get the value property: List of trigger runs.
      *

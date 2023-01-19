@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataProtectionOperations List. */
 public final class DataProtectionOperationsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/Operations/List.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/Operations/List.json
      */
     /**
      * Sample code: Returns the list of supported REST operations.
@@ -18,6 +16,6 @@ public final class DataProtectionOperationsListSamples {
      */
     public static void returnsTheListOfSupportedRESTOperations(
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.dataProtectionOperations().list(Context.NONE);
+        manager.dataProtectionOperations().list(com.azure.core.util.Context.NONE);
     }
 }

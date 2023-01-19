@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SharedGalleryImages List. */
 public final class SharedGalleryImagesListSamples {
     /*
@@ -22,6 +20,6 @@ public final class SharedGalleryImagesListSamples {
             .manager()
             .serviceClient()
             .getSharedGalleryImages()
-            .list("myLocation", "galleryUniqueName", null, Context.NONE);
+            .list("myLocation", "galleryUniqueName", null, com.azure.core.util.Context.NONE);
     }
 }

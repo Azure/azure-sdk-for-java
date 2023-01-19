@@ -26,6 +26,15 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
     public static final HttpAuthenticationType CLIENT_CERTIFICATE = fromString("ClientCertificate");
 
     /**
+     * Creates a new instance of HttpAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a HttpAuthenticationType from its string representation.
      *
      * @param name a name to look for.

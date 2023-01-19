@@ -202,7 +202,7 @@ public final class ReflectionSerializable {
             JSON_WRITER_WRITE_JSON_SERIALIZABLE.writeJson(jsonWriter, jsonSerializable);
             JSON_WRITER_FLUSH.flush(jsonWriter);
 
-            return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
+            return outputStream.toByteBuffer();
         }
     }
 
@@ -289,7 +289,7 @@ public final class ReflectionSerializable {
             XML_WRITER_WRITE_XML_SERIALIZABLE.writeXml(xmlWriter, bodyContent);
             XML_WRITER_FLUSH.flush(xmlWriter);
 
-            return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
+            return outputStream.toByteBuffer();
         } catch (IOException ex) {
             throw ex;
         } catch (Exception ex) {

@@ -16,15 +16,14 @@ import com.azure.resourcemanager.machinelearning.models.WorkspaceUpdateParameter
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkspaceUpdateParameters model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"yqduujit\":\"mgxsab\",\"rwpdappdsbdkvwrw\":\"jczdzevndh\"},\"sku\":{\"name\":\"eusnhutj\",\"tier\":\"Premium\",\"size\":\"rl\",\"family\":\"ugjzzdatqxhocdge\",\"capacity\":1293628182},\"identity\":{\"principalId\":\"487aecd4-d701-4fcd-96e2-191149be5eac\",\"tenantId\":\"539dedbd-00b4-49d6-be46-f81de827404d\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"dvkaozw\":{\"principalId\":\"ad4614b5-7bf6-42b7-a901-4aaeb4103000\",\"clientId\":\"f9eec783-beb4-4338-9f38-95ae1d1625bb\"},\"tyhxhurokft\":{\"principalId\":\"ce579e9b-427b-45dc-ba60-9daff56da2b3\",\"clientId\":\"e645ea8d-ce6c-451e-b125-7adbbb09b71e\"},\"lniwpwcukjfkgiaw\":{\"principalId\":\"d4b52704-b742-4a18-813a-920133a52053\",\"clientId\":\"15f2e38e-ed64-499d-a596-2c2a42cc20a1\"},\"ryplwckbasyypn\":{\"principalId\":\"ec6fccd5-ffaa-4fc2-92e2-2669593b65b3\",\"clientId\":\"3eceb606-78dd-4ad2-90ab-a6c20e0c0c41\"}}},\"properties\":{\"description\":\"sgcbac\",\"friendlyName\":\"ejk\",\"imageBuildCompute\":\"ynqgoulzndlikwyq\",\"serviceManagedResourcesSettings\":{},\"primaryUserAssignedIdentity\":\"ibmadgakeqsrxy\",\"publicNetworkAccess\":\"Disabled\",\"applicationInsights\":\"e\",\"containerRegistry\":\"ytb\"}}")
+                    "{\"tags\":{\"yqduujit\":\"mgxsab\",\"rwpdappdsbdkvwrw\":\"jczdzevndh\"},\"sku\":{\"name\":\"eusnhutj\",\"tier\":\"Premium\",\"size\":\"rl\",\"family\":\"ugjzzdatqxhocdge\",\"capacity\":1293628182},\"identity\":{\"principalId\":\"1766dab0-b6cc-422f-8a7a-5b439fec6fab\",\"tenantId\":\"31064613-1bc8-43cc-a67e-db3b41e6f75c\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"dvkaozw\":{\"principalId\":\"47285ad5-2fb1-4802-9800-ef15b64c9005\",\"clientId\":\"3461706a-d43b-4f70-a1e5-f37623e988fb\"},\"tyhxhurokft\":{\"principalId\":\"141163eb-a84e-4057-876d-ef2ca332a35a\",\"clientId\":\"61aace7e-3ef4-41e3-a5f3-cb34b3814d76\"},\"lniwpwcukjfkgiaw\":{\"principalId\":\"d961710b-4bea-4db4-ae21-054935aa3b87\",\"clientId\":\"52a95018-46dd-4fa9-860b-f8dafc12a373\"},\"ryplwckbasyypn\":{\"principalId\":\"14d938eb-6659-4bd4-b080-10c086f54a8e\",\"clientId\":\"a92d70a9-dbe7-4b71-a2b5-0096f3797152\"}}},\"properties\":{\"description\":\"sgcbac\",\"friendlyName\":\"ejk\",\"imageBuildCompute\":\"ynqgoulzndlikwyq\",\"serviceManagedResourcesSettings\":{},\"primaryUserAssignedIdentity\":\"ibmadgakeqsrxy\",\"publicNetworkAccess\":\"Disabled\",\"applicationInsights\":\"e\",\"containerRegistry\":\"ytb\"}}")
                 .toObject(WorkspaceUpdateParameters.class);
         Assertions.assertEquals("mgxsab", model.tags().get("yqduujit"));
         Assertions.assertEquals("eusnhutj", model.sku().name());
@@ -42,8 +41,8 @@ public final class WorkspaceUpdateParametersTests {
         Assertions.assertEquals("ytb", model.containerRegistry());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkspaceUpdateParameters model =
             new WorkspaceUpdateParameters()
                 .withTags(mapOf("yqduujit", "mgxsab", "rwpdappdsbdkvwrw", "jczdzevndh"))

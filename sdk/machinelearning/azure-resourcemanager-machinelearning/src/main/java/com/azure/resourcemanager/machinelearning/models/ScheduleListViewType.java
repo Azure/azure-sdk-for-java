@@ -20,6 +20,15 @@ public final class ScheduleListViewType extends ExpandableStringEnum<ScheduleLis
     public static final ScheduleListViewType ALL = fromString("All");
 
     /**
+     * Creates a new instance of ScheduleListViewType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduleListViewType() {
+    }
+
+    /**
      * Creates or finds a ScheduleListViewType from its string representation.
      *
      * @param name a name to look for.

@@ -5,26 +5,21 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.maps.fluent.models.MapsAccountProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters used to update an existing Maps Account. */
-@JsonFlatten
 @Fluent
-public class MapsAccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsAccountUpdateParameters.class);
-
+public final class MapsAccountUpdateParameters {
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These
-     * tags can be used in viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater than 128 characters and value no greater than
-     * 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and
+     * grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag
+     * must have a key no greater than 128 characters and value no greater than 256 characters.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -40,24 +35,14 @@ public class MapsAccountUpdateParameters {
     private Sku sku;
 
     /*
-     * A unique identifier for the maps account
+     * The map account properties.
      */
-    @JsonProperty(value = "properties.uniqueId", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueId;
+    @JsonProperty(value = "properties")
+    private MapsAccountProperties innerProperties;
 
-    /*
-     * Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication
-     * from any usage.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
-
-    /*
-     * the state of the provisioning.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    /** Creates an instance of MapsAccountUpdateParameters class. */
+    public MapsAccountUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
@@ -124,12 +109,21 @@ public class MapsAccountUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The map account properties.
+     *
+     * @return the innerProperties value.
+     */
+    private MapsAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the uniqueId property: A unique identifier for the maps account.
      *
      * @return the uniqueId value.
      */
     public String uniqueId() {
-        return this.uniqueId;
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueId();
     }
 
     /**
@@ -139,7 +133,7 @@ public class MapsAccountUpdateParameters {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
@@ -150,7 +144,10 @@ public class MapsAccountUpdateParameters {
      * @return the MapsAccountUpdateParameters object itself.
      */
     public MapsAccountUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -160,7 +157,7 @@ public class MapsAccountUpdateParameters {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -171,6 +168,9 @@ public class MapsAccountUpdateParameters {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

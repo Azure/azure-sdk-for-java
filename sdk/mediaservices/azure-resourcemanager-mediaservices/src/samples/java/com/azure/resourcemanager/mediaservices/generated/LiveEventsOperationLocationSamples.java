@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LiveEvents OperationLocation. */
 public final class LiveEventsOperationLocationSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-operation-location.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-08-01/examples/liveevent-operation-location.json
      */
     /**
      * Sample code: Get the LiveEvent operation status.
@@ -25,6 +23,6 @@ public final class LiveEventsOperationLocationSamples {
                 "slitestmedia10",
                 "myLiveEvent1",
                 "62e4d893-d233-4005-988e-a428d9f77076",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

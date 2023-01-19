@@ -70,42 +70,6 @@ public interface SqlElasticPool
     /** @return a representation of the deferred computation of the information about elastic pool activities */
     PagedFlux<ElasticPoolActivity> listActivitiesAsync();
 
-    /** @return the information about elastic pool database activities */
-    List<ElasticPoolDatabaseActivity> listDatabaseActivities();
-
-    /** @return the information about elastic pool database activities */
-    PagedFlux<ElasticPoolDatabaseActivity> listDatabaseActivitiesAsync();
-
-    /**
-     * Lists the database metrics for this SQL Elastic Pool.
-     *
-     * @param filter an OData filter expression that describes a subset of metrics to return
-     * @return the elastic pool's database metrics
-     */
-    List<SqlDatabaseMetric> listDatabaseMetrics(String filter);
-
-    /**
-     * Asynchronously lists the database metrics for this SQL Elastic Pool.
-     *
-     * @param filter an OData filter expression that describes a subset of metrics to return
-     * @return a representation of the deferred computation of this call
-     */
-    PagedFlux<SqlDatabaseMetric> listDatabaseMetricsAsync(String filter);
-
-    /**
-     * Lists the database metric definitions for this SQL Elastic Pool.
-     *
-     * @return the elastic pool's metric definitions
-     */
-    List<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitions();
-
-    /**
-     * Asynchronously lists the database metric definitions for this SQL Elastic Pool.
-     *
-     * @return a representation of the deferred computation of this call
-     */
-    PagedFlux<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitionsAsync();
-
     /**
      * Lists the SQL databases in this SQL Elastic Pool.
      *

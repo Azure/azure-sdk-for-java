@@ -59,7 +59,7 @@ public final class EnvironmentVersionsClientImpl implements EnvironmentVersionsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface EnvironmentVersionsService {
+    public interface EnvironmentVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.netty.resources.ConnectionProvider;
 
 /**
@@ -17,6 +18,8 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
+
+    private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClientProvider.class);
 
     // Enum Singleton Pattern
     private enum GlobalNettyHttpClient {
@@ -73,6 +76,8 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         // Only configure the maximum connections if it has been set in the options.
         Integer maximumConnectionPoolSize = clientOptions.getMaximumConnectionPoolSize();
         if (maximumConnectionPoolSize != null && maximumConnectionPoolSize > 0) {
+            LOGGER.verbose("Setting Reactor Netty ConnectionProvider's maximum connections to "
+                + maximumConnectionPoolSize + ".");
             connectionProviderBuilder.maxConnections(maximumConnectionPoolSize);
         } else {
             // reactor-netty (as of version 1.0.13) uses different default values for maxConnections when creating
@@ -89,7 +94,7 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
             connectionProviderBuilder.maxConnections(DEFAULT_MAX_CONNECTIONS);
         }
 
-        builder = builder.connectionProvider(connectionProviderBuilder.build());
+        builder = builder.connectionProviderInternal(connectionProviderBuilder.build());
 
         return builder.build();
     }

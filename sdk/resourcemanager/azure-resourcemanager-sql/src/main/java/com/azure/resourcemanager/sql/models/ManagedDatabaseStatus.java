@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedDatabaseStatus. */
+/** Status of the database. */
 public final class ManagedDatabaseStatus extends ExpandableStringEnum<ManagedDatabaseStatus> {
     /** Static value Online for ManagedDatabaseStatus. */
     public static final ManagedDatabaseStatus ONLINE = fromString("Online");

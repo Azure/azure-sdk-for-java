@@ -63,7 +63,7 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
 
                 if (updatedRetryCount > maxRetries) {
                     LOGGER.log(LogLevel.ERROR, () -> "Exhausted all retry attempts while downloading, "
-                        + updatedRetryCount + " of " + maxRetries + ".", exception);
+                        + maxRetries + " of " + maxRetries + ".", exception);
                     return Flux.error(exception);
                 }
 

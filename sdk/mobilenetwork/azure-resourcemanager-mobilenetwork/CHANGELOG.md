@@ -1,5 +1,59 @@
 # Release History
 
+## 1.0.0-beta.6 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.5 (2023-01-16)
+
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2022-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.PacketCoreControlPlaneOperations` was removed
+
+* `models.SimOperations` was removed
+
+#### `MobileNetworkManager` was modified
+
+* `simOperations()` was removed
+* `packetCoreControlPlaneOperations()` was removed
+
+### Features Added
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `collectDiagnosticsPackage(models.PacketCoreControlPlaneCollectDiagnosticsPackage)` was added
+* `rollback()` was added
+* `collectDiagnosticsPackage(models.PacketCoreControlPlaneCollectDiagnosticsPackage,com.azure.core.util.Context)` was added
+* `reinstall(com.azure.core.util.Context)` was added
+* `reinstall()` was added
+* `rollback(com.azure.core.util.Context)` was added
+
+#### `models.Sims` was modified
+
+* `bulkUpload(java.lang.String,java.lang.String,models.SimUploadList,com.azure.core.util.Context)` was added
+* `bulkDelete(java.lang.String,java.lang.String,models.SimDeleteList,com.azure.core.util.Context)` was added
+* `bulkUploadEncrypted(java.lang.String,java.lang.String,models.EncryptedSimUploadList,com.azure.core.util.Context)` was added
+* `bulkDelete(java.lang.String,java.lang.String,models.SimDeleteList)` was added
+* `bulkUpload(java.lang.String,java.lang.String,models.SimUploadList)` was added
+* `bulkUploadEncrypted(java.lang.String,java.lang.String,models.EncryptedSimUploadList)` was added
+
+#### `models.PacketCoreControlPlanes` was modified
+
+* `reinstall(java.lang.String,java.lang.String)` was added
+* `collectDiagnosticsPackage(java.lang.String,java.lang.String,models.PacketCoreControlPlaneCollectDiagnosticsPackage,com.azure.core.util.Context)` was added
+* `rollback(java.lang.String,java.lang.String)` was added
+* `collectDiagnosticsPackage(java.lang.String,java.lang.String,models.PacketCoreControlPlaneCollectDiagnosticsPackage)` was added
+* `reinstall(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `rollback(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
 ## 1.0.0-beta.4 (2022-12-21)
 
 - Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2022-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

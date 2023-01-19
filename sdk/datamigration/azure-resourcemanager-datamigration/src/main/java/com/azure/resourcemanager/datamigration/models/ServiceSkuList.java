@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.models.AvailableServiceSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** OData page of available SKUs. */
 @Fluent
 public final class ServiceSkuList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSkuList.class);
-
     /*
      * List of service SKUs
      */
@@ -27,6 +23,10 @@ public final class ServiceSkuList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ServiceSkuList class. */
+    public ServiceSkuList() {
+    }
 
     /**
      * Get the value property: List of service SKUs.

@@ -17,6 +17,15 @@ public final class PublicIpAllocationMethod extends ExpandableStringEnum<PublicI
     public static final PublicIpAllocationMethod STATIC = fromString("Static");
 
     /**
+     * Creates a new instance of PublicIpAllocationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicIpAllocationMethod() {
+    }
+
+    /**
      * Creates or finds a PublicIpAllocationMethod from its string representation.
      *
      * @param name a name to look for.

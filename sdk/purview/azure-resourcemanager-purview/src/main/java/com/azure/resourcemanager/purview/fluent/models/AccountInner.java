@@ -7,7 +7,6 @@ package com.azure.resourcemanager.purview.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.models.AccountPropertiesEndpoints;
 import com.azure.resourcemanager.purview.models.AccountPropertiesManagedResources;
 import com.azure.resourcemanager.purview.models.AccountSku;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.purview.models.CloudConnectors;
 import com.azure.resourcemanager.purview.models.Identity;
 import com.azure.resourcemanager.purview.models.ProvisioningState;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -24,8 +22,6 @@ import java.util.Map;
 /** Account resource. */
 @Fluent
 public final class AccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountInner.class);
-
     /*
      * Gets or sets the properties.
      */
@@ -35,7 +31,7 @@ public final class AccountInner extends Resource {
     /*
      * Gets or sets the Sku.
      */
-    @JsonProperty(value = "sku")
+    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private AccountSku sku;
 
     /*
@@ -49,6 +45,10 @@ public final class AccountInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of AccountInner class. */
+    public AccountInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the properties.
@@ -66,17 +66,6 @@ public final class AccountInner extends Resource {
      */
     public AccountSku sku() {
         return this.sku;
-    }
-
-    /**
-     * Set the sku property: Gets or sets the Sku.
-     *
-     * @param sku the sku value to set.
-     * @return the AccountInner object itself.
-     */
-    public AccountInner withSku(AccountSku sku) {
-        this.sku = sku;
-        return this;
     }
 
     /**

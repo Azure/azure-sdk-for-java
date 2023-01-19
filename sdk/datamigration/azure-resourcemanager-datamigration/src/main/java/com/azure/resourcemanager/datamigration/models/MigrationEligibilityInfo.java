@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about migration eligibility of a server object. */
 @Immutable
 public final class MigrationEligibilityInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationEligibilityInfo.class);
-
     /*
      * Whether object is eligible for migration or not.
      */
@@ -26,6 +22,10 @@ public final class MigrationEligibilityInfo {
      */
     @JsonProperty(value = "validationMessages", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> validationMessages;
+
+    /** Creates an instance of MigrationEligibilityInfo class. */
+    public MigrationEligibilityInfo() {
+    }
 
     /**
      * Get the isEligibleForMigration property: Whether object is eligible for migration or not.

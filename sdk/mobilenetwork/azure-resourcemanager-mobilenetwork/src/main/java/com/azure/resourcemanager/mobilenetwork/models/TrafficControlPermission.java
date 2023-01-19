@@ -17,6 +17,15 @@ public final class TrafficControlPermission extends ExpandableStringEnum<Traffic
     public static final TrafficControlPermission BLOCKED = fromString("Blocked");
 
     /**
+     * Creates a new instance of TrafficControlPermission value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrafficControlPermission() {
+    }
+
+    /**
      * Creates or finds a TrafficControlPermission from its string representation.
      *
      * @param name a name to look for.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TaskState. */
+/** The state of the task. This is ignored if submitted. */
 public final class TaskState extends ExpandableStringEnum<TaskState> {
     /** Static value Unknown for TaskState. */
     public static final TaskState UNKNOWN = fromString("Unknown");
@@ -35,6 +35,15 @@ public final class TaskState extends ExpandableStringEnum<TaskState> {
     public static final TaskState FAULTED = fromString("Faulted");
 
     /**
+     * Creates a new instance of TaskState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TaskState() {
+    }
+
+    /**
      * Creates or finds a TaskState from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class TaskState extends ExpandableStringEnum<TaskState> {
         return fromString(name, TaskState.class);
     }
 
-    /** @return known TaskState values. */
+    /**
+     * Gets known TaskState values.
+     *
+     * @return known TaskState values.
+     */
     public static Collection<TaskState> values() {
         return values(TaskState.class);
     }

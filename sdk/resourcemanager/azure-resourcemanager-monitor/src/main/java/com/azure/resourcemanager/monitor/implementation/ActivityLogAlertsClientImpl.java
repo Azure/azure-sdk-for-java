@@ -67,7 +67,7 @@ public final class ActivityLogAlertsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientActivit")
-    private interface ActivityLogAlertsService {
+    public interface ActivityLogAlertsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
@@ -317,23 +317,6 @@ public final class ActivityLogAlertsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
      * @param activityLogAlertRule The Activity Log Alert rule to create or use for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityLogAlertResourceInner createOrUpdate(
-        String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule) {
-        return createOrUpdateAsync(resourceGroupName, activityLogAlertName, activityLogAlertRule).block();
-    }
-
-    /**
-     * Create a new Activity Log Alert rule or update an existing one.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRule The Activity Log Alert rule to create or use for the update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -348,6 +331,24 @@ public final class ActivityLogAlertsClientImpl
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, activityLogAlertName, activityLogAlertRule, context)
             .block();
+    }
+
+    /**
+     * Create a new Activity Log Alert rule or update an existing one.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param activityLogAlertName The name of the Activity Log Alert rule.
+     * @param activityLogAlertRule The Activity Log Alert rule to create or use for the update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Activity Log Alert rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityLogAlertResourceInner createOrUpdate(
+        String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule) {
+        return createOrUpdateWithResponse(resourceGroupName, activityLogAlertName, activityLogAlertRule, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -470,21 +471,6 @@ public final class ActivityLogAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityLogAlertResourceInner getByResourceGroup(String resourceGroupName, String activityLogAlertName) {
-        return getByResourceGroupAsync(resourceGroupName, activityLogAlertName).block();
-    }
-
-    /**
-     * Get an Activity Log Alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -495,6 +481,21 @@ public final class ActivityLogAlertsClientImpl
     public Response<ActivityLogAlertResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String activityLogAlertName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, activityLogAlertName, context).block();
+    }
+
+    /**
+     * Get an Activity Log Alert rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param activityLogAlertName The name of the Activity Log Alert rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Activity Log Alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityLogAlertResourceInner getByResourceGroup(String resourceGroupName, String activityLogAlertName) {
+        return getByResourceGroupWithResponse(resourceGroupName, activityLogAlertName, Context.NONE).getValue();
     }
 
     /**
@@ -614,20 +615,6 @@ public final class ActivityLogAlertsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String activityLogAlertName) {
-        deleteAsync(resourceGroupName, activityLogAlertName).block();
-    }
-
-    /**
-     * Delete an Activity Log Alert rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -637,6 +624,20 @@ public final class ActivityLogAlertsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String activityLogAlertName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, activityLogAlertName, context).block();
+    }
+
+    /**
+     * Delete an Activity Log Alert rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param activityLogAlertName The name of the Activity Log Alert rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String activityLogAlertName) {
+        deleteWithResponse(resourceGroupName, activityLogAlertName, Context.NONE);
     }
 
     /**
@@ -788,24 +789,6 @@ public final class ActivityLogAlertsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
      * @param activityLogAlertRulePatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Activity Log Alert rule resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityLogAlertResourceInner update(
-        String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch) {
-        return updateAsync(resourceGroupName, activityLogAlertName, activityLogAlertRulePatch).block();
-    }
-
-    /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param activityLogAlertName The name of the Activity Log Alert rule.
-     * @param activityLogAlertRulePatch Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -820,6 +803,25 @@ public final class ActivityLogAlertsClientImpl
         Context context) {
         return updateWithResponseAsync(resourceGroupName, activityLogAlertName, activityLogAlertRulePatch, context)
             .block();
+    }
+
+    /**
+     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
+     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param activityLogAlertName The name of the Activity Log Alert rule.
+     * @param activityLogAlertRulePatch Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Activity Log Alert rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityLogAlertResourceInner update(
+        String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch) {
+        return updateWithResponse(resourceGroupName, activityLogAlertName, activityLogAlertRulePatch, Context.NONE)
+            .getValue();
     }
 
     /**

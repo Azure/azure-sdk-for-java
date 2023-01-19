@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserInfo model. */
 @Fluent
 public final class UserInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInfo.class);
-
     /*
      * First Name of the user
      */
@@ -37,6 +33,10 @@ public final class UserInfo {
      */
     @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
+
+    /** Creates an instance of UserInfo class. */
+    public UserInfo() {
+    }
 
     /**
      * Get the firstName property: First Name of the user.

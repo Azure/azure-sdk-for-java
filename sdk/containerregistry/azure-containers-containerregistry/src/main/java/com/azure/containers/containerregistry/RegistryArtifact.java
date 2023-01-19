@@ -221,7 +221,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
         String res = this.getDigest();
         try {
             return this.serviceClient.getManifestPropertiesWithResponse(getRepositoryName(), res, enableSync(getTracingContext(context)));
-        } catch (AcrErrorsException exception) {
+        } catch (HttpResponseException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }

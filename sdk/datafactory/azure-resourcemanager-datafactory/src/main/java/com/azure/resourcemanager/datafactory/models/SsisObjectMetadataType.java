@@ -23,6 +23,15 @@ public final class SsisObjectMetadataType extends ExpandableStringEnum<SsisObjec
     public static final SsisObjectMetadataType ENVIRONMENT = fromString("Environment");
 
     /**
+     * Creates a new instance of SsisObjectMetadataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SsisObjectMetadataType() {
+    }
+
+    /**
      * Creates or finds a SsisObjectMetadataType from its string representation.
      *
      * @param name a name to look for.

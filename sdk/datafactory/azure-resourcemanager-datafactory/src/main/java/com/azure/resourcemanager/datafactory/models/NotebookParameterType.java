@@ -23,6 +23,15 @@ public final class NotebookParameterType extends ExpandableStringEnum<NotebookPa
     public static final NotebookParameterType BOOL = fromString("bool");
 
     /**
+     * Creates a new instance of NotebookParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotebookParameterType() {
+    }
+
+    /**
      * Creates or finds a NotebookParameterType from its string representation.
      *
      * @param name a name to look for.

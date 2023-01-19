@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network endpoint. */
 @Fluent
 public final class IntegrationServiceEnvironmentNetworkEndpoint {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentNetworkEndpoint.class);
-
     /*
      * The accessibility state.
      */
@@ -33,6 +28,10 @@ public final class IntegrationServiceEnvironmentNetworkEndpoint {
      */
     @JsonProperty(value = "ports")
     private List<String> ports;
+
+    /** Creates an instance of IntegrationServiceEnvironmentNetworkEndpoint class. */
+    public IntegrationServiceEnvironmentNetworkEndpoint() {
+    }
 
     /**
      * Get the accessibility property: The accessibility state.

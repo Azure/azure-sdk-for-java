@@ -33,6 +33,10 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     @JsonProperty(value = "failedLocationCount", required = true)
     private float failedLocationCount;
 
+    /** Creates an instance of WebtestLocationAvailabilityCriteria class. */
+    public WebtestLocationAvailabilityCriteria() {
+    }
+
     /**
      * Get the webTestId property: The Application Insights web test Id.
      *

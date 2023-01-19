@@ -20,6 +20,15 @@ public final class VirtualMachineScaleSetScaleInRules extends ExpandableStringEn
     public static final VirtualMachineScaleSetScaleInRules NEWEST_VM = fromString("NewestVM");
 
     /**
+     * Creates a new instance of VirtualMachineScaleSetScaleInRules value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachineScaleSetScaleInRules() {
+    }
+
+    /**
      * Creates or finds a VirtualMachineScaleSetScaleInRules from its string representation.
      *
      * @param name a name to look for.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HanaProvisioningStatesEnum. */
+/** State of provisioning of the HanaInstance. */
 public final class HanaProvisioningStatesEnum extends ExpandableStringEnum<HanaProvisioningStatesEnum> {
     /** Static value Accepted for HanaProvisioningStatesEnum. */
     public static final HanaProvisioningStatesEnum ACCEPTED = fromString("Accepted");
@@ -32,6 +32,15 @@ public final class HanaProvisioningStatesEnum extends ExpandableStringEnum<HanaP
     public static final HanaProvisioningStatesEnum MIGRATING = fromString("Migrating");
 
     /**
+     * Creates a new instance of HanaProvisioningStatesEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HanaProvisioningStatesEnum() {
+    }
+
+    /**
      * Creates or finds a HanaProvisioningStatesEnum from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class HanaProvisioningStatesEnum extends ExpandableStringEnum<HanaP
         return fromString(name, HanaProvisioningStatesEnum.class);
     }
 
-    /** @return known HanaProvisioningStatesEnum values. */
+    /**
+     * Gets known HanaProvisioningStatesEnum values.
+     *
+     * @return known HanaProvisioningStatesEnum values.
+     */
     public static Collection<HanaProvisioningStatesEnum> values() {
         return values(HanaProvisioningStatesEnum.class);
     }

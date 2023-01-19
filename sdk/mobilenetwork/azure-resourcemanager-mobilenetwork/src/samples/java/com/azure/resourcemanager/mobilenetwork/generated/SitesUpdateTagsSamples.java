@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.models.Site;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +21,10 @@ public final class SitesUpdateTagsSamples {
     public static void updateMobileNetworkSiteTags(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         Site resource =
-            manager.sites().getWithResponse("rg1", "testMobileNetwork", "testSite", Context.NONE).getValue();
+            manager
+                .sites()
+                .getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

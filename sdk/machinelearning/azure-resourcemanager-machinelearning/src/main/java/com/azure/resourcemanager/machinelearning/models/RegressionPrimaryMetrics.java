@@ -25,6 +25,15 @@ public final class RegressionPrimaryMetrics extends ExpandableStringEnum<Regress
         fromString("NormalizedMeanAbsoluteError");
 
     /**
+     * Creates a new instance of RegressionPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RegressionPrimaryMetrics() {
+    }
+
+    /**
      * Creates or finds a RegressionPrimaryMetrics from its string representation.
      *
      * @param name a name to look for.

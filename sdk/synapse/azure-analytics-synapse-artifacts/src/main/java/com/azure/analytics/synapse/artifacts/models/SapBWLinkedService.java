@@ -57,6 +57,9 @@ public class SapBWLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SapBWLinkedService class. */
+    public SapBWLinkedService() {}
+
     /**
      * Get the server property: Host name of the SAP BW instance. Type: string (or Expression with resultType string).
      *

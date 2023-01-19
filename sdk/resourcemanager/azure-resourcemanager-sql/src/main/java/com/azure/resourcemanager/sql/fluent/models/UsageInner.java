@@ -53,6 +53,10 @@ public final class UsageInner {
     @JsonProperty(value = "requestedLimit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer requestedLimit;
 
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
+
     /**
      * Get the id property: Resource ID.
      *

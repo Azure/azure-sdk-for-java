@@ -19,6 +19,22 @@ public interface PeeringServicesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing peering service with the specified name under the given subscription and resource group along
+     *     with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PeeringServiceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String peeringServiceName, Context context);
+
+    /**
+     * Gets an existing peering service with the specified name under the given subscription and resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringServiceName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -28,19 +44,21 @@ public interface PeeringServicesClient {
     PeeringServiceInner getByResourceGroup(String resourceGroupName, String peeringServiceName);
 
     /**
-     * Gets an existing peering service with the specified name under the given subscription and resource group.
+     * Creates a new peering service or updates an existing peering with the specified name under the given subscription
+     * and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering.
+     * @param peeringServiceName The name of the peering service.
+     * @param peeringService The properties needed to create or update a peering service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering service with the specified name under the given subscription and resource group.
+     * @return peering Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringServiceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String peeringServiceName, Context context);
+    Response<PeeringServiceInner> createOrUpdateWithResponse(
+        String resourceGroupName, String peeringServiceName, PeeringServiceInner peeringService, Context context);
 
     /**
      * Creates a new peering service or updates an existing peering with the specified name under the given subscription
@@ -59,21 +77,18 @@ public interface PeeringServicesClient {
         String resourceGroupName, String peeringServiceName, PeeringServiceInner peeringService);
 
     /**
-     * Creates a new peering service or updates an existing peering with the specified name under the given subscription
-     * and resource group.
+     * Deletes an existing peering service with the specified name under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
-     * @param peeringService The properties needed to create or update a peering service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringServiceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String peeringServiceName, PeeringServiceInner peeringService, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String peeringServiceName, Context context);
 
     /**
      * Deletes an existing peering service with the specified name under the given subscription and resource group.
@@ -88,18 +103,20 @@ public interface PeeringServicesClient {
     void delete(String resourceGroupName, String peeringServiceName);
 
     /**
-     * Deletes an existing peering service with the specified name under the given subscription and resource group.
+     * Updates tags for a peering service with the specified name under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
+     * @param tags The resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return peering Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String peeringServiceName, Context context);
+    Response<PeeringServiceInner> updateWithResponse(
+        String resourceGroupName, String peeringServiceName, ResourceTags tags, Context context);
 
     /**
      * Updates tags for a peering service with the specified name under the given subscription and resource group.
@@ -116,29 +133,13 @@ public interface PeeringServicesClient {
     PeeringServiceInner update(String resourceGroupName, String peeringServiceName, ResourceTags tags);
 
     /**
-     * Updates tags for a peering service with the specified name under the given subscription and resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param tags The resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringServiceInner> updateWithResponse(
-        String resourceGroupName, String peeringServiceName, ResourceTags tags, Context context);
-
-    /**
      * Lists all of the peering services under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringServiceInner> listByResourceGroup(String resourceGroupName);
@@ -151,7 +152,7 @@ public interface PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringServiceInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -161,7 +162,7 @@ public interface PeeringServicesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringServiceInner> list();
@@ -173,7 +174,7 @@ public interface PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringServiceInner> list(Context context);

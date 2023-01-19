@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Start. */
 public final class IntegrationRuntimesStartSamples {
     /*
@@ -19,6 +17,10 @@ public final class IntegrationRuntimesStartSamples {
     public static void integrationRuntimesStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .integrationRuntimes()
-            .start("exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime", Context.NONE);
+            .start(
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

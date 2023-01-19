@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.fluent.models.OperationDetailInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The set of operations available for Maps. */
 @Fluent
 public final class MapsOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsOperations.class);
-
     /*
      * An operation available for Maps.
      */
@@ -28,6 +24,10 @@ public final class MapsOperations {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of MapsOperations class. */
+    public MapsOperations() {
+    }
 
     /**
      * Get the value property: An operation available for Maps.

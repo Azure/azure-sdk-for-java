@@ -47,6 +47,9 @@ public final class PolybaseSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of PolybaseSettings class. */
+    public PolybaseSettings() {}
+
     /**
      * Get the rejectType property: Reject type.
      *

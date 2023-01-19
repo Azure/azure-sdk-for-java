@@ -14,8 +14,6 @@
 ### AzureBareMetalInstances_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AzureBareMetalInstances GetByResourceGroup. */
 public final class AzureBareMetalInstancesGetByResourceGroupSamples {
     /*
@@ -30,7 +28,8 @@ public final class AzureBareMetalInstancesGetByResourceGroupSamples {
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
         manager
             .azureBareMetalInstances()
-            .getByResourceGroupWithResponse("myResourceGroup", "myAzureBareMetalInstance", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myAzureBareMetalInstance", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -38,8 +37,6 @@ public final class AzureBareMetalInstancesGetByResourceGroupSamples {
 ### AzureBareMetalInstances_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AzureBareMetalInstances List. */
 public final class AzureBareMetalInstancesListSamples {
     /*
@@ -52,7 +49,7 @@ public final class AzureBareMetalInstancesListSamples {
      */
     public static void listAllAzureBareMetalInstancesInASubscription(
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
-        manager.azureBareMetalInstances().list(Context.NONE);
+        manager.azureBareMetalInstances().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -60,8 +57,6 @@ public final class AzureBareMetalInstancesListSamples {
 ### AzureBareMetalInstances_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AzureBareMetalInstances ListByResourceGroup. */
 public final class AzureBareMetalInstancesListByResourceGroupSamples {
     /*
@@ -74,7 +69,7 @@ public final class AzureBareMetalInstancesListByResourceGroupSamples {
      */
     public static void listAllAzureBareMetalInstancesInAResourceGroup(
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
-        manager.azureBareMetalInstances().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.azureBareMetalInstances().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -82,7 +77,6 @@ public final class AzureBareMetalInstancesListByResourceGroupSamples {
 ### AzureBareMetalInstances_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.baremetalinfrastructure.models.Tags;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,7 +96,10 @@ public final class AzureBareMetalInstancesUpdateSamples {
         manager
             .azureBareMetalInstances()
             .updateWithResponse(
-                "myResourceGroup", "myABMInstance", new Tags().withTags(mapOf("testkey", "testvalue")), Context.NONE);
+                "myResourceGroup",
+                "myABMInstance",
+                new Tags().withTags(mapOf("testkey", "testvalue")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -117,7 +114,8 @@ public final class AzureBareMetalInstancesUpdateSamples {
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
         manager
             .azureBareMetalInstances()
-            .updateWithResponse("myResourceGroup", "myABMInstance", new Tags().withTags(mapOf()), Context.NONE);
+            .updateWithResponse(
+                "myResourceGroup", "myABMInstance", new Tags().withTags(mapOf()), com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")
@@ -136,8 +134,6 @@ public final class AzureBareMetalInstancesUpdateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -150,7 +146,7 @@ public final class OperationsListSamples {
      */
     public static void listAllManagementOperationsSupportedByTheAzureBareMetalRP(
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

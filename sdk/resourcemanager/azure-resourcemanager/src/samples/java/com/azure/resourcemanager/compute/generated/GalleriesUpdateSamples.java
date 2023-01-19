@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryUpdate;
 
 /** Samples for Galleries Update. */
@@ -27,6 +26,6 @@ public final class GalleriesUpdateSamples {
                 "myResourceGroup",
                 "myGalleryName",
                 new GalleryUpdate().withDescription("This is the gallery description."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

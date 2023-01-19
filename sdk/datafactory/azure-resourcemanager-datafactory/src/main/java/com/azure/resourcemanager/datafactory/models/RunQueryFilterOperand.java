@@ -51,6 +51,15 @@ public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFi
     public static final RunQueryFilterOperand LATEST_ONLY = fromString("LatestOnly");
 
     /**
+     * Creates a new instance of RunQueryFilterOperand value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunQueryFilterOperand() {
+    }
+
+    /**
      * Creates or finds a RunQueryFilterOperand from its string representation.
      *
      * @param name a name to look for.

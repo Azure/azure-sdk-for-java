@@ -83,6 +83,9 @@ public class DelimitedTextDataset extends Dataset {
     @JsonProperty(value = "typeProperties.nullValue")
     private Object nullValue;
 
+    /** Creates an instance of DelimitedTextDataset class. */
+    public DelimitedTextDataset() {}
+
     /**
      * Get the location property: The location of the delimited text storage.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of an enrollment. */
 @Fluent
 public final class Enrollment {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Enrollment.class);
-
     /*
      * The start date of the enrollment.
      */
@@ -68,6 +64,10 @@ public final class Enrollment {
      */
     @JsonProperty(value = "billingCycle", access = JsonProperty.Access.WRITE_ONLY)
     private String billingCycle;
+
+    /** Creates an instance of Enrollment class. */
+    public Enrollment() {
+    }
 
     /**
      * Get the startDate property: The start date of the enrollment.

@@ -6,17 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.ComputeSecretsInner;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeSecretsInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeSecretsInner model =
             BinaryData.fromString("{\"computeType\":\"ComputeSecrets\"}").toObject(ComputeSecretsInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeSecretsInner model = new ComputeSecretsInner();
         model = BinaryData.fromObject(model).toObject(ComputeSecretsInner.class);
     }

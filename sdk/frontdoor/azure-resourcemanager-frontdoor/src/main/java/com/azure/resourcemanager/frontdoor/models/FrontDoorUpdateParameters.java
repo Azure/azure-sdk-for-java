@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties needed to update a Front Door. */
 @Fluent
 public class FrontDoorUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontDoorUpdateParameters.class);
-
     /*
      * A friendly name for the frontDoor
      */
@@ -59,11 +55,14 @@ public class FrontDoorUpdateParameters {
     private BackendPoolsSettings backendPoolsSettings;
 
     /*
-     * Operational status of the Front Door load balancer. Permitted values are
-     * 'Enabled' or 'Disabled'
+     * Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "enabledState")
     private FrontDoorEnabledState enabledState;
+
+    /** Creates an instance of FrontDoorUpdateParameters class. */
+    public FrontDoorUpdateParameters() {
+    }
 
     /**
      * Get the friendlyName property: A friendly name for the frontDoor.

@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.RoleAssignmentsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RoleAssignmentsClient. */
 public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(RoleAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RoleAssignmentsService service;
 
@@ -66,7 +63,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface RoleAssignmentsService {
+    public interface RoleAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -149,7 +146,8 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubSinglePageAsync(
@@ -207,7 +205,8 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubSinglePageAsync(
@@ -261,7 +260,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleAssignmentResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
@@ -279,7 +278,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleAssignmentResourceFormatInner> listByHubAsync(
@@ -297,7 +296,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -313,7 +312,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentResourceFormatInner> listByHub(
@@ -331,7 +330,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -392,7 +391,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -453,9 +452,9 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link PollerFlux} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -471,7 +470,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
                 this.client.getHttpPipeline(),
                 RoleAssignmentResourceFormatInner.class,
                 RoleAssignmentResourceFormatInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -485,9 +484,9 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link PollerFlux} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -518,16 +517,16 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link SyncPoller} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
         beginCreateOrUpdate(
             String resourceGroupName,
             String hubName,
             String assignmentName,
             RoleAssignmentResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters).getSyncPoller();
     }
 
     /**
@@ -541,9 +540,9 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link SyncPoller} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -551,7 +550,8 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             String assignmentName,
             RoleAssignmentResourceFormatInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters, context)
             .getSyncPoller();
     }
 
@@ -565,7 +565,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RoleAssignmentResourceFormatInner> createOrUpdateAsync(
@@ -586,7 +586,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RoleAssignmentResourceFormatInner> createOrUpdateAsync(
@@ -650,7 +650,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RoleAssignmentResourceFormatInner>> getWithResponseAsync(
@@ -704,7 +704,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RoleAssignmentResourceFormatInner>> getWithResponseAsync(
@@ -754,20 +754,31 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RoleAssignmentResourceFormatInner> getAsync(
         String resourceGroupName, String hubName, String assignmentName) {
         return getWithResponseAsync(resourceGroupName, hubName, assignmentName)
-            .flatMap(
-                (Response<RoleAssignmentResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the role assignment in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param assignmentName The name of the role assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the role assignment in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoleAssignmentResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String assignmentName, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
     }
 
     /**
@@ -783,25 +794,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentResourceFormatInner get(String resourceGroupName, String hubName, String assignmentName) {
-        return getAsync(resourceGroupName, hubName, assignmentName).block();
-    }
-
-    /**
-     * Gets the role assignment in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param assignmentName The name of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
+        return getWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE).getValue();
     }
 
     /**
@@ -813,7 +806,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -865,7 +858,7 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -913,12 +906,29 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String assignmentName) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the role assignment in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param assignmentName The name of the role assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String hubName, String assignmentName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
     }
 
     /**
@@ -933,35 +943,19 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hubName, String assignmentName) {
-        deleteAsync(resourceGroupName, hubName, assignmentName).block();
-    }
-
-    /**
-     * Deletes the role assignment in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param assignmentName The name of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
+        deleteWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list role assignment operation.
+     * @return the response of list role assignment operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -992,12 +986,14 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list role assignment operation.
+     * @return the response of list role assignment operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubNextSinglePageAsync(

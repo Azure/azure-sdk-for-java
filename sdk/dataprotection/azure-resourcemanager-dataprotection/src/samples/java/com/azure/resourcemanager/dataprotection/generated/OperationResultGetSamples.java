@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OperationResult Get. */
 public final class OperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/GetOperationResult.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/GetOperationResult.json
      */
     /**
      * Sample code: Get OperationResult.
@@ -22,6 +20,6 @@ public final class OperationResultGetSamples {
             .getWithResponse(
                 "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
                 "WestUS",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

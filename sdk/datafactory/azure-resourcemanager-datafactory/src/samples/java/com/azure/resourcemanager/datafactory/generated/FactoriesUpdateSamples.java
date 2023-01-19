@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.Factory;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,8 @@ public final class FactoriesUpdateSamples {
         Factory resource =
             manager
                 .factories()
-                .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null, Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "exampleResourceGroup", "exampleFactoryName", null, com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("exampleTag", "exampleValue")).apply();
     }
