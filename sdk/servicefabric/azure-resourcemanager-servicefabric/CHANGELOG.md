@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.3 (2023-01-19)
 
 - Azure Resource Manager ServiceFabric client library for Java. This package contains Microsoft Azure SDK for ServiceFabric Management SDK. Service Fabric Management Client. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
