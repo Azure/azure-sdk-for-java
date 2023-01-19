@@ -318,7 +318,7 @@ com.azure.resourcemanager:azure-resourcemanager-servicefabric;1.0.0-beta.3;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-peering;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-policyinsights;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-support;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-subscription;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-subscription;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-powerbidedicated;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storageimportexport;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-applicationinsights;1.0.0-beta.5;1.0.0-beta.6
