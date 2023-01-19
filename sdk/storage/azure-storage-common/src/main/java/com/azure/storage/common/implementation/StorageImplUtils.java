@@ -31,7 +31,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -88,7 +87,18 @@ public class StorageImplUtils {
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
             .withLocale(Locale.ROOT);
 
-    private static final AtomicReference<Provider> HMAC_PROVIDER = new AtomicReference<>();
+    private static final Provider HMAC_PROVIDER;
+
+    static {
+        Provider hmacProvider = null;
+        try {
+            hmacProvider = Mac.getInstance("HmacSHA256").getProvider();
+        } catch (NoSuchAlgorithmException ex) {
+            // Ignored
+        }
+
+        HMAC_PROVIDER = hmacProvider;
+    }
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -202,14 +212,9 @@ public class StorageImplUtils {
         }
 
         try {
-            Provider provider = HMAC_PROVIDER.get();
-            Mac hmacSHA256;
-            if (provider != null) {
-                hmacSHA256 = Mac.getInstance("HmacSHA256", provider);
-            } else {
-                hmacSHA256 = Mac.getInstance("HmacSHA256");
-                HMAC_PROVIDER.compareAndSet(null, hmacSHA256.getProvider());
-            }
+            Mac hmacSHA256 = (HMAC_PROVIDER != null)
+                ? Mac.getInstance("HmacSHA256", HMAC_PROVIDER)
+                : Mac.getInstance("HmacSHA256");
 
             hmacSHA256.init(new SecretKeySpec(key, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
