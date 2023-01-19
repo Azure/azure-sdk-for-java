@@ -35,8 +35,8 @@ class GraphClientTest {
 
     @Test
     void testGetGroupInformationCorrectly() {
-        AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
-        when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
+        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("https://graph.microsoft.com/");
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
         RestTemplate operations = mock(RestTemplate.class);
         Memberships memberships = new Memberships(null, new ArrayList<>());
@@ -50,7 +50,6 @@ class GraphClientTest {
 
     @Test
     void testGetGroupInformationWithNotFoundError(CapturedOutput capturedOutput) {
-
         AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
         when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/newurl1");
         RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
@@ -66,7 +65,6 @@ class GraphClientTest {
 
     @Test
     void testGetGroupInformationWithInternalServerError(CapturedOutput capturedOutput) throws URISyntaxException {
-
         RestTemplate restTemplate = new RestTemplate();
         AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
