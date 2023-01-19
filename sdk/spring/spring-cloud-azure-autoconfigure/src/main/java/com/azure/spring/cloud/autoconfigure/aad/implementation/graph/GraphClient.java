@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
@@ -29,6 +30,11 @@ public class GraphClient {
     private final AadAuthenticationProperties properties;
     private final RestOperations operations;
 
+    GraphClient(AadAuthenticationProperties properties, RestTemplate restTemplate) {
+        this.properties = properties;
+        this.operations = restTemplate;
+    }
+
     /**
      * Creates a new instance of {@link GraphClient}.
      *
@@ -36,8 +42,7 @@ public class GraphClient {
      * @param restTemplateBuilder the restTemplateBuilder
      */
     public GraphClient(AadAuthenticationProperties properties, RestTemplateBuilder restTemplateBuilder) {
-        this.properties = properties;
-        this.operations = createRestTemplate(restTemplateBuilder);
+        this(properties, createRestTemplate(restTemplateBuilder));
     }
 
     /**

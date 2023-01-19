@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,82 +28,55 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 class GraphClientTest {
 
-    private String accessToken = "fake-accesstoken";
-    private String graphMembershipUri = "fake-url";
+    private static final String accessToken = "fake-accesstoken";
+    private static final String graphMembershipUri = "fake-url";
 
     @Test
-    void testGetGroupInformationCorrectly() {
-        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
-            @Override
-            public String getGraphMembershipUri() {
-                return graphMembershipUri;
-            }
-        };
-        RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
+    void testGetUserMembershipsCorrectly() {
         RestTemplate operations = mock(RestTemplate.class);
         Memberships memberships = new Memberships(null, new ArrayList<>());
         ResponseEntity<Memberships> response = new ResponseEntity<>(memberships, HttpStatus.OK);
-        when(restTemplateBuilder.build()).thenReturn(operations);
-        GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
+        GraphClient graphClient = new GraphClient(new AadAuthenticationProperties(), operations);
+
         when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenReturn(response);
         Optional<Memberships> userMemberships = graphClient.getUserMemberships(accessToken, graphMembershipUri);
+
         assertTrue(userMemberships.isPresent());
     }
 
     @Test
-    void testGetGroupInformationWithBadHttpStatus() {
-        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
-            @Override
-            public String getGraphMembershipUri() {
-                return graphMembershipUri;
-            }
-        };
-        RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
+    void testGetUserMembershipsWithBadHttpStatusError() {
         RestTemplate operations = mock(RestTemplate.class);
-        Memberships memberships = new Memberships(null, new ArrayList<>());
-        ResponseEntity<Memberships> response = new ResponseEntity<>(memberships, HttpStatus.BAD_REQUEST);
-        when(restTemplateBuilder.build()).thenReturn(operations);
-        GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
+        ResponseEntity<Memberships> response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        GraphClient graphClient = new GraphClient(new AadAuthenticationProperties(), operations);
+
         when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenReturn(response);
         Optional<Memberships> userMemberships = graphClient.getUserMemberships(accessToken, graphMembershipUri);
+
         assertTrue(userMemberships.isEmpty());
     }
 
     @Test
-    void testGetGroupInformationWithNotFoundError() {
-        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
-            @Override
-            public String getGraphMembershipUri() {
-                return graphMembershipUri;
-            }
-        };
-        RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
+    void testGetUserMembershipsWithNotFoundError() {
         RestTemplate operations = mock(RestTemplate.class);
-        when(restTemplateBuilder.build()).thenReturn(operations);
-        GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
+        GraphClient graphClient = new GraphClient(new AadAuthenticationProperties(), operations);
+
         when(operations.exchange(any(), eq(HttpMethod.GET), any(), eq(Memberships.class), any(Object[].class))).thenThrow(HttpClientErrorException.NotFound.class);
         Optional<Memberships> userMemberships = graphClient.getUserMemberships(accessToken, graphMembershipUri);
+
         assertTrue(userMemberships.isEmpty());
     }
 
     @Test
-    void testGetGroupInformationWithInternalServerError() throws URISyntaxException {
+    void testGetUserMembershipsWithInternalServerError() throws URISyntaxException {
+        String membershipUrl = "http://localhost:8080/v1.0/me/memberOf";
         RestTemplate restTemplate = new RestTemplate();
-        AadAuthenticationProperties properties = new AadAuthenticationProperties() {
-            @Override
-            public String getGraphMembershipUri() {
-                return "http://localhost:8080/v1.0/me/memberOf";
-            }
-        };
-        RestTemplateBuilder restTemplateBuilder = mock(RestTemplateBuilder.class);
-        when(restTemplateBuilder.build()).thenReturn(restTemplate);
-        GraphClient graphClient = new GraphClient(properties, restTemplateBuilder);
+        GraphClient graphClient = new GraphClient(new AadAuthenticationProperties(), restTemplate);
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-        mockServer
-            .expect(ExpectedCount.once(), requestTo(new URI("http://localhost:8080/v1.0/me/memberOf")))
-            .andRespond(withServerError());
-        Optional<Memberships> userMemberships =
-            graphClient.getUserMemberships(accessToken, "http://localhost:8080/v1.0/me/memberOf");
+
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(membershipUrl))).andRespond(withServerError());
+        Optional<Memberships> userMemberships = graphClient.getUserMemberships(accessToken, membershipUrl);
+
         assertTrue(userMemberships.isEmpty());
     }
 
