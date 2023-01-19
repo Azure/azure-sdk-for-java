@@ -152,8 +152,6 @@
 - Updated `azure-core` to `1.25.0`.
 - Updated `azure-core-http-netty` to `1.11.7`.
 
-## 4.14.0 (2022-01-19)
-
 ## 4.8.0 (2022-01-14)
 
 ### Features Added
