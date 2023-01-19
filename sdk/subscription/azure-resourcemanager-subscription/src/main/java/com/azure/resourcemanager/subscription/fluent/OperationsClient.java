@@ -15,22 +15,22 @@ public interface OperationsClient {
     /**
      * Lists all of the available Microsoft.Subscription API operations.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list operations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OperationListResultInner> listWithResponse(Context context);
+
+    /**
+     * Lists all of the available Microsoft.Subscription API operations.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationListResultInner list();
-
-    /**
-     * Lists all of the available Microsoft.Subscription API operations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list operations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationListResultInner> listWithResponse(Context context);
 }

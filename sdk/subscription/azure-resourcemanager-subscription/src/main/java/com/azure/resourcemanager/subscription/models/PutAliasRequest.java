@@ -6,19 +6,20 @@ package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters required to create a new subscription. */
 @Fluent
 public final class PutAliasRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PutAliasRequest.class);
-
     /*
      * Put alias request properties.
      */
     @JsonProperty(value = "properties", required = true)
     private PutAliasRequestProperties properties;
+
+    /** Creates an instance of PutAliasRequest class. */
+    public PutAliasRequest() {
+    }
 
     /**
      * Get the properties property: Put alias request properties.
@@ -47,11 +48,13 @@ public final class PutAliasRequest {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property properties in model PutAliasRequest"));
         } else {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PutAliasRequest.class);
 }
