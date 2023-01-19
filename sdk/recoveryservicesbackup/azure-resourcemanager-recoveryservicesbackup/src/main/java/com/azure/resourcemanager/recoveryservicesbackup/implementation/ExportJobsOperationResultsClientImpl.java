@@ -52,7 +52,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ExportJobsOperationResultsService {
+    public interface ExportJobsOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

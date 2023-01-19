@@ -20,6 +20,15 @@ public final class RestoreRequestType extends ExpandableStringEnum<RestoreReques
     public static final RestoreRequestType ITEM_LEVEL_RESTORE = fromString("ItemLevelRestore");
 
     /**
+     * Creates a new instance of RestoreRequestType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestoreRequestType() {
+    }
+
+    /**
      * Creates or finds a RestoreRequestType from its string representation.
      *
      * @param name a name to look for.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProtectedItemOperationResults Get. */
 public final class ProtectedItemOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectedItemOperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ProtectedItemOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Protected Vm.
@@ -27,6 +25,6 @@ public final class ProtectedItemOperationResultsGetSamples {
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
                 "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
                 "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

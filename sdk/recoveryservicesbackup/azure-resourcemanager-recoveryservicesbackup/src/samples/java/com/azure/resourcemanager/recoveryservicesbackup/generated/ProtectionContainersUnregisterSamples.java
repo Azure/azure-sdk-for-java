@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProtectionContainers Unregister. */
 public final class ProtectionContainersUnregisterSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionContainers_Unregister.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureWorkload/ProtectionContainers_Unregister.json
      */
     /**
      * Sample code: Unregister Protection Container.
@@ -21,6 +19,10 @@ public final class ProtectionContainersUnregisterSamples {
         manager
             .protectionContainers()
             .unregisterWithResponse(
-                "testVault", "testRg", "Azure", "storagecontainer;Storage;test-rg;teststorage", Context.NONE);
+                "testVault",
+                "testRg",
+                "Azure",
+                "storagecontainer;Storage;test-rg;teststorage",
+                com.azure.core.util.Context.NONE);
     }
 }
