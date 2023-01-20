@@ -149,8 +149,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         return Mono.fromCallable(() -> {
             if (session != null && session.isOpen()) {
                 session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
-
-                handleStop();
+            } else {
+                // TODO handle state e.g. CONNECTING, RECOVERING, DISCONNECTED
             }
             return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic());
