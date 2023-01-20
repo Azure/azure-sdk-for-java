@@ -41,6 +41,15 @@ public final class DiskCreateOption extends ExpandableStringEnum<DiskCreateOptio
     public static final DiskCreateOption UPLOAD_PREPARED_SECURE = fromString("UploadPreparedSecure");
 
     /**
+     * Creates a new instance of DiskCreateOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskCreateOption() {
+    }
+
+    /**
      * Creates or finds a DiskCreateOption from its string representation.
      *
      * @param name a name to look for.

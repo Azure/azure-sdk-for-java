@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationMetaMetricAvailabilitiesSpecification model. */
 @Fluent
 public final class OperationMetaMetricAvailabilitiesSpecification {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OperationMetaMetricAvailabilitiesSpecification.class);
-
     /*
      * The timegrain for OperationMetaMetricAvailabilitiesSpecification.
      */
@@ -26,6 +21,10 @@ public final class OperationMetaMetricAvailabilitiesSpecification {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of OperationMetaMetricAvailabilitiesSpecification class. */
+    public OperationMetaMetricAvailabilitiesSpecification() {
+    }
 
     /**
      * Get the timeGrain property: The timegrain for OperationMetaMetricAvailabilitiesSpecification.

@@ -8,7 +8,6 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,6 +17,7 @@ import java.util.List;
  */
 public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<UsernamePasswordCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(UsernamePasswordCredentialBuilder.class);
+    private static final String CLASS_NAME = UsernamePasswordCredentialBuilder.class.getSimpleName();
 
     private String username;
     private String password;
@@ -116,11 +116,8 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
      * @return a {@link UsernamePasswordCredential} with the current configurations.
      */
     public UsernamePasswordCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("username", username);
-                put("password", password);
-            }}, LOGGER);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "username", username, "password", password);
+
         return new UsernamePasswordCredential(clientId, tenantId, username, password, identityClientOptions);
     }
 }

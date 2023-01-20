@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GlobalParameters Delete. */
 public final class GlobalParametersDeleteSamples {
     /*
@@ -19,6 +17,7 @@ public final class GlobalParametersDeleteSamples {
     public static void globalParametersDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .globalParameters()
-            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "default", Context.NONE);
+            .deleteWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", "default", com.azure.core.util.Context.NONE);
     }
 }

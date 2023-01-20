@@ -11,10 +11,9 @@ import com.azure.resourcemanager.customerinsights.fluent.RolesClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.RoleResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.RoleResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Roles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RolesImpl implements Roles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RolesImpl.class);
 
     private final RolesClient innerClient;
 

@@ -20,6 +20,15 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
     public static final GoogleAdWordsAuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
 
     /**
+     * Creates a new instance of GoogleAdWordsAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GoogleAdWordsAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a GoogleAdWordsAuthenticationType from its string representation.
      *
      * @param name a name to look for.

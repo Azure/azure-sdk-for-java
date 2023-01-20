@@ -47,6 +47,9 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.json.reflect/com.azure.json.reflect=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <javadoc.excludePackageNames/>
+    <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
   </properties>
 
   <developers>

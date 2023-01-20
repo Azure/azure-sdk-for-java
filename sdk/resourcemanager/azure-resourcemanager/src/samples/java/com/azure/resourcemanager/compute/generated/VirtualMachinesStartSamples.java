@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines Start. */
 public final class VirtualMachinesStartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_Start_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Start_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Start_MaximumSet_Gen.
@@ -22,11 +20,11 @@ public final class VirtualMachinesStartSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .start("rgcompute", "aaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .start("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_Start_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Start_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Start_MinimumSet_Gen.
@@ -39,6 +37,6 @@ public final class VirtualMachinesStartSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .start("rgcompute", "aaaaa", Context.NONE);
+            .start("rgcompute", "aaaaa", com.azure.core.util.Context.NONE);
     }
 }

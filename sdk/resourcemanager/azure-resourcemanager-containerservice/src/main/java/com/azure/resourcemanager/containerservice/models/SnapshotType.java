@@ -14,6 +14,15 @@ public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
     public static final SnapshotType NODE_POOL = fromString("NodePool");
 
     /**
+     * Creates a new instance of SnapshotType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SnapshotType() {
+    }
+
+    /**
      * Creates or finds a SnapshotType from its string representation.
      *
      * @param name a name to look for.

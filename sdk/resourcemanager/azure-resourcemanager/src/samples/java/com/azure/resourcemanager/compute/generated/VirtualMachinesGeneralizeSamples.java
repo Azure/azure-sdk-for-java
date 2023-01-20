@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines Generalize. */
 public final class VirtualMachinesGeneralizeSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Generalize.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Generalize.json
      */
     /**
      * Sample code: Generalize a Virtual Machine.
@@ -22,6 +20,6 @@ public final class VirtualMachinesGeneralizeSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .generalizeWithResponse("myResourceGroup", "myVMName", Context.NONE);
+            .generalizeWithResponse("myResourceGroup", "myVMName", com.azure.core.util.Context.NONE);
     }
 }

@@ -53,6 +53,9 @@ public final class SqlDWSink extends CopySink {
     @JsonProperty(value = "tableOption")
     private Object tableOption;
 
+    /** Creates an instance of SqlDWSink class. */
+    public SqlDWSink() {}
+
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
      *

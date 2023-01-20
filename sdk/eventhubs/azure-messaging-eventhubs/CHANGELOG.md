@@ -4,9 +4,17 @@
 
 ### Features Added
 
-- Added support for setting different value types in `EventData.getProperties()`. [32518](https://github.com/Azure/azure-sdk-for-java/issues/32518)
-  
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.15.1 (2023-01-18)
+
+### Features Added
+
+- Added support for setting different value types in `EventData.getProperties()`. [32518](https://github.com/Azure/azure-sdk-for-java/issues/32518)
 
 ### Bugs Fixed
 
@@ -14,6 +22,11 @@
 - Added retry for createBatch API as this API also makes network calls similar to its companion send API.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.35.0`.
+- Upgraded `azure-core-amqp` to `2.8.1`.
 
 ## 5.15.0 (2022-11-16)
 

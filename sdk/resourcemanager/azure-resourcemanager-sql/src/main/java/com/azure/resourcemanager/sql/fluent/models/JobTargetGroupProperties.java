@@ -19,6 +19,10 @@ public final class JobTargetGroupProperties {
     @JsonProperty(value = "members", required = true)
     private List<JobTarget> members;
 
+    /** Creates an instance of JobTargetGroupProperties class. */
+    public JobTargetGroupProperties() {
+    }
+
     /**
      * Get the members property: Members of the target group.
      *

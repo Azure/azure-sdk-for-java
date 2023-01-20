@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationVaultSetting Get. */
 public final class ReplicationVaultSettingGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationVaultSettingGetSamples {
      */
     public static void getsTheVaultSetting(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultSettings().getWithResponse("vault1", "resourceGroupPS1", "default", Context.NONE);
+        manager
+            .replicationVaultSettings()
+            .getWithResponse("vault1", "resourceGroupPS1", "default", com.azure.core.util.Context.NONE);
     }
 }

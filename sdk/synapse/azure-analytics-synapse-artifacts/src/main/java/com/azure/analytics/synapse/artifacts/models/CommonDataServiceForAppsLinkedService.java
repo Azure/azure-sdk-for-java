@@ -105,6 +105,9 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of CommonDataServiceForAppsLinkedService class. */
+    public CommonDataServiceForAppsLinkedService() {}
+
     /**
      * Get the deploymentType property: The deployment type of the Common Data Service for Apps instance. 'Online' for
      * Common Data Service for Apps Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with

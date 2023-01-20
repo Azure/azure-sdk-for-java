@@ -23,6 +23,15 @@ public final class RecoveryPointType extends ExpandableStringEnum<RecoveryPointT
     public static final RecoveryPointType CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of RecoveryPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryPointType() {
+    }
+
+    /**
      * Creates or finds a RecoveryPointType from its string representation.
      *
      * @param name a name to look for.

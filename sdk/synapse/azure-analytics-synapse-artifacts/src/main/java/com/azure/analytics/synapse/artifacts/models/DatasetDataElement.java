@@ -22,6 +22,9 @@ public final class DatasetDataElement {
     @JsonProperty(value = "type")
     private Object type;
 
+    /** Creates an instance of DatasetDataElement class. */
+    public DatasetDataElement() {}
+
     /**
      * Get the name property: Name of the column. Type: string (or Expression with resultType string).
      *

@@ -41,12 +41,14 @@ public interface Databases {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database.
+     * @return information about a database along with {@link Response}.
      */
-    Database get(String resourceGroupName, String serverName, String databaseName);
+    Response<Database> getWithResponse(
+        String resourceGroupName, String serverName, String databaseName, Context context);
 
     /**
      * Gets information about a database.
@@ -54,14 +56,12 @@ public interface Databases {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a database.
      */
-    Response<Database> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Database get(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * List all the databases in a given server.
@@ -71,7 +71,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases.
+     * @return a List of databases as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByServer(String resourceGroupName, String serverName);
 
@@ -84,7 +84,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases.
+     * @return a List of databases as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByServer(String resourceGroupName, String serverName, Context context);
 
@@ -95,7 +95,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database.
+     * @return information about a database along with {@link Response}.
      */
     Database getById(String id);
 
@@ -107,7 +107,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database.
+     * @return information about a database along with {@link Response}.
      */
     Response<Database> getByIdWithResponse(String id, Context context);
 

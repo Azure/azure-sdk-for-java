@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that contains details of encryption used on the workspace. */
 @Fluent
 public final class Encryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
-
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):
-     * Default, Microsoft.Keyvault
+     * The encryption keySource (provider). Possible values (case-insensitive):  Default, Microsoft.Keyvault
      */
     @JsonProperty(value = "keySource")
     private KeySource keySource;
@@ -38,6 +33,10 @@ public final class Encryption {
      */
     @JsonProperty(value = "keyvaulturi")
     private String keyVaultUri;
+
+    /** Creates an instance of Encryption class. */
+    public Encryption() {
+    }
 
     /**
      * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive): Default,

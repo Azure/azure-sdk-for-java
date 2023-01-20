@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultsClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupVaultsClient. */
 public final class BackupVaultsClientImpl implements BackupVaultsClient {
-    private final ClientLogger logger = new ClientLogger(BackupVaultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupVaultsService service;
 
@@ -71,7 +68,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface BackupVaultsService {
+    public interface BackupVaultsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/backupVaults")
         @ExpectedResponses({200})
@@ -106,9 +103,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Mono<Response<BackupVaultResourceInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
-            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -121,9 +118,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vaultName") String vaultName,
             @BodyParam("application/json") BackupVaultResourceInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -137,9 +134,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
-            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -152,9 +149,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vaultName") String vaultName,
             @BodyParam("application/json") PatchResourceRequestInput parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -201,7 +198,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> listSinglePageAsync() {
@@ -247,7 +244,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> listSinglePageAsync(Context context) {
@@ -288,7 +285,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupVaultResourceInner> listAsync() {
@@ -302,7 +299,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupVaultResourceInner> listAsync(Context context) {
@@ -315,7 +312,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> list() {
@@ -329,7 +326,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> list(Context context) {
@@ -343,7 +340,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -395,7 +392,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> listByResourceGroupSinglePageAsync(
@@ -444,7 +441,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupVaultResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -461,7 +458,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupVaultResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -477,7 +474,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -492,7 +489,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -507,7 +504,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupVaultResourceInner>> getByResourceGroupWithResponseAsync(
@@ -518,18 +515,18 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -539,9 +536,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                         .getByResourceGroup(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             vaultName,
-                            this.client.getSubscriptionId(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -556,7 +553,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupVaultResourceInner>> getByResourceGroupWithResponseAsync(
@@ -567,6 +564,12 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -574,21 +577,15 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 vaultName,
-                this.client.getSubscriptionId(),
                 accept,
                 context);
     }
@@ -601,19 +598,29 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupVaultResourceInner> getByResourceGroupAsync(String resourceGroupName, String vaultName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vaultName)
-            .flatMap(
-                (Response<BackupVaultResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns a resource belonging to a resource group.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backupVault Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BackupVaultResourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String vaultName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, vaultName, context).block();
     }
 
     /**
@@ -628,58 +635,41 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner getByResourceGroup(String resourceGroupName, String vaultName) {
-        return getByResourceGroupAsync(resourceGroupName, vaultName).block();
-    }
-
-    /**
-     * Returns a resource belonging to a resource group.
-     *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupVaultResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vaultName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, vaultName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters) {
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -694,9 +684,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                         .createOrUpdate(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
                             parameters,
                             accept,
                             context))
@@ -706,36 +696,36 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters, Context context) {
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -748,9 +738,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             .createOrUpdate(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
                 parameters,
                 accept,
                 context);
@@ -759,19 +749,19 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link PollerFlux} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdateAsync(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters) {
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(vaultName, resourceGroupName, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters);
         return this
             .client
             .<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(
@@ -779,27 +769,27 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                 this.client.getHttpPipeline(),
                 BackupVaultResourceInner.class,
                 BackupVaultResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link PollerFlux} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdateAsync(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters, Context context) {
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(vaultName, resourceGroupName, parameters, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, context);
         return this
             .client
             .<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(
@@ -813,53 +803,53 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters) {
-        return beginCreateOrUpdateAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupVaultResourceInner> createOrUpdateAsync(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters) {
-        return beginCreateOrUpdateAsync(vaultName, resourceGroupName, parameters)
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -867,19 +857,19 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupVaultResourceInner> createOrUpdateAsync(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(vaultName, resourceGroupName, parameters, context)
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -887,8 +877,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -897,15 +887,15 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner createOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters) {
-        return createOrUpdateAsync(vaultName, resourceGroupName, parameters).block();
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, vaultName, parameters).block();
     }
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -915,8 +905,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner createOrUpdate(
-        String vaultName, String resourceGroupName, BackupVaultResourceInner parameters, Context context) {
-        return createOrUpdateAsync(vaultName, resourceGroupName, parameters, context).block();
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, vaultName, parameters, context).block();
     }
 
     /**
@@ -927,7 +917,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vaultName) {
@@ -937,18 +927,18 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -958,9 +948,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                         .delete(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             vaultName,
-                            this.client.getSubscriptionId(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -975,7 +965,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vaultName, Context context) {
@@ -985,6 +975,12 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -992,21 +988,15 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 vaultName,
-                this.client.getSubscriptionId(),
                 accept,
                 context);
     }
@@ -1019,11 +1009,27 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName) {
-        return deleteWithResponseAsync(resourceGroupName, vaultName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, vaultName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a BackupVault resource from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, vaultName, context).block();
     }
 
     /**
@@ -1037,57 +1043,41 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName) {
-        deleteAsync(resourceGroupName, vaultName).block();
-    }
-
-    /**
-     * Deletes a BackupVault resource from the resource group.
-     *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, vaultName, context).block();
+        deleteWithResponse(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters) {
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1102,9 +1092,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                         .update(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vaultName,
                             parameters,
                             accept,
                             context))
@@ -1114,36 +1104,36 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters, Context context) {
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1156,9 +1146,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             .update(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
                 parameters,
                 accept,
                 context);
@@ -1167,18 +1157,18 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link PollerFlux} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdateAsync(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(vaultName, resourceGroupName, parameters);
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vaultName, parameters);
         return this
             .client
             .<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(
@@ -1186,27 +1176,27 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
                 this.client.getHttpPipeline(),
                 BackupVaultResourceInner.class,
                 BackupVaultResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link PollerFlux} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdateAsync(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters, Context context) {
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(vaultName, resourceGroupName, parameters, context);
+            updateWithResponseAsync(resourceGroupName, vaultName, parameters, context);
         return this
             .client
             .<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(
@@ -1220,53 +1210,53 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters) {
-        return beginUpdateAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters) {
+        return this.beginUpdateAsync(resourceGroupName, vaultName, parameters).getSyncPoller();
     }
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters, Context context) {
-        return beginUpdateAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, vaultName, parameters, context).getSyncPoller();
     }
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupVaultResourceInner> updateAsync(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters) {
-        return beginUpdateAsync(vaultName, resourceGroupName, parameters)
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters) {
+        return beginUpdateAsync(resourceGroupName, vaultName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1274,19 +1264,19 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupVaultResourceInner> updateAsync(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters, Context context) {
-        return beginUpdateAsync(vaultName, resourceGroupName, parameters, context)
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, vaultName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1294,8 +1284,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1304,15 +1294,15 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner update(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters) {
-        return updateAsync(vaultName, resourceGroupName, parameters).block();
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters) {
+        return updateAsync(resourceGroupName, vaultName, parameters).block();
     }
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param vaultName The name of the backup vault.
      * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1322,8 +1312,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner update(
-        String vaultName, String resourceGroupName, PatchResourceRequestInput parameters, Context context) {
-        return updateAsync(vaultName, resourceGroupName, parameters, context).block();
+        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context) {
+        return updateAsync(resourceGroupName, vaultName, parameters, context).block();
     }
 
     /**
@@ -1335,7 +1325,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return checkNameAvailabilityResult.
+     * @return checkNameAvailabilityResult along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -1391,7 +1381,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return checkNameAvailabilityResult.
+     * @return checkNameAvailabilityResult along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -1443,20 +1433,31 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return checkNameAvailabilityResult.
+     * @return checkNameAvailabilityResult on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
         String resourceGroupName, String location, CheckNameAvailabilityRequest parameters) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, location, parameters)
-            .flatMap(
-                (Response<CheckNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * API to check for resource name availability.
+     *
+     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param location The location in which uniqueness will be verified.
+     * @param parameters Check name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return checkNameAvailabilityResult along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        String resourceGroupName, String location, CheckNameAvailabilityRequest parameters, Context context) {
+        return checkNameAvailabilityWithResponseAsync(resourceGroupName, location, parameters, context).block();
     }
 
     /**
@@ -1473,35 +1474,18 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(
         String resourceGroupName, String location, CheckNameAvailabilityRequest parameters) {
-        return checkNameAvailabilityAsync(resourceGroupName, location, parameters).block();
-    }
-
-    /**
-     * API to check for resource name availability.
-     *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param location The location in which uniqueness will be verified.
-     * @param parameters Check name availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return checkNameAvailabilityResult.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String location, CheckNameAvailabilityRequest parameters, Context context) {
-        return checkNameAvailabilityWithResponseAsync(resourceGroupName, location, parameters, context).block();
+        return checkNameAvailabilityWithResponse(resourceGroupName, location, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> getInSubscriptionNextSinglePageAsync(String nextLink) {
@@ -1532,12 +1516,13 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> getInSubscriptionNextSinglePageAsync(
@@ -1569,11 +1554,12 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> getInResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1605,12 +1591,13 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupVaultResourceInner>> getInResourceGroupNextSinglePageAsync(

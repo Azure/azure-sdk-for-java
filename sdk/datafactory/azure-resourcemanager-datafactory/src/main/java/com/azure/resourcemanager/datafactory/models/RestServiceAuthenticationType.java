@@ -26,6 +26,15 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
     public static final RestServiceAuthenticationType OAUTH2CLIENT_CREDENTIAL = fromString("OAuth2ClientCredential");
 
     /**
+     * Creates a new instance of RestServiceAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestServiceAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a RestServiceAuthenticationType from its string representation.
      *
      * @param name a name to look for.

@@ -22,9 +22,13 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import static com.azure.storage.common.Utility.urlDecode;
@@ -344,5 +348,74 @@ public class StorageImplUtils {
 
         return new TimeAndFormat(LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime(),
             formatter);
+    }
+
+    /**
+     * Parses the query parameters as an iterator to reduce overhead of {@link String#split(String)}.
+     * <p>
+     * Copied from azure-core until it's a public API.
+     *
+     * @param queryParameters Query parameters being parsed.
+     * @return Iterator that iterates over the query parameter key-value pairs.
+     */
+    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
+        return (CoreUtils.isNullOrEmpty(queryParameters))
+            ? Collections.emptyIterator()
+            : new QueryParameterIterator(queryParameters);
+    }
+
+    private static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
+        private final String queryParameters;
+
+        private boolean done = false;
+        private int position;
+
+        QueryParameterIterator(String queryParameters) {
+            this.queryParameters = queryParameters;
+
+            // If the URL query begins with '?' the first possible start of a query parameter key is the
+            // second character in the query.
+            position = (queryParameters.startsWith("?")) ? 1 : 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !done;
+        }
+
+        @Override
+        public Map.Entry<String, String> next() {
+            if (done) {
+                throw new NoSuchElementException();
+            }
+
+            int nextPosition = queryParameters.indexOf('=', position);
+
+            if (nextPosition == -1) {
+                // Query parameters completed with a key only 'https://example.com?param'
+                done = true;
+                return new AbstractMap.SimpleImmutableEntry<>(queryParameters.substring(position), "");
+            }
+
+            String key = queryParameters.substring(position, nextPosition);
+
+            // Position is set to nextPosition + 1 to skip over the '='
+            position = nextPosition + 1;
+
+            nextPosition = queryParameters.indexOf('&', position);
+
+            String value = null;
+            if (nextPosition == -1) {
+                // This was the last key-value pair in the query parameters 'https://example.com?param=done'
+                done = true;
+                value = queryParameters.substring(position);
+            } else {
+                value = queryParameters.substring(position, nextPosition);
+                // Position is set to nextPosition + 1 to skip over the '&'
+                position = nextPosition + 1;
+            }
+
+            return new AbstractMap.SimpleImmutableEntry<>(key, value);
+        }
     }
 }

@@ -31,10 +31,10 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
     }
 
     private String buildFqdnFromNamespace() {
-        if (namespace == null || domainName == null) {
+        if (namespace == null || getDomainName() == null) {
             return null;
         }
-        return this.namespace + "." + domainName;
+        return this.namespace + "." + getDomainName();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
 
     @Override
     public String getDomainName() {
-        return domainName;
+        return this.domainName == null ? getProfile().getEnvironment().getServiceBusDomainName() : this.domainName;
     }
 
     /**

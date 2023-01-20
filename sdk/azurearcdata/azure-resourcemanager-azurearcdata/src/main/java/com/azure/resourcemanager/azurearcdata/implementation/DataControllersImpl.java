@@ -13,10 +13,9 @@ import com.azure.resourcemanager.azurearcdata.fluent.DataControllersClient;
 import com.azure.resourcemanager.azurearcdata.fluent.models.DataControllerResourceInner;
 import com.azure.resourcemanager.azurearcdata.models.DataControllerResource;
 import com.azure.resourcemanager.azurearcdata.models.DataControllers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataControllersImpl implements DataControllers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataControllersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataControllersImpl.class);
 
     private final DataControllersClient innerClient;
 
@@ -57,16 +56,6 @@ public final class DataControllersImpl implements DataControllers {
         this.serviceClient().delete(resourceGroupName, dataControllerName, context);
     }
 
-    public DataControllerResource getByResourceGroup(String resourceGroupName, String dataControllerName) {
-        DataControllerResourceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dataControllerName);
-        if (inner != null) {
-            return new DataControllerResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataControllerResource> getByResourceGroupWithResponse(
         String resourceGroupName, String dataControllerName, Context context) {
         Response<DataControllerResourceInner> inner =
@@ -82,10 +71,20 @@ public final class DataControllersImpl implements DataControllers {
         }
     }
 
+    public DataControllerResource getByResourceGroup(String resourceGroupName, String dataControllerName) {
+        DataControllerResourceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, dataControllerName);
+        if (inner != null) {
+            return new DataControllerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DataControllerResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -93,7 +92,7 @@ public final class DataControllersImpl implements DataControllers {
         }
         String dataControllerName = Utils.getValueFromIdByName(id, "dataControllers");
         if (dataControllerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,7 +104,7 @@ public final class DataControllersImpl implements DataControllers {
     public Response<DataControllerResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +112,7 @@ public final class DataControllersImpl implements DataControllers {
         }
         String dataControllerName = Utils.getValueFromIdByName(id, "dataControllers");
         if (dataControllerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class DataControllersImpl implements DataControllers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,7 +132,7 @@ public final class DataControllersImpl implements DataControllers {
         }
         String dataControllerName = Utils.getValueFromIdByName(id, "dataControllers");
         if (dataControllerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,7 +144,7 @@ public final class DataControllersImpl implements DataControllers {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +152,7 @@ public final class DataControllersImpl implements DataControllers {
         }
         String dataControllerName = Utils.getValueFromIdByName(id, "dataControllers");
         if (dataControllerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

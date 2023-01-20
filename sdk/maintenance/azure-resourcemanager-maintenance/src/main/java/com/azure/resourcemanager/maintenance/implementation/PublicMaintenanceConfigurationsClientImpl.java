@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.PublicMaintenanceConfigurationsClient;
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
 import com.azure.resourcemanager.maintenance.models.ListMaintenanceConfigurationsResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PublicMaintenanceConfigurationsClient. */
 public final class PublicMaintenanceConfigurationsClientImpl implements PublicMaintenanceConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(PublicMaintenanceConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PublicMaintenanceConfigurationsService service;
 
@@ -62,7 +59,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      */
     @Host("{$host}")
     @ServiceInterface(name = "MaintenanceManagemen")
-    private interface PublicMaintenanceConfigurationsService {
+    public interface PublicMaintenanceConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations")
         @ExpectedResponses({200})
@@ -94,7 +91,8 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listSinglePageAsync() {
@@ -135,7 +133,8 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listSinglePageAsync(Context context) {
@@ -171,7 +170,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MaintenanceConfigurationInner> listAsync() {
@@ -185,7 +184,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MaintenanceConfigurationInner> listAsync(Context context) {
@@ -197,7 +196,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list() {
@@ -211,7 +210,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list(Context context) {
@@ -225,7 +224,8 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration record.
+     * @return public Maintenance Configuration record along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(String resourceName) {
@@ -267,7 +267,8 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration record.
+     * @return public Maintenance Configuration record along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(String resourceName, Context context) {
@@ -305,19 +306,26 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration record.
+     * @return public Maintenance Configuration record on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceConfigurationInner> getAsync(String resourceName) {
-        return getWithResponseAsync(resourceName)
-            .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Public Maintenance Configuration record.
+     *
+     * @param resourceName Maintenance Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public Maintenance Configuration record along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MaintenanceConfigurationInner> getWithResponse(String resourceName, Context context) {
+        return getWithResponseAsync(resourceName, context).block();
     }
 
     /**
@@ -331,21 +339,6 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner get(String resourceName) {
-        return getAsync(resourceName).block();
-    }
-
-    /**
-     * Get Public Maintenance Configuration record.
-     *
-     * @param resourceName Maintenance Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration record.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> getWithResponse(String resourceName, Context context) {
-        return getWithResponseAsync(resourceName, context).block();
+        return getWithResponse(resourceName, Context.NONE).getValue();
     }
 }

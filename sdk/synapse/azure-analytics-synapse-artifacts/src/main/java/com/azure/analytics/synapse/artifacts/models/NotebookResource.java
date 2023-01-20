@@ -41,6 +41,9 @@ public final class NotebookResource {
     @JsonProperty(value = "properties", required = true)
     private Notebook properties;
 
+    /** Creates an instance of NotebookResource class. */
+    public NotebookResource() {}
+
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.

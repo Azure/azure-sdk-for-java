@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
 
   <name>Microsoft Azure SDK for Container Registry</name>
   <description>This package contains Microsoft Azure SDK for Container Registry.</description>
@@ -106,7 +106,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -53,7 +53,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ItemLevelRecoveryConnectionsService {
+    public interface ItemLevelRecoveryConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.fluent.models.SkuInformationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The available skus operation response. */
 @Fluent
 public final class AvailableSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableSkusResult.class);
-
     /*
      * List of available skus.
      */
@@ -27,6 +23,10 @@ public final class AvailableSkusResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of AvailableSkusResult class. */
+    public AvailableSkusResult() {
+    }
 
     /**
      * Get the value property: List of available skus.

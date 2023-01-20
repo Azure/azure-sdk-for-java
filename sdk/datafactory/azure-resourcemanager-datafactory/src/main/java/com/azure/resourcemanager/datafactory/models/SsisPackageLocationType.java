@@ -23,6 +23,15 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
     public static final SsisPackageLocationType PACKAGE_STORE = fromString("PackageStore");
 
     /**
+     * Creates a new instance of SsisPackageLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SsisPackageLocationType() {
+    }
+
+    /**
      * Creates or finds a SsisPackageLocationType from its string representation.
      *
      * @param name a name to look for.

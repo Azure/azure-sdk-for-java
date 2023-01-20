@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NameCheckFailureReason. */
+/** The reason why the name is not available, if nameAvailable is false. */
 public final class NameCheckFailureReason extends ExpandableStringEnum<NameCheckFailureReason> {
     /** Static value AlreadyExists for NameCheckFailureReason. */
     public static final NameCheckFailureReason ALREADY_EXISTS = fromString("AlreadyExists");
 
     /** Static value Invalid for NameCheckFailureReason. */
     public static final NameCheckFailureReason INVALID = fromString("Invalid");
+
+    /**
+     * Creates a new instance of NameCheckFailureReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NameCheckFailureReason() {
+    }
 
     /**
      * Creates or finds a NameCheckFailureReason from its string representation.
@@ -27,7 +36,11 @@ public final class NameCheckFailureReason extends ExpandableStringEnum<NameCheck
         return fromString(name, NameCheckFailureReason.class);
     }
 
-    /** @return known NameCheckFailureReason values. */
+    /**
+     * Gets known NameCheckFailureReason values.
+     *
+     * @return known NameCheckFailureReason values.
+     */
     public static Collection<NameCheckFailureReason> values() {
         return values(NameCheckFailureReason.class);
     }

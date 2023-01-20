@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakestore.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DataLakeStoreAccountStatus. */
+/** The provisioning status of the Data Lake Store account. */
 public enum DataLakeStoreAccountStatus {
     /** Enum value Failed. */
     FAILED("Failed"),
@@ -57,6 +57,9 @@ public enum DataLakeStoreAccountStatus {
      */
     @JsonCreator
     public static DataLakeStoreAccountStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DataLakeStoreAccountStatus[] items = DataLakeStoreAccountStatus.values();
         for (DataLakeStoreAccountStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -66,6 +69,7 @@ public enum DataLakeStoreAccountStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

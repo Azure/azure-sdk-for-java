@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContentKeyPolicies GetPolicyPropertiesWithSecrets. */
 public final class ContentKeyPoliciesGetPolicyPropertiesWithSecretsSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-get-with-secrets.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-get-with-secrets.json
      */
     /**
      * Sample code: Get an Content Key Policy with secrets.
@@ -21,6 +19,6 @@ public final class ContentKeyPoliciesGetPolicyPropertiesWithSecretsSamples {
         manager
             .contentKeyPolicies()
             .getPolicyPropertiesWithSecretsWithResponse(
-                "contoso", "contosomedia", "PolicyWithMultipleOptions", Context.NONE);
+                "contoso", "contosomedia", "PolicyWithMultipleOptions", com.azure.core.util.Context.NONE);
     }
 }

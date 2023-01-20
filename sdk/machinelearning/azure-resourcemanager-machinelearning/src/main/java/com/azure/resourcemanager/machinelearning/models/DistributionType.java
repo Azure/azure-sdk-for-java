@@ -20,6 +20,15 @@ public final class DistributionType extends ExpandableStringEnum<DistributionTyp
     public static final DistributionType MPI = fromString("Mpi");
 
     /**
+     * Creates a new instance of DistributionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DistributionType() {
+    }
+
+    /**
      * Creates or finds a DistributionType from its string representation.
      *
      * @param name a name to look for.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The job error items. */
 @Immutable
 public final class JobErrorItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobErrorItem.class);
-
     /*
      * The recommended actions.
      */
@@ -32,6 +28,10 @@ public final class JobErrorItem {
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of JobErrorItem class. */
+    public JobErrorItem() {
+    }
 
     /**
      * Get the recommendations property: The recommended actions.

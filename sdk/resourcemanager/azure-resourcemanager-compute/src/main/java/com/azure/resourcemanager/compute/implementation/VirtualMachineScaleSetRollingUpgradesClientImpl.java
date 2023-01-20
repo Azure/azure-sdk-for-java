@@ -157,7 +157,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -207,7 +207,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -273,7 +273,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String vmScaleSetName) {
-        return beginCancelAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
 
     /**
@@ -290,7 +290,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
         String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginCancelAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
@@ -390,7 +390,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -441,7 +441,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -512,7 +512,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(String resourceGroupName, String vmScaleSetName) {
-        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
+        return this.beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
 
     /**
@@ -530,7 +530,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
+        return this.beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
@@ -634,7 +634,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +685,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -758,7 +758,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
         String resourceGroupName, String vmScaleSetName) {
-        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
+        return this.beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
 
     /**
@@ -776,7 +776,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
+        return this.beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
@@ -880,7 +880,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -931,7 +931,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

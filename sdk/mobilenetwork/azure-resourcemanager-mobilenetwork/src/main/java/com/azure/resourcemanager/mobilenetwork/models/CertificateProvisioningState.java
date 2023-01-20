@@ -20,6 +20,15 @@ public final class CertificateProvisioningState extends ExpandableStringEnum<Cer
     public static final CertificateProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of CertificateProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CertificateProvisioningState from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,15 @@ public final class RecoveryPlanActionLocation extends ExpandableStringEnum<Recov
     public static final RecoveryPlanActionLocation RECOVERY = fromString("Recovery");
 
     /**
+     * Creates a new instance of RecoveryPlanActionLocation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryPlanActionLocation() {
+    }
+
+    /**
      * Creates or finds a RecoveryPlanActionLocation from its string representation.
      *
      * @param name a name to look for.

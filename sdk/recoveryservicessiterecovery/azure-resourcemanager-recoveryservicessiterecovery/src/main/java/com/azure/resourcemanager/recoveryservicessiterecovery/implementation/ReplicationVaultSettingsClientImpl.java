@@ -684,7 +684,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(
         String resourceName, String resourceGroupName, String vaultSettingName, VaultSettingCreationInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input).getSyncPoller();
     }
 
     /**
@@ -709,7 +709,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         String vaultSettingName,
         VaultSettingCreationInput input,
         Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input, context).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input, context).getSyncPoller();
     }
 
     /**

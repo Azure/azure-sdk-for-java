@@ -58,12 +58,12 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+        <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.30.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+        <version>3.31.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
@@ -74,7 +74,7 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity-extensions</artifactId>
-        <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+        <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
       </dependency>
 
       <!-- Spring Cloud Azure -->
@@ -301,6 +301,11 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-redis</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

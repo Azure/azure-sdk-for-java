@@ -16,8 +16,10 @@ import java.util.List;
 /** An instance of this class provides access to all the operations defined in ServiceUnitsClient. */
 public interface ServiceUnitsClient {
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -27,9 +29,9 @@ public interface ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
+     * @return the {@link SyncPoller} for polling of represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceTopologyName,
@@ -38,8 +40,10 @@ public interface ServiceUnitsClient {
         ServiceUnitResourceInner serviceUnitInfo);
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -50,9 +54,9 @@ public interface ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
+     * @return the {@link SyncPoller} for polling of represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceTopologyName,
@@ -62,8 +66,10 @@ public interface ServiceUnitsClient {
         Context context);
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -84,8 +90,10 @@ public interface ServiceUnitsClient {
         ServiceUnitResourceInner serviceUnitInfo);
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -105,6 +113,27 @@ public interface ServiceUnitsClient {
         String serviceName,
         String serviceUnitName,
         ServiceUnitResourceInner serviceUnitInfo,
+        Context context);
+
+    /**
+     * Gets the service unit.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @param serviceUnitName The name of the service unit resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the service unit along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServiceUnitResourceInner> getWithResponse(
+        String resourceGroupName,
+        String serviceTopologyName,
+        String serviceName,
+        String serviceUnitName,
         Context context);
 
     /**
@@ -124,7 +153,7 @@ public interface ServiceUnitsClient {
         String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName);
 
     /**
-     * Gets the service unit.
+     * Deletes the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -134,10 +163,10 @@ public interface ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceUnitResourceInner> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName,
         String serviceTopologyName,
         String serviceName,
@@ -159,25 +188,20 @@ public interface ServiceUnitsClient {
     void delete(String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName);
 
     /**
-     * Deletes the service unit.
+     * Lists the service units under a service in the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
      * @param serviceName The name of the service resource.
-     * @param serviceUnitName The name of the service unit resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the list of service units along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context);
+    Response<List<ServiceUnitResourceInner>> listWithResponse(
+        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
 
     /**
      * Lists the service units under a service in the service topology.
@@ -192,20 +216,4 @@ public interface ServiceUnitsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     List<ServiceUnitResourceInner> list(String resourceGroupName, String serviceTopologyName, String serviceName);
-
-    /**
-     * Lists the service units under a service in the service topology.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service units.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<ServiceUnitResourceInner>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
 }

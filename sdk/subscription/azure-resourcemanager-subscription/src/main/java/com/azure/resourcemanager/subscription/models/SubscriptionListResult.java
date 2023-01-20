@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Subscription list operation response. */
 @Fluent
 public final class SubscriptionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionListResult.class);
-
     /*
      * An array of subscriptions.
      */
@@ -25,8 +21,12 @@ public final class SubscriptionListResult {
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", required = true)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SubscriptionListResult class. */
+    public SubscriptionListResult() {
+    }
 
     /**
      * Get the value property: An array of subscriptions.
@@ -76,11 +76,6 @@ public final class SubscriptionListResult {
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
-        }
-        if (nextLink() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nextLink in model SubscriptionListResult"));
         }
     }
 }

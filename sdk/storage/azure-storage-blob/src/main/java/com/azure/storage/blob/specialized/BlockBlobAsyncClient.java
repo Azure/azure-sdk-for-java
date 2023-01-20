@@ -41,7 +41,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -420,7 +419,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         if (binaryData == null) {
             Flux<ByteBuffer> dataFlux = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                     options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
-                .subscribeOn(Schedulers.boundedElastic())
                 : options.getDataFlux();
             dataMono = BinaryData.fromFlux(dataFlux, options.getLength(), false);
         } else {

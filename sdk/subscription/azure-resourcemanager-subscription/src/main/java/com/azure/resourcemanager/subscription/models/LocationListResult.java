@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.subscription.fluent.models.LocationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Location list operation response. */
 @Fluent
 public final class LocationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationListResult.class);
-
     /*
      * An array of locations.
      */
     @JsonProperty(value = "value")
     private List<LocationInner> value;
+
+    /** Creates an instance of LocationListResult class. */
+    public LocationListResult() {
+    }
 
     /**
      * Get the value property: An array of locations.

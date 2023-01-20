@@ -173,7 +173,6 @@
     "sdk/purview/azure-analytics-purview-scanning/**",
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
-    "sdk/remoterendering/azure-mixedreality-remoterendering/**",
     "sdk/schemaregistry/azure-data-schemaregistry/**",
     "sdk/schemaregistry/azure-data-schemaregistry-apacheavro/**",
     "sdk/servicebus/build/**",
@@ -260,6 +259,7 @@
     "eventhubs",
     "filereports",
     "gapra",
+    "gltf",
     "gmavenplus",
     "gson",
     "guids",
@@ -953,7 +953,10 @@
         "sqldb",
         "SQLDB",
         "Vcap",
-        "VCAP"
+        "VCAP",
+        "xiada",
+        "yiliu",
+        "usgovcloudapi"
       ]
     },
     {

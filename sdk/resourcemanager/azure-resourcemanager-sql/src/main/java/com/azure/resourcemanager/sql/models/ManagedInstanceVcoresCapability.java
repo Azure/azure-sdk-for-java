@@ -36,18 +36,22 @@ public final class ManagedInstanceVcoresCapability {
     private List<MaxSizeRangeCapability> supportedStorageSizes;
 
     /*
-     * True if this service objective is supported for managed instances in an
-     * instance pool.
+     * True if this service objective is supported for managed instances in an instance pool.
      */
     @JsonProperty(value = "instancePoolSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean instancePoolSupported;
 
     /*
-     * True if this service objective is supported for standalone managed
-     * instances.
+     * True if this service objective is supported for standalone managed instances.
      */
     @JsonProperty(value = "standaloneSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean standaloneSupported;
+
+    /*
+     * List of supported maintenance configurations
+     */
+    @JsonProperty(value = "supportedMaintenanceConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagedInstanceMaintenanceConfigurationCapability> supportedMaintenanceConfigurations;
 
     /*
      * The status of the capability.
@@ -60,6 +64,10 @@ public final class ManagedInstanceVcoresCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of ManagedInstanceVcoresCapability class. */
+    public ManagedInstanceVcoresCapability() {
+    }
 
     /**
      * Get the name property: The virtual cores identifier.
@@ -118,6 +126,15 @@ public final class ManagedInstanceVcoresCapability {
     }
 
     /**
+     * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
+     *
+     * @return the supportedMaintenanceConfigurations value.
+     */
+    public List<ManagedInstanceMaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
+        return this.supportedMaintenanceConfigurations;
+    }
+
+    /**
      * Get the status property: The status of the capability.
      *
      * @return the status value.
@@ -157,6 +174,9 @@ public final class ManagedInstanceVcoresCapability {
         }
         if (supportedStorageSizes() != null) {
             supportedStorageSizes().forEach(e -> e.validate());
+        }
+        if (supportedMaintenanceConfigurations() != null) {
+            supportedMaintenanceConfigurations().forEach(e -> e.validate());
         }
     }
 }

@@ -15,7 +15,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
      * The private link service connection status.
      */
     @JsonProperty(value = "status", required = true)
-    private String status;
+    private PrivateLinkServiceConnectionStateStatus status;
 
     /*
      * The private link service connection description.
@@ -27,14 +27,18 @@ public final class PrivateLinkServiceConnectionStateProperty {
      * The actions required for private link service connection.
      */
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
-    private String actionsRequired;
+    private PrivateLinkServiceConnectionStateActionsRequire actionsRequired;
+
+    /** Creates an instance of PrivateLinkServiceConnectionStateProperty class. */
+    public PrivateLinkServiceConnectionStateProperty() {
+    }
 
     /**
      * Get the status property: The private link service connection status.
      *
      * @return the status value.
      */
-    public String status() {
+    public PrivateLinkServiceConnectionStateStatus status() {
         return this.status;
     }
 
@@ -44,7 +48,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionStateProperty object itself.
      */
-    public PrivateLinkServiceConnectionStateProperty withStatus(String status) {
+    public PrivateLinkServiceConnectionStateProperty withStatus(PrivateLinkServiceConnectionStateStatus status) {
         this.status = status;
         return this;
     }
@@ -74,7 +78,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
      *
      * @return the actionsRequired value.
      */
-    public String actionsRequired() {
+    public PrivateLinkServiceConnectionStateActionsRequire actionsRequired() {
         return this.actionsRequired;
     }
 

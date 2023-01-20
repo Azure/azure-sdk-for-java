@@ -16,10 +16,9 @@ import com.azure.resourcemanager.billing.models.BillingSubscription;
 import com.azure.resourcemanager.billing.models.BillingSubscriptions;
 import com.azure.resourcemanager.billing.models.TransferBillingSubscriptionRequestProperties;
 import com.azure.resourcemanager.billing.models.ValidateSubscriptionTransferEligibilityResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingSubscriptionsImpl implements BillingSubscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingSubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingSubscriptionsImpl.class);
 
     private final BillingSubscriptionsClient innerClient;
 
@@ -85,15 +84,6 @@ public final class BillingSubscriptionsImpl implements BillingSubscriptions {
         return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
     }
 
-    public BillingSubscription get(String billingAccountName) {
-        BillingSubscriptionInner inner = this.serviceClient().get(billingAccountName);
-        if (inner != null) {
-            return new BillingSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BillingSubscription> getWithResponse(String billingAccountName, Context context) {
         Response<BillingSubscriptionInner> inner = this.serviceClient().getWithResponse(billingAccountName, context);
         if (inner != null) {
@@ -107,8 +97,8 @@ public final class BillingSubscriptionsImpl implements BillingSubscriptions {
         }
     }
 
-    public BillingSubscription update(String billingAccountName, BillingSubscriptionInner parameters) {
-        BillingSubscriptionInner inner = this.serviceClient().update(billingAccountName, parameters);
+    public BillingSubscription get(String billingAccountName) {
+        BillingSubscriptionInner inner = this.serviceClient().get(billingAccountName);
         if (inner != null) {
             return new BillingSubscriptionImpl(inner, this.manager());
         } else {
@@ -126,6 +116,15 @@ public final class BillingSubscriptionsImpl implements BillingSubscriptions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BillingSubscriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription update(String billingAccountName, BillingSubscriptionInner parameters) {
+        BillingSubscriptionInner inner = this.serviceClient().update(billingAccountName, parameters);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -151,17 +150,6 @@ public final class BillingSubscriptionsImpl implements BillingSubscriptions {
         }
     }
 
-    public ValidateSubscriptionTransferEligibilityResult validateMove(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters) {
-        ValidateSubscriptionTransferEligibilityResultInner inner =
-            this.serviceClient().validateMove(billingAccountName, parameters);
-        if (inner != null) {
-            return new ValidateSubscriptionTransferEligibilityResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ValidateSubscriptionTransferEligibilityResult> validateMoveWithResponse(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context) {
         Response<ValidateSubscriptionTransferEligibilityResultInner> inner =
@@ -172,6 +160,17 @@ public final class BillingSubscriptionsImpl implements BillingSubscriptions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ValidateSubscriptionTransferEligibilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateSubscriptionTransferEligibilityResult validateMove(
+        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters) {
+        ValidateSubscriptionTransferEligibilityResultInner inner =
+            this.serviceClient().validateMove(billingAccountName, parameters);
+        if (inner != null) {
+            return new ValidateSubscriptionTransferEligibilityResultImpl(inner, this.manager());
         } else {
             return null;
         }

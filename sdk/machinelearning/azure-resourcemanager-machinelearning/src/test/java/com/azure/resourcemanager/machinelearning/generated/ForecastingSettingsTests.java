@@ -16,11 +16,10 @@ import com.azure.resourcemanager.machinelearning.models.TargetRollingWindowSize;
 import com.azure.resourcemanager.machinelearning.models.UseStl;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ForecastingSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ForecastingSettings model =
             BinaryData
                 .fromString(
@@ -37,8 +36,8 @@ public final class ForecastingSettingsTests {
         Assertions.assertEquals(UseStl.SEASON, model.useStl());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ForecastingSettings model =
             new ForecastingSettings()
                 .withCountryOrRegionForHolidays("thuqolyahluq")

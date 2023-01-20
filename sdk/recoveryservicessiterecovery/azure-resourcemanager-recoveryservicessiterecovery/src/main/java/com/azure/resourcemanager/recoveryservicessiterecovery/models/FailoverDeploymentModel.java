@@ -20,6 +20,15 @@ public final class FailoverDeploymentModel extends ExpandableStringEnum<Failover
     public static final FailoverDeploymentModel RESOURCE_MANAGER = fromString("ResourceManager");
 
     /**
+     * Creates a new instance of FailoverDeploymentModel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FailoverDeploymentModel() {
+    }
+
+    /**
      * Creates or finds a FailoverDeploymentModel from its string representation.
      *
      * @param name a name to look for.

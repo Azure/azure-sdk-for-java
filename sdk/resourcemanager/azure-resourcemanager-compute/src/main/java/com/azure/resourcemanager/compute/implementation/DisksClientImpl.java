@@ -386,7 +386,7 @@ public final class DisksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String diskName, DiskInner disk) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
     }
 
     /**
@@ -406,7 +406,7 @@ public final class DisksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String diskName, DiskInner disk, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
     }
 
     /**
@@ -666,7 +666,7 @@ public final class DisksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
         String resourceGroupName, String diskName, DiskUpdate disk) {
-        return beginUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, diskName, disk).getSyncPoller();
     }
 
     /**
@@ -686,7 +686,7 @@ public final class DisksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
         String resourceGroupName, String diskName, DiskUpdate disk, Context context) {
-        return beginUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, diskName, disk, context).getSyncPoller();
     }
 
     /**
@@ -1073,7 +1073,7 @@ public final class DisksClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName) {
-        return beginDeleteAsync(resourceGroupName, diskName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskName).getSyncPoller();
     }
 
     /**
@@ -1091,7 +1091,7 @@ public final class DisksClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskName, context).getSyncPoller();
     }
 
     /**
@@ -1651,7 +1651,7 @@ public final class DisksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData) {
-        return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData).getSyncPoller();
+        return this.beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData).getSyncPoller();
     }
 
     /**
@@ -1671,7 +1671,7 @@ public final class DisksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context) {
-        return beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData, context).getSyncPoller();
+        return this.beginGrantAccessAsync(resourceGroupName, diskName, grantAccessData, context).getSyncPoller();
     }
 
     /**
@@ -1908,7 +1908,7 @@ public final class DisksClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String diskName) {
-        return beginRevokeAccessAsync(resourceGroupName, diskName).getSyncPoller();
+        return this.beginRevokeAccessAsync(resourceGroupName, diskName).getSyncPoller();
     }
 
     /**
@@ -1927,7 +1927,7 @@ public final class DisksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
         String resourceGroupName, String diskName, Context context) {
-        return beginRevokeAccessAsync(resourceGroupName, diskName, context).getSyncPoller();
+        return this.beginRevokeAccessAsync(resourceGroupName, diskName, context).getSyncPoller();
     }
 
     /**

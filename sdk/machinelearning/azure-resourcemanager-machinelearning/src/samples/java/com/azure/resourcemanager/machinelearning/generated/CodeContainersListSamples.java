@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CodeContainers List. */
 public final class CodeContainersListSamples {
     /*
@@ -17,6 +15,6 @@ public final class CodeContainersListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listCodeContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeContainers().list("testrg123", "testworkspace", null, Context.NONE);
+        manager.codeContainers().list("testrg123", "testworkspace", null, com.azure.core.util.Context.NONE);
     }
 }

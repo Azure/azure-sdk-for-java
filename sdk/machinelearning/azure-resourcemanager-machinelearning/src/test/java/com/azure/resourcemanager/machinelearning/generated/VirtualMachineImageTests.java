@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineImage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualMachineImageTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualMachineImage model =
             BinaryData.fromString("{\"id\":\"vbopfppdbwnu\"}").toObject(VirtualMachineImage.class);
         Assertions.assertEquals("vbopfppdbwnu", model.id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualMachineImage model = new VirtualMachineImage().withId("vbopfppdbwnu");
         model = BinaryData.fromObject(model).toObject(VirtualMachineImage.class);
         Assertions.assertEquals("vbopfppdbwnu", model.id());

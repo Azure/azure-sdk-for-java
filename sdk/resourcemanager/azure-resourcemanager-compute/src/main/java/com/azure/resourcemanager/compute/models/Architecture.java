@@ -17,6 +17,15 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
     public static final Architecture ARM64 = fromString("Arm64");
 
     /**
+     * Creates a new instance of Architecture value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Architecture() {
+    }
+
+    /**
      * Creates or finds a Architecture from its string representation.
      *
      * @param name a name to look for.

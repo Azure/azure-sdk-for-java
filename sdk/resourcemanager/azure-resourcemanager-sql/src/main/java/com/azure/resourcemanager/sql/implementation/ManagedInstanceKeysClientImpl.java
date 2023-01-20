@@ -175,7 +175,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -187,7 +186,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             managedInstanceName,
                             filter,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<ManagedInstanceKeyInner>>map(
@@ -239,7 +238,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -249,7 +247,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 managedInstanceName,
                 filter,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -398,7 +396,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -410,7 +407,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             managedInstanceName,
                             keyName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -455,7 +452,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -465,7 +461,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 managedInstanceName,
                 keyName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -496,23 +492,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceKeyInner get(String resourceGroupName, String managedInstanceName, String keyName) {
-        return getAsync(resourceGroupName, managedInstanceName, keyName).block();
-    }
-
-    /**
-     * Gets a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -523,6 +502,23 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     public Response<ManagedInstanceKeyInner> getWithResponse(
         String resourceGroupName, String managedInstanceName, String keyName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, keyName, context).block();
+    }
+
+    /**
+     * Gets a managed instance key.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param keyName The name of the managed instance key to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedInstanceKeyInner get(String resourceGroupName, String managedInstanceName, String keyName) {
+        return getWithResponse(resourceGroupName, managedInstanceName, keyName, Context.NONE).getValue();
     }
 
     /**
@@ -569,7 +565,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -581,7 +576,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             managedInstanceName,
                             keyName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -637,7 +632,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -647,7 +641,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 managedInstanceName,
                 keyName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -887,7 +881,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -898,7 +891,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             managedInstanceName,
                             keyName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -942,7 +935,6 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -951,7 +943,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 managedInstanceName,
                 keyName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1115,7 +1107,8 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1151,7 +1144,8 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

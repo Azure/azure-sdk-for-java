@@ -32,6 +32,15 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
     public static final ParameterType SECURE_STRING = fromString("SecureString");
 
     /**
+     * Creates a new instance of ParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ParameterType() {
+    }
+
+    /**
      * Creates or finds a ParameterType from its string representation.
      *
      * @param name a name to look for.

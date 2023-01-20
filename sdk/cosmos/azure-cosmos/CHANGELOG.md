@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.40.0-beta.1 (Unreleased)
+### 4.41.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,11 +9,21 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.40.0 (2023-01-13)
+#### Features Added
+* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Added `CosmosDiagnostics` to `readMany` API - See [PR 32290](https://github.com/Azure/azure-sdk-for-java/pull/32290)
+
+#### Bugs Fixed
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
-* Reduced log noisiness when bulk ingestion completes and sink is already terminated or cancelled. - See [PR 32601](https://github.com/Azure/azure-sdk-for-java/pull/32601)  
-* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Fixed issue with `TracerProvider` constructor inadvertently disabling tracing when `isClientMetricsEnabled` is true - See [PR 32787](https://github.com/Azure/azure-sdk-for-java/pull/32787)
+* Added improvement in handling for idle connection being closed unexpectedly - See [PR 32936](https://github.com/Azure/azure-sdk-for-java/pull/32936)
+
+#### Other Changes
+* Reduced log noisiness when bulk ingestion completes and sink is already terminated or cancelled. - See [PR 32601](https://github.com/Azure/azure-sdk-for-java/pull/32601)
 * Optimized the `readMany` API to make use of point reads when a single item is requested for a given physical partition - See [PR 31723](https://github.com/Azure/azure-sdk-for-java/pull/31723)
-* Added cross region retries for data plane, query plan and metadata requests failed with http timeouts - See [32450](https://github.com/Azure/azure-sdk-for-java/pull/32450)
+* Added cross region retries for data plane, query plan and metadata requests failed with http timeouts - See [PR 32450](https://github.com/Azure/azure-sdk-for-java/pull/32450)
 
 ### 4.39.0 (2022-11-16)
 

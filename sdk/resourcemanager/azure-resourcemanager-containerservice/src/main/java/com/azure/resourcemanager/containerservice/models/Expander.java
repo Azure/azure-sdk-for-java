@@ -29,6 +29,15 @@ public final class Expander extends ExpandableStringEnum<Expander> {
     public static final Expander RANDOM = fromString("random");
 
     /**
+     * Creates a new instance of Expander value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Expander() {
+    }
+
+    /**
      * Creates or finds a Expander from its string representation.
      *
      * @param name a name to look for.

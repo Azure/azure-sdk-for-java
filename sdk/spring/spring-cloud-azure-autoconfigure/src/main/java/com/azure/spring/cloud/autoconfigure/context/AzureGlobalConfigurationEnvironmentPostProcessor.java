@@ -104,7 +104,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         HTTP_NO_PROXY(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts");
 
 
-        // TODO: how to set this proxy?
+        // TODO (xiada): how to set this proxy?
         // proxy(PROPERTY_HTTP_PROXY, PROPERTY_HTTPS_PROXY)
 
         private static Log logger;

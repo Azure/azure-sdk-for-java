@@ -5,128 +5,34 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.InstallRebootBehavior;
 import com.azure.resourcemanager.databoxedge.models.UpdateOperation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Details about ongoing updates and availability of updates on the device. */
-@JsonFlatten
 @Fluent
-public class UpdateSummaryInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateSummaryInner.class);
-
+public final class UpdateSummaryInner extends ArmBaseModel {
     /*
-     * The current version of the device in format: 1.2.17312.13.",
+     * The device update information summary.
      */
-    @JsonProperty(value = "properties.deviceVersionNumber")
-    private String deviceVersionNumber;
+    @JsonProperty(value = "properties")
+    private UpdateSummaryProperties innerProperties;
 
-    /*
-     * The current version of the device in text format.
-     */
-    @JsonProperty(value = "properties.friendlyDeviceVersionName")
-    private String friendlyDeviceVersionName;
+    /** Creates an instance of UpdateSummaryInner class. */
+    public UpdateSummaryInner() {
+    }
 
-    /*
-     * The last time when a scan was done on the device.
+    /**
+     * Get the innerProperties property: The device update information summary.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.deviceLastScannedDateTime")
-    private OffsetDateTime deviceLastScannedDateTime;
-
-    /*
-     * The time when the last scan job was completed (success/cancelled/failed)
-     * on the appliance.
-     */
-    @JsonProperty(value = "properties.lastCompletedScanJobDateTime")
-    private OffsetDateTime lastCompletedScanJobDateTime;
-
-    /*
-     * The time when the last Download job was completed
-     * (success/cancelled/failed) on the appliance.
-     */
-    @JsonProperty(value = "properties.lastCompletedDownloadJobDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastCompletedDownloadJobDateTime;
-
-    /*
-     * The time when the last Install job was completed
-     * (success/cancelled/failed) on the appliance.
-     */
-    @JsonProperty(value = "properties.lastCompletedInstallJobDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastCompletedInstallJobDateTime;
-
-    /*
-     * The number of updates available for the current device version as per
-     * the last device scan.
-     */
-    @JsonProperty(value = "properties.totalNumberOfUpdatesAvailable", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalNumberOfUpdatesAvailable;
-
-    /*
-     * The total number of items pending download.
-     */
-    @JsonProperty(value = "properties.totalNumberOfUpdatesPendingDownload", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalNumberOfUpdatesPendingDownload;
-
-    /*
-     * The total number of items pending install.
-     */
-    @JsonProperty(value = "properties.totalNumberOfUpdatesPendingInstall", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalNumberOfUpdatesPendingInstall;
-
-    /*
-     * Indicates if updates are available and at least one of the updates needs
-     * a reboot.
-     */
-    @JsonProperty(value = "properties.rebootBehavior", access = JsonProperty.Access.WRITE_ONLY)
-    private InstallRebootBehavior rebootBehavior;
-
-    /*
-     * The current update operation.
-     */
-    @JsonProperty(value = "properties.ongoingUpdateOperation", access = JsonProperty.Access.WRITE_ONLY)
-    private UpdateOperation ongoingUpdateOperation;
-
-    /*
-     * The job ID of the download job in progress.
-     */
-    @JsonProperty(value = "properties.inProgressDownloadJobId", access = JsonProperty.Access.WRITE_ONLY)
-    private String inProgressDownloadJobId;
-
-    /*
-     * The job ID of the install job in progress.
-     */
-    @JsonProperty(value = "properties.inProgressInstallJobId", access = JsonProperty.Access.WRITE_ONLY)
-    private String inProgressInstallJobId;
-
-    /*
-     * The time when the currently running download (if any) started.
-     */
-    @JsonProperty(value = "properties.inProgressDownloadJobStartedDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime inProgressDownloadJobStartedDateTime;
-
-    /*
-     * The time when the currently running install (if any) started.
-     */
-    @JsonProperty(value = "properties.inProgressInstallJobStartedDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime inProgressInstallJobStartedDateTime;
-
-    /*
-     * The list of updates available for install.
-     */
-    @JsonProperty(value = "properties.updateTitles", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> updateTitles;
-
-    /*
-     * The total size of updates available for download in bytes.
-     */
-    @JsonProperty(value = "properties.totalUpdateSizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private Double totalUpdateSizeInBytes;
+    private UpdateSummaryProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the deviceVersionNumber property: The current version of the device in format: 1.2.17312.13.",.
@@ -134,7 +40,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the deviceVersionNumber value.
      */
     public String deviceVersionNumber() {
-        return this.deviceVersionNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceVersionNumber();
     }
 
     /**
@@ -144,7 +50,10 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the UpdateSummaryInner object itself.
      */
     public UpdateSummaryInner withDeviceVersionNumber(String deviceVersionNumber) {
-        this.deviceVersionNumber = deviceVersionNumber;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateSummaryProperties();
+        }
+        this.innerProperties().withDeviceVersionNumber(deviceVersionNumber);
         return this;
     }
 
@@ -154,7 +63,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the friendlyDeviceVersionName value.
      */
     public String friendlyDeviceVersionName() {
-        return this.friendlyDeviceVersionName;
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyDeviceVersionName();
     }
 
     /**
@@ -164,7 +73,10 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the UpdateSummaryInner object itself.
      */
     public UpdateSummaryInner withFriendlyDeviceVersionName(String friendlyDeviceVersionName) {
-        this.friendlyDeviceVersionName = friendlyDeviceVersionName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateSummaryProperties();
+        }
+        this.innerProperties().withFriendlyDeviceVersionName(friendlyDeviceVersionName);
         return this;
     }
 
@@ -174,7 +86,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the deviceLastScannedDateTime value.
      */
     public OffsetDateTime deviceLastScannedDateTime() {
-        return this.deviceLastScannedDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceLastScannedDateTime();
     }
 
     /**
@@ -184,7 +96,10 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the UpdateSummaryInner object itself.
      */
     public UpdateSummaryInner withDeviceLastScannedDateTime(OffsetDateTime deviceLastScannedDateTime) {
-        this.deviceLastScannedDateTime = deviceLastScannedDateTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateSummaryProperties();
+        }
+        this.innerProperties().withDeviceLastScannedDateTime(deviceLastScannedDateTime);
         return this;
     }
 
@@ -195,7 +110,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the lastCompletedScanJobDateTime value.
      */
     public OffsetDateTime lastCompletedScanJobDateTime() {
-        return this.lastCompletedScanJobDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastCompletedScanJobDateTime();
     }
 
     /**
@@ -206,7 +121,10 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the UpdateSummaryInner object itself.
      */
     public UpdateSummaryInner withLastCompletedScanJobDateTime(OffsetDateTime lastCompletedScanJobDateTime) {
-        this.lastCompletedScanJobDateTime = lastCompletedScanJobDateTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateSummaryProperties();
+        }
+        this.innerProperties().withLastCompletedScanJobDateTime(lastCompletedScanJobDateTime);
         return this;
     }
 
@@ -217,7 +135,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the lastCompletedDownloadJobDateTime value.
      */
     public OffsetDateTime lastCompletedDownloadJobDateTime() {
-        return this.lastCompletedDownloadJobDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastCompletedDownloadJobDateTime();
     }
 
     /**
@@ -227,7 +145,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the lastCompletedInstallJobDateTime value.
      */
     public OffsetDateTime lastCompletedInstallJobDateTime() {
-        return this.lastCompletedInstallJobDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastCompletedInstallJobDateTime();
     }
 
     /**
@@ -237,7 +155,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the totalNumberOfUpdatesAvailable value.
      */
     public Integer totalNumberOfUpdatesAvailable() {
-        return this.totalNumberOfUpdatesAvailable;
+        return this.innerProperties() == null ? null : this.innerProperties().totalNumberOfUpdatesAvailable();
     }
 
     /**
@@ -246,7 +164,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the totalNumberOfUpdatesPendingDownload value.
      */
     public Integer totalNumberOfUpdatesPendingDownload() {
-        return this.totalNumberOfUpdatesPendingDownload;
+        return this.innerProperties() == null ? null : this.innerProperties().totalNumberOfUpdatesPendingDownload();
     }
 
     /**
@@ -255,7 +173,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the totalNumberOfUpdatesPendingInstall value.
      */
     public Integer totalNumberOfUpdatesPendingInstall() {
-        return this.totalNumberOfUpdatesPendingInstall;
+        return this.innerProperties() == null ? null : this.innerProperties().totalNumberOfUpdatesPendingInstall();
     }
 
     /**
@@ -265,7 +183,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the rebootBehavior value.
      */
     public InstallRebootBehavior rebootBehavior() {
-        return this.rebootBehavior;
+        return this.innerProperties() == null ? null : this.innerProperties().rebootBehavior();
     }
 
     /**
@@ -274,7 +192,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the ongoingUpdateOperation value.
      */
     public UpdateOperation ongoingUpdateOperation() {
-        return this.ongoingUpdateOperation;
+        return this.innerProperties() == null ? null : this.innerProperties().ongoingUpdateOperation();
     }
 
     /**
@@ -283,7 +201,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the inProgressDownloadJobId value.
      */
     public String inProgressDownloadJobId() {
-        return this.inProgressDownloadJobId;
+        return this.innerProperties() == null ? null : this.innerProperties().inProgressDownloadJobId();
     }
 
     /**
@@ -292,7 +210,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the inProgressInstallJobId value.
      */
     public String inProgressInstallJobId() {
-        return this.inProgressInstallJobId;
+        return this.innerProperties() == null ? null : this.innerProperties().inProgressInstallJobId();
     }
 
     /**
@@ -302,7 +220,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the inProgressDownloadJobStartedDateTime value.
      */
     public OffsetDateTime inProgressDownloadJobStartedDateTime() {
-        return this.inProgressDownloadJobStartedDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().inProgressDownloadJobStartedDateTime();
     }
 
     /**
@@ -312,7 +230,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the inProgressInstallJobStartedDateTime value.
      */
     public OffsetDateTime inProgressInstallJobStartedDateTime() {
-        return this.inProgressInstallJobStartedDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().inProgressInstallJobStartedDateTime();
     }
 
     /**
@@ -321,7 +239,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the updateTitles value.
      */
     public List<String> updateTitles() {
-        return this.updateTitles;
+        return this.innerProperties() == null ? null : this.innerProperties().updateTitles();
     }
 
     /**
@@ -330,7 +248,7 @@ public class UpdateSummaryInner extends ArmBaseModel {
      * @return the totalUpdateSizeInBytes value.
      */
     public Double totalUpdateSizeInBytes() {
-        return this.totalUpdateSizeInBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().totalUpdateSizeInBytes();
     }
 
     /**
@@ -341,5 +259,8 @@ public class UpdateSummaryInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

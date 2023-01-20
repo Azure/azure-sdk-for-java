@@ -17,6 +17,15 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
     public static final TeradataAuthenticationType WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of TeradataAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TeradataAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a TeradataAuthenticationType from its string representation.
      *
      * @param name a name to look for.

@@ -5,20 +5,21 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryDisplay;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryForProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ClientDiscoveryValueForSingleApi Available operation details. */
+/**
+ * ClientDiscoveryValueForSingleApi
+ *
+ * <p>Available operation details.
+ */
 @Fluent
 public final class ClientDiscoveryValueForSingleApiInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryValueForSingleApiInner.class);
-
     /*
-     * ClientDiscoveryDisplay Contains the localized display information for
-     * this particular operation
+     * ClientDiscoveryDisplay
+     *
+     * Contains the localized display information for this particular operation
      */
     @JsonProperty(value = "display")
     private ClientDiscoveryDisplay display;
@@ -36,21 +37,27 @@ public final class ClientDiscoveryValueForSingleApiInner {
     private Boolean isDataAction;
 
     /*
-     * The intended executor of the operation;governs the display of the
-     * operation in the RBAC UX and the audit logs UX
+     * The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
      */
     @JsonProperty(value = "origin")
     private String origin;
 
     /*
-     * ClientDiscoveryForProperties Properties for the given operation.
+     * ClientDiscoveryForProperties
+     *
+     * Properties for the given operation.
      */
     @JsonProperty(value = "properties")
     private ClientDiscoveryForProperties properties;
 
+    /** Creates an instance of ClientDiscoveryValueForSingleApiInner class. */
+    public ClientDiscoveryValueForSingleApiInner() {
+    }
+
     /**
-     * Get the display property: ClientDiscoveryDisplay Contains the localized display information for this particular
-     * operation.
+     * Get the display property: ClientDiscoveryDisplay
+     *
+     * <p>Contains the localized display information for this particular operation.
      *
      * @return the display value.
      */
@@ -59,8 +66,9 @@ public final class ClientDiscoveryValueForSingleApiInner {
     }
 
     /**
-     * Set the display property: ClientDiscoveryDisplay Contains the localized display information for this particular
-     * operation.
+     * Set the display property: ClientDiscoveryDisplay
+     *
+     * <p>Contains the localized display information for this particular operation.
      *
      * @param display the display value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
@@ -133,7 +141,9 @@ public final class ClientDiscoveryValueForSingleApiInner {
     }
 
     /**
-     * Get the properties property: ClientDiscoveryForProperties Properties for the given operation.
+     * Get the properties property: ClientDiscoveryForProperties
+     *
+     * <p>Properties for the given operation.
      *
      * @return the properties value.
      */
@@ -142,7 +152,9 @@ public final class ClientDiscoveryValueForSingleApiInner {
     }
 
     /**
-     * Set the properties property: ClientDiscoveryForProperties Properties for the given operation.
+     * Set the properties property: ClientDiscoveryForProperties
+     *
+     * <p>Properties for the given operation.
      *
      * @param properties the properties value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.

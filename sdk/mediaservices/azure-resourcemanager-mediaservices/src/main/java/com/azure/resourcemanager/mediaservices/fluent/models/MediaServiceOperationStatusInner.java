@@ -49,6 +49,10 @@ public final class MediaServiceOperationStatusInner {
     @JsonProperty(value = "error")
     private ManagementError error;
 
+    /** Creates an instance of MediaServiceOperationStatusInner class. */
+    public MediaServiceOperationStatusInner() {
+    }
+
     /**
      * Get the name property: Operation identifier.
      *

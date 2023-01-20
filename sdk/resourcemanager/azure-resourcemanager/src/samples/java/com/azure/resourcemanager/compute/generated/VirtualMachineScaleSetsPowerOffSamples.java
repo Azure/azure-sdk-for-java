@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import java.util.Arrays;
 
 /** Samples for VirtualMachineScaleSets PowerOff. */
 public final class VirtualMachineScaleSetsPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.
@@ -25,11 +24,11 @@ public final class VirtualMachineScaleSetsPowerOffSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .powerOff("rgcompute", "a", null, null, Context.NONE);
+            .powerOff("rgcompute", "a", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.
@@ -48,6 +47,6 @@ public final class VirtualMachineScaleSetsPowerOffSamples {
                 "aaaaaaaaaaaaaaaaaa",
                 true,
                 new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

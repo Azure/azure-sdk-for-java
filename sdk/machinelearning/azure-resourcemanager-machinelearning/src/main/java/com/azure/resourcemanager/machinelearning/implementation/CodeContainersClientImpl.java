@@ -58,7 +58,7 @@ public final class CodeContainersClientImpl implements CodeContainersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface CodeContainersService {
+    public interface CodeContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

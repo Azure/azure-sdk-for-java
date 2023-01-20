@@ -20,6 +20,15 @@ public final class ScheduleProvisioningState extends ExpandableStringEnum<Schedu
     public static final ScheduleProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of ScheduleProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduleProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ScheduleProvisioningState from its string representation.
      *
      * @param name a name to look for.

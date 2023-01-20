@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Invoices ListByBillingAccount. */
 public final class InvoicesListByBillingAccountSamples {
     /*
@@ -17,7 +15,9 @@ public final class InvoicesListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountInvoicesList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", Context.NONE);
+        manager
+            .invoices()
+            .listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -30,6 +30,8 @@ public final class InvoicesListByBillingAccountSamples {
      */
     public static void billingAccountInvoicesListWithRebillDetails(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", Context.NONE);
+        manager
+            .invoices()
+            .listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", com.azure.core.util.Context.NONE);
     }
 }

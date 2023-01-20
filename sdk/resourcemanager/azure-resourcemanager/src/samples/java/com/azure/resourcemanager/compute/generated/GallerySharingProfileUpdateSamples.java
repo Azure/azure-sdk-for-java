@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.SharingUpdateInner;
 import com.azure.resourcemanager.compute.models.SharingProfileGroup;
 import com.azure.resourcemanager.compute.models.SharingProfileGroupTypes;
@@ -31,7 +30,7 @@ public final class GallerySharingProfileUpdateSamples {
                 "myResourceGroup",
                 "myGalleryName",
                 new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.ENABLE_COMMUNITY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -52,7 +51,7 @@ public final class GallerySharingProfileUpdateSamples {
                 "myResourceGroup",
                 "myGalleryName",
                 new SharingUpdateInner().withOperationType(SharingUpdateOperationTypes.RESET),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -87,6 +86,6 @@ public final class GallerySharingProfileUpdateSamples {
                                 new SharingProfileGroup()
                                     .withType(SharingProfileGroupTypes.AADTENANTS)
                                     .withIds(Arrays.asList("c24c76aa-8897-4027-9b03-8f7928b54ff6")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationvCenters Delete. */
 public final class ReplicationvCentersDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationvCentersDeleteSamples {
      */
     public static void removeVCenterOperation(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationvCenters().delete("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", Context.NONE);
+        manager
+            .replicationvCenters()
+            .delete("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents the operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Service provider: Microsoft.Solutions
      */
@@ -21,8 +17,7 @@ public final class OperationDisplay {
     private String provider;
 
     /*
-     * Resource on which the operation is performed: Application, JitRequest,
-     * etc.
+     * Resource on which the operation is performed: Application, JitRequest, etc.
      */
     @JsonProperty(value = "resource")
     private String resource;
@@ -32,6 +27,10 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "operation")
     private String operation;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
 
     /**
      * Get the provider property: Service provider: Microsoft.Solutions.

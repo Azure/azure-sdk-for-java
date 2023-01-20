@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Advisor Digest configuration entity. */
 @Fluent
 public final class DigestConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigestConfig.class);
-
     /*
-     * Name of digest configuration. Value is case-insensitive and must be
-     * unique within a subscription.
+     * Name of digest configuration. Value is case-insensitive and must be unique within a subscription.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -29,23 +24,20 @@ public final class DigestConfig {
     private String actionGroupResourceId;
 
     /*
-     * Frequency that digest will be triggered, in days. Value must be between
-     * 7 and 30 days inclusive.
+     * Frequency that digest will be triggered, in days. Value must be between 7 and 30 days inclusive.
      */
     @JsonProperty(value = "frequency")
     private Integer frequency;
 
     /*
-     * Categories to send digest for. If categories are not provided, then
-     * digest will be sent for all categories.
+     * Categories to send digest for. If categories are not provided, then digest will be sent for all categories.
      */
     @JsonProperty(value = "categories")
     private List<Category> categories;
 
     /*
-     * Language for digest content body. Value must be ISO 639-1 code for one
-     * of Azure portal supported languages. Otherwise, it will be converted
-     * into one. Default value is English (en).
+     * Language for digest content body. Value must be ISO 639-1 code for one of Azure portal supported languages.
+     * Otherwise, it will be converted into one. Default value is English (en).
      */
     @JsonProperty(value = "language")
     private String language;
@@ -55,6 +47,10 @@ public final class DigestConfig {
      */
     @JsonProperty(value = "state")
     private DigestConfigState state;
+
+    /** Creates an instance of DigestConfig class. */
+    public DigestConfig() {
+    }
 
     /**
      * Get the name property: Name of digest configuration. Value is case-insensitive and must be unique within a

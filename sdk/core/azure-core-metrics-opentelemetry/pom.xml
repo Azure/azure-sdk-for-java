@@ -31,6 +31,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <javadoc.excludePackageNames/>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.opentelemetry</groupId>

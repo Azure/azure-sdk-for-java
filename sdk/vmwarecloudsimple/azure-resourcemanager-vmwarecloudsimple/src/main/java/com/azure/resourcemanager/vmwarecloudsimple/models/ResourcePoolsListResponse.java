@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.ResourcePoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of resource pools response model. */
 @Fluent
 public final class ResourcePoolsListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcePoolsListResponse.class);
-
     /*
      * Link for next list of ResourcePoolsList
      */
@@ -27,6 +23,10 @@ public final class ResourcePoolsListResponse {
      */
     @JsonProperty(value = "value")
     private List<ResourcePoolInner> value;
+
+    /** Creates an instance of ResourcePoolsListResponse class. */
+    public ResourcePoolsListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of ResourcePoolsList.

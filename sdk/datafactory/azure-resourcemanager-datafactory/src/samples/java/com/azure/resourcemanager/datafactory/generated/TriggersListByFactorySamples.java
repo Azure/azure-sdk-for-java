@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Triggers ListByFactory. */
 public final class TriggersListByFactorySamples {
     /*
@@ -17,6 +15,8 @@ public final class TriggersListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+        manager
+            .triggers()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

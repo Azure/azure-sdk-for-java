@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.UpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
 import com.azure.resourcemanager.maintenance.models.ListUpdatesResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UpdatesClient. */
 public final class UpdatesClientImpl implements UpdatesClient {
-    private final ClientLogger logger = new ClientLogger(UpdatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final UpdatesService service;
 
@@ -57,7 +54,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MaintenanceManagemen")
-    private interface UpdatesService {
+    public interface UpdatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
@@ -97,7 +94,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -108,7 +107,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateInner>> listParentSinglePageAsync(
@@ -176,7 +175,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -188,7 +189,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateInner>> listParentSinglePageAsync(
@@ -254,7 +255,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -265,7 +268,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UpdateInner> listParentAsync(
@@ -287,7 +290,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -299,7 +304,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UpdateInner> listParentAsync(
@@ -323,7 +328,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -334,7 +341,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> listParent(
@@ -350,7 +357,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -362,7 +371,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> listParent(
@@ -385,7 +394,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -394,7 +405,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateInner>> listSinglePageAsync(
@@ -447,7 +458,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -457,7 +470,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateInner>> listSinglePageAsync(
@@ -507,7 +520,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -516,7 +531,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UpdateInner> listAsync(
@@ -525,7 +540,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -535,7 +552,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UpdateInner> listAsync(
@@ -545,7 +562,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -554,7 +573,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> list(
@@ -563,7 +582,9 @@ public final class UpdatesClientImpl implements UpdatesClient {
     }
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -573,7 +594,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpdateInner> list(

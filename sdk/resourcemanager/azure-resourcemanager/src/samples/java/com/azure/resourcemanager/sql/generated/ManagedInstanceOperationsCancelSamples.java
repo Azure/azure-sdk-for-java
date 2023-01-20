@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for ManagedInstanceOperations Cancel. */
 public final class ManagedInstanceOperationsCancelSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/CancelManagedInstanceOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelManagedInstanceOperation.json
      */
     /**
      * Sample code: Cancel the managed instance management operation.

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.databoxedge.fluent.NodesClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.NodeInner;
 import com.azure.resourcemanager.databoxedge.models.Node;
 import com.azure.resourcemanager.databoxedge.models.Nodes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NodesImpl implements Nodes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NodesImpl.class);
 
     private final NodesClient innerClient;
 

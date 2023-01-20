@@ -63,6 +63,15 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
     public static final MigrationState MIGRATION_PARTIALLY_SUCCEEDED = fromString("MigrationPartiallySucceeded");
 
     /**
+     * Creates a new instance of MigrationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MigrationState() {
+    }
+
+    /**
      * Creates or finds a MigrationState from its string representation.
      *
      * @param name a name to look for.

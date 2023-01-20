@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubscriptionState. */
+/** The subscription state. */
 public final class SubscriptionState extends ExpandableStringEnum<SubscriptionState> {
     /** Static value Registered for SubscriptionState. */
     public static final SubscriptionState REGISTERED = fromString("Registered");
@@ -26,6 +26,15 @@ public final class SubscriptionState extends ExpandableStringEnum<SubscriptionSt
     public static final SubscriptionState WARNED = fromString("Warned");
 
     /**
+     * Creates a new instance of SubscriptionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SubscriptionState() {
+    }
+
+    /**
      * Creates or finds a SubscriptionState from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class SubscriptionState extends ExpandableStringEnum<SubscriptionSt
         return fromString(name, SubscriptionState.class);
     }
 
-    /** @return known SubscriptionState values. */
+    /**
+     * Gets known SubscriptionState values.
+     *
+     * @return known SubscriptionState values.
+     */
     public static Collection<SubscriptionState> values() {
         return values(SubscriptionState.class);
     }

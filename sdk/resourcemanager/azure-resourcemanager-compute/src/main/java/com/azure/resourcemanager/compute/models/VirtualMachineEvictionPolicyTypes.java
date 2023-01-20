@@ -17,6 +17,15 @@ public final class VirtualMachineEvictionPolicyTypes extends ExpandableStringEnu
     public static final VirtualMachineEvictionPolicyTypes DELETE = fromString("Delete");
 
     /**
+     * Creates a new instance of VirtualMachineEvictionPolicyTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachineEvictionPolicyTypes() {
+    }
+
+    /**
      * Creates or finds a VirtualMachineEvictionPolicyTypes from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,15 @@ public final class HealthErrorCustomerResolvability extends ExpandableStringEnum
     public static final HealthErrorCustomerResolvability NOT_ALLOWED = fromString("NotAllowed");
 
     /**
+     * Creates a new instance of HealthErrorCustomerResolvability value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthErrorCustomerResolvability() {
+    }
+
+    /**
      * Creates or finds a HealthErrorCustomerResolvability from its string representation.
      *
      * @param name a name to look for.
