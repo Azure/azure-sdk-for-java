@@ -876,20 +876,14 @@
                 <keepEmptyFile>false</keepEmptyFile>
               </revapi.reporter.json>
             </analysisConfiguration>
-<!--            <pipelineConfiguration>-->
-<!--              <filters>-->
-<!--                <include>-->
-<!--                  <item>azure-sdk-tree-provider</item>-->
-<!--                  <item>revapi.java.filter.annotated</item>-->
-<!--                </include>-->
-<!--              </filters>-->
-<!--              <transformationBlocks>-->
-<!--                <block>-->
-<!--                  <item>revapi.differences</item>-->
-<!--                  <item>transitive-core-changes</item>-->
-<!--                </block>-->
-<!--              </transformationBlocks>-->
-<!--            </pipelineConfiguration>-->
+            <pipelineConfiguration>
+              <filters>
+                <include>
+                  <item>revapi.filter</item>
+                  <item>azure-sdk-tree-provider</item>
+                </include>
+              </filters>
+            </pipelineConfiguration>
           </configuration>
           <dependencies>
             <dependency>
