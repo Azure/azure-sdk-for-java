@@ -45,10 +45,10 @@ public class AzureSdkTreeFilterProviderTest {
     @ParameterizedTest
     @ValueSource(strings = {
         "com.azure.data.cosmos", "com.azure.core.implementation", "com.azure.resourcemanager.fluent",
-        "com.fasterxml.jackson", "com.google.gson", "com.microsoft.azure", "com.nimbusds", "io.micrometer", "io.netty",
-        "io.vertx", "javax.jms", "javax.servlet", "kotlin", "okhttp3", "okio", "org.apache.avro", "org.apache.commons",
-        "org.apache.qpid", "org.junit", "org.slf4j", "org.springframework", "reactor.core", "reactor.netty",
-        "reactor.util"
+        "com.azure.resourcemanager.fluent.models", "com.fasterxml.jackson", "com.google.gson", "com.microsoft.azure",
+        "com.nimbusds", "io.micrometer", "io.netty", "io.vertx", "javax.jms", "javax.servlet", "kotlin", "okhttp3",
+        "okio", "org.apache.avro", "org.apache.commons", "org.apache.qpid", "org.junit", "org.slf4j",
+        "org.springframework", "reactor.core", "reactor.netty", "reactor.util"
     })
     public void packagesThatShouldBeExcluded(String packageName) {
         assertTrue(excludePackage(packageName));
@@ -56,7 +56,7 @@ public class AzureSdkTreeFilterProviderTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "com.azure.cosmos", "com.azure.core.util", "com.azure.resourcemanager.models"
+        "com.azure.cosmos", "com.azure.core.util", "com.azure.resourcemanager.fluentcore"
     })
     public void packagesThatShouldBeNotExcluded(String packageName) {
         assertFalse(excludePackage(packageName));
