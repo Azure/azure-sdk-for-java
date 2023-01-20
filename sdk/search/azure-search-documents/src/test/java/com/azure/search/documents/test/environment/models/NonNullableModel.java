@@ -37,6 +37,10 @@ public class NonNullableModel {
     @JsonProperty(value = "Buckets")
     private Bucket[] buckets;
 
+    public String key() {
+        return key;
+    }
+
     public NonNullableModel key(String key) {
         this.key = key;
         return this;

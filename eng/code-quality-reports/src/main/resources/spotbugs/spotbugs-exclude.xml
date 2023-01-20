@@ -2683,4 +2683,17 @@
     <Field name="bytes"/>
   </Match>
 
+  <!-- Test classes that create clients in setup instead of constructor. -->
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    <Or>
+      <Class name="com.azure.search.documents.GeographyPointTests"/>
+      <Field name="searchAsyncClient"/>
+    </Or>
+    <Or>
+      <Class name="com.azure.search.documents.GeographyPointTests"/>
+      <Field name="searchClient"/>
+    </Or>
+  </Match>
+
 </FindBugsFilter>
