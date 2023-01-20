@@ -11,6 +11,8 @@ import java.util.Collection;
 public final class CallMediaRecognitionType extends ExpandableStringEnum<CallMediaRecognitionType> {
     /** Static value dtmf for RecognitionType. */
     public static final CallMediaRecognitionType DTMF = fromString("dtmf");
+    /** Static value choices for RecognitionTypeInternal. */
+    public static final CallMediaRecognitionType CHOICES = fromString("choices");
 
     /**
      * Creates or finds a RecognitionType from its string representation.
