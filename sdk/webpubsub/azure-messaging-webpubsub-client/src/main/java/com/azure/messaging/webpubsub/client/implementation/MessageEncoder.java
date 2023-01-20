@@ -13,7 +13,7 @@ import org.glassfish.tyrus.core.coder.CoderAdapter;
 
 import java.io.IOException;
 
-public class MessageEncoder extends CoderAdapter implements Encoder.Text<WebPubSubMessage> {
+public final class MessageEncoder extends CoderAdapter implements Encoder.Text<WebPubSubMessage> {
 
     private final static SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 

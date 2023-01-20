@@ -4,15 +4,12 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
 
-public class SendToGroupMessage extends WebPubSubMessage {
+public final class SendToGroupMessage extends WebPubSubMessageAck {
 
-    private String type = "sendToGroup";
+    private final String type = "sendToGroup";
 
     private String group;
-
-    private long ackId;
 
     private Boolean noEcho = false;
 
@@ -29,12 +26,9 @@ public class SendToGroupMessage extends WebPubSubMessage {
         return this;
     }
 
-    public long getAckId() {
-        return ackId;
-    }
-
-    public SendToGroupMessage setAckId(long ackId) {
-        this.ackId = ackId;
+    @Override
+    public SendToGroupMessage setAckId(Long ackId) {
+        super.setAckId(ackId);
         return this;
     }
 

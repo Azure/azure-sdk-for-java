@@ -3,13 +3,10 @@
 
 package com.azure.messaging.webpubsub.client.implementation;
 
-import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
+public final class LeaveGroupMessage extends WebPubSubMessageAck {
 
-public class LeaveGroupMessage extends WebPubSubMessage {
-
-    private String type = "leaveGroup";
+    private final String type = "leaveGroup";
     private String group;
-    private Long ackId;
 
     public String getGroup() {
         return group;
@@ -20,12 +17,9 @@ public class LeaveGroupMessage extends WebPubSubMessage {
         return this;
     }
 
-    public Long getAckId() {
-        return ackId;
-    }
-
+    @Override
     public LeaveGroupMessage setAckId(Long ackId) {
-        this.ackId = ackId;
+        super.setAckId(ackId);
         return this;
     }
 }

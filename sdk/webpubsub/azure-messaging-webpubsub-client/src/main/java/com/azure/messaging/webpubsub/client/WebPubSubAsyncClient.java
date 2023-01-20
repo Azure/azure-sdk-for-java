@@ -8,9 +8,11 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.webpubsub.client.exception.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.LoggingUtils;
+import com.azure.messaging.webpubsub.client.implementation.WebPubSubMessageAck;
 import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
@@ -230,13 +232,18 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         return ackMessageSink.asFlux();
     }
 
-    private Mono<Void> sendMessage(WebPubSubMessage message) {
+    private Mono<Void> sendMessage(WebPubSubMessageAck message) {
+        if (session == null || !session.isOpen()) {
+            return Mono.error(logSendMessageFailedException(
+                "Failed to send message. Websocket session is not opened.", null, message));
+        }
         return Mono.create(sink -> {
             session.getAsyncRemote().sendObject(message, sendResult -> {
                 if (sendResult.isOK()) {
                     sink.success();
                 } else {
-                    sink.error(sendResult.getException());
+                    sink.error(logSendMessageFailedException(
+                        "Failed to send message.", sendResult.getException(), message));
                 }
             });
         });
@@ -307,5 +314,12 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 .log(message);
             return false;
         };
+    }
+
+    private RuntimeException logSendMessageFailedException(
+        String errorMessage, Throwable cause, WebPubSubMessageAck message) {
+
+        return logger.logExceptionAsWarning(
+            new SendMessageFailedException(errorMessage, cause, message.getAckId(), null));
     }
 }

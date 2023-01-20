@@ -4,18 +4,13 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
-import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
-import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
-import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-public class ClientTests {
+public class ClientTests extends TestBase {
 
     public static void main(String[] args) throws Exception {
         runForSyncClient();
@@ -27,7 +22,7 @@ public class ClientTests {
 
     private static void runForSyncClient() throws InterruptedException {
         // client
-        WebPubSubClient client = clientBuilder().buildClient();
+        WebPubSubClient client = getClient();
 
         client.start();
 
@@ -65,7 +60,7 @@ public class ClientTests {
 
     private static void runForAsyncClient() {
         // client
-        WebPubSubAsyncClient asyncClient = clientBuilder().buildAsyncClient();
+        WebPubSubAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
 
         // group data messages
         asyncClient.receiveGroupMessageEvents().filter(event -> event.getMessage().getGroup().equals("group1")).subscribe(event -> {
@@ -127,23 +122,6 @@ public class ClientTests {
 
         // close
         asyncClient.closeAsync().block();
-    }
-
-    private static WebPubSubClientBuilder clientBuilder() {
-        WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()
-            .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
-            .hub("test_hub")
-            .buildAsyncClient();
-
-        Mono<WebPubSubClientAccessToken> accessToken = client.getClientAccessToken(new GetClientAccessTokenOptions()
-            .setUserId("weidxu")
-            .addRole("webpubsub.joinLeaveGroup")
-            .addRole("webpubsub.sendToGroup"));
-
-        // client builder
-        return new WebPubSubClientBuilder()
-            .credential(new WebPubSubClientCredential(accessToken
-                .map(WebPubSubClientAccessToken::getUrl)));
     }
 
     private static void printResult(Mono<WebPubSubResult> result) {

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Locale;
 
-public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubSubMessage> {
+public final class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubSubMessage> {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

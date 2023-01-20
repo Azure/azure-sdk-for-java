@@ -3,13 +3,10 @@
 
 package com.azure.messaging.webpubsub.client.implementation;
 
-import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
+public final class JoinGroupMessage extends WebPubSubMessageAck {
 
-public class JoinGroupMessage extends WebPubSubMessage {
-
-    private String type = "joinGroup";
+    private final String type = "joinGroup";
     private String group;
-    private Long ackId;
 
     public String getGroup() {
         return group;
@@ -20,12 +17,9 @@ public class JoinGroupMessage extends WebPubSubMessage {
         return this;
     }
 
-    public Long getAckId() {
-        return ackId;
-    }
-
+    @Override
     public JoinGroupMessage setAckId(Long ackId) {
-        this.ackId = ackId;
+        super.setAckId(ackId);
         return this;
     }
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class LoggingUtils {
+public final class LoggingUtils {
 
     private LoggingUtils() {
     }
