@@ -43,64 +43,6 @@
     }
   },
   {
-    "extension": "revapi.filter",
-    "configuration": {
-      "elements": {
-        "exclude": [
-          "class com\\.azure\\.core\\.util\\.Configuration",
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure(\\..+?)?\\.(implementation|samples)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/reactor\\.(core|netty|util)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/io\\.(micrometer|netty)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/(kotlin|okhttp3|okio|io\\.vertx|com\\.nimbusds|com\\.fasterxml\\.jackson|com\\.google\\.gson)(\\..+)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.microsoft\\.azure(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/javax\\.(jms|servlet)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
-          },
-          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.(AppConfigurationRefresh|AppConfigurationBootstrapConfiguration)",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
-          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
-          {
-            "matcher": "java-package",
-            "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
-          },
-          "class com\\.azure\\.cosmos\\.(BridgeInternal|CosmosBridgeInternal)",
-          "class com\\.azure\\.cosmos\\.models\\.ModelBridgeInternal",
-          "class com\\.azure\\.cosmos\\.util\\.UtilBridgeInternal"
-        ]
-      }
-    }
-  },
-  {
     "extension": "revapi.differences",
     "configuration": {
       "ignore": true,

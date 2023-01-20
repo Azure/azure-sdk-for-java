@@ -65,6 +65,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.revapi</groupId>
+      <artifactId>revapi-java-spi</artifactId>
+      <version>0.23.6</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
