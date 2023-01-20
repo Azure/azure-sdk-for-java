@@ -78,10 +78,13 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Specifies the HttpPipeline to send all requests. This setting overrides the others.
+     * @deprecated This method is deprecated.
+     * <p>Use {@link CredentialBuilderBase#pipeline(HttpPipeline)} instead</p>
      *
      * @param httpPipeline the HttpPipeline to send all requests
      * @return An updated instance of this builder with the http pipeline set as specified.
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public T httpPipeline(HttpPipeline httpPipeline) {
         this.identityClientOptions.setHttpPipeline(httpPipeline);
@@ -234,15 +237,22 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Specifies the HttpPipeline to send all requests. This setting overrides the others.
+     * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * @param httpPipeline the HttpPipeline to send all requests
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return An updated instance of this builder with the http pipeline set as specified.
      */
     @Override
     @SuppressWarnings("unchecked")
-    public T pipeline(HttpPipeline httpPipeline) {
-        identityClientOptions.setHttpPipeline(httpPipeline);
+    public T pipeline(HttpPipeline pipeline) {
+        identityClientOptions.setHttpPipeline(pipeline);
         return (T) this;
     }
 
