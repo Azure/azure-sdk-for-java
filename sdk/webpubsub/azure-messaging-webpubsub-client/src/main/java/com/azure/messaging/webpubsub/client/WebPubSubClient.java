@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub.client;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
@@ -20,6 +21,10 @@ public class WebPubSubClient implements AutoCloseable {
 
     WebPubSubClient(WebPubSubAsyncClient client) {
         this.client = client;
+    }
+
+    public String getConnectionId() {
+        return this.client.getConnectionId();
     }
 
     public void start() {
@@ -70,5 +75,9 @@ public class WebPubSubClient implements AutoCloseable {
 
     public IterableStream<DisconnectedEvent> receiveDisconnectedEvents() {
         return new IterableStream<>(client.receiveDisconnectedEvents());
+    }
+
+    WebPubSubClientState getClientState() {
+        return this.client.getClientState();
     }
 }

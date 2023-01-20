@@ -25,8 +25,7 @@ public class TestBase {
 
         // client builder
         return new WebPubSubClientBuilder()
-            .credential(new WebPubSubClientCredential(accessToken
-                .map(WebPubSubClientAccessToken::getUrl)));
+            .credential(new WebPubSubClientCredential(accessToken.map(WebPubSubClientAccessToken::getUrl)));
     }
 
     protected static WebPubSubClient getClient() {
