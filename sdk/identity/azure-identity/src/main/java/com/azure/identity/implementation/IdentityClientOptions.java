@@ -644,12 +644,12 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
-    IdentityClientOptions setPerCallPolicies(List perCallPolicies) {
+    IdentityClientOptions setPerCallPolicies(List<HttpPipelinePolicy> perCallPolicies) {
         this.perCallPolicies = perCallPolicies;
         return this;
     }
 
-    IdentityClientOptions setPerRetryPolicies(List perRetryPolicies) {
+    IdentityClientOptions setPerRetryPolicies(List<HttpPipelinePolicy> perRetryPolicies) {
         this.perRetryPolicies = perRetryPolicies;
         return this;
     }
