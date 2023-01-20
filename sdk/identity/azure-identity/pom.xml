@@ -95,7 +95,7 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.12.20</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.12.22</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
