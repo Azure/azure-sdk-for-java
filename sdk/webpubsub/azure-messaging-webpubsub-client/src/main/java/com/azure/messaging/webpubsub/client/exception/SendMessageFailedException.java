@@ -8,13 +8,21 @@ import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 
 public class SendMessageFailedException extends AzureException {
 
+    private final boolean isTransient;
+
     private final Long ackId;
     private final AckMessage error;
 
-    public SendMessageFailedException(String message, Throwable cause, Long ackId, AckMessage error) {
+    public SendMessageFailedException(String message, Throwable cause,
+                                      boolean isTransient, Long ackId, AckMessage error) {
         super(message, cause);
+        this.isTransient = isTransient;
         this.ackId = ackId;
         this.error = error;
+    }
+
+    public boolean isTransient() {
+        return isTransient;
     }
 
     public Long getAckId() {

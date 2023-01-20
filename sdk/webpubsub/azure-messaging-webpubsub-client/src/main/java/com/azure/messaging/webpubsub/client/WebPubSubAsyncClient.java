@@ -233,20 +233,17 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     }
 
     private Mono<Void> sendMessage(WebPubSubMessageAck message) {
-        if (session == null || !session.isOpen()) {
-            return Mono.error(logSendMessageFailedException(
-                "Failed to send message. Websocket session is not opened.", null, message));
-        }
-        return Mono.create(sink -> {
+        Mono<Void> verification = verifyStateBeforeSend();
+        return verification.then(Mono.create(sink -> {
             session.getAsyncRemote().sendObject(message, sendResult -> {
                 if (sendResult.isOK()) {
                     sink.success();
                 } else {
                     sink.error(logSendMessageFailedException(
-                        "Failed to send message.", sendResult.getException(), message));
+                        "Failed to send message.", sendResult.getException(), true, message));
                 }
             });
-        });
+        }));
     }
 
     private Mono<WebPubSubResult> waitForAckMessage(long ackId) {
@@ -316,10 +313,24 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         };
     }
 
+    private Mono<Void> verifyStateBeforeSend() {
+        Mono<Void> verification = Mono.empty();
+        if (isDisposed.get()) {
+            verification = Mono.error(logSendMessageFailedException(
+                "Failed to send message. WebPubSubClient is closed.", null, false, null));
+        }
+        if (session == null || !session.isOpen()) {
+            verification = Mono.error(logSendMessageFailedException(
+                "Failed to send message. Websocket session is not opened.", null, false, null));
+        }
+        return verification;
+    }
+
     private RuntimeException logSendMessageFailedException(
-        String errorMessage, Throwable cause, WebPubSubMessageAck message) {
+        String errorMessage, Throwable cause, boolean isTransient, WebPubSubMessageAck message) {
 
         return logger.logExceptionAsWarning(
-            new SendMessageFailedException(errorMessage, cause, message.getAckId(), null));
+            new SendMessageFailedException(errorMessage, cause, isTransient,
+                message == null ? null : message.getAckId(), null));
     }
 }
