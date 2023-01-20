@@ -48,16 +48,9 @@
       "ignore": true,
       "differences": [
         {
-          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
           "justification": "We allow this in azure.spring.messaging."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring.(messaging|integration|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
-          "justification": "azure.spring classes are allowed to be exposed."
         },
         {
           "regex": true,
@@ -77,18 +70,6 @@
           "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|enum|interface) org\\.conscrypt\\..*",
           "justification": "skip check for third party files."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|json|messaging\\.eventgrid|messaging\\.eventhubs|messaging\\.servicebus|resourcemanager|security\\.keyvault|storage).*",
-          "justification": "SDK classes are allowed to be exposed by dependencies using them."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
-          "justification": "These classes exposed are publisher, subscriber, and Subscription."
         },
         {
           "regex": true,
@@ -143,24 +124,6 @@
           "code": "java.method.addedToInterface",
           "new": "method <S extends T> reactor.core.publisher.Mono<S> com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository<T, K>::save(K, com.azure.cosmos.models.PartitionKey, java.lang.Class<S>, com.azure.cosmos.models.CosmosPatchOperations, com.azure.cosmos.models.CosmosPatchItemRequestOptions)",
           "justification": "Spring interfaces are allowed to add methods."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
-          "justification": "perf-test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) io\\.(cloudevents|opentelemetry).*",
-          "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry, Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class) org\\.springframework.util\\.ErrorHandler",
-          "justification": "Azure Spring Cloud Messaging need the Spring's public interface for error handler registration, it is a common class for users to handle runtime errors."
         },
         {
           "regex": true,
@@ -274,24 +237,6 @@
           "justification": "Not a public api"
         },
         {
-          "ignore": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
-          "justification": "Thi isn't an external class"
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
-          "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) org\\.postgresql\\..*",
-          "justification": "Postgresql driver classes are allowed to be exposed by dependencies using them."
-        },
-        {
           "code": "java.method.parameterTypeParameterChanged",
           "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
@@ -304,18 +249,6 @@
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
           "parameterIndex": "1",
           "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
-          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
-          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
         },
         {
           "regex": true,

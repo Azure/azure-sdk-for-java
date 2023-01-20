@@ -877,6 +877,11 @@
               </revapi.reporter.json>
             </analysisConfiguration>
             <pipelineConfiguration>
+              <filters>
+                <include>
+                  <item>azure-sdk-tree-provider</item>
+                </include>
+              </filters>
               <transformationBlocks>
                 <block>
                   <item>revapi.differences</item>

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests exclusion logic for {@link AzureSdkTreeFilterProvider}.
  */
-public class AzureSdkTreeFilterProviderTests {
+public class AzureSdkTreeFilterProviderTest {
     @ParameterizedTest
     @ValueSource(strings = {
         "com.azure.core.util.Configuration", "com.azure.cosmos.BridgeInternal", "com.azure.cosmos.CosmosBridgeInternal",
