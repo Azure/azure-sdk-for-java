@@ -83,7 +83,7 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : null,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "2.7.9-SNAPSHOT",
     "spring-cloud-version" : "2021.0.5"
   },
@@ -91,7 +91,7 @@
     "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : null,
+    "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.7.8",
     "spring-cloud-version" : "2021.0.5"
   },
