@@ -17,8 +17,7 @@ public final class ChoiceResult {
     private String label;
 
     /*
-     * Phrases are set to the value if choice is seletected via phrase
-     * detection.
+     * Phrases are set to the value if choice is selected via phrase detection.
      * If Dtmf input is recognized, then Label will be the identifier for the
      * choice detected and phrases will be set to null
      */
@@ -46,7 +45,7 @@ public final class ChoiceResult {
     }
 
     /**
-     * Get the recognizedPhrase property: Phrases are set to the value if choice is seletected via phrase detection. If
+     * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
      * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
      * null.
      *
@@ -57,7 +56,7 @@ public final class ChoiceResult {
     }
 
     /**
-     * Set the recognizedPhrase property: Phrases are set to the value if choice is seletected via phrase detection. If
+     * Set the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
      * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
      * null.
      *

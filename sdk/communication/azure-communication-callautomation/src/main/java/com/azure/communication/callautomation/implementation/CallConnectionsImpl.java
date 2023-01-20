@@ -2225,7 +2225,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participants to retrieve.
+     * @param participantMri MRI of the participant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2250,7 +2250,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participants to retrieve.
+     * @param participantMri MRI of the participant to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2274,7 +2274,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participants to retrieve.
+     * @param participantMri MRI of the participant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2297,7 +2297,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participants to retrieve.
+     * @param participantMri MRI of the participant to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2322,7 +2322,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participants to retrieve.
+     * @param participantMri MRI of the participant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2337,7 +2337,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participants to retrieve.
+     * @param participantMri MRI of the participant to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
