@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of virtual machines. */
 @Fluent
 public final class VirtualMachineListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineListResponse.class);
-
     /*
      * Link for next list of VirtualMachines
      */
@@ -27,6 +23,10 @@ public final class VirtualMachineListResponse {
      */
     @JsonProperty(value = "value")
     private List<VirtualMachineInner> value;
+
+    /** Creates an instance of VirtualMachineListResponse class. */
+    public VirtualMachineListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of VirtualMachines.

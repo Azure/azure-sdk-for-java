@@ -72,7 +72,7 @@ stages:
           displayName: 'Generate pom for aggregate JavaDoc report'
           inputs:
             scriptPath: 'eng/scripts/generate_aggregate_pom.py'
-            arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,azure-messaging-servicebus-stress,azure-messaging-eventhubs-stress'
+            arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
             workingDirectory: '$(System.DefaultWorkingDirectory)'    
 
         - task: Maven@3

@@ -20,6 +20,15 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
     public static final SparkServerType SPARK_THRIFT_SERVER = fromString("SparkThriftServer");
 
     /**
+     * Creates a new instance of SparkServerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkServerType() {
+    }
+
+    /**
      * Creates or finds a SparkServerType from its string representation.
      *
      * @param name a name to look for.

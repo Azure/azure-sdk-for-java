@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProtectionInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProtectionProviderSpecificInput;
@@ -33,6 +32,6 @@ public final class ReplicationProtectedItemsDeleteSamples {
                     .withProperties(
                         new DisableProtectionInputProperties()
                             .withReplicationProviderInput(new DisableProtectionProviderSpecificInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

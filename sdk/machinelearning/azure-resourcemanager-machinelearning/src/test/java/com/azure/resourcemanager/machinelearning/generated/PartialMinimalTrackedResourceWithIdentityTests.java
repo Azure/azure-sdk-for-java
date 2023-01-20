@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedRes
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialMinimalTrackedResourceWithIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PartialMinimalTrackedResourceWithIdentity model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class PartialMinimalTrackedResourceWithIdentityTests {
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PartialMinimalTrackedResourceWithIdentity model =
             new PartialMinimalTrackedResourceWithIdentity()
                 .withTags(mapOf("uejrjxgc", "ckcb", "i", "qibrhosxsdqrhzoy"))

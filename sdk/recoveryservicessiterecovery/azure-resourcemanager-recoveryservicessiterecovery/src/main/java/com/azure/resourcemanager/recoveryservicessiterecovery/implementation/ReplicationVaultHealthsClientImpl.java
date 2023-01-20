@@ -396,7 +396,7 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(
         String resourceName, String resourceGroupName) {
-        return beginRefreshAsync(resourceName, resourceGroupName).getSyncPoller();
+        return this.beginRefreshAsync(resourceName, resourceGroupName).getSyncPoller();
     }
 
     /**
@@ -413,7 +413,7 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(
         String resourceName, String resourceGroupName, Context context) {
-        return beginRefreshAsync(resourceName, resourceGroupName, context).getSyncPoller();
+        return this.beginRefreshAsync(resourceName, resourceGroupName, context).getSyncPoller();
     }
 
     /**

@@ -6,19 +6,20 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to SQL DB and target server requirements. */
 @Fluent
 public final class ConnectToTargetSqlDbTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetSqlDbTaskInput.class);
-
     /*
      * Connection information for target SQL DB
      */
     @JsonProperty(value = "targetConnectionInfo", required = true)
     private SqlConnectionInfo targetConnectionInfo;
+
+    /** Creates an instance of ConnectToTargetSqlDbTaskInput class. */
+    public ConnectToTargetSqlDbTaskInput() {
+    }
 
     /**
      * Get the targetConnectionInfo property: Connection information for target SQL DB.
@@ -47,7 +48,7 @@ public final class ConnectToTargetSqlDbTaskInput {
      */
     public void validate() {
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model ConnectToTargetSqlDbTaskInput"));
@@ -55,4 +56,6 @@ public final class ConnectToTargetSqlDbTaskInput {
             targetConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToTargetSqlDbTaskInput.class);
 }

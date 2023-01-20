@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ContainerResourceRequirements;
 import com.azure.resourcemanager.machinelearning.models.ContainerResourceSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerResourceRequirementsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ContainerResourceRequirements model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class ContainerResourceRequirementsTests {
         Assertions.assertEquals("eslk", model.containerResourceRequests().memory());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ContainerResourceRequirements model =
             new ContainerResourceRequirements()
                 .withContainerResourceLimits(

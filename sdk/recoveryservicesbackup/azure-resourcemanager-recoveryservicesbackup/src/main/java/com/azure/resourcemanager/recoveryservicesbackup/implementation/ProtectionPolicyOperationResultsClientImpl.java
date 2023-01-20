@@ -56,7 +56,7 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionPolicyOperationResultsService {
+    public interface ProtectionPolicyOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

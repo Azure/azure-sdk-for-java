@@ -778,7 +778,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(
         String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, input).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, input).getSyncPoller();
     }
 
     /**
@@ -799,7 +799,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(
         String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, input, context).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, input, context).getSyncPoller();
     }
 
     /**
@@ -1056,7 +1056,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String resourceName, String resourceGroupName, String fabricName) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
+        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
@@ -1076,7 +1076,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
+        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
@@ -1329,7 +1329,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(
         String resourceName, String resourceGroupName, String fabricName) {
-        return beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
+        return this.beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
@@ -1349,7 +1349,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(
         String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
+        return this.beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
@@ -1601,7 +1601,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(
         String resourceName, String resourceGroupName, String fabricName) {
-        return beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
+        return this.beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
@@ -1621,7 +1621,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(
         String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
+        return this.beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
@@ -1917,7 +1917,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
         String resourceGroupName,
         String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
-        return beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest)
+        return this
+            .beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest)
             .getSyncPoller();
     }
 
@@ -1943,7 +1944,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
         String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest,
         Context context) {
-        return beginReassociateGatewayAsync(
+        return this
+            .beginReassociateGatewayAsync(
                 resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, context)
             .getSyncPoller();
     }
@@ -2220,7 +2222,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String fabricName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
@@ -2240,7 +2242,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
@@ -2520,7 +2522,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginRenewCertificate(
         String resourceName, String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
-        return beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate)
+        return this
+            .beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate)
             .getSyncPoller();
     }
 
@@ -2546,7 +2549,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
         String fabricName,
         RenewCertificateInput renewCertificate,
         Context context) {
-        return beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context)
+        return this
+            .beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context)
             .getSyncPoller();
     }
 

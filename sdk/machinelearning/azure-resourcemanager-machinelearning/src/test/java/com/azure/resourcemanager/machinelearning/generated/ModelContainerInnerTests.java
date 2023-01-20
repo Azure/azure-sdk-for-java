@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.ModelContainerProperties
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ModelContainerInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ModelContainerInner model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class ModelContainerInnerTests {
         Assertions.assertEquals(false, model.properties().isArchived());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ModelContainerInner model =
             new ModelContainerInner()
                 .withProperties(

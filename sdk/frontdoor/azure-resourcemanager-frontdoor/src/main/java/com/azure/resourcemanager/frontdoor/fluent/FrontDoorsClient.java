@@ -22,7 +22,7 @@ public interface FrontDoorsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Front Doors.
+     * @return result of the request to list Front Doors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FrontDoorInner> list();
@@ -34,7 +34,7 @@ public interface FrontDoorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Front Doors.
+     * @return result of the request to list Front Doors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FrontDoorInner> list(Context context);
@@ -46,7 +46,7 @@ public interface FrontDoorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Front Doors.
+     * @return result of the request to list Front Doors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FrontDoorInner> listByResourceGroup(String resourceGroupName);
@@ -59,10 +59,26 @@ public interface FrontDoorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Front Doors.
+     * @return result of the request to list Front Doors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FrontDoorInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param frontDoorName Name of the Front Door which is globally unique.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Front Door with the specified Front Door name under the specified subscription and resource group along
+     *     with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FrontDoorInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String frontDoorName, Context context);
 
     /**
      * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
@@ -78,21 +94,6 @@ public interface FrontDoorsClient {
     FrontDoorInner getByResourceGroup(String resourceGroupName, String frontDoorName);
 
     /**
-     * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Front Door with the specified Front Door name under the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FrontDoorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String frontDoorName, Context context);
-
-    /**
      * Creates a new Front Door with a Front Door name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
@@ -101,10 +102,10 @@ public interface FrontDoorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return front Door represents a collection of backend endpoints to route traffic to along with rules that specify
-     *     how traffic is sent there.
+     * @return the {@link SyncPoller} for polling of front Door represents a collection of backend endpoints to route
+     *     traffic to along with rules that specify how traffic is sent there.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FrontDoorInner>, FrontDoorInner> beginCreateOrUpdate(
         String resourceGroupName, String frontDoorName, FrontDoorInner frontDoorParameters);
 
@@ -118,10 +119,10 @@ public interface FrontDoorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return front Door represents a collection of backend endpoints to route traffic to along with rules that specify
-     *     how traffic is sent there.
+     * @return the {@link SyncPoller} for polling of front Door represents a collection of backend endpoints to route
+     *     traffic to along with rules that specify how traffic is sent there.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FrontDoorInner>, FrontDoorInner> beginCreateOrUpdate(
         String resourceGroupName, String frontDoorName, FrontDoorInner frontDoorParameters, Context context);
 
@@ -165,9 +166,9 @@ public interface FrontDoorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName);
 
     /**
@@ -179,9 +180,9 @@ public interface FrontDoorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName, Context context);
 
     /**
@@ -215,6 +216,25 @@ public interface FrontDoorsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param customDomainProperties Custom domain to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of custom domain validation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ValidateCustomDomainOutputInner> validateCustomDomainWithResponse(
+        String resourceGroupName,
+        String frontDoorName,
+        ValidateCustomDomainInput customDomainProperties,
+        Context context);
+
+    /**
+     * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param frontDoorName Name of the Front Door which is globally unique.
+     * @param customDomainProperties Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -223,23 +243,4 @@ public interface FrontDoorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ValidateCustomDomainOutputInner validateCustomDomain(
         String resourceGroupName, String frontDoorName, ValidateCustomDomainInput customDomainProperties);
-
-    /**
-     * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param customDomainProperties Custom domain to be validated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateCustomDomainOutputInner> validateCustomDomainWithResponse(
-        String resourceGroupName,
-        String frontDoorName,
-        ValidateCustomDomainInput customDomainProperties,
-        Context context);
 }

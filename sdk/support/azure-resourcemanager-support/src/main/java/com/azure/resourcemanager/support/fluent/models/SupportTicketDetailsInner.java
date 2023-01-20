@@ -5,153 +5,37 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.SupportEngineer;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Object that represents SupportTicketDetails resource. */
-@JsonFlatten
 @Fluent
-public class SupportTicketDetailsInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportTicketDetailsInner.class);
-
+public final class SupportTicketDetailsInner extends ProxyResource {
     /*
-     * System generated support ticket Id that is unique.
+     * Properties of the resource.
      */
-    @JsonProperty(value = "properties.supportTicketId")
-    private String supportTicketId;
+    @JsonProperty(value = "properties")
+    private SupportTicketDetailsProperties innerProperties;
 
-    /*
-     * Detailed description of the question or issue.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    /** Creates an instance of SupportTicketDetailsInner class. */
+    public SupportTicketDetailsInner() {
+    }
 
-    /*
-     * Each Azure service has its own set of issue categories, also known as
-     * problem classification. This parameter is the unique Id for the type of
-     * problem you are experiencing.
+    /**
+     * Get the innerProperties property: Properties of the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.problemClassificationId")
-    private String problemClassificationId;
-
-    /*
-     * Localized name of problem classification.
-     */
-    @JsonProperty(value = "properties.problemClassificationDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String problemClassificationDisplayName;
-
-    /*
-     * A value that indicates the urgency of the case, which in turn determines
-     * the response time according to the service level agreement of the
-     * technical support plan you have with Azure. Note: 'Highest critical
-     * impact', also known as the 'Emergency - Severe impact' level in the
-     * Azure portal is reserved only for our Premium customers.
-     */
-    @JsonProperty(value = "properties.severity")
-    private SeverityLevel severity;
-
-    /*
-     * Enrollment Id associated with the support ticket.
-     */
-    @JsonProperty(value = "properties.enrollmentId", access = JsonProperty.Access.WRITE_ONLY)
-    private String enrollmentId;
-
-    /*
-     * Indicates if this requires a 24x7 response from Azure.
-     */
-    @JsonProperty(value = "properties.require24X7Response")
-    private Boolean require24X7Response;
-
-    /*
-     * Contact information of the user requesting to create a support ticket.
-     */
-    @JsonProperty(value = "properties.contactDetails")
-    private ContactProfile contactDetails;
-
-    /*
-     * Service Level Agreement information for this support ticket.
-     */
-    @JsonProperty(value = "properties.serviceLevelAgreement")
-    private ServiceLevelAgreement serviceLevelAgreement;
-
-    /*
-     * Information about the support engineer working on this support ticket.
-     */
-    @JsonProperty(value = "properties.supportEngineer")
-    private SupportEngineer supportEngineer;
-
-    /*
-     * Support plan type associated with the support ticket.
-     */
-    @JsonProperty(value = "properties.supportPlanType", access = JsonProperty.Access.WRITE_ONLY)
-    private String supportPlanType;
-
-    /*
-     * Title of the support ticket.
-     */
-    @JsonProperty(value = "properties.title")
-    private String title;
-
-    /*
-     * Time in UTC (ISO 8601 format) when the problem started.
-     */
-    @JsonProperty(value = "properties.problemStartTime")
-    private OffsetDateTime problemStartTime;
-
-    /*
-     * This is the resource Id of the Azure service resource associated with
-     * the support ticket.
-     */
-    @JsonProperty(value = "properties.serviceId")
-    private String serviceId;
-
-    /*
-     * Localized name of the Azure service.
-     */
-    @JsonProperty(value = "properties.serviceDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceDisplayName;
-
-    /*
-     * Status of the support ticket.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
-
-    /*
-     * Time in UTC (ISO 8601 format) when the support ticket was created.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * Time in UTC (ISO 8601 format) when the support ticket was last modified.
-     */
-    @JsonProperty(value = "properties.modifiedDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime modifiedDate;
-
-    /*
-     * Additional ticket details associated with a technical support ticket
-     * request.
-     */
-    @JsonProperty(value = "properties.technicalTicketDetails")
-    private TechnicalTicketDetails technicalTicketDetails;
-
-    /*
-     * Additional ticket details associated with a quota support ticket
-     * request.
-     */
-    @JsonProperty(value = "properties.quotaTicketDetails")
-    private QuotaTicketDetails quotaTicketDetails;
+    private SupportTicketDetailsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the supportTicketId property: System generated support ticket Id that is unique.
@@ -159,7 +43,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the supportTicketId value.
      */
     public String supportTicketId() {
-        return this.supportTicketId;
+        return this.innerProperties() == null ? null : this.innerProperties().supportTicketId();
     }
 
     /**
@@ -169,7 +53,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withSupportTicketId(String supportTicketId) {
-        this.supportTicketId = supportTicketId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withSupportTicketId(supportTicketId);
         return this;
     }
 
@@ -179,7 +66,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -189,7 +76,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -200,7 +90,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the problemClassificationId value.
      */
     public String problemClassificationId() {
-        return this.problemClassificationId;
+        return this.innerProperties() == null ? null : this.innerProperties().problemClassificationId();
     }
 
     /**
@@ -211,7 +101,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withProblemClassificationId(String problemClassificationId) {
-        this.problemClassificationId = problemClassificationId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withProblemClassificationId(problemClassificationId);
         return this;
     }
 
@@ -221,7 +114,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the problemClassificationDisplayName value.
      */
     public String problemClassificationDisplayName() {
-        return this.problemClassificationDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().problemClassificationDisplayName();
     }
 
     /**
@@ -233,7 +126,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the severity value.
      */
     public SeverityLevel severity() {
-        return this.severity;
+        return this.innerProperties() == null ? null : this.innerProperties().severity();
     }
 
     /**
@@ -246,7 +139,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withSeverity(SeverityLevel severity) {
-        this.severity = severity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withSeverity(severity);
         return this;
     }
 
@@ -256,7 +152,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the enrollmentId value.
      */
     public String enrollmentId() {
-        return this.enrollmentId;
+        return this.innerProperties() == null ? null : this.innerProperties().enrollmentId();
     }
 
     /**
@@ -265,7 +161,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the require24X7Response value.
      */
     public Boolean require24X7Response() {
-        return this.require24X7Response;
+        return this.innerProperties() == null ? null : this.innerProperties().require24X7Response();
     }
 
     /**
@@ -275,7 +171,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withRequire24X7Response(Boolean require24X7Response) {
-        this.require24X7Response = require24X7Response;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withRequire24X7Response(require24X7Response);
         return this;
     }
 
@@ -285,7 +184,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the contactDetails value.
      */
     public ContactProfile contactDetails() {
-        return this.contactDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().contactDetails();
     }
 
     /**
@@ -295,7 +194,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withContactDetails(ContactProfile contactDetails) {
-        this.contactDetails = contactDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withContactDetails(contactDetails);
         return this;
     }
 
@@ -305,7 +207,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the serviceLevelAgreement value.
      */
     public ServiceLevelAgreement serviceLevelAgreement() {
-        return this.serviceLevelAgreement;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceLevelAgreement();
     }
 
     /**
@@ -315,7 +217,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withServiceLevelAgreement(ServiceLevelAgreement serviceLevelAgreement) {
-        this.serviceLevelAgreement = serviceLevelAgreement;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withServiceLevelAgreement(serviceLevelAgreement);
         return this;
     }
 
@@ -325,7 +230,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the supportEngineer value.
      */
     public SupportEngineer supportEngineer() {
-        return this.supportEngineer;
+        return this.innerProperties() == null ? null : this.innerProperties().supportEngineer();
     }
 
     /**
@@ -335,7 +240,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withSupportEngineer(SupportEngineer supportEngineer) {
-        this.supportEngineer = supportEngineer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withSupportEngineer(supportEngineer);
         return this;
     }
 
@@ -345,7 +253,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the supportPlanType value.
      */
     public String supportPlanType() {
-        return this.supportPlanType;
+        return this.innerProperties() == null ? null : this.innerProperties().supportPlanType();
     }
 
     /**
@@ -354,7 +262,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -364,7 +272,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -374,7 +285,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the problemStartTime value.
      */
     public OffsetDateTime problemStartTime() {
-        return this.problemStartTime;
+        return this.innerProperties() == null ? null : this.innerProperties().problemStartTime();
     }
 
     /**
@@ -384,7 +295,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withProblemStartTime(OffsetDateTime problemStartTime) {
-        this.problemStartTime = problemStartTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withProblemStartTime(problemStartTime);
         return this;
     }
 
@@ -395,7 +309,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the serviceId value.
      */
     public String serviceId() {
-        return this.serviceId;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceId();
     }
 
     /**
@@ -406,7 +320,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withServiceId(String serviceId) {
-        this.serviceId = serviceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withServiceId(serviceId);
         return this;
     }
 
@@ -416,7 +333,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the serviceDisplayName value.
      */
     public String serviceDisplayName() {
-        return this.serviceDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceDisplayName();
     }
 
     /**
@@ -425,7 +342,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -434,7 +351,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
@@ -443,7 +360,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the modifiedDate value.
      */
     public OffsetDateTime modifiedDate() {
-        return this.modifiedDate;
+        return this.innerProperties() == null ? null : this.innerProperties().modifiedDate();
     }
 
     /**
@@ -453,7 +370,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the technicalTicketDetails value.
      */
     public TechnicalTicketDetails technicalTicketDetails() {
-        return this.technicalTicketDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().technicalTicketDetails();
     }
 
     /**
@@ -464,7 +381,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withTechnicalTicketDetails(TechnicalTicketDetails technicalTicketDetails) {
-        this.technicalTicketDetails = technicalTicketDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withTechnicalTicketDetails(technicalTicketDetails);
         return this;
     }
 
@@ -474,7 +394,7 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the quotaTicketDetails value.
      */
     public QuotaTicketDetails quotaTicketDetails() {
-        return this.quotaTicketDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().quotaTicketDetails();
     }
 
     /**
@@ -484,7 +404,10 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @return the SupportTicketDetailsInner object itself.
      */
     public SupportTicketDetailsInner withQuotaTicketDetails(QuotaTicketDetails quotaTicketDetails) {
-        this.quotaTicketDetails = quotaTicketDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withQuotaTicketDetails(quotaTicketDetails);
         return this;
     }
 
@@ -494,20 +417,8 @@ public class SupportTicketDetailsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (contactDetails() != null) {
-            contactDetails().validate();
-        }
-        if (serviceLevelAgreement() != null) {
-            serviceLevelAgreement().validate();
-        }
-        if (supportEngineer() != null) {
-            supportEngineer().validate();
-        }
-        if (technicalTicketDetails() != null) {
-            technicalTicketDetails().validate();
-        }
-        if (quotaTicketDetails() != null) {
-            quotaTicketDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

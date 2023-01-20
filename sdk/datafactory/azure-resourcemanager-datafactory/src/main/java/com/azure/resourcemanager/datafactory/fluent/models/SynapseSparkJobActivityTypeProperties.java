@@ -7,9 +7,13 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.BigDataPoolParametrizationReference;
+import com.azure.resourcemanager.datafactory.models.ConfigurationType;
+import com.azure.resourcemanager.datafactory.models.SparkConfigurationParametrizationReference;
 import com.azure.resourcemanager.datafactory.models.SynapseSparkJobReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Execute spark job activity properties. */
 @Fluent
@@ -32,6 +36,14 @@ public final class SynapseSparkJobActivityTypeProperties {
      */
     @JsonProperty(value = "file")
     private Object file;
+
+    /*
+     * Scanning subfolders from the root folder of the main definition file, these files will be added as reference
+     * files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and the folders name are case
+     * sensitive. Type: boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "scanFolder")
+    private Object scanFolder;
 
     /*
      * The fully-qualified identifier or the main class that is in the main definition file, which will override the
@@ -92,10 +104,29 @@ public final class SynapseSparkJobActivityTypeProperties {
 
     /*
      * Number of executors to launch for this job, which will override the 'numExecutors' of the spark job definition
-     * you provide.
+     * you provide. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "numExecutors")
-    private Integer numExecutors;
+    private Object numExecutors;
+
+    /*
+     * The type of the spark config.
+     */
+    @JsonProperty(value = "configurationType")
+    private ConfigurationType configurationType;
+
+    /*
+     * The spark configuration of the spark job.
+     */
+    @JsonProperty(value = "targetSparkConfiguration")
+    private SparkConfigurationParametrizationReference targetSparkConfiguration;
+
+    /*
+     * Spark configuration property.
+     */
+    @JsonProperty(value = "sparkConfig")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> sparkConfig;
 
     /** Creates an instance of SynapseSparkJobActivityTypeProperties class. */
     public SynapseSparkJobActivityTypeProperties() {
@@ -160,6 +191,30 @@ public final class SynapseSparkJobActivityTypeProperties {
      */
     public SynapseSparkJobActivityTypeProperties withFile(Object file) {
         this.file = file;
+        return this;
+    }
+
+    /**
+     * Get the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
+     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the scanFolder value.
+     */
+    public Object scanFolder() {
+        return this.scanFolder;
+    }
+
+    /**
+     * Set the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
+     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param scanFolder the scanFolder value to set.
+     * @return the SynapseSparkJobActivityTypeProperties object itself.
+     */
+    public SynapseSparkJobActivityTypeProperties withScanFolder(Object scanFolder) {
+        this.scanFolder = scanFolder;
         return this;
     }
 
@@ -348,23 +403,84 @@ public final class SynapseSparkJobActivityTypeProperties {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
-     * of the spark job definition you provide.
+     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
      *
      * @return the numExecutors value.
      */
-    public Integer numExecutors() {
+    public Object numExecutors() {
         return this.numExecutors;
     }
 
     /**
      * Set the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
-     * of the spark job definition you provide.
+     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
      *
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseSparkJobActivityTypeProperties object itself.
      */
-    public SynapseSparkJobActivityTypeProperties withNumExecutors(Integer numExecutors) {
+    public SynapseSparkJobActivityTypeProperties withNumExecutors(Object numExecutors) {
         this.numExecutors = numExecutors;
+        return this;
+    }
+
+    /**
+     * Get the configurationType property: The type of the spark config.
+     *
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.configurationType;
+    }
+
+    /**
+     * Set the configurationType property: The type of the spark config.
+     *
+     * @param configurationType the configurationType value to set.
+     * @return the SynapseSparkJobActivityTypeProperties object itself.
+     */
+    public SynapseSparkJobActivityTypeProperties withConfigurationType(ConfigurationType configurationType) {
+        this.configurationType = configurationType;
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationParametrizationReference targetSparkConfiguration() {
+        return this.targetSparkConfiguration;
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the SynapseSparkJobActivityTypeProperties object itself.
+     */
+    public SynapseSparkJobActivityTypeProperties withTargetSparkConfiguration(
+        SparkConfigurationParametrizationReference targetSparkConfiguration) {
+        this.targetSparkConfiguration = targetSparkConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the sparkConfig property: Spark configuration property.
+     *
+     * @return the sparkConfig value.
+     */
+    public Map<String, Object> sparkConfig() {
+        return this.sparkConfig;
+    }
+
+    /**
+     * Set the sparkConfig property: Spark configuration property.
+     *
+     * @param sparkConfig the sparkConfig value to set.
+     * @return the SynapseSparkJobActivityTypeProperties object itself.
+     */
+    public SynapseSparkJobActivityTypeProperties withSparkConfig(Map<String, Object> sparkConfig) {
+        this.sparkConfig = sparkConfig;
         return this;
     }
 
@@ -384,6 +500,9 @@ public final class SynapseSparkJobActivityTypeProperties {
         }
         if (targetBigDataPool() != null) {
             targetBigDataPool().validate();
+        }
+        if (targetSparkConfiguration() != null) {
+            targetSparkConfiguration().validate();
         }
     }
 

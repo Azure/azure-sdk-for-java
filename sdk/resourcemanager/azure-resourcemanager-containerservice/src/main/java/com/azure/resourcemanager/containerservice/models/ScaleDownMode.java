@@ -20,6 +20,15 @@ public final class ScaleDownMode extends ExpandableStringEnum<ScaleDownMode> {
     public static final ScaleDownMode DEALLOCATE = fromString("Deallocate");
 
     /**
+     * Creates a new instance of ScaleDownMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScaleDownMode() {
+    }
+
+    /**
      * Creates or finds a ScaleDownMode from its string representation.
      *
      * @param name a name to look for.

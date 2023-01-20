@@ -842,7 +842,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         String fabricName,
         String providerName,
         AddRecoveryServicesProviderInput addProviderInput) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput)
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput)
             .getSyncPoller();
     }
 
@@ -870,7 +871,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
         String providerName,
         AddRecoveryServicesProviderInput addProviderInput,
         Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput, context)
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput, context)
             .getSyncPoller();
     }
 
@@ -1165,7 +1167,7 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName).getSyncPoller();
+        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName).getSyncPoller();
     }
 
     /**
@@ -1186,7 +1188,7 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName, context).getSyncPoller();
+        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, providerName, context).getSyncPoller();
     }
 
     /**
@@ -1469,7 +1471,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginRefreshProvider(
         String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        return beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName).getSyncPoller();
+        return this
+            .beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName)
+            .getSyncPoller();
     }
 
     /**
@@ -1490,7 +1494,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginRefreshProvider(
         String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
-        return beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName, context)
+        return this
+            .beginRefreshProviderAsync(resourceName, resourceGroupName, fabricName, providerName, context)
             .getSyncPoller();
     }
 
@@ -1772,7 +1777,7 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName).getSyncPoller();
     }
 
     /**
@@ -1795,7 +1800,9 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, providerName, context)
+            .getSyncPoller();
     }
 
     /**

@@ -26,6 +26,15 @@ public final class SupportStatus extends ExpandableStringEnum<SupportStatus> {
     public static final SupportStatus NOT_SUPPORTED = fromString("NotSupported");
 
     /**
+     * Creates a new instance of SupportStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SupportStatus() {
+    }
+
+    /**
      * Creates or finds a SupportStatus from its string representation.
      *
      * @param name a name to look for.

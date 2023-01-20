@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.commerce.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Key-value pairs of instance details in the legacy format. */
 @Fluent
 public final class InfoField {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InfoField.class);
-
     /*
      * Identifies the name of the instance provisioned by the user.
      */
     @JsonProperty(value = "project")
     private String project;
+
+    /** Creates an instance of InfoField class. */
+    public InfoField() {
+    }
 
     /**
      * Get the project property: Identifies the name of the instance provisioned by the user.

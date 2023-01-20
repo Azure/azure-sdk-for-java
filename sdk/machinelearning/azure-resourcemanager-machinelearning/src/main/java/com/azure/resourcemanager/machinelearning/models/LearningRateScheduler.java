@@ -20,6 +20,15 @@ public final class LearningRateScheduler extends ExpandableStringEnum<LearningRa
     public static final LearningRateScheduler STEP = fromString("Step");
 
     /**
+     * Creates a new instance of LearningRateScheduler value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LearningRateScheduler() {
+    }
+
+    /**
      * Creates or finds a LearningRateScheduler from its string representation.
      *
      * @param name a name to look for.

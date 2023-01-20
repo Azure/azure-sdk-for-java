@@ -23,6 +23,10 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "currentKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String currentKeyIdentifier;
 
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
+
     /**
      * Get the keyIdentifier property: The URL of the Key Vault key used to encrypt the account. The key may either be
      * versioned (for example https://vault/keys/mykey/version1) or reference a key without a version (for example

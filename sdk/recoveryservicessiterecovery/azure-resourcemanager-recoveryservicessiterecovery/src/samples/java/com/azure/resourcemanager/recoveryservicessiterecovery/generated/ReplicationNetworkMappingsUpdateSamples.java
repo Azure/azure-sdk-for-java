@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.NetworkMapping;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateNetworkMappingInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VmmToAzureUpdateNetworkMappingInput;
@@ -30,7 +29,7 @@ public final class ReplicationNetworkMappingsUpdateSamples {
                     "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                     "e2267b5c-2650-49bd-ab3f-d66aae694c06",
                     "corpe2amap",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

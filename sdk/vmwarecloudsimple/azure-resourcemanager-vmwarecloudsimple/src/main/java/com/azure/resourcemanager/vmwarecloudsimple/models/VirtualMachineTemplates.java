@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of VirtualMachineTemplates. */
 public interface VirtualMachineTemplates {
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -19,12 +21,14 @@ public interface VirtualMachineTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachineTemplate> list(String pcName, String regionId, String resourcePoolName);
 
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -33,13 +37,32 @@ public interface VirtualMachineTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachineTemplate> list(
         String pcName, String regionId, String resourcePoolName, Context context);
 
     /**
-     * Returns virtual machine templates by its name.
+     * Implements virtual machine template GET method
+     *
+     * <p>Returns virtual machine templates by its name.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param pcName The private cloud name.
+     * @param virtualMachineTemplateName virtual machine template id (vsphereId).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual machine template model along with {@link Response}.
+     */
+    Response<VirtualMachineTemplate> getWithResponse(
+        String regionId, String pcName, String virtualMachineTemplateName, Context context);
+
+    /**
+     * Implements virtual machine template GET method
+     *
+     * <p>Returns virtual machine templates by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -50,19 +73,4 @@ public interface VirtualMachineTemplates {
      * @return virtual machine template model.
      */
     VirtualMachineTemplate get(String regionId, String pcName, String virtualMachineTemplateName);
-
-    /**
-     * Returns virtual machine templates by its name.
-     *
-     * @param regionId The region Id (westus, eastus).
-     * @param pcName The private cloud name.
-     * @param virtualMachineTemplateName virtual machine template id (vsphereId).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine template model.
-     */
-    Response<VirtualMachineTemplate> getWithResponse(
-        String regionId, String pcName, String virtualMachineTemplateName, Context context);
 }

@@ -22,6 +22,10 @@ public final class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPol
     @JsonProperty(value = "rawBody", required = true)
     private byte[] rawBody;
 
+    /** Creates an instance of ContentKeyPolicyX509CertificateTokenKey class. */
+    public ContentKeyPolicyX509CertificateTokenKey() {
+    }
+
     /**
      * Get the rawBody property: The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET).
      *

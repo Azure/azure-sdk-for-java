@@ -20,6 +20,15 @@ public final class EarlyTerminationPolicyType extends ExpandableStringEnum<Early
     public static final EarlyTerminationPolicyType TRUNCATION_SELECTION = fromString("TruncationSelection");
 
     /**
+     * Creates a new instance of EarlyTerminationPolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EarlyTerminationPolicyType() {
+    }
+
+    /**
      * Creates or finds a EarlyTerminationPolicyType from its string representation.
      *
      * @param name a name to look for.

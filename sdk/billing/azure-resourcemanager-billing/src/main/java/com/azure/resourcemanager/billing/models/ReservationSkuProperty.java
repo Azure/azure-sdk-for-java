@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The property of reservation sku object. */
 @Immutable
 public final class ReservationSkuProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationSkuProperty.class);
-
     /*
      * The name of the reservation sku.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
+
+    /** Creates an instance of ReservationSkuProperty class. */
+    public ReservationSkuProperty() {
+    }
 
     /**
      * Get the name property: The name of the reservation sku.

@@ -17,6 +17,15 @@ public final class AutoProtectionOfDataDisk extends ExpandableStringEnum<AutoPro
     public static final AutoProtectionOfDataDisk ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of AutoProtectionOfDataDisk value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoProtectionOfDataDisk() {
+    }
+
+    /**
      * Creates or finds a AutoProtectionOfDataDisk from its string representation.
      *
      * @param name a name to look for.

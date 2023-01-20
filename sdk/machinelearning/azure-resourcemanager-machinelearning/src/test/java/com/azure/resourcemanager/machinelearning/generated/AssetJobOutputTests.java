@@ -8,19 +8,18 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AssetJobOutput;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssetJobOutputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssetJobOutput model =
             BinaryData.fromString("{\"mode\":\"Upload\",\"uri\":\"lkiexhajlfnthiq\"}").toObject(AssetJobOutput.class);
         Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
         Assertions.assertEquals("lkiexhajlfnthiq", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssetJobOutput model = new AssetJobOutput().withMode(OutputDeliveryMode.UPLOAD).withUri("lkiexhajlfnthiq");
         model = BinaryData.fromObject(model).toObject(AssetJobOutput.class);
         Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());

@@ -14,6 +14,15 @@ public final class NotebookReferenceType extends ExpandableStringEnum<NotebookRe
     public static final NotebookReferenceType NOTEBOOK_REFERENCE = fromString("NotebookReference");
 
     /**
+     * Creates a new instance of NotebookReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotebookReferenceType() {
+    }
+
+    /**
      * Creates or finds a NotebookReferenceType from its string representation.
      *
      * @param name a name to look for.

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.billing.fluent.AvailableBalancesClient;
 import com.azure.resourcemanager.billing.fluent.models.AvailableBalanceInner;
 import com.azure.resourcemanager.billing.models.AvailableBalance;
 import com.azure.resourcemanager.billing.models.AvailableBalances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AvailableBalancesImpl implements AvailableBalances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableBalancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableBalancesImpl.class);
 
     private final AvailableBalancesClient innerClient;
 
@@ -25,15 +24,6 @@ public final class AvailableBalancesImpl implements AvailableBalances {
         AvailableBalancesClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public AvailableBalance get(String billingAccountName, String billingProfileName) {
-        AvailableBalanceInner inner = this.serviceClient().get(billingAccountName, billingProfileName);
-        if (inner != null) {
-            return new AvailableBalanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AvailableBalance> getWithResponse(
@@ -46,6 +36,15 @@ public final class AvailableBalancesImpl implements AvailableBalances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AvailableBalanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AvailableBalance get(String billingAccountName, String billingProfileName) {
+        AvailableBalanceInner inner = this.serviceClient().get(billingAccountName, billingProfileName);
+        if (inner != null) {
+            return new AvailableBalanceImpl(inner, this.manager());
         } else {
             return null;
         }

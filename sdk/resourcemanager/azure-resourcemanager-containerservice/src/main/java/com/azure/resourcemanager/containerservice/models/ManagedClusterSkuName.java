@@ -14,6 +14,15 @@ public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClu
     public static final ManagedClusterSkuName BASIC = fromString("Basic");
 
     /**
+     * Creates a new instance of ManagedClusterSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedClusterSkuName() {
+    }
+
+    /**
      * Creates or finds a ManagedClusterSkuName from its string representation.
      *
      * @param name a name to look for.

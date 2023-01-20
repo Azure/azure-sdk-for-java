@@ -17,6 +17,15 @@ public final class OrchestrationMode extends ExpandableStringEnum<OrchestrationM
     public static final OrchestrationMode FLEXIBLE = fromString("Flexible");
 
     /**
+     * Creates a new instance of OrchestrationMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrchestrationMode() {
+    }
+
+    /**
      * Creates or finds a OrchestrationMode from its string representation.
      *
      * @param name a name to look for.

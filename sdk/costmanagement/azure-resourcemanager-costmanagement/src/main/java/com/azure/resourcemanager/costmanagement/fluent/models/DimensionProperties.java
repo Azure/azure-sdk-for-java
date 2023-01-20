@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** The DimensionProperties model. */
 @Fluent
 public final class DimensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionProperties.class);
-
     /*
      * Dimension description.
      */
@@ -69,6 +65,10 @@ public final class DimensionProperties {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DimensionProperties class. */
+    public DimensionProperties() {
+    }
 
     /**
      * Get the description property: Dimension description.

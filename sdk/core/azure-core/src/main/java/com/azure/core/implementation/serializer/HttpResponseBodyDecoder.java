@@ -61,11 +61,16 @@ public final class HttpResponseBodyDecoder {
                 return deserializeBody(body,
                     decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                     null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
-            } catch (IOException | MalformedValueException ex) {
-                // This translates in RestProxy as a RestException with no deserialized body.
-                // The response content will still be accessible via the .response() member.
+            } catch (IOException | MalformedValueException | IllegalStateException ex) {
+                // MalformedValueException is thrown by Jackson, IllegalStateException is thrown by the TEXT
+                // serialization encoding handler, and IOException can be thrown by both Jackson and TEXT.
+                //
+                // There has been an issue deserializing the error response body. This may be an error in the service
+                // return.
+                //
+                // Return the exception as the body type, RestProxyBase will handle this later.
                 LOGGER.warning("Failed to deserialize the error entity.", ex);
-                return null;
+                return ex;
             }
         } else {
             if (!decodeData.isReturnTypeDecodeable()) {

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The paginated list of peer ASNs. */
 @Fluent
 public final class PeerAsnListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerAsnListResult.class);
-
     /*
      * The list of peer ASNs.
      */
@@ -27,6 +23,10 @@ public final class PeerAsnListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PeerAsnListResult class. */
+    public PeerAsnListResult() {
+    }
 
     /**
      * Get the value property: The list of peer ASNs.

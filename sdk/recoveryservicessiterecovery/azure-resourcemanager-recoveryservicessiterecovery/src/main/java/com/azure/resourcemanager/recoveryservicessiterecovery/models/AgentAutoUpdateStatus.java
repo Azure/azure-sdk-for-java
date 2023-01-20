@@ -17,6 +17,15 @@ public final class AgentAutoUpdateStatus extends ExpandableStringEnum<AgentAutoU
     public static final AgentAutoUpdateStatus ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of AgentAutoUpdateStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AgentAutoUpdateStatus() {
+    }
+
+    /**
      * Creates or finds a AgentAutoUpdateStatus from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,15 @@ public final class DataSyncStatus extends ExpandableStringEnum<DataSyncStatus> {
     public static final DataSyncStatus FOR_SYNCHRONIZATION = fromString("ForSynchronization");
 
     /**
+     * Creates a new instance of DataSyncStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataSyncStatus() {
+    }
+
+    /**
      * Creates or finds a DataSyncStatus from its string representation.
      *
      * @param name a name to look for.

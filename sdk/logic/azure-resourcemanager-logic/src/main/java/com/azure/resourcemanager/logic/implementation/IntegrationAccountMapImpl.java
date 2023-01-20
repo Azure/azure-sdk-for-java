@@ -89,6 +89,10 @@ public final class IntegrationAccountMapImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountMapInner innerModel() {
         return this.innerObject;
     }
@@ -193,18 +197,18 @@ public final class IntegrationAccountMapImpl
         return this;
     }
 
-    public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
-        return serviceManager
-            .integrationAccountMaps()
-            .listContentCallbackUrl(resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl);
-    }
-
     public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
         GetCallbackUrlParameters listContentCallbackUrl, Context context) {
         return serviceManager
             .integrationAccountMaps()
             .listContentCallbackUrlWithResponse(
                 resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl, context);
+    }
+
+    public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
+        return serviceManager
+            .integrationAccountMaps()
+            .listContentCallbackUrl(resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl);
     }
 
     public IntegrationAccountMapImpl withRegion(Region location) {

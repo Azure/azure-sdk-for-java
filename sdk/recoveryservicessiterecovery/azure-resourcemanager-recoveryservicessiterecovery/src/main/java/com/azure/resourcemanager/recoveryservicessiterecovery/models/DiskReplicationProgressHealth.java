@@ -26,6 +26,15 @@ public final class DiskReplicationProgressHealth extends ExpandableStringEnum<Di
     public static final DiskReplicationProgressHealth QUEUED = fromString("Queued");
 
     /**
+     * Creates a new instance of DiskReplicationProgressHealth value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskReplicationProgressHealth() {
+    }
+
+    /**
      * Creates or finds a DiskReplicationProgressHealth from its string representation.
      *
      * @param name a name to look for.

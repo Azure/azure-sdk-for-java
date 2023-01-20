@@ -19,10 +19,9 @@ import com.azure.resourcemanager.databox.models.Jobs;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpRequest;
 import com.azure.resourcemanager.databox.models.ShipmentPickUpResponse;
 import com.azure.resourcemanager.databox.models.UnencryptedCredentials;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 
@@ -54,15 +53,6 @@ public final class JobsImpl implements Jobs {
         return Utils.mapPage(inner, inner1 -> new JobResourceImpl(inner1, this.manager()));
     }
 
-    public JobResource getByResourceGroup(String resourceGroupName, String jobName) {
-        JobResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, jobName);
-        if (inner != null) {
-            return new JobResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobResource> getByResourceGroupWithResponse(
         String resourceGroupName, String jobName, String expand, Context context) {
         Response<JobResourceInner> inner =
@@ -78,23 +68,21 @@ public final class JobsImpl implements Jobs {
         }
     }
 
+    public JobResource getByResourceGroup(String resourceGroupName, String jobName) {
+        JobResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String jobName) {
         this.serviceClient().delete(resourceGroupName, jobName);
     }
 
     public void delete(String resourceGroupName, String jobName, Context context) {
         this.serviceClient().delete(resourceGroupName, jobName, context);
-    }
-
-    public ShipmentPickUpResponse bookShipmentPickUp(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest) {
-        ShipmentPickUpResponseInner inner =
-            this.serviceClient().bookShipmentPickUp(resourceGroupName, jobName, shipmentPickUpRequest);
-        if (inner != null) {
-            return new ShipmentPickUpResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(
@@ -114,13 +102,24 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public void cancel(String resourceGroupName, String jobName, CancellationReason cancellationReason) {
-        this.serviceClient().cancel(resourceGroupName, jobName, cancellationReason);
+    public ShipmentPickUpResponse bookShipmentPickUp(
+        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest) {
+        ShipmentPickUpResponseInner inner =
+            this.serviceClient().bookShipmentPickUp(resourceGroupName, jobName, shipmentPickUpRequest);
+        if (inner != null) {
+            return new ShipmentPickUpResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> cancelWithResponse(
         String resourceGroupName, String jobName, CancellationReason cancellationReason, Context context) {
         return this.serviceClient().cancelWithResponse(resourceGroupName, jobName, cancellationReason, context);
+    }
+
+    public void cancel(String resourceGroupName, String jobName, CancellationReason cancellationReason) {
+        this.serviceClient().cancel(resourceGroupName, jobName, cancellationReason);
     }
 
     public PagedIterable<UnencryptedCredentials> listCredentials(String resourceGroupName, String jobName) {
@@ -139,7 +138,7 @@ public final class JobsImpl implements Jobs {
     public JobResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -159,7 +158,7 @@ public final class JobsImpl implements Jobs {
     public Response<JobResource> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +166,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -178,7 +177,7 @@ public final class JobsImpl implements Jobs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +185,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -197,7 +196,7 @@ public final class JobsImpl implements Jobs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -205,7 +204,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));

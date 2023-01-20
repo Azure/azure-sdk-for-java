@@ -21,7 +21,7 @@ public interface CustomerSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomerSubscriptionInner> list(String resourceGroup, String registrationName);
@@ -35,10 +35,26 @@ public interface CustomerSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomerSubscriptionInner> list(String resourceGroup, String registrationName, Context context);
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param customerSubscriptionName Name of the product.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return customer subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CustomerSubscriptionInner> getWithResponse(
+        String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
 
     /**
      * Returns the specified product.
@@ -55,7 +71,7 @@ public interface CustomerSubscriptionsClient {
     CustomerSubscriptionInner get(String resourceGroup, String registrationName, String customerSubscriptionName);
 
     /**
-     * Returns the specified product.
+     * Deletes a customer subscription under a registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -64,10 +80,10 @@ public interface CustomerSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomerSubscriptionInner> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
 
     /**
@@ -84,20 +100,25 @@ public interface CustomerSubscriptionsClient {
     void delete(String resourceGroup, String registrationName, String customerSubscriptionName);
 
     /**
-     * Deletes a customer subscription under a registration.
+     * Creates a new customer subscription under a registration.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
+     * @param customerCreationParameters Parameters use to create a customer subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return customer subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
+    Response<CustomerSubscriptionInner> createWithResponse(
+        String resourceGroup,
+        String registrationName,
+        String customerSubscriptionName,
+        CustomerSubscriptionInner customerCreationParameters,
+        Context context);
 
     /**
      * Creates a new customer subscription under a registration.
@@ -117,25 +138,4 @@ public interface CustomerSubscriptionsClient {
         String registrationName,
         String customerSubscriptionName,
         CustomerSubscriptionInner customerCreationParameters);
-
-    /**
-     * Creates a new customer subscription under a registration.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param customerSubscriptionName Name of the product.
-     * @param customerCreationParameters Parameters use to create a customer subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomerSubscriptionInner> createWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
-        CustomerSubscriptionInner customerCreationParameters,
-        Context context);
 }

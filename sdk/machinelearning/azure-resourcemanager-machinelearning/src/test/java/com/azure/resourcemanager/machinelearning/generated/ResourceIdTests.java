@@ -7,17 +7,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ResourceId;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceIdTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceId model = BinaryData.fromString("{\"id\":\"gwgcl\"}").toObject(ResourceId.class);
         Assertions.assertEquals("gwgcl", model.id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceId model = new ResourceId().withId("gwgcl");
         model = BinaryData.fromObject(model).toObject(ResourceId.class);
         Assertions.assertEquals("gwgcl", model.id());

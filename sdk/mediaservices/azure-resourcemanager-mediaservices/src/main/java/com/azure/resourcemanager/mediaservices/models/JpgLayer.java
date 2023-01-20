@@ -16,6 +16,10 @@ public final class JpgLayer extends Layer {
     @JsonProperty(value = "quality")
     private Integer quality;
 
+    /** Creates an instance of JpgLayer class. */
+    public JpgLayer() {
+    }
+
     /**
      * Get the quality property: The compression quality of the JPEG output. Range is from 0-100 and the default is 70.
      *

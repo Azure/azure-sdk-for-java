@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OperationStatus Get. */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/GetOperationStatus.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/GetOperationStatus.json
      */
     /**
      * Sample code: Get OperationStatus.
@@ -22,6 +20,6 @@ public final class OperationStatusGetSamples {
             .getWithResponse(
                 "WestUS",
                 "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

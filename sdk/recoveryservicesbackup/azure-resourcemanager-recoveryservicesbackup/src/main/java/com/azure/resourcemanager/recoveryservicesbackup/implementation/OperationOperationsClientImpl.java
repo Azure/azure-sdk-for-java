@@ -52,7 +52,7 @@ public final class OperationOperationsClientImpl implements OperationOperationsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface OperationOperationsService {
+    public interface OperationOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

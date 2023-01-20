@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of managed application definitions. */
 @Fluent
 public final class ApplicationDefinitionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationDefinitionListResult.class);
-
     /*
      * The array of managed application definitions.
      */
@@ -27,6 +23,10 @@ public final class ApplicationDefinitionListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ApplicationDefinitionListResult class. */
+    public ApplicationDefinitionListResult() {
+    }
 
     /**
      * Get the value property: The array of managed application definitions.

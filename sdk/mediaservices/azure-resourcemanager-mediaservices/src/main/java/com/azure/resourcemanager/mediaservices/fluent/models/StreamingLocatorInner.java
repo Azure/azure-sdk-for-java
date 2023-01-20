@@ -28,6 +28,10 @@ public final class StreamingLocatorInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of StreamingLocatorInner class. */
+    public StreamingLocatorInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Streaming Locator.
      *

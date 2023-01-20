@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NodeStatus. */
+/** Node status, indicates is private cloud set up on this node or not. */
 public enum NodeStatus {
     /** Enum value unused. */
     UNUSED("unused"),
@@ -30,6 +30,9 @@ public enum NodeStatus {
      */
     @JsonCreator
     public static NodeStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NodeStatus[] items = NodeStatus.values();
         for (NodeStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum NodeStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationVaultHealth Get. */
 public final class ReplicationVaultHealthGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationVaultHealthGetSamples {
      */
     public static void getsTheHealthSummaryForTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultHealths().getWithResponse("vault1", "resourceGroupPS1", Context.NONE);
+        manager
+            .replicationVaultHealths()
+            .getWithResponse("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

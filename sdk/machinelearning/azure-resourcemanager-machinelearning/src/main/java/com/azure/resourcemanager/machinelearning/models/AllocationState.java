@@ -24,6 +24,15 @@ public final class AllocationState extends ExpandableStringEnum<AllocationState>
     public static final AllocationState RESIZING = fromString("Resizing");
 
     /**
+     * Creates a new instance of AllocationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AllocationState() {
+    }
+
+    /**
      * Creates or finds a AllocationState from its string representation.
      *
      * @param name a name to look for.

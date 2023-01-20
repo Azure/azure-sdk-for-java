@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.ScriptReference;
 import com.azure.resourcemanager.machinelearning.models.ScriptsToExecute;
 import com.azure.resourcemanager.machinelearning.models.SetupScripts;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SetupScriptsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SetupScripts model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class SetupScriptsTests {
         Assertions.assertEquals("ju", model.scripts().creationScript().timeout());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SetupScripts model =
             new SetupScripts()
                 .withScripts(

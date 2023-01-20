@@ -23,7 +23,7 @@ import java.util.Map;
 /** Samples for Mediaservices CreateOrUpdate. */
 public final class MediaservicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/async-accounts-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/async-accounts-create.json
      */
     /**
      * Sample code: Create a Media Services account.

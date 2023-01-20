@@ -14,6 +14,15 @@ public final class ReplicationStatusTypes extends ExpandableStringEnum<Replicati
     public static final ReplicationStatusTypes REPLICATION_STATUS = fromString("ReplicationStatus");
 
     /**
+     * Creates a new instance of ReplicationStatusTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationStatusTypes() {
+    }
+
+    /**
      * Creates or finds a ReplicationStatusTypes from its string representation.
      *
      * @param name a name to look for.

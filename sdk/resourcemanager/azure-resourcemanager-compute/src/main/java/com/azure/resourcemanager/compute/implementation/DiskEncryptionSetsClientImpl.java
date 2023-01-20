@@ -410,7 +410,9 @@ public final class DiskEncryptionSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
+            .getSyncPoller();
     }
 
     /**
@@ -434,7 +436,8 @@ public final class DiskEncryptionSetsClientImpl
         String diskEncryptionSetName,
         DiskEncryptionSetInner diskEncryptionSet,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
             .getSyncPoller();
     }
 
@@ -733,7 +736,7 @@ public final class DiskEncryptionSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
-        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
     }
 
     /**
@@ -757,7 +760,9 @@ public final class DiskEncryptionSetsClientImpl
         String diskEncryptionSetName,
         DiskEncryptionSetUpdate diskEncryptionSet,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1172,7 +1177,7 @@ public final class DiskEncryptionSetsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName) {
-        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskEncryptionSetName).getSyncPoller();
     }
 
     /**
@@ -1191,7 +1196,7 @@ public final class DiskEncryptionSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskEncryptionSetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context).getSyncPoller();
     }
 
     /**

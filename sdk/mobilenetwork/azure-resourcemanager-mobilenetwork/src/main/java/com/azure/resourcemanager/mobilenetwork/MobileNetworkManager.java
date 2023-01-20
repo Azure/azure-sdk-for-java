@@ -29,13 +29,11 @@ import com.azure.resourcemanager.mobilenetwork.implementation.DataNetworksImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.MobileNetworkManagementClientBuilder;
 import com.azure.resourcemanager.mobilenetwork.implementation.MobileNetworksImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.OperationsImpl;
-import com.azure.resourcemanager.mobilenetwork.implementation.PacketCoreControlPlaneOperationsImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.PacketCoreControlPlaneVersionsImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.PacketCoreControlPlanesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.PacketCoreDataPlanesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.ServicesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SimGroupsImpl;
-import com.azure.resourcemanager.mobilenetwork.implementation.SimOperationsImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SimPoliciesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SimsImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SitesImpl;
@@ -44,13 +42,11 @@ import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.DataNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.Operations;
-import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneOperations;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneVersions;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlanes;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlanes;
 import com.azure.resourcemanager.mobilenetwork.models.Services;
 import com.azure.resourcemanager.mobilenetwork.models.SimGroups;
-import com.azure.resourcemanager.mobilenetwork.models.SimOperations;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicies;
 import com.azure.resourcemanager.mobilenetwork.models.Sims;
 import com.azure.resourcemanager.mobilenetwork.models.Sites;
@@ -77,8 +73,6 @@ public final class MobileNetworkManager {
 
     private PacketCoreControlPlanes packetCoreControlPlanes;
 
-    private PacketCoreControlPlaneOperations packetCoreControlPlaneOperations;
-
     private PacketCoreControlPlaneVersions packetCoreControlPlaneVersions;
 
     private PacketCoreDataPlanes packetCoreDataPlanes;
@@ -86,8 +80,6 @@ public final class MobileNetworkManager {
     private Services services;
 
     private Sims sims;
-
-    private SimOperations simOperations;
 
     private SimGroups simGroups;
 
@@ -262,7 +254,7 @@ public final class MobileNetworkManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mobilenetwork")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -381,19 +373,6 @@ public final class MobileNetworkManager {
     }
 
     /**
-     * Gets the resource collection API of PacketCoreControlPlaneOperations.
-     *
-     * @return Resource collection API of PacketCoreControlPlaneOperations.
-     */
-    public PacketCoreControlPlaneOperations packetCoreControlPlaneOperations() {
-        if (this.packetCoreControlPlaneOperations == null) {
-            this.packetCoreControlPlaneOperations =
-                new PacketCoreControlPlaneOperationsImpl(clientObject.getPacketCoreControlPlaneOperations(), this);
-        }
-        return packetCoreControlPlaneOperations;
-    }
-
-    /**
      * Gets the resource collection API of PacketCoreControlPlaneVersions.
      *
      * @return Resource collection API of PacketCoreControlPlaneVersions.
@@ -440,18 +419,6 @@ public final class MobileNetworkManager {
             this.sims = new SimsImpl(clientObject.getSims(), this);
         }
         return sims;
-    }
-
-    /**
-     * Gets the resource collection API of SimOperations.
-     *
-     * @return Resource collection API of SimOperations.
-     */
-    public SimOperations simOperations() {
-        if (this.simOperations == null) {
-            this.simOperations = new SimOperationsImpl(clientObject.getSimOperations(), this);
-        }
-        return simOperations;
     }
 
     /**

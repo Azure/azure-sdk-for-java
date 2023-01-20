@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TargetComputeSizes ListByReplicationProtectedItems. */
 public final class TargetComputeSizesListByReplicationProtectedIte {
     /*
@@ -26,6 +24,6 @@ public final class TargetComputeSizesListByReplicationProtectedIte {
                 "asr-a2a-default-centraluseuap",
                 "asr-a2a-default-centraluseuap-container",
                 "468c912d-b1ab-4ea2-97eb-4b5095155db2",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

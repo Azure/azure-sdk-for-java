@@ -5,35 +5,30 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.frontdoor.fluent.models.ExperimentUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Defines modifiable attributes of an Experiment. */
-@JsonFlatten
 @Fluent
-public class ExperimentUpdateModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExperimentUpdateModel.class);
-
+public final class ExperimentUpdateModel {
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The description of the intent or details of the Experiment
+     * The properties of a Profile
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private ExperimentUpdateProperties innerProperties;
 
-    /*
-     * The state of the Experiment
-     */
-    @JsonProperty(value = "properties.enabledState")
-    private State enabledState;
+    /** Creates an instance of ExperimentUpdateModel class. */
+    public ExperimentUpdateModel() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -56,12 +51,21 @@ public class ExperimentUpdateModel {
     }
 
     /**
+     * Get the innerProperties property: The properties of a Profile.
+     *
+     * @return the innerProperties value.
+     */
+    private ExperimentUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the description property: The description of the intent or details of the Experiment.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -71,7 +75,10 @@ public class ExperimentUpdateModel {
      * @return the ExperimentUpdateModel object itself.
      */
     public ExperimentUpdateModel withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExperimentUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -81,7 +88,7 @@ public class ExperimentUpdateModel {
      * @return the enabledState value.
      */
     public State enabledState() {
-        return this.enabledState;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
     }
 
     /**
@@ -91,7 +98,10 @@ public class ExperimentUpdateModel {
      * @return the ExperimentUpdateModel object itself.
      */
     public ExperimentUpdateModel withEnabledState(State enabledState) {
-        this.enabledState = enabledState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExperimentUpdateProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
         return this;
     }
 
@@ -101,5 +111,8 @@ public class ExperimentUpdateModel {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateVCenterRequestProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VCenter;
 
@@ -23,7 +22,8 @@ public final class ReplicationvCentersUpdateSamples {
         VCenter resource =
             manager
                 .replicationvCenters()
-                .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", Context.NONE)
+                .getWithResponse(
+                    "MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withProperties(new UpdateVCenterRequestProperties().withIpAddress("10.150.109.25")).apply();
     }

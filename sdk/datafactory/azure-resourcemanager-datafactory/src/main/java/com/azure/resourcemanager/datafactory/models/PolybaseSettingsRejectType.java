@@ -17,6 +17,15 @@ public final class PolybaseSettingsRejectType extends ExpandableStringEnum<Polyb
     public static final PolybaseSettingsRejectType PERCENTAGE = fromString("percentage");
 
     /**
+     * Creates a new instance of PolybaseSettingsRejectType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolybaseSettingsRejectType() {
+    }
+
+    /**
      * Creates or finds a PolybaseSettingsRejectType from its string representation.
      *
      * @param name a name to look for.

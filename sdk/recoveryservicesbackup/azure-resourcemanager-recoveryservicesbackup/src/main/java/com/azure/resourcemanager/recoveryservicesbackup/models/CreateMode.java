@@ -20,6 +20,15 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     public static final CreateMode RECOVER = fromString("Recover");
 
     /**
+     * Creates a new instance of CreateMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CreateMode() {
+    }
+
+    /**
      * Creates or finds a CreateMode from its string representation.
      *
      * @param name a name to look for.

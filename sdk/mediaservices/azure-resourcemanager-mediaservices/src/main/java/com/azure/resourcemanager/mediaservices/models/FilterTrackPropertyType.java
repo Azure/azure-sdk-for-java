@@ -29,6 +29,15 @@ public final class FilterTrackPropertyType extends ExpandableStringEnum<FilterTr
     public static final FilterTrackPropertyType BITRATE = fromString("Bitrate");
 
     /**
+     * Creates a new instance of FilterTrackPropertyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FilterTrackPropertyType() {
+    }
+
+    /**
      * Creates or finds a FilterTrackPropertyType from its string representation.
      *
      * @param name a name to look for.

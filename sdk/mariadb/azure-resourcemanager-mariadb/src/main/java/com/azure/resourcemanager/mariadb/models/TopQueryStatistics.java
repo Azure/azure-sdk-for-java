@@ -16,12 +16,14 @@ public interface TopQueryStatistics {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryStatisticId The Query Statistic identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Statistic.
+     * @return represents a Query Statistic along with {@link Response}.
      */
-    QueryStatistic get(String resourceGroupName, String serverName, String queryStatisticId);
+    Response<QueryStatistic> getWithResponse(
+        String resourceGroupName, String serverName, String queryStatisticId, Context context);
 
     /**
      * Retrieve the query statistic for specified identifier.
@@ -29,14 +31,12 @@ public interface TopQueryStatistics {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryStatisticId The Query Statistic identifier.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Query Statistic.
      */
-    Response<QueryStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context);
+    QueryStatistic get(String resourceGroupName, String serverName, String queryStatisticId);
 
     /**
      * Retrieve the Query-Store top queries for specified metric and aggregation.
@@ -47,7 +47,7 @@ public interface TopQueryStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<QueryStatistic> listByServer(
         String resourceGroupName, String serverName, TopQueryStatisticsInput parameters);
@@ -62,7 +62,7 @@ public interface TopQueryStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<QueryStatistic> listByServer(
         String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context);

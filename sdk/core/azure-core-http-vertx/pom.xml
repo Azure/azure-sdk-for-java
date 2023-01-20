@@ -54,6 +54,8 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+
+    <javadoc.excludePackageNames/>
   </properties>
 
   <developers>

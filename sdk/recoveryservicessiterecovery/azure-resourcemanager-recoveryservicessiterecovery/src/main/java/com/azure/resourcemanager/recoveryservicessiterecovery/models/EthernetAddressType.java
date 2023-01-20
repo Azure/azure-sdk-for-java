@@ -17,6 +17,15 @@ public final class EthernetAddressType extends ExpandableStringEnum<EthernetAddr
     public static final EthernetAddressType STATIC = fromString("Static");
 
     /**
+     * Creates a new instance of EthernetAddressType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EthernetAddressType() {
+    }
+
+    /**
      * Creates or finds a EthernetAddressType from its string representation.
      *
      * @param name a name to look for.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders ListByReplicationFabrics. */
 public final class ReplicationRecoveryServicesProvidersListByRepli {
     /*
@@ -20,6 +18,6 @@ public final class ReplicationRecoveryServicesProvidersListByRepli {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationRecoveryServicesProviders()
-            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

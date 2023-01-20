@@ -20,6 +20,15 @@ public final class DiskAccountType extends ExpandableStringEnum<DiskAccountType>
     public static final DiskAccountType STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
 
     /**
+     * Creates a new instance of DiskAccountType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskAccountType() {
+    }
+
+    /**
      * Creates or finds a DiskAccountType from its string representation.
      *
      * @param name a name to look for.
