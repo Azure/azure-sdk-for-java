@@ -3,7 +3,10 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
-public class DisconnectedMessage extends WebPubSubMessage {
+import com.azure.core.annotation.Immutable;
+
+@Immutable
+public final class DisconnectedMessage extends WebPubSubMessage {
 
     private final String reason;
 

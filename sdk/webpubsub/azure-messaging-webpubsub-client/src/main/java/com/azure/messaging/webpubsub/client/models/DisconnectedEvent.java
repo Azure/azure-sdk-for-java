@@ -3,7 +3,10 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
-public class DisconnectedEvent {
+import com.azure.core.annotation.Immutable;
+
+@Immutable
+public final class DisconnectedEvent {
 
     private final String connectionId;
     private final DisconnectedMessage disconnectedMessage;

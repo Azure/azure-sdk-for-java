@@ -25,6 +25,7 @@ import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
+import com.azure.messaging.webpubsub.client.protocol.WebPubSubProtocol;
 import jakarta.websocket.ClientEndpointConfig;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Endpoint;

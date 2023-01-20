@@ -3,7 +3,10 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
-public class WebPubSubResult {
+import com.azure.core.annotation.Immutable;
+
+@Immutable
+public final class WebPubSubResult {
 
     private final Long ackId;
 

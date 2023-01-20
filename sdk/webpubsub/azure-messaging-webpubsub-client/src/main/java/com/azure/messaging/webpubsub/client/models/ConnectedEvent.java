@@ -3,7 +3,10 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
-public class ConnectedEvent {
+import com.azure.core.annotation.Immutable;
+
+@Immutable
+public final class ConnectedEvent {
 
     private final String connectionId;
     private final String userId;

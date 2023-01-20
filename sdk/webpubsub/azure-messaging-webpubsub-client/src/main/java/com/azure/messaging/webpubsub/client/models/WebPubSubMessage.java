@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
-public class WebPubSubMessage {
-
+public abstract class WebPubSubMessage {
+    protected WebPubSubMessage() {
+    }
 }

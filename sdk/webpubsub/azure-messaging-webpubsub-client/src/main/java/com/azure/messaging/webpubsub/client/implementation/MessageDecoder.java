@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.azure.messaging.webpubsub.client.models.AckMessageError;
 import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
@@ -27,7 +28,7 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
     public WebPubSubMessage decode(String s) throws DecodeException {
 //        System.out.println("decode webPubSubMessage: " + s);
 
-        WebPubSubMessage msg = new WebPubSubMessage();
+        WebPubSubMessage msg = null;
         try (JsonParser parser = OBJECT_MAPPER.createParser(s)) {
             JsonNode jsonNode = OBJECT_MAPPER.readTree(parser);
             switch (jsonNode.get("type").asText()) {
@@ -66,9 +67,16 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
                 }
 
                 case "ack": {
-                    msg = new AckMessage()
+                    AckMessage ackMessage = new AckMessage()
                         .setAckId(jsonNode.get("ackId").asLong())
                         .setSuccess(jsonNode.get("success").asBoolean());
+                    if (jsonNode.has("error")) {
+                        JsonNode errorNode = jsonNode.get("error");
+                        ackMessage.setError(new AckMessageError(
+                            errorNode.get("name").asText(),
+                            errorNode.get("message").asText()));
+                    }
+                    msg = ackMessage;
                     break;
                 }
 

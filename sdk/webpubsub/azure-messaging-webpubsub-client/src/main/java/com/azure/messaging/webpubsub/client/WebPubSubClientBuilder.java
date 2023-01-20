@@ -8,6 +8,8 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.messaging.webpubsub.client.protocol.WebPubSubJsonReliableProtocol;
+import com.azure.messaging.webpubsub.client.protocol.WebPubSubProtocol;
 
 import java.util.Objects;
 

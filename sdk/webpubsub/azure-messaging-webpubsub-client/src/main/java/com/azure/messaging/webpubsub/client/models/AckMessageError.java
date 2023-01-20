@@ -6,15 +6,21 @@ package com.azure.messaging.webpubsub.client.models;
 import com.azure.core.annotation.Immutable;
 
 @Immutable
-public final class GroupMessageEvent {
+public final class AckMessageError {
 
-    private final GroupDataMessage message;
+    private final String name;
+    private final String message;
 
-    public GroupMessageEvent(GroupDataMessage message) {
+    public AckMessageError(String name, String message) {
+        this.name = name;
         this.message = message;
     }
 
-    public GroupDataMessage getMessage() {
+    public String getName() {
+        return name;
+    }
+
+    public String getMessage() {
         return message;
     }
 }

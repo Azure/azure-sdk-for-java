@@ -3,9 +3,11 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
-public class GroupDataMessage extends WebPubSubMessage {
+@Immutable
+public final class GroupDataMessage extends WebPubSubMessage {
 
     private final String group;
     private final WebPubSubDataType dataType;

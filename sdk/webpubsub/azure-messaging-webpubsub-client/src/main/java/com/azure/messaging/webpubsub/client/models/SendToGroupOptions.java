@@ -3,7 +3,10 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
-public class SendToGroupOptions {
+import com.azure.core.annotation.Fluent;
+
+@Fluent
+public final class SendToGroupOptions {
 
     private Long ackId;
     private Boolean noEcho = false;

@@ -5,14 +5,13 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.messaging.webpubsub.WebPubSubServiceClient;
+import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Map;
 
@@ -131,15 +130,15 @@ public class ClientTests {
     }
 
     private static WebPubSubClientBuilder clientBuilder() {
-        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
+        WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()
             .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
             .hub("test_hub")
-            .buildClient();
+            .buildAsyncClient();
 
-        Mono<WebPubSubClientAccessToken> accessToken = Mono.just(client.getClientAccessToken(new GetClientAccessTokenOptions()
+        Mono<WebPubSubClientAccessToken> accessToken = client.getClientAccessToken(new GetClientAccessTokenOptions()
             .setUserId("weidxu")
             .addRole("webpubsub.joinLeaveGroup")
-            .addRole("webpubsub.sendToGroup"))).subscribeOn(Schedulers.boundedElastic());
+            .addRole("webpubsub.sendToGroup"));
 
         // client builder
         return new WebPubSubClientBuilder()
