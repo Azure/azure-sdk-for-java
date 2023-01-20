@@ -44,6 +44,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
@@ -149,17 +150,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
             if (session != null && session.isOpen()) {
                 session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
 
-                session = null;
-
-                connectionId = null;
-                reconnectionToken = null;
-
-//                groupDataMessageSink.tryEmitComplete();
-//                groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
-                ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
-                ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
-
-//                disconnectedEventSink.tryEmitNext(new DisconnectedEvent(connectionId, ""));
+                handleStop();
             }
             return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic());
@@ -274,14 +265,40 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private Mono<WebPubSubResult> waitForAckMessage(long ackId) {
         return receiveAckMessages()
             .filter(m -> ackId == m.getAckId())
-            .map(m -> new WebPubSubResult(m.getAckId()))
+            // single AckMessage
             .next()
-            // error handling
-            .switchIfEmpty(Mono.error(new RuntimeException()));
+            // error from upstream
+            .onErrorMap(throwable -> logSendMessageFailedException(
+                "Acknowledge from the service not received.", throwable, true, ackId))
+            // error from AckMessage
+            .flatMap(m -> {
+                if (m.isSuccess() || (m.getError() != null && "Duplicate".equals(m.getError().getName()))) {
+                    return Mono.just(new WebPubSubResult(m.getAckId()));
+                } else {
+                    return Mono.error(logSendMessageFailedException(
+                        "Received non-success acknowledge from the service.", null, false, ackId));
+                }
+            })
+            // timeout or stream closed
+            .timeout(Duration.ofSeconds(30), Mono.empty())
+            .switchIfEmpty(Mono.error(logSendMessageFailedException(
+                "Acknowledge from the service not received.", null, true, ackId)));
     }
 
-    private void handleClose() {
+    private void handleClose(CloseReason closeReason) {
+        handleStop();
+    }
+
+    private void handleStop() {
         clientState.changeState(WebPubSubClientState.STOPPED);
+
+        session = null;
+
+        connectionId = null;
+        reconnectionToken = null;
+
+        ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
+        ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
     }
 
     private class ClientEndpoint extends Endpoint {
@@ -327,12 +344,13 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
         @Override
         public void onClose(Session session, CloseReason closeReason) {
-            handleClose();
+            handleClose(closeReason);
         }
 
         @Override
         public void onError(Session session, Throwable thr) {
-//            System.out.println("session error: " + thr);
+            logger.atInfo()
+                .log("Error from session: " + thr.getMessage());
         }
     }
 
@@ -390,7 +408,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         }
         if (session == null || !session.isOpen()) {
             verification = Mono.error(logSendMessageFailedException(
-                "Failed to send message. Websocket session is not opened.", null, false, null));
+                "Failed to send message. Websocket session is not opened.", null, false, (Long) null));
         }
         return verification;
     }
@@ -398,8 +416,13 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private RuntimeException logSendMessageFailedException(
         String errorMessage, Throwable cause, boolean isTransient, WebPubSubMessageAck message) {
 
+        return logSendMessageFailedException(errorMessage, cause, isTransient, message == null ? null : message.getAckId());
+    }
+
+    private RuntimeException logSendMessageFailedException(
+        String errorMessage, Throwable cause, boolean isTransient, Long ackId) {
+
         return logger.logExceptionAsWarning(
-            new SendMessageFailedException(errorMessage, cause, isTransient,
-                message == null ? null : message.getAckId(), null));
+            new SendMessageFailedException(errorMessage, cause, isTransient, ackId, null));
     }
 }
