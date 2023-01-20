@@ -1,16 +1,14 @@
 # Release History
 
-## 7.14.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 7.13.1 (2023-01-20)
 
 ### Bugs Fixed
 - Fixed incorrect queue description parameter order. ([#30880](https://github.com/Azure/azure-sdk-for-java/issues/30880))
-
 ### Other Changes
-
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+- Upgraded `azure-core-amqp` from `2.8.0` to `2.8.1`.
+- Upgraded `azure-identity` from `1.7.0` to `1.7.3`.
 ## 7.13.0 (2022-11-14)
 
 ### Features Added
