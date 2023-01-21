@@ -879,7 +879,6 @@
             <pipelineConfiguration>
               <filters>
                 <include>
-                  <item>revapi.filter</item>
                   <item>azure-sdk-tree-provider</item>
                 </include>
               </filters>

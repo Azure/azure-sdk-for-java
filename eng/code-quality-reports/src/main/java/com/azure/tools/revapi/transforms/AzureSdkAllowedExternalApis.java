@@ -25,6 +25,11 @@ public final class AzureSdkAllowedExternalApis<E extends Element<E>> extends Bas
 
     @Override
     public TransformationResult tryTransform(@Nullable E oldElement, @Nullable E newElement, Difference difference) {
+        if (newElement == null) {
+            // Missing element to compare.
+            return TransformationResult.keep();
+        }
+
         if (!(newElement instanceof JavaTypeElement)) {
             // Unknown element type.
             return TransformationResult.keep();
