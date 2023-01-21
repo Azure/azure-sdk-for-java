@@ -36,7 +36,7 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof KafkaProperties) {
-            //TODO(yiliu6): link to OAuth2 reference doc here
+            //TODO (yiliu6): link to OAuth2 reference doc here
             LOGGER.warn("Autoconfiguration for Event Hubs for Kafka on connection string/Azure Resource Manager"
                 + " has been deprecated, please migrate to AzureEventHubsKafkaOAuth2AutoConfiguration for OAuth2 authentication with Azure Identity credentials."
                 + " To leverage the OAuth2 authentication, you can delete all your Event Hubs for Kafka credential configurations, and configure Kafka bootstrap servers"

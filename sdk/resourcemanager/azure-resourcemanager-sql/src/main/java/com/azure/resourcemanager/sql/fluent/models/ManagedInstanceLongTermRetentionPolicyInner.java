@@ -17,6 +17,10 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     @JsonProperty(value = "properties")
     private BaseLongTermRetentionPolicyProperties innerProperties;
 
+    /** Creates an instance of ManagedInstanceLongTermRetentionPolicyInner class. */
+    public ManagedInstanceLongTermRetentionPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

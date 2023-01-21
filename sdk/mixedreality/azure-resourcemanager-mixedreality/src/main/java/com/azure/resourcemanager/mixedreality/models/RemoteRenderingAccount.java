@@ -119,6 +119,13 @@ public interface RemoteRenderingAccount {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mixedreality.fluent.models.RemoteRenderingAccountInner object.
      *
      * @return the inner object.
@@ -365,6 +372,17 @@ public interface RemoteRenderingAccount {
     /**
      * List Both of the 2 Keys of a Remote Rendering Account.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return developer Keys of account along with {@link Response}.
+     */
+    Response<AccountKeys> listKeysWithResponse(Context context);
+
+    /**
+     * List Both of the 2 Keys of a Remote Rendering Account.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return developer Keys of account.
@@ -372,15 +390,16 @@ public interface RemoteRenderingAccount {
     AccountKeys listKeys();
 
     /**
-     * List Both of the 2 Keys of a Remote Rendering Account.
+     * Regenerate specified Key of a Remote Rendering Account.
      *
+     * @param regenerate Required information for key regeneration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
-    Response<AccountKeys> listKeysWithResponse(Context context);
+    Response<AccountKeys> regenerateKeysWithResponse(AccountKeyRegenerateRequest regenerate, Context context);
 
     /**
      * Regenerate specified Key of a Remote Rendering Account.
@@ -392,16 +411,4 @@ public interface RemoteRenderingAccount {
      * @return developer Keys of account.
      */
     AccountKeys regenerateKeys(AccountKeyRegenerateRequest regenerate);
-
-    /**
-     * Regenerate specified Key of a Remote Rendering Account.
-     *
-     * @param regenerate Required information for key regeneration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
-     */
-    Response<AccountKeys> regenerateKeysWithResponse(AccountKeyRegenerateRequest regenerate, Context context);
 }

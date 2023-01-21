@@ -5,28 +5,28 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ID of the subscriptions that is being renamed. */
 @Immutable
 public final class RenamedSubscriptionIdInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RenamedSubscriptionIdInner.class);
-
     /*
      * The ID of the subscriptions that is being renamed
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private String value;
+    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String subscriptionId;
+
+    /** Creates an instance of RenamedSubscriptionIdInner class. */
+    public RenamedSubscriptionIdInner() {
+    }
 
     /**
-     * Get the value property: The ID of the subscriptions that is being renamed.
+     * Get the subscriptionId property: The ID of the subscriptions that is being renamed.
      *
-     * @return the value value.
+     * @return the subscriptionId value.
      */
-    public String value() {
-        return this.value;
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     /**

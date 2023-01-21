@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.InstructionInner;
 import java.time.OffsetDateTime;
 
@@ -29,6 +28,6 @@ public final class InstructionsPutSamples {
                     .withAmount(5000f)
                     .withStartDate(OffsetDateTime.parse("2019-12-30T21:26:47.997Z"))
                     .withEndDate(OffsetDateTime.parse("2020-12-30T21:26:47.997Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

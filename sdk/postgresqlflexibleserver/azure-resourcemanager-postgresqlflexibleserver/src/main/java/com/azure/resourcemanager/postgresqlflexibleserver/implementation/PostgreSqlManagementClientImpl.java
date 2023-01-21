@@ -15,13 +15,17 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.AdministratorsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.BackupsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CheckNameAvailabilitiesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CheckNameAvailabilityWithLocationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DatabasesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FirewallRulesClient;
@@ -29,6 +33,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.GetPrivateDnsZo
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.OperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
 import java.io.IOException;
@@ -37,15 +42,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the PostgreSqlManagementClientImpl type. */
 @ServiceClient(builder = PostgreSqlManagementClientBuilder.class)
 public final class PostgreSqlManagementClientImpl implements PostgreSqlManagementClient {
-    private final ClientLogger logger = new ClientLogger(PostgreSqlManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -118,52 +120,28 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.defaultPollInterval;
     }
 
-    /** The ServersClient object to access its operations. */
-    private final ServersClient servers;
+    /** The AdministratorsClient object to access its operations. */
+    private final AdministratorsClient administrators;
 
     /**
-     * Gets the ServersClient object to access its operations.
+     * Gets the AdministratorsClient object to access its operations.
      *
-     * @return the ServersClient object.
+     * @return the AdministratorsClient object.
      */
-    public ServersClient getServers() {
-        return this.servers;
+    public AdministratorsClient getAdministrators() {
+        return this.administrators;
     }
 
-    /** The FirewallRulesClient object to access its operations. */
-    private final FirewallRulesClient firewallRules;
+    /** The BackupsClient object to access its operations. */
+    private final BackupsClient backups;
 
     /**
-     * Gets the FirewallRulesClient object to access its operations.
+     * Gets the BackupsClient object to access its operations.
      *
-     * @return the FirewallRulesClient object.
+     * @return the BackupsClient object.
      */
-    public FirewallRulesClient getFirewallRules() {
-        return this.firewallRules;
-    }
-
-    /** The ConfigurationsClient object to access its operations. */
-    private final ConfigurationsClient configurations;
-
-    /**
-     * Gets the ConfigurationsClient object to access its operations.
-     *
-     * @return the ConfigurationsClient object.
-     */
-    public ConfigurationsClient getConfigurations() {
-        return this.configurations;
-    }
-
-    /** The CheckNameAvailabilitiesClient object to access its operations. */
-    private final CheckNameAvailabilitiesClient checkNameAvailabilities;
-
-    /**
-     * Gets the CheckNameAvailabilitiesClient object to access its operations.
-     *
-     * @return the CheckNameAvailabilitiesClient object.
-     */
-    public CheckNameAvailabilitiesClient getCheckNameAvailabilities() {
-        return this.checkNameAvailabilities;
+    public BackupsClient getBackups() {
+        return this.backups;
     }
 
     /** The LocationBasedCapabilitiesClient object to access its operations. */
@@ -178,28 +156,40 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.locationBasedCapabilities;
     }
 
-    /** The VirtualNetworkSubnetUsagesClient object to access its operations. */
-    private final VirtualNetworkSubnetUsagesClient virtualNetworkSubnetUsages;
+    /** The CheckNameAvailabilitiesClient object to access its operations. */
+    private final CheckNameAvailabilitiesClient checkNameAvailabilities;
 
     /**
-     * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
      *
-     * @return the VirtualNetworkSubnetUsagesClient object.
+     * @return the CheckNameAvailabilitiesClient object.
      */
-    public VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages() {
-        return this.virtualNetworkSubnetUsages;
+    public CheckNameAvailabilitiesClient getCheckNameAvailabilities() {
+        return this.checkNameAvailabilities;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The CheckNameAvailabilityWithLocationsClient object to access its operations. */
+    private final CheckNameAvailabilityWithLocationsClient checkNameAvailabilityWithLocations;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the CheckNameAvailabilityWithLocationsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the CheckNameAvailabilityWithLocationsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public CheckNameAvailabilityWithLocationsClient getCheckNameAvailabilityWithLocations() {
+        return this.checkNameAvailabilityWithLocations;
+    }
+
+    /** The ConfigurationsClient object to access its operations. */
+    private final ConfigurationsClient configurations;
+
+    /**
+     * Gets the ConfigurationsClient object to access its operations.
+     *
+     * @return the ConfigurationsClient object.
+     */
+    public ConfigurationsClient getConfigurations() {
+        return this.configurations;
     }
 
     /** The DatabasesClient object to access its operations. */
@@ -214,6 +204,42 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.databases;
     }
 
+    /** The FirewallRulesClient object to access its operations. */
+    private final FirewallRulesClient firewallRules;
+
+    /**
+     * Gets the FirewallRulesClient object to access its operations.
+     *
+     * @return the FirewallRulesClient object.
+     */
+    public FirewallRulesClient getFirewallRules() {
+        return this.firewallRules;
+    }
+
+    /** The ServersClient object to access its operations. */
+    private final ServersClient servers;
+
+    /**
+     * Gets the ServersClient object to access its operations.
+     *
+     * @return the ServersClient object.
+     */
+    public ServersClient getServers() {
+        return this.servers;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
     /** The GetPrivateDnsZoneSuffixesClient object to access its operations. */
     private final GetPrivateDnsZoneSuffixesClient getPrivateDnsZoneSuffixes;
 
@@ -224,6 +250,30 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      */
     public GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes() {
         return this.getPrivateDnsZoneSuffixes;
+    }
+
+    /** The ReplicasClient object to access its operations. */
+    private final ReplicasClient replicas;
+
+    /**
+     * Gets the ReplicasClient object to access its operations.
+     *
+     * @return the ReplicasClient object.
+     */
+    public ReplicasClient getReplicas() {
+        return this.replicas;
+    }
+
+    /** The VirtualNetworkSubnetUsagesClient object to access its operations. */
+    private final VirtualNetworkSubnetUsagesClient virtualNetworkSubnetUsages;
+
+    /**
+     * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
+     *
+     * @return the VirtualNetworkSubnetUsagesClient object.
+     */
+    public VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages() {
+        return this.virtualNetworkSubnetUsages;
     }
 
     /**
@@ -248,16 +298,20 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-06-01";
-        this.servers = new ServersClientImpl(this);
-        this.firewallRules = new FirewallRulesClientImpl(this);
-        this.configurations = new ConfigurationsClientImpl(this);
-        this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
+        this.apiVersion = "2022-12-01";
+        this.administrators = new AdministratorsClientImpl(this);
+        this.backups = new BackupsClientImpl(this);
         this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
-        this.virtualNetworkSubnetUsages = new VirtualNetworkSubnetUsagesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
+        this.checkNameAvailabilityWithLocations = new CheckNameAvailabilityWithLocationsClientImpl(this);
+        this.configurations = new ConfigurationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
+        this.firewallRules = new FirewallRulesClientImpl(this);
+        this.servers = new ServersClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
         this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
+        this.replicas = new ReplicasClientImpl(this);
+        this.virtualNetworkSubnetUsages = new VirtualNetworkSubnetUsagesClientImpl(this);
     }
 
     /**
@@ -276,10 +330,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -343,7 +394,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -402,4 +453,6 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlManagementClientImpl.class);
 }

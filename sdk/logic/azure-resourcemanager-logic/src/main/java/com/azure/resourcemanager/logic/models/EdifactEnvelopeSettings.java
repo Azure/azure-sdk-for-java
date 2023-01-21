@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact agreement envelope settings. */
 @Fluent
 public final class EdifactEnvelopeSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactEnvelopeSettings.class);
-
     /*
      * The group association assigned code.
      */
@@ -195,8 +191,7 @@ public final class EdifactEnvelopeSettings {
     private String groupApplicationPassword;
 
     /*
-     * The value indicating whether to overwrite existing transaction set
-     * control number.
+     * The value indicating whether to overwrite existing transaction set control number.
      */
     @JsonProperty(value = "overwriteExistingTransactionSetControlNumber", required = true)
     private boolean overwriteExistingTransactionSetControlNumber;
@@ -260,6 +255,10 @@ public final class EdifactEnvelopeSettings {
      */
     @JsonProperty(value = "receiverInternalSubIdentification")
     private String receiverInternalSubIdentification;
+
+    /** Creates an instance of EdifactEnvelopeSettings class. */
+    public EdifactEnvelopeSettings() {
+    }
 
     /**
      * Get the groupAssociationAssignedCode property: The group association assigned code.

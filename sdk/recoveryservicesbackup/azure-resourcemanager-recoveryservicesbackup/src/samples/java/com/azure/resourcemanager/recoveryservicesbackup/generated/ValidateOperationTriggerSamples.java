@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRes
 /** Samples for ValidateOperation Trigger. */
 public final class ValidateOperationTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
      */
     /**
      * Sample code: Trigger Validate Operation.
@@ -46,6 +45,6 @@ public final class ValidateOperationTriggerSamples {
                                     .withIsSystemAssignedIdentity(false)
                                     .withManagedIdentityResourceId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

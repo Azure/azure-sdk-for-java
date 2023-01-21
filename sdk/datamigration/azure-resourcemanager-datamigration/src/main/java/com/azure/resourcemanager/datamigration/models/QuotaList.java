@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.models.QuotaInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** OData page of quota objects. */
 @Fluent
 public final class QuotaList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaList.class);
-
     /*
      * List of quotas
      */
@@ -23,11 +19,14 @@ public final class QuotaList {
     private List<QuotaInner> value;
 
     /*
-     * URL to load the next page of quotas, or null or missing if this is the
-     * last page
+     * URL to load the next page of quotas, or null or missing if this is the last page
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of QuotaList class. */
+    public QuotaList() {
+    }
 
     /**
      * Get the value property: List of quotas.

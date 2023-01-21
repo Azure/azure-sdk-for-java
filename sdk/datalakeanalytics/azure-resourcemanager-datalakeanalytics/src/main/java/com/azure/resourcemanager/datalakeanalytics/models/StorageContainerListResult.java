@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageContainerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of blob containers associated with the storage account attached to the Data Lake Analytics account. */
 @Immutable
 public final class StorageContainerListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageContainerListResult.class);
-
     /*
      * The results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class StorageContainerListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of StorageContainerListResult class. */
+    public StorageContainerListResult() {
+    }
 
     /**
      * Get the value property: The results of the list operation.

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ExternalFqdnResponse;
 import java.nio.ByteBuffer;
@@ -61,7 +60,8 @@ public final class WorkspacesListOutboundNetworkDependenciesEndpointsWithRespons
         ExternalFqdnResponse response =
             manager
                 .workspaces()
-                .listOutboundNetworkDependenciesEndpointsWithResponse("ffffg", "uhznwhvuldbk", Context.NONE)
+                .listOutboundNetworkDependenciesEndpointsWithResponse(
+                    "ffffg", "uhznwhvuldbk", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -57,7 +57,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupResourceEncryptionConfigsService {
+    public interface BackupResourceEncryptionConfigsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

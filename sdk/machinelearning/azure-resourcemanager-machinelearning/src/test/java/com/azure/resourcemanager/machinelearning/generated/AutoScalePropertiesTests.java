@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AutoScaleProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoScalePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoScaleProperties model =
             BinaryData
                 .fromString("{\"minNodeCount\":814110880,\"enabled\":true,\"maxNodeCount\":1557135644}")
@@ -21,8 +20,8 @@ public final class AutoScalePropertiesTests {
         Assertions.assertEquals(1557135644, model.maxNodeCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoScaleProperties model =
             new AutoScaleProperties().withMinNodeCount(814110880).withEnabled(true).withMaxNodeCount(1557135644);
         model = BinaryData.fromObject(model).toObject(AutoScaleProperties.class);

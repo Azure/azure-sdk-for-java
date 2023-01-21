@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_AUTHORITY_HOST;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_SECRET;
@@ -71,6 +72,8 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         CLIENT_SECRET(PROPERTY_AZURE_CLIENT_SECRET, "credential.client-secret"),
 
         CLIENT_CERTIFICATE_PATH(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "credential.client-certificate-path"),
+
+        CLIENT_CERTIFICATE_PASSWORD(PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "credential.client-certificate-password"),
 
         USERNAME(PROPERTY_AZURE_USERNAME, "credential.username"),
 

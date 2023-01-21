@@ -52,7 +52,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupStatusService {
+    public interface BackupStatusService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupStatus")

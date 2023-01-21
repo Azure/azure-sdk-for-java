@@ -20,6 +20,15 @@ public final class ODataAadServicePrincipalCredentialType
         fromString("ServicePrincipalCert");
 
     /**
+     * Creates a new instance of ODataAadServicePrincipalCredentialType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ODataAadServicePrincipalCredentialType() {
+    }
+
+    /**
      * Creates or finds a ODataAadServicePrincipalCredentialType from its string representation.
      *
      * @param name a name to look for.

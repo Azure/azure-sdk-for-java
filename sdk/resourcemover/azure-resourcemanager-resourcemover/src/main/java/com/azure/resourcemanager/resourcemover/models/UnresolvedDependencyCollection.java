@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcemover.fluent.models.UnresolvedDependencyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Unresolved dependency collection. */
 @Fluent
 public final class UnresolvedDependencyCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnresolvedDependencyCollection.class);
-
     /*
      * Gets or sets the list of unresolved dependencies.
      */
@@ -29,8 +25,7 @@ public final class UnresolvedDependencyCollection {
     private String nextLink;
 
     /*
-     * Gets or sets the list of summary items and the field on which summary is
-     * done.
+     * Gets or sets the list of summary items and the field on which summary is done.
      */
     @JsonProperty(value = "summaryCollection", access = JsonProperty.Access.WRITE_ONLY)
     private SummaryCollection summaryCollection;
@@ -40,6 +35,10 @@ public final class UnresolvedDependencyCollection {
      */
     @JsonProperty(value = "totalCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalCount;
+
+    /** Creates an instance of UnresolvedDependencyCollection class. */
+    public UnresolvedDependencyCollection() {
+    }
 
     /**
      * Get the value property: Gets or sets the list of unresolved dependencies.

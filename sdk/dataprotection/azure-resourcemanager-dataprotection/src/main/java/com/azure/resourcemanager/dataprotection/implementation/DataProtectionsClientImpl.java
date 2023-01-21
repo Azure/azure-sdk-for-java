@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationResponseBaseInner;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequestBase;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataProtectionsClient. */
 public final class DataProtectionsClientImpl implements DataProtectionsClient {
-    private final ClientLogger logger = new ClientLogger(DataProtectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataProtectionsService service;
 
@@ -55,7 +52,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface DataProtectionsService {
+    public interface DataProtectionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}"
@@ -80,7 +77,8 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupportWithResponseAsync(
@@ -130,7 +128,8 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupportWithResponseAsync(
@@ -176,20 +175,30 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FeatureValidationResponseBaseInner> checkFeatureSupportAsync(
         String location, FeatureValidationRequestBase parameters) {
         return checkFeatureSupportWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<FeatureValidationResponseBaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Validates if a feature is supported.
+     *
+     * @param location The location parameter.
+     * @param parameters Feature support request object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for Backup Feature support along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(
+        String location, FeatureValidationRequestBase parameters, Context context) {
+        return checkFeatureSupportWithResponseAsync(location, parameters, context).block();
     }
 
     /**
@@ -205,23 +214,6 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeatureValidationResponseBaseInner checkFeatureSupport(
         String location, FeatureValidationRequestBase parameters) {
-        return checkFeatureSupportAsync(location, parameters).block();
-    }
-
-    /**
-     * Validates if a feature is supported.
-     *
-     * @param location The location parameter.
-     * @param parameters Feature support request object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(
-        String location, FeatureValidationRequestBase parameters, Context context) {
-        return checkFeatureSupportWithResponseAsync(location, parameters, context).block();
+        return checkFeatureSupportWithResponse(location, parameters, Context.NONE).getValue();
     }
 }

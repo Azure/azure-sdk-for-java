@@ -5,87 +5,34 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.ConnectorStates;
 import com.azure.resourcemanager.customerinsights.models.ConnectorTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The connector resource format. */
-@JsonFlatten
 @Fluent
-public class ConnectorResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorResourceFormatInner.class);
-
+public final class ConnectorResourceFormatInner extends ProxyResource {
     /*
-     * ID of the connector.
+     * Properties of connector.
      */
-    @JsonProperty(value = "properties.connectorId", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer connectorId;
+    @JsonProperty(value = "properties")
+    private Connector innerProperties;
 
-    /*
-     * Name of the connector.
-     */
-    @JsonProperty(value = "properties.connectorName")
-    private String connectorName;
+    /** Creates an instance of ConnectorResourceFormatInner class. */
+    public ConnectorResourceFormatInner() {
+    }
 
-    /*
-     * Type of connector.
+    /**
+     * Get the innerProperties property: Properties of connector.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.connectorType")
-    private ConnectorTypes connectorType;
-
-    /*
-     * Display name of the connector.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Description of the connector.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The connector properties.
-     */
-    @JsonProperty(value = "properties.connectorProperties")
-    private Map<String, Object> connectorProperties;
-
-    /*
-     * The created time.
-     */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
-
-    /*
-     * The last modified time.
-     */
-    @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModified;
-
-    /*
-     * State of connector.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private ConnectorStates state;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * If this is an internal connector.
-     */
-    @JsonProperty(value = "properties.isInternal")
-    private Boolean isInternal;
+    private Connector innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the connectorId property: ID of the connector.
@@ -93,7 +40,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the connectorId value.
      */
     public Integer connectorId() {
-        return this.connectorId;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorId();
     }
 
     /**
@@ -102,7 +49,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the connectorName value.
      */
     public String connectorName() {
-        return this.connectorName;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorName();
     }
 
     /**
@@ -112,7 +59,10 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the ConnectorResourceFormatInner object itself.
      */
     public ConnectorResourceFormatInner withConnectorName(String connectorName) {
-        this.connectorName = connectorName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Connector();
+        }
+        this.innerProperties().withConnectorName(connectorName);
         return this;
     }
 
@@ -122,7 +72,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the connectorType value.
      */
     public ConnectorTypes connectorType() {
-        return this.connectorType;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorType();
     }
 
     /**
@@ -132,7 +82,10 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the ConnectorResourceFormatInner object itself.
      */
     public ConnectorResourceFormatInner withConnectorType(ConnectorTypes connectorType) {
-        this.connectorType = connectorType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Connector();
+        }
+        this.innerProperties().withConnectorType(connectorType);
         return this;
     }
 
@@ -142,7 +95,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -152,7 +105,10 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the ConnectorResourceFormatInner object itself.
      */
     public ConnectorResourceFormatInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Connector();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -162,7 +118,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -172,7 +128,10 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the ConnectorResourceFormatInner object itself.
      */
     public ConnectorResourceFormatInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Connector();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -182,7 +141,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the connectorProperties value.
      */
     public Map<String, Object> connectorProperties() {
-        return this.connectorProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorProperties();
     }
 
     /**
@@ -192,7 +151,10 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the ConnectorResourceFormatInner object itself.
      */
     public ConnectorResourceFormatInner withConnectorProperties(Map<String, Object> connectorProperties) {
-        this.connectorProperties = connectorProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Connector();
+        }
+        this.innerProperties().withConnectorProperties(connectorProperties);
         return this;
     }
 
@@ -202,7 +164,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -211,7 +173,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
-        return this.lastModified;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModified();
     }
 
     /**
@@ -220,7 +182,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the state value.
      */
     public ConnectorStates state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -229,7 +191,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -238,7 +200,7 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the isInternal value.
      */
     public Boolean isInternal() {
-        return this.isInternal;
+        return this.innerProperties() == null ? null : this.innerProperties().isInternal();
     }
 
     /**
@@ -248,7 +210,10 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @return the ConnectorResourceFormatInner object itself.
      */
     public ConnectorResourceFormatInner withIsInternal(Boolean isInternal) {
-        this.isInternal = isInternal;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Connector();
+        }
+        this.innerProperties().withIsInternal(isInternal);
         return this;
     }
 
@@ -258,5 +223,8 @@ public class ConnectorResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

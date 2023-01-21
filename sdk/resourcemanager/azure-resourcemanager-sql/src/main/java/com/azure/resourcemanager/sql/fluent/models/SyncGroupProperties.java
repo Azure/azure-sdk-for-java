@@ -62,6 +62,34 @@ public final class SyncGroupProperties {
     @JsonProperty(value = "schema")
     private SyncGroupSchema schema;
 
+    /*
+     * If conflict logging is enabled.
+     */
+    @JsonProperty(value = "enableConflictLogging")
+    private Boolean enableConflictLogging;
+
+    /*
+     * Conflict logging retention period.
+     */
+    @JsonProperty(value = "conflictLoggingRetentionInDays")
+    private Integer conflictLoggingRetentionInDays;
+
+    /*
+     * If use private link connection is enabled.
+     */
+    @JsonProperty(value = "usePrivateLinkConnection")
+    private Boolean usePrivateLinkConnection;
+
+    /*
+     * Private endpoint name of the sync group if use private link connection is enabled.
+     */
+    @JsonProperty(value = "privateEndpointName", access = JsonProperty.Access.WRITE_ONLY)
+    private String privateEndpointName;
+
+    /** Creates an instance of SyncGroupProperties class. */
+    public SyncGroupProperties() {
+    }
+
     /**
      * Get the interval property: Sync interval of the sync group.
      *
@@ -198,6 +226,76 @@ public final class SyncGroupProperties {
     public SyncGroupProperties withSchema(SyncGroupSchema schema) {
         this.schema = schema;
         return this;
+    }
+
+    /**
+     * Get the enableConflictLogging property: If conflict logging is enabled.
+     *
+     * @return the enableConflictLogging value.
+     */
+    public Boolean enableConflictLogging() {
+        return this.enableConflictLogging;
+    }
+
+    /**
+     * Set the enableConflictLogging property: If conflict logging is enabled.
+     *
+     * @param enableConflictLogging the enableConflictLogging value to set.
+     * @return the SyncGroupProperties object itself.
+     */
+    public SyncGroupProperties withEnableConflictLogging(Boolean enableConflictLogging) {
+        this.enableConflictLogging = enableConflictLogging;
+        return this;
+    }
+
+    /**
+     * Get the conflictLoggingRetentionInDays property: Conflict logging retention period.
+     *
+     * @return the conflictLoggingRetentionInDays value.
+     */
+    public Integer conflictLoggingRetentionInDays() {
+        return this.conflictLoggingRetentionInDays;
+    }
+
+    /**
+     * Set the conflictLoggingRetentionInDays property: Conflict logging retention period.
+     *
+     * @param conflictLoggingRetentionInDays the conflictLoggingRetentionInDays value to set.
+     * @return the SyncGroupProperties object itself.
+     */
+    public SyncGroupProperties withConflictLoggingRetentionInDays(Integer conflictLoggingRetentionInDays) {
+        this.conflictLoggingRetentionInDays = conflictLoggingRetentionInDays;
+        return this;
+    }
+
+    /**
+     * Get the usePrivateLinkConnection property: If use private link connection is enabled.
+     *
+     * @return the usePrivateLinkConnection value.
+     */
+    public Boolean usePrivateLinkConnection() {
+        return this.usePrivateLinkConnection;
+    }
+
+    /**
+     * Set the usePrivateLinkConnection property: If use private link connection is enabled.
+     *
+     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
+     * @return the SyncGroupProperties object itself.
+     */
+    public SyncGroupProperties withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
+        this.usePrivateLinkConnection = usePrivateLinkConnection;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointName property: Private endpoint name of the sync group if use private link connection is
+     * enabled.
+     *
+     * @return the privateEndpointName value.
+     */
+    public String privateEndpointName() {
+        return this.privateEndpointName;
     }
 
     /**

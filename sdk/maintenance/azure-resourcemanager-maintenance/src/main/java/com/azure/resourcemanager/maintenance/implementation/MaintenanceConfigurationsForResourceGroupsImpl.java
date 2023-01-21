@@ -11,12 +11,10 @@ import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsFor
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurationsForResourceGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MaintenanceConfigurationsForResourceGroupsImpl
     implements MaintenanceConfigurationsForResourceGroups {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationsForResourceGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MaintenanceConfigurationsForResourceGroupsImpl.class);
 
     private final MaintenanceConfigurationsForResourceGroupsClient innerClient;
 

@@ -17,6 +17,15 @@ public final class PatchAssessmentState extends ExpandableStringEnum<PatchAssess
     public static final PatchAssessmentState AVAILABLE = fromString("Available");
 
     /**
+     * Creates a new instance of PatchAssessmentState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PatchAssessmentState() {
+    }
+
+    /**
      * Creates or finds a PatchAssessmentState from its string representation.
      *
      * @param name a name to look for.

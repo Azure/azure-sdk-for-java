@@ -17,6 +17,15 @@ public final class ArchitectureTypes extends ExpandableStringEnum<ArchitectureTy
     public static final ArchitectureTypes ARM64 = fromString("Arm64");
 
     /**
+     * Creates a new instance of ArchitectureTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArchitectureTypes() {
+    }
+
+    /**
      * Creates or finds a ArchitectureTypes from its string representation.
      *
      * @param name a name to look for.

@@ -60,6 +60,10 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SolutionInner innerModel() {
         return this.innerObject;
     }

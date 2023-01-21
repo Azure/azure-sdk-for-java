@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RulesEngineOperator. */
+/** Describes operator to apply to the match condition. */
 public final class RulesEngineOperator extends ExpandableStringEnum<RulesEngineOperator> {
     /** Static value Any for RulesEngineOperator. */
     public static final RulesEngineOperator ANY = fromString("Any");
@@ -44,6 +44,15 @@ public final class RulesEngineOperator extends ExpandableStringEnum<RulesEngineO
     public static final RulesEngineOperator ENDS_WITH = fromString("EndsWith");
 
     /**
+     * Creates a new instance of RulesEngineOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RulesEngineOperator() {
+    }
+
+    /**
      * Creates or finds a RulesEngineOperator from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +63,11 @@ public final class RulesEngineOperator extends ExpandableStringEnum<RulesEngineO
         return fromString(name, RulesEngineOperator.class);
     }
 
-    /** @return known RulesEngineOperator values. */
+    /**
+     * Gets known RulesEngineOperator values.
+     *
+     * @return known RulesEngineOperator values.
+     */
     public static Collection<RulesEngineOperator> values() {
         return values(RulesEngineOperator.class);
     }

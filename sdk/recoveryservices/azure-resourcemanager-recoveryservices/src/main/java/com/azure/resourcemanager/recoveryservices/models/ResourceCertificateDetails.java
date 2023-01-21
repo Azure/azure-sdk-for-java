@@ -73,6 +73,10 @@ public class ResourceCertificateDetails {
     @JsonProperty(value = "validTo")
     private OffsetDateTime validTo;
 
+    /** Creates an instance of ResourceCertificateDetails class. */
+    public ResourceCertificateDetails() {
+    }
+
     /**
      * Get the certificate property: The base64 encoded certificate raw data string.
      *

@@ -276,7 +276,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return beginRefreshAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
+        return this.beginRefreshAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
     }
 
     /**
@@ -294,7 +294,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
-        return beginRefreshAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
+        return this.beginRefreshAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
     }
 
     /**

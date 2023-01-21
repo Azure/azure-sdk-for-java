@@ -2365,7 +2365,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
     }
 
     /**
@@ -2383,7 +2383,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
-        return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
     }
 
     /**
@@ -2627,7 +2627,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
     }
 
     /**
@@ -2645,7 +2645,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
-        return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
     }
 
     /**

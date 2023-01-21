@@ -18,7 +18,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -58,6 +57,7 @@ public class AsyncRestProxy extends RestProxyBase {
     }
 
     @Override
+    @SuppressWarnings("try")
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
@@ -70,10 +70,16 @@ public class AsyncRestProxy extends RestProxyBase {
             requestCallback.accept(request);
         }
 
-        Context finalContext = context;
+        final Context finalContext = context;
         final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
-            .flatMap(r -> send(r, finalContext));
-
+            .flatMap(r -> {
+                // correlates logs
+                try (AutoCloseable scope = tracer.makeSpanCurrent(finalContext)) {
+                    return send(r, finalContext);
+                } catch (Throwable ex) {
+                    return Mono.error(ex);
+                }
+            });
         Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = this.decoder
             .decode(asyncResponse, methodParser);
 
@@ -234,7 +240,7 @@ public class AsyncRestProxy extends RestProxyBase {
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
     private void endTracingSpan(Signal<HttpResponseDecoder.HttpDecodedResponse> signal) {
-        if (!TracerProxy.isTracingEnabled()) {
+        if (!tracer.isEnabled()) {
             return;
         }
 

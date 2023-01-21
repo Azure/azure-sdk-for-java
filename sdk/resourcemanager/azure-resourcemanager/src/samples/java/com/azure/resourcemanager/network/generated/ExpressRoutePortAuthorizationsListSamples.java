@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRoutePortAuthorizations List. */
 public final class ExpressRoutePortAuthorizationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRoutePortAuthorizationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRoutePortAuthorizationList.json
      */
     /**
      * Sample code: List ExpressRoutePort Authorization.

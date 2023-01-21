@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.DedicatedCloudNodesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DedicatedCloudNodesClient. */
 public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesClient {
-    private final ClientLogger logger = new ClientLogger(DedicatedCloudNodesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DedicatedCloudNodesService service;
 
@@ -68,7 +65,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleDed")
-    private interface DedicatedCloudNodesService {
+    public interface DedicatedCloudNodesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudNodes")
         @ExpectedResponses({200})
@@ -185,7 +182,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within subscription.
+     * Implements list of dedicated cloud nodes within subscription method
+     *
+     * <p>Returns list of dedicate cloud nodes within subscription.
      *
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -193,7 +192,8 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listSinglePageAsync(
@@ -237,7 +237,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within subscription.
+     * Implements list of dedicated cloud nodes within subscription method
+     *
+     * <p>Returns list of dedicate cloud nodes within subscription.
      *
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -246,7 +248,8 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listSinglePageAsync(
@@ -287,7 +290,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within subscription.
+     * Implements list of dedicated cloud nodes within subscription method
+     *
+     * <p>Returns list of dedicate cloud nodes within subscription.
      *
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -295,7 +300,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCloudNodeInner> listAsync(String filter, Integer top, String skipToken) {
@@ -305,11 +310,13 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within subscription.
+     * Implements list of dedicated cloud nodes within subscription method
+     *
+     * <p>Returns list of dedicate cloud nodes within subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCloudNodeInner> listAsync() {
@@ -322,7 +329,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within subscription.
+     * Implements list of dedicated cloud nodes within subscription method
+     *
+     * <p>Returns list of dedicate cloud nodes within subscription.
      *
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -331,7 +340,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCloudNodeInner> listAsync(
@@ -342,11 +351,13 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within subscription.
+     * Implements list of dedicated cloud nodes within subscription method
+     *
+     * <p>Returns list of dedicate cloud nodes within subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCloudNodeInner> list() {
@@ -357,7 +368,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within subscription.
+     * Implements list of dedicated cloud nodes within subscription method
+     *
+     * <p>Returns list of dedicate cloud nodes within subscription.
      *
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -366,7 +379,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCloudNodeInner> list(String filter, Integer top, String skipToken, Context context) {
@@ -374,7 +387,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within resource group.
+     * Implements list of dedicated cloud nodes within RG method
+     *
+     * <p>Returns list of dedicate cloud nodes within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
@@ -383,7 +398,8 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listByResourceGroupSinglePageAsync(
@@ -432,7 +448,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within resource group.
+     * Implements list of dedicated cloud nodes within RG method
+     *
+     * <p>Returns list of dedicate cloud nodes within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
@@ -442,7 +460,8 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listByResourceGroupSinglePageAsync(
@@ -488,7 +507,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within resource group.
+     * Implements list of dedicated cloud nodes within RG method
+     *
+     * <p>Returns list of dedicate cloud nodes within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
@@ -497,7 +518,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCloudNodeInner> listByResourceGroupAsync(
@@ -508,13 +529,15 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within resource group.
+     * Implements list of dedicated cloud nodes within RG method
+     *
+     * <p>Returns list of dedicate cloud nodes within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCloudNodeInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -527,7 +550,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within resource group.
+     * Implements list of dedicated cloud nodes within RG method
+     *
+     * <p>Returns list of dedicate cloud nodes within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
@@ -537,7 +562,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCloudNodeInner> listByResourceGroupAsync(
@@ -548,13 +573,15 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within resource group.
+     * Implements list of dedicated cloud nodes within RG method
+     *
+     * <p>Returns list of dedicate cloud nodes within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCloudNodeInner> listByResourceGroup(String resourceGroupName) {
@@ -565,7 +592,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns list of dedicate cloud nodes within resource group.
+     * Implements list of dedicated cloud nodes within RG method
+     *
+     * <p>Returns list of dedicate cloud nodes within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
@@ -575,7 +604,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCloudNodeInner> listByResourceGroup(
@@ -584,14 +613,16 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns dedicated cloud node.
+     * Implements dedicated cloud node GET method
+     *
+     * <p>Returns dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedCloudNodeInner>> getByResourceGroupWithResponseAsync(
@@ -634,7 +665,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns dedicated cloud node.
+     * Implements dedicated cloud node GET method
+     *
+     * <p>Returns dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -642,7 +675,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedCloudNodeInner>> getByResourceGroupWithResponseAsync(
@@ -682,31 +715,47 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns dedicated cloud node.
+     * Implements dedicated cloud node GET method
+     *
+     * <p>Returns dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCloudNodeInner> getByResourceGroupAsync(
         String resourceGroupName, String dedicatedCloudNodeName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCloudNodeName)
-            .flatMap(
-                (Response<DedicatedCloudNodeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns dedicated cloud node.
+     * Implements dedicated cloud node GET method
+     *
+     * <p>Returns dedicated cloud node.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param dedicatedCloudNodeName dedicated cloud node name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dedicated cloud node model along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DedicatedCloudNodeInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String dedicatedCloudNodeName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCloudNodeName, context).block();
+    }
+
+    /**
+     * Implements dedicated cloud node GET method
+     *
+     * <p>Returns dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -717,40 +766,29 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCloudNodeInner getByResourceGroup(String resourceGroupName, String dedicatedCloudNodeName) {
-        return getByResourceGroupAsync(resourceGroupName, dedicatedCloudNodeName).block();
+        return getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE).getValue();
     }
 
     /**
-     * Returns dedicated cloud node.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param dedicatedCloudNodeName dedicated cloud node name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DedicatedCloudNodeInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCloudNodeName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCloudNodeName, context).block();
-    }
-
-    /**
-     * Returns dedicated cloud node by its name.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
+        String resourceGroupName,
+        String referer,
+        String dedicatedCloudNodeName,
+        DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -767,10 +805,8 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (this.client.getReferer() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.client.getReferer() is required and cannot be null."));
+        if (referer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter referer is required and cannot be null."));
         }
         if (dedicatedCloudNodeName == null) {
             return Mono
@@ -794,7 +830,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            this.client.getReferer(),
+                            referer,
                             dedicatedCloudNodeName,
                             this.client.getApiVersion(),
                             dedicatedCloudNodeRequest,
@@ -804,20 +840,24 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
+        String referer,
         String dedicatedCloudNodeName,
         DedicatedCloudNodeInner dedicatedCloudNodeRequest,
         Context context) {
@@ -837,10 +877,8 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (this.client.getReferer() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.client.getReferer() is required and cannot be null."));
+        if (referer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter referer is required and cannot be null."));
         }
         if (dedicatedCloudNodeName == null) {
             return Mono
@@ -862,7 +900,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                this.client.getReferer(),
+                referer,
                 dedicatedCloudNodeName,
                 this.client.getApiVersion(),
                 dedicatedCloudNodeRequest,
@@ -871,21 +909,28 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return the {@link PollerFlux} for polling of dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
+        String resourceGroupName,
+        String referer,
+        String dedicatedCloudNodeName,
+        DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest);
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest);
         return this
             .client
             .<DedicatedCloudNodeInner, DedicatedCloudNodeInner>getLroResult(
@@ -893,31 +938,35 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
                 this.client.getHttpPipeline(),
                 DedicatedCloudNodeInner.class,
                 DedicatedCloudNodeInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return the {@link PollerFlux} for polling of dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
+        String referer,
         String dedicatedCloudNodeName,
         DedicatedCloudNodeInner dedicatedCloudNodeRequest,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context);
+                resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context);
         return this
             .client
             .<DedicatedCloudNodeInner, DedicatedCloudNodeInner>getLroResult(
@@ -929,91 +978,118 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return the {@link SyncPoller} for polling of dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdate(
-        String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
-        return beginCreateOrUpdateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest)
+        String resourceGroupName,
+        String referer,
+        String dedicatedCloudNodeName,
+        DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest)
             .getSyncPoller();
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return the {@link SyncPoller} for polling of dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdate(
         String resourceGroupName,
+        String referer,
         String dedicatedCloudNodeName,
         DedicatedCloudNodeInner dedicatedCloudNodeRequest,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context)
+        return this
+            .beginCreateOrUpdateAsync(
+                resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context)
             .getSyncPoller();
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCloudNodeInner> createOrUpdateAsync(
-        String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
-        return beginCreateOrUpdateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest)
+        String resourceGroupName,
+        String referer,
+        String dedicatedCloudNodeName,
+        DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
+        return beginCreateOrUpdateAsync(resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCloudNodeInner> createOrUpdateAsync(
         String resourceGroupName,
+        String referer,
         String dedicatedCloudNodeName,
         DedicatedCloudNodeInner dedicatedCloudNodeRequest,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Returns dedicated cloud node by its name.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,41 +1099,52 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCloudNodeInner createOrUpdate(
-        String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
-        return createOrUpdateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest).block();
-    }
-
-    /**
-     * Returns dedicated cloud node by its name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param dedicatedCloudNodeName dedicated cloud node name.
-     * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedCloudNodeInner createOrUpdate(
         String resourceGroupName,
+        String referer,
         String dedicatedCloudNodeName,
-        DedicatedCloudNodeInner dedicatedCloudNodeRequest,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context)
+        DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
+        return createOrUpdateAsync(resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest)
             .block();
     }
 
     /**
-     * Delete dedicated cloud node.
+     * Implements dedicated cloud node PUT method
+     *
+     * <p>Returns dedicated cloud node by its name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
+     * @param dedicatedCloudNodeName dedicated cloud node name.
+     * @param dedicatedCloudNodeRequest Create Dedicated Cloud Node request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dedicated cloud node model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedCloudNodeInner createOrUpdate(
+        String resourceGroupName,
+        String referer,
+        String dedicatedCloudNodeName,
+        DedicatedCloudNodeInner dedicatedCloudNodeRequest,
+        Context context) {
+        return createOrUpdateAsync(
+                resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest, context)
+            .block();
+    }
+
+    /**
+     * Implements dedicated cloud node DELETE method
+     *
+     * <p>Delete dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dedicatedCloudNodeName) {
@@ -1099,7 +1186,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Delete dedicated cloud node.
+     * Implements dedicated cloud node DELETE method
+     *
+     * <p>Delete dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -1107,7 +1196,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1147,23 +1236,44 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Delete dedicated cloud node.
+     * Implements dedicated cloud node DELETE method
+     *
+     * <p>Delete dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String dedicatedCloudNodeName) {
-        return deleteWithResponseAsync(resourceGroupName, dedicatedCloudNodeName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, dedicatedCloudNodeName).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Delete dedicated cloud node.
+     * Implements dedicated cloud node DELETE method
+     *
+     * <p>Delete dedicated cloud node.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param dedicatedCloudNodeName dedicated cloud node name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String dedicatedCloudNodeName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, dedicatedCloudNodeName, context).block();
+    }
+
+    /**
+     * Implements dedicated cloud node DELETE method
+     *
+     * <p>Delete dedicated cloud node.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -1173,27 +1283,13 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dedicatedCloudNodeName) {
-        deleteAsync(resourceGroupName, dedicatedCloudNodeName).block();
+        deleteWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE);
     }
 
     /**
-     * Delete dedicated cloud node.
+     * Implements dedicated cloud node PATCH method
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param dedicatedCloudNodeName dedicated cloud node name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String dedicatedCloudNodeName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, dedicatedCloudNodeName, context).block();
-    }
-
-    /**
-     * Patches dedicated node properties.
+     * <p>Patches dedicated node properties.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -1201,7 +1297,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedCloudNodeInner>> updateWithResponseAsync(
@@ -1253,7 +1349,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Patches dedicated node properties.
+     * Implements dedicated cloud node PATCH method
+     *
+     * <p>Patches dedicated node properties.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -1262,7 +1360,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedCloudNodeInner>> updateWithResponseAsync(
@@ -1314,7 +1412,9 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Patches dedicated node properties.
+     * Implements dedicated cloud node PATCH method
+     *
+     * <p>Patches dedicated node properties.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -1322,41 +1422,19 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCloudNodeInner> updateAsync(
         String resourceGroupName, String dedicatedCloudNodeName, PatchPayload dedicatedCloudNodeRequest) {
         return updateWithResponseAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest)
-            .flatMap(
-                (Response<DedicatedCloudNodeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Patches dedicated node properties.
+     * Implements dedicated cloud node PATCH method
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param dedicatedCloudNodeName dedicated cloud node name.
-     * @param dedicatedCloudNodeRequest Patch Dedicated Cloud Node request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedCloudNodeInner update(
-        String resourceGroupName, String dedicatedCloudNodeName, PatchPayload dedicatedCloudNodeRequest) {
-        return updateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest).block();
-    }
-
-    /**
-     * Patches dedicated node properties.
+     * <p>Patches dedicated node properties.
      *
      * @param resourceGroupName The name of the resource group.
      * @param dedicatedCloudNodeName dedicated cloud node name.
@@ -1365,7 +1443,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated cloud node model.
+     * @return dedicated cloud node model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DedicatedCloudNodeInner> updateWithResponse(
@@ -1378,13 +1456,35 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     }
 
     /**
-     * Get the next page of items.
+     * Implements dedicated cloud node PATCH method
      *
-     * @param nextLink The nextLink parameter.
+     * <p>Patches dedicated node properties.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param dedicatedCloudNodeName dedicated cloud node name.
+     * @param dedicatedCloudNodeRequest Patch Dedicated Cloud Node request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return dedicated cloud node model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedCloudNodeInner update(
+        String resourceGroupName, String dedicatedCloudNodeName, PatchPayload dedicatedCloudNodeRequest) {
+        return updateWithResponse(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1416,12 +1516,14 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listBySubscriptionNextSinglePageAsync(
@@ -1453,11 +1555,13 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1489,12 +1593,14 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of dedicated nodes response model.
+     * @return list of dedicated nodes response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCloudNodeInner>> listByResourceGroupNextSinglePageAsync(

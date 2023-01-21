@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("Microsoft.Network/virtualNetworks")
 @Fluent
 public final class VirtualNetworkResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkResourceSettings.class);
-
     /*
      * Gets or sets a value indicating whether gets or sets whether the
      * DDOS protection should be switched on.
@@ -33,8 +29,7 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
     private List<String> addressSpace;
 
     /*
-     * Gets or sets DHCPOptions that contains an array of DNS servers available
-     * to VMs
+     * Gets or sets DHCPOptions that contains an array of DNS servers available to VMs
      * deployed in the virtual network.
      */
     @JsonProperty(value = "dnsServers")
@@ -45,6 +40,10 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
      */
     @JsonProperty(value = "subnets")
     private List<SubnetResourceSettings> subnets;
+
+    /** Creates an instance of VirtualNetworkResourceSettings class. */
+    public VirtualNetworkResourceSettings() {
+    }
 
     /**
      * Get the enableDdosProtection property: Gets or sets a value indicating whether gets or sets whether the DDOS

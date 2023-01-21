@@ -31,6 +31,10 @@ public final class SenderAuthorization {
     @JsonProperty(value = "scope")
     private String scope;
 
+    /** Creates an instance of SenderAuthorization class. */
+    public SenderAuthorization() {
+    }
+
     /**
      * Get the action property: the permissible actions. For instance: microsoft.support/supporttickets/write.
      *

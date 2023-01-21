@@ -5,6 +5,8 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.file.datalake.models.LeaseAction;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 
 /**
  * Optional parameters for appending data to a file.
@@ -15,7 +17,9 @@ public class DataLakeFileAppendOptions {
     private String leaseId;
     private byte[] contentMd5;
     private Boolean flush;
-
+    private LeaseAction leaseAction;
+    private Integer leaseDuration;
+    private String proposedLeaseId;
 
     /**
      * Gets the lease ID to access the file.
@@ -81,6 +85,78 @@ public class DataLakeFileAppendOptions {
      */
     public DataLakeFileAppendOptions setFlush(Boolean flush) {
         this.flush = flush;
+        return this;
+    }
+
+    /**
+     * Get lease action set on file.
+     * {@link LeaseAction#ACQUIRE} will attempt to acquire a new lease on the file,
+     * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID.
+     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to aquire a new lease on the file,
+     * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID. The lease will be released once the
+     * Append operation is complete.
+     * {@link LeaseAction#AUTO_RENEW} will attempt to renew the lease specified by {@link DataLakeRequestConditions#getLeaseId()}.
+     * {@link LeaseAction#RELEASE} will attempt to release the least specified by {@link DataLakeRequestConditions#getLeaseId()}.
+     *
+     * @return The {@link LeaseAction} set on the file.
+     */
+    public LeaseAction getLeaseAction() {
+        return leaseAction;
+    }
+
+    /**
+     * Get lease action set on file.
+     * {@link LeaseAction#ACQUIRE} will attempt to acquire a new lease on the file,
+     * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID.
+     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to aquire a new lease on the file,
+     * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID. The lease will be released once the
+     * Append operation is complete.
+     * {@link LeaseAction#AUTO_RENEW} will attempt to renew the lease specified by {@link DataLakeRequestConditions#getLeaseId()}.
+     * {@link LeaseAction#RELEASE} will attempt to release the least specified by {@link DataLakeRequestConditions#getLeaseId()}.
+     *
+     * @param leaseAction the {@link LeaseAction} to set on the file.
+     * @return the updated DataLakeFileAppendOptions object.
+     */
+    public DataLakeFileAppendOptions setLeaseAction(LeaseAction leaseAction) {
+        this.leaseAction = leaseAction;
+        return this;
+    }
+
+    /**
+     * @return the lease duration in seconds.
+     */
+    public Integer getLeaseDuration() {
+        return leaseDuration;
+    }
+
+    /**
+     * Optional. Specifies the duration of the lease, in seconds, or specify -1 for a lease that never expires.
+     * A non-infinite lease can be between 15 and 60 seconds.
+     *
+     * Sets the lease duration.
+     * @param leaseDurationInSeconds the new lease duration.
+     * @return the updated DataLakeFileAppendOptions object.
+     */
+    public DataLakeFileAppendOptions setLeaseDuration(Integer leaseDurationInSeconds) {
+        this.leaseDuration = leaseDurationInSeconds;
+        return this;
+    }
+
+    /**
+     * Gets proposed lease id. Valid with {@link LeaseAction#ACQUIRE} and {@link LeaseAction#ACQUIRE_RELEASE}.
+     * @return the proposed lease id.
+     */
+    public String getProposedLeaseId() {
+        return proposedLeaseId;
+    }
+
+    /**
+     * Sets the proposed lease id. Valid with {@link LeaseAction#ACQUIRE} and {@link LeaseAction#ACQUIRE_RELEASE}.
+     * @param proposedLeaseId the proposed lease id to set.
+     * @return the updated DataLakeFileAppendOptions object.
+     */
+    public DataLakeFileAppendOptions setProposedLeaseId(String proposedLeaseId) {
+        this.proposedLeaseId = proposedLeaseId;
         return this;
     }
 }

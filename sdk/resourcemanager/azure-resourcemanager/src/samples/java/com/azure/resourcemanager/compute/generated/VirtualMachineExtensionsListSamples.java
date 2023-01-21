@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineExtensions List. */
 public final class VirtualMachineExtensionsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachineExtensions_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_List_MinimumSet_Gen.
@@ -22,11 +20,11 @@ public final class VirtualMachineExtensionsListSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineExtensions()
-            .listWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .listWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachineExtensions_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_List_MaximumSet_Gen.
@@ -39,6 +37,6 @@ public final class VirtualMachineExtensionsListSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineExtensions()
-            .listWithResponse("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaa", Context.NONE);
+            .listWithResponse("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

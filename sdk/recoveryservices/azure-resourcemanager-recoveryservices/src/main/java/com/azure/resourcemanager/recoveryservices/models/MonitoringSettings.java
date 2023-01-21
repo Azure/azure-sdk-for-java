@@ -22,6 +22,10 @@ public final class MonitoringSettings {
     @JsonProperty(value = "classicAlertSettings")
     private ClassicAlertSettings classicAlertSettings;
 
+    /** Creates an instance of MonitoringSettings class. */
+    public MonitoringSettings() {
+    }
+
     /**
      * Get the azureMonitorAlertSettings property: Settings for Azure Monitor based alerts.
      *

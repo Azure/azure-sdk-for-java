@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnectionOperation Delete. */
 public final class PrivateEndpointConnectionOperationDeleteSamples {
     /*
@@ -20,6 +18,7 @@ public final class PrivateEndpointConnectionOperationDeleteSamples {
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .privateEndpointConnectionOperations()
-            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "connection", Context.NONE);
+            .deleteWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", "connection", com.azure.core.util.Context.NONE);
     }
 }

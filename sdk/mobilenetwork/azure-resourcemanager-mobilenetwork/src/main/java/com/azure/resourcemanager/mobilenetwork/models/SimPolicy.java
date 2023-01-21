@@ -63,6 +63,14 @@ public interface SimPolicy {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
+     * that site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    Map<String, SiteProvisioningState> siteProvisioningState();
+
+    /**
      * Gets the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
      *
@@ -72,7 +80,7 @@ public interface SimPolicy {
 
     /**
      * Gets the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice
-     * must exist in the `sliceConfigurations` map.
+     * must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @return the defaultSlice value.
      */
@@ -189,10 +197,11 @@ public interface SimPolicy {
         interface WithDefaultSlice {
             /**
              * Specifies the defaultSlice property: The default slice to use if the UE does not explicitly specify it.
-             * This slice must exist in the `sliceConfigurations` map..
+             * This slice must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM
+             * policy..
              *
              * @param defaultSlice The default slice to use if the UE does not explicitly specify it. This slice must
-             *     exist in the `sliceConfigurations` map.
+             *     exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
              * @return the next definition stage.
              */
             WithSliceConfigurations withDefaultSlice(SliceResourceId defaultSlice);

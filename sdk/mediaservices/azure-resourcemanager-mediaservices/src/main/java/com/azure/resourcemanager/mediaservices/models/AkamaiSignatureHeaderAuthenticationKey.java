@@ -29,6 +29,10 @@ public final class AkamaiSignatureHeaderAuthenticationKey {
     @JsonProperty(value = "expiration")
     private OffsetDateTime expiration;
 
+    /** Creates an instance of AkamaiSignatureHeaderAuthenticationKey class. */
+    public AkamaiSignatureHeaderAuthenticationKey() {
+    }
+
     /**
      * Get the identifier property: identifier of the key.
      *

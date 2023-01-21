@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.AutoScaleProperties;
 import com.azure.resourcemanager.machinelearning.models.SynapseSpark;
 import com.azure.resourcemanager.machinelearning.models.SynapseSparkProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SynapseSparkTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SynapseSpark model =
             BinaryData
                 .fromString(
@@ -39,8 +38,8 @@ public final class SynapseSparkTests {
         Assertions.assertEquals("kxcpt", model.properties().poolName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SynapseSpark model =
             new SynapseSpark()
                 .withComputeLocation("qfyiaseqchkr")

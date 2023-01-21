@@ -10,26 +10,21 @@ import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a report config. */
 @Fluent
 public final class ReportConfigDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportConfigDefinition.class);
-
     /*
-     * The type of the report. Usage represents actual usage, forecast
-     * represents forecasted data and UsageAndForecast represents both usage
-     * and forecasted data. Actual usage and forecasted data can be
-     * differentiated based on dates.
+     * The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast
+     * represents both usage and forecasted data. Actual usage and forecasted data can be differentiated based on
+     * dates.
      */
     @JsonProperty(value = "type", required = true)
     private ReportType type;
 
     /*
-     * The time frame for pulling data for the report. If custom, then a
-     * specific time period must be provided.
+     * The time frame for pulling data for the report. If custom, then a specific time period must be provided.
      */
     @JsonProperty(value = "timeframe", required = true)
     private ReportTimeframeType timeframe;
@@ -43,14 +38,12 @@ public final class ReportConfigDefinition {
     /*
      * Has definition for data in this report config.
      */
-    @JsonProperty(value = "dataSet")
-    private ReportConfigDataset dataSet;
+    @JsonProperty(value = "dataset")
+    private ReportConfigDataset dataset;
 
-    /*
-     * Include monetary commitment
-     */
-    @JsonProperty(value = "includeMonetaryCommitment", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean includeMonetaryCommitment;
+    /** Creates an instance of ReportConfigDefinition class. */
+    public ReportConfigDefinition() {
+    }
 
     /**
      * Get the type property: The type of the report. Usage represents actual usage, forecast represents forecasted data
@@ -119,32 +112,23 @@ public final class ReportConfigDefinition {
     }
 
     /**
-     * Get the dataSet property: Has definition for data in this report config.
+     * Get the dataset property: Has definition for data in this report config.
      *
-     * @return the dataSet value.
+     * @return the dataset value.
      */
-    public ReportConfigDataset dataSet() {
-        return this.dataSet;
+    public ReportConfigDataset dataset() {
+        return this.dataset;
     }
 
     /**
-     * Set the dataSet property: Has definition for data in this report config.
+     * Set the dataset property: Has definition for data in this report config.
      *
-     * @param dataSet the dataSet value to set.
+     * @param dataset the dataset value to set.
      * @return the ReportConfigDefinition object itself.
      */
-    public ReportConfigDefinition withDataSet(ReportConfigDataset dataSet) {
-        this.dataSet = dataSet;
+    public ReportConfigDefinition withDataset(ReportConfigDataset dataset) {
+        this.dataset = dataset;
         return this;
-    }
-
-    /**
-     * Get the includeMonetaryCommitment property: Include monetary commitment.
-     *
-     * @return the includeMonetaryCommitment value.
-     */
-    public Boolean includeMonetaryCommitment() {
-        return this.includeMonetaryCommitment;
     }
 
     /**
@@ -154,12 +138,12 @@ public final class ReportConfigDefinition {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ReportConfigDefinition"));
         }
         if (timeframe() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property timeframe in model ReportConfigDefinition"));
@@ -167,8 +151,10 @@ public final class ReportConfigDefinition {
         if (timePeriod() != null) {
             timePeriod().validate();
         }
-        if (dataSet() != null) {
-            dataSet().validate();
+        if (dataset() != null) {
+            dataset().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReportConfigDefinition.class);
 }

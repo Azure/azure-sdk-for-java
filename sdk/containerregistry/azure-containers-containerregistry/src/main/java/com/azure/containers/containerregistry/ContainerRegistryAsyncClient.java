@@ -3,9 +3,9 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -116,13 +116,7 @@ public final class ContainerRegistryAsyncClient {
             (token, pageSize) -> withContext(context -> listRepositoryNamesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<String> listRepositoryNames(Context context) {
-        return new PagedFlux<>(
-            (pageSize) -> listRepositoryNamesSinglePageAsync(pageSize, context),
-            (token, pageSize) -> listRepositoryNamesNextSinglePageAsync(token, context));
-    }
-
-    Mono<PagedResponse<String>> listRepositoryNamesSinglePageAsync(Integer pageSize, Context context) {
+    private Mono<PagedResponse<String>> listRepositoryNamesSinglePageAsync(Integer pageSize, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
@@ -138,7 +132,7 @@ public final class ContainerRegistryAsyncClient {
         }
     }
 
-    Mono<PagedResponse<String>> listRepositoryNamesNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<String>> listRepositoryNamesNextSinglePageAsync(String nextLink, Context context) {
         try {
             Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE));
             return pagedResponseMono.map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res));
@@ -173,7 +167,7 @@ public final class ContainerRegistryAsyncClient {
         return withContext(context -> deleteRepositoryWithResponse(repositoryName, context));
     }
 
-    Mono<Response<Void>> deleteRepositoryWithResponse(String repositoryName, Context context) {
+    private Mono<Response<Void>> deleteRepositoryWithResponse(String repositoryName, Context context) {
         try {
             if (repositoryName == null) {
                 return monoError(logger, new NullPointerException("'repositoryName' cannot be null."));
@@ -184,7 +178,7 @@ public final class ContainerRegistryAsyncClient {
             }
 
             return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
-                .flatMap(UtilsImpl::deleteResponseToSuccess)
+                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -216,7 +210,7 @@ public final class ContainerRegistryAsyncClient {
         return withContext(context -> this.deleteRepository(repositoryName, context));
     }
 
-    Mono<Void> deleteRepository(String repositoryName, Context context) {
+    private Mono<Void> deleteRepository(String repositoryName, Context context) {
         return this.deleteRepositoryWithResponse(repositoryName, context).flatMap(FluxUtil::toMono);
     }
 

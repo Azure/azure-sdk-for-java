@@ -17,6 +17,9 @@ public final class LinkTableListResponse {
     @JsonProperty(value = "value")
     private List<LinkTableResource> value;
 
+    /** Creates an instance of LinkTableListResponse class. */
+    public LinkTableListResponse() {}
+
     /**
      * Get the value property: List link table value.
      *

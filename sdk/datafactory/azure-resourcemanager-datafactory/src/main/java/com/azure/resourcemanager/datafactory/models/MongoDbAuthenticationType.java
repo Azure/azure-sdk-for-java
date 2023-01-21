@@ -17,6 +17,15 @@ public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoD
     public static final MongoDbAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
+     * Creates a new instance of MongoDbAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MongoDbAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a MongoDbAuthenticationType from its string representation.
      *
      * @param name a name to look for.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CustomizationIpAddress model. */
 @Fluent
 public final class CustomizationIpAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationIpAddress.class);
-
     /*
      * Argument when Custom ip type is selected
      */
@@ -31,6 +27,10 @@ public final class CustomizationIpAddress {
      */
     @JsonProperty(value = "type")
     private CustomizationIpAddressType type;
+
+    /** Creates an instance of CustomizationIpAddress class. */
+    public CustomizationIpAddress() {
+    }
 
     /**
      * Get the argument property: Argument when Custom ip type is selected.

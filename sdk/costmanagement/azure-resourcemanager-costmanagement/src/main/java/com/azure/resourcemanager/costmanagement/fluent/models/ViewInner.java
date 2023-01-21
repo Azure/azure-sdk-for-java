@@ -6,7 +6,6 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
 import com.azure.resourcemanager.costmanagement.models.KpiProperties;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -24,8 +22,6 @@ import java.util.List;
 /** States and configurations of Cost Analysis. */
 @Fluent
 public final class ViewInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewInner.class);
-
     /*
      * The properties of the view.
      */
@@ -33,12 +29,15 @@ public final class ViewInner extends ProxyResource {
     private ViewProperties innerProperties;
 
     /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
+     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the
+     * user is updating the latest version or not.
      */
     @JsonProperty(value = "eTag")
     private String etag;
+
+    /** Creates an instance of ViewInner class. */
+    public ViewInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the view.
@@ -159,24 +158,6 @@ public final class ViewInner extends ProxyResource {
      */
     public OffsetDateTime modifiedOn() {
         return this.innerProperties() == null ? null : this.innerProperties().modifiedOn();
-    }
-
-    /**
-     * Get the dateRange property: Selected date range for viewing cost in.
-     *
-     * @return the dateRange value.
-     */
-    public String dateRange() {
-        return this.innerProperties() == null ? null : this.innerProperties().dateRange();
-    }
-
-    /**
-     * Get the currency property: Selected currency.
-     *
-     * @return the currency value.
-     */
-    public String currency() {
-        return this.innerProperties() == null ? null : this.innerProperties().currency();
     }
 
     /**
@@ -370,35 +351,26 @@ public final class ViewInner extends ProxyResource {
     }
 
     /**
-     * Get the dataSet property: Has definition for data in this report config.
+     * Get the dataset property: Has definition for data in this report config.
      *
-     * @return the dataSet value.
+     * @return the dataset value.
      */
-    public ReportConfigDataset dataSet() {
-        return this.innerProperties() == null ? null : this.innerProperties().dataSet();
+    public ReportConfigDataset dataset() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataset();
     }
 
     /**
-     * Set the dataSet property: Has definition for data in this report config.
+     * Set the dataset property: Has definition for data in this report config.
      *
-     * @param dataSet the dataSet value to set.
+     * @param dataset the dataset value to set.
      * @return the ViewInner object itself.
      */
-    public ViewInner withDataSet(ReportConfigDataset dataSet) {
+    public ViewInner withDataset(ReportConfigDataset dataset) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ViewProperties();
         }
-        this.innerProperties().withDataSet(dataSet);
+        this.innerProperties().withDataset(dataset);
         return this;
-    }
-
-    /**
-     * Get the includeMonetaryCommitment property: Include monetary commitment.
-     *
-     * @return the includeMonetaryCommitment value.
-     */
-    public Boolean includeMonetaryCommitment() {
-        return this.innerProperties() == null ? null : this.innerProperties().includeMonetaryCommitment();
     }
 
     /**

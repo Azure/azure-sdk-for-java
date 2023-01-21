@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,22 +15,22 @@ import java.util.Map;
  */
 @Fluent
 public final class ApplicationDeltaHealthPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationDeltaHealthPolicy.class);
-
     /*
-     * The delta health policy used by default to evaluate the health of a
-     * service type when upgrading the cluster.
+     * The delta health policy used by default to evaluate the health of a service type when upgrading the cluster.
      */
     @JsonProperty(value = "defaultServiceTypeDeltaHealthPolicy")
     private ServiceTypeDeltaHealthPolicy defaultServiceTypeDeltaHealthPolicy;
 
     /*
-     * The map with service type delta health policy per service type name. The
-     * map is empty by default.
+     * The map with service type delta health policy per service type name. The map is empty by default.
      */
     @JsonProperty(value = "serviceTypeDeltaHealthPolicies")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceTypeDeltaHealthPolicy> serviceTypeDeltaHealthPolicies;
+
+    /** Creates an instance of ApplicationDeltaHealthPolicy class. */
+    public ApplicationDeltaHealthPolicy() {
+    }
 
     /**
      * Get the defaultServiceTypeDeltaHealthPolicy property: The delta health policy used by default to evaluate the

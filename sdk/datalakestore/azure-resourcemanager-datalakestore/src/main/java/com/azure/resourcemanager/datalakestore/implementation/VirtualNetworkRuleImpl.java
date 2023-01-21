@@ -20,16 +20,20 @@ public final class VirtualNetworkRuleImpl
         return this.innerModel().id();
     }
 
-    public String subnetId() {
-        return this.innerModel().subnetId();
-    }
-
     public String name() {
         return this.innerModel().name();
     }
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String subnetId() {
+        return this.innerModel().subnetId();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public VirtualNetworkRuleInner innerModel() {

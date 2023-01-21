@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class FilteringTag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FilteringTag.class);
-
     /*
      * The name (also known as the key) of the tag.
      */
@@ -30,11 +26,14 @@ public final class FilteringTag {
     private String value;
 
     /*
-     * Valid actions for a filtering tag. Exclusion takes priority over
-     * inclusion.
+     * Valid actions for a filtering tag. Exclusion takes priority over inclusion.
      */
     @JsonProperty(value = "action")
     private TagAction action;
+
+    /** Creates an instance of FilteringTag class. */
+    public FilteringTag() {
+    }
 
     /**
      * Get the name property: The name (also known as the key) of the tag.

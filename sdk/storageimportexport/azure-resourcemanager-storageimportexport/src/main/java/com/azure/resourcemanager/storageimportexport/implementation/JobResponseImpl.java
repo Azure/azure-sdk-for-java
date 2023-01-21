@@ -71,6 +71,10 @@ public final class JobResponseImpl implements JobResponse, JobResponse.Definitio
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public JobResponseInner innerModel() {
         return this.innerObject;
     }

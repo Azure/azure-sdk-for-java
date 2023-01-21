@@ -5,143 +5,36 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.AssignmentPrincipal;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.ResourceSetDescription;
 import com.azure.resourcemanager.customerinsights.models.RoleTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The Role Assignment resource format. */
-@JsonFlatten
 @Fluent
-public class RoleAssignmentResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentResourceFormatInner.class);
-
+public final class RoleAssignmentResourceFormatInner extends ProxyResource {
     /*
-     * The hub name.
+     * The Role Assignment definition.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    @JsonProperty(value = "properties")
+    private RoleAssignment innerProperties;
 
-    /*
-     * The name of the metadata object.
-     */
-    @JsonProperty(value = "properties.assignmentName", access = JsonProperty.Access.WRITE_ONLY)
-    private String assignmentName;
+    /** Creates an instance of RoleAssignmentResourceFormatInner class. */
+    public RoleAssignmentResourceFormatInner() {
+    }
 
-    /*
-     * Localized display names for the metadata.
+    /**
+     * Get the innerProperties property: The Role Assignment definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
-
-    /*
-     * Localized description for the metadata.
-     */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * Type of roles.
-     */
-    @JsonProperty(value = "properties.role")
-    private RoleTypes role;
-
-    /*
-     * The principals being assigned to.
-     */
-    @JsonProperty(value = "properties.principals")
-    private List<AssignmentPrincipal> principals;
-
-    /*
-     * Profiles set for the assignment.
-     */
-    @JsonProperty(value = "properties.profiles")
-    private ResourceSetDescription profiles;
-
-    /*
-     * Interactions set for the assignment.
-     */
-    @JsonProperty(value = "properties.interactions")
-    private ResourceSetDescription interactions;
-
-    /*
-     * Links set for the assignment.
-     */
-    @JsonProperty(value = "properties.links")
-    private ResourceSetDescription links;
-
-    /*
-     * Kpis set for the assignment.
-     */
-    @JsonProperty(value = "properties.kpis")
-    private ResourceSetDescription kpis;
-
-    /*
-     * Sas Policies set for the assignment.
-     */
-    @JsonProperty(value = "properties.sasPolicies")
-    private ResourceSetDescription sasPolicies;
-
-    /*
-     * Connectors set for the assignment.
-     */
-    @JsonProperty(value = "properties.connectors")
-    private ResourceSetDescription connectors;
-
-    /*
-     * Views set for the assignment.
-     */
-    @JsonProperty(value = "properties.views")
-    private ResourceSetDescription views;
-
-    /*
-     * The Role assignments set for the relationship links.
-     */
-    @JsonProperty(value = "properties.relationshipLinks")
-    private ResourceSetDescription relationshipLinks;
-
-    /*
-     * The Role assignments set for the relationships.
-     */
-    @JsonProperty(value = "properties.relationships")
-    private ResourceSetDescription relationships;
-
-    /*
-     * Widget types set for the assignment.
-     */
-    @JsonProperty(value = "properties.widgetTypes")
-    private ResourceSetDescription widgetTypes;
-
-    /*
-     * The Role assignments set for the assignment.
-     */
-    @JsonProperty(value = "properties.roleAssignments")
-    private ResourceSetDescription roleAssignments;
-
-    /*
-     * Widget types set for the assignment.
-     */
-    @JsonProperty(value = "properties.conflationPolicies")
-    private ResourceSetDescription conflationPolicies;
-
-    /*
-     * The Role assignments set for the assignment.
-     */
-    @JsonProperty(value = "properties.segments")
-    private ResourceSetDescription segments;
+    private RoleAssignment innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tenantId property: The hub name.
@@ -149,7 +42,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -158,7 +51,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the assignmentName value.
      */
     public String assignmentName() {
-        return this.assignmentName;
+        return this.innerProperties() == null ? null : this.innerProperties().assignmentName();
     }
 
     /**
@@ -167,7 +60,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -177,7 +70,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -187,7 +83,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -197,7 +93,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -207,7 +106,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -216,7 +115,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the role value.
      */
     public RoleTypes role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
@@ -226,7 +125,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRole(RoleTypes role) {
-        this.role = role;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRole(role);
         return this;
     }
 
@@ -236,7 +138,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the principals value.
      */
     public List<AssignmentPrincipal> principals() {
-        return this.principals;
+        return this.innerProperties() == null ? null : this.innerProperties().principals();
     }
 
     /**
@@ -246,7 +148,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withPrincipals(List<AssignmentPrincipal> principals) {
-        this.principals = principals;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withPrincipals(principals);
         return this;
     }
 
@@ -256,7 +161,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the profiles value.
      */
     public ResourceSetDescription profiles() {
-        return this.profiles;
+        return this.innerProperties() == null ? null : this.innerProperties().profiles();
     }
 
     /**
@@ -266,7 +171,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withProfiles(ResourceSetDescription profiles) {
-        this.profiles = profiles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withProfiles(profiles);
         return this;
     }
 
@@ -276,7 +184,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the interactions value.
      */
     public ResourceSetDescription interactions() {
-        return this.interactions;
+        return this.innerProperties() == null ? null : this.innerProperties().interactions();
     }
 
     /**
@@ -286,7 +194,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withInteractions(ResourceSetDescription interactions) {
-        this.interactions = interactions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withInteractions(interactions);
         return this;
     }
 
@@ -296,7 +207,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the links value.
      */
     public ResourceSetDescription links() {
-        return this.links;
+        return this.innerProperties() == null ? null : this.innerProperties().links();
     }
 
     /**
@@ -306,7 +217,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withLinks(ResourceSetDescription links) {
-        this.links = links;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withLinks(links);
         return this;
     }
 
@@ -316,7 +230,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the kpis value.
      */
     public ResourceSetDescription kpis() {
-        return this.kpis;
+        return this.innerProperties() == null ? null : this.innerProperties().kpis();
     }
 
     /**
@@ -326,7 +240,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withKpis(ResourceSetDescription kpis) {
-        this.kpis = kpis;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withKpis(kpis);
         return this;
     }
 
@@ -336,7 +253,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the sasPolicies value.
      */
     public ResourceSetDescription sasPolicies() {
-        return this.sasPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().sasPolicies();
     }
 
     /**
@@ -346,7 +263,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withSasPolicies(ResourceSetDescription sasPolicies) {
-        this.sasPolicies = sasPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withSasPolicies(sasPolicies);
         return this;
     }
 
@@ -356,7 +276,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the connectors value.
      */
     public ResourceSetDescription connectors() {
-        return this.connectors;
+        return this.innerProperties() == null ? null : this.innerProperties().connectors();
     }
 
     /**
@@ -366,7 +286,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withConnectors(ResourceSetDescription connectors) {
-        this.connectors = connectors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withConnectors(connectors);
         return this;
     }
 
@@ -376,7 +299,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the views value.
      */
     public ResourceSetDescription views() {
-        return this.views;
+        return this.innerProperties() == null ? null : this.innerProperties().views();
     }
 
     /**
@@ -386,7 +309,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withViews(ResourceSetDescription views) {
-        this.views = views;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withViews(views);
         return this;
     }
 
@@ -396,7 +322,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the relationshipLinks value.
      */
     public ResourceSetDescription relationshipLinks() {
-        return this.relationshipLinks;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipLinks();
     }
 
     /**
@@ -406,7 +332,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRelationshipLinks(ResourceSetDescription relationshipLinks) {
-        this.relationshipLinks = relationshipLinks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRelationshipLinks(relationshipLinks);
         return this;
     }
 
@@ -416,7 +345,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the relationships value.
      */
     public ResourceSetDescription relationships() {
-        return this.relationships;
+        return this.innerProperties() == null ? null : this.innerProperties().relationships();
     }
 
     /**
@@ -426,7 +355,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRelationships(ResourceSetDescription relationships) {
-        this.relationships = relationships;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRelationships(relationships);
         return this;
     }
 
@@ -436,7 +368,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the widgetTypes value.
      */
     public ResourceSetDescription widgetTypes() {
-        return this.widgetTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().widgetTypes();
     }
 
     /**
@@ -446,7 +378,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withWidgetTypes(ResourceSetDescription widgetTypes) {
-        this.widgetTypes = widgetTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withWidgetTypes(widgetTypes);
         return this;
     }
 
@@ -456,7 +391,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the roleAssignments value.
      */
     public ResourceSetDescription roleAssignments() {
-        return this.roleAssignments;
+        return this.innerProperties() == null ? null : this.innerProperties().roleAssignments();
     }
 
     /**
@@ -466,7 +401,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRoleAssignments(ResourceSetDescription roleAssignments) {
-        this.roleAssignments = roleAssignments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRoleAssignments(roleAssignments);
         return this;
     }
 
@@ -476,7 +414,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the conflationPolicies value.
      */
     public ResourceSetDescription conflationPolicies() {
-        return this.conflationPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().conflationPolicies();
     }
 
     /**
@@ -486,7 +424,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withConflationPolicies(ResourceSetDescription conflationPolicies) {
-        this.conflationPolicies = conflationPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withConflationPolicies(conflationPolicies);
         return this;
     }
 
@@ -496,7 +437,7 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the segments value.
      */
     public ResourceSetDescription segments() {
-        return this.segments;
+        return this.innerProperties() == null ? null : this.innerProperties().segments();
     }
 
     /**
@@ -506,7 +447,10 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withSegments(ResourceSetDescription segments) {
-        this.segments = segments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withSegments(segments);
         return this;
     }
 
@@ -516,47 +460,8 @@ public class RoleAssignmentResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (principals() != null) {
-            principals().forEach(e -> e.validate());
-        }
-        if (profiles() != null) {
-            profiles().validate();
-        }
-        if (interactions() != null) {
-            interactions().validate();
-        }
-        if (links() != null) {
-            links().validate();
-        }
-        if (kpis() != null) {
-            kpis().validate();
-        }
-        if (sasPolicies() != null) {
-            sasPolicies().validate();
-        }
-        if (connectors() != null) {
-            connectors().validate();
-        }
-        if (views() != null) {
-            views().validate();
-        }
-        if (relationshipLinks() != null) {
-            relationshipLinks().validate();
-        }
-        if (relationships() != null) {
-            relationships().validate();
-        }
-        if (widgetTypes() != null) {
-            widgetTypes().validate();
-        }
-        if (roleAssignments() != null) {
-            roleAssignments().validate();
-        }
-        if (conflationPolicies() != null) {
-            conflationPolicies().validate();
-        }
-        if (segments() != null) {
-            segments().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

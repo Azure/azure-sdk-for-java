@@ -29,16 +29,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceManager = serviceManager;
     }
 
-    public OperationResource getOperationStatus(String resourceGroupName, String vaultName, String operationId) {
-        OperationResourceInner inner =
-            this.serviceClient().getOperationStatus(resourceGroupName, vaultName, operationId);
-        if (inner != null) {
-            return new OperationResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationResource> getOperationStatusWithResponse(
         String resourceGroupName, String vaultName, String operationId, Context context) {
         Response<OperationResourceInner> inner =
@@ -54,10 +44,11 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Vault getOperationResult(String resourceGroupName, String vaultName, String operationId) {
-        VaultInner inner = this.serviceClient().getOperationResult(resourceGroupName, vaultName, operationId);
+    public OperationResource getOperationStatus(String resourceGroupName, String vaultName, String operationId) {
+        OperationResourceInner inner =
+            this.serviceClient().getOperationStatus(resourceGroupName, vaultName, operationId);
         if (inner != null) {
-            return new VaultImpl(inner, this.manager());
+            return new OperationResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -73,6 +64,15 @@ public final class ResourceProvidersImpl implements ResourceProviders {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VaultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Vault getOperationResult(String resourceGroupName, String vaultName, String operationId) {
+        VaultInner inner = this.serviceClient().getOperationResult(resourceGroupName, vaultName, operationId);
+        if (inner != null) {
+            return new VaultImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -9,6 +9,8 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
@@ -92,7 +94,30 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
                 assertThat(properties.getCredential().getClientId()).isEqualTo("servicebus-client-id");
                 assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
                 assertThat(properties.getRetry().getExponential().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
+                assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE);
+                assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
+                assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
+
             });
+    }
+
+    @Test
+    void configureServiceBusDomainNameOverrideGlobalDefault() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+
+        this.contextRunner
+                .withBean("azureProperties", AzureGlobalProperties.class, () -> azureProperties)
+                .withPropertyValues(
+                        "spring.cloud.azure.servicebus.domain-name=servicebus.chinacloudapi.cn"
+                )
+                .run(context -> {
+                    assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                    final AzureServiceBusProperties properties = context.getBean(AzureServiceBusProperties.class);
+                    assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+                    assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+                    assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName());
+                });
     }
 
     @Test

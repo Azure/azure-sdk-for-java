@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -38,13 +37,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSettings.class);
-
     /*
      * Gets or sets the target Resource name.
      */
     @JsonProperty(value = "targetResourceName", required = true)
     private String targetResourceName;
+
+    /** Creates an instance of ResourceSettings class. */
+    public ResourceSettings() {
+    }
 
     /**
      * Get the targetResourceName property: Gets or sets the target Resource name.
@@ -73,10 +74,12 @@ public class ResourceSettings {
      */
     public void validate() {
         if (targetResourceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceName in model ResourceSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceSettings.class);
 }

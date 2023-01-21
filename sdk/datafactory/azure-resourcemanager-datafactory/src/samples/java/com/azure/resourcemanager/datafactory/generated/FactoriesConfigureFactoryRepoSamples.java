@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.FactoryRepoUpdate;
 import com.azure.resourcemanager.datafactory.models.FactoryVstsConfiguration;
 
@@ -35,6 +34,6 @@ public final class FactoriesConfigureFactoryRepoSamples {
                             .withLastCommitId("")
                             .withProjectName("project")
                             .withTenantId("")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

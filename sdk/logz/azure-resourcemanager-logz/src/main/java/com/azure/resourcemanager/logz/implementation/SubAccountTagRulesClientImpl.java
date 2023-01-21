@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.fluent.SubAccountTagRulesClient;
 import com.azure.resourcemanager.logz.fluent.models.MonitoringTagRulesInner;
 import com.azure.resourcemanager.logz.models.MonitoringTagRulesListResponse;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubAccountTagRulesClient. */
 public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesClient {
-    private final ClientLogger logger = new ClientLogger(SubAccountTagRulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubAccountTagRulesService service;
 
@@ -62,7 +59,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftLogzSubAcco")
-    private interface SubAccountTagRulesService {
+    public interface SubAccountTagRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
@@ -151,7 +148,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoringTagRulesInner>> listSinglePageAsync(
@@ -214,7 +211,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoringTagRulesInner>> listSinglePageAsync(
@@ -273,7 +270,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoringTagRulesInner> listAsync(
@@ -293,7 +290,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoringTagRulesInner> listAsync(
@@ -312,7 +309,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoringTagRulesInner> list(
@@ -330,7 +327,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoringTagRulesInner> list(
@@ -349,7 +346,8 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
+     * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> createOrUpdateWithResponseAsync(
@@ -417,7 +415,8 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
+     * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> createOrUpdateWithResponseAsync(
@@ -478,28 +477,17 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @param ruleSetName The ruleSetName parameter.
-     * @param body Capture logs and metrics of Azure resources based on ARM tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
+     * @return capture logs and metrics of Azure resources based on ARM tags on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoringTagRulesInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        String ruleSetName,
-        MonitoringTagRulesInner body) {
+        String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
+        final MonitoringTagRulesInner body = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, monitorName, subAccountName, ruleSetName, body)
-            .flatMap(
-                (Response<MonitoringTagRulesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -509,24 +497,24 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @param ruleSetName The ruleSetName parameter.
+     * @param body Capture logs and metrics of Azure resources based on ARM tags.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
+     * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoringTagRulesInner> createOrUpdateAsync(
-        String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
-        final MonitoringTagRulesInner body = null;
-        return createOrUpdateWithResponseAsync(resourceGroupName, monitorName, subAccountName, ruleSetName, body)
-            .flatMap(
-                (Response<MonitoringTagRulesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<MonitoringTagRulesInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String monitorName,
+        String subAccountName,
+        String ruleSetName,
+        MonitoringTagRulesInner body,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, monitorName, subAccountName, ruleSetName, body, context)
+            .block();
     }
 
     /**
@@ -545,34 +533,9 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
     public MonitoringTagRulesInner createOrUpdate(
         String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
         final MonitoringTagRulesInner body = null;
-        return createOrUpdateAsync(resourceGroupName, monitorName, subAccountName, ruleSetName, body).block();
-    }
-
-    /**
-     * Create or update a tag rule set for a given sub account resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param ruleSetName The ruleSetName parameter.
-     * @param body Capture logs and metrics of Azure resources based on ARM tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MonitoringTagRulesInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        String ruleSetName,
-        MonitoringTagRulesInner body,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, monitorName, subAccountName, ruleSetName, body, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, monitorName, subAccountName, ruleSetName, body, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -585,7 +548,8 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return a tag rule set for a given monitor resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> getWithResponseAsync(
@@ -644,7 +608,8 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return a tag rule set for a given monitor resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoringTagRulesInner>> getWithResponseAsync(
@@ -699,20 +664,32 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return a tag rule set for a given monitor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoringTagRulesInner> getAsync(
         String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
         return getWithResponseAsync(resourceGroupName, monitorName, subAccountName, ruleSetName)
-            .flatMap(
-                (Response<MonitoringTagRulesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a tag rule set for a given monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @param ruleSetName The ruleSetName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a tag rule set for a given monitor resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MonitoringTagRulesInner> getWithResponse(
+        String resourceGroupName, String monitorName, String subAccountName, String ruleSetName, Context context) {
+        return getWithResponseAsync(resourceGroupName, monitorName, subAccountName, ruleSetName, context).block();
     }
 
     /**
@@ -730,26 +707,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoringTagRulesInner get(
         String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
-        return getAsync(resourceGroupName, monitorName, subAccountName, ruleSetName).block();
-    }
-
-    /**
-     * Get a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param ruleSetName The ruleSetName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MonitoringTagRulesInner> getWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, String ruleSetName, Context context) {
-        return getWithResponseAsync(resourceGroupName, monitorName, subAccountName, ruleSetName, context).block();
+        return getWithResponse(resourceGroupName, monitorName, subAccountName, ruleSetName, Context.NONE).getValue();
     }
 
     /**
@@ -762,7 +720,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubAccountTagRulesDeleteResponse> deleteWithResponseAsync(
@@ -821,7 +779,7 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubAccountTagRulesDeleteResponse> deleteWithResponseAsync(
@@ -876,29 +834,13 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
         String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
         return deleteWithResponseAsync(resourceGroupName, monitorName, subAccountName, ruleSetName)
-            .flatMap((SubAccountTagRulesDeleteResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a tag rule set for a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param ruleSetName The ruleSetName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
-        deleteAsync(resourceGroupName, monitorName, subAccountName, ruleSetName).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -921,13 +863,30 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
     }
 
     /**
-     * Get the next page of items.
+     * Delete a tag rule set for a given monitor resource.
      *
-     * @param nextLink The nextLink parameter.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @param ruleSetName The ruleSetName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String monitorName, String subAccountName, String ruleSetName) {
+        deleteWithResponse(resourceGroupName, monitorName, subAccountName, ruleSetName, Context.NONE);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoringTagRulesInner>> listNextSinglePageAsync(String nextLink) {
@@ -958,12 +917,13 @@ public final class SubAccountTagRulesClientImpl implements SubAccountTagRulesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoringTagRulesInner>> listNextSinglePageAsync(String nextLink, Context context) {

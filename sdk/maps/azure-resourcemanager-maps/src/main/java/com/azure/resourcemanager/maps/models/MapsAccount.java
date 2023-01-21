@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
+import com.azure.resourcemanager.maps.fluent.models.MapsAccountProperties;
 import java.util.Map;
 
 /** An immutable client-side representation of MapsAccount. */
@@ -89,6 +90,13 @@ public interface MapsAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.maps.fluent.models.MapsAccountInner object.
@@ -295,6 +303,18 @@ public interface MapsAccount {
      * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
      * Only one key is needed at a time; two are given to provide seamless key regeneration.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keys to use with the Maps APIs along with {@link Response}.
+     */
+    Response<MapsAccountKeys> listKeysWithResponse(Context context);
+
+    /**
+     * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
+     * Only one key is needed at a time; two are given to provide seamless key regeneration.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keys to use with the Maps APIs.
@@ -302,16 +322,17 @@ public interface MapsAccount {
     MapsAccountKeys listKeys();
 
     /**
-     * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
-     * Only one key is needed at a time; two are given to provide seamless key regeneration.
+     * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
+     * immediately.
      *
+     * @param keySpecification Which key to regenerate: primary or secondary.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keys to use with the Maps APIs.
+     * @return the set of keys which can be used to access the Maps REST APIs along with {@link Response}.
      */
-    Response<MapsAccountKeys> listKeysWithResponse(Context context);
+    Response<MapsAccountKeys> regenerateKeysWithResponse(MapsKeySpecification keySpecification, Context context);
 
     /**
      * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
@@ -324,17 +345,4 @@ public interface MapsAccount {
      * @return the set of keys which can be used to access the Maps REST APIs.
      */
     MapsAccountKeys regenerateKeys(MapsKeySpecification keySpecification);
-
-    /**
-     * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
-     * immediately.
-     *
-     * @param keySpecification Which key to regenerate: primary or secondary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of keys which can be used to access the Maps REST APIs.
-     */
-    Response<MapsAccountKeys> regenerateKeysWithResponse(MapsKeySpecification keySpecification, Context context);
 }

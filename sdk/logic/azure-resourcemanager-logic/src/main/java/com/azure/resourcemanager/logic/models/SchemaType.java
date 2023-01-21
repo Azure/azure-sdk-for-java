@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SchemaType. */
+/** The schema type. */
 public final class SchemaType extends ExpandableStringEnum<SchemaType> {
     /** Static value NotSpecified for SchemaType. */
     public static final SchemaType NOT_SPECIFIED = fromString("NotSpecified");
 
     /** Static value Xml for SchemaType. */
     public static final SchemaType XML = fromString("Xml");
+
+    /**
+     * Creates a new instance of SchemaType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SchemaType() {
+    }
 
     /**
      * Creates or finds a SchemaType from its string representation.
@@ -27,7 +36,11 @@ public final class SchemaType extends ExpandableStringEnum<SchemaType> {
         return fromString(name, SchemaType.class);
     }
 
-    /** @return known SchemaType values. */
+    /**
+     * Gets known SchemaType values.
+     *
+     * @return known SchemaType values.
+     */
     public static Collection<SchemaType> values() {
         return values(SchemaType.class);
     }

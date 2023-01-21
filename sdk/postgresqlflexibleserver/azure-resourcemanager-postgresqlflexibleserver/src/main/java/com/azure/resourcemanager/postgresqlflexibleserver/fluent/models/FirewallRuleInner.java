@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a server firewall rule. */
 @Fluent
 public final class FirewallRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
-
     /*
      * The properties of a firewall rule.
      */
@@ -23,10 +20,14 @@ public final class FirewallRuleInner extends ProxyResource {
     private FirewallRuleProperties innerProperties = new FirewallRuleProperties();
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of FirewallRuleInner class. */
+    public FirewallRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a firewall rule.
@@ -38,7 +39,7 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -99,7 +100,7 @@ public final class FirewallRuleInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model FirewallRuleInner"));
@@ -107,4 +108,6 @@ public final class FirewallRuleInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallRuleInner.class);
 }

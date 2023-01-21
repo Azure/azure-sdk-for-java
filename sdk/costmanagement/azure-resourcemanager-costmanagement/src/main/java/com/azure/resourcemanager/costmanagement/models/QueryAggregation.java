@@ -6,14 +6,11 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The aggregation expression to be used in the query. */
 @Fluent
 public final class QueryAggregation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryAggregation.class);
-
     /*
      * The name of the column to aggregate.
      */
@@ -25,6 +22,10 @@ public final class QueryAggregation {
      */
     @JsonProperty(value = "function", required = true)
     private FunctionType function;
+
+    /** Creates an instance of QueryAggregation class. */
+    public QueryAggregation() {
+    }
 
     /**
      * Get the name property: The name of the column to aggregate.
@@ -73,14 +74,16 @@ public final class QueryAggregation {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model QueryAggregation"));
         }
         if (function() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property function in model QueryAggregation"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueryAggregation.class);
 }

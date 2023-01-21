@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Metric specification of operation. */
 @Fluent
 public final class MetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
-
     /*
      * Name of metric specification.
      */
@@ -68,6 +64,10 @@ public final class MetricSpecification {
      */
     @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
+
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
 
     /**
      * Get the name property: Name of metric specification.

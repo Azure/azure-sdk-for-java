@@ -79,6 +79,9 @@ public final class ManifestWrapper extends Manifest {
     @JsonProperty(value = "signatures")
     private List<ImageSignature> signatures;
 
+    /** Creates an instance of ManifestWrapper class. */
+    public ManifestWrapper() {}
+
     /**
      * Get the mediaType property: Media type for this Manifest.
      *
@@ -296,6 +299,13 @@ public final class ManifestWrapper extends Manifest {
      */
     public ManifestWrapper setSignatures(List<ImageSignature> signatures) {
         this.signatures = signatures;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManifestWrapper setSchemaVersion(Integer schemaVersion) {
+        super.setSchemaVersion(schemaVersion);
         return this;
     }
 }

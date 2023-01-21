@@ -5,11 +5,11 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
-import com.azure.communication.callautomation.implementation.ContentsImpl;
-import com.azure.communication.callautomation.implementation.ServerCallingsImpl;
-import com.azure.communication.callautomation.implementation.ServerCallsImpl;
+import com.azure.communication.callautomation.implementation.CallMediasImpl;
+import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
+import com.azure.communication.callautomation.implementation.converters.CallSourceConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
@@ -18,6 +18,7 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
@@ -25,7 +26,6 @@ import com.azure.communication.callautomation.implementation.models.AnswerCallRe
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
-import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
@@ -66,24 +66,22 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = CallAutomationClientBuilder.class, isAsync = true)
 public final class CallAutomationAsyncClient {
-    private final CallConnectionsImpl callConnectionInternal;
-    private final ServerCallingsImpl serverCallingInternal;
-    private final ServerCallsImpl serverCallsInternal;
-    private final ContentsImpl contentsInternal;
+    private final CallConnectionsImpl callConnectionsInternal;
+    private final AzureCommunicationCallAutomationServiceImpl azureCommunicationCallAutomationServiceInternal;
+    private final CallRecordingsImpl callRecordingsInternal;
+    private final CallMediasImpl callMediasInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient) {
-        this.callConnectionInternal = callServiceClient.getCallConnections();
-        this.serverCallingInternal = callServiceClient.getServerCallings();
-        this.serverCallsInternal = callServiceClient.getServerCalls();
-        this.contentsInternal = callServiceClient.getContents();
+        this.callConnectionsInternal = callServiceClient.getCallConnections();
+        this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
+        this.callRecordingsInternal = callServiceClient.getCallRecordings();
+        this.callMediasInternal = callServiceClient.getCallMedias();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        this.contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint(),
-            callServiceClient.getHttpPipeline());
+        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceEndpoint = callServiceClient.getEndpoint();
     }
@@ -100,7 +98,7 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CommunicationIdentifier source,
+    public Mono<CreateCallResult> createCall(CallSource source,
                                              List<CommunicationIdentifier> targets,
                                              String callbackUrl) {
         CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl);
@@ -128,7 +126,7 @@ public final class CallAutomationAsyncClient {
 
             createCallOptions.setRepeatabilityHeaders(handleApiIdempotency(createCallOptions.getRepeatabilityHeaders()));
 
-            return serverCallingInternal.createCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
                     createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
                     createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
@@ -153,12 +151,7 @@ public final class CallAutomationAsyncClient {
         List<CommunicationIdentifierModel> targetsModel = createCallOptions.getTargets()
             .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-        CallSourceInternal callSourceDto = new CallSourceInternal().setIdentifier(
-            CommunicationIdentifierConverter.convert(createCallOptions.getSource()));
-        if (createCallOptions.getSourceCallerId() != null) {
-            callSourceDto.setCallerId(new PhoneNumberIdentifierModel().setValue(createCallOptions.getSourceCallerId()));
-        }
-
+        CallSourceInternal callSourceDto = CallSourceConverter.convert(createCallOptions.getSource());
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSource(callSourceDto)
             .setTargets(targetsModel)
@@ -243,7 +236,7 @@ public final class CallAutomationAsyncClient {
                 request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
             }
 
-            return serverCallingInternal.answerCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request,
                     answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
                     answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
@@ -301,7 +294,7 @@ public final class CallAutomationAsyncClient {
 
             redirectCallOptions.setRepeatabilityHeaders(handleApiIdempotency(redirectCallOptions.getRepeatabilityHeaders()));
 
-            return serverCallingInternal.redirectCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
                     redirectCallOptions.getRepeatabilityHeaders() != null ? redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
                     redirectCallOptions.getRepeatabilityHeaders() != null ? redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
@@ -350,7 +343,7 @@ public final class CallAutomationAsyncClient {
 
             rejectCallOptions.setRepeatabilityHeaders(handleApiIdempotency(rejectCallOptions.getRepeatabilityHeaders()));
 
-            return serverCallingInternal.rejectCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
                     rejectCallOptions.getRepeatabilityHeaders() != null ? rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
                     rejectCallOptions.getRepeatabilityHeaders() != null ? rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
@@ -369,7 +362,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallContentAsync.
      */
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionInternal, contentsInternal);
+        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal);
     }
     //endregion
 
@@ -380,8 +373,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallRecordingAsync.
      */
     public CallRecordingAsync getCallRecordingAsync() {
-        return new CallRecordingAsync(serverCallsInternal, contentsInternal,
-            contentDownloader, httpPipelineInternal, resourceEndpoint);
+        return new CallRecordingAsync(callRecordingsInternal, contentDownloader, httpPipelineInternal, resourceEndpoint);
     }
     //endregion
 

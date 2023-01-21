@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
@@ -83,7 +82,7 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSets Update. */
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MinimumSet_Gen.
@@ -97,11 +96,12 @@ public final class VirtualMachineScaleSetsUpdateSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .update("rgcompute", "aaaaaaaaaaaaaa", new VirtualMachineScaleSetUpdate(), Context.NONE);
+            .update(
+                "rgcompute", "aaaaaaaaaaaaaa", new VirtualMachineScaleSetUpdate(), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MaximumSet_Gen.
@@ -142,7 +142,9 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                     .withMaxUnhealthyUpgradedInstancePercent(98)
                                     .withPauseTimeBetweenBatches("aaaaaaaaaaaaaaa")
                                     .withEnableCrossZoneUpgrade(true)
-                                    .withPrioritizeUnhealthyInstances(true))
+                                    .withPrioritizeUnhealthyInstances(true)
+                                    .withRollbackFailedInstancesOnPolicyBreach(true)
+                                    .withMaxSurge(true))
                             .withAutomaticOSUpgradePolicy(
                                 new AutomaticOSUpgradePolicy()
                                     .withEnableAutomaticOSUpgrade(true)
@@ -389,7 +391,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                         new SubResource()
                             .withId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

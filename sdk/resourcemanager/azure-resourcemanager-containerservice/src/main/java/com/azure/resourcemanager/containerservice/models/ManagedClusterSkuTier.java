@@ -22,6 +22,15 @@ public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClu
     public static final ManagedClusterSkuTier FREE = fromString("Free");
 
     /**
+     * Creates a new instance of ManagedClusterSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedClusterSkuTier() {
+    }
+
+    /**
      * Creates or finds a ManagedClusterSkuTier from its string representation.
      *
      * @param name a name to look for.

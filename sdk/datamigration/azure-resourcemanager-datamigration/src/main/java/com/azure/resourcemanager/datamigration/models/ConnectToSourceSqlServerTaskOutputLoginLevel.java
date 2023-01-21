@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,9 +17,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("LoginLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectToSourceSqlServerTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectToSourceSqlServerTaskOutputLoginLevel.class);
-
     /*
      * Login name.
      */
@@ -51,6 +46,10 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectT
      */
     @JsonProperty(value = "migrationEligibility", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationEligibilityInfo migrationEligibility;
+
+    /** Creates an instance of ConnectToSourceSqlServerTaskOutputLoginLevel class. */
+    public ConnectToSourceSqlServerTaskOutputLoginLevel() {
+    }
 
     /**
      * Get the name property: Login name.

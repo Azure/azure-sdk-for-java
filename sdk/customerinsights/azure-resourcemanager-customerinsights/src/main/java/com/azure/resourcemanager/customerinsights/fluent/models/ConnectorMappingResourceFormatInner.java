@@ -5,112 +5,35 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingProperties;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingStates;
 import com.azure.resourcemanager.customerinsights.models.ConnectorTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The connector mapping resource format. */
-@JsonFlatten
 @Fluent
-public class ConnectorMappingResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingResourceFormatInner.class);
-
+public final class ConnectorMappingResourceFormatInner extends ProxyResource {
     /*
-     * The connector name.
+     * The connector mapping definition.
      */
-    @JsonProperty(value = "properties.connectorName", access = JsonProperty.Access.WRITE_ONLY)
-    private String connectorName;
+    @JsonProperty(value = "properties")
+    private ConnectorMapping innerProperties;
 
-    /*
-     * Type of connector.
-     */
-    @JsonProperty(value = "properties.connectorType")
-    private ConnectorTypes connectorType;
+    /** Creates an instance of ConnectorMappingResourceFormatInner class. */
+    public ConnectorMappingResourceFormatInner() {
+    }
 
-    /*
-     * The created time.
+    /**
+     * Get the innerProperties property: The connector mapping definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
-
-    /*
-     * The last modified time.
-     */
-    @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModified;
-
-    /*
-     * Defines which entity type the file should map to.
-     */
-    @JsonProperty(value = "properties.entityType")
-    private EntityTypes entityType;
-
-    /*
-     * The mapping entity name.
-     */
-    @JsonProperty(value = "properties.entityTypeName")
-    private String entityTypeName;
-
-    /*
-     * The connector mapping name
-     */
-    @JsonProperty(value = "properties.connectorMappingName", access = JsonProperty.Access.WRITE_ONLY)
-    private String connectorMappingName;
-
-    /*
-     * Display name for the connector mapping.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * The description of the connector mapping.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The DataFormat ID.
-     */
-    @JsonProperty(value = "properties.dataFormatId", access = JsonProperty.Access.WRITE_ONLY)
-    private String dataFormatId;
-
-    /*
-     * The properties of the mapping.
-     */
-    @JsonProperty(value = "properties.mappingProperties")
-    private ConnectorMappingProperties mappingProperties;
-
-    /*
-     * The next run time based on customer's settings.
-     */
-    @JsonProperty(value = "properties.nextRunTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextRunTime;
-
-    /*
-     * The RunId.
-     */
-    @JsonProperty(value = "properties.runId", access = JsonProperty.Access.WRITE_ONLY)
-    private String runId;
-
-    /*
-     * State of connector mapping.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private ConnectorMappingStates state;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private ConnectorMapping innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the connectorName property: The connector name.
@@ -118,7 +41,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the connectorName value.
      */
     public String connectorName() {
-        return this.connectorName;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorName();
     }
 
     /**
@@ -127,7 +50,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the connectorType value.
      */
     public ConnectorTypes connectorType() {
-        return this.connectorType;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorType();
     }
 
     /**
@@ -137,7 +60,10 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
     public ConnectorMappingResourceFormatInner withConnectorType(ConnectorTypes connectorType) {
-        this.connectorType = connectorType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectorMapping();
+        }
+        this.innerProperties().withConnectorType(connectorType);
         return this;
     }
 
@@ -147,7 +73,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -156,7 +82,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
-        return this.lastModified;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModified();
     }
 
     /**
@@ -165,7 +91,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the entityType value.
      */
     public EntityTypes entityType() {
-        return this.entityType;
+        return this.innerProperties() == null ? null : this.innerProperties().entityType();
     }
 
     /**
@@ -175,7 +101,10 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
     public ConnectorMappingResourceFormatInner withEntityType(EntityTypes entityType) {
-        this.entityType = entityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectorMapping();
+        }
+        this.innerProperties().withEntityType(entityType);
         return this;
     }
 
@@ -185,7 +114,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the entityTypeName value.
      */
     public String entityTypeName() {
-        return this.entityTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().entityTypeName();
     }
 
     /**
@@ -195,7 +124,10 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
     public ConnectorMappingResourceFormatInner withEntityTypeName(String entityTypeName) {
-        this.entityTypeName = entityTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectorMapping();
+        }
+        this.innerProperties().withEntityTypeName(entityTypeName);
         return this;
     }
 
@@ -205,7 +137,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the connectorMappingName value.
      */
     public String connectorMappingName() {
-        return this.connectorMappingName;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorMappingName();
     }
 
     /**
@@ -214,7 +146,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -224,7 +156,10 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
     public ConnectorMappingResourceFormatInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectorMapping();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -234,7 +169,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -244,7 +179,10 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
     public ConnectorMappingResourceFormatInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectorMapping();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -254,7 +192,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the dataFormatId value.
      */
     public String dataFormatId() {
-        return this.dataFormatId;
+        return this.innerProperties() == null ? null : this.innerProperties().dataFormatId();
     }
 
     /**
@@ -263,7 +201,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the mappingProperties value.
      */
     public ConnectorMappingProperties mappingProperties() {
-        return this.mappingProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().mappingProperties();
     }
 
     /**
@@ -273,7 +211,10 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the ConnectorMappingResourceFormatInner object itself.
      */
     public ConnectorMappingResourceFormatInner withMappingProperties(ConnectorMappingProperties mappingProperties) {
-        this.mappingProperties = mappingProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectorMapping();
+        }
+        this.innerProperties().withMappingProperties(mappingProperties);
         return this;
     }
 
@@ -283,7 +224,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the nextRunTime value.
      */
     public OffsetDateTime nextRunTime() {
-        return this.nextRunTime;
+        return this.innerProperties() == null ? null : this.innerProperties().nextRunTime();
     }
 
     /**
@@ -292,7 +233,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the runId value.
      */
     public String runId() {
-        return this.runId;
+        return this.innerProperties() == null ? null : this.innerProperties().runId();
     }
 
     /**
@@ -301,7 +242,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the state value.
      */
     public ConnectorMappingStates state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -310,7 +251,7 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -319,8 +260,8 @@ public class ConnectorMappingResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mappingProperties() != null) {
-            mappingProperties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

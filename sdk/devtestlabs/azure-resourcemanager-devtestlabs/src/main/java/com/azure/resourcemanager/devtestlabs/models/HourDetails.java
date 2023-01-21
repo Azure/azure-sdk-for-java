@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an hourly schedule. */
 @Fluent
 public final class HourDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HourDetails.class);
-
     /*
      * Minutes of the hour the schedule will run.
      */
     @JsonProperty(value = "minute")
     private Integer minute;
+
+    /** Creates an instance of HourDetails class. */
+    public HourDetails() {
+    }
 
     /**
      * Get the minute property: Minutes of the hour the schedule will run.

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to an Azure Arc custom location resource. */
+/** Reference to an Azure Stack Edge device resource. */
 @Fluent
 public final class AzureStackEdgeDeviceResourceId {
     /*
@@ -16,6 +16,10 @@ public final class AzureStackEdgeDeviceResourceId {
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of AzureStackEdgeDeviceResourceId class. */
+    public AzureStackEdgeDeviceResourceId() {
+    }
 
     /**
      * Get the id property: Azure Stack Edge device resource ID.

@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.ClusterVersionsClient;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsListResultInner;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersionsEnvironment;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ClusterVersionsClient. */
 public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
-    private final ClientLogger logger = new ClientLogger(ClusterVersionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ClusterVersionsService service;
 
@@ -54,7 +51,7 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManagem")
-    private interface ClusterVersionsService {
+    public interface ClusterVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions"
@@ -115,14 +112,17 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version.
+     * Gets information about a Service Fabric cluster code version available in the specified location.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param clusterVersion The cluster code version.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version.
+     * @return information about an available Service Fabric cluster code version along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> getWithResponseAsync(
@@ -162,7 +162,9 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version.
+     * Gets information about a Service Fabric cluster code version available in the specified location.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param clusterVersion The cluster code version.
@@ -170,7 +172,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version.
+     * @return information about an available Service Fabric cluster code version along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> getWithResponseAsync(
@@ -207,30 +210,46 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version.
+     * Gets information about a Service Fabric cluster code version available in the specified location.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param clusterVersion The cluster code version.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version.
+     * @return information about an available Service Fabric cluster code version on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterCodeVersionsListResultInner> getAsync(String location, String clusterVersion) {
-        return getWithResponseAsync(location, clusterVersion)
-            .flatMap(
-                (Response<ClusterCodeVersionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, clusterVersion).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version.
+     * Gets information about a Service Fabric cluster code version available in the specified location.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version.
+     *
+     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param clusterVersion The cluster code version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about an available Service Fabric cluster code version along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ClusterCodeVersionsListResultInner> getWithResponse(
+        String location, String clusterVersion, Context context) {
+        return getWithResponseAsync(location, clusterVersion, context).block();
+    }
+
+    /**
+     * Gets information about a Service Fabric cluster code version available in the specified location.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param clusterVersion The cluster code version.
@@ -241,28 +260,13 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterCodeVersionsListResultInner get(String location, String clusterVersion) {
-        return getAsync(location, clusterVersion).block();
+        return getWithResponse(location, clusterVersion, Context.NONE).getValue();
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version.
+     * Gets information about a Service Fabric cluster code version available for the specified environment.
      *
-     * @param location The location for the cluster code versions. This is different from cluster location.
-     * @param clusterVersion The cluster code version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterCodeVersionsListResultInner> getWithResponse(
-        String location, String clusterVersion, Context context) {
-        return getWithResponseAsync(location, clusterVersion, context).block();
-    }
-
-    /**
-     * Gets information about an available Service Fabric cluster code version by environment.
+     * <p>Gets information about an available Service Fabric cluster code version by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
@@ -270,7 +274,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version by environment.
+     * @return information about an available Service Fabric cluster code version by environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> getByEnvironmentWithResponseAsync(
@@ -314,7 +319,9 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version by environment.
+     * Gets information about a Service Fabric cluster code version available for the specified environment.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
@@ -323,7 +330,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version by environment.
+     * @return information about an available Service Fabric cluster code version by environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> getByEnvironmentWithResponseAsync(
@@ -364,7 +372,9 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version by environment.
+     * Gets information about a Service Fabric cluster code version available for the specified environment.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
@@ -372,24 +382,41 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version by environment.
+     * @return information about an available Service Fabric cluster code version by environment on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterCodeVersionsListResultInner> getByEnvironmentAsync(
         String location, ClusterVersionsEnvironment environment, String clusterVersion) {
         return getByEnvironmentWithResponseAsync(location, environment, clusterVersion)
-            .flatMap(
-                (Response<ClusterCodeVersionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version by environment.
+     * Gets information about a Service Fabric cluster code version available for the specified environment.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version by environment.
+     *
+     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param environment The operating system of the cluster. The default means all.
+     * @param clusterVersion The cluster code version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about an available Service Fabric cluster code version by environment along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ClusterCodeVersionsListResultInner> getByEnvironmentWithResponse(
+        String location, ClusterVersionsEnvironment environment, String clusterVersion, Context context) {
+        return getByEnvironmentWithResponseAsync(location, environment, clusterVersion, context).block();
+    }
+
+    /**
+     * Gets information about a Service Fabric cluster code version available for the specified environment.
+     *
+     * <p>Gets information about an available Service Fabric cluster code version by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
@@ -402,35 +429,20 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterCodeVersionsListResultInner getByEnvironment(
         String location, ClusterVersionsEnvironment environment, String clusterVersion) {
-        return getByEnvironmentAsync(location, environment, clusterVersion).block();
+        return getByEnvironmentWithResponse(location, environment, clusterVersion, Context.NONE).getValue();
     }
 
     /**
-     * Gets information about an available Service Fabric cluster code version by environment.
+     * Gets the list of Service Fabric cluster code versions available for the specified location.
      *
-     * @param location The location for the cluster code versions. This is different from cluster location.
-     * @param environment The operating system of the cluster. The default means all.
-     * @param clusterVersion The cluster code version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version by environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterCodeVersionsListResultInner> getByEnvironmentWithResponse(
-        String location, ClusterVersionsEnvironment environment, String clusterVersion, Context context) {
-        return getByEnvironmentWithResponseAsync(location, environment, clusterVersion, context).block();
-    }
-
-    /**
-     * Gets all available code versions for Service Fabric cluster resources by location.
+     * <p>Gets all available code versions for Service Fabric cluster resources by location.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by location.
+     * @return all available code versions for Service Fabric cluster resources by location along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> listWithResponseAsync(String location) {
@@ -465,14 +477,17 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets all available code versions for Service Fabric cluster resources by location.
+     * Gets the list of Service Fabric cluster code versions available for the specified location.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by location.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by location.
+     * @return all available code versions for Service Fabric cluster resources by location along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> listWithResponseAsync(String location, Context context) {
@@ -504,29 +519,43 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets all available code versions for Service Fabric cluster resources by location.
+     * Gets the list of Service Fabric cluster code versions available for the specified location.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by location.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by location.
+     * @return all available code versions for Service Fabric cluster resources by location on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterCodeVersionsListResultInner> listAsync(String location) {
-        return listWithResponseAsync(location)
-            .flatMap(
-                (Response<ClusterCodeVersionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets all available code versions for Service Fabric cluster resources by location.
+     * Gets the list of Service Fabric cluster code versions available for the specified location.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by location.
+     *
+     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all available code versions for Service Fabric cluster resources by location along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ClusterCodeVersionsListResultInner> listWithResponse(String location, Context context) {
+        return listWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Gets the list of Service Fabric cluster code versions available for the specified location.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by location.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,33 +565,21 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterCodeVersionsListResultInner list(String location) {
-        return listAsync(location).block();
+        return listWithResponse(location, Context.NONE).getValue();
     }
 
     /**
-     * Gets all available code versions for Service Fabric cluster resources by location.
+     * Gets the list of Service Fabric cluster code versions available for the specified environment.
      *
-     * @param location The location for the cluster code versions. This is different from cluster location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterCodeVersionsListResultInner> listWithResponse(String location, Context context) {
-        return listWithResponseAsync(location, context).block();
-    }
-
-    /**
-     * Gets all available code versions for Service Fabric cluster resources by environment.
+     * <p>Gets all available code versions for Service Fabric cluster resources by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by environment.
+     * @return all available code versions for Service Fabric cluster resources by environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> listByEnvironmentWithResponseAsync(
@@ -602,7 +619,9 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets all available code versions for Service Fabric cluster resources by environment.
+     * Gets the list of Service Fabric cluster code versions available for the specified environment.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
@@ -610,7 +629,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by environment.
+     * @return all available code versions for Service Fabric cluster resources by environment along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterCodeVersionsListResultInner>> listByEnvironmentWithResponseAsync(
@@ -647,31 +667,49 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     }
 
     /**
-     * Gets all available code versions for Service Fabric cluster resources by environment.
+     * Gets the list of Service Fabric cluster code versions available for the specified environment.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by environment.
+     * @return all available code versions for Service Fabric cluster resources by environment on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterCodeVersionsListResultInner> listByEnvironmentAsync(
         String location, ClusterVersionsEnvironment environment) {
         return listByEnvironmentWithResponseAsync(location, environment)
-            .flatMap(
-                (Response<ClusterCodeVersionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets all available code versions for Service Fabric cluster resources by environment.
+     * Gets the list of Service Fabric cluster code versions available for the specified environment.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by environment.
+     *
+     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param environment The operating system of the cluster. The default means all.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all available code versions for Service Fabric cluster resources by environment along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ClusterCodeVersionsListResultInner> listByEnvironmentWithResponse(
+        String location, ClusterVersionsEnvironment environment, Context context) {
+        return listByEnvironmentWithResponseAsync(location, environment, context).block();
+    }
+
+    /**
+     * Gets the list of Service Fabric cluster code versions available for the specified environment.
+     *
+     * <p>Gets all available code versions for Service Fabric cluster resources by environment.
      *
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
@@ -683,23 +721,6 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterCodeVersionsListResultInner listByEnvironment(
         String location, ClusterVersionsEnvironment environment) {
-        return listByEnvironmentAsync(location, environment).block();
-    }
-
-    /**
-     * Gets all available code versions for Service Fabric cluster resources by environment.
-     *
-     * @param location The location for the cluster code versions. This is different from cluster location.
-     * @param environment The operating system of the cluster. The default means all.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterCodeVersionsListResultInner> listByEnvironmentWithResponse(
-        String location, ClusterVersionsEnvironment environment, Context context) {
-        return listByEnvironmentWithResponseAsync(location, environment, context).block();
+        return listByEnvironmentWithResponse(location, environment, Context.NONE).getValue();
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deploymentmanager.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RestMatchQuantifier. */
+/** Indicates whether any or all of the expressions should match with the response content. */
 public enum RestMatchQuantifier {
     /** Enum value All. */
     ALL("All"),
@@ -30,6 +30,9 @@ public enum RestMatchQuantifier {
      */
     @JsonCreator
     public static RestMatchQuantifier fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RestMatchQuantifier[] items = RestMatchQuantifier.values();
         for (RestMatchQuantifier item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RestMatchQuantifier {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

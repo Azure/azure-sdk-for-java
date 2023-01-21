@@ -3,8 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.ProxyOptions;
-
 /**
  * Metrics configuration options for clients.
  */
@@ -25,13 +23,13 @@ public class MetricsOptions {
     }
     /**
      * Attempts to load metrics options from the configuration.
-     *
+     * <p>
      * {@code null} will be returned if no metric options are found in the environment.
      *
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
      * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
-     * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
-     * will be returned.
+     * @return A {@link MetricsOptions} reflecting a metrics loaded from configuration, if no options are found, default
+     * (enabled) options will be returned.
      */
     public static MetricsOptions fromConfiguration(Configuration configuration) {
         if (configuration.contains(IS_DISABLED_PROPERTY)) {

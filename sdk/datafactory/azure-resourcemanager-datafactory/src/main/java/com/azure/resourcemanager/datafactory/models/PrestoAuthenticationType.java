@@ -17,6 +17,15 @@ public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoA
     public static final PrestoAuthenticationType LDAP = fromString("LDAP");
 
     /**
+     * Creates a new instance of PrestoAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrestoAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a PrestoAuthenticationType from its string representation.
      *
      * @param name a name to look for.

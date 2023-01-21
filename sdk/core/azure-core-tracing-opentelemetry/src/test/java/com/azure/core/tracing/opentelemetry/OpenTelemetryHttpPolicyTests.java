@@ -16,15 +16,18 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
@@ -34,24 +37,30 @@ import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for {@link OpenTelemetryHttpPolicy}.
+ * Unit tests for {com.azure.core.implementation.http.policy.InstrumentationPolicy.
  */
 public class OpenTelemetryHttpPolicyTests {
 
@@ -59,27 +68,19 @@ public class OpenTelemetryHttpPolicyTests {
     private static final String X_MS_REQUEST_ID_2 = "response id 2";
     private static final int RESPONSE_STATUS_CODE = 201;
     private InMemorySpanExporter exporter;
+    private SdkTracerProvider tracerProvider;
     private Tracer tracer;
+    private com.azure.core.util.tracing.Tracer azTracer;
     private static final String SPAN_NAME = "foo";
 
     @BeforeEach
     public void setUp(TestInfo testInfo) {
         exporter = InMemorySpanExporter.create();
-        SdkTracerProvider otelProvider = SdkTracerProvider.builder()
+        tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        tracer = OpenTelemetrySdk.builder().setTracerProvider(otelProvider).build().getTracer(testInfo.getDisplayName());
-    }
-
-    @Test
-    public void addAfterPolicyTest() {
-        // Arrange & Act
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        // Assert
-        assertEquals(1, policies.size());
-        assertEquals(OpenTelemetryHttpPolicy.class, policies.get(0).getClass());
+        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions().setProvider(tracerProvider));
+        tracer = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build().getTracer(testInfo.getDisplayName());
     }
 
     @Test
@@ -89,12 +90,12 @@ public class OpenTelemetryHttpPolicyTests {
 
         // Add parent span to tracingContext
         Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
-            .addData(AZ_TRACING_NAMESPACE_KEY, "foo");
+            .addData("az.namespace", "foo");
 
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.POST, "https://httpbin.org/hello?there#otel");
         request.setHeader("User-Agent", "user-agent");
-        HttpResponse response =  createHttpPipeline(tracer).send(request, tracingContext).block();
+        HttpResponse response =  createHttpPipeline(azTracer).send(request, tracingContext).block();
 
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -103,7 +104,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         SpanData httpSpan = exportedSpans.get(0);
 
-        assertEquals(request.getHeaders().getValue("Traceparent"), String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
+        assertEquals(request.getHeaders().getValue("traceparent"), String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
         assertEquals(((ReadableSpan) parentSpan).getSpanContext().getSpanId(), httpSpan.getParentSpanId());
         assertEquals("HTTP POST", httpSpan.getName());
 
@@ -113,9 +114,9 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals("https://httpbin.org/hello?there#otel", httpAttributes.get("http.url"));
         assertEquals("POST", httpAttributes.get("http.method"));
         assertEquals("user-agent", httpAttributes.get("http.user_agent"));
-        assertEquals("foo", httpAttributes.get(AZ_TRACING_NAMESPACE_KEY));
+        assertEquals("foo", httpAttributes.get("az.namespace"));
         assertEquals(Long.valueOf(RESPONSE_STATUS_CODE), httpAttributes.get("http.status_code"));
-        assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("serviceRequestId"));
+        assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("az.service_request_id"));
     }
 
     @Test
@@ -147,15 +148,14 @@ public class OpenTelemetryHttpPolicyTests {
             })
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        tracer = OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build().getTracer("presampling-test");
-
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
-        HttpResponse response =  createHttpPipeline(tracer).send(request).block();
+        HttpResponse response =  createHttpPipeline(new OpenTelemetryTracer("test", null, null,
+                new OpenTelemetryTracingOptions().setProvider(providerWithSampler)))
+            .send(request).block();
 
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
-        // rest proxy span is not exported as global otel is not configured
         assertEquals(0, exportedSpans.size());
         assertTrue(samplerCalled.get());
     }
@@ -163,7 +163,7 @@ public class OpenTelemetryHttpPolicyTests {
     @Test
     public void clientRequestIdIsStamped() {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, "https://httpbin.org/hello?there#otel");
-        HttpResponse response =  createHttpPipeline(tracer, new RequestIdPolicy()).send(request).block();
+        HttpResponse response =  createHttpPipeline(azTracer, new RequestIdPolicy()).send(request).block();
 
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -174,8 +174,8 @@ public class OpenTelemetryHttpPolicyTests {
         Map<String, Object> httpAttributes = getAttributes(exportedSpans.get(0));
         assertEquals(5, httpAttributes.size());
 
-        assertEquals(response.getRequest().getHeaders().getValue("x-ms-client-request-id"), httpAttributes.get("requestId"));
-        assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("serviceRequestId"));
+        assertEquals(response.getRequest().getHeaders().getValue("x-ms-client-request-id"), httpAttributes.get("az.client_request_id"));
+        assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("az.service_request_id"));
 
         assertEquals("https://httpbin.org/hello?there#otel", httpAttributes.get("http.url"));
         assertEquals("PUT", httpAttributes.get("http.method"));
@@ -190,9 +190,15 @@ public class OpenTelemetryHttpPolicyTests {
         AtomicReference<Span> currentSpanTry503 = new AtomicReference<>();
         AtomicReference<Span> currentSpanTry200 = new AtomicReference<>();
 
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new RetryPolicy())
-            .policies(new OpenTelemetryHttpPolicy(tracer))
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> {
                 HttpHeaders headers = new HttpHeaders();
 
@@ -212,13 +218,14 @@ public class OpenTelemetryHttpPolicyTests {
                     return Mono.just(new MockHttpResponse(request, 400, headers));
                 }
             })
+            .tracer(azTracer)
             .build();
 
         // Start user parent span and populate context.
         Span parentSpan = tracer.spanBuilder("test").startSpan();
 
         Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
-            .addData(AZ_TRACING_NAMESPACE_KEY, "foo");
+            .addData("az.namespace", "foo");
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -240,13 +247,127 @@ public class OpenTelemetryHttpPolicyTests {
         Map<String, Object> httpAttributes503 = getAttributes(try503);
         assertEquals(5, httpAttributes503.size());
         assertEquals(Long.valueOf(503), httpAttributes503.get("http.status_code"));
-        assertEquals(X_MS_REQUEST_ID_1, httpAttributes503.get("serviceRequestId"));
+        assertEquals(X_MS_REQUEST_ID_1, httpAttributes503.get("az.service_request_id"));
 
         assertEquals("HTTP GET", try503.getName());
         Map<String, Object> httpAttributes200 = getAttributes(try200);
         assertEquals(5, httpAttributes200.size());
         assertEquals(Long.valueOf(200), httpAttributes200.get("http.status_code"));
-        assertEquals(X_MS_REQUEST_ID_2, httpAttributes200.get("serviceRequestId"));
+        assertEquals(X_MS_REQUEST_ID_2, httpAttributes200.get("az.service_request_id"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getStatusCodes")
+    public void endStatusDependingOnStatusCode(int statusCode, StatusCode status) {
+
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, statusCode)))
+            .tracer(azTracer)
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello")))
+            .assertNext(response -> assertEquals(statusCode, response.getStatusCode()))
+            .verifyComplete();
+
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
+        assertEquals(1, exportedSpans.size());
+
+        SpanData span = exportedSpans.get(0);
+        assertEquals(Long.valueOf(statusCode), span.getAttributes().get(AttributeKey.longKey("http.status_code")));
+        assertEquals(status, span.getStatus().getStatusCode());
+    }
+
+    @Test
+    public void exceptionEventIsRecorded() {
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(request -> Mono.error(new Exception("foo")))
+            .tracer(azTracer)
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello")))
+            .expectErrorMessage("foo")
+            .verify();
+
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
+        assertEquals(1, exportedSpans.size());
+
+        SpanData span = exportedSpans.get(0);
+        assertNull(span.getAttributes().get(AttributeKey.longKey("http.status_code")));
+        assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode());
+
+        List<EventData> events = span.getEvents();
+        assertEquals(1, events.size());
+        assertEquals("exception", events.get(0).getName());
+        assertEquals(Exception.class.getName(), events.get(0).getAttributes().get(AttributeKey.stringKey("exception.type")));
+        assertEquals("foo", events.get(0).getAttributes().get(AttributeKey.stringKey("exception.message")));
+    }
+
+    @Test
+    public void timeoutIsTraced() {
+        AtomicInteger attemptCount = new AtomicInteger();
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+
+        List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(request -> {
+                HttpHeaders headers = new HttpHeaders();
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.error(new TimeoutException("timeout"));
+                } else if (count == 1) {
+                    return Mono.just(new MockHttpResponse(request, 200, headers));
+                } else {
+                    // Too many requests have been made.
+                    return Mono.just(new MockHttpResponse(request, 400, headers));
+                }
+            })
+            .tracer(azTracer)
+            .build();
+
+        // Start user parent span and populate context.
+        Span parentSpan = tracer.spanBuilder("test").startSpan();
+
+        Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
+            .addData("az.namespace", "foo");
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
+        assertEquals(2, exportedSpans.size());
+
+        SpanData tryTimeout = exportedSpans.get(0);
+        Map<String, Object> httpAttributesTimeout = getAttributes(tryTimeout);
+        assertNull(httpAttributesTimeout.get("http.status_code"));
+        assertEquals(StatusCode.ERROR, tryTimeout.getStatus().getStatusCode());
+        assertEquals("", tryTimeout.getStatus().getDescription());
+
+        List<EventData> events = tryTimeout.getEvents();
+        assertEquals(1, events.size());
+        assertEquals("exception", events.get(0).getName());
+        assertEquals(TimeoutException.class.getName(), events.get(0).getAttributes().get(AttributeKey.stringKey("exception.type")));
     }
 
     private Map<String, Object> getAttributes(SpanData span) {
@@ -256,13 +377,31 @@ public class OpenTelemetryHttpPolicyTests {
         return attributes;
     }
 
-    private static HttpPipeline createHttpPipeline(Tracer tracer, HttpPipelinePolicy... beforeRetryPolicies) {
+    private static HttpPipeline createHttpPipeline(com.azure.core.util.tracing.Tracer azTracer, HttpPipelinePolicy... beforeRetryPolicies) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(beforeRetryPolicies));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(beforeRetryPolicies)
-            .policies(new OpenTelemetryHttpPolicy(tracer))
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(new SimpleMockHttpClient())
+            .tracer(azTracer)
             .build();
+
+
         return httpPipeline;
+    }
+
+    private static Stream<Arguments> getStatusCodes() {
+        return Stream.of(
+            Arguments.of(100, StatusCode.UNSET),
+            Arguments.of(200, StatusCode.UNSET),
+            Arguments.of(201, StatusCode.UNSET),
+            Arguments.of(302, StatusCode.UNSET),
+            Arguments.of(307, StatusCode.UNSET),
+            Arguments.of(400, StatusCode.ERROR),
+            Arguments.of(404, StatusCode.ERROR),
+            Arguments.of(500, StatusCode.ERROR),
+            Arguments.of(503, StatusCode.ERROR)
+        );
     }
 
     private static class SimpleMockHttpClient implements HttpClient {
@@ -274,9 +413,13 @@ public class OpenTelemetryHttpPolicyTests {
 
             SpanContext currentContext = Span.current().getSpanContext();
             String expectedTraceparent = String.format("00-%s-%s-%s", currentContext.getTraceId(), currentContext.getSpanId(), currentContext.getTraceFlags().toString());
-            assertEquals(expectedTraceparent, request.getHeaders().getValue("traceparent"));
+            if (currentContext.isValid()) {
+                assertEquals(expectedTraceparent, request.getHeaders().getValue("traceparent"));
+            } else {
+                assertNull(request.getHeaders().getValue("traceparent"));
+            }
+
             return Mono.just(new MockHttpResponse(request, RESPONSE_STATUS_CODE, headers));
         }
     }
-
 }

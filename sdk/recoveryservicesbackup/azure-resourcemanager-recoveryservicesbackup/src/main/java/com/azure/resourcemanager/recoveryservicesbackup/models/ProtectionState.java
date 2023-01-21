@@ -28,6 +28,18 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
     /** Static value ProtectionPaused for ProtectionState. */
     public static final ProtectionState PROTECTION_PAUSED = fromString("ProtectionPaused");
 
+    /** Static value BackupsSuspended for ProtectionState. */
+    public static final ProtectionState BACKUPS_SUSPENDED = fromString("BackupsSuspended");
+
+    /**
+     * Creates a new instance of ProtectionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectionState() {
+    }
+
     /**
      * Creates or finds a ProtectionState from its string representation.
      *

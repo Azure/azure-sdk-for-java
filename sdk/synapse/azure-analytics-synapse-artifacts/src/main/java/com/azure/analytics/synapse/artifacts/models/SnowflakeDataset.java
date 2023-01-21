@@ -30,6 +30,9 @@ public class SnowflakeDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of SnowflakeDataset class. */
+    public SnowflakeDataset() {}
+
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the Snowflake database. Type: string (or
      * Expression with resultType string).

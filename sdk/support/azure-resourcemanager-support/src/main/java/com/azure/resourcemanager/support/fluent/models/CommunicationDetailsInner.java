@@ -5,57 +5,33 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.models.CommunicationDirection;
 import com.azure.resourcemanager.support.models.CommunicationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Object that represents a Communication resource. */
-@JsonFlatten
 @Fluent
-public class CommunicationDetailsInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationDetailsInner.class);
-
+public final class CommunicationDetailsInner extends ProxyResource {
     /*
-     * Communication type.
+     * Properties of the resource.
      */
-    @JsonProperty(value = "properties.communicationType", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationType communicationType;
+    @JsonProperty(value = "properties")
+    private CommunicationDetailsProperties innerProperties;
 
-    /*
-     * Direction of communication.
-     */
-    @JsonProperty(value = "properties.communicationDirection", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationDirection communicationDirection;
+    /** Creates an instance of CommunicationDetailsInner class. */
+    public CommunicationDetailsInner() {
+    }
 
-    /*
-     * Email address of the sender. This property is required if called by a
-     * service principal.
+    /**
+     * Get the innerProperties property: Properties of the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sender")
-    private String sender;
-
-    /*
-     * Subject of the communication.
-     */
-    @JsonProperty(value = "properties.subject")
-    private String subject;
-
-    /*
-     * Body of the communication.
-     */
-    @JsonProperty(value = "properties.body")
-    private String body;
-
-    /*
-     * Time in UTC (ISO 8601 format) when the communication was created.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
+    private CommunicationDetailsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the communicationType property: Communication type.
@@ -63,7 +39,7 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the communicationType value.
      */
     public CommunicationType communicationType() {
-        return this.communicationType;
+        return this.innerProperties() == null ? null : this.innerProperties().communicationType();
     }
 
     /**
@@ -72,7 +48,7 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the communicationDirection value.
      */
     public CommunicationDirection communicationDirection() {
-        return this.communicationDirection;
+        return this.innerProperties() == null ? null : this.innerProperties().communicationDirection();
     }
 
     /**
@@ -81,7 +57,7 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the sender value.
      */
     public String sender() {
-        return this.sender;
+        return this.innerProperties() == null ? null : this.innerProperties().sender();
     }
 
     /**
@@ -91,7 +67,10 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the CommunicationDetailsInner object itself.
      */
     public CommunicationDetailsInner withSender(String sender) {
-        this.sender = sender;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationDetailsProperties();
+        }
+        this.innerProperties().withSender(sender);
         return this;
     }
 
@@ -101,7 +80,7 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the subject value.
      */
     public String subject() {
-        return this.subject;
+        return this.innerProperties() == null ? null : this.innerProperties().subject();
     }
 
     /**
@@ -111,7 +90,10 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the CommunicationDetailsInner object itself.
      */
     public CommunicationDetailsInner withSubject(String subject) {
-        this.subject = subject;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationDetailsProperties();
+        }
+        this.innerProperties().withSubject(subject);
         return this;
     }
 
@@ -121,7 +103,7 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the body value.
      */
     public String body() {
-        return this.body;
+        return this.innerProperties() == null ? null : this.innerProperties().body();
     }
 
     /**
@@ -131,7 +113,10 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the CommunicationDetailsInner object itself.
      */
     public CommunicationDetailsInner withBody(String body) {
-        this.body = body;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationDetailsProperties();
+        }
+        this.innerProperties().withBody(body);
         return this;
     }
 
@@ -141,7 +126,7 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
@@ -150,5 +135,8 @@ public class CommunicationDetailsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
