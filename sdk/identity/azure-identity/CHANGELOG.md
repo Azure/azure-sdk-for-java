@@ -4,6 +4,9 @@
 
 ### Other Changes
 
+### Features Added
+- Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
+
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
