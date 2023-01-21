@@ -199,7 +199,7 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
-        return new NettyHttpClient(nettyHttpClient, disableBufferCopy,
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy,
             getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
             getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT), addProxyHandler, buildProxyOptions,
             nonProxyHostsPattern, handler, proxyChallengeHolder);
@@ -236,7 +236,7 @@ public class NettyAsyncHttpClientBuilder {
         if (connectionProvider != null) {
             LOGGER.verbose("Setting ConnectionProvider for the Reactor Netty HttpClient. Please be aware of the "
                 + "differences in runtime behavior when creating a default Reactor Netty HttpClient vs an HttpClient"
-                + "with a specified ConnectionProvider. For more details see " 
+                + "with a specified ConnectionProvider. For more details see "
                 + "https://aka.ms/azsdk/java/docs/configure-httpclient.");
         }
 

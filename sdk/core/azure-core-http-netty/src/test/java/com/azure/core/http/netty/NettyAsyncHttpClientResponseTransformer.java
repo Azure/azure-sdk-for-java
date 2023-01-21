@@ -17,7 +17,7 @@ import static com.azure.core.http.netty.NettyAsyncHttpClientTests.NO_DOUBLE_UA_P
 import static com.azure.core.http.netty.NettyAsyncHttpClientTests.RETURN_HEADERS_AS_IS_PATH;
 
 /**
- * Mock response transformer used to test {@link NettyHttpClient}.
+ * Mock response transformer used to test {@link NettyAsyncHttpClient}.
  */
 public final class NettyAsyncHttpClientResponseTransformer extends ResponseTransformer {
     public static final String NAME = "reactor-netty-client-response-transformer";
