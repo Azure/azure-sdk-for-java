@@ -1,0 +1,21 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED:3000/fr/path/2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "User-Agent": "Java/11.0.9"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "82",
+        "Content-Type": "application/json"
+      },
+      "ResponseBody": "{\u0022Body\u0022 : \u003CUserDelegationKey\u003E\u003CSignedTid\u003EREDACTED\u003C/SignedTid\u003E\u003C/UserDelegationKey\u003E\u0022}"
+    }
+  ],
+  "Variables": {}
+}

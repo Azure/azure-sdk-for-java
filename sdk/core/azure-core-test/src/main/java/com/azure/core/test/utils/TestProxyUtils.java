@@ -42,8 +42,8 @@ public class TestProxyUtils {
     private static final List<String> HEADERS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
-    private static final String DELEGATIONKEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";
-    private static final String DELEGATIONKEY_TENANTID_REGEX = "(?:<SignedTid>)(?<secret>.*)(?:</SignedTid>)";
+    private static final String DELEGATION_KEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";
+    private static final String DELEGATION_KEY_TENANTID_REGEX = "(?:<SignedTid>)(?<secret>.*)(?:</SignedTid>)";
 
     /**
      * Get the proxy URL.
@@ -127,11 +127,12 @@ public class TestProxyUtils {
                     if (testProxySanitizer.getGroupForReplace() != null) {
                         requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(),
                             testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
+                        sanitizerType = TestProxySanitizerType.BODY_REGEX.name;
                     } else {
                         requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getRegex(),
                             testProxySanitizer.getRedactedValue());
+                        sanitizerType = TestProxySanitizerType.BODY.name;
                     }
-                    sanitizerType = TestProxySanitizerType.BODY.name;
                     break;
                 case HEADER:
                     requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(),
@@ -178,8 +179,8 @@ public class TestProxyUtils {
 
     private static List<TestProxySanitizer> getUserDelegationSanitizers() {
         List<TestProxySanitizer> userDelegationSanitizers = new ArrayList<>();
-        userDelegationSanitizers.add(new TestProxySanitizer(DELEGATIONKEY_CLIENTID_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY).setGroupForReplace("secret"));
-        userDelegationSanitizers.add(new TestProxySanitizer(DELEGATIONKEY_TENANTID_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY).setGroupForReplace("secret"));
+        userDelegationSanitizers.add(new TestProxySanitizer(DELEGATION_KEY_CLIENTID_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY).setGroupForReplace("secret"));
+        userDelegationSanitizers.add(new TestProxySanitizer(DELEGATION_KEY_TENANTID_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY).setGroupForReplace("secret"));
         return userDelegationSanitizers;
     }
 }

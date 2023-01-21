@@ -15,6 +15,8 @@ public enum TestProxySanitizerType {
      * Sanitize the response body.
      */
     BODY("BodyKeySanitizer"),
+
+    BODY_REGEX("BodyRegexSanitizer"),
     /**
      * Sanitize the request/response headers.
      */
