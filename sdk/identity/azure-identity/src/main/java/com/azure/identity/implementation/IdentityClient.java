@@ -1150,6 +1150,7 @@ public class IdentityClient extends IdentityClientBase {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(500);
+                connection.setRequestProperty("User-Agent", userAgent);
                 connection.connect();
             } catch (Exception e) {
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
