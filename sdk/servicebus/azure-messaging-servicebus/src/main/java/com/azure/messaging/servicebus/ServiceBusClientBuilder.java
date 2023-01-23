@@ -13,9 +13,9 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.RecoverableReactorConnection;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
@@ -212,11 +212,11 @@ public final class ServiceBusClientBuilder implements
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
 
-    private final Object connectionLock = new Object();
+    private final Object cacheInitDisposeLock = new Object();
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private ClientOptions clientOptions;
     private Configuration configuration;
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> sharedConnection;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
     private String connectionStringEntityName;
     private TokenCredential credentials;
     private String fullyQualifiedNamespace;
@@ -661,7 +661,7 @@ public final class ServiceBusClientBuilder implements
      * Called when a child client is closed. Disposes of the shared connection if there are no more clients.
      */
     void onClientClose() {
-        synchronized (connectionLock) {
+        synchronized (cacheInitDisposeLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
             LOGGER.atInfo()
                 .addKeyValue("numberOfOpenClients", numberOfOpenClients)
@@ -679,16 +679,16 @@ public final class ServiceBusClientBuilder implements
 
             LOGGER.info("No more open clients, closing shared connection.");
 
-            if (sharedConnection != null) {
-                sharedConnection.dispose();
-                sharedConnection = null;
+            if (sharedConnectionCache != null) {
+                sharedConnectionCache.dispose();
+                sharedConnectionCache = null;
             } else {
-                LOGGER.warning("Shared RecoverableReactorConnection was already disposed.");
+                LOGGER.warning("Shared ReactorConnectionCache was already disposed.");
             }
         }
     }
 
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> getOrCreateRecoverableConnection(MessageSerializer serializer) {
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer) {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
@@ -697,8 +697,8 @@ public final class ServiceBusClientBuilder implements
             scheduler = Schedulers.boundedElastic();
         }
 
-        synchronized (connectionLock) {
-            if (sharedConnection == null) {
+        synchronized (cacheInitDisposeLock) {
+            if (sharedConnectionCache == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
 
                 final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = () -> {
@@ -719,14 +719,14 @@ public final class ServiceBusClientBuilder implements
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
                 final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
 
-                sharedConnection = new RecoverableReactorConnection<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
+                sharedConnectionCache = new ReactorConnectionCache<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
             }
         }
 
         final int numberOfOpenClients = openClients.incrementAndGet();
         LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
-        return sharedConnection;
+        return sharedConnectionCache;
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -910,7 +910,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
 
@@ -1407,7 +1407,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
@@ -1488,7 +1488,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
@@ -1971,7 +1971,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
@@ -2043,7 +2043,7 @@ public final class ServiceBusClientBuilder implements
                 null);
             final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName,
                 null);
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
 
             return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, recoverableConnection,
                 ServiceBusClientBuilder.this::onClientClose);
