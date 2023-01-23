@@ -85,7 +85,7 @@ public class ReactorProvider {
      *
      * Note: This could be a static method, keeping it instance-level for now to simplify the testing.
      */
-    public ReactorExecutor createExecutorForReactor(Reactor reactor, String connectionId, String fullyQualifiedNamespace,
+    public ReactorExecutor createExecutor(Reactor reactor, String connectionId, String fullyQualifiedNamespace,
         ReactorConnection.ReactorExceptionHandler reactorExceptionHandler, AmqpRetryOptions retryOptions) {
         final Duration timeoutDivided = retryOptions.getTryTimeout().dividedBy(2);
         final Duration pendingTasksDuration = ClientConstants.SERVER_BUSY_WAIT_TIME.compareTo(timeoutDivided) < 0
