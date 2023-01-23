@@ -14,8 +14,12 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -42,11 +46,13 @@ public class FormRecognizerSample {
                 .endpoint(AZURE_FORM_RECOGNIZER_ENDPOINT)
                 .buildClient();
 
-        InputStream resourceAsStream = FormRecognizerSample.class.getClassLoader().getResourceAsStream("contoso-allinone.jpg");
-        BinaryData targetData = BinaryData.fromStream(resourceAsStream);
-
+        String fileName = "contoso-allinone.jpg";
+        InputStream resourceAsStream = FormRecognizerSample.class.getClassLoader().getResourceAsStream(fileName);
+        BinaryData imageData = BinaryData.fromStream(resourceAsStream);
+        byte[] bytes = imageData.toBytes();
+        BinaryData requestContent = BinaryData.fromBytes(bytes);
         SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
-                client.beginAnalyzeDocument("prebuilt-receipt", targetData);
+                client.beginAnalyzeDocument("prebuilt-receipt", requestContent);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
