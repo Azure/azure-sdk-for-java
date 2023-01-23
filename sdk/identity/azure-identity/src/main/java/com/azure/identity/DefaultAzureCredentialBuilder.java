@@ -187,13 +187,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(7);
+        output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions.clone()));
         output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
-        // Azd does not support tenantId. It uses the tenantId that is currently logged in azd.
-        output.add(new AzureDeveloperCliCredential(identityClientOptions.clone()));
         output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
         return output;
