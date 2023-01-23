@@ -32,18 +32,19 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     private final AmqpErrorContext errorContext;
     private final ClientLogger logger;
     private final Mono<T> createOrGetCachedConnection;
+    private final Object lock = new Object();
+    private volatile boolean terminated;
     // Note: The only reason to have below 'currentConnection' is to close the cached Connection internally
     // upon 'ReactorConnectionCache' termination. We must never expose 'currentConnection' variable to
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile T currentConnection;
-    private volatile boolean terminated;
 
     /**
-     * Create a ReactorConnectionCache that is responsible for obtaining a connection, caching it,
-     * and replaying to subscribers as long as the cached connection is not closed. Upon downstream request
-     * for a connection, if it finds that the cached connection is closed, then cache is refreshed with
-     * new connection.
+     * Create a ReactorConnectionCache that is responsible for obtaining a connection, waiting for it to active,
+     * caching it, and replaying to subscribers as long as the cached connection is not closed. Upon downstream
+     * request for a connection, if the cache finds that the cached connection is closed, then cache is refreshed
+     * with new connection.
      *
      * @param connectionSupplier the supplier that provides a new connection object, which is not yet
      *                          connected to the host or active.
@@ -95,7 +96,11 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             .<T>handle((c, sink) -> {
                 @SuppressWarnings("unchecked")
                 final T connection = (T) c;
-                currentConnection = connection;
+                final boolean terminated;
+                synchronized (lock) {
+                    terminated = this.terminated;
+                    currentConnection = connection;
+                }
                 if (terminated) {
                     connection.closeAsync(closeSignal("Connection recovery support is terminated.")).subscribe();
                     sink.error(TERMINATED_ERROR);
@@ -170,13 +175,18 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
      */
     @Override
     public void dispose() {
-        if (!terminated) {
-            terminated = true;
-            if (currentConnection != null && !currentConnection.isDisposed()) {
-                currentConnection.closeAsync(closeSignal("Terminating the connection recovery support.")).subscribe();
-            } else {
-                logger.info("Terminating the connection recovery support.");
+        final ReactorConnection connection;
+        synchronized (lock) {
+            if (terminated) {
+                return;
             }
+            terminated = true;
+            connection = this.currentConnection;
+        }
+        if (connection != null && !connection.isDisposed()) {
+            connection.closeAsync(closeSignal("Terminating the connection recovery support.")).subscribe();
+        } else {
+            logger.info("Terminating the connection recovery support.");
         }
     }
 
