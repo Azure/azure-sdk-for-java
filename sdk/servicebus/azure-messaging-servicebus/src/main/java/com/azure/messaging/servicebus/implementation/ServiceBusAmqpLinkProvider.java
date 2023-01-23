@@ -17,6 +17,19 @@ import java.time.Duration;
  * Provides links for send and receive.
  */
 public final class ServiceBusAmqpLinkProvider extends AmqpLinkProvider {
+    /**
+     * Creates an Amqp Link to receive messages from a Service Bus entity.
+     *
+     * @param connection The connection to host the Amqp Link.
+     * @param entityPath The message broker address for the receiver.
+     * @param receiver The underlying QPID receiver.
+     * @param handler The QPID handler associated with the QPID receiver.
+     * @param tokenManager Token manager for authorising with the CBS node.
+     * @param reactorProvider The provider for QPID Reactor and Reactor Executor.
+     * @param timeout The timeout for message disposition operations.
+     * @param retryPolicy The Retry policy.
+     * @return An Amqp Link.
+     */
     public ServiceBusReactorReceiver createReceiveLink(AmqpConnection connection, String entityPath, Receiver receiver,
         ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider reactorProvider, Duration timeout,
         AmqpRetryPolicy retryPolicy) {
