@@ -19,7 +19,7 @@
         "Content-Type": "application/json",
         "Host": "localhost:3000",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "traceparent": "00-991ec280d6eb610706ed90b754f450d5-f327e47ae4f71dc1-00",
+        "traceparent": "00-18e2d72d3db49d1a4bae9e6a4c82dc96-8f32ab073c009f2a-00",
         "User-Agent": "Java/11.0.9"
       },
       "ResponseBody": {
@@ -29,8 +29,5 @@
       }
     }
   ],
-  "Variables": {
-    "0": "test21822",
-    "1": "2023-01-05T21:43:38.703776200Z"
-  }
+  "Variables": {}
 }

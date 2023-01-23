@@ -184,10 +184,10 @@ public class TestProxyTests extends TestBase {
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
         // default sanitizers
-        // assertEquals("https://REDACTED:3000/fr/path/1", record.getUri());
-        // assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
-        // // custom sanitizers
-        // assertEquals(REDACTED, record.getResponse().get("modelId"));
+        assertEquals("https://REDACTED:3000/fr/path/1", record.getUri());
+        assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+        // custom sanitizers
+        assertEquals(REDACTED, record.getResponse().get("modelId"));
 
     }
 

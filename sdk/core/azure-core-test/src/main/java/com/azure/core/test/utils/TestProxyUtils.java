@@ -88,7 +88,7 @@ public class TestProxyUtils {
 
     public static List<TestProxySanitizer> loadSanitizers() {
         List<TestProxySanitizer> sanitizers = new ArrayList<>();
-        sanitizers.addAll(getDefaultRegexSanitizers());
+        // sanitizers.addAll(getDefaultRegexSanitizers());
         sanitizers.add(getDefaultUrlSanitizer());
         sanitizers.addAll(getDefaultBodySanitizers());
         sanitizers.addAll(getDefaultHeaderSanitizers());
