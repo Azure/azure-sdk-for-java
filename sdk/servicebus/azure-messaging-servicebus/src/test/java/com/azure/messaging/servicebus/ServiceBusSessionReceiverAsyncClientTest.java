@@ -10,7 +10,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RecoverableReactorConnection;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
@@ -77,7 +77,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false);
 
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private ServiceBusSessionManager sessionManager;
 
     @Mock
@@ -133,7 +133,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
+        connectionCache = new ReactorConnectionCache<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
             new HashMap<>());
     }
@@ -146,8 +146,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
             sessionManager.close();
         }
 
-        if (recoverableConnection != null) {
-            recoverableConnection.dispose();
+        if (connectionCache != null) {
+            connectionCache.dispose();
         }
 
         Mockito.framework().clearInlineMock(this);
@@ -183,7 +183,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            recoverableConnection, instrumentation,
+            connectionCache, instrumentation,
             messageSerializer, () -> { }, CLIENT_IDENTIFIER
         );
 
@@ -207,7 +207,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     void acceptNextSession() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final int numberOfMessages = 5;
@@ -275,7 +275,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            recoverableConnection, instrumentation,
+            connectionCache, instrumentation,
             messageSerializer, () -> { }, CLIENT_IDENTIFIER
         );
 
