@@ -3,15 +3,14 @@
 
 package com.azure.cosmos.spark.catalog
 
-import com.azure.core.management.exception.ManagementException
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
-import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner
 import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource}
 import com.fasterxml.jackson.databind.ObjectMapper
+import reactor.core.scala.publisher.SMono.{PimpJFlux, PimpJMono}
+import reactor.core.scala.publisher.{SFlux, SMono}
 
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, ZoneOffset, ZonedDateTime}
@@ -29,77 +28,73 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                                                            cosmosAsyncClient: CosmosAsyncClient)
   extends CosmosCatalogClient {
 
-
   val objectMapper: ObjectMapper = new ObjectMapper()
+  val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
+
   override def close(): Unit = {}
 
-  override def readAllDatabases(): Array[Array[String]] = {
-    val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
-    sqlResourcesClient.listSqlDatabases(resourceGroupName, databaseAccountName)
-      .iterator()
+  override def readAllDatabases(): SFlux[String] = {
+      sqlResourcesClient
+          .listSqlDatabasesAsync(resourceGroupName, databaseAccountName)
+          .asScala
+          .map(resultsInner => resultsInner.id())
+  }
+
+  override def readDatabase(databaseName: String): SMono[Unit] = {
+    sqlResourcesClient
+      .getSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName)
       .asScala
-      .toList
-      .map(resultInner => Array(resultInner.id()))
-      .toArray
+      .`then`()
   }
 
-  override def readDatabase(databaseName: String): Unit = {
-    val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
-    sqlResourcesClient.getSqlDatabase(resourceGroupName, databaseAccountName, databaseName)
-  }
+  override def createDatabase(databaseName: String, metaData: Map[String, String]): SMono[Unit] = {
+    sqlResourcesClient
+        .getSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName)
+        .asScala
+        .flatMap(_ => {
+            SMono.error(new CosmosCatalogConflictException(s"Database $databaseName already exists"))
+        })
+        .onErrorResume((throwable: Throwable) => {
+            if (ManagementExceptions.isNotFoundException(throwable)) {
+                val createUpdateOptions = new CreateUpdateOptions()
 
-  override def createDatabase(databaseName: String, metaData: Map[String, String]): Unit = {
-    val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
+                CosmosThroughputProperties.getManualThroughput(metaData) match {
+                    case Some(throughput) => createUpdateOptions.withThroughput(throughput)
+                    case None =>
+                        CosmosThroughputProperties.getAutoScaleMaxThroughput(metaData) match {
+                            case Some(autoScaleMaxThroughput) =>
+                                createUpdateOptions.withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(autoScaleMaxThroughput))
+                            case None =>
+                        }
+                }
 
-    try {
-        this.readDatabase(databaseName);
-        // If we reached here, then it means the database already exists
-        throw new CosmosCatalogConflictException(s"Database $databaseName already exists")
-
-    } catch {
-                // TODO: Annie: Extract the logic for checking notFound
-        case e: ManagementException if isNotFound(e) =>
-            val createUpdateOptions = new CreateUpdateOptions()
-
-            CosmosThroughputProperties.getManualThroughput(metaData) match {
-                case Some(throughput) => createUpdateOptions.withThroughput(throughput)
-                case None =>
-                    CosmosThroughputProperties.getAutoScaleMaxThroughput(metaData) match {
-                        case Some(autoScaleMaxThroughput) =>
-                            createUpdateOptions.withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(autoScaleMaxThroughput))
-                        case None =>
-                    }
+                sqlResourcesClient.createUpdateSqlDatabaseAsync(
+                    resourceGroupName,
+                    databaseAccountName,
+                    databaseName,
+                    new SqlDatabaseCreateUpdateParameters()
+                        .withResource(new SqlDatabaseResource().withId(databaseName))
+                        .withOptions(createUpdateOptions)
+                ).asScala
+            } else {
+                SMono.error(throwable)
             }
-
-            sqlResourcesClient.createUpdateSqlDatabaseAsync(
-                resourceGroupName,
-                databaseAccountName,
-                databaseName,
-                new SqlDatabaseCreateUpdateParameters()
-                    .withResource(new SqlDatabaseResource().withId(databaseName))
-                    .withOptions(createUpdateOptions)
-            ).block()
-    }
+        }).`then`()
   }
 
-  override def deleteDatabase(databaseName: String): Unit = {
-    val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
-    sqlResourcesClient.deleteSqlDatabase(resourceGroupName, databaseAccountName, databaseName)
-  }
+  override def deleteDatabase(databaseName: String): SMono[Unit] =
+    sqlResourcesClient.deleteSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName).asScala.`then`()
 
-  override def readAllContainers(databaseName: String): List[String] = {
-    val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
-    sqlResourcesClient.listSqlContainers(resourceGroupName, databaseAccountName, databaseName)
-      .iterator()
-      .asScala
-      .toList
-      .map(resultInner => resultInner.id())
+  override def readAllContainers(databaseName: String): SFlux[String] = {
+    sqlResourcesClient.listSqlContainersAsync(resourceGroupName, databaseAccountName, databaseName)
+        .asScala
+        .map(_.id())
   }
 
   override def createContainer(
                                 databaseName: String,
                                 containerName: String,
-                                containerProperties: Map[String, String]): Unit = {
+                                containerProperties: Map[String, String]): SMono[Unit] = {
 
     val sqlContainerResource = new SqlContainerResource()
     sqlContainerResource.withId(containerName)
@@ -120,140 +115,104 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
 
     getThroughputUpdateOption(containerProperties) match {
       case Some(createUpdateOptions) =>
-        cosmosManager.serviceClient().getSqlResources().createUpdateSqlContainerAsync(
-          resourceGroupName,
-          databaseAccountName,
-          databaseName,
-          containerName,
-          new SqlContainerCreateUpdateParameters()
-            .withResource(sqlContainerResource)
-            .withOptions(createUpdateOptions)
-        ).block()
-      case None =>
-        cosmosManager.serviceClient().getSqlResources().createUpdateSqlContainerAsync(
-          resourceGroupName,
-          databaseAccountName,
-          databaseName,
-          containerName,
-          new SqlContainerCreateUpdateParameters()
-            .withResource(sqlContainerResource)
-        ).block()
-    }
-  }
-
-  override def deleteContainer(databaseName: String, containerName: String): Unit = {
-      // TODO: Validate whether SDK will throw the above exception
-      try {
-          cosmosManager
-              .serviceClient()
-              .getSqlResources()
-              .deleteSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName).block()
-      } catch {
-          case e: ManagementException if isNotFound(e) =>
-              throw new CosmosCatalogNotFoundException(e.toString)
-      }
-  }
-
-  override def readDatabaseThroughput(databaseName: String): Map[String, String] = {
-    try {
-        val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
-        toMap(
-            sqlResourcesClient.getSqlDatabaseThroughputAsync(
+        sqlResourcesClient
+            .createUpdateSqlContainerAsync(
                 resourceGroupName,
                 databaseAccountName,
-                databaseName).block())
-    } catch {
-        case e: ManagementException if isNotFound(e) =>
-            throw new CosmosCatalogNotFoundException(e.toString)
-        case e: ManagementException if e.getValue != null && isBadRequest(e) =>
-            Map[String, String]() // TODO: [Annie] Need to validate whether will get 400 for serverless account
-        // not a shared throughput database account
+                databaseName,
+                containerName,
+                new SqlContainerCreateUpdateParameters()
+                  .withResource(sqlContainerResource)
+                  .withOptions(createUpdateOptions)
+            )
+            .asScala.`then`()
+      case None =>
+        sqlResourcesClient
+            .createUpdateSqlContainerAsync(
+              resourceGroupName,
+              databaseAccountName,
+              databaseName,
+              containerName,
+              new SqlContainerCreateUpdateParameters()
+                .withResource(sqlContainerResource)
+            )
+            .asScala
+            .`then`()
     }
   }
 
-  override def readContainerMetadata(databaseName: String, containerName: String): Option[util.HashMap[String, String]] =
-  {
-      val sqlResourceClient = cosmosManager.serviceClient().getSqlResources()
-      val container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)
-
-      val metaResultOpt = try {
-          Some((
-              sqlResourceClient.getSqlContainerAsync(
-                  resourceGroupName,
-                  databaseAccountName,
-                  databaseName,
-                  containerName
-              ).block().resource(),
-
-              ContainerFeedRangesCache
-                  .getFeedRanges(container)
-                  .block(),
-
-              try {
-                  Some(
-                      (
-                          sqlResourceClient.getSqlContainerThroughputAsync(
-                              resourceGroupName,
-                              databaseAccountName,
-                              databaseName,
-                              containerName
-                          ).block().resource(),
-                          false
-                      ))
-              } catch {
-                  case error: ManagementException => {
-                      // TODO: Annie: double check the logic here
-                      if (error.getValue != null && error.getValue.getCode != "BadRequest") {
-                          throw error
-                      }
-
-                      try {
-                          Some(
-                              (
-                                  sqlResourceClient.getSqlDatabaseThroughputAsync(
-                                      resourceGroupName,
-                                      databaseAccountName,
-                                      databaseName
-                                  ).block().resource(),
-                                  true
-                              )
-                          )
-                      } catch {
-                          case error: ManagementException => {
-                              if (isBadRequest(error)) {
-                                  throw error
-                              }
-                              None
-                          }
-                      }
-                  }
+  override def deleteContainer(databaseName: String, containerName: String): SMono[Unit] = {
+      // TODO: Validate whether SDK will throw the above exception
+      sqlResourcesClient.deleteSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
+          .asScala
+          .onErrorResume((throwable: Throwable) => {
+              if (ManagementExceptions.isNotFoundException(throwable)) {
+                  SMono.error(new CosmosCatalogNotFoundException(throwable.toString))
+              } else {
+                  SMono.error(throwable)
               }
-          ))
-      } catch {
-          case e: ManagementException if isNotFound(e) =>
-              None
-      }
-
-      metaResultOpt match {
-          case Some(metaDataResult) => Some(generateTblProperties(metaDataResult))
-          case None => None
-      }
+          })
+          .`then`()
   }
 
-  private def isNotFound(exception: ManagementException) =
-        exception.getValue != null && StringUtils.equalsIgnoreCase(exception.getValue.getCode, "NotFound")
+  override def readDatabaseThroughput(databaseName: String): SMono[Map[String, String]] = {
+      sqlResourcesClient
+          .getSqlDatabaseThroughputAsync(resourceGroupName, databaseAccountName, databaseName)
+          .asScala
+          .map(resultInner => toMap(resultInner.resource()))
+          .onErrorResume((throwable: Throwable) => {
+              if (ManagementExceptions.isNotFoundException(throwable)) {
+                  SMono.error(new CosmosCatalogNotFoundException(throwable.toString))
+              } else if (ManagementExceptions.isBadRequestException(throwable)) {
+                  SMono.just(Map[String, String]())        // not a shared throughput database account
+              } else {
+                  SMono.error(throwable)
+              }
+          })
+  }
 
-  private def isBadRequest(exception: ManagementException) =
-      exception.getValue != null && StringUtils.equalsIgnoreCase(exception.getValue.getCode, "BadRequest")
+  override def readContainerMetadata(databaseName: String, containerName: String): SMono[Option[util.HashMap[String, String]]] =
+  {
+      SFlux
+          .zip3(
+              sqlResourcesClient
+                  .getSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
+                  .asScala,
+              ContainerFeedRangesCache
+                  .getFeedRanges(cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)),
+              readContainerThroughputProperties(databaseName, containerName)
+                  .map(Some(_))
+                  .onErrorResume((throwable: Throwable) => {
+                      if (ManagementExceptions.isBadRequestException(throwable)) {
+                          SMono.just(None)
+                      } else {
+                          SMono.error(throwable)
+                      }
+                  }))
+          .single()
+          .map(result => {
+              val metaResultOpt = Some((result._1.resource(), result._2, result._3))
+              metaResultOpt match {
+                  case Some(metaDataResult) => Some(generateTblProperties(metaDataResult))
+                  case _ => None
+              }
+          })
+          .onErrorResume((throwable: Throwable) => {
+              if (ManagementExceptions.isNotFoundException(throwable)) {
+                  SMono.just(None)
+              } else {
+                  SMono.error(throwable)
+              }
+          })
+  }
 
-  private def toMap(throughputResult: ThroughputSettingsGetResultsInner): Map[String, String] = {
+  private def toMap(throughputPropertiesResource: ThroughputSettingsGetPropertiesResource): Map[String, String] = {
     val props = new util.HashMap[String, String]()
-    val manualThroughput = throughputResult.resource().throughput()
+    val manualThroughput = throughputPropertiesResource.throughput()
     if (manualThroughput != null) {
       props.put(CosmosThroughputProperties.manualThroughputFieldName, manualThroughput.toString)
     } else {
-      val autoScaleMaxThroughput =
-        throughputResult.resource().autoscaleSettings().maxThroughput()
+      val autoScaleMaxThroughput = throughputPropertiesResource.autoscaleSettings().maxThroughput()
       props.put(CosmosThroughputProperties.autoScaleMaxThroughputName, autoScaleMaxThroughput.toString)
     }
     props.asScala.toMap
@@ -403,4 +362,29 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
     }
     // scalastyle:on cyclomatic.complexity
     // scalastyle:on method.length
+
+    override def readContainerThroughput(databaseName: String, containerName: String): SMono[Integer] = {
+        readContainerThroughputProperties(databaseName, containerName)
+            .map(throughputPropertiesResource => getMaxThroughput(throughputPropertiesResource._1))
+    }
+
+    private def getMaxThroughput(throughputResource: ThroughputSettingsGetPropertiesResource): Integer =
+        Math.max(throughputResource.throughput(), throughputResource.autoscaleSettings().maxThroughput())
+
+    private def readContainerThroughputProperties(databaseName: String, containerName: String): SMono[(ThroughputSettingsGetPropertiesResource, Boolean)] = {
+        sqlResourcesClient
+            .getSqlContainerThroughputAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
+            .asScala
+            .map(containerThroughputResultInner => (containerThroughputResultInner.resource(), false))
+            .onErrorResume((throwable: Throwable) => {
+                if (ManagementExceptions.isBadRequestException(throwable)) {
+                    sqlResourcesClient
+                        .getSqlDatabaseThroughputAsync(resourceGroupName, databaseAccountName, databaseName)
+                        .asScala
+                        .map(databaseThroughputResultInner => (databaseThroughputResultInner.resource(), true))
+                } else {
+                    SMono.error(throwable)
+                }
+            })
+    }
 }

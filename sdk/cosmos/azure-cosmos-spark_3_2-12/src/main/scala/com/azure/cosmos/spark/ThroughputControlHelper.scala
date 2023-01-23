@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
+import reactor.core.scala.publisher.SMono
 
 private object ThroughputControlHelper {
     def getContainer(userConfig: Map[String, String],
@@ -42,7 +44,20 @@ private object ThroughputControlHelper {
                 globalThroughputControlConfigBuilder.setControlItemExpireInterval(throughputControlConfig.globalControlExpireInterval.get)
             }
 
-            container.enableGlobalThroughputControlGroup(groupConfigBuilder.build(), globalThroughputControlConfigBuilder.build())
+            val throughputQueryMonoOpt = getThroughputQueryMono(cacheItem, cosmosContainerConfig, throughputControlConfig)
+            throughputQueryMonoOpt match {
+                case Some(throughputQueryMono) =>
+                    ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor
+                        .enableGlobalThroughputControlGroup(
+                            container,
+                            groupConfigBuilder.build(),
+                            globalThroughputControlConfigBuilder.build(),
+                            throughputQueryMono.asJava())
+                case None =>
+                    container.enableGlobalThroughputControlGroup(
+                        groupConfigBuilder.build(),
+                        globalThroughputControlConfigBuilder.build())
+            }
         }
 
         container
@@ -69,6 +84,18 @@ private object ThroughputControlHelper {
                 s"ThroughputControl: $calledFrom"))
         } else {
             None
+        }
+    }
+
+    private def getThroughputQueryMono(
+                                          cacheItem: CosmosClientCacheItem,
+                                          cosmosContainerConfig: CosmosContainerConfig,
+                                          throughputControlConfig: CosmosThroughputControlConfig): Option[SMono[Integer]] = {
+        val throughputControlClientAuthConfig = throughputControlConfig.cosmosAccountConfig.authConfig
+        throughputControlClientAuthConfig match {
+            case _: CosmosMasterKeyAuthConfig => None
+            case _: CosmosAadAuthConfig =>
+                Some(cacheItem.sparkCatalogClient.readContainerThroughput(cosmosContainerConfig.database, cosmosContainerConfig.container))
         }
     }
 }

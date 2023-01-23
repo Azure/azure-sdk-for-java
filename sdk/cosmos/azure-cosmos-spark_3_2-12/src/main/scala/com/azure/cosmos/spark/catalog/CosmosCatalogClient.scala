@@ -3,19 +3,22 @@
 
 package com.azure.cosmos.spark.catalog
 
+import reactor.core.scala.publisher.{SFlux, SMono}
+
 import java.util
 
 trait CosmosCatalogClient {
     def close()
-    def readAllDatabases(): Array[Array[String]]
-    def readDatabase(databaseName: String): Unit
-    def readDatabaseThroughput(databaseName:String): Map[String, String]
-    def createDatabase(databaseName: String, metaData: Map[String, String]): Unit
-    def deleteDatabase(databaseName: String): Unit
-    def readAllContainers(databaseName: String): List[String]
-    def createContainer(databaseName: String, containerName: String, containerProperties: Map[String, String]): Unit
-    def deleteContainer(databaseName: String, containerName: String): Unit
-    def readContainerMetadata(databaseName: String, containerName: String): Option[util.HashMap[String, String]]
+    def readAllDatabases(): SFlux[String]
+    def readDatabase(databaseName: String): SMono[Unit]
+    def readDatabaseThroughput(databaseName: String): SMono[Map[String, String]]
+    def createDatabase(databaseName: String, metaData: Map[String, String]): SMono[Unit]
+    def deleteDatabase(databaseName: String): SMono[Unit]
+    def readAllContainers(databaseName: String): SFlux[String]
+    def createContainer(databaseName: String, containerName: String, containerProperties: Map[String, String]): SMono[Unit]
+    def deleteContainer(databaseName: String, containerName: String): SMono[Unit]
+    def readContainerMetadata(databaseName: String, containerName: String): SMono[Option[util.HashMap[String, String]]]
+    def readContainerThroughput(databaseName: String, containerName: String): SMono[Integer]
 
     object CosmosContainerProperties {
         val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"

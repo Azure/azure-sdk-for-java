@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosException
 import com.azure.cosmos.spark.catalog.{CosmosCatalogConflictException, CosmosCatalogException, CosmosCatalogNotFoundException}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.SparkSession
@@ -121,6 +120,9 @@ class CosmosCatalogBase
                     .get
                     .sparkCatalogClient
                     .readAllDatabases()
+                    .map(Array(_))
+                    .blockLast()
+                    .toArray
             })
     }
 
@@ -169,6 +171,7 @@ class CosmosCatalogBase
                         .get
                         .sparkCatalogClient
                         .readDatabaseThroughput(toCosmosDatabaseName(namespace.head))
+                        .block()
                         .asJava
                 } catch {
                     case _: CosmosCatalogNotFoundException =>
@@ -203,6 +206,7 @@ class CosmosCatalogBase
                         .get
                         .sparkCatalogClient
                         .createDatabase(databaseName, metadata.asScala.toMap)
+                        .block()
                 } catch {
                     case _: CosmosCatalogConflictException =>
                         throw new NamespaceAlreadyExistsException(namespace)
@@ -246,10 +250,11 @@ class CosmosCatalogBase
                         .get
                         .sparkCatalogClient
                         .deleteDatabase(toCosmosDatabaseName(namespace.head))
+                        .block()
                 })
             true
         } catch {
-            case e: CosmosException if isNotFound(e) =>
+            case _: CosmosCatalogNotFoundException =>
                 throw new NoSuchNamespaceException(namespace)
         }
     }
@@ -277,6 +282,8 @@ class CosmosCatalogBase
                             .sparkCatalogClient
                             .readAllContainers(databaseName)
                             .map(containerId => getContainerIdentifier(namespace.head, containerId))
+                            .blockLast()
+                            .toList
                     })
 
             val tableIdentifiers = this.tryGetViewDefinitions(databaseName) match {
@@ -287,7 +294,7 @@ class CosmosCatalogBase
 
             tableIdentifiers.toArray
         } catch {
-            case e: CosmosException if isNotFound(e) =>
+            case _: CosmosCatalogNotFoundException =>
                 throw new NoSuchNamespaceException(namespace)
         }
     }
@@ -406,6 +413,7 @@ class CosmosCatalogBase
                         databaseName,
                         containerName,
                         containerProperties)
+                    .block()
             })
 
         val effectiveOptions = tableOptions ++ containerProperties
@@ -497,6 +505,7 @@ class CosmosCatalogBase
                     cosmosClientCacheItems(0).get
                         .sparkCatalogClient
                         .deleteContainer(databaseName, containerName))
+                        .block()
             true
         } catch {
             case _: CosmosCatalogNotFoundException => false
@@ -553,7 +562,11 @@ class CosmosCatalogBase
                 ))
             ))
             .to(cosmosClientCacheItems => {
-                cosmosClientCacheItems(0).get.sparkCatalogClient.readContainerMetadata(databaseName, containerName)
+                cosmosClientCacheItems(0)
+                    .get
+                    .sparkCatalogClient
+                    .readContainerMetadata(databaseName, containerName)
+                    .block()
             })
     }
     //scalastyle:on method.length
@@ -587,12 +600,6 @@ class CosmosCatalogBase
             case None => None
         }
     }
-
-    private def isNotFound(exception: CosmosException) =
-        exception.getStatusCode == 404
-
-    private def alreadyExists(exception: CosmosException) =
-        exception.getStatusCode == 409
 
     private def getContainerIdentifier(
                                           namespaceName: String,

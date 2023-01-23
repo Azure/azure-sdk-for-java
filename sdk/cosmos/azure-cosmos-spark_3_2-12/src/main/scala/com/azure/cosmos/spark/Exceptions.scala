@@ -39,8 +39,28 @@ private object Exceptions {
     }
   }
 
+  def isBadRequestException(throwable: Throwable): Boolean = {
+      throwable match {
+          case cosmosException: CosmosException =>
+              isBadRequestExceptionCore(cosmosException.getStatusCode)
+          case _ => false
+      }
+  }
+
+  def isResourceExistsException(throwable: Throwable): Boolean = {
+      throwable match {
+          case cosmosException: CosmosException =>
+              isResourceExistsException(cosmosException.getStatusCode)
+          case _ => false
+      }
+  }
+
   def isNotFoundExceptionCore(statusCode: Int, subStatusCode: Int): Boolean = {
       statusCode == CosmosConstants.StatusCodes.NotFound &&
         subStatusCode == 0
+  }
+
+  def isBadRequestExceptionCore(statusCode: Int): Boolean = {
+      statusCode == CosmosConstants.StatusCodes.BadRequest
   }
 }
