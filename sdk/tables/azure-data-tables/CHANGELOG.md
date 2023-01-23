@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Removed Reactor from synchronous clients
 
 ## 12.3.7 (2023-01-11)
 
