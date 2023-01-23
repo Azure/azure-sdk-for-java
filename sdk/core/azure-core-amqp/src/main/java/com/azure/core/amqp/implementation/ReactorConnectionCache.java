@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 
-public final class ReactorConnectionCache<C extends ReactorConnection> implements Disposable {
+public final class ReactorConnectionCache<T extends ReactorConnection> implements Disposable {
     private static final AmqpException TERMINATED_ERROR = new AmqpException(false, "Connection recovery support is terminated.", null);
     private static final String TRY_COUNT_KEY = "tryCount";
     private final String fullyQualifiedNamespace;
@@ -31,12 +31,12 @@ public final class ReactorConnectionCache<C extends ReactorConnection> implement
     private final AmqpRetryOptions retryOptions;
     private final AmqpErrorContext errorContext;
     private final ClientLogger logger;
-    private final Mono<C> createOrGetCachedConnection;
+    private final Mono<T> createOrGetCachedConnection;
     // Note: The only reason to have below 'currentConnection' is to close the cached Connection internally
     // upon 'ReactorConnectionCache' termination. We must never expose 'currentConnection' variable to
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
-    private volatile C currentConnection;
+    private volatile T currentConnection;
     private volatile boolean terminated;
 
     /**
@@ -52,7 +52,7 @@ public final class ReactorConnectionCache<C extends ReactorConnection> implement
      * @param retryPolicy the retry configuration to use to obtain a new active connection.
      * @param loggingContext the logger context.
      */
-    public ReactorConnectionCache(Supplier<C> connectionSupplier,
+    public ReactorConnectionCache(Supplier<T> connectionSupplier,
         String fullyQualifiedNamespace,
         String entityPath,
         AmqpRetryPolicy retryPolicy,
@@ -68,7 +68,7 @@ public final class ReactorConnectionCache<C extends ReactorConnection> implement
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
         this.logger = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
         Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
-        final Mono<C> newConnection = Mono.fromSupplier(() -> {
+        final Mono<T> newConnection = Mono.fromSupplier(() -> {
             if (terminated) {
                 logger.info("Connection recovery support is terminated, dropping the request for new connection.");
                 throw TERMINATED_ERROR;
@@ -92,9 +92,9 @@ public final class ReactorConnectionCache<C extends ReactorConnection> implement
                     });
             })
             .retryWhen(retryWhenSpec(retryPolicy))
-            .<C>handle((c, sink) -> {
+            .<T>handle((c, sink) -> {
                 @SuppressWarnings("unchecked")
-                final C connection = (C) c;
+                final T connection = (T) c;
                 currentConnection = connection;
                 if (terminated) {
                     connection.closeAsync(closeSignal("Connection recovery support is terminated.")).subscribe();
@@ -123,7 +123,7 @@ public final class ReactorConnectionCache<C extends ReactorConnection> implement
      *
      * @return a Mono that emits active connection.
      */
-    public Mono<C> get() {
+    public Mono<T> get() {
         return createOrGetCachedConnection;
     }
 
