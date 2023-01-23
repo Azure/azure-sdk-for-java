@@ -6,7 +6,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -300,12 +299,11 @@ public final class TableClient {
         final TableProperties properties = new TableProperties().setTableName(tableName);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
-        Callable<Response<TableItem>> createTableOp = () -> {
-            return new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
-                null,
-                ResponseFormat.RETURN_NO_CONTENT, null, contextValue),
-                ModelHelper.createItem(new TableResponseProperties().setTableName(tableName)));
-        };
+        Callable<Response<TableItem>> createTableOp = () ->
+            new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
+            null,
+            ResponseFormat.RETURN_NO_CONTENT, null, contextValue),
+            ModelHelper.createItem(new TableResponseProperties().setTableName(tableName)));
 
         ScheduledFuture<Response<TableItem>> scheduledFuture =
             scheduler.schedule(createTableOp, IMMEDIATELY, TimeUnit.SECONDS);
@@ -370,11 +368,10 @@ public final class TableClient {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
-        Callable<Response<Void>> deleteTableOp = () -> {
-            return new SimpleResponse<>(tablesImplementation.getTables().deleteWithResponse(
-                tableName, null, contextValue),
-                null);
-        };
+        Callable<Response<Void>> deleteTableOp = () ->
+            new SimpleResponse<>(tablesImplementation.getTables().deleteWithResponse(
+            tableName, null, contextValue),
+            null);
 
         ScheduledFuture<Response<Void>> scheduledFuture =
             scheduler.schedule(deleteTableOp, IMMEDIATELY, TimeUnit.SECONDS);
@@ -389,7 +386,8 @@ public final class TableClient {
     }
 
     private Response<Void> swallow404Exception(Throwable ex) {
-        if (ex instanceof TableServiceException &&
+        if (ex instanceof TableServiceException
+            &&
             ((TableServiceException) ex).getResponse().getStatusCode() == 404) {
             return new SimpleResponse<>(
                 ((TableServiceException) ex).getResponse().getRequest(),
@@ -397,7 +395,7 @@ public final class TableClient {
                 ((TableServiceException) ex).getResponse().getHeaders(),
                 null);
         } else {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -881,11 +879,9 @@ public final class TableClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null"));
         }
 
-        Callable<Response<Void>> deleteEntityOp = () -> {
-            return tablesImplementation.getTables().deleteEntityWithResponse(
-                tableName, escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), finalETag, null,
-                null, null, contextValue);
-        };
+        Callable<Response<Void>> deleteEntityOp = () -> tablesImplementation.getTables().deleteEntityWithResponse(
+            tableName, escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), finalETag, null,
+            null, null, contextValue);
 
         ScheduledFuture<Response<Void>> scheduledFuture = scheduler.schedule(deleteEntityOp, IMMEDIATELY, TimeUnit.SECONDS);
 
@@ -976,11 +972,9 @@ public final class TableClient {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
-        Callable<PagedIterable<TableEntity>> listEntitiesOp = () -> {
-            return new PagedIterable<>(
-                () -> listEntitiesFirstPage(context, options, TableEntity.class),
-                token -> listEntitiesNextPage(token, context, options, TableEntity.class));
-        };
+        Callable<PagedIterable<TableEntity>> listEntitiesOp = () -> new PagedIterable<>(
+            () -> listEntitiesFirstPage(context, options, TableEntity.class),
+            token -> listEntitiesNextPage(token, context, options, TableEntity.class));
 
         ScheduledFuture<PagedIterable<TableEntity>> scheduledFuture =
             scheduler.schedule(listEntitiesOp, IMMEDIATELY, TimeUnit.SECONDS);
@@ -1038,7 +1032,7 @@ public final class TableClient {
 
         final ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> response =
             tablesImplementation.getTables().queryEntitiesWithResponse(tableName, null, null,
-            nextPartitionKey, nextRowKey, queryOptions, context);
+            nextPartitionKey, nextRowKey, queryOptions, contextValue);
 
         final TableEntityQueryResponse tablesQueryEntityResponse = response.getValue();
 
@@ -1734,12 +1728,10 @@ public final class TableClient {
         }
 
         Callable<Response<TableTransactionResult>> submitTransactionOp = () -> {
-            BiConsumer<TransactionalBatchRequestBody, RequestActionPair> accumulator = (body, pair) -> {
+            BiConsumer<TransactionalBatchRequestBody, RequestActionPair> accumulator = (body, pair) ->
                 body.addChangeOperation(new TransactionalBatchSubRequest(pair.getAction(), pair.getRequest()));
-            };
-            BiConsumer<TransactionalBatchRequestBody, TransactionalBatchRequestBody> combiner = (body1, body2) -> {
-                body2.getContents().forEach( req -> body1.addChangeOperation((TransactionalBatchSubRequest) req));
-            };
+            BiConsumer<TransactionalBatchRequestBody, TransactionalBatchRequestBody> combiner = (body1, body2) -> 
+                body2.getContents().forEach(req -> body1.addChangeOperation((TransactionalBatchSubRequest) req));
             TransactionalBatchRequestBody requestBody =
                 operations.stream()
                     .map(op -> new RequestActionPair(op.prepareRequest(transactionalBatchClient), op))
