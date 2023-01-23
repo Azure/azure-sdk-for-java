@@ -4,14 +4,12 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.util.Objects;
 
 /**
  * A signed identifier.
  */
-@JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
 public final class TableSignedIdentifier {
     /*
