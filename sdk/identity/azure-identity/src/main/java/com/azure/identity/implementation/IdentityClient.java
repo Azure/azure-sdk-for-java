@@ -346,7 +346,7 @@ public class IdentityClient extends IdentityClientBase {
         try {
             String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
             if (!CoreUtils.isNullOrEmpty(tenant)) {
-                azdCommand.append(" --tenant ").append(tenant);
+                azdCommand.append(" --tenant-id ").append(tenant);
             }
         } catch (ClientAuthenticationException e) {
             return Mono.error(e);
