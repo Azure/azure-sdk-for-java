@@ -554,6 +554,9 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
+            // wait until the process completes or the timeout (10 sec) is reached.
+            process.waitFor(10, TimeUnit.SECONDS);
+
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
@@ -591,7 +594,7 @@ public abstract class IdentityClientBase {
                     .toOffsetDateTime()
                     .withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
 
