@@ -8,6 +8,9 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -20,6 +23,10 @@ import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+
+// TODO: Use slf4j Logger and LoggerFactory instead of the core ClientLogger?
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -97,6 +104,11 @@ public class CosmosClientBuilder implements
     TokenCredentialTrait<CosmosClientBuilder>,
     AzureKeyCredentialTrait<CosmosClientBuilder>,
     EndpointTrait<CosmosClientBuilder> {
+
+    private static final ClientLogger LOGGER = new ClientLogger(CosmosClientBuilder.class);
+    // TODO: use LoggerFactory instead of core SDK ClientLogger?
+    // private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
+
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -829,9 +841,15 @@ public class CosmosClientBuilder implements
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
+
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosAsyncClient(this);
+        CosmosAsyncClient client = new CosmosAsyncClient(this);
+
+        logStartupInfo(stopwatch);
+        return client;
     }
 
     /**
@@ -840,10 +858,35 @@ public class CosmosClientBuilder implements
      * @return CosmosClient
      */
     public CosmosClient buildClient() {
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
 
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosClient(this);
+        CosmosClient client = new CosmosClient(this);
+
+        logStartupInfo(stopwatch);
+        return client;
+    }
+
+    private void logStartupInfo(StopWatch stopwatch) {
+        stopwatch.stop();
+
+        // TODO: do we need special flag/config option to log or not the startup config and time?
+
+        if (LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+            long time = stopwatch.getTime();
+            // NOTE: RxDocumentClientImpl logs some of this info as well, but not all of it and can't calculate overall
+            // startup time since there are calls happening both before and after RxDocumentClientImpl is initialized.
+            // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
+            LOGGER.info("Cosmos Client started up in [{}] ms with the following configuration: " +
+                "serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], consistencyLevel [{}], " +
+                "userSuffix [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
+                "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}].",
+                time, getEndpoint(), getPreferredRegions(), getConnectionPolicy(), getConsistencyLevel(),
+                getUserAgentSuffix(), isContentResponseOnWriteEnabled(), isSessionCapturingOverrideEnabled(),
+                isConnectionSharingAcrossClientsEnabled(), isClientTelemetryEnabled());
+        }
     }
 
     //  Connection policy has to be built before it can be used by this builder
