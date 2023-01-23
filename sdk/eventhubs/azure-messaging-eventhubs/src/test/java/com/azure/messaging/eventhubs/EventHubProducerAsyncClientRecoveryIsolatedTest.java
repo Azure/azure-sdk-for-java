@@ -17,7 +17,7 @@ import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorExecutor;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.RecoverableReactorConnection;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
@@ -138,7 +138,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         final int sessionsCnt = 1;
         final int[] linksPerSession = new int[] { 2 };
         try (MockEndpoint endpoint = createMockEndpoint(sessionsCnt, linksPerSession)) {
-            // The EventHubReactorAmqpConnection connection supplier for RecoverableReactorConnection.
+            // The EventHubReactorAmqpConnection connection supplier for ReactorConnectionCache.
             final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
                 private int invocationCount = -1;
                 @Override
@@ -182,8 +182,8 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             final int eventsCount = 4;
             final Flux<EventData> eventsToSend = createEventsToSend(eventsCount);
 
-            final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection = createRecoverableConnection(connectionSupplier);
-            final EventHubProducerAsyncClient producer = createProducerAsyncClient(recoverableConnection, false);
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final EventHubProducerAsyncClient producer = createProducerAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use the first AmqpSendLink, but upon transient-error
                 // on the first link, the retry obtains and uses second AmqpSendLink.
@@ -204,7 +204,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 Assertions.assertEquals(eventsCount, messagesSendInSession0Link1.size());
             } finally {
                 producer.close();
-                recoverableConnection.dispose();
+                connectionCache.dispose();
             }
         }
     }
@@ -216,7 +216,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         final int sessionsCnt = 1;
         final int[] linksPerSession = new int[] { 2 };
         try (MockEndpoint endpoint = createMockEndpoint(sessionsCnt, linksPerSession)) {
-            // The EventHubReactorAmqpConnection connection supplier for RecoverableReactorConnection.
+            // The EventHubReactorAmqpConnection connection supplier for ReactorConnectionCache.
             final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
                 private int invocationCount = -1;
                 @Override
@@ -263,8 +263,8 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             final int eventsCount = 4;
             final Flux<EventData> eventsToSend = createEventsToSend(eventsCount);
 
-            final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection = createRecoverableConnection(connectionSupplier);
-            final EventHubProducerAsyncClient producer = createProducerAsyncClient(recoverableConnection, false);
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final EventHubProducerAsyncClient producer = createProducerAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use the first AmqpSendLink, but upon transient-error
                 // on the first link, the retry obtains second AmqpSendLink, which has non-transient-error.
@@ -289,7 +289,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 verifyNoInteractions(onClientClosed);
             } finally {
                 producer.close();
-                recoverableConnection.dispose();
+                connectionCache.dispose();
             }
         }
     }
@@ -301,7 +301,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         final int sessionsCnt = 2;
         final int[] linksPerSession = new int[] { 1, 1 };
         try (MockEndpoint endpoint = createMockEndpoint(sessionsCnt, linksPerSession)) {
-            // The EventHubReactorAmqpConnection connection supplier for RecoverableReactorConnection.
+            // The EventHubReactorAmqpConnection connection supplier for ReactorConnectionCache.
             final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
                 private int invocationCount = -1;
                 @Override
@@ -347,8 +347,8 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             final int eventsCount = 4;
             final Flux<EventData> eventsToSend = createEventsToSend(eventsCount);
 
-            final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection = createRecoverableConnection(connectionSupplier);
-            final EventHubProducerAsyncClient producer = createProducerAsyncClient(recoverableConnection, false);
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final EventHubProducerAsyncClient producer = createProducerAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but upon
                 // transient-error on the first session, the retry obtains second Session and uses AmqpSendLink in it.
@@ -369,7 +369,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 Assertions.assertEquals(eventsCount, messagesSendInSession1Link0.size());
             } finally {
                 producer.close();
-                recoverableConnection.dispose();
+                connectionCache.dispose();
             }
         }
     }
@@ -381,7 +381,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         final int sessionsCnt = 2;
         final int[] linksPerSession = new int[] { 1, 1 };
         try (MockEndpoint endpoint = createMockEndpoint(sessionsCnt, linksPerSession)) {
-            // The EventHubReactorAmqpConnection connection supplier for RecoverableReactorConnection.
+            // The EventHubReactorAmqpConnection connection supplier for ReactorConnectionCache.
             final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
                 private int invocationCount = -1;
                 @Override
@@ -428,8 +428,8 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             final int eventsCount = 4;
             final Flux<EventData> eventsToSend = createEventsToSend(eventsCount);
 
-            final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection = createRecoverableConnection(connectionSupplier);
-            final EventHubProducerAsyncClient producer = createProducerAsyncClient(recoverableConnection, false);
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final EventHubProducerAsyncClient producer = createProducerAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but upon
                 // transient-error on the first session, the retry obtains second Session which has non-transient error.
@@ -454,7 +454,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 verifyNoInteractions(onClientClosed);
             } finally {
                 producer.close();
-                recoverableConnection.dispose();
+                connectionCache.dispose();
             }
         }
     }
@@ -466,7 +466,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         final int sessionsCnt = 3;
         final int[] linksPerSession = new int[] { 1, 1, 1 };
         try (MockEndpoint endpoint = createMockEndpoint(sessionsCnt, linksPerSession)) {
-            // The EventHubReactorAmqpConnection connection supplier for RecoverableReactorConnection.
+            // The EventHubReactorAmqpConnection connection supplier for ReactorConnectionCache.
             final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
                 private int invocationCount = -1;
 
@@ -523,8 +523,8 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             final Flux<EventData> eventsToSend = createEventsToSend(eventsCount);
             final EventData eventToSend = createEventToSend();
 
-            final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection = createRecoverableConnection(connectionSupplier);
-            final EventHubProducerAsyncClient producer = createProducerAsyncClient(recoverableConnection, false);
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final EventHubProducerAsyncClient producer = createProducerAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but fails
                 // with a non-transient-error on the AmqpSendLink.
@@ -568,7 +568,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 verify(endpoint.getAmqpSendLink(2, 0), times(1)).send(any(Message.class));
             } finally {
                 producer.close();
-                recoverableConnection.dispose();
+                connectionCache.dispose();
             }
         }
     }
@@ -585,7 +585,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
 
         try (MockEndpoints endpoints = createMockEndpoints(sessionLinkCountList)) {
             final AtomicReference<MockEndpoint> currentEndpoint = new AtomicReference<>();
-            // The EventHubReactorAmqpConnection connection supplier for RecoverableReactorConnection.
+            // The EventHubReactorAmqpConnection connection supplier for ReactorConnectionCache.
             final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
                 private int endpointIndex = -1;
 
@@ -648,8 +648,8 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             final int eventsCount = 4;
             final Flux<EventData> eventsToSend = createEventsToSend(eventsCount);
 
-            final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection = createRecoverableConnection(connectionSupplier);
-            final EventHubProducerAsyncClient producer = createProducerAsyncClient(recoverableConnection, false);
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final EventHubProducerAsyncClient producer = createProducerAsyncClient(connectionCache, false);
             try {
                 try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                     verifier.create(() -> producer.send(eventsToSend))
@@ -663,7 +663,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 verify(endpoints.get(3).getAmqpSendLink(0, 0), times(1)).send(anyList());
             } finally {
                 producer.close();
-                recoverableConnection.dispose();
+                connectionCache.dispose();
             }
         }
     }
@@ -677,14 +677,14 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         return MockEndpoints.create(EVENT_HUB_NAME, retryOptions, sessionLinkCountList);
     }
 
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> createRecoverableConnection(
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> createConnectionCache(
         Supplier<EventHubReactorAmqpConnection> connectionSupplier) {
-        return new RecoverableReactorConnection<>(connectionSupplier,
+        return new ReactorConnectionCache<>(connectionSupplier,
             FQDN, EVENT_HUB_NAME, getRetryPolicy(retryOptions), new HashMap<>());
     }
 
     private EventHubProducerAsyncClient createProducerAsyncClient(
-        RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection, boolean isSharedConnection) {
+            ReactorConnectionCache<EventHubReactorAmqpConnection> recoverableConnection, boolean isSharedConnection) {
         return new EventHubProducerAsyncClient(FQDN, EVENT_HUB_NAME, recoverableConnection, retryOptions,
             messageSerializer, Schedulers.parallel(), isSharedConnection, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);

@@ -14,9 +14,9 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.RecoverableReactorConnection;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
@@ -198,7 +198,7 @@ public class EventHubClientBuilder implements
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> sharedRecoverableConnection;
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> sharedConnectionCache;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
@@ -820,20 +820,20 @@ public class EventHubClientBuilder implements
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection;
+        final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
-                if (sharedRecoverableConnection == null) {
-                    sharedRecoverableConnection = buildRecoverableConnection(messageSerializer, meter);
+                if (sharedConnectionCache == null) {
+                    sharedConnectionCache = buildConnectionCache(messageSerializer, meter);
                 }
             }
 
-            recoverableConnection = sharedRecoverableConnection;
+            connectionCache = sharedConnectionCache;
 
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            recoverableConnection = buildRecoverableConnection(messageSerializer, meter);
+            connectionCache = buildConnectionCache(messageSerializer, meter);
         }
 
         String identifier;
@@ -844,7 +844,7 @@ public class EventHubClientBuilder implements
             identifier = UUID.randomUUID().toString();
         }
 
-        return new EventHubAsyncClient(recoverableConnection, messageSerializer, scheduler,
+        return new EventHubAsyncClient(connectionCache, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose, identifier, meter, EventHubsTracer.getDefaultTracer());
     }
 
@@ -896,11 +896,11 @@ public class EventHubClientBuilder implements
             }
 
             LOGGER.info("No more open clients, closing shared connection.");
-            if (sharedRecoverableConnection != null) {
-                sharedRecoverableConnection.dispose();
-                sharedRecoverableConnection = null;
+            if (sharedConnectionCache != null) {
+                sharedConnectionCache.dispose();
+                sharedConnectionCache = null;
             } else {
-                LOGGER.warning("Shared EventHub RecoverableConnection was already disposed.");
+                LOGGER.warning("Shared EventHub ConnectionCache was already disposed.");
             }
         }
     }
@@ -910,7 +910,7 @@ public class EventHubClientBuilder implements
             clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> buildRecoverableConnection(MessageSerializer messageSerializer, Meter meter) {
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> buildConnectionCache(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
@@ -944,7 +944,7 @@ public class EventHubClientBuilder implements
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
 
-        return new RecoverableReactorConnection<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
+        return new ReactorConnectionCache<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
     }
 
     private ConnectionOptions getConnectionOptions() {

@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 
-public final class RecoverableReactorConnection<C extends ReactorConnection> implements Disposable {
+public final class ReactorConnectionCache<C extends ReactorConnection> implements Disposable {
     private static final AmqpException TERMINATED_ERROR = new AmqpException(false, "Connection recovery support is terminated.", null);
     private static final String TRY_COUNT_KEY = "tryCount";
     private final String fullyQualifiedNamespace;
@@ -33,14 +33,14 @@ public final class RecoverableReactorConnection<C extends ReactorConnection> imp
     private final ClientLogger logger;
     private final Mono<C> createOrGetCachedConnection;
     // Note: The only reason to have below 'currentConnection' is to close the cached Connection internally
-    // upon 'RecoverableReactorConnection' termination. We must never expose 'currentConnection' variable to
+    // upon 'ReactorConnectionCache' termination. We must never expose 'currentConnection' variable to
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile C currentConnection;
     private volatile boolean terminated;
 
     /**
-     * Create a RecoverableReactorConnection that is responsible for obtaining a connection, caching it,
+     * Create a ReactorConnectionCache that is responsible for obtaining a connection, caching it,
      * and replaying to subscribers as long as the cached connection is not closed. Upon downstream request
      * for a connection, if it finds that the cached connection is closed, then cache is refreshed with
      * new connection.
@@ -52,16 +52,16 @@ public final class RecoverableReactorConnection<C extends ReactorConnection> imp
      * @param retryPolicy the retry configuration to use to obtain a new active connection.
      * @param loggingContext the logger context.
      */
-    public RecoverableReactorConnection(Supplier<C> connectionSupplier,
-                                        String fullyQualifiedNamespace,
-                                        String entityPath,
-                                        AmqpRetryPolicy retryPolicy,
-                                        Map<String, Object> loggingContext) {
+    public ReactorConnectionCache(Supplier<C> connectionSupplier,
+        String fullyQualifiedNamespace,
+        String entityPath,
+        AmqpRetryPolicy retryPolicy,
+        Map<String, Object> loggingContext) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         // Note: FQDN, (to an extent) entity-path are generic enough, but if we find more connection description
         // parameters that are non-generic, i.e., specific to individual messaging services, then consider creating
         // dedicated POJO types to pass around connection description parameters in corresponding libraries rather
-        // than polluting shared 'RecoverableReactorConnection' type.
+        // than polluting shared 'ReactorConnectionCache' type.
         this.entityPath = entityPath;
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.retryOptions = retryPolicy.getRetryOptions();

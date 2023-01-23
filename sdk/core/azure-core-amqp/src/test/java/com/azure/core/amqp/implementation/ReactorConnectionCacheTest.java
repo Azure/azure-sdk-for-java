@@ -40,7 +40,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class RecoverableReactorConnectionTest {
+public class ReactorConnectionCacheTest {
     private static final String FQDN = "contoso-shopping.servicebus.windows.net";
     private static final String ENTITY_PATH = "orders";
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
@@ -64,10 +64,10 @@ public class RecoverableReactorConnectionTest {
     @Test
     public void shouldGetConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
             connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
-            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The request (subscription) for connection should get a connection.
             StepVerifier.create(connectionMono, 0)
                 .thenRequest(1)
@@ -83,18 +83,18 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.assertInvocationCount(1);
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.dispose();
+            connectionCache.dispose();
         }
     }
 
     @Test
     public void shouldCacheConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
             connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
-            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) for connection populates the cache.
             StepVerifier.create(connectionMono, 0)
                 .thenRequest(1)
@@ -125,18 +125,18 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.assertInvocationCount(1);
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.dispose();
+            connectionCache.dispose();
         }
     }
 
     @Test
     public void shouldRefreshCacheOnCompletionOfCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
             connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
-            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) for connection populates the cache.
             StepVerifier.create(connectionMono, 0)
                 .thenRequest(1)
@@ -173,18 +173,18 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.assertInvocationCount(2);
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.dispose();
+            connectionCache.dispose();
         }
     }
 
     @Test
     public void shouldRefreshCacheOnErrorInCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
             connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
-            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) for connection populates the cache.
             StepVerifier.create(connectionMono, 0)
                 .thenRequest(1)
@@ -222,18 +222,18 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.assertInvocationCount(2);
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.dispose();
+            connectionCache.dispose();
         }
     }
 
     @Test
     public void shouldBubbleUpNonRetriableError() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
             connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final Throwable nonRetriableError = new Throwable("non-retriable");
         try {
-            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) fails with non-retriable error.
             StepVerifier.create(connectionMono, 0)
                 .thenRequest(1)
@@ -260,18 +260,18 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.assertInvocationCount(2);
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.dispose();
+            connectionCache.dispose();
         }
     }
 
     @Test
     public void shouldDisposeConnectionUponTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
             connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final ReactorConnection[] c = new ReactorConnection[1];
         try {
-            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
             StepVerifier.create(connectionMono, 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
@@ -287,7 +287,7 @@ public class RecoverableReactorConnectionTest {
             Assertions.assertFalse(c[0].isDisposed());
         } finally {
             // Connection support is terminated, and such a termination...
-            recoverableConnection.dispose();
+            connectionCache.dispose();
         }
 
         try {
@@ -301,12 +301,12 @@ public class RecoverableReactorConnectionTest {
     @Test
     public void shouldNotProvideConnectionAfterTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
             connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         // Terminating the recovery support.
-        recoverableConnection.dispose();
+        connectionCache.dispose();
         try {
-            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+            final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // Attempt to obtain a connection post the termination of recovery support will fail.
             StepVerifier.create(connectionMono, 0)
                 .thenRequest(1)
