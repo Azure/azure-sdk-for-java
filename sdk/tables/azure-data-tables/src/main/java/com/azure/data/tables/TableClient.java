@@ -6,6 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -66,6 +67,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -75,6 +77,7 @@ import java.util.stream.Collectors;
 
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
+import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
 /**
@@ -242,7 +245,7 @@ public final class TableClient {
     }
 
     private Long setTimeout(Duration timeout) {
-        return timeout != null ? timeout.toMillis() : -1;
+        return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
     }
 
     /**
@@ -298,24 +301,23 @@ public final class TableClient {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
         Callable<Response<TableItem>> createTableOp = () -> {
-            try {
-                return new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
-                    null,
-                    ResponseFormat.RETURN_NO_CONTENT, null, contextValue),
-                    ModelHelper.createItem(new TableResponseProperties().setTableName(tableName)));
-            } catch (RuntimeException ex) {
-                throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
-            }
+            return new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
+                null,
+                ResponseFormat.RETURN_NO_CONTENT, null, contextValue),
+                ModelHelper.createItem(new TableResponseProperties().setTableName(tableName)));
         };
 
         ScheduledFuture<Response<TableItem>> scheduledFuture =
             scheduler.schedule(createTableOp, IMMEDIATELY, TimeUnit.SECONDS);
 
-        scheduler.shutdown();
+        //scheduler.shutdown();
         try {
-            return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            Response<TableItem> response = scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+            scheduler.shutdown();
+            return response;
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex)); //TODO: Test this error being thrown
+            scheduler.shutdown();
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex)); //TODO: Test this error being thrown
         }
     }
 
@@ -381,18 +383,21 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            if (ex instanceof TableServiceException
-                &&
-                ((TableServiceException) ex).getResponse().getStatusCode() == 404) {
-                return new SimpleResponse<>(
-                    ((TableServiceException) ex).getResponse().getRequest(),
-                    ((TableServiceException) ex).getResponse().getStatusCode(),
-                    ((TableServiceException) ex).getResponse().getHeaders(),
-                    null);
-            }  else {
-                throw logger.logExceptionAsError(
-                    new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
-            }
+            Throwable except = mapThrowableToTableServiceException(ex);
+            return swallow404Exception(except);
+        }
+    }
+
+    private Response<Void> swallow404Exception(Throwable ex) {
+        if (ex instanceof TableServiceException &&
+            ((TableServiceException) ex).getResponse().getStatusCode() == 404) {
+            return new SimpleResponse<>(
+                ((TableServiceException) ex).getResponse().getRequest(),
+                ((TableServiceException) ex).getResponse().getStatusCode(),
+                ((TableServiceException) ex).getResponse().getHeaders(),
+                null);
+        } else {
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -486,7 +491,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -599,7 +604,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -760,7 +765,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -888,7 +893,8 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            Throwable except = mapThrowableToTableServiceException(ex);
+            return swallow404Exception(except);
         }
     }
 
@@ -983,7 +989,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -1226,7 +1232,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -1318,7 +1324,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -1471,7 +1477,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -1751,11 +1757,22 @@ public final class TableClient {
         ScheduledFuture<Response<TableTransactionResult>> scheduledFuture =
             scheduler.schedule(submitTransactionOp, IMMEDIATELY, TimeUnit.SECONDS);
 
+
         scheduler.shutdown();
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
-        } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+        }
+        catch (Exception ex) {
+            Exception exception = ex;
+            if (exception instanceof ExecutionException) {
+                exception = (Exception) exception.getCause();
+            }
+            if (exception.getCause() instanceof TableTransactionFailedException) {
+                throw logger.logExceptionAsError((TableTransactionFailedException) exception.getCause());
+            } else {
+                throw logger.logExceptionAsError((RuntimeException)(mapThrowableToTableServiceException(exception)));
+            }
+
         }
     }
 

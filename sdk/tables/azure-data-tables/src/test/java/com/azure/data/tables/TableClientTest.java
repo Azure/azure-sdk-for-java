@@ -95,6 +95,7 @@ public class TableClientTest extends TableClientTestBase {
             .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
             .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
+            .additionallyAllowedTenants("*")
             .build();
 
         final TableClient tableClient2 =
@@ -1132,4 +1133,7 @@ public class TableClientTest extends TableClientTestBase {
             assertEquals(permissions, accessPolicy.getPermissions());
         }
     }
+
+    // Testing for correct errors thrown
+
 }

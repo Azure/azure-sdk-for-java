@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The retention policy. */
+@JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
 public final class RetentionPolicy {
     /*

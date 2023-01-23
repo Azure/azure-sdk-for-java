@@ -255,7 +255,7 @@ public final class TableServiceClient {
         try {
             return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
     }
 
@@ -329,7 +329,7 @@ public final class TableServiceClient {
         try {
             return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
     }
 
@@ -419,7 +419,7 @@ public final class TableServiceClient {
                     httpResponse.getHeaders(), null);
             }
 
-            throw logger.logExceptionAsError(new RuntimeException(exception));
+            throw logger.logExceptionAsError((RuntimeException) exception);
         }
     }
 
@@ -489,7 +489,7 @@ public final class TableServiceClient {
         try {
             return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
     }
 
@@ -637,7 +637,7 @@ public final class TableServiceClient {
         try {
             return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
     }
 
@@ -797,7 +797,7 @@ public final class TableServiceClient {
         try {
             return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
     }
 
@@ -931,7 +931,7 @@ public final class TableServiceClient {
         try {
             return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
         }
     }
 
@@ -962,6 +962,6 @@ public final class TableServiceClient {
             geoReplication.getLastSyncTime());
     }
     private Long setTimeout(Duration timeout) {
-        return timeout != null ? timeout.toMillis() : -1;
+        return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
     }
 }

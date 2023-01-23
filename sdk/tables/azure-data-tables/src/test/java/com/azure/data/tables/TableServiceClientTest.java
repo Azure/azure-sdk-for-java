@@ -96,6 +96,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
             .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
             .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
+            .additionallyAllowedTenants("*")
             .build();
 
         final TableServiceClient tableServiceClient =

@@ -6,9 +6,12 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The properties for the table query response. */
+@JacksonXmlRootElement(localName = "TableQueryResponse")
 @Fluent
 public final class TableQueryResponse {
     /*

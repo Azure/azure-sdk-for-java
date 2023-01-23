@@ -92,7 +92,10 @@ public final class TableUtils {
     public static Throwable mapThrowableToTableServiceException(Throwable throwable) {
         if (throwable instanceof TableServiceErrorException) {
             return toTableServiceException((TableServiceErrorException) throwable);
-        } else {
+        } else if (throwable.getCause() instanceof TableServiceErrorException) {
+            return toTableServiceException((TableServiceErrorException) throwable.getCause());
+        }
+        else {
             return throwable;
         }
     }

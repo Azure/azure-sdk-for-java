@@ -109,6 +109,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
             .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
+            .additionallyAllowedTenants("*")
             .build();
 
         final TableAsyncClient tableClient2 =

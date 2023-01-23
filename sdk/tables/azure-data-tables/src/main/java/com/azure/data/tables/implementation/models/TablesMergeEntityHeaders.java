@@ -9,9 +9,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /** The TablesMergeEntityHeaders model. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class TablesMergeEntityHeaders {
     /*
