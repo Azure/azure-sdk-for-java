@@ -294,7 +294,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
-        // TODO: Spawn thread to utilize timeout param
         Context contextValue = setContext(context);
         final TableProperties properties = new TableProperties().setTableName(tableName);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -315,7 +314,7 @@ public final class TableClient {
             return response;
         } catch (Exception ex) {
             scheduler.shutdown();
-            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex)); //TODO: Test this error being thrown
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
     }
 
@@ -363,7 +362,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
-        // TODO: Spawn thread to utilize timeout param
         Context contextValue = setContext(context);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
@@ -465,7 +463,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         Context contextValue = setContext(context);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
@@ -570,7 +567,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         Context contextValue = setContext(context);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
@@ -729,7 +725,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    boolean ifUnchanged, Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         Context contextValue = setContext(context);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
@@ -862,7 +857,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
                                                    Context context) {
-        // TODO: spawn thread to utilize timeout param
         return deleteEntityWithResponse(
             entity.getPartitionKey(), entity.getRowKey(), entity.getETag(), ifUnchanged, timeout, context);
     }
@@ -968,7 +962,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
@@ -1183,7 +1176,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
                                                        Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
         Context contextValue = setContext(context);
@@ -1295,7 +1287,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
         Context contextValue = setContext(context);
@@ -1422,7 +1413,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                         Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
         Context contextValue = setContext(context);
@@ -1678,7 +1668,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
-        // TODO: spawn thread to utilize timeout param
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
         Context contextValue = setContext(context);
@@ -1730,7 +1719,7 @@ public final class TableClient {
         Callable<Response<TableTransactionResult>> submitTransactionOp = () -> {
             BiConsumer<TransactionalBatchRequestBody, RequestActionPair> accumulator = (body, pair) ->
                 body.addChangeOperation(new TransactionalBatchSubRequest(pair.getAction(), pair.getRequest()));
-            BiConsumer<TransactionalBatchRequestBody, TransactionalBatchRequestBody> combiner = (body1, body2) -> 
+            BiConsumer<TransactionalBatchRequestBody, TransactionalBatchRequestBody> combiner = (body1, body2) ->
                 body2.getContents().forEach(req -> body1.addChangeOperation((TransactionalBatchSubRequest) req));
             TransactionalBatchRequestBody requestBody =
                 operations.stream()
