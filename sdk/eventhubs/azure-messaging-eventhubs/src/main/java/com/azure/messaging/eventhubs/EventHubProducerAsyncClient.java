@@ -10,7 +10,7 @@ import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RecoverableReactorConnection;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -176,7 +176,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection;
+    private final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
     private final AmqpRetryOptions retryOptions;
     private final EventHubsProducerInstrumentation instrumentation;
     private final MessageSerializer messageSerializer;
@@ -191,14 +191,14 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
+        ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
         Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
         String identifier, EventHubsProducerInstrumentation instrumentation) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
-        this.recoverableConnection = Objects.requireNonNull(recoverableConnection,
-            "'recoverableConnection' cannot be null.");
+        this.connectionCache = Objects.requireNonNull(connectionCache,
+            "'connectionCache' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -236,7 +236,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
         return instrumentation.getTracer().traceMono(
-            recoverableConnection.get().flatMap(connection -> connection.getManagementNode())
+            connectionCache.get().flatMap(connection -> connection.getManagementNode())
                 .flatMap(EventHubManagementNode::getEventHubProperties),
            "EventHubs.getEventHubProperties");
     }
@@ -262,7 +262,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         return instrumentation.getTracer().traceMono(
-            recoverableConnection.get().flatMap(connection -> connection.getManagementNode())
+            connectionCache.get().flatMap(connection -> connection.getManagementNode())
                 .flatMap(node -> node.getPartitionProperties(partitionId)),
             "EventHubs.getPartitionProperties");
     }
@@ -600,7 +600,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = entityPath;
 
-        return recoverableConnection
+        return connectionCache
             .get()
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions, identifier));
     }
@@ -618,7 +618,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (isSharedConnection) {
             onClientClose.run();
         } else {
-            recoverableConnection.dispose();
+            connectionCache.dispose();
         }
     }
 

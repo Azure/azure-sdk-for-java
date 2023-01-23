@@ -11,7 +11,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RecoverableReactorConnection;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestHistogram;
@@ -133,7 +133,7 @@ class EventHubConsumerAsyncClientTest {
     private Runnable onClientClosed;
 
     private EventHubConsumerAsyncClient consumer;
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection;
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
     private AutoCloseable mockCloseable;
 
     @BeforeAll
@@ -173,10 +173,10 @@ class EventHubConsumerAsyncClientTest {
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
+        connectionCache = new ReactorConnectionCache<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), "event-hub-name", getRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
 
-        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, recoverableConnection, messageSerializer,
+        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
     }
 
@@ -199,7 +199,7 @@ class EventHubConsumerAsyncClientTest {
     @Test
     void lastEnqueuedEventInformationIsNull() {
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            recoverableConnection, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false, onClientClosed,
+            connectionCache, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false, onClientClosed,
             CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
         final int numberOfEvents = 10;
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
@@ -223,7 +223,7 @@ class EventHubConsumerAsyncClientTest {
     void lastEnqueuedEventInformationCreated() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            recoverableConnection, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false, onClientClosed,
+            connectionCache, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, false, onClientClosed,
             CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
         final int numberOfEvents = 10;
         final ReceiveOptions receiveOptions = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
@@ -277,7 +277,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Scheduling on elastic to simulate a user passed in scheduler (this is the default in EventHubClientBuilder).
         final EventHubConsumerAsyncClient myConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            recoverableConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
+            connectionCache, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
         final Flux<PartitionEvent> eventsFlux = myConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
             .take(numberOfEvents);
@@ -313,7 +313,7 @@ class EventHubConsumerAsyncClientTest {
         final int numberOfEvents = 10;
 
         EventHubReactorAmqpConnection connection1 = mock(EventHubReactorAmqpConnection.class);
-        RecoverableReactorConnection<EventHubReactorAmqpConnection> eventHubConnection = new RecoverableReactorConnection<>(
+        ReactorConnectionCache<EventHubReactorAmqpConnection> eventHubConnection = new ReactorConnectionCache<>(
             () -> connection1, HOSTNAME, EVENT_HUB_NAME, getRetryPolicy(retryOptions), new HashMap<>());
 
         when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
@@ -548,7 +548,7 @@ class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         EventHubReactorAmqpConnection connection1 = mock(EventHubReactorAmqpConnection.class);
-        RecoverableReactorConnection<EventHubReactorAmqpConnection> eventHubConnection = new RecoverableReactorConnection<>(
+        ReactorConnectionCache<EventHubReactorAmqpConnection> eventHubConnection = new ReactorConnectionCache<>(
             () -> connection1, HOSTNAME, EVENT_HUB_NAME, getRetryPolicy(retryOptions), new HashMap<>());
 
 
@@ -627,7 +627,7 @@ class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         EventHubReactorAmqpConnection connection1 = mock(EventHubReactorAmqpConnection.class);
-        RecoverableReactorConnection<EventHubReactorAmqpConnection> eventHubConnection = new RecoverableReactorConnection<>(
+        ReactorConnectionCache<EventHubReactorAmqpConnection> eventHubConnection = new ReactorConnectionCache<>(
             () -> connection1, HOSTNAME, EVENT_HUB_NAME, getRetryPolicy(retryOptions), new HashMap<>());
 
         when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
@@ -703,7 +703,7 @@ class EventHubConsumerAsyncClientTest {
     void doesNotCloseSharedConnection() {
         // Arrange
         EventHubReactorAmqpConnection connection1 = mock(EventHubReactorAmqpConnection.class);
-        RecoverableReactorConnection<EventHubReactorAmqpConnection> eventHubConnection = new RecoverableReactorConnection<>(
+        ReactorConnectionCache<EventHubReactorAmqpConnection> eventHubConnection = new ReactorConnectionCache<>(
             () -> connection1, HOSTNAME, EVENT_HUB_NAME, getRetryPolicy(retryOptions), new HashMap<>());
         EventHubConsumerAsyncClient sharedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, true, onClientClosed, CLIENT_IDENTIFIER,
@@ -726,7 +726,7 @@ class EventHubConsumerAsyncClientTest {
     void closesDedicatedConnection() {
         // Arrange
         @SuppressWarnings("unchecked")
-        RecoverableReactorConnection<EventHubReactorAmqpConnection> hubConnection = mock(RecoverableReactorConnection.class);
+        ReactorConnectionCache<EventHubReactorAmqpConnection> hubConnection = mock(ReactorConnectionCache.class);
         EventHubConsumerAsyncClient dedicatedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             hubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
@@ -749,7 +749,7 @@ class EventHubConsumerAsyncClientTest {
         TestMeter meter = new TestMeter();
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, meter,
             HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
-        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, recoverableConnection, messageSerializer,
+        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         Flux<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
@@ -785,7 +785,7 @@ class EventHubConsumerAsyncClientTest {
         TestMeter meter = new TestMeter();
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, meter,
             HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
-        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, recoverableConnection, messageSerializer,
+        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         Flux<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
@@ -821,7 +821,7 @@ class EventHubConsumerAsyncClientTest {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, meter,
             HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
 
-        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, recoverableConnection, messageSerializer,
+        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         Flux<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
@@ -842,7 +842,7 @@ class EventHubConsumerAsyncClientTest {
         // Arrange
         when(amqpReceiveLink.getCredits()).thenReturn(1);
 
-        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, recoverableConnection, messageSerializer,
+        consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         Flux<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
@@ -866,7 +866,7 @@ class EventHubConsumerAsyncClientTest {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer1, null,
             HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
         EventHubConsumerAsyncClient consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            recoverableConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
+            connectionCache, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
             instrumentation);
 
         EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
