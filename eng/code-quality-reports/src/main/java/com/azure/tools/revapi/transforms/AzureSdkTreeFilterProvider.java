@@ -132,10 +132,10 @@ public final class AzureSdkTreeFilterProvider implements TreeFilterProvider {
                     // Exclude com.azure*.implementation* and com.azure*.samples*
                     return true;
                 } else if ("resourcemanager".regionMatches(0, packageName, 10, 15)) {
-                    // Exclude com.azure.resourcemanager.*fluent* but don't match fluentcore
+                    // Exclude com.azure.resourcemanager*.fluent.* but don't match fluentcore or confluent
                     int fluentIndex = packageName.indexOf("fluent", 25);
-                    return fluentIndex + 6 == packageName.length()
-                        || packageName.charAt(fluentIndex + 6) == '.';
+                    return fluentIndex != -1 && (fluentIndex + 6 == packageName.length()
+                        || (packageName.charAt(fluentIndex - 1) == '.' && packageName.charAt(fluentIndex + 6) == '.'));
                 } else {
                     return false;
                 }
