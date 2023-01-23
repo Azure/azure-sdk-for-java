@@ -66,6 +66,12 @@
 
     <dependency>
       <groupId>org.revapi</groupId>
+      <artifactId>revapi-java</artifactId>
+      <version>0.28.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.revapi</groupId>
       <artifactId>revapi-java-spi</artifactId>
       <version>0.25.0</version> <!-- {x-version-update;org.revapi:revapi-java-spi;external_dependency} -->
     </dependency>

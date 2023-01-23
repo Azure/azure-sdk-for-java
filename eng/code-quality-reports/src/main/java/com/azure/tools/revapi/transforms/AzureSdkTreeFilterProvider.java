@@ -7,7 +7,6 @@ import org.revapi.AnalysisContext;
 import org.revapi.ArchiveAnalyzer;
 import org.revapi.Element;
 import org.revapi.FilterStartResult;
-import org.revapi.Ternary;
 import org.revapi.TreeFilter;
 import org.revapi.TreeFilterProvider;
 import org.revapi.base.IndependentTreeFilter;
@@ -44,7 +43,7 @@ public final class AzureSdkTreeFilterProvider implements TreeFilterProvider {
 
                 if (excludeClass) {
                     // Class is being excluded, no need to inspect package.
-                    return FilterStartResult.direct(Ternary.FALSE, Ternary.FALSE);
+                    return FilterStartResult.doesntMatch();
                 }
 
                 PackageElement packageElement = findPackage((JavaTypeElement) element);
@@ -57,7 +56,7 @@ public final class AzureSdkTreeFilterProvider implements TreeFilterProvider {
                 String packageName = packageElement.getQualifiedName().toString();
                 boolean excludePackage = excludePackage(packageName);
 
-                return FilterStartResult.direct(Ternary.fromBoolean(!excludePackage), Ternary.fromBoolean(!excludePackage));
+                return excludePackage ? FilterStartResult.doesntMatch() : FilterStartResult.matchAndDescend();
             }
         });
     }
