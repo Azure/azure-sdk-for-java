@@ -14,14 +14,29 @@ public final class ManagedClusterPodIdentityProvisioningState
     /** Static value Assigned for ManagedClusterPodIdentityProvisioningState. */
     public static final ManagedClusterPodIdentityProvisioningState ASSIGNED = fromString("Assigned");
 
-    /** Static value Updating for ManagedClusterPodIdentityProvisioningState. */
-    public static final ManagedClusterPodIdentityProvisioningState UPDATING = fromString("Updating");
+    /** Static value Canceled for ManagedClusterPodIdentityProvisioningState. */
+    public static final ManagedClusterPodIdentityProvisioningState CANCELED = fromString("Canceled");
 
     /** Static value Deleting for ManagedClusterPodIdentityProvisioningState. */
     public static final ManagedClusterPodIdentityProvisioningState DELETING = fromString("Deleting");
 
     /** Static value Failed for ManagedClusterPodIdentityProvisioningState. */
     public static final ManagedClusterPodIdentityProvisioningState FAILED = fromString("Failed");
+
+    /** Static value Succeeded for ManagedClusterPodIdentityProvisioningState. */
+    public static final ManagedClusterPodIdentityProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /** Static value Updating for ManagedClusterPodIdentityProvisioningState. */
+    public static final ManagedClusterPodIdentityProvisioningState UPDATING = fromString("Updating");
+
+    /**
+     * Creates a new instance of ManagedClusterPodIdentityProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedClusterPodIdentityProvisioningState() {
+    }
 
     /**
      * Creates or finds a ManagedClusterPodIdentityProvisioningState from its string representation.

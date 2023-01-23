@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualNetworkGateways GetLearnedRoutes. */
 public final class VirtualNetworkGatewaysGetLearnedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayLearnedRoutes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayLearnedRoutes.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayLearnedRoutes.

@@ -38,6 +38,15 @@ public final class BackupManagementType extends ExpandableStringEnum<BackupManag
     public static final BackupManagementType DEFAULT_BACKUP = fromString("DefaultBackup");
 
     /**
+     * Creates a new instance of BackupManagementType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupManagementType() {
+    }
+
+    /**
      * Creates or finds a BackupManagementType from its string representation.
      *
      * @param name a name to look for.

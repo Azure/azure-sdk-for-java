@@ -20,10 +20,20 @@ import java.util.function.Supplier;
 public class SimpleTokenCache {
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
+    private static final String REFRESH_DELAY_STRING = String.valueOf(REFRESH_DELAY.getSeconds());
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     // SimpleTokenCache is commonly used, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(SimpleTokenCache.class);
+
+    private static final String NO_CACHE_ACQUIRED = "Acquired a new access token.";
+    private static final String NO_CACHE_FAILED = "Failed to acquire a new access token.";
+
+    private static final String NEGATIVE_TTE = " seconds after expiry. Retry may be attempted after "
+        + REFRESH_DELAY_STRING + " seconds.";
+    private static final String POSITIVE_TTE = " seconds before expiry. Retry may be attempted after "
+        + REFRESH_DELAY_STRING + " seconds. The token currently cached will be used.";
+
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
@@ -89,14 +99,14 @@ public class SimpleTokenCache {
                             Throwable error = signal.getThrowable();
                             if (signal.isOnNext() && accessToken != null) { // SUCCESS
                                 LOGGER.log(LogLevel.INFORMATIONAL,
-                                    () -> refreshLog(cache, now, "Acquired a new access token"));
+                                    () -> refreshLog(cache, now, "Acquired a new access token", true));
                                 cache = accessToken;
                                 sinksOne.tryEmitValue(accessToken);
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return Mono.just(accessToken);
                             } else if (signal.isOnError() && error != null) { // ERROR
                                 LOGGER.log(LogLevel.ERROR,
-                                    () -> refreshLog(cache, now, "Failed to acquire a new access token"));
+                                    () -> refreshLog(cache, now, "Failed to acquire a new access token", false));
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return fallback.switchIfEmpty(Mono.error(() -> error));
                             } else { // NO REFRESH
@@ -105,7 +115,7 @@ public class SimpleTokenCache {
                             }
                         })
                         .doOnError(sinksOne::tryEmitError)
-                        .doOnTerminate(() -> wip.set(null));
+                        .doFinally(ignored -> wip.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
@@ -126,19 +136,17 @@ public class SimpleTokenCache {
         });
     }
 
-    private static String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
-        StringBuilder info = new StringBuilder(log);
+    Sinks.One<AccessToken> getWipValue() {
+        return wip.get();
+    }
+
+    private static String refreshLog(AccessToken cache, OffsetDateTime now, String log, boolean acquired) {
         if (cache == null) {
-            info.append(".");
-        } else {
-            Duration tte = Duration.between(now, cache.getExpiresAt());
-            info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
-                .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_DELAY.getSeconds()).append(" seconds.");
-            if (!tte.isNegative()) {
-                info.append(" The token currently cached will be used.");
-            }
+            return acquired ? NO_CACHE_ACQUIRED : NO_CACHE_FAILED;
         }
-        return info.toString();
+
+        Duration tte = Duration.between(now, cache.getExpiresAt());
+
+        return log + " at " + tte.abs().getSeconds() + (tte.isNegative() ? NEGATIVE_TTE : POSITIVE_TTE);
     }
 }

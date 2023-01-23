@@ -49,7 +49,7 @@ steps:
 
 - task: Cache@2
   inputs:
-  # Note: CacheSalt is only intented to be used in special cases, as a build is queued, to force a cache miss.
+  # Note: CacheSalt is only intended to be used in special cases, as a build is queued, to force a cache miss.
   # This would be set as a variable in the UI when the run is queued.
     key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "$(ProjectListSha256)" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
     path: $(MAVEN_CACHE_FOLDER)

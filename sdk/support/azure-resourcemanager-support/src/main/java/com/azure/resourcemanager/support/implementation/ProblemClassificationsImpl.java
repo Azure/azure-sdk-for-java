@@ -13,10 +13,9 @@ import com.azure.resourcemanager.support.fluent.ProblemClassificationsClient;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
 import com.azure.resourcemanager.support.models.ProblemClassification;
 import com.azure.resourcemanager.support.models.ProblemClassifications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProblemClassificationsImpl implements ProblemClassifications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProblemClassificationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProblemClassificationsImpl.class);
 
     private final ProblemClassificationsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class ProblemClassificationsImpl implements ProblemClassifications 
         return Utils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
     }
 
-    public ProblemClassification get(String serviceName, String problemClassificationName) {
-        ProblemClassificationInner inner = this.serviceClient().get(serviceName, problemClassificationName);
-        if (inner != null) {
-            return new ProblemClassificationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProblemClassification> getWithResponse(
         String serviceName, String problemClassificationName, Context context) {
         Response<ProblemClassificationInner> inner =
@@ -57,6 +47,15 @@ public final class ProblemClassificationsImpl implements ProblemClassifications 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProblemClassificationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProblemClassification get(String serviceName, String problemClassificationName) {
+        ProblemClassificationInner inner = this.serviceClient().get(serviceName, problemClassificationName);
+        if (inner != null) {
+            return new ProblemClassificationImpl(inner, this.manager());
         } else {
             return null;
         }

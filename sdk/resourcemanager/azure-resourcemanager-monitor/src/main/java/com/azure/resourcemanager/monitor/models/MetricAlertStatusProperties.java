@@ -32,6 +32,10 @@ public final class MetricAlertStatusProperties {
     @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
+    /** Creates an instance of MetricAlertStatusProperties class. */
+    public MetricAlertStatusProperties() {
+    }
+
     /**
      * Get the dimensions property: An object describing the type of the dimensions.
      *

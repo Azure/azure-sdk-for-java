@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
@@ -730,6 +731,26 @@ public class CosmosQueryRequestOptions {
                                                     String defaultQueryName) {
 
                     return queryRequestOptions.getQueryNameOrDefault(defaultQueryName);
+                }
+
+                @Override
+                public RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions) {
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.setConsistencyLevel(queryRequestOptions.getConsistencyLevel());
+                    requestOptions.setSessionToken(queryRequestOptions.getSessionToken());
+                    requestOptions.setPartitionKey(queryRequestOptions.getPartitionKey());
+                    requestOptions.setThroughputControlGroupName(queryRequestOptions.getThroughputControlGroupName());
+                    requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
+                    requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
+                    requestOptions.setThresholdForDiagnosticsOnTracer(queryRequestOptions.getThresholdForDiagnosticsOnTracer());
+
+                    if (queryRequestOptions.customOptions != null) {
+                        for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
+                            requestOptions.setHeader(entry.getKey(), entry.getValue());
+                        }
+                    }
+
+                    return requestOptions;
                 }
             });
     }

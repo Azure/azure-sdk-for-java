@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CredentialOperations ListByFactory. */
 public final class CredentialOperationsListByFactorySamples {
     /*
@@ -17,6 +15,8 @@ public final class CredentialOperationsListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.credentialOperations().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+        manager
+            .credentialOperations()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

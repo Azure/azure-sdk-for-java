@@ -17,10 +17,9 @@ import com.azure.resourcemanager.billing.models.Products;
 import com.azure.resourcemanager.billing.models.ProductsMoveResponse;
 import com.azure.resourcemanager.billing.models.TransferProductRequestProperties;
 import com.azure.resourcemanager.billing.models.ValidateProductTransferEligibilityResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductsImpl implements Products {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductsImpl.class);
 
     private final ProductsClient innerClient;
 
@@ -86,15 +85,6 @@ public final class ProductsImpl implements Products {
         return Utils.mapPage(inner, inner1 -> new ProductImpl(inner1, this.manager()));
     }
 
-    public Product get(String billingAccountName, String productName) {
-        ProductInner inner = this.serviceClient().get(billingAccountName, productName);
-        if (inner != null) {
-            return new ProductImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Product> getWithResponse(String billingAccountName, String productName, Context context) {
         Response<ProductInner> inner = this.serviceClient().getWithResponse(billingAccountName, productName, context);
         if (inner != null) {
@@ -108,8 +98,8 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public Product update(String billingAccountName, String productName, ProductInner parameters) {
-        ProductInner inner = this.serviceClient().update(billingAccountName, productName, parameters);
+    public Product get(String billingAccountName, String productName) {
+        ProductInner inner = this.serviceClient().get(billingAccountName, productName);
         if (inner != null) {
             return new ProductImpl(inner, this.manager());
         } else {
@@ -132,8 +122,8 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public Product move(String billingAccountName, String productName, TransferProductRequestProperties parameters) {
-        ProductInner inner = this.serviceClient().move(billingAccountName, productName, parameters);
+    public Product update(String billingAccountName, String productName, ProductInner parameters) {
+        ProductInner inner = this.serviceClient().update(billingAccountName, productName, parameters);
         if (inner != null) {
             return new ProductImpl(inner, this.manager());
         } else {
@@ -156,12 +146,10 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public ValidateProductTransferEligibilityResult validateMove(
-        String billingAccountName, String productName, TransferProductRequestProperties parameters) {
-        ValidateProductTransferEligibilityResultInner inner =
-            this.serviceClient().validateMove(billingAccountName, productName, parameters);
+    public Product move(String billingAccountName, String productName, TransferProductRequestProperties parameters) {
+        ProductInner inner = this.serviceClient().move(billingAccountName, productName, parameters);
         if (inner != null) {
-            return new ValidateProductTransferEligibilityResultImpl(inner, this.manager());
+            return new ProductImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -177,6 +165,17 @@ public final class ProductsImpl implements Products {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ValidateProductTransferEligibilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateProductTransferEligibilityResult validateMove(
+        String billingAccountName, String productName, TransferProductRequestProperties parameters) {
+        ValidateProductTransferEligibilityResultInner inner =
+            this.serviceClient().validateMove(billingAccountName, productName, parameters);
+        if (inner != null) {
+            return new ValidateProductTransferEligibilityResultImpl(inner, this.manager());
         } else {
             return null;
         }

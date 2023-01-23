@@ -20,6 +20,15 @@ public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthent
     public static final WebAuthenticationType CLIENT_CERTIFICATE = fromString("ClientCertificate");
 
     /**
+     * Creates a new instance of WebAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a WebAuthenticationType from its string representation.
      *
      * @param name a name to look for.

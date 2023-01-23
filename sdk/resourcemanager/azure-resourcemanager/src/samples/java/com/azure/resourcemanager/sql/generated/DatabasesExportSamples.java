@@ -5,51 +5,50 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.sql.models.AuthenticationType;
-import com.azure.resourcemanager.sql.models.ExportRequest;
+import com.azure.resourcemanager.sql.models.ExportDatabaseDefinition;
+import com.azure.resourcemanager.sql.models.NetworkIsolationSettings;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
 
 /** Samples for Databases Export. */
 public final class DatabasesExportSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseExportStorageKey.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabase.json
      */
     /**
-     * Sample code: Export a database into a new bacpac file with storage key.
+     * Sample code: Exports a database.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void exportADatabaseIntoANewBacpacFileWithStorageKey(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void exportsADatabase(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
             .export(
-                "sqlcrudtest-4799",
-                "sqlcrudtest-5961",
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
                 "testdb",
-                new ExportRequest()
+                new ExportDatabaseDefinition()
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
                     .withStorageKey(
-                        "sdlfkjdsf+sdlfkjsdlkfsjdfLDKFJSDLKFDFKLjsdfksjdflsdkfD2342309432849328479324/3RSD==")
-                    .withStorageUri("https://test.blob.core.windows.net/bacpacs/testbacpac.bacpac")
-                    .withAdministratorLogin("dummyLogin")
-                    .withAdministratorLoginPassword("Un53cuRE!")
-                    .withAuthenticationType(AuthenticationType.SQL),
+                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==")
+                    .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
+                    .withAdministratorLogin("login")
+                    .withAdministratorLoginPassword("password")
+                    .withAuthenticationType("Sql"),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseExportSasKey.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabaseWithNetworkIsolation.json
      */
     /**
-     * Sample code: Export a database into a new bacpac file with SAS key.
+     * Sample code: Exports a database, using private link to communicate with SQL server and storage account.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void exportADatabaseIntoANewBacpacFileWithSASKey(
+    public static void exportsADatabaseUsingPrivateLinkToCommunicateWithSQLServerAndStorageAccount(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
@@ -57,17 +56,23 @@ public final class DatabasesExportSamples {
             .serviceClient()
             .getDatabases()
             .export(
-                "sqlcrudtest-4799",
-                "sqlcrudtest-5961",
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
                 "testdb",
-                new ExportRequest()
-                    .withStorageKeyType(StorageKeyType.SHARED_ACCESS_KEY)
+                new ExportDatabaseDefinition()
+                    .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
                     .withStorageKey(
-                        "?sr=b&sp=rw&se=2018-01-01T00%3A00%3A00Z&sig=sdfsdfklsdjflSLIFJLSIEJFLKSDJFDd/%2wdfskdjf3%3D&sv=2015-07-08")
-                    .withStorageUri("https://test.blob.core.windows.net/bacpacs/testbacpac.bacpac")
-                    .withAdministratorLogin("dummyLogin")
-                    .withAdministratorLoginPassword("Un53cuRE!")
-                    .withAuthenticationType(AuthenticationType.SQL),
+                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==")
+                    .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
+                    .withAdministratorLogin("login")
+                    .withAdministratorLoginPassword("password")
+                    .withAuthenticationType("Sql")
+                    .withNetworkIsolation(
+                        new NetworkIsolationSettings()
+                            .withStorageAccountResourceId(
+                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Storage/storageAccounts/test-privatelink")
+                            .withSqlServerResourceId(
+                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr")),
                 Context.NONE);
     }
 }

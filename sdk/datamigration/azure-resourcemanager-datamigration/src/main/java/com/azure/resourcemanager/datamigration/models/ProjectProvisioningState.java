@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProjectProvisioningState. */
+/** The project's provisioning state. */
 public final class ProjectProvisioningState extends ExpandableStringEnum<ProjectProvisioningState> {
     /** Static value Deleting for ProjectProvisioningState. */
     public static final ProjectProvisioningState DELETING = fromString("Deleting");
 
     /** Static value Succeeded for ProjectProvisioningState. */
     public static final ProjectProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /**
+     * Creates a new instance of ProjectProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProjectProvisioningState() {
+    }
 
     /**
      * Creates or finds a ProjectProvisioningState from its string representation.
@@ -27,7 +36,11 @@ public final class ProjectProvisioningState extends ExpandableStringEnum<Project
         return fromString(name, ProjectProvisioningState.class);
     }
 
-    /** @return known ProjectProvisioningState values. */
+    /**
+     * Gets known ProjectProvisioningState values.
+     *
+     * @return known ProjectProvisioningState values.
+     */
     public static Collection<ProjectProvisioningState> values() {
         return values(ProjectProvisioningState.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Entity. */
+/** Entity type source of the bounding box. For reverse-geocoding this is always equal to position. */
 public final class Entity extends ExpandableStringEnum<Entity> {
     /** Static value position for Entity. */
     public static final Entity POSITION = fromString("position");

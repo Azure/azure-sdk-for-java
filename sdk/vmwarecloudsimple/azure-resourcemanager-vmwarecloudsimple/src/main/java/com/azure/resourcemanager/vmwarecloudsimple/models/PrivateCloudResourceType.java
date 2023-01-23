@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PrivateCloudResourceType. */
+/** Azure Resource type. */
 public enum PrivateCloudResourceType {
     /** Enum value Microsoft.VMwareCloudSimple/privateClouds. */
     MICROSOFT_VMWARE_CLOUD_SIMPLE_PRIVATE_CLOUDS("Microsoft.VMwareCloudSimple/privateClouds");
@@ -27,6 +27,9 @@ public enum PrivateCloudResourceType {
      */
     @JsonCreator
     public static PrivateCloudResourceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PrivateCloudResourceType[] items = PrivateCloudResourceType.values();
         for (PrivateCloudResourceType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum PrivateCloudResourceType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

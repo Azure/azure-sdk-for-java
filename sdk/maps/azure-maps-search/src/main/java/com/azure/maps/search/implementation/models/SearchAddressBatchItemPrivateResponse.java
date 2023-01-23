@@ -18,6 +18,9 @@ public final class SearchAddressBatchItemPrivateResponse extends SearchAddressRe
     @JsonProperty(value = "error")
     private ErrorDetail error;
 
+    /** Creates an instance of SearchAddressBatchItemPrivateResponse class. */
+    public SearchAddressBatchItemPrivateResponse() {}
+
     /**
      * Get the error property: The error object.
      *

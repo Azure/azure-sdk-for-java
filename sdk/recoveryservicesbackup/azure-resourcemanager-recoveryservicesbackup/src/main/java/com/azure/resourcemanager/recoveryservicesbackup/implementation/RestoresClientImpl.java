@@ -55,7 +55,7 @@ public final class RestoresClientImpl implements RestoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface RestoresService {
+    public interface RestoresService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
@@ -353,7 +353,8 @@ public final class RestoresClientImpl implements RestoresClient {
         String protectedItemName,
         String recoveryPointId,
         RestoreRequestResource parameters) {
-        return beginTriggerAsync(
+        return this
+            .beginTriggerAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
             .getSyncPoller();
     }
@@ -385,7 +386,8 @@ public final class RestoresClientImpl implements RestoresClient {
         String recoveryPointId,
         RestoreRequestResource parameters,
         Context context) {
-        return beginTriggerAsync(
+        return this
+            .beginTriggerAsync(
                 vaultName,
                 resourceGroupName,
                 fabricName,

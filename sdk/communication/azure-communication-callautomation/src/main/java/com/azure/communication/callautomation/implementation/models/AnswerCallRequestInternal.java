@@ -28,6 +28,12 @@ public final class AnswerCallRequestInternal {
     @JsonProperty(value = "mediaStreamingConfiguration")
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
+     */
+    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
+    private String azureCognitiveServicesEndpointUrl;
+
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *
@@ -86,6 +92,28 @@ public final class AnswerCallRequestInternal {
     public AnswerCallRequestInternal setMediaStreamingConfiguration(
             MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

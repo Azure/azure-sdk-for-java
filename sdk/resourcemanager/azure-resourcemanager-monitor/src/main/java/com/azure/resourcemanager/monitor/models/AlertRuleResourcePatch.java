@@ -28,6 +28,10 @@ public final class AlertRuleResourcePatch {
     @JsonProperty(value = "properties")
     private AlertRule innerProperties;
 
+    /** Creates an instance of AlertRuleResourcePatch class. */
+    public AlertRuleResourcePatch() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

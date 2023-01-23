@@ -26,6 +26,15 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
     public static final ODataAuthenticationType MANAGED_SERVICE_IDENTITY = fromString("ManagedServiceIdentity");
 
     /**
+     * Creates a new instance of ODataAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ODataAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a ODataAuthenticationType from its string representation.
      *
      * @param name a name to look for.

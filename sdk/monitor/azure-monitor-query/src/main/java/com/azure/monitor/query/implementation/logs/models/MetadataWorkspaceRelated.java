@@ -41,6 +41,9 @@ public final class MetadataWorkspaceRelated {
     @JsonProperty(value = "resources")
     private List<String> resources;
 
+    /** Creates an instance of MetadataWorkspaceRelated class. */
+    public MetadataWorkspaceRelated() {}
+
     /**
      * Get the tables property: The related tables for the Log Analytics workspace.
      *

@@ -32,6 +32,15 @@ public final class RestorePointType extends ExpandableStringEnum<RestorePointTyp
     public static final RestorePointType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
 
     /**
+     * Creates a new instance of RestorePointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestorePointType() {
+    }
+
+    /**
      * Creates or finds a RestorePointType from its string representation.
      *
      * @param name a name to look for.

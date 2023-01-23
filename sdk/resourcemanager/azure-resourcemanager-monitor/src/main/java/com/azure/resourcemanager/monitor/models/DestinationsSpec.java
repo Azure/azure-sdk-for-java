@@ -23,6 +23,10 @@ public class DestinationsSpec {
     @JsonProperty(value = "azureMonitorMetrics")
     private DestinationsSpecAzureMonitorMetrics azureMonitorMetrics;
 
+    /** Creates an instance of DestinationsSpec class. */
+    public DestinationsSpec() {
+    }
+
     /**
      * Get the logAnalytics property: List of Log Analytics destinations.
      *

@@ -65,6 +65,9 @@ public class ResponsysLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ResponsysLinkedService class. */
+    public ResponsysLinkedService() {}
+
     /**
      * Get the endpoint property: The endpoint of the Responsys server.
      *

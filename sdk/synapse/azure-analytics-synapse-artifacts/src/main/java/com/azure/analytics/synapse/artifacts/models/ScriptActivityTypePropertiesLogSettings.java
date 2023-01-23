@@ -22,6 +22,9 @@ public final class ScriptActivityTypePropertiesLogSettings {
     @JsonProperty(value = "logLocationSettings")
     private LogLocationSettings logLocationSettings;
 
+    /** Creates an instance of ScriptActivityTypePropertiesLogSettings class. */
+    public ScriptActivityTypePropertiesLogSettings() {}
+
     /**
      * Get the logDestination property: The destination of logs. Type: string.
      *

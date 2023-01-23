@@ -34,6 +34,9 @@ public final class KqlScriptResource {
     @JsonProperty(value = "properties")
     private KqlScript properties;
 
+    /** Creates an instance of KqlScriptResource class. */
+    public KqlScriptResource() {}
+
     /**
      * Get the id property: The id property.
      *

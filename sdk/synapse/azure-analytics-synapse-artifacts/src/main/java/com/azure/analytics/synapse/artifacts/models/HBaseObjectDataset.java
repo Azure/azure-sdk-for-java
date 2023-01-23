@@ -24,6 +24,9 @@ public class HBaseObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of HBaseObjectDataset class. */
+    public HBaseObjectDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

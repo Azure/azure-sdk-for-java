@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuardProxyOperation Delete. */
 public final class ResourceGuardProxyOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
      */
     /**
      * Sample code: Delete ResourceGuardProxy.
@@ -20,6 +18,7 @@ public final class ResourceGuardProxyOperationDeleteSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager
             .resourceGuardProxyOperations()
-            .deleteWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", Context.NONE);
+            .deleteWithResponse(
+                "sampleVault", "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

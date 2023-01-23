@@ -25,6 +25,10 @@ public final class AutoscaleSettingResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AutoscaleSettingResourceCollection class. */
+    public AutoscaleSettingResourceCollection() {
+    }
+
     /**
      * Get the value property: the values for the autoscale setting resources.
      *

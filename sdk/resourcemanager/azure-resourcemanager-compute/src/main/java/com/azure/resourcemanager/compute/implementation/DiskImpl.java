@@ -138,6 +138,11 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     }
 
     @Override
+    public boolean isHibernationSupported() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().supportsHibernation());
+    }
+
+    @Override
     public DiskImpl withLinuxFromVhd(String vhdUrl) {
         this
             .innerModel()
@@ -385,6 +390,18 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         }
         encryption.withType(encryptionType);
         encryption.withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withHibernationSupport() {
+        this.innerModel().withSupportsHibernation(true);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withoutHibernationSupport() {
+        this.innerModel().withSupportsHibernation(false);
         return this;
     }
 

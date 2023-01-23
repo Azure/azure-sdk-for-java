@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The set of allowed action and not allowed actions a caller has on a billing account. */
 @Immutable
 public final class BillingPermissionsPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPermissionsPropertiesInner.class);
-
     /*
      * The set of actions that the caller is allowed to perform.
      */
@@ -26,6 +22,10 @@ public final class BillingPermissionsPropertiesInner {
      */
     @JsonProperty(value = "notActions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> notActions;
+
+    /** Creates an instance of BillingPermissionsPropertiesInner class. */
+    public BillingPermissionsPropertiesInner() {
+    }
 
     /**
      * Get the actions property: The set of actions that the caller is allowed to perform.

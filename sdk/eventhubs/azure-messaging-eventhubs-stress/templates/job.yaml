@@ -19,7 +19,8 @@ spec:
           source $ENV_FILE &&
           export CONTAINER_NAME=sender &&
           export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
-          java "org.springframework.boot.loader.JarLauncher" \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+          "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventSender
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:

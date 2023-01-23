@@ -30,6 +30,10 @@ public final class StreamingPath {
     @JsonProperty(value = "paths")
     private List<String> paths;
 
+    /** Creates an instance of StreamingPath class. */
+    public StreamingPath() {
+    }
+
     /**
      * Get the streamingProtocol property: Streaming protocol.
      *

@@ -66,6 +66,9 @@ public class AzureMLLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureMLLinkedService class. */
+    public AzureMLLinkedService() {}
+
     /**
      * Get the mlEndpoint property: The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type:
      * string (or Expression with resultType string).

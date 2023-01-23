@@ -7,14 +7,13 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.fluent.models.ServerKeyInner;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL Server Key. */
 @Fluent
@@ -24,8 +23,7 @@ public interface SqlServerKey
         HasName,
         HasResourceGroup,
         Indexable,
-        Refreshable<SqlServerKey>,
-        Updatable<SqlServerKey.Update> {
+        Refreshable<SqlServerKey> {
     /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
 
@@ -59,36 +57,4 @@ public interface SqlServerKey
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> deleteAsync();
-
-    /** The template for a SQL Server Key update operation, containing all the settings that can be modified. */
-    interface Update
-        extends SqlServerKey.UpdateStages.WithThumbprint,
-            SqlServerKey.UpdateStages.WithCreationDate,
-            Appliable<SqlServerKey> {
-    }
-
-    /** Grouping of all the SQL Server Key update stages. */
-    interface UpdateStages {
-        /** The SQL Server Key definition to set the thumbprint. */
-        interface WithThumbprint {
-            /**
-             * Sets the thumbprint of the server key.
-             *
-             * @param thumbprint the thumbprint of the server key
-             * @return The next stage of the definition.
-             */
-            SqlServerKey.Update withThumbprint(String thumbprint);
-        }
-
-        /** The SQL Server Key definition to set the server key creation date. */
-        interface WithCreationDate {
-            /**
-             * Sets the server key creation date.
-             *
-             * @param creationDate the server key creation date
-             * @return The next stage of the definition.
-             */
-            SqlServerKey.Update withCreationDate(OffsetDateTime creationDate);
-        }
-    }
 }

@@ -23,6 +23,10 @@ public final class LocalizableStringInner {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of LocalizableStringInner class. */
+    public LocalizableStringInner() {
+    }
+
     /**
      * Get the value property: the invariant value.
      *

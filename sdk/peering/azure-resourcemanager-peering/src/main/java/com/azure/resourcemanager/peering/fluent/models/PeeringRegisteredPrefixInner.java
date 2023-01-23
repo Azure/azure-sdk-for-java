@@ -5,49 +5,32 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.models.PrefixValidationState;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The customer's prefix that is registered by the peering service provider. */
-@JsonFlatten
 @Fluent
-public class PeeringRegisteredPrefixInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringRegisteredPrefixInner.class);
-
+public final class PeeringRegisteredPrefixInner extends ProxyResource {
     /*
-     * The customer's prefix from which traffic originates.
+     * The properties that define a registered prefix.
      */
-    @JsonProperty(value = "properties.prefix")
-    private String prefix;
+    @JsonProperty(value = "properties")
+    private PeeringRegisteredPrefixProperties innerProperties;
 
-    /*
-     * The prefix validation state.
-     */
-    @JsonProperty(value = "properties.prefixValidationState", access = JsonProperty.Access.WRITE_ONLY)
-    private PrefixValidationState prefixValidationState;
+    /** Creates an instance of PeeringRegisteredPrefixInner class. */
+    public PeeringRegisteredPrefixInner() {
+    }
 
-    /*
-     * The peering service prefix key that is to be shared with the customer.
+    /**
+     * Get the innerProperties property: The properties that define a registered prefix.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.peeringServicePrefixKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String peeringServicePrefixKey;
-
-    /*
-     * The error message associated with the validation state, if any.
-     */
-    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
-
-    /*
-     * The provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private PeeringRegisteredPrefixProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the prefix property: The customer's prefix from which traffic originates.
@@ -55,7 +38,7 @@ public class PeeringRegisteredPrefixInner extends ProxyResource {
      * @return the prefix value.
      */
     public String prefix() {
-        return this.prefix;
+        return this.innerProperties() == null ? null : this.innerProperties().prefix();
     }
 
     /**
@@ -65,7 +48,10 @@ public class PeeringRegisteredPrefixInner extends ProxyResource {
      * @return the PeeringRegisteredPrefixInner object itself.
      */
     public PeeringRegisteredPrefixInner withPrefix(String prefix) {
-        this.prefix = prefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringRegisteredPrefixProperties();
+        }
+        this.innerProperties().withPrefix(prefix);
         return this;
     }
 
@@ -75,7 +61,7 @@ public class PeeringRegisteredPrefixInner extends ProxyResource {
      * @return the prefixValidationState value.
      */
     public PrefixValidationState prefixValidationState() {
-        return this.prefixValidationState;
+        return this.innerProperties() == null ? null : this.innerProperties().prefixValidationState();
     }
 
     /**
@@ -84,7 +70,7 @@ public class PeeringRegisteredPrefixInner extends ProxyResource {
      * @return the peeringServicePrefixKey value.
      */
     public String peeringServicePrefixKey() {
-        return this.peeringServicePrefixKey;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringServicePrefixKey();
     }
 
     /**
@@ -93,7 +79,7 @@ public class PeeringRegisteredPrefixInner extends ProxyResource {
      * @return the errorMessage value.
      */
     public String errorMessage() {
-        return this.errorMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().errorMessage();
     }
 
     /**
@@ -102,7 +88,7 @@ public class PeeringRegisteredPrefixInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -111,5 +97,8 @@ public class PeeringRegisteredPrefixInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The aggregation expression to be used in the report. */
 @Fluent
 public final class ReportConfigAggregation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportConfigAggregation.class);
-
     /*
      * The name of the column to aggregate.
      */
@@ -25,6 +22,10 @@ public final class ReportConfigAggregation {
      */
     @JsonProperty(value = "function", required = true)
     private FunctionType function;
+
+    /** Creates an instance of ReportConfigAggregation class. */
+    public ReportConfigAggregation() {
+    }
 
     /**
      * Get the name property: The name of the column to aggregate.
@@ -73,15 +74,17 @@ public final class ReportConfigAggregation {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ReportConfigAggregation"));
         }
         if (function() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property function in model ReportConfigAggregation"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReportConfigAggregation.class);
 }

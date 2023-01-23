@@ -17,6 +17,15 @@ public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAut
     public static final DataAccessAuthMode NONE = fromString("None");
 
     /**
+     * Creates a new instance of DataAccessAuthMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataAccessAuthMode() {
+    }
+
+    /**
      * Creates or finds a DataAccessAuthMode from its string representation.
      *
      * @param name a name to look for.

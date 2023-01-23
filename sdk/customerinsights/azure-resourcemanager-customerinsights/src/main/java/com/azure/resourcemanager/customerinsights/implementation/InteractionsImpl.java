@@ -15,10 +15,9 @@ import com.azure.resourcemanager.customerinsights.fluent.models.SuggestRelations
 import com.azure.resourcemanager.customerinsights.models.InteractionResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Interactions;
 import com.azure.resourcemanager.customerinsights.models.SuggestRelationshipLinksResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class InteractionsImpl implements Interactions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InteractionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InteractionsImpl.class);
 
     private final InteractionsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class InteractionsImpl implements Interactions {
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public InteractionResourceFormat get(String resourceGroupName, String hubName, String interactionName) {
-        InteractionResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, interactionName);
-        if (inner != null) {
-            return new InteractionResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<InteractionResourceFormat> getWithResponse(
@@ -55,6 +45,15 @@ public final class InteractionsImpl implements Interactions {
         }
     }
 
+    public InteractionResourceFormat get(String resourceGroupName, String hubName, String interactionName) {
+        InteractionResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, interactionName);
+        if (inner != null) {
+            return new InteractionResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<InteractionResourceFormat> listByHub(String resourceGroupName, String hubName) {
         PagedIterable<InteractionResourceFormatInner> inner =
             this.serviceClient().listByHub(resourceGroupName, hubName);
@@ -66,17 +65,6 @@ public final class InteractionsImpl implements Interactions {
         PagedIterable<InteractionResourceFormatInner> inner =
             this.serviceClient().listByHub(resourceGroupName, hubName, localeCode, context);
         return Utils.mapPage(inner, inner1 -> new InteractionResourceFormatImpl(inner1, this.manager()));
-    }
-
-    public SuggestRelationshipLinksResponse suggestRelationshipLinks(
-        String resourceGroupName, String hubName, String interactionName) {
-        SuggestRelationshipLinksResponseInner inner =
-            this.serviceClient().suggestRelationshipLinks(resourceGroupName, hubName, interactionName);
-        if (inner != null) {
-            return new SuggestRelationshipLinksResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(
@@ -96,10 +84,21 @@ public final class InteractionsImpl implements Interactions {
         }
     }
 
+    public SuggestRelationshipLinksResponse suggestRelationshipLinks(
+        String resourceGroupName, String hubName, String interactionName) {
+        SuggestRelationshipLinksResponseInner inner =
+            this.serviceClient().suggestRelationshipLinks(resourceGroupName, hubName, interactionName);
+        if (inner != null) {
+            return new SuggestRelationshipLinksResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public InteractionResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,14 +106,14 @@ public final class InteractionsImpl implements Interactions {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String interactionName = Utils.getValueFromIdByName(id, "interactions");
         if (interactionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'interactions'.", id)));
@@ -128,7 +127,7 @@ public final class InteractionsImpl implements Interactions {
     public Response<InteractionResourceFormat> getByIdWithResponse(String id, String localeCode, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,14 +135,14 @@ public final class InteractionsImpl implements Interactions {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String interactionName = Utils.getValueFromIdByName(id, "interactions");
         if (interactionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'interactions'.", id)));

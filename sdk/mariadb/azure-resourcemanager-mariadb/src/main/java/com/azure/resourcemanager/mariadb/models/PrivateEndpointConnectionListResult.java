@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private endpoint connections. */
 @Immutable
 public final class PrivateEndpointConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class PrivateEndpointConnectionListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of PrivateEndpointConnectionListResult class. */
+    public PrivateEndpointConnectionListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

@@ -23,6 +23,10 @@ public final class SyncGroupSchemaTable {
     @JsonProperty(value = "quotedName")
     private String quotedName;
 
+    /** Creates an instance of SyncGroupSchemaTable class. */
+    public SyncGroupSchemaTable() {
+    }
+
     /**
      * Get the columns property: List of columns in sync group schema.
      *

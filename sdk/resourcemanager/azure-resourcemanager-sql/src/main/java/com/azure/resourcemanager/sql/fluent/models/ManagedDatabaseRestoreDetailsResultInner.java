@@ -4,20 +4,24 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** A managed database restore details. */
-@Fluent
+@Immutable
 public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private ManagedDatabaseRestoreDetailsProperties innerProperties;
+
+    /** Creates an instance of ManagedDatabaseRestoreDetailsResultInner class. */
+    public ManagedDatabaseRestoreDetailsResultInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Guest OS nic customization. */
 @Fluent
 public final class GuestOsnicCustomization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GuestOsnicCustomization.class);
-
     /*
      * IP address allocation method
      */
@@ -56,6 +52,10 @@ public final class GuestOsnicCustomization {
      */
     @JsonProperty(value = "secondaryWinsServer")
     private String secondaryWinsServer;
+
+    /** Creates an instance of GuestOsnicCustomization class. */
+    public GuestOsnicCustomization() {
+    }
 
     /**
      * Get the allocation property: IP address allocation method.

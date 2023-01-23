@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Services Delete. */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/ServiceDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/ServiceDelete.json
      */
     /**
      * Sample code: Delete service.
@@ -17,6 +15,6 @@ public final class ServicesDeleteSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteService(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.services().delete("rg1", "testMobileNetwork", "TestService", Context.NONE);
+        manager.services().delete("rg1", "testMobileNetwork", "TestService", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,12 +11,10 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -24,6 +22,9 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -234,6 +235,18 @@ public class ReflectionUtils {
 
     public static void setGatewayHttpClient(RxStoreModel client, HttpClient httpClient) {
         set(client, httpClient, "httpClient");
+    }
+
+    public static void setCollectionCache(RxDocumentClientImpl client, RxClientCollectionCache collectionCache) {
+        set(client, collectionCache, "collectionCache");
+    }
+
+    public static void setPartitionKeyRangeCache(RxDocumentClientImpl client, RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        set(client, partitionKeyRangeCache, "partitionKeyRangeCache");
+    }
+
+    public static void setResetSessionTokenRetryPolicy(RxDocumentClientImpl client, IRetryPolicyFactory retryPolicyFactory) {
+        set(client, retryPolicyFactory, "resetSessionTokenRetryPolicy");
     }
 
     public static HttpHeaders getHttpHeaders(HttpRequest httpRequest) {

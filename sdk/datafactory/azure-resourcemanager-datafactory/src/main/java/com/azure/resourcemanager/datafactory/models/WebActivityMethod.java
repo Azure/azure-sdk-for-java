@@ -23,6 +23,15 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
     public static final WebActivityMethod DELETE = fromString("DELETE");
 
     /**
+     * Creates a new instance of WebActivityMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebActivityMethod() {
+    }
+
+    /**
      * Creates or finds a WebActivityMethod from its string representation.
      *
      * @param name a name to look for.

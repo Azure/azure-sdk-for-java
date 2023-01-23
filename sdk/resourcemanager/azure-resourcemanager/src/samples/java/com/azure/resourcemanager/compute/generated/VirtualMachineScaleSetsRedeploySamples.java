@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import java.util.Arrays;
 
 /** Samples for VirtualMachineScaleSets Redeploy. */
 public final class VirtualMachineScaleSetsRedeploySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Redeploy_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Redeploy_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Redeploy_MinimumSet_Gen.
@@ -25,11 +24,11 @@ public final class VirtualMachineScaleSetsRedeploySamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .redeploy("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .redeploy("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Redeploy_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Redeploy_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Redeploy_MaximumSet_Gen.
@@ -47,6 +46,6 @@ public final class VirtualMachineScaleSetsRedeploySamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

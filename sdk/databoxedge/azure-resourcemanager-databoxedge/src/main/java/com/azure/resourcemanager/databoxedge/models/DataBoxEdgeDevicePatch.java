@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The Data Box Edge/Gateway device patch. */
 @Fluent
 public final class DataBoxEdgeDevicePatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxEdgeDevicePatch.class);
-
     /*
      * The tags attached to the Data Box Edge/Gateway resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of DataBoxEdgeDevicePatch class. */
+    public DataBoxEdgeDevicePatch() {
+    }
 
     /**
      * Get the tags property: The tags attached to the Data Box Edge/Gateway resource.

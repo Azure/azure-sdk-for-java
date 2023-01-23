@@ -12,10 +12,10 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityConstants;
-import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
-import com.azure.identity.implementation.util.ScopeUtil;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
@@ -36,8 +36,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.IOException;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -54,14 +54,13 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Scanner;
-
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -70,7 +69,6 @@ import java.util.function.Supplier;
  * from various configurations.
  */
 public class IdentityClient extends IdentityClientBase {
-
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
@@ -96,21 +94,20 @@ public class IdentityClient extends IdentityClientBase {
         String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
         InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
         Duration clientAssertionTimeout, IdentityClientOptions options) {
-        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
-            certificate, certificatePassword, isSharedTokenCacheCredential, clientAssertionTimeout, options);
+        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId,
+            clientAssertionSupplier, certificate, certificatePassword, isSharedTokenCacheCredential,
+            clientAssertionTimeout, options);
 
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
-        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
-            getConfidentialClientApplication());
+        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<>(this::getConfidentialClientApplication);
 
-        this.managedIdentityConfidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
-            getManagedIdentityConfidentialClientApplication());
+        this.managedIdentityConfidentialClientApplicationAccessor =
+            new SynchronizedAccessor<>(this::getManagedIdentityConfidentialClientApplication);
 
-        this.clientAssertionAccessor = clientAssertionTimeout == null
-            ? new SynchronizedAccessor<>(() -> parseClientAssertion(), Duration.ofMinutes(5))
-                : new SynchronizedAccessor<>(() -> parseClientAssertion(), clientAssertionTimeout);
+        Duration cacheTimeout = (clientAssertionTimeout == null) ? Duration.ofMinutes(5) : clientAssertionTimeout;
+        this.clientAssertionAccessor = new SynchronizedAccessor<>(this::parseClientAssertion, cacheTimeout);
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
@@ -436,14 +433,12 @@ public class IdentityClient extends IdentityClientBase {
                                     + " use Azure PowerShell Credential.")));
                         }
                         LOGGER.verbose("Az.accounts module was found installed.");
-                        StringBuilder accessTokenCommand = new StringBuilder("Get-AzAccessToken -ResourceUrl ");
-                        accessTokenCommand.append(ScopeUtil.scopesToResource(request.getScopes()));
-                        accessTokenCommand.append(" | ConvertTo-Json");
-                        String command = accessTokenCommand.toString();
-                        LOGGER.verbose("Azure Powershell Authentication => Executing the command `%s` in Azure "
-                                + "Powershell to retrieve the Access Token.",
-                            accessTokenCommand);
-                        return manager.runCommand(accessTokenCommand.toString())
+                        String command = "Get-AzAccessToken -ResourceUrl "
+                            + ScopeUtil.scopesToResource(request.getScopes())
+                            + " | ConvertTo-Json";
+                        LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
+                                + "Powershell to retrieve the Access Token.", command);
+                        return manager.runCommand(command)
                             .flatMap(out -> {
                                 if (out.contains("Run Connect-AzAccount to login")) {
                                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
@@ -482,8 +477,7 @@ public class IdentityClient extends IdentityClientBase {
             .flatMap(confidentialClient -> Mono.fromFuture(() -> {
                 ClientCredentialParameters.ClientCredentialParametersBuilder builder =
                     ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                        .tenant(IdentityUtil
-                            .resolveTenantId(tenantId, request, options));
+                        .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
                 if (clientAssertionSupplier != null) {
                     builder.clientCredential(ClientCredentialFactory
                         .createFromClientAssertion(clientAssertionSupplier.get()));
@@ -593,8 +587,7 @@ public class IdentityClient extends IdentityClientBase {
             .flatMap(confidentialClient -> Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes()))
-                    .tenant(IdentityUtil.resolveTenantId(tenantId, request,
-                        options));
+                    .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -749,49 +742,47 @@ public class IdentityClient extends IdentityClientBase {
     public Mono<MsalToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
         // find if the Public Client app with the requested username exists
         return publicClientApplicationAccessor.getValue()
-                .flatMap(pc -> Mono.fromFuture(() -> pc.getAccounts())
-                    .onErrorMap(t -> new CredentialUnavailableException(
-                            "Cannot get accounts from token cache. Error: " + t.getMessage(), t))
-                    .flatMap(set -> {
-                        IAccount requestedAccount;
-                        Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
+                .flatMap(pc -> Mono.fromFuture(pc::getAccounts))
+            .onErrorMap(t -> new CredentialUnavailableException(
+                "Cannot get accounts from token cache. Error: " + t.getMessage(), t))
+            .flatMap(set -> {
+                IAccount requestedAccount;
+                Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
 
-                        if (set.isEmpty()) {
-                            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                                new CredentialUnavailableException("SharedTokenCacheCredential "
-                                    + "authentication unavailable. No accounts were found in the cache.")));
-                        }
+                if (set.isEmpty()) {
+                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                        new CredentialUnavailableException("SharedTokenCacheCredential "
+                            + "authentication unavailable. No accounts were found in the cache.")));
+                }
 
-                        for (IAccount cached : set) {
-                            if (username == null || username.equals(cached.username())) {
-                                if (!accounts.containsKey(cached.homeAccountId())) { // only put the first one
-                                    accounts.put(cached.homeAccountId(), cached);
-                                }
-                            }
-                        }
+                for (IAccount cached : set) {
+                    if (username == null || username.equals(cached.username())) {
+                        accounts.putIfAbsent(cached.homeAccountId(), cached); // only put the first one
+                    }
+                }
 
-                        if (accounts.isEmpty()) {
-                            // no more accounts after filtering, username must be set
-                            return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential "
-                                    + "authentication unavailable. No account matching the specified username: %s was "
-                                    + "found in the cache.", username)));
-                        } else if (accounts.size() > 1) {
-                            if (username == null) {
-                                return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication "
-                                        + "unavailable. Multiple accounts were found in the cache. Use username and "
-                                        + "tenant id to disambiguate."));
-                            } else {
-                                return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential "
-                                    + "authentication unavailable. Multiple accounts matching the specified username: "
-                                    + "%s were found in the cache.", username)));
-                            }
-                        } else {
-                            requestedAccount = accounts.values().iterator().next();
-                        }
+                if (accounts.isEmpty()) {
+                    // no more accounts after filtering, username must be set
+                    return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential "
+                            + "authentication unavailable. No account matching the specified username: %s was "
+                            + "found in the cache.", username)));
+                } else if (accounts.size() > 1) {
+                    if (username == null) {
+                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. "
+                            + "Multiple accounts were found in the cache. Use username and tenant id to disambiguate.")
+                        );
+                    } else {
+                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential "
+                            + "authentication unavailable. Multiple accounts matching the specified username: "
+                            + "%s were found in the cache.", username)));
+                    }
+                } else {
+                    requestedAccount = accounts.values().iterator().next();
+                }
 
 
-                        return authenticateWithPublicClientCache(request, requestedAccount);
-                    }));
+                return authenticateWithPublicClientCache(request, requestedAccount);
+            });
     }
 
 
@@ -806,14 +797,11 @@ public class IdentityClient extends IdentityClientBase {
                                                                       TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
-            StringBuilder payload = new StringBuilder();
-            payload.append("resource=");
-            payload.append(URLEncoder.encode(ScopeUtil.scopesToResource(request.getScopes()),
-                StandardCharsets.UTF_8.name()));
-            payload.append("&api-version=");
-            payload.append(URLEncoder.encode("2019-11-01", StandardCharsets.UTF_8.name()));
+            String payload = identityEndpoint + "?resource="
+                + urlEncode(ScopeUtil.scopesToResource(request.getScopes()))
+                + "&api-version=" + ARC_MANAGED_IDENTITY_ENDPOINT_API_VERSION;
 
-            URL url = getUrl(String.format("%s?%s", identityEndpoint, payload));
+            URL url = getUrl(payload);
 
 
             String secretKey = null;
@@ -823,8 +811,6 @@ public class IdentityClient extends IdentityClientBase {
                 connection.setRequestProperty("Metadata", "true");
                 connection.setRequestProperty("User-Agent", userAgent);
                 connection.connect();
-
-                new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
             } catch (IOException e) {
                 if (connection == null) {
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to initialize "
@@ -874,16 +860,12 @@ public class IdentityClient extends IdentityClientBase {
 
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setRequestProperty("Authorization", String.format("Basic %s", secretKey));
+                connection.setRequestProperty("Authorization", "Basic " + secretKey);
                 connection.setRequestProperty("Metadata", "true");
                 connection.connect();
 
-                Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                    .useDelimiter("\\A");
-                String result = scanner.hasNext() ? scanner.next() : "";
-
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-
+                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                    SerializerEncoding.JSON);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -905,19 +887,9 @@ public class IdentityClient extends IdentityClientBase {
                 String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
                     + "/" + tenantId + "/oauth2/v2.0/token";
 
-                StringBuilder urlParametersBuilder  = new StringBuilder();
-                urlParametersBuilder.append("client_assertion=");
-                urlParametersBuilder.append(assertionToken);
-                urlParametersBuilder.append("&client_assertion_type=urn:ietf:params:oauth:client-assertion-type"
-                    + ":jwt-bearer");
-                urlParametersBuilder.append("&client_id=");
-                urlParametersBuilder.append(clientId);
-                urlParametersBuilder.append("&grant_type=client_credentials");
-                urlParametersBuilder.append("&scope=");
-                urlParametersBuilder.append(URLEncoder.encode(request.getScopes().get(0),
-                    StandardCharsets.UTF_8.name()));
-
-                String urlParams = urlParametersBuilder.toString();
+                String urlParams = "client_assertion=" + assertionToken
+                    + "&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_id="
+                    + clientId + "&grant_type=client_credentials&scope=" + urlEncode(request.getScopes().get(0));
 
                 byte[] postData = urlParams.getBytes(StandardCharsets.UTF_8);
                 int postDataLength = postData.length;
@@ -938,10 +910,8 @@ public class IdentityClient extends IdentityClientBase {
                     }
                     connection.connect();
 
-                    Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                        .useDelimiter("\\A");
-                    String result = s.hasNext() ? s.next() : "";
-                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                        SerializerEncoding.JSON);
                 } finally {
                     if (connection != null) {
                         connection.disconnect();
@@ -964,49 +934,43 @@ public class IdentityClient extends IdentityClientBase {
                                                                                 TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             HttpsURLConnection connection = null;
-            String endpoint = identityEndpoint;
-            String headerValue = identityHeader;
-            String endpointVersion = SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION;
 
             String resource = ScopeUtil.scopesToResource(request.getScopes());
-            StringBuilder payload = new StringBuilder();
+            StringBuilder payload = new StringBuilder(1024)
+                .append(identityEndpoint);
 
-            payload.append("resource=");
-            payload.append(URLEncoder.encode(resource, StandardCharsets.UTF_8.name()));
+            payload.append("?resource=");
+            payload.append(urlEncode(resource));
             payload.append("&api-version=");
-            payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
+            payload.append(SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION);
             if (clientId != null) {
                 LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&client_id=");
-                payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(clientId));
             }
 
             if (resourceId != null) {
                 LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&mi_res_id=");
-                payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(resourceId));
             }
 
             try {
-
-                URL url = getUrl(String.format("%s?%s", endpoint, payload));
+                URL url = getUrl(payload.toString());
                 connection = (HttpsURLConnection) url.openConnection();
 
                 IdentitySslUtil.addTrustedCertificateThumbprint(connection, thumbprint, LOGGER);
                 connection.setRequestMethod("GET");
-                if (headerValue != null) {
-                    connection.setRequestProperty("Secret", headerValue);
+                if (identityHeader != null) {
+                    connection.setRequestProperty("Secret", identityHeader);
                 }
                 connection.setRequestProperty("Metadata", "true");
                 connection.setRequestProperty("User-Agent", userAgent);
 
                 connection.connect();
 
-                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                                .useDelimiter("\\A");
-
-                String result = s.hasNext() ? s.next() : "";
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                    SerializerEncoding.JSON);
 
             } finally {
                 if (connection != null) {
@@ -1018,7 +982,7 @@ public class IdentityClient extends IdentityClientBase {
 
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
-     *
+     * <p>
      * Specifying identity parameters will use the 2019-08-01 endpoint version.
      * Specifying MSI parameters will use the 2017-09-01 endpoint version.
      *
@@ -1051,12 +1015,13 @@ public class IdentityClient extends IdentityClientBase {
 
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
-            StringBuilder payload = new StringBuilder();
+            StringBuilder payload = new StringBuilder(1024)
+                .append(endpoint);
 
-            payload.append("resource=");
-            payload.append(URLEncoder.encode(resource, StandardCharsets.UTF_8.name()));
+            payload.append("?resource=");
+            payload.append(urlEncode(resource));
             payload.append("&api-version=");
-            payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
+            payload.append(MSI_ENDPOINT_VERSION);
             if (clientId != null) {
                 if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
                     payload.append("&client_id=");
@@ -1067,7 +1032,7 @@ public class IdentityClient extends IdentityClientBase {
                     }
                     payload.append("&clientid=");
                 }
-                payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(clientId));
             }
             if (resourceId != null) {
                 if (endpointVersion.equals(MSI_ENDPOINT_VERSION) && headerValue == null) {
@@ -1075,10 +1040,10 @@ public class IdentityClient extends IdentityClientBase {
                     LOGGER.warning("User assigned managed identities are not supported in the Cloud Shell environment.");
                 }
                 payload.append("&mi_res_id=");
-                payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(resourceId));
             }
             try {
-                URL url = getUrl(String.format("%s?%s", endpoint, payload));
+                URL url = getUrl(payload.toString());
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
@@ -1094,11 +1059,8 @@ public class IdentityClient extends IdentityClientBase {
 
                 connection.connect();
 
-                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                        .useDelimiter("\\A");
-                String result = s.hasNext() ? s.next() : "";
-
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                    SerializerEncoding.JSON);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1122,17 +1084,16 @@ public class IdentityClient extends IdentityClientBase {
         final int imdsUpgradeTimeInMs = 70 * 1000;
 
         try {
-            payload.append("api-version=");
-            payload.append(URLEncoder.encode("2018-02-01", StandardCharsets.UTF_8.name()));
+            payload.append("api-version=2018-02-01");
             payload.append("&resource=");
-            payload.append(URLEncoder.encode(resource, StandardCharsets.UTF_8.name()));
+            payload.append(urlEncode(resource));
             if (clientId != null) {
                 payload.append("&client_id=");
-                payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(clientId));
             }
             if (resourceId != null) {
                 payload.append("&mi_res_id=");
-                payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(resourceId));
             }
         } catch (IOException exception) {
             return Mono.error(exception);
@@ -1147,7 +1108,7 @@ public class IdentityClient extends IdentityClientBase {
                 URL url = null;
                 HttpURLConnection connection = null;
                 try {
-                    url = getUrl(String.format("%s?%s", endpoint, payload));
+                    url = getUrl(endpoint + "?" + payload);
 
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
@@ -1155,15 +1116,12 @@ public class IdentityClient extends IdentityClientBase {
                     connection.setRequestProperty("User-Agent", userAgent);
                     connection.connect();
 
-                    Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                            .useDelimiter("\\A");
-                    String result = s.hasNext() ? s.next() : "";
-
-                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                        SerializerEncoding.JSON);
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(
-                                String.format("Could not connect to the url: %s.", url), exception));
+                            "Could not connect to the url: " + url + ".", exception));
                     }
                     int responseCode;
                     try {
@@ -1186,7 +1144,7 @@ public class IdentityClient extends IdentityClientBase {
                             || responseCode == 404
                             || (responseCode >= 500 && responseCode <= 599)) {
                         int retryTimeoutInMs = options.getRetryTimeout()
-                                .apply(Duration.ofSeconds(RANDOM.nextInt(retry))).getNano() / 1000;
+                                .apply(Duration.ofSeconds(ThreadLocalRandom.current().nextInt(retry))).getNano() / 1000;
                         // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                         //
                         retryTimeoutInMs =
@@ -1216,17 +1174,9 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private Mono<Boolean> checkIMDSAvailable(String endpoint) {
-        StringBuilder payload = new StringBuilder();
-
-        try {
-            payload.append("api-version=");
-            payload.append(URLEncoder.encode("2018-02-01", StandardCharsets.UTF_8.name()));
-        } catch (IOException exception) {
-            return Mono.error(exception);
-        }
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
-            URL url = getUrl(String.format("%s?%s", endpoint, payload));
+            URL url = getUrl(endpoint + "?api-version=2018-02-01");
 
             try {
                 connection = (HttpURLConnection) url.openConnection();
@@ -1319,6 +1269,10 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private boolean isADFSTenant() {
-        return this.tenantId.equals(ADFS_TENANT);
+        return ADFS_TENANT.equals(this.tenantId);
+    }
+
+    private static String urlEncode(String value) throws IOException {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
     }
 }

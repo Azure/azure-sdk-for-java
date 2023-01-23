@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource provider available operation display model. */
 @Fluent
 public final class AvailableOperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperationDisplay.class);
-
     /*
      * Description of the operation for display purposes
      */
@@ -37,6 +33,10 @@ public final class AvailableOperationDisplay {
      */
     @JsonProperty(value = "resource")
     private String resource;
+
+    /** Creates an instance of AvailableOperationDisplay class. */
+    public AvailableOperationDisplay() {
+    }
 
     /**
      * Get the description property: Description of the operation for display purposes.

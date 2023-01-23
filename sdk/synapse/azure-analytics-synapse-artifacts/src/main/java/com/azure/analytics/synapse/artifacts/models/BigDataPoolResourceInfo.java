@@ -135,6 +135,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     @JsonProperty(value = "properties.lastSucceededTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSucceededTimestamp;
 
+    /** Creates an instance of BigDataPoolResourceInfo class. */
+    public BigDataPoolResourceInfo() {}
+
     /**
      * Get the provisioningState property: The state of the Big Data pool.
      *

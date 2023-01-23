@@ -17,10 +17,9 @@ import com.azure.resourcemanager.customerinsights.models.PredictionModelStatus;
 import com.azure.resourcemanager.customerinsights.models.PredictionResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.PredictionTrainingResults;
 import com.azure.resourcemanager.customerinsights.models.Predictions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PredictionsImpl implements Predictions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PredictionsImpl.class);
 
     private final PredictionsClient innerClient;
 
@@ -31,15 +30,6 @@ public final class PredictionsImpl implements Predictions {
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PredictionResourceFormat get(String resourceGroupName, String hubName, String predictionName) {
-        PredictionResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, predictionName);
-        if (inner != null) {
-            return new PredictionResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PredictionResourceFormat> getWithResponse(
@@ -57,23 +47,21 @@ public final class PredictionsImpl implements Predictions {
         }
     }
 
+    public PredictionResourceFormat get(String resourceGroupName, String hubName, String predictionName) {
+        PredictionResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, predictionName);
+        if (inner != null) {
+            return new PredictionResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String hubName, String predictionName) {
         this.serviceClient().delete(resourceGroupName, hubName, predictionName);
     }
 
     public void delete(String resourceGroupName, String hubName, String predictionName, Context context) {
         this.serviceClient().delete(resourceGroupName, hubName, predictionName, context);
-    }
-
-    public PredictionTrainingResults getTrainingResults(
-        String resourceGroupName, String hubName, String predictionName) {
-        PredictionTrainingResultsInner inner =
-            this.serviceClient().getTrainingResults(resourceGroupName, hubName, predictionName);
-        if (inner != null) {
-            return new PredictionTrainingResultsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PredictionTrainingResults> getTrainingResultsWithResponse(
@@ -91,11 +79,12 @@ public final class PredictionsImpl implements Predictions {
         }
     }
 
-    public PredictionModelStatus getModelStatus(String resourceGroupName, String hubName, String predictionName) {
-        PredictionModelStatusInner inner =
-            this.serviceClient().getModelStatus(resourceGroupName, hubName, predictionName);
+    public PredictionTrainingResults getTrainingResults(
+        String resourceGroupName, String hubName, String predictionName) {
+        PredictionTrainingResultsInner inner =
+            this.serviceClient().getTrainingResults(resourceGroupName, hubName, predictionName);
         if (inner != null) {
-            return new PredictionModelStatusImpl(inner, this.manager());
+            return new PredictionTrainingResultsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -116,9 +105,14 @@ public final class PredictionsImpl implements Predictions {
         }
     }
 
-    public void modelStatus(
-        String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters) {
-        this.serviceClient().modelStatus(resourceGroupName, hubName, predictionName, parameters);
+    public PredictionModelStatus getModelStatus(String resourceGroupName, String hubName, String predictionName) {
+        PredictionModelStatusInner inner =
+            this.serviceClient().getModelStatus(resourceGroupName, hubName, predictionName);
+        if (inner != null) {
+            return new PredictionModelStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> modelStatusWithResponse(
@@ -130,6 +124,11 @@ public final class PredictionsImpl implements Predictions {
         return this
             .serviceClient()
             .modelStatusWithResponse(resourceGroupName, hubName, predictionName, parameters, context);
+    }
+
+    public void modelStatus(
+        String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters) {
+        this.serviceClient().modelStatus(resourceGroupName, hubName, predictionName, parameters);
     }
 
     public PagedIterable<PredictionResourceFormat> listByHub(String resourceGroupName, String hubName) {
@@ -147,7 +146,7 @@ public final class PredictionsImpl implements Predictions {
     public PredictionResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,14 +154,14 @@ public final class PredictionsImpl implements Predictions {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String predictionName = Utils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
@@ -173,7 +172,7 @@ public final class PredictionsImpl implements Predictions {
     public Response<PredictionResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,14 +180,14 @@ public final class PredictionsImpl implements Predictions {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String predictionName = Utils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
@@ -199,7 +198,7 @@ public final class PredictionsImpl implements Predictions {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,14 +206,14 @@ public final class PredictionsImpl implements Predictions {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String predictionName = Utils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));
@@ -225,7 +224,7 @@ public final class PredictionsImpl implements Predictions {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -233,14 +232,14 @@ public final class PredictionsImpl implements Predictions {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String predictionName = Utils.getValueFromIdByName(id, "predictions");
         if (predictionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'predictions'.", id)));

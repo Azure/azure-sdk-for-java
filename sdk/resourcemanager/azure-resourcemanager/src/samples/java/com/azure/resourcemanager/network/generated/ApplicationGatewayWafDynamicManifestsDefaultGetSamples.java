@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGatewayWafDynamicManifestsDefault Get. */
 public final class ApplicationGatewayWafDynamicManifestsDefaultGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/GetApplicationGatewayWafDynamicManifestsDefault.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/GetApplicationGatewayWafDynamicManifestsDefault.json
      */
     /**
      * Sample code: Gets WAF default manifest.

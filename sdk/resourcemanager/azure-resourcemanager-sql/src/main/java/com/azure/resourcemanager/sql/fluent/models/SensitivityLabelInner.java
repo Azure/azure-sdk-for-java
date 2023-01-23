@@ -13,10 +13,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SensitivityLabelInner extends ProxyResource {
     /*
+     * Resource that manages the sensitivity label.
+     */
+    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedBy;
+
+    /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private SensitivityLabelProperties innerProperties;
+
+    /** Creates an instance of SensitivityLabelInner class. */
+    public SensitivityLabelInner() {
+    }
+
+    /**
+     * Get the managedBy property: Resource that manages the sensitivity label.
+     *
+     * @return the managedBy value.
+     */
+    public String managedBy() {
+        return this.managedBy;
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -25,6 +44,33 @@ public final class SensitivityLabelInner extends ProxyResource {
      */
     private SensitivityLabelProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the schemaName property: The schema name.
+     *
+     * @return the schemaName value.
+     */
+    public String schemaName() {
+        return this.innerProperties() == null ? null : this.innerProperties().schemaName();
+    }
+
+    /**
+     * Get the tableName property: The table name.
+     *
+     * @return the tableName value.
+     */
+    public String tableName() {
+        return this.innerProperties() == null ? null : this.innerProperties().tableName();
+    }
+
+    /**
+     * Get the columnName property: The column name.
+     *
+     * @return the columnName value.
+     */
+    public String columnName() {
+        return this.innerProperties() == null ? null : this.innerProperties().columnName();
     }
 
     /**

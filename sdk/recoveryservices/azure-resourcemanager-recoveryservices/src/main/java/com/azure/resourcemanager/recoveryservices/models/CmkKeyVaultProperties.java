@@ -16,6 +16,10 @@ public final class CmkKeyVaultProperties {
     @JsonProperty(value = "keyUri")
     private String keyUri;
 
+    /** Creates an instance of CmkKeyVaultProperties class. */
+    public CmkKeyVaultProperties() {
+    }
+
     /**
      * Get the keyUri property: The key uri of the Customer Managed Key.
      *

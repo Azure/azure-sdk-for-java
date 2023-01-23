@@ -55,7 +55,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientActivit")
-    private interface ActivityLogsService {
+    public interface ActivityLogsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/eventtypes/management/values")
         @ExpectedResponses({200})

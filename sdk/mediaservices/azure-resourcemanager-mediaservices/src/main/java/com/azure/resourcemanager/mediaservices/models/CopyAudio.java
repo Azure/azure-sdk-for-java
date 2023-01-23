@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.CopyAudio")
 @Fluent
 public final class CopyAudio extends Codec {
+    /** Creates an instance of CopyAudio class. */
+    public CopyAudio() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public CopyAudio withLabel(String label) {

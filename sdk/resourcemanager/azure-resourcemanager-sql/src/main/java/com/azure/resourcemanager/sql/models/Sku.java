@@ -30,8 +30,7 @@ public final class Sku {
     private String size;
 
     /*
-     * If the service has different generations of hardware, for the same SKU,
-     * then that can be captured here.
+     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
      */
     @JsonProperty(value = "family")
     private String family;
@@ -41,6 +40,10 @@ public final class Sku {
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The name of the SKU, typically, a letter + Number code, e.g. P3.

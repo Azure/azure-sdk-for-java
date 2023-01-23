@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.AdvisorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of query statistics. */
 @Immutable
 public final class AdvisorsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvisorsResultList.class);
-
     /*
      * The list of recommendation action advisors.
      */
@@ -27,6 +23,10 @@ public final class AdvisorsResultList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of AdvisorsResultList class. */
+    public AdvisorsResultList() {
+    }
 
     /**
      * Get the value property: The list of recommendation action advisors.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of capacity name request body. */
 @Fluent
 public final class CheckCapacityNameAvailabilityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckCapacityNameAvailabilityParameters.class);
-
     /*
      * Name for checking availability.
      */
@@ -25,6 +21,10 @@ public final class CheckCapacityNameAvailabilityParameters {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of CheckCapacityNameAvailabilityParameters class. */
+    public CheckCapacityNameAvailabilityParameters() {
+    }
 
     /**
      * Get the name property: Name for checking availability.

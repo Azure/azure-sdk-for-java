@@ -24,7 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.fluent.OperationsClient;
 import com.azure.resourcemanager.databricks.fluent.models.OperationInner;
 import com.azure.resourcemanager.databricks.models.ErrorInfoException;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationsService service;
 
@@ -58,7 +55,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDatabricksManag")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Databricks/operations")
         @ExpectedResponses({200})
@@ -85,7 +82,8 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
@@ -95,10 +93,10 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .<PagedResponse<OperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -118,7 +116,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
@@ -128,11 +127,10 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -149,7 +147,7 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listAsync() {
@@ -163,7 +161,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listAsync(Context context) {
@@ -176,7 +174,8 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list() {
@@ -190,7 +189,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list(Context context) {
@@ -200,11 +200,13 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
@@ -235,12 +237,14 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Resource Provider operations.
+     * @return result of the request to list Resource Provider operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {

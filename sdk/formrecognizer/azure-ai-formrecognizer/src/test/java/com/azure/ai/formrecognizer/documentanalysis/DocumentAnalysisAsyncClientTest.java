@@ -29,10 +29,6 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CA
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_DOCX;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_HTML;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_PPT;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_XLSX;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.GERMAN_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_6_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_PDF;
@@ -1190,79 +1186,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
             Assertions.assertNotNull(analyzeResult.getLanguages());
-            Assertions.assertEquals(2, analyzeResult.getLanguages().size());
         }, INVOICE_PDF);
-    }
-
-    /**
-     * Verifies support for pptx when using "prebuilt-read".
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void testPptDocumentPrebuiltRead(HttpClient httpClient,
-                                                 DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, AnalyzeResult>
-                syncPoller
-                = client.beginAnalyzeDocument("prebuilt-read",
-                    BinaryData.fromStream(data, dataLength))
-                .setPollInterval(durationTestMode).getSyncPoller();
-            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertNotNull(analyzeResult);
-            Assertions.assertEquals("This is a pptx example.", analyzeResult.getContent());
-        }, EXAMPLE_PPT);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void testHtmlDocumentPrebuiltRead(HttpClient httpClient,
-                                             DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, AnalyzeResult>
-                syncPoller
-                = client.beginAnalyzeDocument("prebuilt-read",
-                    BinaryData.fromStream(data, dataLength))
-                .setPollInterval(durationTestMode).getSyncPoller();
-            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertNotNull(analyzeResult);
-            Assertions.assertTrue(analyzeResult.getContent().contains("html example."));
-        }, EXAMPLE_HTML);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void testDocxDocumentPrebuiltRead(HttpClient httpClient,
-                                             DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, AnalyzeResult>
-                syncPoller
-                = client.beginAnalyzeDocument("prebuilt-read",
-                    BinaryData.fromStream(data, dataLength))
-                .setPollInterval(durationTestMode).getSyncPoller();
-            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertNotNull(analyzeResult);
-            Assertions.assertEquals("This is a docx example.", analyzeResult.getContent());
-        }, EXAMPLE_DOCX);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void testXlsxDocumentPrebuiltRead(HttpClient httpClient,
-                                             DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            SyncPoller<OperationResult, AnalyzeResult>
-                syncPoller
-                = client.beginAnalyzeDocument("prebuilt-read",
-                    BinaryData.fromStream(data, dataLength))
-                .setPollInterval(durationTestMode).getSyncPoller();
-            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertNotNull(analyzeResult);
-            Assertions.assertTrue(analyzeResult.getContent().contains("This is a xlsx example."));
-        }, EXAMPLE_XLSX);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

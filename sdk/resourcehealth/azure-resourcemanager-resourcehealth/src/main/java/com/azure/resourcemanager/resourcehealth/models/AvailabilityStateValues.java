@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AvailabilityStateValues. */
+/** Impacted resource status of the resource. */
 public final class AvailabilityStateValues extends ExpandableStringEnum<AvailabilityStateValues> {
     /** Static value Available for AvailabilityStateValues. */
     public static final AvailabilityStateValues AVAILABLE = fromString("Available");
@@ -33,7 +33,11 @@ public final class AvailabilityStateValues extends ExpandableStringEnum<Availabi
         return fromString(name, AvailabilityStateValues.class);
     }
 
-    /** @return known AvailabilityStateValues values. */
+    /**
+     * Gets known AvailabilityStateValues values.
+     *
+     * @return known AvailabilityStateValues values.
+     */
     public static Collection<AvailabilityStateValues> values() {
         return values(AvailabilityStateValues.class);
     }

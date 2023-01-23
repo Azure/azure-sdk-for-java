@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.Caching;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceDataDisk;
 import com.azure.resourcemanager.machinelearning.models.StorageAccountType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceDataDiskTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceDataDisk model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class ComputeInstanceDataDiskTests {
         Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.storageAccountType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceDataDisk model =
             new ComputeInstanceDataDisk()
                 .withCaching(Caching.READ_WRITE)

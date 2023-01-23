@@ -12,20 +12,20 @@ public interface Operations {
     /**
      * Lists all of the available Azure attestation operations.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of supported operations along with {@link Response}.
+     */
+    Response<OperationList> listWithResponse(Context context);
+
+    /**
+     * Lists all of the available Azure attestation operations.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of supported operations.
      */
     OperationList list();
-
-    /**
-     * Lists all of the available Azure attestation operations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of supported operations.
-     */
-    Response<OperationList> listWithResponse(Context context);
 }

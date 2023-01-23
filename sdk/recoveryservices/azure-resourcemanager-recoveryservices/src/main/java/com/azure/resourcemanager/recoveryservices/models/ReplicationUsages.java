@@ -12,7 +12,7 @@ public interface ReplicationUsages {
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +24,7 @@ public interface ReplicationUsages {
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceIdentityType. */
+/** The type of identity used for the resource mover service. */
 public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIdentityType> {
     /** Static value None for ResourceIdentityType. */
     public static final ResourceIdentityType NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
 
     /** Static value UserAssigned for ResourceIdentityType. */
     public static final ResourceIdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /**
+     * Creates a new instance of ResourceIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceIdentityType() {
+    }
 
     /**
      * Creates or finds a ResourceIdentityType from its string representation.
@@ -30,7 +39,11 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
         return fromString(name, ResourceIdentityType.class);
     }
 
-    /** @return known ResourceIdentityType values. */
+    /**
+     * Gets known ResourceIdentityType values.
+     *
+     * @return known ResourceIdentityType values.
+     */
     public static Collection<ResourceIdentityType> values() {
         return values(ResourceIdentityType.class);
     }

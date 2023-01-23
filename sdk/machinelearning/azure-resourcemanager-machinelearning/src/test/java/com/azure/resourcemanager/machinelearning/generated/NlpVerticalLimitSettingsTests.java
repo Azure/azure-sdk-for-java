@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.NlpVerticalLimitSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NlpVerticalLimitSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NlpVerticalLimitSettings model =
             BinaryData
                 .fromString("{\"maxConcurrentTrials\":422661668,\"maxTrials\":768209268,\"timeout\":\"PT230H9M19S\"}")
@@ -22,8 +21,8 @@ public final class NlpVerticalLimitSettingsTests {
         Assertions.assertEquals(Duration.parse("PT230H9M19S"), model.timeout());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NlpVerticalLimitSettings model =
             new NlpVerticalLimitSettings()
                 .withMaxConcurrentTrials(422661668)

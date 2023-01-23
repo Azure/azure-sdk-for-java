@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation properties. */
 @Fluent
 public final class OperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationProperties.class);
-
     /*
      * Service specification.
      */
     @JsonProperty(value = "serviceSpecification")
     private ServiceSpecification serviceSpecification;
+
+    /** Creates an instance of OperationProperties class. */
+    public OperationProperties() {
+    }
 
     /**
      * Get the serviceSpecification property: Service specification.

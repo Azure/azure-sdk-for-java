@@ -5,117 +5,33 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.UserIdentity;
 import com.azure.resourcemanager.devtestlabs.models.UserSecretStore;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Profile of a lab user. */
-@JsonFlatten
 @Fluent
-public class UserInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
-
+public final class UserInner extends Resource {
     /*
-     * The identity of the user.
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.identity")
-    private UserIdentity identity;
+    @JsonProperty(value = "properties")
+    private UserProperties innerProperties;
 
-    /*
-     * The secret store of the user.
-     */
-    @JsonProperty(value = "properties.secretStore")
-    private UserSecretStore secretStore;
-
-    /*
-     * The creation date of the user profile.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
-
-    /**
-     * Get the identity property: The identity of the user.
-     *
-     * @return the identity value.
-     */
-    public UserIdentity identity() {
-        return this.identity;
+    /** Creates an instance of UserInner class. */
+    public UserInner() {
     }
 
     /**
-     * Set the identity property: The identity of the user.
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @param identity the identity value to set.
-     * @return the UserInner object itself.
+     * @return the innerProperties value.
      */
-    public UserInner withIdentity(UserIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the secretStore property: The secret store of the user.
-     *
-     * @return the secretStore value.
-     */
-    public UserSecretStore secretStore() {
-        return this.secretStore;
-    }
-
-    /**
-     * Set the secretStore property: The secret store of the user.
-     *
-     * @param secretStore the secretStore value to set.
-     * @return the UserInner object itself.
-     */
-    public UserInner withSecretStore(UserSecretStore secretStore) {
-        this.secretStore = secretStore;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the user profile.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
+    private UserProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -133,16 +49,86 @@ public class UserInner extends Resource {
     }
 
     /**
+     * Get the identity property: The identity of the user.
+     *
+     * @return the identity value.
+     */
+    public UserIdentity identity() {
+        return this.innerProperties() == null ? null : this.innerProperties().identity();
+    }
+
+    /**
+     * Set the identity property: The identity of the user.
+     *
+     * @param identity the identity value to set.
+     * @return the UserInner object itself.
+     */
+    public UserInner withIdentity(UserIdentity identity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * Get the secretStore property: The secret store of the user.
+     *
+     * @return the secretStore value.
+     */
+    public UserSecretStore secretStore() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretStore();
+    }
+
+    /**
+     * Set the secretStore property: The secret store of the user.
+     *
+     * @param secretStore the secretStore value to set.
+     * @return the UserInner object itself.
+     */
+    public UserInner withSecretStore(UserSecretStore secretStore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withSecretStore(secretStore);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the user profile.
+     *
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     *
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
-        if (secretStore() != null) {
-            secretStore().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

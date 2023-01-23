@@ -22,6 +22,10 @@ public final class ColumnDefinition {
     @JsonProperty(value = "type")
     private KnownColumnDefinitionType type;
 
+    /** Creates an instance of ColumnDefinition class. */
+    public ColumnDefinition() {
+    }
+
     /**
      * Get the name property: The name of the column.
      *

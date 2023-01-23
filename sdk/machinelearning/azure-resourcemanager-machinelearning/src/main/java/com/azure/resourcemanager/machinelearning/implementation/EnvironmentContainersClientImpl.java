@@ -60,7 +60,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface EnvironmentContainersService {
+    public interface EnvironmentContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

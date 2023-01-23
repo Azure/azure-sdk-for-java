@@ -30,6 +30,9 @@ public class ParquetDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compressionCodec")
     private Object compressionCodec;
 
+    /** Creates an instance of ParquetDataset class. */
+    public ParquetDataset() {}
+
     /**
      * Get the location property: The location of the parquet storage.
      *

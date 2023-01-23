@@ -7,18 +7,14 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.MachineProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a hybrid machine. */
 @Fluent
 public final class MachineInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineInner.class);
-
     /*
      * Hybrid Compute Machine properties
      */
@@ -36,6 +32,10 @@ public final class MachineInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of MachineInner class. */
+    public MachineInner() {
+    }
 
     /**
      * Get the properties property: Hybrid Compute Machine properties.

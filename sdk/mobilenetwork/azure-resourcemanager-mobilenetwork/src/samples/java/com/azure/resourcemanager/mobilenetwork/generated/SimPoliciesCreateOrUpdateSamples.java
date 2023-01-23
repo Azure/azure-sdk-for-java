@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for SimPolicies CreateOrUpdate. */
 public final class SimPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimPolicyCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyCreate.json
      */
     /**
      * Sample code: Create SIM policy.
@@ -68,7 +68,8 @@ public final class SimPoliciesCreateOrUpdateSamples {
                                                     .asList(
                                                         new ServiceResourceId()
                                                             .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))))))
+                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))
+                                            .withMaximumNumberOfBufferedPackets(200)))))
             .withRegistrationTimer(3240)
             .create();
     }

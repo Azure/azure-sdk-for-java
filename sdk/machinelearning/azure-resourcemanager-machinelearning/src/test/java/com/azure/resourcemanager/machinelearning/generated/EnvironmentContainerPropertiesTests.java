@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.EnvironmentContainerProp
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentContainerPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentContainerProperties model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class EnvironmentContainerPropertiesTests {
         Assertions.assertEquals(false, model.isArchived());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EnvironmentContainerProperties model =
             new EnvironmentContainerProperties()
                 .withDescription("dieuzaofj")

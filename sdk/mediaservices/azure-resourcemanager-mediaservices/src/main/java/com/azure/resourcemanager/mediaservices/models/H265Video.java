@@ -38,6 +38,10 @@ public final class H265Video extends Video {
     @JsonProperty(value = "layers")
     private List<H265Layer> layers;
 
+    /** Creates an instance of H265Video class. */
+    public H265Video() {
+    }
+
     /**
      * Get the sceneChangeDetection property: Specifies whether or not the encoder should insert key frames at scene
      * changes. If not specified, the default is false. This flag should be set to true only when the encoder is being

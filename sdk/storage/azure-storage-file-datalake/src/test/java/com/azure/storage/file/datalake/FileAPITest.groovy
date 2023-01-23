@@ -20,6 +20,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
+import com.azure.storage.file.datalake.models.LeaseAction
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -2576,6 +2577,110 @@ class FileAPITest extends APISpec {
         then:
         def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 412
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease acquire"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        def proposedLeaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseAction = LeaseAction.ACQUIRE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setProposedLeaseId(proposedLeaseId)
+            .setLeaseDuration(duration)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProperties.getLeaseState() == LeaseStateType.LEASED
+        fileProperties.getLeaseDuration() == LeaseDurationType.FIXED
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease auto renew"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def leaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseClient = createLeaseClient(fc, leaseId)
+
+        leaseClient.acquireLease(duration)
+
+        def leaseAction = LeaseAction.AUTO_RENEW
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setLeaseId(leaseId)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProperties.getLeaseState() == LeaseStateType.LEASED
+        fileProperties.getLeaseDuration() == LeaseDurationType.FIXED
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease release"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def leaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseClient = createLeaseClient(fc, leaseId)
+
+        leaseClient.acquireLease(duration)
+
+        def leaseAction = LeaseAction.RELEASE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setLeaseId(leaseId)
+            .setFlush(true)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        fileProperties.getLeaseState() == LeaseStateType.AVAILABLE
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease acquire release"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def proposedLeaseId = UUID.randomUUID().toString()
+        def duration = 15
+
+        def leaseAction = LeaseAction.ACQUIRE_RELEASE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setProposedLeaseId(proposedLeaseId)
+            .setLeaseDuration(duration)
+            .setFlush(true)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        fileProperties.getLeaseState() == LeaseStateType.AVAILABLE
     }
 
     def "Append data error"() {

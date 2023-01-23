@@ -24,6 +24,10 @@ public final class PrivateLinkResourceListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PrivateLinkResourceListResult class. */
+    public PrivateLinkResourceListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

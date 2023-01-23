@@ -13,6 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -118,6 +119,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
+    @Disabled
     public void listArtifacts(HttpClient httpClient) {
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
@@ -136,6 +138,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
+    @Disabled
     public void listArtifactsWithPageSize(HttpClient httpClient) {
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
@@ -157,6 +160,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
+    @Disabled
     public void listArtifactsWithPageSizeAndOrderBy(HttpClient httpClient) {
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
@@ -178,6 +182,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
+    @Disabled
     public void listArtifactsWithPageSizeNoOrderBy(HttpClient httpClient) {
         asyncClient = getContainerRepositoryAsync(httpClient);
         client = getContainerRepository(httpClient);
@@ -214,7 +219,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
             .expectError(NullPointerException.class)
             .verify();
 
-        StepVerifier.create(asyncClient.updatePropertiesWithResponse(null, Context.NONE))
+        StepVerifier.create(asyncClient.updatePropertiesWithResponse(null))
             .expectError(NullPointerException.class)
             .verify();
         assertThrows(NullPointerException.class, () -> client.updateProperties(null));

@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Functions are stored Kusto queries that can be specified as part of queries by using their name. */
+/**
+ * A stored function.
+ *
+ * <p>Functions are stored Kusto queries that can be specified as part of queries by using their name.
+ */
 @Fluent
 public final class MetadataFunction {
     /*

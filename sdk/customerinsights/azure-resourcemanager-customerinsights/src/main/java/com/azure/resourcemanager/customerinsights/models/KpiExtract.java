@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KPI extract. */
 @Fluent
 public final class KpiExtract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiExtract.class);
-
     /*
      * KPI extract name.
      */
@@ -25,6 +22,10 @@ public final class KpiExtract {
      */
     @JsonProperty(value = "expression", required = true)
     private String expression;
+
+    /** Creates an instance of KpiExtract class. */
+    public KpiExtract() {
+    }
 
     /**
      * Get the extractName property: KPI extract name.
@@ -73,14 +74,16 @@ public final class KpiExtract {
      */
     public void validate() {
         if (extractName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property extractName in model KpiExtract"));
         }
         if (expression() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property expression in model KpiExtract"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KpiExtract.class);
 }

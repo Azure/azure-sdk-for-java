@@ -6,15 +6,15 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationInner;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for Elastic Pool Activity interface. */
-class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> implements ElasticPoolActivity {
+class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolOperationInner> implements ElasticPoolActivity {
     private final ResourceId resourceId;
 
-    protected ElasticPoolActivityImpl(ElasticPoolActivityInner innerObject) {
+    protected ElasticPoolActivityImpl(ElasticPoolOperationInner innerObject) {
         super(innerObject);
         this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
@@ -36,7 +36,7 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     @Override
     public OffsetDateTime endTime() {
-        return this.innerModel().endTime();
+        return this.innerModel().estimatedCompletionTime();
     }
 
     @Override
@@ -46,7 +46,7 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     @Override
     public String errorMessage() {
-        return this.innerModel().errorMessage();
+        return this.innerModel().errorDescription();
     }
 
     @Override
@@ -61,37 +61,12 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     @Override
     public String operationId() {
-        return this.innerModel().operationId().toString();
+        return this.innerModel().id();
     }
 
     @Override
     public int percentComplete() {
         return ResourceManagerUtils.toPrimitiveInt(this.innerModel().percentComplete());
-    }
-
-    @Override
-    public int requestedDatabaseDtuMax() {
-        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().requestedDatabaseDtuMax());
-    }
-
-    @Override
-    public int requestedDatabaseDtuMin() {
-        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().requestedDatabaseDtuMin());
-    }
-
-    @Override
-    public int requestedDtu() {
-        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().requestedDtu());
-    }
-
-    @Override
-    public String requestedElasticPoolName() {
-        return this.innerModel().requestedElasticPoolName();
-    }
-
-    @Override
-    public long requestedStorageLimitInGB() {
-        return ResourceManagerUtils.toPrimitiveLong(this.innerModel().requestedStorageLimitInGB());
     }
 
     @Override
@@ -112,30 +87,5 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
     @Override
     public String state() {
         return this.innerModel().state();
-    }
-
-    @Override
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    @Override
-    public int requestedStorageLimitInMB() {
-        return this.innerModel().requestedStorageLimitInMB();
-    }
-
-    @Override
-    public int requestedDatabaseDtuGuarantee() {
-        return this.innerModel().requestedDatabaseDtuGuarantee();
-    }
-
-    @Override
-    public int requestedDatabaseDtuCap() {
-        return this.innerModel().requestedDatabaseDtuCap();
-    }
-
-    @Override
-    public int requestedDtuGuarantee() {
-        return this.innerModel().requestedDtuGuarantee();
     }
 }

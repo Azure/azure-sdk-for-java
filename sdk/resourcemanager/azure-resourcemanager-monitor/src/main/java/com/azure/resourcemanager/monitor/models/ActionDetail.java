@@ -46,6 +46,10 @@ public final class ActionDetail {
     @JsonProperty(value = "Detail")
     private String detail;
 
+    /** Creates an instance of ActionDetail class. */
+    public ActionDetail() {
+    }
+
     /**
      * Get the mechanismType property: The mechanism type.
      *

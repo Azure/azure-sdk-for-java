@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a resource currently being monitored by the Datadog monitor resource. */
 @Fluent
 public final class MonitoredResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoredResourceInner.class);
-
     /*
      * The ARM id of the resource.
      */
@@ -27,8 +23,7 @@ public final class MonitoredResourceInner {
     private Boolean sendingMetrics;
 
     /*
-     * Reason for why the resource is sending metrics (or why it is not
-     * sending).
+     * Reason for why the resource is sending metrics (or why it is not sending).
      */
     @JsonProperty(value = "reasonForMetricsStatus")
     private String reasonForMetricsStatus;
@@ -44,6 +39,10 @@ public final class MonitoredResourceInner {
      */
     @JsonProperty(value = "reasonForLogsStatus")
     private String reasonForLogsStatus;
+
+    /** Creates an instance of MonitoredResourceInner class. */
+    public MonitoredResourceInner() {
+    }
 
     /**
      * Get the id property: The ARM id of the resource.

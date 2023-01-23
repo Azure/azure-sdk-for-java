@@ -41,17 +41,6 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         return Utils.mapPage(inner, inner1 -> new TimeSeriesDatabaseConnectionImpl(inner1, this.manager()));
     }
 
-    public TimeSeriesDatabaseConnection get(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
-        TimeSeriesDatabaseConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
-        if (inner != null) {
-            return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TimeSeriesDatabaseConnection> getWithResponse(
         String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
         Response<TimeSeriesDatabaseConnectionInner> inner =
@@ -64,6 +53,17 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TimeSeriesDatabaseConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TimeSeriesDatabaseConnection get(
+        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+        TimeSeriesDatabaseConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
+        if (inner != null) {
+            return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

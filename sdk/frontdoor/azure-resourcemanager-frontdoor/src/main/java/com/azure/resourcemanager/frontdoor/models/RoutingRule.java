@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.frontdoor.fluent.models.RoutingRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,10 +14,13 @@ import java.util.List;
  * A routing rule represents a specification for traffic to treat and where to send it, along with health probe
  * information.
  */
-@JsonFlatten
 @Fluent
-public class RoutingRule extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingRule.class);
+public final class RoutingRule extends SubResource {
+    /*
+     * Properties of the Front Door Routing Rule
+     */
+    @JsonProperty(value = "properties")
+    private RoutingRuleProperties innerProperties;
 
     /*
      * Resource name.
@@ -33,56 +34,18 @@ public class RoutingRule extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Frontend endpoints associated with this rule
-     */
-    @JsonProperty(value = "properties.frontendEndpoints")
-    private List<SubResource> frontendEndpoints;
+    /** Creates an instance of RoutingRule class. */
+    public RoutingRule() {
+    }
 
-    /*
-     * Protocol schemes to match for this rule
+    /**
+     * Get the innerProperties property: Properties of the Front Door Routing Rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.acceptedProtocols")
-    private List<FrontDoorProtocol> acceptedProtocols;
-
-    /*
-     * The route patterns of the rule.
-     */
-    @JsonProperty(value = "properties.patternsToMatch")
-    private List<String> patternsToMatch;
-
-    /*
-     * Whether to enable use of this rule. Permitted values are 'Enabled' or
-     * 'Disabled'
-     */
-    @JsonProperty(value = "properties.enabledState")
-    private RoutingRuleEnabledState enabledState;
-
-    /*
-     * A reference to the routing configuration.
-     */
-    @JsonProperty(value = "properties.routeConfiguration")
-    private RouteConfiguration routeConfiguration;
-
-    /*
-     * A reference to a specific Rules Engine Configuration to apply to this
-     * route.
-     */
-    @JsonProperty(value = "properties.rulesEngine")
-    private SubResource rulesEngine;
-
-    /*
-     * Defines the Web Application Firewall policy for each routing rule (if
-     * applicable)
-     */
-    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
-    private RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
-
-    /*
-     * Resource status.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private FrontDoorResourceState resourceState;
+    private RoutingRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Resource name.
@@ -113,13 +76,31 @@ public class RoutingRule extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RoutingRule withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
+     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
+     *
+     * <p>Resource status.
+     *
+     * @return the resourceState value.
+     */
+    public FrontDoorResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
     /**
      * Get the frontendEndpoints property: Frontend endpoints associated with this rule.
      *
      * @return the frontendEndpoints value.
      */
     public List<SubResource> frontendEndpoints() {
-        return this.frontendEndpoints;
+        return this.innerProperties() == null ? null : this.innerProperties().frontendEndpoints();
     }
 
     /**
@@ -129,7 +110,10 @@ public class RoutingRule extends SubResource {
      * @return the RoutingRule object itself.
      */
     public RoutingRule withFrontendEndpoints(List<SubResource> frontendEndpoints) {
-        this.frontendEndpoints = frontendEndpoints;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutingRuleProperties();
+        }
+        this.innerProperties().withFrontendEndpoints(frontendEndpoints);
         return this;
     }
 
@@ -139,7 +123,7 @@ public class RoutingRule extends SubResource {
      * @return the acceptedProtocols value.
      */
     public List<FrontDoorProtocol> acceptedProtocols() {
-        return this.acceptedProtocols;
+        return this.innerProperties() == null ? null : this.innerProperties().acceptedProtocols();
     }
 
     /**
@@ -149,7 +133,10 @@ public class RoutingRule extends SubResource {
      * @return the RoutingRule object itself.
      */
     public RoutingRule withAcceptedProtocols(List<FrontDoorProtocol> acceptedProtocols) {
-        this.acceptedProtocols = acceptedProtocols;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutingRuleProperties();
+        }
+        this.innerProperties().withAcceptedProtocols(acceptedProtocols);
         return this;
     }
 
@@ -159,7 +146,7 @@ public class RoutingRule extends SubResource {
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
-        return this.patternsToMatch;
+        return this.innerProperties() == null ? null : this.innerProperties().patternsToMatch();
     }
 
     /**
@@ -169,7 +156,10 @@ public class RoutingRule extends SubResource {
      * @return the RoutingRule object itself.
      */
     public RoutingRule withPatternsToMatch(List<String> patternsToMatch) {
-        this.patternsToMatch = patternsToMatch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutingRuleProperties();
+        }
+        this.innerProperties().withPatternsToMatch(patternsToMatch);
         return this;
     }
 
@@ -179,7 +169,7 @@ public class RoutingRule extends SubResource {
      * @return the enabledState value.
      */
     public RoutingRuleEnabledState enabledState() {
-        return this.enabledState;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
     }
 
     /**
@@ -189,7 +179,10 @@ public class RoutingRule extends SubResource {
      * @return the RoutingRule object itself.
      */
     public RoutingRule withEnabledState(RoutingRuleEnabledState enabledState) {
-        this.enabledState = enabledState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutingRuleProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
         return this;
     }
 
@@ -199,7 +192,7 @@ public class RoutingRule extends SubResource {
      * @return the routeConfiguration value.
      */
     public RouteConfiguration routeConfiguration() {
-        return this.routeConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().routeConfiguration();
     }
 
     /**
@@ -209,7 +202,10 @@ public class RoutingRule extends SubResource {
      * @return the RoutingRule object itself.
      */
     public RoutingRule withRouteConfiguration(RouteConfiguration routeConfiguration) {
-        this.routeConfiguration = routeConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutingRuleProperties();
+        }
+        this.innerProperties().withRouteConfiguration(routeConfiguration);
         return this;
     }
 
@@ -219,7 +215,7 @@ public class RoutingRule extends SubResource {
      * @return the rulesEngine value.
      */
     public SubResource rulesEngine() {
-        return this.rulesEngine;
+        return this.innerProperties() == null ? null : this.innerProperties().rulesEngine();
     }
 
     /**
@@ -229,7 +225,10 @@ public class RoutingRule extends SubResource {
      * @return the RoutingRule object itself.
      */
     public RoutingRule withRulesEngine(SubResource rulesEngine) {
-        this.rulesEngine = rulesEngine;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutingRuleProperties();
+        }
+        this.innerProperties().withRulesEngine(rulesEngine);
         return this;
     }
 
@@ -240,7 +239,7 @@ public class RoutingRule extends SubResource {
      * @return the webApplicationFirewallPolicyLink value.
      */
     public RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
-        return this.webApplicationFirewallPolicyLink;
+        return this.innerProperties() == null ? null : this.innerProperties().webApplicationFirewallPolicyLink();
     }
 
     /**
@@ -252,23 +251,10 @@ public class RoutingRule extends SubResource {
      */
     public RoutingRule withWebApplicationFirewallPolicyLink(
         RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
-        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
-        return this;
-    }
-
-    /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    public FrontDoorResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RoutingRule withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutingRuleProperties();
+        }
+        this.innerProperties().withWebApplicationFirewallPolicyLink(webApplicationFirewallPolicyLink);
         return this;
     }
 
@@ -278,11 +264,8 @@ public class RoutingRule extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (routeConfiguration() != null) {
-            routeConfiguration().validate();
-        }
-        if (webApplicationFirewallPolicyLink() != null) {
-            webApplicationFirewallPolicyLink().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

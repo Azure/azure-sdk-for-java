@@ -26,6 +26,15 @@ public final class ProtectedItemHealthStatus extends ExpandableStringEnum<Protec
     public static final ProtectedItemHealthStatus IRPENDING = fromString("IRPending");
 
     /**
+     * Creates a new instance of ProtectedItemHealthStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectedItemHealthStatus() {
+    }
+
+    /**
      * Creates or finds a ProtectedItemHealthStatus from its string representation.
      *
      * @param name a name to look for.
