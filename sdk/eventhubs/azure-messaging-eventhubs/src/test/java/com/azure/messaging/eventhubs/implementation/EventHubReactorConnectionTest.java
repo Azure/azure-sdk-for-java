@@ -144,7 +144,7 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
-        when(reactorProvider.createExecutorForReactor(any(Reactor.class), anyString(), anyString(),
+        when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
             any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
             .then(answerByCreatingExecutor());
 
@@ -218,7 +218,7 @@ public class EventHubReactorConnectionTest {
             final String fqdn = invocation.getArgument(2);
             final ReactorConnection.ReactorExceptionHandler exceptionHandler = invocation.getArgument(3);
             final AmqpRetryOptions retry = invocation.getArgument(4);
-            return (new ReactorProvider()).createExecutorForReactor(r, conId, fqdn, exceptionHandler, retry);
+            return (new ReactorProvider()).createExecutor(r, conId, fqdn, exceptionHandler, retry);
         };
     }
 }

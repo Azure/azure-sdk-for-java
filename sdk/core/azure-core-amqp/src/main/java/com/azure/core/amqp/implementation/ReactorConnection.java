@@ -88,7 +88,7 @@ public class ReactorConnection implements AmqpConnection {
     private final Duration operationTimeout;
     private final Composite subscriptions;
 
-    private ReactorExecutor executor;
+    private ReactorExecutor reactorExecutor;
 
     private volatile ClaimsBasedSecurityChannel cbsChannel;
     private volatile AmqpChannelProcessor<RequestResponseChannel> cbsChannelProcessor;
@@ -546,10 +546,10 @@ public class ReactorConnection implements AmqpConnection {
 
         // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
         // remaining work after OperationTimeout has elapsed and closes afterwards.
-        final Mono<Void> closedExecutor = executor != null ? Mono.defer(() -> {
+        final Mono<Void> closedExecutor = reactorExecutor != null ? Mono.defer(() -> {
             synchronized (this) {
                 logger.info("Closing executor.");
-                return executor.closeAsync();
+                return reactorExecutor.closeAsync();
             }
         }) : Mono.empty();
 
@@ -599,14 +599,14 @@ public class ReactorConnection implements AmqpConnection {
 
             final ReactorExceptionHandler reactorExceptionHandler = new ReactorExceptionHandler();
 
-            executor = reactorProvider.createExecutorForReactor(reactor, connectionId,
+            reactorExecutor = reactorProvider.createExecutor(reactor, connectionId,
                 connectionOptions.getFullyQualifiedNamespace(), reactorExceptionHandler, connectionOptions.getRetry());
 
             // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
             // It will not be kicked off until subscribed to.
             final Mono<Void> executorCloseMono = Mono.defer(() -> {
                 synchronized (this) {
-                    return executor.closeAsync();
+                    return reactorExecutor.closeAsync();
                 }
             });
 
@@ -623,7 +623,7 @@ public class ReactorConnection implements AmqpConnection {
                 })
                 .subscribe();
 
-            executor.start();
+            reactorExecutor.start();
         }
 
         return connection;

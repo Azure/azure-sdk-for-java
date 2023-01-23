@@ -875,7 +875,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             }
 
             when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
-            when(reactorProvider.createExecutorForReactor(any(), anyString(), any(), any(), any())).thenReturn(reactorExecutor);
+            when(reactorProvider.createExecutor(any(), anyString(), any(), any(), any())).thenReturn(reactorExecutor);
             when(handlerProvider.createConnectionHandler(anyString(), any())).thenReturn(connectionHandler);
             when(tokenManager.authorize()).thenReturn(Mono.just(Duration.ofHours(1).toMillis()));
             when(tokenManagerProvider.getTokenManager(any(), anyString())).thenReturn(tokenManager);
