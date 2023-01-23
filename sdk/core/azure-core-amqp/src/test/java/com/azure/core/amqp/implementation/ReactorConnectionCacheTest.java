@@ -431,7 +431,7 @@ public class ReactorConnectionCacheTest {
                 throw new UncheckedIOException(ioe);
             }
             when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
-            when(reactorProvider.createExecutorForReactor(any(), anyString(), any(), any(), any())).thenReturn(reactorExecutor);
+            when(reactorProvider.createExecutor(any(), anyString(), any(), any(), any())).thenReturn(reactorExecutor);
 
             final ConnectionHandler connectionHandler = mock(ConnectionHandler.class);
             when(connectionHandler.getEndpointStates()).thenReturn(endpointStates);
