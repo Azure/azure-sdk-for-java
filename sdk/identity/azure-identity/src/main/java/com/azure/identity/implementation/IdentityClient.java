@@ -344,6 +344,15 @@ public class IdentityClient extends IdentityClientBase {
         azdCommand.append(String.join(" --scope ", scopes));
 
         try {
+            String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+            if (!CoreUtils.isNullOrEmpty(tenant)) {
+                azdCommand.append(" --tenant ").append(tenant);
+            }
+        } catch (ClientAuthenticationException e) {
+            return Mono.error(e);
+        }
+
+        try {
             AccessToken token = getTokenFromAzureDeveloperCLIAuthentication(azdCommand);
             return Mono.just(token);
         } catch (RuntimeException e) {

@@ -361,6 +361,11 @@ public class IdentitySyncClient extends IdentityClientBase {
         // If there are more than one scope, we add `--scope` before each.
         azdCommand.append(String.join(" --scope ", scopes));
 
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant)) {
+            azdCommand.append(" --tenant-id ").append(tenant);
+        }
+
         try {
             return getTokenFromAzureDeveloperCLIAuthentication(azdCommand);
         } catch (RuntimeException e) {
