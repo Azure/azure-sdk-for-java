@@ -486,7 +486,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -598,7 +598,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -758,7 +758,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -976,7 +976,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
