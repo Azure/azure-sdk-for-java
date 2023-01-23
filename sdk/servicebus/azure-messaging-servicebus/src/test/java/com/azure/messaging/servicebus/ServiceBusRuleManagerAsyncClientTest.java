@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.implementation.RecoverableReactorConnection;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
@@ -52,7 +52,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private static final String RULE_NAME = "foo-bar";
 
     private ServiceBusRuleManagerAsyncClient ruleManager;
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
 
     private AutoCloseable mocksCloseable;
     private CreateRuleOptions ruleOptions;
@@ -107,11 +107,11 @@ public class ServiceBusRuleManagerAsyncClientTest {
         when(connection.isDisposed()).thenReturn(false);
         when(connection.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
 
-        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
+        connectionCache = new ReactorConnectionCache<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
             new HashMap<>());
 
-        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, recoverableConnection, onClientClose);
+        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, connectionCache, onClientClose);
 
     }
 
