@@ -8,6 +8,7 @@ import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.perf.test.core.BatchPerfTest;
 import com.azure.perf.test.core.PerfStressOptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Represents the EventHubs Service Test.
@@ -28,6 +29,7 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
     protected EventHubProducerAsyncClient eventHubProducerAsyncClient;
     protected EventHubProducerClient eventHubProducerClient;
     protected final List<EventData> events;
+    protected byte[] eventDataBytes;
 
 
     /**
@@ -48,11 +50,15 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
             throw new IllegalStateException("Environment variable EVENTHUB_NAME must be set");
         }
 
-        byte[] eventBytes = generateString(100).getBytes(StandardCharsets.UTF_8);
+        eventHubClientBuilder = new EventHubClientBuilder().connectionString(connectionString, eventHubName);
+        eventHubProducerAsyncClient = eventHubClientBuilder.buildAsyncProducerClient();
+        eventHubProducerClient = eventHubClientBuilder.buildProducerClient();
+
+        eventDataBytes = generateString(100).getBytes(StandardCharsets.UTF_8);
 
         final ArrayList<EventData> eventsList = new ArrayList<>();
         for (int number = 0; number < options.getCount(); number++) {
-            final EventData eventData = new EventData(eventBytes);
+            final EventData eventData = new EventData(eventDataBytes);
             eventData.getProperties().put("index", number);
             eventsList.add(eventData);
         }
@@ -61,13 +67,7 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
 
     @Override
     public Mono<Void> setupAsync() {
-        return Mono.fromCallable(() -> {
-            // Setup the service client
-            eventHubClientBuilder = new EventHubClientBuilder().connectionString(connectionString, eventHubName);
-            eventHubProducerAsyncClient = eventHubClientBuilder.buildAsyncProducerClient();
-            eventHubProducerClient = eventHubClientBuilder.buildProducerClient();
-            return 1;
-        }).then();
+        return Mono.empty();
     }
 
     @Override
@@ -79,30 +79,77 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
         }).then();
     }
 
-    Mono<Void> sendMessages(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend) {
+    Mono<Void> preLoadEvents(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend) {
         final CreateBatchOptions options = partitionId != null
             ? new CreateBatchOptions().setPartitionId(partitionId)
             : new CreateBatchOptions();
 
-        final AtomicInteger number = new AtomicInteger(totalMessagesToSend);
-        return Mono.defer(() -> client.createBatch(options)
-                .flatMap(batch -> {
-                    EventData event = events.get(0);
-                    while (batch.tryAdd(event)) {
-                        final int index = number.getAndDecrement() % events.size();
-                        if (index < 0) {
-                            break;
+        final AtomicLong eventsToSend = new AtomicLong(totalMessagesToSend);
+        final AtomicLong totalEvents = new AtomicLong(0);
+
+        Mono<Void> partitionMono;
+        if (CoreUtils.isNullOrEmpty(partitionId)) {
+            partitionMono = client.getPartitionIds()
+                .flatMap(partId -> client.getPartitionProperties(partId))
+                .map(partitionProperties -> {
+                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
+                    return Mono.empty();
+                }).then();
+        } else {
+            partitionMono = client.getPartitionProperties(partitionId)
+                .map(partitionProperties -> {
+                    totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
+                    return Mono.empty();
+                }).then();
+        }
+        return partitionMono.then(Mono.defer(() -> {
+            if (totalEvents.get() < totalMessagesToSend) {
+                eventsToSend.set(totalMessagesToSend - totalEvents.get());
+                return client.createBatch(options)
+                    .flatMap(batch -> {
+                        EventData event = createEvent();
+                        while (batch.tryAdd(event)) {
+                            eventsToSend.getAndDecrement();
                         }
+                        return client.send(batch);
+                    }).repeat(() -> eventsToSend.get() > 0).then()
+                    .doFinally(signal -> System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
+            } else {
+                return Mono.empty();
+            }
+        }));
+    }
 
-                        event = events.get(index);
-                    }
 
-                    return client.send(batch);
-                }))
-            .repeat(() -> number.get() > 0)
-            .then()
-            .doFinally(signal ->
-                System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
+    Mono<Void> preLoadEvents(EventHubProducerAsyncClient client, int totalMessagesToSend) {
+        AtomicLong totalEvents = new AtomicLong(0);
+        return client.getPartitionIds()
+            .flatMap(partId -> client.getPartitionProperties(partId))
+            .map(partitionProperties -> {
+                totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber() - partitionProperties.getBeginningSequenceNumber());
+                return Mono.empty();
+            }).then(Mono.defer(() -> {
+                if (totalEvents.get() < totalMessagesToSend) {
+                    AtomicLong eventsToAdd = new AtomicLong(totalMessagesToSend - totalEvents.get());
+                    return client.createBatch()
+                        .map(eventDataBatch -> {
+                            long eventsToLoad = eventsToAdd.get();
+                            for (int i = 0; i < eventsToLoad; i++) {
+                                if (!eventDataBatch.tryAdd(createEvent())) {
+                                    break;
+                                }
+                                eventsToAdd.decrementAndGet();
+                            }
+                            return client.send(eventDataBatch);
+                        }).repeat(() -> eventsToAdd.get() > 0).then();
+                }
+                return Mono.empty();
+            }));
+    }
+
+    protected EventData createEvent() {
+        EventData eventData = new EventData(eventDataBytes);
+        return eventData;
     }
 
     protected String generateString(int targetLength) {

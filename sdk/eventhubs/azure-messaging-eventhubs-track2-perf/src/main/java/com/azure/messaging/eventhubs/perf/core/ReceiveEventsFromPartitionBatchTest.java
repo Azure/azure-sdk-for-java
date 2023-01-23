@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
+public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
     private EventHubConsumerClient eventHubConsumerClient;
     private EventHubConsumerAsyncClient eventHubConsumerAsyncClient;
 
@@ -21,13 +21,23 @@ public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOption
      * @param options The options bag to use to run performance test.
      * @throws IllegalStateException when expected configuration of environment variables is not found.
      */
-    public ReceiveEventsBatchTest(EventHubsPerfOptions options) throws IllegalStateException {
+    public ReceiveEventsFromPartitionBatchTest(EventHubsPerfOptions options) throws IllegalStateException {
         super(options);
+        if(options.getPartitionId() == null) {
+            throw new IllegalStateException("Specify target partition id.");
+        }
+    }
+
+
+    @Override
+    public Mono<Void> globalSetupAsync() {
+        return super.globalSetupAsync()
+            .then(Mono.defer(() -> preLoadEvents(eventHubProducerAsyncClient, String.valueOf(options.getPartitionId()), options.getEvents())));
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        return Mono.fromCallable(() -> {
+        return super.setupAsync().then(Mono.fromCallable(() -> {
             // Setup the service client
             eventHubClientBuilder = new EventHubClientBuilder().connectionString(connectionString, eventHubName);
             eventHubClientBuilder
@@ -36,7 +46,7 @@ public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOption
             eventHubConsumerClient = eventHubClientBuilder.buildConsumerClient();
             eventHubConsumerAsyncClient = eventHubClientBuilder.buildAsyncConsumerClient();
             return 1;
-        }).then(Mono.defer(() -> sendMessages(eventHubProducerAsyncClient, String.valueOf(options.getPartitionId()), options.getEvents())));
+        })).then();
     }
 
     @Override
@@ -45,7 +55,7 @@ public class ReceiveEventsBatchTest extends ServiceBatchTest<EventHubsPerfOption
             eventHubConsumerClient.close();
             eventHubConsumerAsyncClient.close();
             return 1;
-        }).then();
+        }).then(Mono.defer(() -> super.cleanupAsync()));
     }
 
     @Override

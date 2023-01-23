@@ -28,7 +28,7 @@ public class EventHubsPerfOptions extends PerfStressOptions {
     private Integer paritionId = null;
 
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
-    private String consumerGroup;
+    private String consumerGroup = "$Default";
 
     @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
     private int prefetch = 500;
