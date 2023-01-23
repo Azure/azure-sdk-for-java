@@ -155,7 +155,7 @@ class ReactorConnectionTest {
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
-        when(reactorProvider.createExecutorForReactor(any(Reactor.class), anyString(), anyString(),
+        when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
             any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
             .then(answerByCreatingExecutor());
 
@@ -496,7 +496,7 @@ class ReactorConnectionTest {
         when(reactorProvider.createReactor(anyString(), anyInt())).thenReturn(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
-        when(reactorProvider.createExecutorForReactor(any(Reactor.class), anyString(), anyString(),
+        when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
             any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
             .then(answerByCreatingExecutor());
 
@@ -896,7 +896,7 @@ class ReactorConnectionTest {
             final String fqdn = invocation.getArgument(2);
             final ReactorConnection.ReactorExceptionHandler exceptionHandler = invocation.getArgument(3);
             final AmqpRetryOptions retry = invocation.getArgument(4);
-            return (new ReactorProvider()).createExecutorForReactor(r, conId, fqdn, exceptionHandler, retry);
+            return (new ReactorProvider()).createExecutor(r, conId, fqdn, exceptionHandler, retry);
         };
     }
 }
