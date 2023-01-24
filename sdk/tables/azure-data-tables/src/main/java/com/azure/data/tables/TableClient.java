@@ -1733,19 +1733,23 @@ public final class TableClient {
         scheduler.shutdown();
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception ex) {
+
+            throw logger.logExceptionAsError((RuntimeException) interpretException(ex));
         }
-        catch (Exception ex) {
-            Throwable exception = ex;
-            if (exception instanceof ExecutionException) {
-                exception = exception.getCause();
-            }
-            Throwable cause = exception.getCause();
-            if (cause instanceof TableTransactionFailedException) {
-                TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
-                throw logger.logExceptionAsError(failedException);
-            } else {
-                throw logger.logExceptionAsError(new RuntimeException(mapThrowableToTableServiceException(exception)));
-            }
+    }
+
+    private Exception interpretException(Exception ex) {
+        Throwable exception = ex;
+        if (exception instanceof ExecutionException) {
+            exception = exception.getCause();
+        }
+        Throwable cause = exception.getCause();
+        if (cause instanceof TableTransactionFailedException) {
+            TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
+            return failedException;
+        } else {
+            return new RuntimeException(mapThrowableToTableServiceException(exception));
         }
     }
 
