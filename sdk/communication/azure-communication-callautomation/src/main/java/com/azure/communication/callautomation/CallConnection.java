@@ -226,13 +226,14 @@ public class CallConnection {
     }
 
     /**
-     * Mutes a single participant in the call.
-     * @param targetParticipant - Participant to be muted.
+     * Mutes participants in the call.
+     *
+     * @param targetParticipants - Participants to be muted. Only one participant currently supported.
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResult muteParticipant(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.muteParticipantAsync(targetParticipant).block();
+    public MuteParticipantsResult muteParticipant(List<CommunicationIdentifier> targetParticipants) {
+        return callConnectionAsync.muteParticipantAsync(targetParticipants).block();
     }
 
     /**
@@ -270,13 +271,13 @@ public class CallConnection {
     }
 
     /**
-     * Unmutes a single participant in the call.
-     * @param targetParticipant - Participant to be muted.
+     * Unmutes participants in the call.
+     * @param targetParticipants - Participants to be muted. Only one participant currently supported.
      * @return An UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResult unmuteParticipant(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.unmuteParticipantAsync(targetParticipant).block();
+    public UnmuteParticipantsResult unmuteParticipant(List<CommunicationIdentifier> targetParticipants) {
+        return callConnectionAsync.unmuteParticipantAsync(targetParticipants).block();
     }
 
     /**

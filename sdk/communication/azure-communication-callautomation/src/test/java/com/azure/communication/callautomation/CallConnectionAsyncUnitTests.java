@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -310,7 +311,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
         MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteParticipantAsync(
-            new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))).block();
 
         assertNotNull(muteParticipantsResult);
         assertNull(muteParticipantsResult.getOperationContext());
@@ -326,7 +327,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
         MuteParticipantOptions muteParticipantOptions = new MuteParticipantOptions(
-            new CommunicationUserIdentifier(CALL_TARGET_ID))
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
         Response<MuteParticipantsResult> muteParticipantsResultResponse =
@@ -351,7 +352,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
         assertThrows(CallingServerErrorException.class, () ->  callConnectionAsync.muteParticipantAsync(
-            new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))).block());
     }
 
     @Test
@@ -446,7 +447,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
         UnmuteParticipantsResult unmuteParticipantsResult = callConnectionAsync.unmuteParticipantAsync(
-            new CommunicationUserIdentifier(CALL_TARGET_ID)
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))
         ).block();
 
         assertNotNull(unmuteParticipantsResult);
@@ -462,7 +463,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
         assertThrows(CallingServerErrorException.class, () ->  callConnectionAsync.unmuteParticipantAsync(
-            new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))).block());
     }
 
     @Test
@@ -475,7 +476,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
         UnmuteParticipantOptions muteParticipantOptions = new UnmuteParticipantOptions(
-            new CommunicationUserIdentifier(CALL_TARGET_ID))
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
         Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse =

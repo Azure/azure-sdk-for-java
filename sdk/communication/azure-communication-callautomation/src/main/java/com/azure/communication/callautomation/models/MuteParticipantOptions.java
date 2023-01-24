@@ -7,6 +7,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -15,9 +16,10 @@ import java.util.UUID;
 @Fluent
 public final class MuteParticipantOptions {
     /**
-     * The participant to mute.
+     * The participants to mute.
+     * Only one participant currently supported.
      */
-    private final CommunicationIdentifier targetParticipant;
+    private final List<CommunicationIdentifier> targetParticipant;
 
     /**
      * The operational context
@@ -34,7 +36,7 @@ public final class MuteParticipantOptions {
      *
      * @param targetParticipant The targetParticipant to mute.
      */
-    public MuteParticipantOptions(CommunicationIdentifier targetParticipant) {
+    public MuteParticipantOptions(List<CommunicationIdentifier> targetParticipant) {
         this.targetParticipant = targetParticipant;
         this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
@@ -44,7 +46,7 @@ public final class MuteParticipantOptions {
      *
      * @return the participants to mute.
      */
-    public CommunicationIdentifier getTargetParticipant() {
+    public List<CommunicationIdentifier> getTargetParticipant() {
         return targetParticipant;
     }
 

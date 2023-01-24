@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contract model of an ACS call participant. */
 @Fluent
-public final class AcsCallParticipantInternal {
+public final class CallParticipantInternal {
     /*
      * Communication identifier of the participant
      */
@@ -35,9 +35,9 @@ public final class AcsCallParticipantInternal {
      * Set the identifier property: Communication identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the AcsCallParticipantInternal object itself.
+     * @return the CallParticipantInternal object itself.
      */
-    public AcsCallParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
+    public CallParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -55,9 +55,9 @@ public final class AcsCallParticipantInternal {
      * Set the isMuted property: Is participant muted.
      *
      * @param isMuted the isMuted value to set.
-     * @return the AcsCallParticipantInternal object itself.
+     * @return the CallParticipantInternal object itself.
      */
-    public AcsCallParticipantInternal setIsMuted(Boolean isMuted) {
+    public CallParticipantInternal setIsMuted(Boolean isMuted) {
         this.isMuted = isMuted;
         return this;
     }

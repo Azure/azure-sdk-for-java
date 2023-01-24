@@ -4,21 +4,21 @@
 
 package com.azure.communication.callautomation.implementation;
 
-import com.azure.communication.callautomation.implementation.models.AcsCallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.AddParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
+import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.MuteAllParticipantsRequestInternal;
-import com.azure.communication.callautomation.implementation.models.MuteParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteAllParticipantsRequestInternal;
-import com.azure.communication.callautomation.implementation.models.UnmuteParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -183,7 +183,7 @@ public final class CallConnectionsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
-                @BodyParam("application/json") MuteParticipantRequestInternal muteParticipantRequest,
+                @BodyParam("application/json") MuteParticipantsRequestInternal muteParticipantsRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -196,17 +196,17 @@ public final class CallConnectionsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
-                @BodyParam("application/json") UnmuteParticipantRequestInternal unmuteParticipantRequest,
+                @BodyParam("application/json") UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/calling/callConnections/{callConnectionId}/participants/{participantMri}")
+        @Get("/calling/callConnections/{callConnectionId}/participants/{participantRawId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcsCallParticipantInternal>> getParticipant(
+        Mono<Response<CallParticipantInternal>> getParticipant(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
-                @PathParam("participantMri") String participantMri,
+                @PathParam("participantRawId") String participantRawId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -1788,10 +1788,10 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Mute participant from the call using identifier.
+     * Mute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param muteParticipantRequest The participant to be muted from the call.
+     * @param muteParticipantsRequest The participants to be muted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -1808,7 +1808,7 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MuteParticipantsResponseInternal>> muteWithResponseAsync(
             String callConnectionId,
-            MuteParticipantRequestInternal muteParticipantRequest,
+            MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
         final String accept = "application/json";
@@ -1820,16 +1820,16 @@ public final class CallConnectionsImpl {
                                 this.client.getApiVersion(),
                                 repeatabilityRequestID,
                                 repeatabilityFirstSent,
-                                muteParticipantRequest,
+                                muteParticipantsRequest,
                                 accept,
                                 context));
     }
 
     /**
-     * Mute participant from the call using identifier.
+     * Mute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param muteParticipantRequest The participant to be muted from the call.
+     * @param muteParticipantsRequest The participants to be muted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -1847,7 +1847,7 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MuteParticipantsResponseInternal>> muteWithResponseAsync(
             String callConnectionId,
-            MuteParticipantRequestInternal muteParticipantRequest,
+            MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
@@ -1858,16 +1858,16 @@ public final class CallConnectionsImpl {
                 this.client.getApiVersion(),
                 repeatabilityRequestID,
                 repeatabilityFirstSent,
-                muteParticipantRequest,
+                muteParticipantsRequest,
                 accept,
                 context);
     }
 
     /**
-     * Mute participant from the call using identifier.
+     * Mute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param muteParticipantRequest The participant to be muted from the call.
+     * @param muteParticipantsRequest The participants to be muted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -1884,11 +1884,11 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MuteParticipantsResponseInternal> muteAsync(
             String callConnectionId,
-            MuteParticipantRequestInternal muteParticipantRequest,
+            MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
         return muteWithResponseAsync(
-                        callConnectionId, muteParticipantRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                        callConnectionId, muteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<MuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1900,10 +1900,10 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Mute participant from the call using identifier.
+     * Mute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param muteParticipantRequest The participant to be muted from the call.
+     * @param muteParticipantsRequest The participants to be muted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -1921,13 +1921,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MuteParticipantsResponseInternal> muteAsync(
             String callConnectionId,
-            MuteParticipantRequestInternal muteParticipantRequest,
+            MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
         return muteWithResponseAsync(
                         callConnectionId,
-                        muteParticipantRequest,
+                        muteParticipantsRequest,
                         repeatabilityRequestID,
                         repeatabilityFirstSent,
                         context)
@@ -1942,10 +1942,10 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Mute participant from the call using identifier.
+     * Mute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param muteParticipantRequest The participant to be muted from the call.
+     * @param muteParticipantsRequest The participants to be muted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -1962,18 +1962,18 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MuteParticipantsResponseInternal mute(
             String callConnectionId,
-            MuteParticipantRequestInternal muteParticipantRequest,
+            MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
-        return muteAsync(callConnectionId, muteParticipantRequest, repeatabilityRequestID, repeatabilityFirstSent)
+        return muteAsync(callConnectionId, muteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .block();
     }
 
     /**
-     * Mute participant from the call using identifier.
+     * Mute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param muteParticipantRequest The participant to be muted from the call.
+     * @param muteParticipantsRequest The participants to be muted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -1991,13 +1991,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MuteParticipantsResponseInternal> muteWithResponse(
             String callConnectionId,
-            MuteParticipantRequestInternal muteParticipantRequest,
+            MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
         return muteWithResponseAsync(
                         callConnectionId,
-                        muteParticipantRequest,
+                        muteParticipantsRequest,
                         repeatabilityRequestID,
                         repeatabilityFirstSent,
                         context)
@@ -2005,10 +2005,10 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Unmute participant from the call using identifier.
+     * Unmute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unmuteParticipantRequest The participant to be unmuted from the call.
+     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -2025,7 +2025,7 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UnmuteParticipantsResponseInternal>> unmuteWithResponseAsync(
             String callConnectionId,
-            UnmuteParticipantRequestInternal unmuteParticipantRequest,
+            UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
         final String accept = "application/json";
@@ -2037,16 +2037,16 @@ public final class CallConnectionsImpl {
                                 this.client.getApiVersion(),
                                 repeatabilityRequestID,
                                 repeatabilityFirstSent,
-                                unmuteParticipantRequest,
+                                unmuteParticipantsRequest,
                                 accept,
                                 context));
     }
 
     /**
-     * Unmute participant from the call using identifier.
+     * Unmute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unmuteParticipantRequest The participant to be unmuted from the call.
+     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -2064,7 +2064,7 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UnmuteParticipantsResponseInternal>> unmuteWithResponseAsync(
             String callConnectionId,
-            UnmuteParticipantRequestInternal unmuteParticipantRequest,
+            UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
@@ -2075,16 +2075,16 @@ public final class CallConnectionsImpl {
                 this.client.getApiVersion(),
                 repeatabilityRequestID,
                 repeatabilityFirstSent,
-                unmuteParticipantRequest,
+                unmuteParticipantsRequest,
                 accept,
                 context);
     }
 
     /**
-     * Unmute participant from the call using identifier.
+     * Unmute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unmuteParticipantRequest The participant to be unmuted from the call.
+     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -2101,11 +2101,11 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnmuteParticipantsResponseInternal> unmuteAsync(
             String callConnectionId,
-            UnmuteParticipantRequestInternal unmuteParticipantRequest,
+            UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
         return unmuteWithResponseAsync(
-                        callConnectionId, unmuteParticipantRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                        callConnectionId, unmuteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<UnmuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -2117,10 +2117,10 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Unmute participant from the call using identifier.
+     * Unmute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unmuteParticipantRequest The participant to be unmuted from the call.
+     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -2138,13 +2138,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnmuteParticipantsResponseInternal> unmuteAsync(
             String callConnectionId,
-            UnmuteParticipantRequestInternal unmuteParticipantRequest,
+            UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
         return unmuteWithResponseAsync(
                         callConnectionId,
-                        unmuteParticipantRequest,
+                        unmuteParticipantsRequest,
                         repeatabilityRequestID,
                         repeatabilityFirstSent,
                         context)
@@ -2159,10 +2159,10 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Unmute participant from the call using identifier.
+     * Unmute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unmuteParticipantRequest The participant to be unmuted from the call.
+     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -2179,18 +2179,18 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnmuteParticipantsResponseInternal unmute(
             String callConnectionId,
-            UnmuteParticipantRequestInternal unmuteParticipantRequest,
+            UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
-        return unmuteAsync(callConnectionId, unmuteParticipantRequest, repeatabilityRequestID, repeatabilityFirstSent)
+        return unmuteAsync(callConnectionId, unmuteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .block();
     }
 
     /**
-     * Unmute participant from the call using identifier.
+     * Unmute participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unmuteParticipantRequest The participant to be unmuted from the call.
+     * @param unmuteParticipantsRequest The participants to be unmuted from the call.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -2208,13 +2208,13 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnmuteParticipantsResponseInternal> unmuteWithResponse(
             String callConnectionId,
-            UnmuteParticipantRequestInternal unmuteParticipantRequest,
+            UnmuteParticipantsRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
         return unmuteWithResponseAsync(
                         callConnectionId,
-                        unmuteParticipantRequest,
+                        unmuteParticipantsRequest,
                         repeatabilityRequestID,
                         repeatabilityFirstSent,
                         context)
@@ -2225,22 +2225,22 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participant to retrieve.
+     * @param participantRawId Raw id of the participant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(
-            String callConnectionId, String participantMri) {
+    public Mono<Response<CallParticipantInternal>> getParticipantWithResponseAsync(
+            String callConnectionId, String participantRawId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getParticipant(
                                 this.client.getEndpoint(),
                                 callConnectionId,
-                                participantMri,
+                                participantRawId,
                                 this.client.getApiVersion(),
                                 accept,
                                 context));
@@ -2250,7 +2250,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participant to retrieve.
+     * @param participantRawId Raw id of the participant to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2258,13 +2258,13 @@ public final class CallConnectionsImpl {
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(
-            String callConnectionId, String participantMri, Context context) {
+    public Mono<Response<CallParticipantInternal>> getParticipantWithResponseAsync(
+            String callConnectionId, String participantRawId, Context context) {
         final String accept = "application/json";
         return service.getParticipant(
                 this.client.getEndpoint(),
                 callConnectionId,
-                participantMri,
+                participantRawId,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -2274,17 +2274,17 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participant to retrieve.
+     * @param participantRawId Raw id of the participant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcsCallParticipantInternal> getParticipantAsync(String callConnectionId, String participantMri) {
-        return getParticipantWithResponseAsync(callConnectionId, participantMri)
+    public Mono<CallParticipantInternal> getParticipantAsync(String callConnectionId, String participantRawId) {
+        return getParticipantWithResponseAsync(callConnectionId, participantRawId)
                 .flatMap(
-                        (Response<AcsCallParticipantInternal> res) -> {
+                        (Response<CallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2297,7 +2297,7 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participant to retrieve.
+     * @param participantRawId Raw id of the participant to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2305,11 +2305,11 @@ public final class CallConnectionsImpl {
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcsCallParticipantInternal> getParticipantAsync(
-            String callConnectionId, String participantMri, Context context) {
-        return getParticipantWithResponseAsync(callConnectionId, participantMri, context)
+    public Mono<CallParticipantInternal> getParticipantAsync(
+            String callConnectionId, String participantRawId, Context context) {
+        return getParticipantWithResponseAsync(callConnectionId, participantRawId, context)
                 .flatMap(
-                        (Response<AcsCallParticipantInternal> res) -> {
+                        (Response<CallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2322,22 +2322,22 @@ public final class CallConnectionsImpl {
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participant to retrieve.
+     * @param participantRawId Raw id of the participant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcsCallParticipantInternal getParticipant(String callConnectionId, String participantMri) {
-        return getParticipantAsync(callConnectionId, participantMri).block();
+    public CallParticipantInternal getParticipant(String callConnectionId, String participantRawId) {
+        return getParticipantAsync(callConnectionId, participantRawId).block();
     }
 
     /**
      * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param participantMri MRI of the participant to retrieve.
+     * @param participantRawId Raw id of the participant to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2345,8 +2345,8 @@ public final class CallConnectionsImpl {
      * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcsCallParticipantInternal> getParticipantWithResponse(
-            String callConnectionId, String participantMri, Context context) {
-        return getParticipantWithResponseAsync(callConnectionId, participantMri, context).block();
+    public Response<CallParticipantInternal> getParticipantWithResponse(
+            String callConnectionId, String participantRawId, Context context) {
+        return getParticipantWithResponseAsync(callConnectionId, participantRawId, context).block();
     }
 }

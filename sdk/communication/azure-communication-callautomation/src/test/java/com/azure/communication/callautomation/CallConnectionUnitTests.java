@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -289,7 +290,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         MuteParticipantsResult muteParticipantsResult =
-            callConnection.muteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
+            callConnection.muteParticipant(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
 
         assertNotNull(muteParticipantsResult);
         assertNull(muteParticipantsResult.getOperationContext());
@@ -305,7 +306,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         MuteParticipantOptions muteParticipantOptions = new MuteParticipantOptions(
-            new CommunicationUserIdentifier(CALL_TARGET_ID))
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
         Response<MuteParticipantsResult> muteParticipantsResultResponse =
@@ -395,7 +396,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         UnmuteParticipantsResult unmuteParticipantsResult =
-            callConnection.unmuteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
+            callConnection.unmuteParticipant(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
 
         assertNotNull(unmuteParticipantsResult);
         assertNull(unmuteParticipantsResult.getOperationContext());
@@ -411,7 +412,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         UnmuteParticipantOptions muteParticipantOptions = new UnmuteParticipantOptions(
-            new CommunicationUserIdentifier(CALL_TARGET_ID))
+            Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)))
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
         Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse =

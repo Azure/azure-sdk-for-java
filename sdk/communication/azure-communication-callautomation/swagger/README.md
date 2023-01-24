@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/517e4b305c3434cecff01cdd5dc299deefd8d013/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/62597ab28d4c1223f64fab661c08786654fabd60/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -49,8 +49,8 @@ context-client-method-parameter: true
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
-    from: AcsCallParticipant
-    to: AcsCallParticipantInternal
+    from: CallParticipant
+    to: CallParticipantInternal
 - rename-model:
     from: AddParticipantsRequest
     to: AddParticipantsRequestInternal
@@ -148,8 +148,8 @@ directive:
     from: Choice
     to: RecognizeChoice
 - rename-model:
-    from: MuteParticipantRequest
-    to: MuteParticipantRequestInternal
+    from: MuteParticipantsRequest
+    to: MuteParticipantsRequestInternal
 - rename-model:
     from: MuteAllParticipantsRequest
     to: MuteAllParticipantsRequestInternal
@@ -157,8 +157,8 @@ directive:
     from: MuteParticipantsResponse
     to: MuteParticipantsResponseInternal
 - rename-model:
-    from: UnmuteParticipantRequest
-    to: UnmuteParticipantRequestInternal
+    from: UnmuteParticipantsRequest
+    to: UnmuteParticipantsRequestInternal
 - rename-model:
     from: UnmuteAllParticipantsRequest
     to: UnmuteAllParticipantsRequestInternal
