@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans FailoverCommit. */
 public final class ReplicationRecoveryPlansFailoverCommitSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationRecoveryPlansFailoverCommitSamples {
      */
     public static void executeCommitFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().failoverCommit("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .failoverCommit("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }

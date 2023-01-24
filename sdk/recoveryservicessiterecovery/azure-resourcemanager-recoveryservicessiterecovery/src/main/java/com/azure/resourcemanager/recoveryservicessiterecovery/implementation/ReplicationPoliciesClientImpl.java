@@ -704,7 +704,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(
         String resourceName, String resourceGroupName, String policyName, CreatePolicyInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, policyName, input).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, policyName, input).getSyncPoller();
     }
 
     /**
@@ -725,7 +725,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(
         String resourceName, String resourceGroupName, String policyName, CreatePolicyInput input, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, policyName, input, context).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, policyName, input, context).getSyncPoller();
     }
 
     /**
@@ -982,7 +982,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String policyName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, policyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, policyName).getSyncPoller();
     }
 
     /**
@@ -1002,7 +1002,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String policyName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, policyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, policyName, context).getSyncPoller();
     }
 
     /**
@@ -1272,7 +1272,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(
         String resourceName, String resourceGroupName, String policyName, UpdatePolicyInput input) {
-        return beginUpdateAsync(resourceName, resourceGroupName, policyName, input).getSyncPoller();
+        return this.beginUpdateAsync(resourceName, resourceGroupName, policyName, input).getSyncPoller();
     }
 
     /**
@@ -1293,7 +1293,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(
         String resourceName, String resourceGroupName, String policyName, UpdatePolicyInput input, Context context) {
-        return beginUpdateAsync(resourceName, resourceGroupName, policyName, input, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceName, resourceGroupName, policyName, input, context).getSyncPoller();
     }
 
     /**

@@ -19,7 +19,7 @@ public interface Disks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Disk> list(String resourceGroupName, String labName, String username);
 
@@ -37,7 +37,7 @@ public interface Disks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Disk> list(
         String resourceGroupName,
@@ -56,12 +56,15 @@ public interface Disks {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the disk.
+     * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk.
+     * @return disk along with {@link Response}.
      */
-    Disk get(String resourceGroupName, String labName, String username, String name);
+    Response<Disk> getWithResponse(
+        String resourceGroupName, String labName, String username, String name, String expand, Context context);
 
     /**
      * Get disk.
@@ -70,15 +73,12 @@ public interface Disks {
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param name The name of the disk.
-     * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk.
      */
-    Response<Disk> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Disk get(String resourceGroupName, String labName, String username, String name);
 
     /**
      * Delete disk. This operation can take a while to complete.
@@ -196,7 +196,7 @@ public interface Disks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk.
+     * @return disk along with {@link Response}.
      */
     Disk getById(String id);
 
@@ -209,7 +209,7 @@ public interface Disks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk.
+     * @return disk along with {@link Response}.
      */
     Response<Disk> getByIdWithResponse(String id, String expand, Context context);
 

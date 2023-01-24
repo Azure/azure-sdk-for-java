@@ -20,7 +20,8 @@ public interface NodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the nodes currently configured under this Data Box Edge device.
+     * @return all the nodes currently configured under this Data Box Edge device as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NodeInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
@@ -34,7 +35,8 @@ public interface NodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the nodes currently configured under this Data Box Edge device.
+     * @return all the nodes currently configured under this Data Box Edge device as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NodeInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context);

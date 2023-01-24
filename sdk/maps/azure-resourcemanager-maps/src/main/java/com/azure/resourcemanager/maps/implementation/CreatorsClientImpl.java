@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.fluent.CreatorsClient;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
 import com.azure.resourcemanager.maps.models.CreatorList;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CreatorsClient. */
 public final class CreatorsClientImpl implements CreatorsClient {
-    private final ClientLogger logger = new ClientLogger(CreatorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CreatorsService service;
 
@@ -62,7 +59,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMapsManagementC")
-    private interface CreatorsService {
+    public interface CreatorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
@@ -163,7 +160,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(
@@ -221,7 +219,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(
@@ -275,7 +274,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CreatorInner> listByAccountAsync(String resourceGroupName, String accountName) {
@@ -293,7 +292,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CreatorInner> listByAccountAsync(String resourceGroupName, String accountName, Context context) {
@@ -310,7 +309,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CreatorInner> listByAccount(String resourceGroupName, String accountName) {
@@ -326,7 +325,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CreatorInner> listByAccount(String resourceGroupName, String accountName, Context context) {
@@ -345,7 +344,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(
@@ -409,7 +408,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(
@@ -473,20 +472,39 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     *     data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreatorInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String creatorName, CreatorInner creatorResource) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorResource)
-            .flatMap(
-                (Response<CreatorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
+     * custom set of mapping data. It requires an account to exist before it can be created.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param creatorName The name of the Maps Creator instance.
+     * @param creatorResource The new or updated parameters for the Creator resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
+     *     data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreatorInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String creatorName,
+        CreatorInner creatorResource,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorResource, context)
+            .block();
     }
 
     /**
@@ -506,33 +524,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreatorInner createOrUpdate(
         String resourceGroupName, String accountName, String creatorName, CreatorInner creatorResource) {
-        return createOrUpdateAsync(resourceGroupName, accountName, creatorName, creatorResource).block();
-    }
-
-    /**
-     * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
-     * custom set of mapping data. It requires an account to exist before it can be created.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param creatorName The name of the Maps Creator instance.
-     * @param creatorResource The new or updated parameters for the Creator resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreatorInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorInner creatorResource,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorResource, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, accountName, creatorName, creatorResource, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -546,7 +539,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> updateWithResponseAsync(
@@ -613,7 +606,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     *     data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> updateWithResponseAsync(
@@ -677,7 +670,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     *     data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreatorInner> updateAsync(
@@ -686,14 +679,32 @@ public final class CreatorsClientImpl implements CreatorsClient {
         String creatorName,
         CreatorUpdateParameters creatorUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorUpdateParameters)
-            .flatMap(
-                (Response<CreatorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param creatorName The name of the Maps Creator instance.
+     * @param creatorUpdateParameters The update parameters for Maps Creator.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
+     *     data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreatorInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String creatorName,
+        CreatorUpdateParameters creatorUpdateParameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorUpdateParameters, context)
+            .block();
     }
 
     /**
@@ -715,32 +726,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
         String accountName,
         String creatorName,
         CreatorUpdateParameters creatorUpdateParameters) {
-        return updateAsync(resourceGroupName, accountName, creatorName, creatorUpdateParameters).block();
-    }
-
-    /**
-     * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param creatorName The name of the Maps Creator instance.
-     * @param creatorUpdateParameters The update parameters for Maps Creator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreatorInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String creatorName,
-        CreatorUpdateParameters creatorUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, creatorName, creatorUpdateParameters, context)
-            .block();
+        return updateWithResponse(resourceGroupName, accountName, creatorName, creatorUpdateParameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -752,7 +739,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -806,7 +793,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -856,12 +843,29 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String creatorName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, creatorName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, creatorName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Maps Creator resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param creatorName The name of the Maps Creator instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String creatorName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, creatorName, context).block();
     }
 
     /**
@@ -876,25 +880,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String creatorName) {
-        deleteAsync(resourceGroupName, accountName, creatorName).block();
-    }
-
-    /**
-     * Delete a Maps Creator resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param creatorName The name of the Maps Creator instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, creatorName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, creatorName, Context.NONE);
     }
 
     /**
@@ -906,7 +892,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
+     * @return a Maps Creator resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> getWithResponseAsync(
@@ -960,7 +946,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
+     * @return a Maps Creator resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> getWithResponseAsync(
@@ -1010,19 +996,30 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
+     * @return a Maps Creator resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreatorInner> getAsync(String resourceGroupName, String accountName, String creatorName) {
         return getWithResponseAsync(resourceGroupName, accountName, creatorName)
-            .flatMap(
-                (Response<CreatorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Maps Creator resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param creatorName The name of the Maps Creator instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Maps Creator resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreatorInner> getWithResponse(
+        String resourceGroupName, String accountName, String creatorName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, creatorName, context).block();
     }
 
     /**
@@ -1038,35 +1035,18 @@ public final class CreatorsClientImpl implements CreatorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreatorInner get(String resourceGroupName, String accountName, String creatorName) {
-        return getAsync(resourceGroupName, accountName, creatorName).block();
-    }
-
-    /**
-     * Get a Maps Creator resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param creatorName The name of the Maps Creator instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreatorInner> getWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, creatorName, context).block();
+        return getWithResponse(resourceGroupName, accountName, creatorName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Creator resources.
+     * @return a list of Creator resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CreatorInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -1097,12 +1077,13 @@ public final class CreatorsClientImpl implements CreatorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Creator resources.
+     * @return a list of Creator resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CreatorInner>> listByAccountNextSinglePageAsync(String nextLink, Context context) {

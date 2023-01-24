@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpoint GetOperationStatus. */
 public final class PrivateEndpointGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
      */
     /**
      * Sample code: Get OperationStatus.
@@ -25,6 +23,6 @@ public final class PrivateEndpointGetOperationStatusSamples {
                 "gaallaRG",
                 "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
                 "0f48183b-0a44-4dca-aec1-bba5daab888a",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

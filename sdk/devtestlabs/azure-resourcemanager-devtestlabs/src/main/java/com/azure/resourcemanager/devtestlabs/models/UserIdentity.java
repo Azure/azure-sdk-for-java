@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity attributes of a lab user. */
 @Fluent
 public class UserIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserIdentity.class);
-
     /*
      * Set to the principal name / UPN of the client JWT making the request.
      */
@@ -21,8 +17,7 @@ public class UserIdentity {
     private String principalName;
 
     /*
-     * Set to the principal Id of the client JWT making the request. Service
-     * principal will not have the principal Id.
+     * Set to the principal Id of the client JWT making the request. Service principal will not have the principal Id.
      */
     @JsonProperty(value = "principalId")
     private String principalId;
@@ -34,9 +29,8 @@ public class UserIdentity {
     private String tenantId;
 
     /*
-     * Set to the object Id of the client JWT making the request. Not all users
-     * have object Id. For CSP (reseller) scenarios for example, object Id is
-     * not available.
+     * Set to the object Id of the client JWT making the request. Not all users have object Id. For CSP (reseller)
+     * scenarios for example, object Id is not available.
      */
     @JsonProperty(value = "objectId")
     private String objectId;
@@ -46,6 +40,10 @@ public class UserIdentity {
      */
     @JsonProperty(value = "appId")
     private String appId;
+
+    /** Creates an instance of UserIdentity class. */
+    public UserIdentity() {
+    }
 
     /**
      * Get the principalName property: Set to the principal name / UPN of the client JWT making the request.

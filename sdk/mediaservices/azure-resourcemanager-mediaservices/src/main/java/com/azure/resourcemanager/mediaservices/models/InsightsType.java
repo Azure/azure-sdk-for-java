@@ -27,6 +27,15 @@ public final class InsightsType extends ExpandableStringEnum<InsightsType> {
     public static final InsightsType ALL_INSIGHTS = fromString("AllInsights");
 
     /**
+     * Creates a new instance of InsightsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InsightsType() {
+    }
+
+    /**
      * Creates or finds a InsightsType from its string representation.
      *
      * @param name a name to look for.

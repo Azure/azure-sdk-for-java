@@ -11,6 +11,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Deprecated the always-failing API `DataLakeFileClient.flush(long)` to avoid confusion regarding overwrite semantics in DataLake.
+
+## 12.13.2 (2023-01-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-storage-blob` from `12.20.1` to version `12.20.2`.
 
 ## 12.13.1 (2022-11-15)
 

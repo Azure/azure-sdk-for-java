@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AggregationInterval. */
+/** The aggregation interval of the Timeseries. */
 public final class AggregationInterval extends ExpandableStringEnum<AggregationInterval> {
     /** Static value Hourly for AggregationInterval. */
     public static final AggregationInterval HOURLY = fromString("Hourly");
 
     /** Static value Daily for AggregationInterval. */
     public static final AggregationInterval DAILY = fromString("Daily");
+
+    /**
+     * Creates a new instance of AggregationInterval value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AggregationInterval() {
+    }
 
     /**
      * Creates or finds a AggregationInterval from its string representation.
@@ -27,7 +36,11 @@ public final class AggregationInterval extends ExpandableStringEnum<AggregationI
         return fromString(name, AggregationInterval.class);
     }
 
-    /** @return known AggregationInterval values. */
+    /**
+     * Gets known AggregationInterval values.
+     *
+     * @return known AggregationInterval values.
+     */
     public static Collection<AggregationInterval> values() {
         return values(AggregationInterval.class);
     }

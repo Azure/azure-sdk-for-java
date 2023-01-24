@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics MigrateToAad. */
 public final class ReplicationFabricsMigrateToAadSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationFabricsMigrateToAadSamples {
      */
     public static void migratesTheSiteToAAD(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().migrateToAad("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+        manager
+            .replicationFabrics()
+            .migrateToAad("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

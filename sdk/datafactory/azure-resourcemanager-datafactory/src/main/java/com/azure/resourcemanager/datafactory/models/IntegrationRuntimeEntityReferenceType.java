@@ -20,6 +20,15 @@ public final class IntegrationRuntimeEntityReferenceType
         fromString("LinkedServiceReference");
 
     /**
+     * Creates a new instance of IntegrationRuntimeEntityReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeEntityReferenceType() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeEntityReferenceType from its string representation.
      *
      * @param name a name to look for.

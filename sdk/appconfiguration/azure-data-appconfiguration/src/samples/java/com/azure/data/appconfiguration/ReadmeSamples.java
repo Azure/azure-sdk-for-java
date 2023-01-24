@@ -2,11 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -342,6 +346,49 @@ public class ReadmeSamples {
             configurationClient.deleteConfigurationSetting(referenceConfigurationSetting);
         // END: readme-sample-deleteSecretReferenceConfigurationSetting
     }
+
+    public void enableHttpLogging() {
+        // BEGIN: readme-sample-enablehttplogging
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // or
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ConfigurationClient configurationClientAad = new ConfigurationClientBuilder()
+                .credential(credential)
+                .endpoint(endpoint)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // END: readme-sample-enablehttplogging
+
+    }
+
+    public void troubleshootingExceptions() {
+        ConfigurationClient client = new ConfigurationClientBuilder()
+                                                      .buildClient();
+        // BEGIN: readme-sample-troubleshootingExceptions
+        try {
+            ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
+            client.getConfigurationSetting(setting);
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
+            // Do something with the exception
+        }
+        // END: readme-sample-troubleshootingExceptions
+
+        ConfigurationAsyncClient asyncClient = new ConfigurationClientBuilder()
+                                         .buildAsyncClient();
+        // BEGIN: readme-sample-troubleshootingExceptions-async
+        ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
+        asyncClient.getConfigurationSetting(setting)
+            .doOnSuccess(ignored -> System.out.println("Success!"))
+            .doOnError(
+                error -> error instanceof ResourceNotFoundException,
+                error -> System.out.println("Exception: 'getConfigurationSetting' could not be performed."));
+        // END: readme-sample-troubleshootingExceptions-async
+    }
+
 
     private void updateConfiguration(ConfigurationSetting setting) {
         // do something on the given setting.

@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.fluent.PolicySetsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.EvaluatePoliciesResponseInner;
 import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicySetsClient. */
 public final class PolicySetsClientImpl implements PolicySetsClient {
-    private final ClientLogger logger = new ClientLogger(PolicySetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicySetsService service;
 
@@ -55,7 +52,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientPol")
-    private interface PolicySetsService {
+    public interface PolicySetsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs"
@@ -84,7 +81,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set.
+     * @return response body for evaluating a policy set along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(
@@ -147,7 +145,8 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set.
+     * @return response body for evaluating a policy set along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EvaluatePoliciesResponseInner>> evaluatePoliciesWithResponseAsync(
@@ -210,20 +209,37 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set.
+     * @return response body for evaluating a policy set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EvaluatePoliciesResponseInner> evaluatePoliciesAsync(
         String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
         return evaluatePoliciesWithResponseAsync(resourceGroupName, labName, name, evaluatePoliciesRequest)
-            .flatMap(
-                (Response<EvaluatePoliciesResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Evaluates lab policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param name The name of the policy set.
+     * @param evaluatePoliciesRequest Request body for evaluating a policy set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for evaluating a policy set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EvaluatePoliciesResponseInner> evaluatePoliciesWithResponse(
+        String resourceGroupName,
+        String labName,
+        String name,
+        EvaluatePoliciesRequest evaluatePoliciesRequest,
+        Context context) {
+        return evaluatePoliciesWithResponseAsync(resourceGroupName, labName, name, evaluatePoliciesRequest, context)
+            .block();
     }
 
     /**
@@ -241,30 +257,7 @@ public final class PolicySetsClientImpl implements PolicySetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvaluatePoliciesResponseInner evaluatePolicies(
         String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
-        return evaluatePoliciesAsync(resourceGroupName, labName, name, evaluatePoliciesRequest).block();
-    }
-
-    /**
-     * Evaluates lab policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the policy set.
-     * @param evaluatePoliciesRequest Request body for evaluating a policy set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for evaluating a policy set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EvaluatePoliciesResponseInner> evaluatePoliciesWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context) {
-        return evaluatePoliciesWithResponseAsync(resourceGroupName, labName, name, evaluatePoliciesRequest, context)
-            .block();
+        return evaluatePoliciesWithResponse(resourceGroupName, labName, name, evaluatePoliciesRequest, Context.NONE)
+            .getValue();
     }
 }

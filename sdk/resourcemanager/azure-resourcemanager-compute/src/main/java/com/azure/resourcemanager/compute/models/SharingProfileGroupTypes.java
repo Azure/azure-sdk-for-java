@@ -20,6 +20,15 @@ public final class SharingProfileGroupTypes extends ExpandableStringEnum<Sharing
     public static final SharingProfileGroupTypes AADTENANTS = fromString("AADTenants");
 
     /**
+     * Creates a new instance of SharingProfileGroupTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharingProfileGroupTypes() {
+    }
+
+    /**
      * Creates or finds a SharingProfileGroupTypes from its string representation.
      *
      * @param name a name to look for.

@@ -6,18 +6,15 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the notification target properties. */
 @Fluent
 public final class NotificationTarget {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationTarget.class);
-
     /*
-     * The notification channel indicates the type of receivers subscribed to
-     * the notification, either user or subscription.
+     * The notification channel indicates the type of receivers subscribed to the notification, either user or
+     * subscription.
      */
     @JsonProperty(value = "notificationChannel", required = true)
     private NotificationChannel notificationChannel;
@@ -27,6 +24,10 @@ public final class NotificationTarget {
      */
     @JsonProperty(value = "receivers", required = true)
     private List<String> receivers;
+
+    /** Creates an instance of NotificationTarget class. */
+    public NotificationTarget() {
+    }
 
     /**
      * Get the notificationChannel property: The notification channel indicates the type of receivers subscribed to the
@@ -77,15 +78,17 @@ public final class NotificationTarget {
      */
     public void validate() {
         if (notificationChannel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property notificationChannel in model NotificationTarget"));
         }
         if (receivers() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property receivers in model NotificationTarget"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationTarget.class);
 }

@@ -20,6 +20,15 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
     public static final LicenseType WINDOWS_SERVER = fromString("WindowsServer");
 
     /**
+     * Creates a new instance of LicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LicenseType() {
+    }
+
+    /**
      * Creates or finds a LicenseType from its string representation.
      *
      * @param name a name to look for.

@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceSkuRestrictionsType. */
+/** The type of restrictions. */
 public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<ResourceSkuRestrictionsType> {
     /** Static value location for ResourceSkuRestrictionsType. */
     public static final ResourceSkuRestrictionsType LOCATION = fromString("location");
+
+    /**
+     * Creates a new instance of ResourceSkuRestrictionsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceSkuRestrictionsType() {
+    }
 
     /**
      * Creates or finds a ResourceSkuRestrictionsType from its string representation.
@@ -24,7 +33,11 @@ public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<Reso
         return fromString(name, ResourceSkuRestrictionsType.class);
     }
 
-    /** @return known ResourceSkuRestrictionsType values. */
+    /**
+     * Gets known ResourceSkuRestrictionsType values.
+     *
+     * @return known ResourceSkuRestrictionsType values.
+     */
     public static Collection<ResourceSkuRestrictionsType> values() {
         return values(ResourceSkuRestrictionsType.class);
     }

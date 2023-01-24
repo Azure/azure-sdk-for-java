@@ -17,6 +17,21 @@ public interface Policies {
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy along with {@link Response}.
+     */
+    Response<Policy> getByBillingProfileWithResponse(
+        String billingAccountName, String billingProfileName, Context context);
+
+    /**
+     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,19 +40,20 @@ public interface Policies {
     Policy getByBillingProfile(String billingAccountName, String billingProfileName);
 
     /**
-     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
      * type Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param parameters Request parameters that are provided to the update policies operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response}.
      */
-    Response<Policy> getByBillingProfileWithResponse(
-        String billingAccountName, String billingProfileName, Context context);
+    Response<Policy> updateWithResponse(
+        String billingAccountName, String billingProfileName, PolicyInner parameters, Context context);
 
     /**
      * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
@@ -54,20 +70,18 @@ public interface Policies {
     Policy update(String billingAccountName, String billingProfileName, PolicyInner parameters);
 
     /**
-     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
-     * type Microsoft Customer Agreement.
+     * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param parameters Request parameters that are provided to the update policies operation.
+     * @param customerName The ID that uniquely identifies a customer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return the customer's Policy along with {@link Response}.
      */
-    Response<Policy> updateWithResponse(
-        String billingAccountName, String billingProfileName, PolicyInner parameters, Context context);
+    Response<CustomerPolicy> getByCustomerWithResponse(String billingAccountName, String customerName, Context context);
 
     /**
      * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
@@ -83,18 +97,20 @@ public interface Policies {
     CustomerPolicy getByCustomer(String billingAccountName, String customerName);
 
     /**
-     * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
      * Microsoft Partner Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters Request parameters that are provided to the update policies operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response}.
      */
-    Response<CustomerPolicy> getByCustomerWithResponse(String billingAccountName, String customerName, Context context);
+    Response<CustomerPolicy> updateCustomerWithResponse(
+        String billingAccountName, String customerName, CustomerPolicyInner parameters, Context context);
 
     /**
      * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
@@ -109,20 +125,4 @@ public interface Policies {
      * @return the customer's Policy.
      */
     CustomerPolicy updateCustomer(String billingAccountName, String customerName, CustomerPolicyInner parameters);
-
-    /**
-     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
-     * Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
-     * @param parameters Request parameters that are provided to the update policies operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
-     */
-    Response<CustomerPolicy> updateCustomerWithResponse(
-        String billingAccountName, String customerName, CustomerPolicyInner parameters, Context context);
 }

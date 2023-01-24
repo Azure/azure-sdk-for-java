@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Jobs List. */
 public final class JobsListSamples {
     /*
@@ -17,7 +15,9 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listCommandJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, "string", "string", null, Context.NONE);
+        manager
+            .jobs()
+            .list("test-rg", "my-aml-workspace", null, "string", "string", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -29,7 +29,9 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listPipelineJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, "string", "string", null, Context.NONE);
+        manager
+            .jobs()
+            .list("test-rg", "my-aml-workspace", null, "string", "string", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,7 +43,9 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listSweepJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, "string", "string", null, Context.NONE);
+        manager
+            .jobs()
+            .list("test-rg", "my-aml-workspace", null, "string", "string", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -53,6 +57,6 @@ public final class JobsListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listAutoMLJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().list("test-rg", "my-aml-workspace", null, null, null, null, Context.NONE);
+        manager.jobs().list("test-rg", "my-aml-workspace", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

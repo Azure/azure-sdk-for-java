@@ -36,6 +36,60 @@ public final class ProfileResourceFormatImpl
         return this.innerModel().type();
     }
 
+    public List<StrongId> strongIds() {
+        List<StrongId> inner = this.innerModel().strongIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String apiEntitySetName() {
+        return this.innerModel().apiEntitySetName();
+    }
+
+    public EntityTypes entityType() {
+        return this.innerModel().entityType();
+    }
+
+    public List<PropertyDefinition> fields() {
+        List<PropertyDefinition> inner = this.innerModel().fields();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Integer instancesCount() {
+        return this.innerModel().instancesCount();
+    }
+
+    public OffsetDateTime lastChangedUtc() {
+        return this.innerModel().lastChangedUtc();
+    }
+
+    public ProvisioningStates provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String schemaItemTypeLink() {
+        return this.innerModel().schemaItemTypeLink();
+    }
+
+    public String tenantId() {
+        return this.innerModel().tenantId();
+    }
+
+    public String timestampFieldName() {
+        return this.innerModel().timestampFieldName();
+    }
+
+    public String typeName() {
+        return this.innerModel().typeName();
+    }
+
     public Map<String, List<String>> attributes() {
         Map<String, List<String>> inner = this.innerModel().attributes();
         if (inner != null) {
@@ -84,58 +138,8 @@ public final class ProfileResourceFormatImpl
         return this.innerModel().largeImage();
     }
 
-    public String apiEntitySetName() {
-        return this.innerModel().apiEntitySetName();
-    }
-
-    public EntityTypes entityType() {
-        return this.innerModel().entityType();
-    }
-
-    public List<PropertyDefinition> fields() {
-        List<PropertyDefinition> inner = this.innerModel().fields();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Integer instancesCount() {
-        return this.innerModel().instancesCount();
-    }
-
-    public OffsetDateTime lastChangedUtc() {
-        return this.innerModel().lastChangedUtc();
-    }
-
-    public ProvisioningStates provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String schemaItemTypeLink() {
-        return this.innerModel().schemaItemTypeLink();
-    }
-
-    public String tenantId() {
-        return this.innerModel().tenantId();
-    }
-
-    public String timestampFieldName() {
-        return this.innerModel().timestampFieldName();
-    }
-
-    public String typeName() {
-        return this.innerModel().typeName();
-    }
-
-    public List<StrongId> strongIds() {
-        List<StrongId> inner = this.innerModel().strongIds();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ProfileResourceFormatInner innerModel() {
@@ -237,46 +241,16 @@ public final class ProfileResourceFormatImpl
         return this;
     }
 
-    public List<KpiDefinition> getEnrichingKpis() {
-        return serviceManager.profiles().getEnrichingKpis(resourceGroupName, hubName, profileName);
-    }
-
     public Response<List<KpiDefinition>> getEnrichingKpisWithResponse(Context context) {
         return serviceManager.profiles().getEnrichingKpisWithResponse(resourceGroupName, hubName, profileName, context);
     }
 
-    public ProfileResourceFormatImpl withAttributes(Map<String, List<String>> attributes) {
-        this.innerModel().withAttributes(attributes);
-        return this;
+    public List<KpiDefinition> getEnrichingKpis() {
+        return serviceManager.profiles().getEnrichingKpis(resourceGroupName, hubName, profileName);
     }
 
-    public ProfileResourceFormatImpl withDescription(Map<String, String> description) {
-        this.innerModel().withDescription(description);
-        return this;
-    }
-
-    public ProfileResourceFormatImpl withDisplayName(Map<String, String> displayName) {
-        this.innerModel().withDisplayName(displayName);
-        return this;
-    }
-
-    public ProfileResourceFormatImpl withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes) {
-        this.innerModel().withLocalizedAttributes(localizedAttributes);
-        return this;
-    }
-
-    public ProfileResourceFormatImpl withSmallImage(String smallImage) {
-        this.innerModel().withSmallImage(smallImage);
-        return this;
-    }
-
-    public ProfileResourceFormatImpl withMediumImage(String mediumImage) {
-        this.innerModel().withMediumImage(mediumImage);
-        return this;
-    }
-
-    public ProfileResourceFormatImpl withLargeImage(String largeImage) {
-        this.innerModel().withLargeImage(largeImage);
+    public ProfileResourceFormatImpl withStrongIds(List<StrongId> strongIds) {
+        this.innerModel().withStrongIds(strongIds);
         return this;
     }
 
@@ -315,8 +289,38 @@ public final class ProfileResourceFormatImpl
         return this;
     }
 
-    public ProfileResourceFormatImpl withStrongIds(List<StrongId> strongIds) {
-        this.innerModel().withStrongIds(strongIds);
+    public ProfileResourceFormatImpl withAttributes(Map<String, List<String>> attributes) {
+        this.innerModel().withAttributes(attributes);
+        return this;
+    }
+
+    public ProfileResourceFormatImpl withDescription(Map<String, String> description) {
+        this.innerModel().withDescription(description);
+        return this;
+    }
+
+    public ProfileResourceFormatImpl withDisplayName(Map<String, String> displayName) {
+        this.innerModel().withDisplayName(displayName);
+        return this;
+    }
+
+    public ProfileResourceFormatImpl withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes) {
+        this.innerModel().withLocalizedAttributes(localizedAttributes);
+        return this;
+    }
+
+    public ProfileResourceFormatImpl withSmallImage(String smallImage) {
+        this.innerModel().withSmallImage(smallImage);
+        return this;
+    }
+
+    public ProfileResourceFormatImpl withMediumImage(String mediumImage) {
+        this.innerModel().withMediumImage(mediumImage);
+        return this;
+    }
+
+    public ProfileResourceFormatImpl withLargeImage(String largeImage) {
+        this.innerModel().withLargeImage(largeImage);
         return this;
     }
 }

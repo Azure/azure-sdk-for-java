@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.TruncationSelectionPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TruncationSelectionPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TruncationSelectionPolicy model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class TruncationSelectionPolicyTests {
         Assertions.assertEquals(1106944697, model.truncationPercentage());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TruncationSelectionPolicy model =
             new TruncationSelectionPolicy()
                 .withDelayEvaluation(674073421)

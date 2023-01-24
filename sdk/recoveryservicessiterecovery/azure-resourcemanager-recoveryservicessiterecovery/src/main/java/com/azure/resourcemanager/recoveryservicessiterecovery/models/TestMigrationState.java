@@ -35,6 +35,15 @@ public final class TestMigrationState extends ExpandableStringEnum<TestMigration
         fromString("TestMigrationPartiallySucceeded");
 
     /**
+     * Creates a new instance of TestMigrationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TestMigrationState() {
+    }
+
+    /**
      * Creates or finds a TestMigrationState from its string representation.
      *
      * @param name a name to look for.

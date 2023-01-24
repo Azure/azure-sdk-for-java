@@ -20,6 +20,15 @@ public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
     public static final SkuScaleType NONE = fromString("None");
 
     /**
+     * Creates a new instance of SkuScaleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuScaleType() {
+    }
+
+    /**
      * Creates or finds a SkuScaleType from its string representation.
      *
      * @param name a name to look for.

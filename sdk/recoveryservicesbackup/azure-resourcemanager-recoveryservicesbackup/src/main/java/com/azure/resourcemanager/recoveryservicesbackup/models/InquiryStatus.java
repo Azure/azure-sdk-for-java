@@ -20,6 +20,15 @@ public final class InquiryStatus extends ExpandableStringEnum<InquiryStatus> {
     public static final InquiryStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of InquiryStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InquiryStatus() {
+    }
+
+    /**
      * Creates or finds a InquiryStatus from its string representation.
      *
      * @param name a name to look for.

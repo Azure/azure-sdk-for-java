@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.PrivateLinkResourceProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
@@ -21,8 +20,8 @@ public final class PrivateLinkResourcePropertiesTests {
         Assertions.assertEquals("ycduier", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceProperties model =
             new PrivateLinkResourceProperties().withRequiredZoneNames(Arrays.asList("ycduier", "gccymvaolpssl"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceProperties.class);

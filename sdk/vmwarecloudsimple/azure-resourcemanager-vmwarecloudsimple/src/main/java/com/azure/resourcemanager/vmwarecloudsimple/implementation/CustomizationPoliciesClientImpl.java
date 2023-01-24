@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.CustomizationPoliciesClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.CustomizationPolicyInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationPoliciesListResponse;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CustomizationPoliciesClient. */
 public final class CustomizationPoliciesClientImpl implements CustomizationPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(CustomizationPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CustomizationPoliciesService service;
 
@@ -59,7 +56,7 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      */
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleCus")
-    private interface CustomizationPoliciesService {
+    public interface CustomizationPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
@@ -104,7 +101,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns list of customization policies in region for private cloud.
+     * Implements get of customization policies list
+     *
+     * <p>Returns list of customization policies in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -113,7 +112,8 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomizationPolicyInner>> listSinglePageAsync(
@@ -163,7 +163,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns list of customization policies in region for private cloud.
+     * Implements get of customization policies list
+     *
+     * <p>Returns list of customization policies in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -173,7 +175,8 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomizationPolicyInner>> listSinglePageAsync(
@@ -220,7 +223,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns list of customization policies in region for private cloud.
+     * Implements get of customization policies list
+     *
+     * <p>Returns list of customization policies in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -229,7 +234,7 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomizationPolicyInner> listAsync(String regionId, String pcName, String filter) {
@@ -238,14 +243,16 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns list of customization policies in region for private cloud.
+     * Implements get of customization policies list
+     *
+     * <p>Returns list of customization policies in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomizationPolicyInner> listAsync(String regionId, String pcName) {
@@ -255,7 +262,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns list of customization policies in region for private cloud.
+     * Implements get of customization policies list
+     *
+     * <p>Returns list of customization policies in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -265,7 +274,7 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomizationPolicyInner> listAsync(
@@ -276,14 +285,16 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns list of customization policies in region for private cloud.
+     * Implements get of customization policies list
+     *
+     * <p>Returns list of customization policies in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomizationPolicyInner> list(String regionId, String pcName) {
@@ -292,7 +303,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns list of customization policies in region for private cloud.
+     * Implements get of customization policies list
+     *
+     * <p>Returns list of customization policies in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -302,7 +315,7 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomizationPolicyInner> list(
@@ -311,7 +324,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns customization policy by its name.
+     * Implements get of customization policy
+     *
+     * <p>Returns customization policy by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -319,7 +334,8 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine customization policy.
+     * @return the virtual machine customization policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomizationPolicyInner>> getWithResponseAsync(
@@ -365,7 +381,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns customization policy by its name.
+     * Implements get of customization policy
+     *
+     * <p>Returns customization policy by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -374,7 +392,8 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine customization policy.
+     * @return the virtual machine customization policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomizationPolicyInner>> getWithResponseAsync(
@@ -417,7 +436,9 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     }
 
     /**
-     * Returns customization policy by its name.
+     * Implements get of customization policy
+     *
+     * <p>Returns customization policy by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -425,23 +446,38 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine customization policy.
+     * @return the virtual machine customization policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomizationPolicyInner> getAsync(String regionId, String pcName, String customizationPolicyName) {
         return getWithResponseAsync(regionId, pcName, customizationPolicyName)
-            .flatMap(
-                (Response<CustomizationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns customization policy by its name.
+     * Implements get of customization policy
+     *
+     * <p>Returns customization policy by its name.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param pcName The private cloud name.
+     * @param customizationPolicyName customization policy name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the virtual machine customization policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomizationPolicyInner> getWithResponse(
+        String regionId, String pcName, String customizationPolicyName, Context context) {
+        return getWithResponseAsync(regionId, pcName, customizationPolicyName, context).block();
+    }
+
+    /**
+     * Implements get of customization policy
+     *
+     * <p>Returns customization policy by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -453,35 +489,19 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomizationPolicyInner get(String regionId, String pcName, String customizationPolicyName) {
-        return getAsync(regionId, pcName, customizationPolicyName).block();
-    }
-
-    /**
-     * Returns customization policy by its name.
-     *
-     * @param regionId The region Id (westus, eastus).
-     * @param pcName The private cloud name.
-     * @param customizationPolicyName customization policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtual machine customization policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomizationPolicyInner> getWithResponse(
-        String regionId, String pcName, String customizationPolicyName, Context context) {
-        return getWithResponseAsync(regionId, pcName, customizationPolicyName, context).block();
+        return getWithResponse(regionId, pcName, customizationPolicyName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomizationPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -512,12 +532,14 @@ public final class CustomizationPoliciesClientImpl implements CustomizationPolic
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of customization polices response model.
+     * @return list of customization polices response model along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomizationPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {

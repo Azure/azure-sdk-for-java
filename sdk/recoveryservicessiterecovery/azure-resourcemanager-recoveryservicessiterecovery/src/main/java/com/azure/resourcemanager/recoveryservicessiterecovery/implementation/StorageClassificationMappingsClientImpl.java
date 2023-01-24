@@ -962,7 +962,8 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
         String storageClassificationName,
         String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -998,7 +999,8 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
         String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput,
         Context context) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -1393,7 +1395,8 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
         String fabricName,
         String storageClassificationName,
         String storageClassificationMappingName) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -1426,7 +1429,8 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
         String storageClassificationName,
         String storageClassificationMappingName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,

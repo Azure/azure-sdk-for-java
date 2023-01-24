@@ -15,10 +15,9 @@ import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.subscription.models.Location;
 import com.azure.resourcemanager.subscription.models.Subscription;
 import com.azure.resourcemanager.subscription.models.Subscriptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubscriptionsImpl implements Subscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionsImpl.class);
 
     private final SubscriptionsClient innerClient;
 
@@ -40,15 +39,6 @@ public final class SubscriptionsImpl implements Subscriptions {
         return Utils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
     }
 
-    public Subscription get(String subscriptionId) {
-        SubscriptionInner inner = this.serviceClient().get(subscriptionId);
-        if (inner != null) {
-            return new SubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Subscription> getWithResponse(String subscriptionId, Context context) {
         Response<SubscriptionInner> inner = this.serviceClient().getWithResponse(subscriptionId, context);
         if (inner != null) {
@@ -57,6 +47,15 @@ public final class SubscriptionsImpl implements Subscriptions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SubscriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Subscription get(String subscriptionId) {
+        SubscriptionInner inner = this.serviceClient().get(subscriptionId);
+        if (inner != null) {
+            return new SubscriptionImpl(inner, this.manager());
         } else {
             return null;
         }

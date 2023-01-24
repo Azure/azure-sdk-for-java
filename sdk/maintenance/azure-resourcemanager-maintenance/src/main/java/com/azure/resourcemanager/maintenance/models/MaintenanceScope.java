@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MaintenanceScope. */
+/** Gets or sets maintenanceScope of the configuration. */
 public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScope> {
     /** Static value Host for MaintenanceScope. */
     public static final MaintenanceScope HOST = fromString("Host");
@@ -29,6 +29,15 @@ public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScop
     public static final MaintenanceScope SQLMANAGED_INSTANCE = fromString("SQLManagedInstance");
 
     /**
+     * Creates a new instance of MaintenanceScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MaintenanceScope() {
+    }
+
+    /**
      * Creates or finds a MaintenanceScope from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScop
         return fromString(name, MaintenanceScope.class);
     }
 
-    /** @return known MaintenanceScope values. */
+    /**
+     * Gets known MaintenanceScope values.
+     *
+     * @return known MaintenanceScope values.
+     */
     public static Collection<MaintenanceScope> values() {
         return values(MaintenanceScope.class);
     }

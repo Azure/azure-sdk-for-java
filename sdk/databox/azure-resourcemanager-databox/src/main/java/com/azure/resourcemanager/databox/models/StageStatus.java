@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StageStatus. */
+/** Status of the job stage. */
 public enum StageStatus {
     /** Enum value None. */
     NONE("None"),
@@ -51,6 +51,9 @@ public enum StageStatus {
      */
     @JsonCreator
     public static StageStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StageStatus[] items = StageStatus.values();
         for (StageStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +63,7 @@ public enum StageStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

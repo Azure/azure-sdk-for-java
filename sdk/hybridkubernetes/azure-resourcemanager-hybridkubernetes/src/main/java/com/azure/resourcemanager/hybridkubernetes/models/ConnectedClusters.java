@@ -11,8 +11,27 @@ import com.azure.core.util.Context;
 /** Resource collection API of ConnectedClusters. */
 public interface ConnectedClusters {
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster along with {@link Response}.
+     */
+    Response<ConnectedCluster> getByResourceGroupWithResponse(
+        String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -24,22 +43,9 @@ public interface ConnectedClusters {
     ConnectedCluster getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Delete a connected cluster.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kubernetes cluster on which get is called.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
-     */
-    Response<ConnectedCluster> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
-
-    /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -50,7 +56,9 @@ public interface ConnectedClusters {
     void deleteByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -62,7 +70,27 @@ public interface ConnectedClusters {
     void delete(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredential properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response}.
+     */
+    Response<CredentialResults> listClusterUserCredentialWithResponse(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context);
+
+    /**
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -76,90 +104,89 @@ public interface ConnectedClusters {
         String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties);
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Lists all connected clusters
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kubernetes cluster on which get is called.
-     * @param properties ListClusterUserCredential properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
-     */
-    Response<CredentialResults> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context);
-
-    /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName);
 
     /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> list();
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> list(Context context);
 
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     ConnectedCluster getById(String id);
 
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     Response<ConnectedCluster> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +196,9 @@ public interface ConnectedClusters {
     void deleteById(String id);
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

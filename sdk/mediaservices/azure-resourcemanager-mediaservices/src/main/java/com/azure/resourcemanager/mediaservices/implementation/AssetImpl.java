@@ -172,32 +172,32 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
         return this;
     }
 
-    public AssetContainerSas listContainerSas(ListContainerSasInput parameters) {
-        return serviceManager.assets().listContainerSas(resourceGroupName, accountName, assetName, parameters);
-    }
-
     public Response<AssetContainerSas> listContainerSasWithResponse(ListContainerSasInput parameters, Context context) {
         return serviceManager
             .assets()
             .listContainerSasWithResponse(resourceGroupName, accountName, assetName, parameters, context);
     }
 
-    public StorageEncryptedAssetDecryptionData getEncryptionKey() {
-        return serviceManager.assets().getEncryptionKey(resourceGroupName, accountName, assetName);
+    public AssetContainerSas listContainerSas(ListContainerSasInput parameters) {
+        return serviceManager.assets().listContainerSas(resourceGroupName, accountName, assetName, parameters);
     }
 
     public Response<StorageEncryptedAssetDecryptionData> getEncryptionKeyWithResponse(Context context) {
         return serviceManager.assets().getEncryptionKeyWithResponse(resourceGroupName, accountName, assetName, context);
     }
 
-    public ListStreamingLocatorsResponse listStreamingLocators() {
-        return serviceManager.assets().listStreamingLocators(resourceGroupName, accountName, assetName);
+    public StorageEncryptedAssetDecryptionData getEncryptionKey() {
+        return serviceManager.assets().getEncryptionKey(resourceGroupName, accountName, assetName);
     }
 
     public Response<ListStreamingLocatorsResponse> listStreamingLocatorsWithResponse(Context context) {
         return serviceManager
             .assets()
             .listStreamingLocatorsWithResponse(resourceGroupName, accountName, assetName, context);
+    }
+
+    public ListStreamingLocatorsResponse listStreamingLocators() {
+        return serviceManager.assets().listStreamingLocators(resourceGroupName, accountName, assetName);
     }
 
     public AssetImpl withAlternateId(String alternateId) {

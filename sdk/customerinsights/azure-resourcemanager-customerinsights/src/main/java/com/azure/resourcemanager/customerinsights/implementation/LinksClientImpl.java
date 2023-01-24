@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.LinksClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LinksClient. */
 public final class LinksClientImpl implements LinksClient {
-    private final ClientLogger logger = new ClientLogger(LinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LinksService service;
 
@@ -65,7 +62,7 @@ public final class LinksClientImpl implements LinksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface LinksService {
+    public interface LinksService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -150,7 +147,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the link resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -211,7 +208,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the link resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -272,9 +269,9 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the {@link PollerFlux} for polling of the link resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -286,7 +283,7 @@ public final class LinksClientImpl implements LinksClient {
                 this.client.getHttpPipeline(),
                 LinkResourceFormatInner.class,
                 LinkResourceFormatInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -300,9 +297,9 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the {@link PollerFlux} for polling of the link resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String hubName,
@@ -332,12 +329,12 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the {@link SyncPoller} for polling of the link resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, linkName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, linkName, parameters).getSyncPoller();
     }
 
     /**
@@ -351,16 +348,16 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the {@link SyncPoller} for polling of the link resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
         String linkName,
         LinkResourceFormatInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, linkName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, linkName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -373,7 +370,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the link resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LinkResourceFormatInner> createOrUpdateAsync(
@@ -394,7 +391,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
+     * @return the link resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LinkResourceFormatInner> createOrUpdateAsync(
@@ -458,7 +455,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
+     * @return a link in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LinkResourceFormatInner>> getWithResponseAsync(
@@ -512,7 +509,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
+     * @return a link in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LinkResourceFormatInner>> getWithResponseAsync(
@@ -562,19 +559,30 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
+     * @return a link in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LinkResourceFormatInner> getAsync(String resourceGroupName, String hubName, String linkName) {
         return getWithResponseAsync(resourceGroupName, hubName, linkName)
-            .flatMap(
-                (Response<LinkResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a link in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param linkName The name of the link.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a link in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LinkResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String linkName, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, linkName, context).block();
     }
 
     /**
@@ -590,25 +598,7 @@ public final class LinksClientImpl implements LinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkResourceFormatInner get(String resourceGroupName, String hubName, String linkName) {
-        return getAsync(resourceGroupName, hubName, linkName).block();
-    }
-
-    /**
-     * Gets a link in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param linkName The name of the link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String linkName, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, linkName, context).block();
+        return getWithResponse(resourceGroupName, hubName, linkName, Context.NONE).getValue();
     }
 
     /**
@@ -620,7 +610,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hubName, String linkName) {
@@ -671,7 +661,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -719,12 +709,29 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String linkName) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, linkName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, hubName, linkName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a link in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param linkName The name of the link.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String hubName, String linkName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, hubName, linkName, context).block();
     }
 
     /**
@@ -739,25 +746,7 @@ public final class LinksClientImpl implements LinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hubName, String linkName) {
-        deleteAsync(resourceGroupName, hubName, linkName).block();
-    }
-
-    /**
-     * Deletes a link in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param linkName The name of the link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String linkName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, linkName, context).block();
+        deleteWithResponse(resourceGroupName, hubName, linkName, Context.NONE);
     }
 
     /**
@@ -768,7 +757,8 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkResourceFormatInner>> listByHubSinglePageAsync(
@@ -826,7 +816,8 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkResourceFormatInner>> listByHubSinglePageAsync(
@@ -880,7 +871,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LinkResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
@@ -898,7 +889,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LinkResourceFormatInner> listByHubAsync(
@@ -916,7 +907,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -932,7 +923,7 @@ public final class LinksClientImpl implements LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context) {
@@ -942,11 +933,13 @@ public final class LinksClientImpl implements LinksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list link operation.
+     * @return the response of list link operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -977,12 +970,14 @@ public final class LinksClientImpl implements LinksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list link operation.
+     * @return the response of list link operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkResourceFormatInner>> listByHubNextSinglePageAsync(

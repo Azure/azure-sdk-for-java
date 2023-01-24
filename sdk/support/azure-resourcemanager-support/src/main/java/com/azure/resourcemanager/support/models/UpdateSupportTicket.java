@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Updates severity, ticket status, and contact details in the support ticket. */
 @Fluent
 public final class UpdateSupportTicket {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateSupportTicket.class);
-
     /*
      * Severity level.
      */
@@ -31,6 +27,10 @@ public final class UpdateSupportTicket {
      */
     @JsonProperty(value = "contactDetails")
     private UpdateContactProfile contactDetails;
+
+    /** Creates an instance of UpdateSupportTicket class. */
+    public UpdateSupportTicket() {
+    }
 
     /**
      * Get the severity property: Severity level.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2ASwitchProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProtectionInputProperties;
@@ -32,6 +31,6 @@ public final class ReplicationProtectionContainersSwitchProtection {
                     .withProperties(
                         new SwitchProtectionInputProperties()
                             .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

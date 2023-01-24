@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Reservations ListByBillingAccount. */
 public final class ReservationsListByBillingAccountSamples {
     /*
@@ -25,6 +23,6 @@ public final class ReservationsListByBillingAccountSamples {
                 "properties/userFriendlyAppliedScopeType asc",
                 "true",
                 "Succeeded",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

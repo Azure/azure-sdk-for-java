@@ -6,17 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.IdentityConfiguration;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IdentityConfiguration model =
             BinaryData.fromString("{\"identityType\":\"IdentityConfiguration\"}").toObject(IdentityConfiguration.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IdentityConfiguration model = new IdentityConfiguration();
         model = BinaryData.fromObject(model).toObject(IdentityConfiguration.class);
     }

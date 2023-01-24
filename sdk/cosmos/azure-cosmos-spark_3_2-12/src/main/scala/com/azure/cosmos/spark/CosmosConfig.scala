@@ -80,6 +80,7 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedMode = "spark.cosmos.changeFeed.mode"
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
   val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
+  val ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid = "spark.cosmos.changeFeed.batchCheckpointLocation.ignoreWhenInvalid"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
   val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
   val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
@@ -148,6 +149,7 @@ private[spark] object CosmosConfigNames {
     ChangeFeedMode,
     ChangeFeedItemCountPerTriggerHint,
     ChangeFeedBatchCheckpointLocation,
+    ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
     ThroughputControlEnabled,
     ThroughputControlAccountEndpoint,
     ThroughputControlAccountKey,
@@ -624,7 +626,8 @@ private object CosmosPatchOperationTypes extends Enumeration {
 
 private case class CosmosPatchColumnConfig(columnName: String,
                                            operationType: CosmosPatchOperationTypes,
-                                           mappingPath: String)
+                                           mappingPath: String,
+                                           isRawJson: Boolean)
 
 private case class CosmosPatchConfigs(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                                       filter: Option[String] = None)
@@ -744,9 +747,10 @@ private object CosmosWriteConfig {
              // col[(](.*?)[)]: column name match
              // ([.]path[(](.*)[)])*: mapping path match, it is optional
              // [.]op[(](.*)[)]: patch operation mapping
-             val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)]$""".r
+             // (.rawJson$|$): optional .rawJson suffix to indicate that the col(column) contains raw json
+             val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)](.rawJson$|$)""".r
              columnConfigString match {
-               case operationConfigaRegx(columnName, _, path, operationTypeString) =>
+               case operationConfigaRegx(columnName, _, path, operationTypeString, rawJsonSuffix) =>
                  assertNotNullOrEmpty(columnName, "columnName")
                  assertNotNullOrEmpty(operationTypeString, "operationTypeString")
 
@@ -757,11 +761,14 @@ private object CosmosWriteConfig {
                    mappingPath = s"/$columnName"
                  }
 
+                 val isRawJson = !rawJsonSuffix.isEmpty
                  val columnConfig =
                    CosmosPatchColumnConfig(
                      columnName = columnName,
                      operationType = CosmosConfigEntry.parseEnumeration(operationTypeString, CosmosPatchOperationTypes),
-                     mappingPath = mappingPath)
+                     mappingPath = mappingPath,
+                     isRawJson
+                   )
 
                  columnConfigMap += (columnConfigMap.get(columnName) match {
                    case Some(_: CosmosPatchColumnConfig) => throw new IllegalStateException(s"Duplicate config for the same column $columnName")
@@ -823,7 +830,7 @@ private object CosmosWriteConfig {
           userDefinedPatchColumnConfigMap.remove(schemaField.name)
         case None =>
           // There is no customer specified column config, create one based on the default config
-          val newColumnConfig = CosmosPatchColumnConfig(schemaField.name, defaultPatchOperationType.get, s"/${schemaField.name}")
+          val newColumnConfig = CosmosPatchColumnConfig(schemaField.name, defaultPatchOperationType.get, s"/${schemaField.name}", false)
           aggregatedPatchColumnConfigMap += schemaField.name -> validatePatchColumnConfig(newColumnConfig, schemaField.dataType)
       }
     })
@@ -1122,7 +1129,8 @@ private case class CosmosChangeFeedConfig
   startFrom: ChangeFeedStartFromMode,
   startFromPointInTime: Option[Instant],
   maxItemCountPerTrigger: Option[Long],
-  batchCheckpointLocation: Option[String]
+  batchCheckpointLocation: Option[String],
+  ignoreOffsetWhenInvalid: Boolean
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -1152,6 +1160,7 @@ private case class CosmosChangeFeedConfig
 private object CosmosChangeFeedConfig {
   private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
+  private val DefaultIgnoreOffsetWhenInvalid: Boolean = false
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
     key = CosmosConfigNames.ChangeFeedStartFrom,
@@ -1177,6 +1186,13 @@ private object CosmosChangeFeedConfig {
     defaultValue = Some(ChangeFeedModes.Incremental),
     parseFromStringFunction = changeFeedModeString => CosmosConfigEntry.parseEnumeration(changeFeedModeString, ChangeFeedModes),
     helpMessage = "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)")
+
+  private val ignoreOffsetWhenInvalid = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
+    mandatory = false,
+    parseFromStringFunction = ignoreOffsetWhenInvalidString => ignoreOffsetWhenInvalidString.toBoolean,
+    helpMessage = "Flag that indicates whether invalid offset files (for example for different or " +
+      "recreated container should be silently ignored)")
 
   private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
     key = CosmosConfigNames.ChangeFeedItemCountPerTriggerHint,
@@ -1211,6 +1227,7 @@ private object CosmosChangeFeedConfig {
   def parseCosmosChangeFeedConfig(cfg: Map[String, String]): CosmosChangeFeedConfig = {
     val changeFeedModeParsed = CosmosConfigEntry.parse(cfg, changeFeedMode)
     val startFromModeParsed = CosmosConfigEntry.parse(cfg, startFrom)
+    val ignoreOffsetWhenInvalidParsed =  CosmosConfigEntry.parse(cfg, ignoreOffsetWhenInvalid)
     val maxItemCountPerTriggerHintParsed = CosmosConfigEntry.parse(cfg, maxItemCountPerTriggerHint)
     val startFromPointInTimeParsed = startFromModeParsed match {
       case Some(PointInTime) => CosmosConfigEntry.parse(cfg, startFromPointInTime)
@@ -1223,7 +1240,9 @@ private object CosmosChangeFeedConfig {
       startFromModeParsed.getOrElse(DefaultStartFromMode),
       startFromPointInTimeParsed,
       maxItemCountPerTriggerHintParsed,
-      batchCheckpointLocationParsed)
+      batchCheckpointLocationParsed,
+      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid)
+    )
   }
 }
 

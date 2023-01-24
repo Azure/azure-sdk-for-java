@@ -17,15 +17,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BatchEndpointTrackedResourceArmPaginatedResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BatchEndpointTrackedResourceArmPaginatedResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"gcj\",\"value\":[{\"identity\":{\"principalId\":\"875d27dc-520e-4e28-9e39-ef2c3c22bca2\",\"tenantId\":\"36464ae0-f335-4668-9adf-03711d96b2d4\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"kind\":\"ttdumorppxebmnzb\",\"properties\":{\"provisioningState\":\"Canceled\",\"authMode\":\"Key\",\"description\":\"lkfg\",\"properties\":{},\"scoringUri\":\"http://example.org/euel\",\"swaggerUri\":\"http://example.org/hsd\"},\"sku\":{\"name\":\"t\",\"tier\":\"Standard\",\"size\":\"kd\",\"family\":\"wq\",\"capacity\":180318621},\"location\":\"zx\",\"tags\":{\"sg\":\"ithhqzon\",\"c\":\"b\"},\"id\":\"hfwdsjnkaljutiis\",\"name\":\"acffgdkzzewkfvhq\",\"type\":\"railvpnppfuf\"}]}")
+                    "{\"nextLink\":\"gcj\",\"value\":[{\"identity\":{\"principalId\":\"f81557b3-3455-43a9-863a-877ebc9a8614\",\"tenantId\":\"ca2f438e-dabf-4a7a-808b-9b35946ac806\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"kind\":\"ttdumorppxebmnzb\",\"properties\":{\"provisioningState\":\"Canceled\",\"authMode\":\"Key\",\"description\":\"lkfg\",\"properties\":{},\"scoringUri\":\"euel\",\"swaggerUri\":\"hsd\"},\"sku\":{\"name\":\"t\",\"tier\":\"Standard\",\"size\":\"kd\",\"family\":\"wq\",\"capacity\":180318621},\"location\":\"zx\",\"tags\":{\"sg\":\"ithhqzon\",\"c\":\"b\"},\"id\":\"hfwdsjnkaljutiis\",\"name\":\"acffgdkzzewkfvhq\",\"type\":\"railvpnppfuf\"}]}")
                 .toObject(BatchEndpointTrackedResourceArmPaginatedResult.class);
         Assertions.assertEquals("gcj", model.nextLink());
         Assertions.assertEquals("zx", model.value().get(0).location());
@@ -41,8 +40,8 @@ public final class BatchEndpointTrackedResourceArmPaginatedResultTests {
         Assertions.assertEquals(180318621, model.value().get(0).sku().capacity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BatchEndpointTrackedResourceArmPaginatedResult model =
             new BatchEndpointTrackedResourceArmPaginatedResult()
                 .withNextLink("gcj")

@@ -610,7 +610,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).getSyncPoller();
     }
 
     /**
@@ -629,7 +629,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
             .getSyncPoller();
     }
 
@@ -1098,7 +1099,9 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String endpointName,
         String deploymentName,
         PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+            .getSyncPoller();
     }
 
     /**
@@ -1123,7 +1126,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String deploymentName,
         PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
     }
 
@@ -1448,7 +1452,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String endpointName,
         String deploymentName,
         BatchDeploymentInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
 
@@ -1474,7 +1479,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         String deploymentName,
         BatchDeploymentInner body,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
     }
 

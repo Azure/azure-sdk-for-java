@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestoreSourceDataStoreType. */
+/** Gets or sets the type of the source data store. */
 public final class RestoreSourceDataStoreType extends ExpandableStringEnum<RestoreSourceDataStoreType> {
     /** Static value OperationalStore for RestoreSourceDataStoreType. */
     public static final RestoreSourceDataStoreType OPERATIONAL_STORE = fromString("OperationalStore");
@@ -18,6 +18,15 @@ public final class RestoreSourceDataStoreType extends ExpandableStringEnum<Resto
 
     /** Static value ArchiveStore for RestoreSourceDataStoreType. */
     public static final RestoreSourceDataStoreType ARCHIVE_STORE = fromString("ArchiveStore");
+
+    /**
+     * Creates a new instance of RestoreSourceDataStoreType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestoreSourceDataStoreType() {
+    }
 
     /**
      * Creates or finds a RestoreSourceDataStoreType from its string representation.
@@ -30,7 +39,11 @@ public final class RestoreSourceDataStoreType extends ExpandableStringEnum<Resto
         return fromString(name, RestoreSourceDataStoreType.class);
     }
 
-    /** @return known RestoreSourceDataStoreType values. */
+    /**
+     * Gets known RestoreSourceDataStoreType values.
+     *
+     * @return known RestoreSourceDataStoreType values.
+     */
     public static Collection<RestoreSourceDataStoreType> values() {
         return values(RestoreSourceDataStoreType.class);
     }

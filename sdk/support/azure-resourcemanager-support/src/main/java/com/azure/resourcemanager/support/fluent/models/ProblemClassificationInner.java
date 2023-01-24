@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ProblemClassification resource object. */
-@JsonFlatten
 @Fluent
-public class ProblemClassificationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProblemClassificationInner.class);
-
+public final class ProblemClassificationInner {
     /*
      * Id of the resource.
      */
@@ -35,10 +29,14 @@ public class ProblemClassificationInner {
     private String type;
 
     /*
-     * Localized name of problem classification.
+     * Properties of the resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private ProblemClassificationProperties innerProperties;
+
+    /** Creates an instance of ProblemClassificationInner class. */
+    public ProblemClassificationInner() {
+    }
 
     /**
      * Get the id property: Id of the resource.
@@ -68,12 +66,21 @@ public class ProblemClassificationInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private ProblemClassificationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the displayName property: Localized name of problem classification.
      *
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -83,7 +90,10 @@ public class ProblemClassificationInner {
      * @return the ProblemClassificationInner object itself.
      */
     public ProblemClassificationInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProblemClassificationProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -93,5 +103,8 @@ public class ProblemClassificationInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

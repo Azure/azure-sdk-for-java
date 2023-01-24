@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Agreements ListByBillingAccount. */
 public final class AgreementsListByBillingAccountSamples {
     /*
@@ -17,6 +15,6 @@ public final class AgreementsListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void agreementsListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.agreements().listByBillingAccount("{billingAccountName}", null, Context.NONE);
+        manager.agreements().listByBillingAccount("{billingAccountName}", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -38,6 +38,13 @@ public interface ConfigurationAssignment {
     String location();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the maintenanceConfigurationId property: The maintenance configuration Id.
      *
      * @return the maintenanceConfigurationId value.
@@ -50,13 +57,6 @@ public interface ConfigurationAssignment {
      * @return the resourceId value.
      */
     String resourceId();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner object.

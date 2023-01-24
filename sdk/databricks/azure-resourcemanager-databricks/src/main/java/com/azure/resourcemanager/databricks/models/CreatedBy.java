@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Provides details of the entity that created/updated the workspace. */
 @Immutable
 public final class CreatedBy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreatedBy.class);
-
     /*
      * The Object ID that created the workspace.
      */
@@ -28,11 +24,14 @@ public final class CreatedBy {
     private String puid;
 
     /*
-     * The application ID of the application that initiated the creation of the
-     * workspace. For example, Azure Portal.
+     * The application ID of the application that initiated the creation of the workspace. For example, Azure Portal.
      */
     @JsonProperty(value = "applicationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID applicationId;
+
+    /** Creates an instance of CreatedBy class. */
+    public CreatedBy() {
+    }
 
     /**
      * Get the oid property: The Object ID that created the workspace.

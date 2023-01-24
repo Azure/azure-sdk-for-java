@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("PointInTimeRestore")
 @Fluent
 public final class ServerPropertiesForRestore extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForRestore.class);
-
     /*
      * The source server id to restore from.
      */
@@ -26,11 +23,14 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
     private String sourceServerId;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to
-     * restore from.
+     * Restore point creation time (ISO8601 format), specifying the time to restore from.
      */
     @JsonProperty(value = "restorePointInTime", required = true)
     private OffsetDateTime restorePointInTime;
+
+    /** Creates an instance of ServerPropertiesForRestore class. */
+    public ServerPropertiesForRestore() {
+    }
 
     /**
      * Get the sourceServerId property: The source server id to restore from.
@@ -118,16 +118,18 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
     public void validate() {
         super.validate();
         if (sourceServerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceServerId in model ServerPropertiesForRestore"));
         }
         if (restorePointInTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restorePointInTime in model ServerPropertiesForRestore"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerPropertiesForRestore.class);
 }

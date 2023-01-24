@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics CheckConsistency. */
 public final class ReplicationFabricsCheckConsistencySamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationFabricsCheckConsistencySamples {
      */
     public static void checksTheConsistencyOfTheASRFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().checkConsistency("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+        manager
+            .replicationFabrics()
+            .checkConsistency("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

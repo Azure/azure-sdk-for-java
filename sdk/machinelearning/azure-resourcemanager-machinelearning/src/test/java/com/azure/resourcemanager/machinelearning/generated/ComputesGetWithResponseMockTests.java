@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ComputeResource;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
@@ -34,7 +33,7 @@ public final class ComputesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"identity\":{\"principalId\":\"f4325cc5-1957-4813-8c1b-1bc8c5db856d\",\"tenantId\":\"4f48a8da-de74-4312-8239-98bb99f21f2c\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"kgd\",\"tags\":{\"qsktxqf\":\"krukizyhgsqt\",\"cgbfzuscstun\":\"jbqggweeiwdhdm\",\"bkl\":\"lhxd\",\"f\":\"iichgjsysmvxodgw\"},\"sku\":{\"name\":\"sifcuvbdujgc\",\"tier\":\"Free\",\"size\":\"cbbwjtrdxriz\",\"family\":\"bbgiarksykpgdqxw\",\"capacity\":230334707},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"qrxhaclcdos\",\"provisioningState\":\"Creating\",\"description\":\"jqgkifmmainwhe\",\"createdOn\":\"2021-07-02T12:23:07Z\",\"modifiedOn\":\"2021-11-29T01:34:21Z\",\"resourceId\":\"wuntobuiz\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":true},\"id\":\"vydjufbnk\",\"name\":\"blaxpegj\",\"type\":\"dabalfdxaglzfytl\"}";
+            "{\"identity\":{\"principalId\":\"1de443a3-f608-425f-91bd-438d47ec26d7\",\"tenantId\":\"e37f22c1-6b70-4a8c-8d5a-d0815df251d2\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"kgd\",\"tags\":{\"qsktxqf\":\"krukizyhgsqt\",\"cgbfzuscstun\":\"jbqggweeiwdhdm\",\"bkl\":\"lhxd\",\"f\":\"iichgjsysmvxodgw\"},\"sku\":{\"name\":\"sifcuvbdujgc\",\"tier\":\"Free\",\"size\":\"cbbwjtrdxriz\",\"family\":\"bbgiarksykpgdqxw\",\"capacity\":230334707},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"qrxhaclcdos\",\"provisioningState\":\"Creating\",\"description\":\"jqgkifmmainwhe\",\"createdOn\":\"2021-07-02T12:23:07Z\",\"modifiedOn\":\"2021-11-29T01:34:21Z\",\"resourceId\":\"wuntobuiz\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":true},\"id\":\"vydjufbnk\",\"name\":\"blaxpegj\",\"type\":\"dabalfdxaglzfytl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +62,10 @@ public final class ComputesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ComputeResource response =
-            manager.computes().getWithResponse("xampqcr", "g", "uqxbpiatwfauje", Context.NONE).getValue();
+            manager
+                .computes()
+                .getWithResponse("xampqcr", "g", "uqxbpiatwfauje", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
         Assertions.assertEquals("kgd", response.location());

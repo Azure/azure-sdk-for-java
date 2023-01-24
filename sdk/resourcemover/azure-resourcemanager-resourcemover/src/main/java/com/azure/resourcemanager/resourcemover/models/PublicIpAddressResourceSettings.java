@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Network/publicIPAddresses")
 @Fluent
 public final class PublicIpAddressResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressResourceSettings.class);
-
     /*
      * Gets or sets the domain name label.
      */
@@ -47,6 +43,10 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
      */
     @JsonProperty(value = "zones")
     private String zones;
+
+    /** Creates an instance of PublicIpAddressResourceSettings class. */
+    public PublicIpAddressResourceSettings() {
+    }
 
     /**
      * Get the domainNameLabel property: Gets or sets the domain name label.

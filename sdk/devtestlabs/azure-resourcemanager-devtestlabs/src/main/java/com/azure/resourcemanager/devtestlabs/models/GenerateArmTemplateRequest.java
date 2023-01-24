@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for generating an ARM template for deploying artifacts. */
 @Fluent
 public final class GenerateArmTemplateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenerateArmTemplateRequest.class);
-
     /*
      * The resource name of the virtual machine.
      */
@@ -34,11 +30,14 @@ public final class GenerateArmTemplateRequest {
     private String location;
 
     /*
-     * Options for uploading the files for the artifact.
-     * UploadFilesAndGenerateSasTokens is the default value.
+     * Options for uploading the files for the artifact. UploadFilesAndGenerateSasTokens is the default value.
      */
     @JsonProperty(value = "fileUploadOptions")
     private FileUploadOptions fileUploadOptions;
+
+    /** Creates an instance of GenerateArmTemplateRequest class. */
+    public GenerateArmTemplateRequest() {
+    }
 
     /**
      * Get the virtualMachineName property: The resource name of the virtual machine.

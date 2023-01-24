@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainers List. */
 public final class ReplicationProtectionContainersListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationProtectionContainersListSamples {
      */
     public static void getsTheListOfAllProtectionContainersInAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainers().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationProtectionContainers().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

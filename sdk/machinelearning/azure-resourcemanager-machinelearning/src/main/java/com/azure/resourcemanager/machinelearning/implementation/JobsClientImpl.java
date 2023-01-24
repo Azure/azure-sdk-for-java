@@ -585,7 +585,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String id) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, id).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, id).getSyncPoller();
     }
 
     /**
@@ -603,7 +603,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String id, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, id, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, id, context).getSyncPoller();
     }
 
     /**
@@ -1164,7 +1164,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String workspaceName, String id) {
-        return beginCancelAsync(resourceGroupName, workspaceName, id).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, workspaceName, id).getSyncPoller();
     }
 
     /**
@@ -1182,7 +1182,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
         String resourceGroupName, String workspaceName, String id, Context context) {
-        return beginCancelAsync(resourceGroupName, workspaceName, id, context).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, workspaceName, id, context).getSyncPoller();
     }
 
     /**

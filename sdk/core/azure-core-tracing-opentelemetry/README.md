@@ -32,7 +32,7 @@ Azure SDK produces span for public client calls such as `SecretClient.getSecret`
 
 By using an Azure Monitor Java in-process agent, you can enable monitoring of your applications without any code changes. For more information, see [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent). Azure SDK support is enabled by default starting with agent version 3.2.
 
-## Tracing Azure SDK calls with OpenTelemetry agent
+## Tracing Azure SDK calls with OpenTelemetry Java agent
 
 If you use [OpenTelemetry Java agent](https://github.com/open-telemetry/opentelemetry-java-instrumentation/), Azure SDK instrumentation is enabled out-of-the-box starting from version 1.12.0.
 
@@ -60,7 +60,39 @@ You don't need this package if you use ApplicationInsights Java agent or OpenTel
 
 ### Examples
 
-The following sections provides examples of using the `azure-core-tracing-opentelemetry` plugin with a few Azure Java SDK libraries:
+The following sections provides examples of using the `azure-core-tracing-opentelemetry` plugin with a few Azure Java SDK libraries. 
+
+### Configuration
+
+If you want to configure tracing on specific instances of Azure client, you can do so with `OpenTelemetryTracingOptions`. With it,
+you can disable tracing on the client, or configure custom `TracerProvider`.
+
+If no `TraceProvider` is specified, Azure SDK will use global one (`GlobalOpenTelemetry.getTracerProvider()`). 
+
+Pass OpenTelemetry TracerProvider to Azure client:
+
+```java com.azure.core.tracing.TracingOptions#custom
+
+// configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
+SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .build();
+
+// Pass OpenTelemetry tracerProvider to TracingOptions.
+TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
+    .setProvider(tracerProvider);
+
+// configure Azure Client to use customTracingOptions - it will use tracerProvider
+// to create tracers
+AzureClient sampleClient = new AzureClientBuilder()
+    .endpoint("https://my-client.azure.com")
+    .clientOptions(new ClientOptions().setTracingOptions(customTracingOptions))
+    .build();
+
+// use client as usual, if it emits spans, they will be exported
+sampleClient.methodCall("get items");
+
+```
 
 ### Using the plugin package with HTTP client libraries
 
@@ -93,6 +125,39 @@ try (Scope s = span.makeCurrent()) {
 
 When using async clients without Application Insights Java agent or OpenTelemetry agent, please do context propagation manually:
 
+#### Synchronous clients 
+
+Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in `com.azure.core.util.Context`: 
+
+```java com.azure.core.util.tracing#explicit-parent
+
+SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .build();
+
+AzureClient sampleClient = new AzureClientBuilder()
+    .endpoint("Https://my-client.azure.com")
+    .build();
+
+Tracer tracer = tracerProvider.get("test");
+Span parent = tracer.spanBuilder("parent").startSpan();
+io.opentelemetry.context.Context traceContext = io.opentelemetry.context.Context.current().with(parent);
+
+// do some  work
+
+// You can pass parent explicitly using PARENT_TRACE_CONTEXT_KEY in the com.azure.core.util.Context.
+// Or, when using async clients, pass it in reactor.util.context.Context under the same key.
+String response = sampleClient.methodCall("get items",
+    new Context(PARENT_TRACE_CONTEXT_KEY, traceContext));
+
+// do more work
+parent.end();
+
+```
+
+#### Asynchronous clients
+
+Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in `reactor.util.context.Context`:
 ```java readme-sample-context-manual-propagation
 SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
     .vaultUrl(VAULT_URL)

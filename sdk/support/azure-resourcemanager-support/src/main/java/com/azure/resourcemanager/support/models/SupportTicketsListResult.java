@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Object that represents a collection of SupportTicket resources. */
 @Fluent
 public final class SupportTicketsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportTicketsListResult.class);
-
     /*
      * List of SupportTicket resources.
      */
@@ -27,6 +23,10 @@ public final class SupportTicketsListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SupportTicketsListResult class. */
+    public SupportTicketsListResult() {
+    }
 
     /**
      * Get the value property: List of SupportTicket resources.

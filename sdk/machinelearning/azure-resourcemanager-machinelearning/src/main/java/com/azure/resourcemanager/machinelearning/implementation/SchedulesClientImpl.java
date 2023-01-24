@@ -533,7 +533,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, name).getSyncPoller();
     }
 
     /**
@@ -551,7 +551,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, name, context).getSyncPoller();
     }
 
     /**
@@ -964,7 +964,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, ScheduleInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, name, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, name, body).getSyncPoller();
     }
 
     /**
@@ -983,7 +983,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, ScheduleInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, name, body, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, name, body, context).getSyncPoller();
     }
 
     /**

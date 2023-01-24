@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationEvents List. */
 public final class ReplicationEventsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationEventsListSamples {
      */
     public static void getsTheListOfAzureSiteRecoveryEvents(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEvents().list("vault1", "resourceGroupPS1", null, Context.NONE);
+        manager.replicationEvents().list("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
     }
 }

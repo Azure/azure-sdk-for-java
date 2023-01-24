@@ -20,6 +20,15 @@ public final class A2ARecoveryAvailabilityType extends ExpandableStringEnum<A2AR
     public static final A2ARecoveryAvailabilityType AVAILABILITY_ZONE = fromString("AvailabilityZone");
 
     /**
+     * Creates a new instance of A2ARecoveryAvailabilityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public A2ARecoveryAvailabilityType() {
+    }
+
+    /**
      * Creates or finds a A2ARecoveryAvailabilityType from its string representation.
      *
      * @param name a name to look for.

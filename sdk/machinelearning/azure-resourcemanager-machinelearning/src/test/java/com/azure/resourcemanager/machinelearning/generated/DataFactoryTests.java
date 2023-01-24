@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.DataFactory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataFactoryTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataFactory model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class DataFactoryTests {
         Assertions.assertEquals(false, model.disableLocalAuth());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataFactory model =
             new DataFactory()
                 .withComputeLocation("anurnnqb")

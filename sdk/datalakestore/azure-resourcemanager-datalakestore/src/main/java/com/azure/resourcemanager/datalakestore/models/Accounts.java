@@ -16,7 +16,7 @@ public interface Accounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeStoreAccountBasic> list();
 
@@ -38,7 +38,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeStoreAccountBasic> list(
         String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context);
@@ -51,7 +51,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeStoreAccountBasic> listByResourceGroup(String resourceGroupName);
 
@@ -74,7 +74,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeStoreAccountBasic> listByResourceGroup(
         String resourceGroupName,
@@ -91,26 +91,26 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
+     * @return the specified Data Lake Store account along with {@link Response}.
      */
-    DataLakeStoreAccount getByResourceGroup(String resourceGroupName, String accountName);
+    Response<DataLakeStoreAccount> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Store account.
      */
-    Response<DataLakeStoreAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    DataLakeStoreAccount getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
      * Deletes the specified Data Lake Store account.
@@ -140,6 +140,19 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> enableKeyVaultWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -147,17 +160,18 @@ public interface Accounts {
     void enableKeyVault(String resourceGroupName, String accountName);
 
     /**
-     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
+     * Checks whether the specified account name is available or taken.
      *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
+     * @param location The resource location without whitespace.
+     * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return data Lake Store account name availability result information along with {@link Response}.
      */
-    Response<Void> enableKeyVaultWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(
+        String location, CheckNameAvailabilityParameters parameters, Context context);
 
     /**
      * Checks whether the specified account name is available or taken.
@@ -172,27 +186,13 @@ public interface Accounts {
     NameAvailabilityInformation checkNameAvailability(String location, CheckNameAvailabilityParameters parameters);
 
     /**
-     * Checks whether the specified account name is available or taken.
-     *
-     * @param location The resource location without whitespace.
-     * @param parameters Parameters supplied to check the Data Lake Store account name availability.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account name availability result information.
-     */
-    Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters parameters, Context context);
-
-    /**
      * Gets the specified Data Lake Store account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
+     * @return the specified Data Lake Store account along with {@link Response}.
      */
     DataLakeStoreAccount getById(String id);
 
@@ -204,7 +204,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
+     * @return the specified Data Lake Store account along with {@link Response}.
      */
     Response<DataLakeStoreAccount> getByIdWithResponse(String id, Context context);
 

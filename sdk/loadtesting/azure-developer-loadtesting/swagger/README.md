@@ -1,7 +1,7 @@
 ## Generate autorest code
 
 ```yaml
-require: https://github.com/Azure/azure-rest-api-specs/blob/038922fd638b28f04ad706a916b486f8392c7cef/specification/loadtestservice/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/3e27c70e7c02c07b458bc0e94716c3d82d3fdd19/specification/loadtestservice/data-plane/readme.md
 java: true
 data-plane: true
 title: LoadTestingClient

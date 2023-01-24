@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ip address range. */
 @Fluent
 public final class IpAddressRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddressRange.class);
-
     /*
      * The IP address range.
      */
     @JsonProperty(value = "addressRange")
     private String addressRange;
+
+    /** Creates an instance of IpAddressRange class. */
+    public IpAddressRange() {
+    }
 
     /**
      * Get the addressRange property: The IP address range.

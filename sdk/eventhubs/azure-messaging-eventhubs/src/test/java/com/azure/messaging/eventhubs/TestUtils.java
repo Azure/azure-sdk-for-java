@@ -13,6 +13,7 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
@@ -88,15 +89,14 @@ public final class TestUtils {
         message.getMessageAnnotations().getValue()
             .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
-        Map<String, Object> applicationProperties = new HashMap<>();
-        APPLICATION_PROPERTIES.forEach(applicationProperties::put);
+        Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
 
         if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
             applicationProperties.put(MESSAGE_ID, messageTrackingValue);
         }
 
         if (additionalProperties != null) {
-            additionalProperties.forEach(applicationProperties::put);
+            applicationProperties.putAll(additionalProperties);
         }
 
         message.setApplicationProperties(new ApplicationProperties(applicationProperties));
@@ -116,7 +116,15 @@ public final class TestUtils {
 
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
-        message.setBody(new Data(new Binary(contents)));
+
+        final Data body;
+        if (contents != null) {
+            body = new Data(new Binary(contents));
+        } else {
+            body = new Data(Binary.create((ReadableBuffer) null));
+        }
+
+        message.setBody(body);
 
         return message;
     }

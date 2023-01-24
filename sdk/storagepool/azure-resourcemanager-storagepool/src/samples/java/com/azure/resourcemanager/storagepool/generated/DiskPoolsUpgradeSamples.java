@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Upgrade. */
 public final class DiskPoolsUpgradeSamples {
     /*
@@ -17,6 +15,6 @@ public final class DiskPoolsUpgradeSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void upgradeDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().upgrade("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().upgrade("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }

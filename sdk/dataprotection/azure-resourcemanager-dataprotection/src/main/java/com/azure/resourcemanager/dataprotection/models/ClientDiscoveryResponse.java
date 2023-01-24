@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryValueForSingleApiInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ClientDiscoveryResponse Operations List response which contains list of available APIs. */
+/**
+ * ClientDiscoveryResponse
+ *
+ * <p>Operations List response which contains list of available APIs.
+ */
 @Fluent
 public final class ClientDiscoveryResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryResponse.class);
-
     /*
      * Link to the next chunk of Response.
      */
@@ -27,6 +27,10 @@ public final class ClientDiscoveryResponse {
      */
     @JsonProperty(value = "value")
     private List<ClientDiscoveryValueForSingleApiInner> value;
+
+    /** Creates an instance of ClientDiscoveryResponse class. */
+    public ClientDiscoveryResponse() {
+    }
 
     /**
      * Get the nextLink property: Link to the next chunk of Response.

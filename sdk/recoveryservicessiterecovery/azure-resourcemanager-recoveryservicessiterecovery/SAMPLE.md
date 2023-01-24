@@ -224,8 +224,6 @@
 ### MigrationRecoveryPoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for MigrationRecoveryPoints Get. */
 public final class MigrationRecoveryPointsGetSamples {
     /*
@@ -247,7 +245,7 @@ public final class MigrationRecoveryPointsGetSamples {
                 "vmwareContainer1",
                 "virtualmachine1",
                 "b22134ea-620c-474b-9fa5-3c1cb47708e3",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -255,8 +253,6 @@ public final class MigrationRecoveryPointsGetSamples {
 ### MigrationRecoveryPoints_ListByReplicationMigrationItems
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for MigrationRecoveryPoints ListByReplicationMigrationItems. */
 public final class MigrationRecoveryPointsListByReplicationMigrati {
     /*
@@ -277,7 +273,7 @@ public final class MigrationRecoveryPointsListByReplicationMigrati {
                 "vmwarefabric1",
                 "vmwareContainer1",
                 "virtualmachine1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -285,8 +281,6 @@ public final class MigrationRecoveryPointsListByReplicationMigrati {
 ### Operations_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations ListByResourceGroup. */
 public final class OperationsListByResourceGroupSamples {
     /*
@@ -299,7 +293,7 @@ public final class OperationsListByResourceGroupSamples {
      */
     public static void returnsTheListOfAvailableOperations(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.operations().listByResourceGroup("resourceGroupPS1", Context.NONE);
+        manager.operations().listByResourceGroup("resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -307,8 +301,6 @@ public final class OperationsListByResourceGroupSamples {
 ### RecoveryPoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for RecoveryPoints Get. */
 public final class RecoveryPointsGetSamples {
     /*
@@ -330,7 +322,7 @@ public final class RecoveryPointsGetSamples {
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
                 "b22134ea-620c-474b-9fa5-3c1cb47708e3",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -338,8 +330,6 @@ public final class RecoveryPointsGetSamples {
 ### RecoveryPoints_ListByReplicationProtectedItems
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for RecoveryPoints ListByReplicationProtectedItems. */
 public final class RecoveryPointsListByReplicationProtectedItemsSa {
     /*
@@ -360,7 +350,7 @@ public final class RecoveryPointsListByReplicationProtectedItemsSa {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -400,8 +390,6 @@ public final class ReplicationAlertSettingsCreateSamples {
 ### ReplicationAlertSettings_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationAlertSettings Get. */
 public final class ReplicationAlertSettingsGetSamples {
     /*
@@ -416,7 +404,7 @@ public final class ReplicationAlertSettingsGetSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationAlertSettings()
-            .getWithResponse("vault1", "resourceGroupPS1", "defaultAlertSetting", Context.NONE);
+            .getWithResponse("vault1", "resourceGroupPS1", "defaultAlertSetting", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -424,8 +412,6 @@ public final class ReplicationAlertSettingsGetSamples {
 ### ReplicationAlertSettings_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationAlertSettings List. */
 public final class ReplicationAlertSettingsListSamples {
     /*
@@ -438,7 +424,7 @@ public final class ReplicationAlertSettingsListSamples {
      */
     public static void getsTheListOfConfiguredEmailNotificationAlertConfigurations(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAlertSettings().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationAlertSettings().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -446,8 +432,6 @@ public final class ReplicationAlertSettingsListSamples {
 ### ReplicationAppliances_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationAppliances List. */
 public final class ReplicationAppliancesListSamples {
     /*
@@ -460,7 +444,7 @@ public final class ReplicationAppliancesListSamples {
      */
     public static void getsTheListOfAppliances(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAppliances().list("vault1", "resourceGroupPS1", null, Context.NONE);
+        manager.replicationAppliances().list("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -468,8 +452,6 @@ public final class ReplicationAppliancesListSamples {
 ### ReplicationEligibilityResultsOperation_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationEligibilityResultsOperation Get. */
 public final class ReplicationEligibilityResultsOperationGetSamples {
     /*
@@ -482,7 +464,9 @@ public final class ReplicationEligibilityResultsOperationGetSamples {
      */
     public static void getsTheValidationErrorsInCaseTheVMIsUnsuitableForProtection(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEligibilityResultsOperations().getWithResponse("testRg1", "testVm1", Context.NONE);
+        manager
+            .replicationEligibilityResultsOperations()
+            .getWithResponse("testRg1", "testVm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -490,8 +474,6 @@ public final class ReplicationEligibilityResultsOperationGetSamples {
 ### ReplicationEligibilityResultsOperation_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationEligibilityResultsOperation List. */
 public final class ReplicationEligibilityResultsOperationListSampl {
     /*
@@ -504,7 +486,9 @@ public final class ReplicationEligibilityResultsOperationListSampl {
      */
     public static void getsTheValidationErrorsInCaseTheVMIsUnsuitableForProtection(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEligibilityResultsOperations().listWithResponse("testRg1", "testVm2", Context.NONE);
+        manager
+            .replicationEligibilityResultsOperations()
+            .listWithResponse("testRg1", "testVm2", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -512,8 +496,6 @@ public final class ReplicationEligibilityResultsOperationListSampl {
 ### ReplicationEvents_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationEvents Get. */
 public final class ReplicationEventsGetSamples {
     /*
@@ -528,7 +510,8 @@ public final class ReplicationEventsGetSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationEvents()
-            .getWithResponse("vault1", "resourceGroupPS1", "654b71d0-b2ce-4e6e-a861-98528d4bd375", Context.NONE);
+            .getWithResponse(
+                "vault1", "resourceGroupPS1", "654b71d0-b2ce-4e6e-a861-98528d4bd375", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -536,8 +519,6 @@ public final class ReplicationEventsGetSamples {
 ### ReplicationEvents_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationEvents List. */
 public final class ReplicationEventsListSamples {
     /*
@@ -550,7 +531,7 @@ public final class ReplicationEventsListSamples {
      */
     public static void getsTheListOfAzureSiteRecoveryEvents(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEvents().list("vault1", "resourceGroupPS1", null, Context.NONE);
+        manager.replicationEvents().list("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -558,8 +539,6 @@ public final class ReplicationEventsListSamples {
 ### ReplicationFabrics_CheckConsistency
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics CheckConsistency. */
 public final class ReplicationFabricsCheckConsistencySamples {
     /*
@@ -572,7 +551,9 @@ public final class ReplicationFabricsCheckConsistencySamples {
      */
     public static void checksTheConsistencyOfTheASRFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().checkConsistency("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+        manager
+            .replicationFabrics()
+            .checkConsistency("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -608,8 +589,6 @@ public final class ReplicationFabricsCreateSamples {
 ### ReplicationFabrics_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics Delete. */
 public final class ReplicationFabricsDeleteSamples {
     /*
@@ -622,7 +601,7 @@ public final class ReplicationFabricsDeleteSamples {
      */
     public static void deletesTheSite(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().delete("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+        manager.replicationFabrics().delete("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -630,8 +609,6 @@ public final class ReplicationFabricsDeleteSamples {
 ### ReplicationFabrics_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics Get. */
 public final class ReplicationFabricsGetSamples {
     /*
@@ -644,7 +621,9 @@ public final class ReplicationFabricsGetSamples {
      */
     public static void getsTheDetailsOfAnASRFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().getWithResponse("vault1", "resourceGroupPS1", "cloud1", null, Context.NONE);
+        manager
+            .replicationFabrics()
+            .getWithResponse("vault1", "resourceGroupPS1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -652,8 +631,6 @@ public final class ReplicationFabricsGetSamples {
 ### ReplicationFabrics_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics List. */
 public final class ReplicationFabricsListSamples {
     /*
@@ -666,7 +643,7 @@ public final class ReplicationFabricsListSamples {
      */
     public static void getsTheListOfASRFabrics(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationFabrics().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -674,8 +651,6 @@ public final class ReplicationFabricsListSamples {
 ### ReplicationFabrics_MigrateToAad
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics MigrateToAad. */
 public final class ReplicationFabricsMigrateToAadSamples {
     /*
@@ -688,7 +663,9 @@ public final class ReplicationFabricsMigrateToAadSamples {
      */
     public static void migratesTheSiteToAAD(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().migrateToAad("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+        manager
+            .replicationFabrics()
+            .migrateToAad("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -696,8 +673,6 @@ public final class ReplicationFabricsMigrateToAadSamples {
 ### ReplicationFabrics_Purge
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics Purge. */
 public final class ReplicationFabricsPurgeSamples {
     /*
@@ -710,7 +685,7 @@ public final class ReplicationFabricsPurgeSamples {
      */
     public static void purgesTheSite(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().purge("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+        manager.replicationFabrics().purge("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -718,7 +693,6 @@ public final class ReplicationFabricsPurgeSamples {
 ### ReplicationFabrics_ReassociateGateway
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.FailoverProcessServerRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.FailoverProcessServerRequestProperties;
 import java.util.Arrays;
@@ -749,7 +723,7 @@ public final class ReplicationFabricsReassociateGatewaySamples {
                             .withTargetProcessServerId("5D3ED340-85AE-C646-B338641E015DA405")
                             .withVmsToMigrate(Arrays.asList("Vm1", "Vm2"))
                             .withUpdateType("ServerLevel")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -757,7 +731,6 @@ public final class ReplicationFabricsReassociateGatewaySamples {
 ### ReplicationFabrics_RenewCertificate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RenewCertificateInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RenewCertificateInputProperties;
 
@@ -781,7 +754,7 @@ public final class ReplicationFabricsRenewCertificateSamples {
                 "cloud1",
                 new RenewCertificateInput()
                     .withProperties(new RenewCertificateInputProperties().withRenewCertificateType("Cloud")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -789,8 +762,6 @@ public final class ReplicationFabricsRenewCertificateSamples {
 ### ReplicationJobs_Cancel
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationJobs Cancel. */
 public final class ReplicationJobsCancelSamples {
     /*
@@ -805,7 +776,8 @@ public final class ReplicationJobsCancelSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationJobs()
-            .cancel("vault1", "resourceGroupPS1", "2653c648-fc72-4316-86f3-fdf8eaa0066b", Context.NONE);
+            .cancel(
+                "vault1", "resourceGroupPS1", "2653c648-fc72-4316-86f3-fdf8eaa0066b", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -813,7 +785,6 @@ public final class ReplicationJobsCancelSamples {
 ### ReplicationJobs_Export
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.JobQueryParameter;
 
 /** Samples for ReplicationJobs Export. */
@@ -838,7 +809,7 @@ public final class ReplicationJobsExportSamples {
                     .withEndTime("2017-05-04T14:26:51.9161395Z")
                     .withAffectedObjectTypes("")
                     .withJobStatus(""),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -846,8 +817,6 @@ public final class ReplicationJobsExportSamples {
 ### ReplicationJobs_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationJobs Get. */
 public final class ReplicationJobsGetSamples {
     /*
@@ -862,7 +831,8 @@ public final class ReplicationJobsGetSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationJobs()
-            .getWithResponse("vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d", Context.NONE);
+            .getWithResponse(
+                "vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -870,8 +840,6 @@ public final class ReplicationJobsGetSamples {
 ### ReplicationJobs_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationJobs List. */
 public final class ReplicationJobsListSamples {
     /*
@@ -884,7 +852,7 @@ public final class ReplicationJobsListSamples {
      */
     public static void getsTheListOfJobs(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationJobs().list("vault1", "resourceGroupPS1", null, Context.NONE);
+        manager.replicationJobs().list("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -892,8 +860,6 @@ public final class ReplicationJobsListSamples {
 ### ReplicationJobs_Restart
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationJobs Restart. */
 public final class ReplicationJobsRestartSamples {
     /*
@@ -908,7 +874,8 @@ public final class ReplicationJobsRestartSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationJobs()
-            .restart("vault1", "resourceGroupPS1", "0664564c-353e-401a-ab0c-722257c10e25", Context.NONE);
+            .restart(
+                "vault1", "resourceGroupPS1", "0664564c-353e-401a-ab0c-722257c10e25", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -916,7 +883,6 @@ public final class ReplicationJobsRestartSamples {
 ### ReplicationJobs_Resume
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobParams;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobParamsProperties;
 
@@ -939,7 +905,7 @@ public final class ReplicationJobsResumeSamples {
                 "resourceGroupPS1",
                 "58776d0b-3141-48b2-a377-9ad863eb160d",
                 new ResumeJobParams().withProperties(new ResumeJobParamsProperties().withComments(" ")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -947,8 +913,6 @@ public final class ReplicationJobsResumeSamples {
 ### ReplicationLogicalNetworks_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationLogicalNetworks Get. */
 public final class ReplicationLogicalNetworksGetSamples {
     /*
@@ -964,7 +928,11 @@ public final class ReplicationLogicalNetworksGetSamples {
         manager
             .replicationLogicalNetworks()
             .getWithResponse(
-                "vault1", "resourceGroupPS1", "cloud1", "87ab394f-165f-4aa9-bd84-b018500b4509", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "87ab394f-165f-4aa9-bd84-b018500b4509",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -972,8 +940,6 @@ public final class ReplicationLogicalNetworksGetSamples {
 ### ReplicationLogicalNetworks_ListByReplicationFabrics
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationLogicalNetworks ListByReplicationFabrics. */
 public final class ReplicationLogicalNetworksListByReplicationFabr {
     /*
@@ -988,7 +954,7 @@ public final class ReplicationLogicalNetworksListByReplicationFabr {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationLogicalNetworks()
-            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1051,8 +1017,6 @@ public final class ReplicationMigrationItemsCreateSamples {
 ### ReplicationMigrationItems_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationMigrationItems Delete. */
 public final class ReplicationMigrationItemsDeleteSamples {
     /*
@@ -1074,7 +1038,7 @@ public final class ReplicationMigrationItemsDeleteSamples {
                 "vmwareContainer1",
                 "virtualmachine1",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1082,8 +1046,6 @@ public final class ReplicationMigrationItemsDeleteSamples {
 ### ReplicationMigrationItems_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationMigrationItems Get. */
 public final class ReplicationMigrationItemsGetSamples {
     /*
@@ -1104,7 +1066,7 @@ public final class ReplicationMigrationItemsGetSamples {
                 "vmwarefabric1",
                 "vmwareContainer1",
                 "virtualmachine1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1112,8 +1074,6 @@ public final class ReplicationMigrationItemsGetSamples {
 ### ReplicationMigrationItems_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationMigrationItems List. */
 public final class ReplicationMigrationItemsListSamples {
     /*
@@ -1126,7 +1086,9 @@ public final class ReplicationMigrationItemsListSamples {
      */
     public static void getsTheListOfMigrationItemsInTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().list("migrationvault", "resourcegroup1", null, null, null, Context.NONE);
+        manager
+            .replicationMigrationItems()
+            .list("migrationvault", "resourcegroup1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1134,8 +1096,6 @@ public final class ReplicationMigrationItemsListSamples {
 ### ReplicationMigrationItems_ListByReplicationProtectionContainers
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationMigrationItems ListByReplicationProtectionContainers. */
 public final class ReplicationMigrationItemsListByReplicationProte {
     /*
@@ -1158,7 +1118,7 @@ public final class ReplicationMigrationItemsListByReplicationProte {
                 null,
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1166,7 +1126,6 @@ public final class ReplicationMigrationItemsListByReplicationProte {
 ### ReplicationMigrationItems_Migrate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrateInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrateInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtMigrateInput;
@@ -1194,7 +1153,7 @@ public final class ReplicationMigrationItemsMigrateSamples {
                     .withProperties(
                         new MigrateInputProperties()
                             .withProviderSpecificDetails(new VMwareCbtMigrateInput().withPerformShutdown("true"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1202,7 +1161,6 @@ public final class ReplicationMigrationItemsMigrateSamples {
 ### ReplicationMigrationItems_PauseReplication
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PauseReplicationInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PauseReplicationInputProperties;
 
@@ -1228,7 +1186,7 @@ public final class ReplicationMigrationItemsPauseReplicationSamples {
                 "virtualmachine1",
                 new PauseReplicationInput()
                     .withProperties(new PauseReplicationInputProperties().withInstanceType("VMwareCbt")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1236,7 +1194,6 @@ public final class ReplicationMigrationItemsPauseReplicationSamples {
 ### ReplicationMigrationItems_ResumeReplication
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeReplicationInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeReplicationInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtResumeReplicationInput;
@@ -1266,7 +1223,7 @@ public final class ReplicationMigrationItemsResumeReplicationSampl {
                         new ResumeReplicationInputProperties()
                             .withProviderSpecificDetails(
                                 new VMwareCbtResumeReplicationInput().withDeleteMigrationResources("false"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1274,7 +1231,6 @@ public final class ReplicationMigrationItemsResumeReplicationSampl {
 ### ReplicationMigrationItems_Resync
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResyncInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResyncInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtResyncInput;
@@ -1303,7 +1259,7 @@ public final class ReplicationMigrationItemsResyncSamples {
                     .withProperties(
                         new ResyncInputProperties()
                             .withProviderSpecificDetails(new VMwareCbtResyncInput().withSkipCbtReset("true"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1311,7 +1267,6 @@ public final class ReplicationMigrationItemsResyncSamples {
 ### ReplicationMigrationItems_TestMigrate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtTestMigrateInput;
@@ -1345,7 +1300,7 @@ public final class ReplicationMigrationItemsTestMigrateSamples {
                                         "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/9e737191-317e-43d0-8c83-e32ac3b34686")
                                     .withNetworkId(
                                         "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1353,7 +1308,6 @@ public final class ReplicationMigrationItemsTestMigrateSamples {
 ### ReplicationMigrationItems_TestMigrateCleanup
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateCleanupInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateCleanupInputProperties;
 
@@ -1379,7 +1333,7 @@ public final class ReplicationMigrationItemsTestMigrateCleanupSamp {
                 "virtualmachine1",
                 new TestMigrateCleanupInput()
                     .withProperties(new TestMigrateCleanupInputProperties().withComments("Test Failover Cleanup")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1387,7 +1341,6 @@ public final class ReplicationMigrationItemsTestMigrateCleanupSamp {
 ### ReplicationMigrationItems_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationItem;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMigrationItemInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtUpdateMigrationItemInput;
@@ -1413,7 +1366,7 @@ public final class ReplicationMigrationItemsUpdateSamples {
                     "vmwarefabric1",
                     "vmwareContainer1",
                     "virtualmachine1",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1465,8 +1418,6 @@ public final class ReplicationNetworkMappingsCreateSamples {
 ### ReplicationNetworkMappings_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworkMappings Delete. */
 public final class ReplicationNetworkMappingsDeleteSamples {
     /*
@@ -1487,7 +1438,7 @@ public final class ReplicationNetworkMappingsDeleteSamples {
                 "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                 "e2267b5c-2650-49bd-ab3f-d66aae694c06",
                 "corpe2amap",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1495,8 +1446,6 @@ public final class ReplicationNetworkMappingsDeleteSamples {
 ### ReplicationNetworkMappings_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworkMappings Get. */
 public final class ReplicationNetworkMappingsGetSamples {
     /*
@@ -1517,7 +1466,7 @@ public final class ReplicationNetworkMappingsGetSamples {
                 "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                 "e2267b5c-2650-49bd-ab3f-d66aae694c06",
                 "corpe2amap",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1525,8 +1474,6 @@ public final class ReplicationNetworkMappingsGetSamples {
 ### ReplicationNetworkMappings_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworkMappings List. */
 public final class ReplicationNetworkMappingsListSamples {
     /*
@@ -1539,7 +1486,9 @@ public final class ReplicationNetworkMappingsListSamples {
      */
     public static void getsAllTheNetworkMappingsUnderAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationNetworkMappings().list("srce2avaultbvtaC27", "srcBvte2a14C27", Context.NONE);
+        manager
+            .replicationNetworkMappings()
+            .list("srce2avaultbvtaC27", "srcBvte2a14C27", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1547,8 +1496,6 @@ public final class ReplicationNetworkMappingsListSamples {
 ### ReplicationNetworkMappings_ListByReplicationNetworks
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworkMappings ListByReplicationNetworks. */
 public final class ReplicationNetworkMappingsListByReplicationNetw {
     /*
@@ -1568,7 +1515,7 @@ public final class ReplicationNetworkMappingsListByReplicationNetw {
                 "srcBvte2a14C27",
                 "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                 "e2267b5c-2650-49bd-ab3f-d66aae694c06",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1576,7 +1523,6 @@ public final class ReplicationNetworkMappingsListByReplicationNetw {
 ### ReplicationNetworkMappings_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.NetworkMapping;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateNetworkMappingInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VmmToAzureUpdateNetworkMappingInput;
@@ -1602,7 +1548,7 @@ public final class ReplicationNetworkMappingsUpdateSamples {
                     "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                     "e2267b5c-2650-49bd-ab3f-d66aae694c06",
                     "corpe2amap",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1620,8 +1566,6 @@ public final class ReplicationNetworkMappingsUpdateSamples {
 ### ReplicationNetworks_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworks Get. */
 public final class ReplicationNetworksGetSamples {
     /*
@@ -1641,7 +1585,7 @@ public final class ReplicationNetworksGetSamples {
                 "srcBvte2a14C27",
                 "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                 "93ce99d7-1219-4914-aa61-73fe5023988e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1649,8 +1593,6 @@ public final class ReplicationNetworksGetSamples {
 ### ReplicationNetworks_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworks List. */
 public final class ReplicationNetworksListSamples {
     /*
@@ -1663,7 +1605,7 @@ public final class ReplicationNetworksListSamples {
      */
     public static void getsTheListOfNetworksViewOnlyAPI(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationNetworks().list("srce2avaultbvtaC27", "srcBvte2a14C27", Context.NONE);
+        manager.replicationNetworks().list("srce2avaultbvtaC27", "srcBvte2a14C27", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1671,8 +1613,6 @@ public final class ReplicationNetworksListSamples {
 ### ReplicationNetworks_ListByReplicationFabrics
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworks ListByReplicationFabrics. */
 public final class ReplicationNetworksListByReplicationFabricsSamp {
     /*
@@ -1691,7 +1631,7 @@ public final class ReplicationNetworksListByReplicationFabricsSamp {
                 "srce2avaultbvtaC27",
                 "srcBvte2a14C27",
                 "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1728,8 +1668,6 @@ public final class ReplicationPoliciesCreateSamples {
 ### ReplicationPolicies_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationPolicies Delete. */
 public final class ReplicationPoliciesDeleteSamples {
     /*
@@ -1742,7 +1680,9 @@ public final class ReplicationPoliciesDeleteSamples {
      */
     public static void deleteThePolicy(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationPolicies().delete("vault1", "resourceGroupPS1", "protectionprofile1", Context.NONE);
+        manager
+            .replicationPolicies()
+            .delete("vault1", "resourceGroupPS1", "protectionprofile1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1750,8 +1690,6 @@ public final class ReplicationPoliciesDeleteSamples {
 ### ReplicationPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationPolicies Get. */
 public final class ReplicationPoliciesGetSamples {
     /*
@@ -1764,7 +1702,9 @@ public final class ReplicationPoliciesGetSamples {
      */
     public static void getsTheRequestedPolicy(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationPolicies().getWithResponse("vault1", "resourceGroupPS1", "protectionprofile1", Context.NONE);
+        manager
+            .replicationPolicies()
+            .getWithResponse("vault1", "resourceGroupPS1", "protectionprofile1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1772,8 +1712,6 @@ public final class ReplicationPoliciesGetSamples {
 ### ReplicationPolicies_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationPolicies List. */
 public final class ReplicationPoliciesListSamples {
     /*
@@ -1786,7 +1724,7 @@ public final class ReplicationPoliciesListSamples {
      */
     public static void getsTheListOfReplicationPolicies(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationPolicies().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationPolicies().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1794,7 +1732,6 @@ public final class ReplicationPoliciesListSamples {
 ### ReplicationPolicies_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzurePolicyInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Policy;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdatePolicyInputProperties;
@@ -1814,7 +1751,7 @@ public final class ReplicationPoliciesUpdateSamples {
         Policy resource =
             manager
                 .replicationPolicies()
-                .getWithResponse("vault1", "resourceGroupPS1", "protectionprofile1", Context.NONE)
+                .getWithResponse("vault1", "resourceGroupPS1", "protectionprofile1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1828,8 +1765,6 @@ public final class ReplicationPoliciesUpdateSamples {
 ### ReplicationProtectableItems_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectableItems Get. */
 public final class ReplicationProtectableItemsGetSamples {
     /*
@@ -1850,7 +1785,7 @@ public final class ReplicationProtectableItemsGetSamples {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "c0c14913-3d7a-48ea-9531-cc99e0e686e6",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1858,8 +1793,6 @@ public final class ReplicationProtectableItemsGetSamples {
 ### ReplicationProtectableItems_ListByReplicationProtectionContainers
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectableItems ListByReplicationProtectionContainers. */
 public final class ReplicationProtectableItemsListByReplicationPro {
     /*
@@ -1882,7 +1815,7 @@ public final class ReplicationProtectableItemsListByReplicationPro {
                 null,
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1890,7 +1823,6 @@ public final class ReplicationProtectableItemsListByReplicationPro {
 ### ReplicationProtectedItems_AddDisks
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AAddDisksInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AVmDiskInputDetails;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddDisksInput;
@@ -1932,7 +1864,7 @@ public final class ReplicationProtectedItemsAddDisksSamples {
                                                         "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Storage/storageAccounts/recoverystorage")
                                                     .withPrimaryStagingAzureStorageAccountId(
                                                         "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Storage/storageAccounts/vmcachestorage"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1940,7 +1872,6 @@ public final class ReplicationProtectedItemsAddDisksSamples {
 ### ReplicationProtectedItems_ApplyRecoveryPoint
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ApplyRecoveryPointInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ApplyRecoveryPointInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureApplyRecoveryPointInput;
@@ -1971,7 +1902,7 @@ public final class ReplicationProtectedItemsApplyRecoveryPointSamp {
                             .withRecoveryPointId(
                                 "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b/recoveryPoints/e4d05fe9-5dfd-47be-b50b-aad306b2802d")
                             .withProviderSpecificDetails(new HyperVReplicaAzureApplyRecoveryPointInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2014,7 +1945,6 @@ public final class ReplicationProtectedItemsCreateSamples {
 ### ReplicationProtectedItems_Delete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProtectionInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProtectionProviderSpecificInput;
@@ -2043,7 +1973,7 @@ public final class ReplicationProtectedItemsDeleteSamples {
                     .withProperties(
                         new DisableProtectionInputProperties()
                             .withReplicationProviderInput(new DisableProtectionProviderSpecificInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2051,8 +1981,6 @@ public final class ReplicationProtectedItemsDeleteSamples {
 ### ReplicationProtectedItems_FailoverCancel
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems FailoverCancel. */
 public final class ReplicationProtectedItemsFailoverCancelSamples {
     /*
@@ -2073,7 +2001,7 @@ public final class ReplicationProtectedItemsFailoverCancelSamples {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2081,8 +2009,6 @@ public final class ReplicationProtectedItemsFailoverCancelSamples {
 ### ReplicationProtectedItems_FailoverCommit
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems FailoverCommit. */
 public final class ReplicationProtectedItemsFailoverCommitSamples {
     /*
@@ -2103,7 +2029,7 @@ public final class ReplicationProtectedItemsFailoverCommitSamples {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2111,8 +2037,6 @@ public final class ReplicationProtectedItemsFailoverCommitSamples {
 ### ReplicationProtectedItems_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems Get. */
 public final class ReplicationProtectedItemsGetSamples {
     /*
@@ -2133,7 +2057,7 @@ public final class ReplicationProtectedItemsGetSamples {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2141,8 +2065,6 @@ public final class ReplicationProtectedItemsGetSamples {
 ### ReplicationProtectedItems_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems List. */
 public final class ReplicationProtectedItemsListSamples {
     /*
@@ -2155,7 +2077,9 @@ public final class ReplicationProtectedItemsListSamples {
      */
     public static void getsTheListOfReplicationProtectedItems(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectedItems().list("vault1", "resourceGroupPS1", null, null, Context.NONE);
+        manager
+            .replicationProtectedItems()
+            .list("vault1", "resourceGroupPS1", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2163,8 +2087,6 @@ public final class ReplicationProtectedItemsListSamples {
 ### ReplicationProtectedItems_ListByReplicationProtectionContainers
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems ListByReplicationProtectionContainers. */
 public final class ReplicationProtectedItemsListByReplicationProte {
     /*
@@ -2180,7 +2102,11 @@ public final class ReplicationProtectedItemsListByReplicationProte {
         manager
             .replicationProtectedItems()
             .listByReplicationProtectionContainers(
-                "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2188,7 +2114,6 @@ public final class ReplicationProtectedItemsListByReplicationProte {
 ### ReplicationProtectedItems_PlannedFailover
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzurePlannedFailoverProviderInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PlannedFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PlannedFailoverInputProperties;
@@ -2218,7 +2143,7 @@ public final class ReplicationProtectedItemsPlannedFailoverSamples {
                         new PlannedFailoverInputProperties()
                             .withFailoverDirection("PrimaryToRecovery")
                             .withProviderSpecificDetails(new HyperVReplicaAzurePlannedFailoverProviderInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2226,8 +2151,6 @@ public final class ReplicationProtectedItemsPlannedFailoverSamples {
 ### ReplicationProtectedItems_Purge
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems Purge. */
 public final class ReplicationProtectedItemsPurgeSamples {
     /*
@@ -2248,7 +2171,7 @@ public final class ReplicationProtectedItemsPurgeSamples {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "c0c14913-3d7a-48ea-9531-cc99e0e686e6",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2256,7 +2179,6 @@ public final class ReplicationProtectedItemsPurgeSamples {
 ### ReplicationProtectedItems_RemoveDisks
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2ARemoveDisksInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveDisksInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveDisksInputProperties;
@@ -2289,7 +2211,7 @@ public final class ReplicationProtectedItemsRemoveDisksSamples {
                                 new A2ARemoveDisksInput()
                                     .withVmDisksUris(
                                         Arrays.asList("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2297,8 +2219,6 @@ public final class ReplicationProtectedItemsRemoveDisksSamples {
 ### ReplicationProtectedItems_RepairReplication
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems RepairReplication. */
 public final class ReplicationProtectedItemsRepairReplicationSampl {
     /*
@@ -2319,7 +2239,7 @@ public final class ReplicationProtectedItemsRepairReplicationSampl {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2327,7 +2247,6 @@ public final class ReplicationProtectedItemsRepairReplicationSampl {
 ### ReplicationProtectedItems_Reprotect
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureReprotectInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReverseReplicationInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReverseReplicationInputProperties;
@@ -2357,7 +2276,7 @@ public final class ReplicationProtectedItemsReprotectSamples {
                         new ReverseReplicationInputProperties()
                             .withFailoverDirection("PrimaryToRecovery")
                             .withProviderSpecificDetails(new HyperVReplicaAzureReprotectInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2365,7 +2284,6 @@ public final class ReplicationProtectedItemsReprotectSamples {
 ### ReplicationProtectedItems_ResolveHealthErrors
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResolveHealthError;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResolveHealthInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResolveHealthInputProperties;
@@ -2395,7 +2313,7 @@ public final class ReplicationProtectedItemsResolveHealthErrorsSam {
                     .withProperties(
                         new ResolveHealthInputProperties()
                             .withHealthErrors(Arrays.asList(new ResolveHealthError().withHealthErrorId("3:8020")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2403,7 +2321,6 @@ public final class ReplicationProtectedItemsResolveHealthErrorsSam {
 ### ReplicationProtectedItems_SwitchProvider
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageAzureV2SwitchProviderInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProviderInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProviderInputProperties;
@@ -2439,7 +2356,7 @@ public final class ReplicationProtectedItemsSwitchProviderSamples {
                                     .withTargetFabricId(
                                         "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud2")
                                     .withTargetApplianceId("5efaa202-e958-435e-8171-706bf735fcc4"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2447,7 +2364,6 @@ public final class ReplicationProtectedItemsSwitchProviderSamples {
 ### ReplicationProtectedItems_TestFailover
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureTestFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailoverInputProperties;
@@ -2480,7 +2396,7 @@ public final class ReplicationProtectedItemsTestFailoverSamples {
                             .withNetworkId(
                                 "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai")
                             .withProviderSpecificDetails(new HyperVReplicaAzureTestFailoverInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2488,7 +2404,6 @@ public final class ReplicationProtectedItemsTestFailoverSamples {
 ### ReplicationProtectedItems_TestFailoverCleanup
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailoverCleanupInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailoverCleanupInputProperties;
 
@@ -2514,7 +2429,7 @@ public final class ReplicationProtectedItemsTestFailoverCleanupSam {
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
                 new TestFailoverCleanupInput()
                     .withProperties(new TestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2522,7 +2437,6 @@ public final class ReplicationProtectedItemsTestFailoverCleanupSam {
 ### ReplicationProtectedItems_UnplannedFailover
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureUnplannedFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UnplannedFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UnplannedFailoverInputProperties;
@@ -2553,7 +2467,7 @@ public final class ReplicationProtectedItemsUnplannedFailoverSampl {
                             .withFailoverDirection("PrimaryToRecovery")
                             .withSourceSiteOperations("NotRequired")
                             .withProviderSpecificDetails(new HyperVReplicaAzureUnplannedFailoverInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2561,7 +2475,6 @@ public final class ReplicationProtectedItemsUnplannedFailoverSampl {
 ### ReplicationProtectedItems_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureUpdateReplicationProtectedItemInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.IpConfigInputDetails;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.LicenseType;
@@ -2591,7 +2504,7 @@ public final class ReplicationProtectedItemsUpdateSamples {
                     "cloud1",
                     "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                     "f8491e4f-817a-40dd-a90c-af773978c75b",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -2626,7 +2539,6 @@ public final class ReplicationProtectedItemsUpdateSamples {
 ### ReplicationProtectedItems_UpdateAppliance
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmUpdateApplianceForReplicationProtectedItemInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateApplianceForReplicationProtectedItemInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateApplianceForReplicationProtectedItemInputProperties;
@@ -2657,7 +2569,7 @@ public final class ReplicationProtectedItemsUpdateApplianceSamples {
                             .withTargetApplianceId("")
                             .withProviderSpecificDetails(
                                 new InMageRcmUpdateApplianceForReplicationProtectedItemInput().withRunAsAccountId(""))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2665,7 +2577,6 @@ public final class ReplicationProtectedItemsUpdateApplianceSamples {
 ### ReplicationProtectedItems_UpdateMobilityService
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMobilityServiceRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMobilityServiceRequestProperties;
 
@@ -2691,7 +2602,7 @@ public final class ReplicationProtectedItemsUpdateMobilityServiceS {
                 "79dd20ab-2b40-11e7-9791-0050568f387e",
                 new UpdateMobilityServiceRequest()
                     .withProperties(new UpdateMobilityServiceRequestProperties().withRunAsAccountId("2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2733,7 +2644,6 @@ public final class ReplicationProtectionContainerMappingsCreateSam {
 ### ReplicationProtectionContainerMappings_Delete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveProtectionContainerMappingInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveProtectionContainerMappingInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProviderContainerUnmappingInput;
@@ -2762,7 +2672,7 @@ public final class ReplicationProtectionContainerMappingsDeleteSam {
                     .withProperties(
                         new RemoveProtectionContainerMappingInputProperties()
                             .withProviderSpecificInput(new ReplicationProviderContainerUnmappingInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2770,8 +2680,6 @@ public final class ReplicationProtectionContainerMappingsDeleteSam {
 ### ReplicationProtectionContainerMappings_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainerMappings Get. */
 public final class ReplicationProtectionContainerMappingsGetSamples {
     /*
@@ -2792,7 +2700,7 @@ public final class ReplicationProtectionContainerMappingsGetSamples {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "cloud1protectionprofile1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2800,8 +2708,6 @@ public final class ReplicationProtectionContainerMappingsGetSamples {
 ### ReplicationProtectionContainerMappings_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainerMappings List. */
 public final class ReplicationProtectionContainerMappingsListSampl {
     /*
@@ -2814,7 +2720,9 @@ public final class ReplicationProtectionContainerMappingsListSampl {
      */
     public static void getsTheListOfAllProtectionContainerMappingsInAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainerMappings().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager
+            .replicationProtectionContainerMappings()
+            .list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2822,8 +2730,6 @@ public final class ReplicationProtectionContainerMappingsListSampl {
 ### ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainerMappings ListByReplicationProtectionContainers. */
 public final class ReplicationProtectionContainerMappingsListByRep {
     /*
@@ -2839,7 +2745,11 @@ public final class ReplicationProtectionContainerMappingsListByRep {
         manager
             .replicationProtectionContainerMappings()
             .listByReplicationProtectionContainers(
-                "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2847,8 +2757,6 @@ public final class ReplicationProtectionContainerMappingsListByRep {
 ### ReplicationProtectionContainerMappings_Purge
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainerMappings Purge. */
 public final class ReplicationProtectionContainerMappingsPurgeSamp {
     /*
@@ -2869,7 +2777,7 @@ public final class ReplicationProtectionContainerMappingsPurgeSamp {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "cloud1protectionprofile1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2877,7 +2785,6 @@ public final class ReplicationProtectionContainerMappingsPurgeSamp {
 ### ReplicationProtectionContainerMappings_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AUpdateContainerMappingInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.AgentAutoUpdateStatus;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectionContainerMapping;
@@ -2904,7 +2811,7 @@ public final class ReplicationProtectionContainerMappingsUpdateSam {
                     "cloud1",
                     "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                     "cloud1protectionprofile1",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -2954,8 +2861,6 @@ public final class ReplicationProtectionContainersCreateSamples {
 ### ReplicationProtectionContainers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainers Delete. */
 public final class ReplicationProtectionContainersDeleteSamples {
     /*
@@ -2970,7 +2875,12 @@ public final class ReplicationProtectionContainersDeleteSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationProtectionContainers()
-            .delete("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", Context.NONE);
+            .delete(
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2978,7 +2888,6 @@ public final class ReplicationProtectionContainersDeleteSamples {
 ### ReplicationProtectionContainers_DiscoverProtectableItem
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiscoverProtectableItemRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiscoverProtectableItemRequestProperties;
 
@@ -3007,7 +2916,7 @@ public final class ReplicationProtectionContainersDiscoverProtecta {
                             .withFriendlyName("Test")
                             .withIpAddress("10.150.2.3")
                             .withOsType("Windows")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3015,8 +2924,6 @@ public final class ReplicationProtectionContainersDiscoverProtecta {
 ### ReplicationProtectionContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainers Get. */
 public final class ReplicationProtectionContainersGetSamples {
     /*
@@ -3032,7 +2939,11 @@ public final class ReplicationProtectionContainersGetSamples {
         manager
             .replicationProtectionContainers()
             .getWithResponse(
-                "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3040,8 +2951,6 @@ public final class ReplicationProtectionContainersGetSamples {
 ### ReplicationProtectionContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainers List. */
 public final class ReplicationProtectionContainersListSamples {
     /*
@@ -3054,7 +2963,7 @@ public final class ReplicationProtectionContainersListSamples {
      */
     public static void getsTheListOfAllProtectionContainersInAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainers().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationProtectionContainers().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3062,8 +2971,6 @@ public final class ReplicationProtectionContainersListSamples {
 ### ReplicationProtectionContainers_ListByReplicationFabrics
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainers ListByReplicationFabrics. */
 public final class ReplicationProtectionContainersListByReplicatio {
     /*
@@ -3078,7 +2985,7 @@ public final class ReplicationProtectionContainersListByReplicatio {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationProtectionContainers()
-            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3086,7 +2993,6 @@ public final class ReplicationProtectionContainersListByReplicatio {
 ### ReplicationProtectionContainers_SwitchProtection
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2ASwitchProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProtectionInputProperties;
@@ -3114,7 +3020,7 @@ public final class ReplicationProtectionContainersSwitchProtection {
                     .withProperties(
                         new SwitchProtectionInputProperties()
                             .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3162,8 +3068,6 @@ public final class ReplicationProtectionIntentsCreateSamples {
 ### ReplicationProtectionIntents_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionIntents Get. */
 public final class ReplicationProtectionIntentsGetSamples {
     /*
@@ -3176,7 +3080,9 @@ public final class ReplicationProtectionIntentsGetSamples {
      */
     public static void getsTheDetailsOfAReplicationProtectionIntentItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionIntents().getWithResponse("vault1", "resourceGroupPS1", "vm1", Context.NONE);
+        manager
+            .replicationProtectionIntents()
+            .getWithResponse("vault1", "resourceGroupPS1", "vm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3184,8 +3090,6 @@ public final class ReplicationProtectionIntentsGetSamples {
 ### ReplicationProtectionIntents_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionIntents List. */
 public final class ReplicationProtectionIntentsListSamples {
     /*
@@ -3198,7 +3102,9 @@ public final class ReplicationProtectionIntentsListSamples {
      */
     public static void getsTheListOfReplicationProtectionIntentObjects(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionIntents().list("2007vttp", "resourceGroupPS1", null, null, Context.NONE);
+        manager
+            .replicationProtectionIntents()
+            .list("2007vttp", "resourceGroupPS1", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3257,8 +3163,6 @@ public final class ReplicationRecoveryPlansCreateSamples {
 ### ReplicationRecoveryPlans_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans Delete. */
 public final class ReplicationRecoveryPlansDeleteSamples {
     /*
@@ -3271,7 +3175,9 @@ public final class ReplicationRecoveryPlansDeleteSamples {
      */
     public static void deletesTheSpecifiedRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().delete("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .delete("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3279,8 +3185,6 @@ public final class ReplicationRecoveryPlansDeleteSamples {
 ### ReplicationRecoveryPlans_FailoverCancel
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans FailoverCancel. */
 public final class ReplicationRecoveryPlansFailoverCancelSamples {
     /*
@@ -3293,7 +3197,9 @@ public final class ReplicationRecoveryPlansFailoverCancelSamples {
      */
     public static void executeCancelFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().failoverCancel("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .failoverCancel("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3301,8 +3207,6 @@ public final class ReplicationRecoveryPlansFailoverCancelSamples {
 ### ReplicationRecoveryPlans_FailoverCommit
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans FailoverCommit. */
 public final class ReplicationRecoveryPlansFailoverCommitSamples {
     /*
@@ -3315,7 +3219,9 @@ public final class ReplicationRecoveryPlansFailoverCommitSamples {
      */
     public static void executeCommitFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().failoverCommit("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .failoverCommit("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3323,8 +3229,6 @@ public final class ReplicationRecoveryPlansFailoverCommitSamples {
 ### ReplicationRecoveryPlans_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans Get. */
 public final class ReplicationRecoveryPlansGetSamples {
     /*
@@ -3337,7 +3241,9 @@ public final class ReplicationRecoveryPlansGetSamples {
      */
     public static void getsTheRequestedRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().getWithResponse("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3345,8 +3251,6 @@ public final class ReplicationRecoveryPlansGetSamples {
 ### ReplicationRecoveryPlans_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans List. */
 public final class ReplicationRecoveryPlansListSamples {
     /*
@@ -3359,7 +3263,7 @@ public final class ReplicationRecoveryPlansListSamples {
      */
     public static void getsTheListOfRecoveryPlans(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationRecoveryPlans().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3367,7 +3271,6 @@ public final class ReplicationRecoveryPlansListSamples {
 ### ReplicationRecoveryPlans_PlannedFailover
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PossibleOperationsDirections;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanHyperVReplicaAzureFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanPlannedFailoverInput;
@@ -3398,7 +3301,7 @@ public final class ReplicationRecoveryPlansPlannedFailoverSamples {
                             .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
                             .withProviderSpecificDetails(
                                 Arrays.asList(new RecoveryPlanHyperVReplicaAzureFailoverInput()))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3406,8 +3309,6 @@ public final class ReplicationRecoveryPlansPlannedFailoverSamples {
 ### ReplicationRecoveryPlans_Reprotect
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans Reprotect. */
 public final class ReplicationRecoveryPlansReprotectSamples {
     /*
@@ -3420,7 +3321,9 @@ public final class ReplicationRecoveryPlansReprotectSamples {
      */
     public static void executeReprotectOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().reprotect("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .reprotect("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3428,7 +3331,6 @@ public final class ReplicationRecoveryPlansReprotectSamples {
 ### ReplicationRecoveryPlans_TestFailover
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PossibleOperationsDirections;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanHyperVReplicaAzureFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanTestFailoverInput;
@@ -3462,7 +3364,7 @@ public final class ReplicationRecoveryPlansTestFailoverSamples {
                                 "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai")
                             .withProviderSpecificDetails(
                                 Arrays.asList(new RecoveryPlanHyperVReplicaAzureFailoverInput()))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3470,7 +3372,6 @@ public final class ReplicationRecoveryPlansTestFailoverSamples {
 ### ReplicationRecoveryPlans_TestFailoverCleanup
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanTestFailoverCleanupInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanTestFailoverCleanupInputProperties;
 
@@ -3495,7 +3396,7 @@ public final class ReplicationRecoveryPlansTestFailoverCleanupSamp {
                 new RecoveryPlanTestFailoverCleanupInput()
                     .withProperties(
                         new RecoveryPlanTestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3503,7 +3404,6 @@ public final class ReplicationRecoveryPlansTestFailoverCleanupSamp {
 ### ReplicationRecoveryPlans_UnplannedFailover
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PossibleOperationsDirections;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanHyperVReplicaAzureFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanUnplannedFailoverInput;
@@ -3536,7 +3436,7 @@ public final class ReplicationRecoveryPlansUnplannedFailoverSamples {
                             .withSourceSiteOperations(SourceSiteOperations.REQUIRED)
                             .withProviderSpecificDetails(
                                 Arrays.asList(new RecoveryPlanHyperVReplicaAzureFailoverInput()))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3544,7 +3444,6 @@ public final class ReplicationRecoveryPlansUnplannedFailoverSamples {
 ### ReplicationRecoveryPlans_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlan;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanGroup;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanGroupType;
@@ -3567,7 +3466,7 @@ public final class ReplicationRecoveryPlansUpdateSamples {
         RecoveryPlan resource =
             manager
                 .replicationRecoveryPlans()
-                .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", Context.NONE)
+                .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -3660,8 +3559,6 @@ public final class ReplicationRecoveryServicesProvidersCreateSampl {
 ### ReplicationRecoveryServicesProviders_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders Delete. */
 public final class ReplicationRecoveryServicesProvidersDeleteSampl {
     /*
@@ -3679,7 +3576,12 @@ public final class ReplicationRecoveryServicesProvidersDeleteSampl {
             com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationRecoveryServicesProviders()
-            .delete("vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", Context.NONE);
+            .delete(
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "241641e6-ee7b-4ee4-8141-821fadda43fa",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3687,8 +3589,6 @@ public final class ReplicationRecoveryServicesProvidersDeleteSampl {
 ### ReplicationRecoveryServicesProviders_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders Get. */
 public final class ReplicationRecoveryServicesProvidersGetSamples {
     /*
@@ -3704,7 +3604,11 @@ public final class ReplicationRecoveryServicesProvidersGetSamples {
         manager
             .replicationRecoveryServicesProviders()
             .getWithResponse(
-                "vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "241641e6-ee7b-4ee4-8141-821fadda43fa",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3712,8 +3616,6 @@ public final class ReplicationRecoveryServicesProvidersGetSamples {
 ### ReplicationRecoveryServicesProviders_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders List. */
 public final class ReplicationRecoveryServicesProvidersListSamples {
     /*
@@ -3726,7 +3628,9 @@ public final class ReplicationRecoveryServicesProvidersListSamples {
      */
     public static void getsTheListOfRegisteredRecoveryServicesProvidersInTheVaultThisIsAViewOnlyApi(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryServicesProviders().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager
+            .replicationRecoveryServicesProviders()
+            .list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3734,8 +3638,6 @@ public final class ReplicationRecoveryServicesProvidersListSamples {
 ### ReplicationRecoveryServicesProviders_ListByReplicationFabrics
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders ListByReplicationFabrics. */
 public final class ReplicationRecoveryServicesProvidersListByRepli {
     /*
@@ -3750,7 +3652,7 @@ public final class ReplicationRecoveryServicesProvidersListByRepli {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationRecoveryServicesProviders()
-            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3758,8 +3660,6 @@ public final class ReplicationRecoveryServicesProvidersListByRepli {
 ### ReplicationRecoveryServicesProviders_Purge
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders Purge. */
 public final class ReplicationRecoveryServicesProvidersPurgeSamples {
     /*
@@ -3774,7 +3674,12 @@ public final class ReplicationRecoveryServicesProvidersPurgeSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationRecoveryServicesProviders()
-            .purge("vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", Context.NONE);
+            .purge(
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "241641e6-ee7b-4ee4-8141-821fadda43fa",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3782,8 +3687,6 @@ public final class ReplicationRecoveryServicesProvidersPurgeSamples {
 ### ReplicationRecoveryServicesProviders_RefreshProvider
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders RefreshProvider. */
 public final class ReplicationRecoveryServicesProvidersRefreshProv {
     /*
@@ -3799,7 +3702,11 @@ public final class ReplicationRecoveryServicesProvidersRefreshProv {
         manager
             .replicationRecoveryServicesProviders()
             .refreshProvider(
-                "vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", Context.NONE);
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "241641e6-ee7b-4ee4-8141-821fadda43fa",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3807,8 +3714,6 @@ public final class ReplicationRecoveryServicesProvidersRefreshProv {
 ### ReplicationVaultHealth_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationVaultHealth Get. */
 public final class ReplicationVaultHealthGetSamples {
     /*
@@ -3821,7 +3726,9 @@ public final class ReplicationVaultHealthGetSamples {
      */
     public static void getsTheHealthSummaryForTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultHealths().getWithResponse("vault1", "resourceGroupPS1", Context.NONE);
+        manager
+            .replicationVaultHealths()
+            .getWithResponse("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3829,8 +3736,6 @@ public final class ReplicationVaultHealthGetSamples {
 ### ReplicationVaultHealth_Refresh
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationVaultHealth Refresh. */
 public final class ReplicationVaultHealthRefreshSamples {
     /*
@@ -3843,7 +3748,7 @@ public final class ReplicationVaultHealthRefreshSamples {
      */
     public static void refreshesHealthSummaryOfTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultHealths().refresh("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationVaultHealths().refresh("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3882,8 +3787,6 @@ public final class ReplicationVaultSettingCreateSamples {
 ### ReplicationVaultSetting_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationVaultSetting Get. */
 public final class ReplicationVaultSettingGetSamples {
     /*
@@ -3896,7 +3799,9 @@ public final class ReplicationVaultSettingGetSamples {
      */
     public static void getsTheVaultSetting(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultSettings().getWithResponse("vault1", "resourceGroupPS1", "default", Context.NONE);
+        manager
+            .replicationVaultSettings()
+            .getWithResponse("vault1", "resourceGroupPS1", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3904,8 +3809,6 @@ public final class ReplicationVaultSettingGetSamples {
 ### ReplicationVaultSetting_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationVaultSetting List. */
 public final class ReplicationVaultSettingListSamples {
     /*
@@ -3918,7 +3821,7 @@ public final class ReplicationVaultSettingListSamples {
      */
     public static void getsTheListOfVaultSetting(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationVaultSettings().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationVaultSettings().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3958,8 +3861,6 @@ public final class ReplicationvCentersCreateSamples {
 ### ReplicationvCenters_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationvCenters Delete. */
 public final class ReplicationvCentersDeleteSamples {
     /*
@@ -3972,7 +3873,9 @@ public final class ReplicationvCentersDeleteSamples {
      */
     public static void removeVCenterOperation(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationvCenters().delete("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", Context.NONE);
+        manager
+            .replicationvCenters()
+            .delete("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3980,8 +3883,6 @@ public final class ReplicationvCentersDeleteSamples {
 ### ReplicationvCenters_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationvCenters Get. */
 public final class ReplicationvCentersGetSamples {
     /*
@@ -3996,7 +3897,7 @@ public final class ReplicationvCentersGetSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationvCenters()
-            .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", Context.NONE);
+            .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4004,8 +3905,6 @@ public final class ReplicationvCentersGetSamples {
 ### ReplicationvCenters_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationvCenters List. */
 public final class ReplicationvCentersListSamples {
     /*
@@ -4018,7 +3917,7 @@ public final class ReplicationvCentersListSamples {
      */
     public static void getsTheListOfVCenterRegisteredUnderTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationvCenters().list("MadhaviVault", "MadhaviVRG", Context.NONE);
+        manager.replicationvCenters().list("MadhaviVault", "MadhaviVRG", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4026,8 +3925,6 @@ public final class ReplicationvCentersListSamples {
 ### ReplicationvCenters_ListByReplicationFabrics
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationvCenters ListByReplicationFabrics. */
 public final class ReplicationvCentersListByReplicationFabricsSamp {
     /*
@@ -4042,7 +3939,7 @@ public final class ReplicationvCentersListByReplicationFabricsSamp {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationvCenters()
-            .listByReplicationFabrics("MadhaviVault", "MadhaviVRG", "MadhaviFabric", Context.NONE);
+            .listByReplicationFabrics("MadhaviVault", "MadhaviVRG", "MadhaviFabric", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4050,7 +3947,6 @@ public final class ReplicationvCentersListByReplicationFabricsSamp {
 ### ReplicationvCenters_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateVCenterRequestProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VCenter;
 
@@ -4069,7 +3965,8 @@ public final class ReplicationvCentersUpdateSamples {
         VCenter resource =
             manager
                 .replicationvCenters()
-                .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", Context.NONE)
+                .getWithResponse(
+                    "MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withProperties(new UpdateVCenterRequestProperties().withIpAddress("10.150.109.25")).apply();
     }
@@ -4113,8 +4010,6 @@ public final class StorageClassificationMappingsCreateSamples {
 ### StorageClassificationMappings_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassificationMappings Delete. */
 public final class StorageClassificationMappingsDeleteSamples {
     /*
@@ -4135,7 +4030,7 @@ public final class StorageClassificationMappingsDeleteSamples {
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
                 "8891569e-aaef-4a46-a4a0-78c14f2d7b09",
                 "testStorageMapping",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4143,8 +4038,6 @@ public final class StorageClassificationMappingsDeleteSamples {
 ### StorageClassificationMappings_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassificationMappings Get. */
 public final class StorageClassificationMappingsGetSamples {
     /*
@@ -4165,7 +4058,7 @@ public final class StorageClassificationMappingsGetSamples {
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
                 "8891569e-aaef-4a46-a4a0-78c14f2d7b09",
                 "testStorageMapping",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4173,8 +4066,6 @@ public final class StorageClassificationMappingsGetSamples {
 ### StorageClassificationMappings_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassificationMappings List. */
 public final class StorageClassificationMappingsListSamples {
     /*
@@ -4187,7 +4078,7 @@ public final class StorageClassificationMappingsListSamples {
      */
     public static void getsTheListOfStorageClassificationMappingsObjectsUnderAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.storageClassificationMappings().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.storageClassificationMappings().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4195,8 +4086,6 @@ public final class StorageClassificationMappingsListSamples {
 ### StorageClassificationMappings_ListByReplicationStorageClassifications
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassificationMappings ListByReplicationStorageClassifications. */
 public final class StorageClassificationMappingsListByReplicationS {
     /*
@@ -4216,7 +4105,7 @@ public final class StorageClassificationMappingsListByReplicationS {
                 "resourceGroupPS1",
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
                 "8891569e-aaef-4a46-a4a0-78c14f2d7b09",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4224,8 +4113,6 @@ public final class StorageClassificationMappingsListByReplicationS {
 ### StorageClassifications_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassifications Get. */
 public final class StorageClassificationsGetSamples {
     /*
@@ -4245,7 +4132,7 @@ public final class StorageClassificationsGetSamples {
                 "resourceGroupPS1",
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
                 "8891569e-aaef-4a46-a4a0-78c14f2d7b09",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4253,8 +4140,6 @@ public final class StorageClassificationsGetSamples {
 ### StorageClassifications_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassifications List. */
 public final class StorageClassificationsListSamples {
     /*
@@ -4267,7 +4152,7 @@ public final class StorageClassificationsListSamples {
      */
     public static void getsTheListOfStorageClassificationObjectsUnderAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.storageClassifications().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.storageClassifications().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4275,8 +4160,6 @@ public final class StorageClassificationsListSamples {
 ### StorageClassifications_ListByReplicationFabrics
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassifications ListByReplicationFabrics. */
 public final class StorageClassificationsListByReplicationFabricsS {
     /*
@@ -4295,7 +4178,7 @@ public final class StorageClassificationsListByReplicationFabricsS {
                 "vault1",
                 "resourceGroupPS1",
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4303,8 +4186,6 @@ public final class StorageClassificationsListByReplicationFabricsS {
 ### SupportedOperatingSystemsOperation_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SupportedOperatingSystemsOperation Get. */
 public final class SupportedOperatingSystemsOperationGetSamples {
     /*
@@ -4317,7 +4198,9 @@ public final class SupportedOperatingSystemsOperationGetSamples {
      */
     public static void getsTheDataOfSupportedOperatingSystemsBySRS(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.supportedOperatingSystemsOperations().getWithResponse("vault1", "resourceGroupPS1", null, Context.NONE);
+        manager
+            .supportedOperatingSystemsOperations()
+            .getWithResponse("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4325,8 +4208,6 @@ public final class SupportedOperatingSystemsOperationGetSamples {
 ### TargetComputeSizes_ListByReplicationProtectedItems
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for TargetComputeSizes ListByReplicationProtectedItems. */
 public final class TargetComputeSizesListByReplicationProtectedIte {
     /*
@@ -4347,7 +4228,7 @@ public final class TargetComputeSizesListByReplicationProtectedIte {
                 "asr-a2a-default-centraluseuap",
                 "asr-a2a-default-centraluseuap-container",
                 "468c912d-b1ab-4ea2-97eb-4b5095155db2",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

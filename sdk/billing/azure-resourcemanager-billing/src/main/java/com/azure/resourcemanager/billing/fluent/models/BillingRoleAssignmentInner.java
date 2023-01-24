@@ -6,20 +6,20 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The role assignment. */
 @Fluent
 public final class BillingRoleAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingRoleAssignmentInner.class);
-
     /*
      * The properties of the role assignment.
      */
     @JsonProperty(value = "properties")
     private BillingRoleAssignmentProperties innerProperties;
+
+    /** Creates an instance of BillingRoleAssignmentInner class. */
+    public BillingRoleAssignmentInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the role assignment.

@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration Assignment. */
-@JsonFlatten
 @Fluent
-public class ConfigurationAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationAssignmentInner.class);
-
+public final class ConfigurationAssignmentInner extends ProxyResource {
     /*
      * Location of the resource
      */
@@ -25,23 +19,20 @@ public class ConfigurationAssignmentInner extends ProxyResource {
     private String location;
 
     /*
-     * The maintenance configuration Id
+     * Properties of the configuration assignment
      */
-    @JsonProperty(value = "properties.maintenanceConfigurationId")
-    private String maintenanceConfigurationId;
+    @JsonProperty(value = "properties")
+    private ConfigurationAssignmentProperties innerProperties;
 
     /*
-     * The unique resourceId
-     */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ConfigurationAssignmentInner class. */
+    public ConfigurationAssignmentInner() {
+    }
 
     /**
      * Get the location property: Location of the resource.
@@ -64,43 +55,12 @@ public class ConfigurationAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the maintenanceConfigurationId property: The maintenance configuration Id.
+     * Get the innerProperties property: Properties of the configuration assignment.
      *
-     * @return the maintenanceConfigurationId value.
+     * @return the innerProperties value.
      */
-    public String maintenanceConfigurationId() {
-        return this.maintenanceConfigurationId;
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: The maintenance configuration Id.
-     *
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the ConfigurationAssignmentInner object itself.
-     */
-    public ConfigurationAssignmentInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        this.maintenanceConfigurationId = maintenanceConfigurationId;
-        return this;
-    }
-
-    /**
-     * Get the resourceId property: The unique resourceId.
-     *
-     * @return the resourceId value.
-     */
-    public String resourceId() {
-        return this.resourceId;
-    }
-
-    /**
-     * Set the resourceId property: The unique resourceId.
-     *
-     * @param resourceId the resourceId value to set.
-     * @return the ConfigurationAssignmentInner object itself.
-     */
-    public ConfigurationAssignmentInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
-        return this;
+    private ConfigurationAssignmentProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -113,10 +73,59 @@ public class ConfigurationAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the maintenanceConfigurationId property: The maintenance configuration Id.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: The maintenance configuration Id.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ConfigurationAssignmentInner object itself.
+     */
+    public ConfigurationAssignmentInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationAssignmentProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the resourceId property: The unique resourceId.
+     *
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
+    }
+
+    /**
+     * Set the resourceId property: The unique resourceId.
+     *
+     * @param resourceId the resourceId value to set.
+     * @return the ConfigurationAssignmentInner object itself.
+     */
+    public ConfigurationAssignmentInner withResourceId(String resourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationAssignmentProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
