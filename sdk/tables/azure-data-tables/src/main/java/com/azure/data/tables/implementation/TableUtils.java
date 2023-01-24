@@ -97,12 +97,13 @@ public final class TableUtils {
     public static Throwable mapThrowableToTableServiceException(Throwable throwable) {
         if (throwable instanceof TableServiceErrorException) {
             return toTableServiceException((TableServiceErrorException) throwable);
-        } else if (throwable.getCause() instanceof TableServiceErrorException) {
-            return toTableServiceException((TableServiceErrorException) throwable.getCause());
+        } else if (throwable.getCause() instanceof Exception) {
+            Throwable cause = throwable.getCause();
+            if (cause instanceof TableServiceErrorException) {
+                return toTableServiceException((TableServiceErrorException) cause);
+            }
         }
-        else {
-            return throwable;
-        }
+        return throwable;
     }
 
     /**
@@ -182,6 +183,10 @@ public final class TableUtils {
 
     private static Context enableSyncRestProxy(Context context) {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+
+    public static Long setTimeout(Duration timeout) {
+        return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
     }
 
     /**

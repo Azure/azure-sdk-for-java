@@ -248,7 +248,7 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableWithResponse(tableName, context);
         Future<Response<TableClient>> future = scheduler.submit(callable);
         scheduler.shutdown();
@@ -322,7 +322,7 @@ public final class TableServiceClient {
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
         Future<Response<TableClient>> future = scheduler.submit(callable);
         scheduler.shutdown();
@@ -345,7 +345,7 @@ public final class TableServiceClient {
                 response.getHeaders(), null);
             }
 
-            throw logger.logThrowableAsError(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -404,7 +404,7 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Future<Response<Void>> future =
             scheduler.submit(() -> deleteTableWithResponse(tableName, context));
         scheduler.shutdown();
@@ -419,7 +419,7 @@ public final class TableServiceClient {
                     httpResponse.getHeaders(), null);
             }
 
-            throw logger.logExceptionAsError((RuntimeException) exception);
+            throw logger.logExceptionAsError(new RuntimeException(exception));
         }
     }
 
@@ -483,7 +483,7 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Future<PagedIterable<TableItem>> future = scheduler.submit(() -> listTables(options, context));
         scheduler.shutdown();
         try {
@@ -631,7 +631,7 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Future<Response<TableServiceProperties>> future = scheduler.submit(() -> getPropertiesWithResponse(context));
         scheduler.shutdown();
         try {
@@ -791,7 +791,7 @@ public final class TableServiceClient {
                                                     Context context) {
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Future<Response<Void>> future = scheduler.submit(() -> setPropertiesWithResponse(tableServiceProperties, context));
         scheduler.shutdown();
         try {
@@ -925,7 +925,7 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Future<Response<TableServiceStatistics>> future = scheduler.submit(() -> getStatisticsWithResponse(context));
         scheduler.shutdown();
         try {
@@ -960,12 +960,5 @@ public final class TableServiceClient {
         return new TableServiceGeoReplication(
             TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
             geoReplication.getLastSyncTime());
-    }
-    private Long setTimeout(Duration timeout) {
-        return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
-    }
-
-    private Context enableSyncRestProxy(Context context) {
-        return context.addData("HTTP_REST_PROXY_SYNC_PROXY_ENABLE", true);
     }
 }

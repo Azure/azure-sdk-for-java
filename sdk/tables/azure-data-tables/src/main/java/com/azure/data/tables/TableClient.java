@@ -238,12 +238,6 @@ public final class TableClient {
         return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential).getSas();
     }
 
-
-
-    private Long setTimeout(Duration timeout) {
-        return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
-    }
-
     /**
      * Creates the table within the Tables service.
      *
@@ -294,7 +288,7 @@ public final class TableClient {
         Context contextValue = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableItem>> createTableOp = () ->
             new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
             null,
@@ -361,7 +355,7 @@ public final class TableClient {
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
 
         Callable<Response<Void>> deleteTableOp = () ->
             new SimpleResponse<>(tablesImplementation.getTables().deleteWithResponse(
@@ -462,7 +456,7 @@ public final class TableClient {
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -566,7 +560,7 @@ public final class TableClient {
                                                    Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -724,7 +718,7 @@ public final class TableClient {
                                                    boolean ifUnchanged, Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -862,7 +856,7 @@ public final class TableClient {
                                             Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
 
         String finalETag = ifUnchanged ? eTag : "*";
 
@@ -960,7 +954,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
 
         Callable<PagedIterable<TableEntity>> listEntitiesOp = () -> new PagedIterable<>(
             () -> listEntitiesFirstPage(context, options, TableEntity.class),
@@ -1174,7 +1168,7 @@ public final class TableClient {
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
                                                        Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         QueryOptions queryOptions = new QueryOptions()
@@ -1285,7 +1279,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         Callable<Response<TableAccessPolicies>> getAccessPoliciesOp = () -> {
@@ -1411,7 +1405,7 @@ public final class TableClient {
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                         Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
         List<SignedIdentifier> signedIdentifiers = null;
 
@@ -1666,7 +1660,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        long timeoutInMillis = setTimeout(timeout);
+        long timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         if (transactionActions.isEmpty()) {
@@ -1742,15 +1736,18 @@ public final class TableClient {
         }
         catch (Exception ex) {
             Exception exception = ex;
-            if (exception instanceof ExecutionException) {
-                exception = (Exception) exception.getCause();
+            if (exception instanceof ExecutionException
+            && exception.getCause() instanceof Exception) {
+                Throwable cause = exception.getCause();
+                exception = new Exception(cause);
             }
-            if (exception.getCause() instanceof TableTransactionFailedException) {
-                throw logger.logExceptionAsError((TableTransactionFailedException) exception.getCause());
+            Throwable cause = exception.getCause();
+            if (cause instanceof TableTransactionFailedException) {
+                TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
+                throw logger.logExceptionAsError(failedException);
             } else {
                 throw logger.logExceptionAsError((RuntimeException) (mapThrowableToTableServiceException(exception)));
             }
-
         }
     }
 
