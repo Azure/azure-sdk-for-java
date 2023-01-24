@@ -15,6 +15,7 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -39,12 +40,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -148,6 +151,60 @@ public class ThroughputControlTests extends TestSuiteBase {
             this.validateRequestThrottled(
                 cosmosDiagnostics.toString(),
                 BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+        } finally {
+            controlContainer
+                .delete()
+                .block();
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void throughputGlobalControlWithThroughputQuery() {
+        String controlContainerId = "throughputControlContainer";
+        CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
+        database
+            .createContainerIfNotExists(
+                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
+            .block();
+
+        try {
+            // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+            ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName("group-" + UUID.randomUUID())
+                    .targetThroughput(6)
+                    .build();
+
+            GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
+                .setControlItemRenewInterval(Duration.ofSeconds(5))
+                .setControlItemExpireInterval(Duration.ofSeconds(20))
+                .build();
+
+            AtomicInteger throughputQueryMonoCalledCount = new AtomicInteger(0);
+            Mono<Integer> throughputQueryMono =
+                Mono.just(6).doOnSuccess(throughput -> throughputQueryMonoCalledCount.incrementAndGet());
+            ImplementationBridgeHelpers
+                .CosmosAsyncContainerHelper
+                .getCosmosAsyncContainerAccessor()
+                .enableGlobalThroughputControlGroup(container, groupConfig, globalControlConfig, throughputQueryMono);
+
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setContentResponseOnWriteEnabled(true);
+            requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+            CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+            TestItem createdItem = createItemResponse.getItem();
+            this.validateRequestNotThrottled(
+                createItemResponse.getDiagnostics().toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            // second request to same group. which will get throttled
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, OperationType.Create, createdItem, groupConfig.getGroupName());
+            this.validateRequestThrottled(
+                cosmosDiagnostics.toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            assertThat(throughputQueryMonoCalledCount.get()).isEqualTo(1);
         } finally {
             controlContainer
                 .delete()

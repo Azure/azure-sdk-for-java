@@ -24,7 +24,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
+case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
                                                            databaseAccountName: String,
                                                            cosmosManager: CosmosManager,
                                                            cosmosAsyncClient: CosmosAsyncClient)
@@ -152,29 +152,26 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
 
     override def readContainerMetadata(databaseName: String, containerName: String): SMono[Option[util.HashMap[String, String]]] =
     {
-        SFlux
-            .zip3(
-                sqlResourcesClient
-                    .getSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
-                    .asScala,
-                ContainerFeedRangesCache
-                    .getFeedRanges(cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)),
-                readContainerThroughputProperties(databaseName, containerName)
-                    .map(Some(_))
-                    .onErrorResume((throwable: Throwable) => {
-                        if (ManagementExceptions.isBadRequestException(throwable)) {
-                            SMono.just(None) // Serverless database account
-                        } else {
-                            SMono.error(throwable)
-                        }
-                    }))
-            .single()
-            .map(result => {
-                val metaResultOpt = Some((result._1.resource(), result._2, result._3))
-                metaResultOpt match {
-                    case Some(metaDataResult) => Some(generateTblProperties(metaDataResult))
-                    case _ => None
-                }
+        sqlResourcesClient
+            .getSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
+            .asScala
+            .flatMap(containerResultInner => {
+                SFlux.zip(
+                    ContainerFeedRangesCache.getFeedRanges(cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)),
+                    readContainerThroughputProperties(databaseName, containerName)
+                        .map(Some(_))
+                        .onErrorResume((throwable: Throwable) => {
+                            if (ManagementExceptions.isBadRequestException(throwable)) {
+                                SMono.just(None) // Serverless database account
+                            } else {
+                                SMono.error(throwable)
+                            }
+                        }))
+                    .single()
+                    .map(result => {
+                        val metaResult = (containerResultInner.resource(), result._1, result._2)
+                        Some(generateTblProperties(metaResult))
+                    })
             })
             .onErrorResume((throwable: Throwable) => {
                 if (ManagementExceptions.isNotFoundException(throwable)) {

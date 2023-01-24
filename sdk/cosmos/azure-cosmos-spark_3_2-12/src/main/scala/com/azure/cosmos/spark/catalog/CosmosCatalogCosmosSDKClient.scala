@@ -20,8 +20,7 @@ import java.util.Collections
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-// TODO: what is the difference of case class and class
-private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
+case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
     extends CosmosCatalogClient
     with BasicLoggingTrait {
 
@@ -213,26 +212,27 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
     override def readContainerMetadata(databaseName: String, containerName: String): SMono[Option[util.HashMap[String, String]]] = {
         val container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)
 
-        SFlux
-            .zip3(
-                container.read().asScala,
-                ContainerFeedRangesCache.getFeedRanges(container),
-                readContainerThroughputProperties(databaseName, containerName)
-                    .map(Some(_))
-                    .onErrorResume((throwable: Throwable) => {
-                        if (Exceptions.isBadRequestException(throwable)) {
-                            SMono.just(None) // Serverless database account
-                        } else {
-                            SMono.error(throwable)
-                        }
-                    }))
-            .single()
-            .map(result => {
-                val metaResultOpt = Some((result._1.getProperties, result._2, result._3))
-                metaResultOpt match {
-                    case Some(metaDataResult) => Some(generateTblProperties(metaDataResult))
-                    case _ => None
-                }
+        container.read()
+            .asScala
+            .flatMap(containerResponse => {
+                SFlux
+                    .zip(
+                        ContainerFeedRangesCache.getFeedRanges(container),
+                        readContainerThroughputProperties(databaseName, containerName)
+                            .map(Some(_))
+                            .onErrorResume((throwable: Throwable) => {
+                                if (Exceptions.isBadRequestException(throwable)) {
+                                    SMono.just(None) // Serverless database account
+                                } else {
+                                    SMono.error(throwable)
+                                }
+                            })
+                    )
+                    .single()
+                    .map(result => {
+                        val metaResult = (containerResponse.getProperties, result._1, result._2)
+                        Some(generateTblProperties(metaResult))
+                    })
             })
             .onErrorResume((throwable: Throwable) => {
                 if (Exceptions.isNotFoundException(throwable)) {
