@@ -239,9 +239,6 @@ public final class TableClient {
     }
 
 
-    private Context setContext(Context context) {
-        return context == null ? Context.NONE : context;
-    }
 
     private Long setTimeout(Duration timeout) {
         return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
@@ -294,7 +291,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
@@ -362,7 +359,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
@@ -463,7 +460,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
@@ -567,7 +564,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    Duration timeout, Context context) {
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
@@ -725,7 +722,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    boolean ifUnchanged, Duration timeout, Context context) {
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
@@ -863,7 +860,7 @@ public final class TableClient {
 
     private Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                             Duration timeout, Context context) {
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
 
@@ -1010,7 +1007,7 @@ public final class TableClient {
     private <T extends TableEntity> PagedResponse<T> listEntities(String nextPartitionKey, String nextRowKey,
                                                                   Context context, ListEntitiesOptions options,
                                                                   Class<T> resultType) {
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         String select = null;
 
         if (options.getSelect() != null) {
@@ -1178,7 +1175,7 @@ public final class TableClient {
                                                        Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
 
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
@@ -1218,7 +1215,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -1289,7 +1286,7 @@ public final class TableClient {
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
 
         Callable<Response<TableAccessPolicies>> getAccessPoliciesOp = () -> {
             ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> response =
@@ -1309,7 +1306,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -1415,7 +1412,7 @@ public final class TableClient {
                                                         Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
         List<SignedIdentifier> signedIdentifiers = null;
 
         if (tableSignedIdentifiers != null) {
@@ -1461,7 +1458,7 @@ public final class TableClient {
         try {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            throw logger.logExceptionAsError((RuntimeException)(TableUtils.mapThrowableToTableServiceException(ex)));
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
     }
 
@@ -1670,7 +1667,7 @@ public final class TableClient {
     public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         long timeoutInMillis = setTimeout(timeout);
-        Context contextValue = setContext(context);
+        Context contextValue = TableUtils.setContext(context, true);
 
         if (transactionActions.isEmpty()) {
             throw logger.logExceptionAsError(
@@ -1751,7 +1748,7 @@ public final class TableClient {
             if (exception.getCause() instanceof TableTransactionFailedException) {
                 throw logger.logExceptionAsError((TableTransactionFailedException) exception.getCause());
             } else {
-                throw logger.logExceptionAsError((RuntimeException)(mapThrowableToTableServiceException(exception)));
+                throw logger.logExceptionAsError((RuntimeException) (mapThrowableToTableServiceException(exception)));
             }
 
         }
@@ -1761,7 +1758,7 @@ public final class TableClient {
         private final HttpRequest request;
         private final TransactionalBatchAction action;
 
-        public RequestActionPair(HttpRequest request, TransactionalBatchAction action) {
+        RequestActionPair(HttpRequest request, TransactionalBatchAction action) {
             this.request = request;
             this.action = action;
         }

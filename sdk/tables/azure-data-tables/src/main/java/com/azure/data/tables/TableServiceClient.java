@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -260,7 +261,7 @@ public final class TableServiceClient {
     }
 
     Response<TableClient> createTableWithResponse(String tableName, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         return new SimpleResponse<>(implementation.getTables()
@@ -424,7 +425,7 @@ public final class TableServiceClient {
     }
 
     Response<Void> deleteTableWithResponse(String tableName, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context, true);
         return new SimpleResponse<>(
             implementation.getTables().deleteWithResponse(tableName, null, context), null);
     }
@@ -509,7 +510,7 @@ public final class TableServiceClient {
     }
 
     private PagedResponse<TableItem> listTables(String nextTableName, Context context, ListTablesOptions options) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context, true);
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
@@ -642,7 +643,7 @@ public final class TableServiceClient {
     }
 
     Response<TableServiceProperties> getPropertiesWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context, true);
         Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
             this.implementation.getServices().getPropertiesWithResponse(null, null, context);
         return new SimpleResponse<>(response, toTableServiceProperties(response.getValue()));
@@ -802,7 +803,7 @@ public final class TableServiceClient {
     }
 
     Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context, true);
         return new SimpleResponse<>(this.implementation.getServices()
             .setPropertiesWithResponse(toImplTableServiceProperties(tableServiceProperties), null,
                 null, context), null);
@@ -937,7 +938,7 @@ public final class TableServiceClient {
 
 
     Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context, true);
         Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
             null, null, context);
         return new SimpleResponse<>(response, toTableServiceStatistics(response.getValue()));
@@ -963,5 +964,9 @@ public final class TableServiceClient {
     }
     private Long setTimeout(Duration timeout) {
         return timeout != null ? timeout.toMillis() : Duration.ofDays(1).toMillis();
+    }
+
+    private Context enableSyncRestProxy(Context context) {
+        return context.addData("HTTP_REST_PROXY_SYNC_PROXY_ENABLE", true);
     }
 }

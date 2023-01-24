@@ -265,7 +265,7 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<TableAsyncClient>> createTableWithResponse(String tableName, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
@@ -399,7 +399,7 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteTableWithResponse(String tableName, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
@@ -488,7 +488,7 @@ public final class TableServiceAsyncClient {
 
     private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context,
                                                       ListTablesOptions options) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
@@ -618,7 +618,7 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<TableServiceProperties>> getPropertiesWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         try {
             return this.implementation.getServices().getPropertiesWithResponseAsync(null, null, context)
@@ -774,7 +774,7 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         try {
             return
@@ -904,7 +904,7 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<TableServiceStatistics>> getStatisticsWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = TableUtils.setContext(context);
 
         try {
             return this.implementation.getServices().getStatisticsWithResponseAsync(null, null, context)
