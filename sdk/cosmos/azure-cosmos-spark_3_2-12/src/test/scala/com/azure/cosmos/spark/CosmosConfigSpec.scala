@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.Increment
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import org.apache.spark.sql.types.{NumericType, StructType}
@@ -17,6 +18,11 @@ class CosmosConfigSpec extends UnitSpec {
 
   private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
   private val defaultPatchOperationType = CosmosPatchOperationTypes.Replace
+  private val testAadAuthClientId = UUID.randomUUID().toString
+  private val testAadAuthTenantId = UUID.randomUUID().toString
+  private val testAadAuthSubscriptionId = UUID.randomUUID().toString
+  private val testAadAuthResourceGroupName = "test-resourceGroup"
+  private val testAadAuthClientSecret = "test-secret"
 
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
@@ -37,7 +43,63 @@ class CosmosConfigSpec extends UnitSpec {
     endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("west us", "eastus1")
   }
 
-  "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions" in {
+  "Config Parser" should "parse default account AAD authentication credentials" in {
+      val userConfig = Map(
+          "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+          "spark.cosmos.auth.type" -> "ServicePrinciple",
+          "spark.cosmos.auth.aad.subscriptionId" -> testAadAuthSubscriptionId,
+          "spark.cosmos.auth.aad.tenantId" -> testAadAuthTenantId,
+          "spark.cosmos.auth.aad.resourceGroupName" -> testAadAuthResourceGroupName,
+          "spark.cosmos.auth.aad.clientId" -> testAadAuthClientId,
+          "spark.cosmos.auth.aad.clientSecret" -> testAadAuthClientSecret
+      )
+
+      val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+      endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+      val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+      aadAuthConfig.subscriptionId shouldEqual testAadAuthSubscriptionId
+      aadAuthConfig.tenantId shouldEqual testAadAuthTenantId
+      aadAuthConfig.resourceGroupName shouldEqual testAadAuthResourceGroupName
+      aadAuthConfig.clientId shouldEqual testAadAuthClientId
+      aadAuthConfig.clientSecret shouldEqual testAadAuthClientSecret
+      aadAuthConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE
+      aadAuthConfig.authorityHost shouldEqual "https://login.microsoftonline.com"
+      aadAuthConfig.databaseAccountName shouldEqual "boson-test"
+  }
+
+  "Config Parser" should "parse account AAD authentication credentials" in {
+      val testAuthorityHost = "https://login-test.microsoftonline.com"
+
+      val userConfig = Map(
+          "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+          "spark.cosmos.auth.type" -> "ServicePrinciple",
+          "spark.cosmos.auth.aad.subscriptionId" -> testAadAuthSubscriptionId,
+          "spark.cosmos.auth.aad.tenantId" -> testAadAuthTenantId,
+          "spark.cosmos.auth.aad.resourceGroupName" -> testAadAuthResourceGroupName,
+          "spark.cosmos.auth.aad.clientId" -> testAadAuthClientId,
+          "spark.cosmos.auth.aad.clientSecret" -> testAadAuthClientSecret,
+          "spark.cosmos.auth.aad.authorityHost" -> testAuthorityHost,
+          "spark.cosmos.auth.aad.azureEnvironment" -> "AzureUsGovernment"
+      )
+
+      val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+      endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+      val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+      aadAuthConfig.subscriptionId shouldEqual testAadAuthSubscriptionId
+      aadAuthConfig.tenantId shouldEqual testAadAuthTenantId
+      aadAuthConfig.resourceGroupName shouldEqual testAadAuthResourceGroupName
+      aadAuthConfig.clientId shouldEqual testAadAuthClientId
+      aadAuthConfig.clientSecret shouldEqual testAadAuthClientSecret
+      aadAuthConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT
+      aadAuthConfig.authorityHost shouldEqual testAuthorityHost
+      aadAuthConfig.databaseAccountName shouldEqual "boson-test"
+  }
+
+    "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",

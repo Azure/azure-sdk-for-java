@@ -44,6 +44,8 @@ private object ThroughputControlHelper {
                 globalThroughputControlConfigBuilder.setControlItemExpireInterval(throughputControlConfig.globalControlExpireInterval.get)
             }
 
+            // Currently CosmosDB data plane SDK does not support query database/container throughput by using AAD authentication
+            // As a mitigation we are going to pass a throughput query mono which internally use management SDK to query throughput
             val throughputQueryMonoOpt = getThroughputQueryMono(cacheItem, cosmosContainerConfig, throughputControlConfig)
             throughputQueryMonoOpt match {
                 case Some(throughputQueryMono) =>

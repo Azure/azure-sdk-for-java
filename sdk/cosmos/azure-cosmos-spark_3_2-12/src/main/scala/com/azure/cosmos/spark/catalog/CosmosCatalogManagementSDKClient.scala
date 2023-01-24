@@ -4,11 +4,13 @@
 package com.azure.cosmos.spark.catalog
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.FeedRange
+import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource}
+import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.ObjectMapper
+import reactor.core.publisher.Mono
 import reactor.core.scala.publisher.SMono.{PimpJFlux, PimpJMono}
 import reactor.core.scala.publisher.{SFlux, SMono}
 
@@ -16,105 +18,101 @@ import java.time.format.DateTimeFormatter
 import java.time.{Instant, ZoneOffset, ZonedDateTime}
 import java.util
 import java.util.Collections
+import scala.collection.mutable.ListBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-// TODO: figure out the error handling
 private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
                                                            databaseAccountName: String,
                                                            cosmosManager: CosmosManager,
                                                            cosmosAsyncClient: CosmosAsyncClient)
-  extends CosmosCatalogClient {
+    extends CosmosCatalogClient {
 
-  val objectMapper: ObjectMapper = new ObjectMapper()
-  val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
+    private val objectMapper: ObjectMapper = new ObjectMapper()
+    objectMapper.setSerializationInclusion(Include.NON_NULL)
 
-  override def close(): Unit = {}
+    private val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
 
-  override def readAllDatabases(): SFlux[String] = {
-      sqlResourcesClient
-          .listSqlDatabasesAsync(resourceGroupName, databaseAccountName)
-          .asScala
-          .map(resultsInner => resultsInner.id())
-  }
+    override def close(): Unit = {}
 
-  override def readDatabase(databaseName: String): SMono[Unit] = {
-    sqlResourcesClient
-      .getSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName)
-      .asScala
-      .`then`()
-  }
+    override def readAllDatabases(): SFlux[String] = {
+        sqlResourcesClient
+            .listSqlDatabasesAsync(resourceGroupName, databaseAccountName)
+            .asScala
+            .map(resultsInner => resultsInner.id())
+    }
 
-  override def createDatabase(databaseName: String, metaData: Map[String, String]): SMono[Unit] = {
-    sqlResourcesClient
-        .getSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName)
-        .asScala
-        .flatMap(_ => {
-            SMono.error(new CosmosCatalogConflictException(s"Database $databaseName already exists"))
-        })
-        .onErrorResume((throwable: Throwable) => {
-            if (ManagementExceptions.isNotFoundException(throwable)) {
-                val createUpdateOptions = new CreateUpdateOptions()
+    override def readDatabase(databaseName: String): SMono[Unit] = {
+        sqlResourcesClient
+            .getSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName)
+            .asScala
+            .`then`()
+    }
 
-                CosmosThroughputProperties.getManualThroughput(metaData) match {
-                    case Some(throughput) => createUpdateOptions.withThroughput(throughput)
-                    case None =>
-                        CosmosThroughputProperties.getAutoScaleMaxThroughput(metaData) match {
-                            case Some(autoScaleMaxThroughput) =>
-                                createUpdateOptions.withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(autoScaleMaxThroughput))
-                            case None =>
-                        }
+    override def createDatabase(databaseName: String, metaData: Map[String, String]): SMono[Unit] = {
+        sqlResourcesClient
+            .getSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName)
+            .asScala
+            .flatMap(_ => {
+                SMono.error(new CosmosCatalogConflictException(s"Database $databaseName already exists"))
+            })
+            .onErrorResume((throwable: Throwable) => {
+                if (ManagementExceptions.isNotFoundException(throwable)) {
+                    sqlResourcesClient.createUpdateSqlDatabaseAsync(
+                        resourceGroupName,
+                        databaseAccountName,
+                        databaseName,
+                        new SqlDatabaseCreateUpdateParameters()
+                            .withResource(new SqlDatabaseResource().withId(databaseName))
+                            .withOptions(getThroughputCreateUpdateOption(metaData))
+                    ).asScala
+                } else {
+                    SMono.error(throwable)
                 }
-
-                sqlResourcesClient.createUpdateSqlDatabaseAsync(
-                    resourceGroupName,
-                    databaseAccountName,
-                    databaseName,
-                    new SqlDatabaseCreateUpdateParameters()
-                        .withResource(new SqlDatabaseResource().withId(databaseName))
-                        .withOptions(createUpdateOptions)
-                ).asScala
-            } else {
-                SMono.error(throwable)
-            }
-        }).`then`()
-  }
-
-  override def deleteDatabase(databaseName: String): SMono[Unit] =
-    sqlResourcesClient.deleteSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName).asScala.`then`()
-
-  override def readAllContainers(databaseName: String): SFlux[String] = {
-    sqlResourcesClient.listSqlContainersAsync(resourceGroupName, databaseAccountName, databaseName)
-        .asScala
-        .map(_.id())
-  }
-
-  override def createContainer(
-                                databaseName: String,
-                                containerName: String,
-                                containerProperties: Map[String, String]): SMono[Unit] = {
-
-    val sqlContainerResource = new SqlContainerResource()
-    sqlContainerResource.withId(containerName)
-    sqlContainerResource.withPartitionKey(getPartitionKeyDefinition(containerProperties))
-    sqlContainerResource.withIndexingPolicy(getIndexingPolicy(containerProperties))
-
-    // setup ttl
-    CosmosContainerProperties.getDefaultTtlInSeconds(containerProperties) match {
-      case Some(ttl) => sqlContainerResource.withDefaultTtl(ttl)
-      case None =>
+            }).`then`()
     }
 
-    //setup analytical store ttl
-    CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
-      case Some(ttl) => sqlContainerResource.withAnalyticalStorageTtl(ttl)
-      case None =>
+    override def deleteDatabase(databaseName: String): SMono[Unit] =
+        sqlResourcesClient.deleteSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName).asScala.`then`()
+
+    override def readAllContainers(databaseName: String): SFlux[String] = {
+        sqlResourcesClient.listSqlContainersAsync(resourceGroupName, databaseAccountName, databaseName)
+            .onErrorResume(throwable => {
+                if (ManagementExceptions.isNotFoundException(throwable)) {
+                    Mono.error(new CosmosCatalogNotFoundException(throwable.toString))
+                } else {
+                    Mono.error(throwable)
+                }
+            })
+            .asScala
+            .map(_.id())
+
     }
 
-    getThroughputUpdateOption(containerProperties) match {
-      case Some(createUpdateOptions) =>
+    override def createContainer(
+                                    databaseName: String,
+                                    containerName: String,
+                                    containerProperties: Map[String, String]): SMono[Unit] = {
+
+        val sqlContainerResource = new SqlContainerResource()
+        sqlContainerResource.withId(containerName)
+        sqlContainerResource.withPartitionKey(getPartitionKeyDefinition(containerProperties))
+        sqlContainerResource.withIndexingPolicy(getIndexingPolicy(containerProperties))
+
+        // setup ttl
+        CosmosContainerProperties.getDefaultTtlInSeconds(containerProperties) match {
+            case Some(ttl) => sqlContainerResource.withDefaultTtl(ttl)
+            case None =>
+        }
+
+        //setup analytical store ttl
+        CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
+            case Some(ttl) => sqlContainerResource.withAnalyticalStorageTtl(ttl)
+            case None =>
+        }
+
         sqlResourcesClient
             .createUpdateSqlContainerAsync(
                 resourceGroupName,
@@ -122,151 +120,159 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 databaseName,
                 containerName,
                 new SqlContainerCreateUpdateParameters()
-                  .withResource(sqlContainerResource)
-                  .withOptions(createUpdateOptions)
+                    .withResource(sqlContainerResource)
+                    .withOptions(getThroughputCreateUpdateOption(containerProperties))
             )
             .asScala.`then`()
-      case None =>
+    }
+
+    override def deleteContainer(databaseName: String, containerName: String): SMono[Unit] = {
+        // If the container does not exists, calling the following method will not get exceptions
         sqlResourcesClient
-            .createUpdateSqlContainerAsync(
-              resourceGroupName,
-              databaseAccountName,
-              databaseName,
-              containerName,
-              new SqlContainerCreateUpdateParameters()
-                .withResource(sqlContainerResource)
-            )
+            .deleteSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
             .asScala
             .`then`()
     }
-  }
 
-  override def deleteContainer(databaseName: String, containerName: String): SMono[Unit] = {
-      // TODO: Validate whether SDK will throw the above exception
-      sqlResourcesClient.deleteSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
-          .asScala
-          .onErrorResume((throwable: Throwable) => {
-              if (ManagementExceptions.isNotFoundException(throwable)) {
-                  SMono.error(new CosmosCatalogNotFoundException(throwable.toString))
-              } else {
-                  SMono.error(throwable)
-              }
-          })
-          .`then`()
-  }
-
-  override def readDatabaseThroughput(databaseName: String): SMono[Map[String, String]] = {
-      sqlResourcesClient
-          .getSqlDatabaseThroughputAsync(resourceGroupName, databaseAccountName, databaseName)
-          .asScala
-          .map(resultInner => toMap(resultInner.resource()))
-          .onErrorResume((throwable: Throwable) => {
-              if (ManagementExceptions.isNotFoundException(throwable)) {
-                  SMono.error(new CosmosCatalogNotFoundException(throwable.toString))
-              } else if (ManagementExceptions.isBadRequestException(throwable)) {
-                  SMono.just(Map[String, String]())        // not a shared throughput database account
-              } else {
-                  SMono.error(throwable)
-              }
-          })
-  }
-
-  override def readContainerMetadata(databaseName: String, containerName: String): SMono[Option[util.HashMap[String, String]]] =
-  {
-      SFlux
-          .zip3(
-              sqlResourcesClient
-                  .getSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
-                  .asScala,
-              ContainerFeedRangesCache
-                  .getFeedRanges(cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)),
-              readContainerThroughputProperties(databaseName, containerName)
-                  .map(Some(_))
-                  .onErrorResume((throwable: Throwable) => {
-                      if (ManagementExceptions.isBadRequestException(throwable)) {
-                          SMono.just(None)
-                      } else {
-                          SMono.error(throwable)
-                      }
-                  }))
-          .single()
-          .map(result => {
-              val metaResultOpt = Some((result._1.resource(), result._2, result._3))
-              metaResultOpt match {
-                  case Some(metaDataResult) => Some(generateTblProperties(metaDataResult))
-                  case _ => None
-              }
-          })
-          .onErrorResume((throwable: Throwable) => {
-              if (ManagementExceptions.isNotFoundException(throwable)) {
-                  SMono.just(None)
-              } else {
-                  SMono.error(throwable)
-              }
-          })
-  }
-
-  private def toMap(throughputPropertiesResource: ThroughputSettingsGetPropertiesResource): Map[String, String] = {
-    val props = new util.HashMap[String, String]()
-    val manualThroughput = throughputPropertiesResource.throughput()
-    if (manualThroughput != null) {
-      props.put(CosmosThroughputProperties.manualThroughputFieldName, manualThroughput.toString)
-    } else {
-      val autoScaleMaxThroughput = throughputPropertiesResource.autoscaleSettings().maxThroughput()
-      props.put(CosmosThroughputProperties.autoScaleMaxThroughputName, autoScaleMaxThroughput.toString)
-    }
-    props.asScala.toMap
-  }
-
-  private def getPartitionKeyDefinition(containerProperties: Map[String, String]): ContainerPartitionKey = {
-    val containerPartitionKey = new ContainerPartitionKey()
-
-    val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
-    val pkVersion = CosmosContainerProperties.getPartitionKeyVersion(containerProperties)
-
-    containerPartitionKey.withPaths(util.Arrays.asList(partitionKeyPath))
-    if (pkVersion.isDefined) {
-      containerPartitionKey.withVersion(pkVersion.get.toInt)
+    override def readDatabaseThroughput(databaseName: String): SMono[Map[String, String]] = {
+        sqlResourcesClient
+            .getSqlDatabaseThroughputAsync(resourceGroupName, databaseAccountName, databaseName)
+            .asScala
+            .map(resultInner => toMap(resultInner.resource()))
+            .onErrorResume((throwable: Throwable) => {
+                if (ManagementExceptions.isNotFoundException(throwable)) {
+                    SMono.error(new CosmosCatalogNotFoundException(throwable.toString))
+                } else if (ManagementExceptions.isBadRequestException(throwable)) {
+                    SMono.just(Map[String, String]())  // 400 - not a shared throughput database account
+                } else {
+                    SMono.error(throwable)
+                }
+            })
     }
 
-    containerPartitionKey
-  }
-
-  private def getIndexingPolicy(containerProperties: Map[String, String]): IndexingPolicy = {
-    val indexingPolicySpecification = CosmosContainerProperties.getIndexingPolicy(containerProperties)
-    //scalastyle:on multiple.string.literals
-    if (CosmosContainerProperties.AllPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
-      new IndexingPolicy()
-        .withAutomatic(true)
-        .withIndexingMode(IndexingMode.CONSISTENT)
-        .withIncludedPaths(util.Arrays.asList(new IncludedPath().withPath("/*")))
-        .withExcludedPaths(util.Arrays.asList(new ExcludedPath().withPath(raw"""/"_etag"/?""")))
-    } else if (CosmosContainerProperties.OnlySystemPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
-      new IndexingPolicy()
-        .withAutomatic(true)
-        .withIndexingMode(IndexingMode.CONSISTENT)
-        .withIncludedPaths(Collections.emptyList())
-        .withExcludedPaths(util.Arrays.asList(new ExcludedPath().withPath("/*")))
-    } else {
-      // TODO: add proper handling
-      throw new IllegalStateException("Parsing from json string is not supported")
+    override def readContainerMetadata(databaseName: String, containerName: String): SMono[Option[util.HashMap[String, String]]] =
+    {
+        SFlux
+            .zip3(
+                sqlResourcesClient
+                    .getSqlContainerAsync(resourceGroupName, databaseAccountName, databaseName, containerName)
+                    .asScala,
+                ContainerFeedRangesCache
+                    .getFeedRanges(cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName)),
+                readContainerThroughputProperties(databaseName, containerName)
+                    .map(Some(_))
+                    .onErrorResume((throwable: Throwable) => {
+                        if (ManagementExceptions.isBadRequestException(throwable)) {
+                            SMono.just(None) // Serverless database account
+                        } else {
+                            SMono.error(throwable)
+                        }
+                    }))
+            .single()
+            .map(result => {
+                val metaResultOpt = Some((result._1.resource(), result._2, result._3))
+                metaResultOpt match {
+                    case Some(metaDataResult) => Some(generateTblProperties(metaDataResult))
+                    case _ => None
+                }
+            })
+            .onErrorResume((throwable: Throwable) => {
+                if (ManagementExceptions.isNotFoundException(throwable)) {
+                    SMono.just(None)
+                } else {
+                    SMono.error(throwable)
+                }
+            })
     }
-    //scalastyle:off multiple.string.literals
-  }
 
-  private def getThroughputUpdateOption(containerProperties: Map[String, String]): Option[CreateUpdateOptions] = {
-    CosmosThroughputProperties.getManualThroughput(containerProperties) match {
-      case Some(throughput) =>
-        Some(new CreateUpdateOptions().withThroughput(throughput))
-      case None =>
-        CosmosThroughputProperties.getAutoScaleMaxThroughput(containerProperties) match {
-          case Some(autoScaleMaxThroughput) =>
-            Some(new CreateUpdateOptions().withAutoscaleSettings(
-              new AutoscaleSettings().withMaxThroughput(autoScaleMaxThroughput)))
-          case None => None
+    private def toMap(throughputPropertiesResource: ThroughputSettingsGetPropertiesResource): Map[String, String] = {
+        val props = new util.HashMap[String, String]()
+        val autoScaleSettings = throughputPropertiesResource.autoscaleSettings()
+        if (autoScaleSettings != null) {
+            val autoScaleMaxThroughput = throughputPropertiesResource.autoscaleSettings().maxThroughput()
+            props.put(CosmosThroughputProperties.autoScaleMaxThroughputName, autoScaleMaxThroughput.toString)
+        } else {
+            props.put(CosmosThroughputProperties.manualThroughputFieldName, throughputPropertiesResource.throughput().toString)
+        }
+        props.asScala.toMap
+    }
+
+    private def getPartitionKeyDefinition(containerProperties: Map[String, String]): ContainerPartitionKey = {
+        val containerPartitionKey = new ContainerPartitionKey()
+
+        val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
+        val pkVersion = CosmosContainerProperties.getPartitionKeyVersion(containerProperties)
+
+        containerPartitionKey.withPaths(util.Arrays.asList(partitionKeyPath))
+        if (pkVersion.isDefined) {
+            val partitionKeyDefinitionVersion = PartitionKeyDefinitionVersion.valueOf(pkVersion.get)
+            partitionKeyDefinitionVersion match {
+                case PartitionKeyDefinitionVersion.V1 => containerPartitionKey.withVersion(1)
+                case PartitionKeyDefinitionVersion.V2 => containerPartitionKey.withVersion(2)
+                case version: PartitionKeyDefinitionVersion => throw new IllegalStateException(s"Partition key version $version is not supported.")
+            }
+        }
+
+        containerPartitionKey
+    }
+
+    private def getIndexingPolicy(containerProperties: Map[String, String]): IndexingPolicy = {
+        val indexingPolicySpecification = CosmosContainerProperties.getIndexingPolicy(containerProperties)
+        //scalastyle:on multiple.string.literals
+        if (CosmosContainerProperties.AllPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
+            new IndexingPolicy()
+                .withAutomatic(true)
+                .withIndexingMode(IndexingMode.CONSISTENT)
+                .withIncludedPaths(util.Arrays.asList(new IncludedPath().withPath("/*")))
+                .withExcludedPaths(util.Arrays.asList(new ExcludedPath().withPath(raw"""/"_etag"/?""")))
+        } else if (CosmosContainerProperties.OnlySystemPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
+            new IndexingPolicy()
+                .withAutomatic(true)
+                .withIndexingMode(IndexingMode.CONSISTENT)
+                .withIncludedPaths(Collections.emptyList())
+                .withExcludedPaths(util.Arrays.asList(new ExcludedPath().withPath("/*")))
+        } else {
+            val cosmosIndexingPolicy = SparkModelBridgeInternal.createIndexingPolicyFromJson(indexingPolicySpecification)
+            val indexingMode = cosmosIndexingPolicy.getIndexingMode match {
+                case com.azure.cosmos.models.IndexingMode.CONSISTENT => IndexingMode.CONSISTENT
+                case com.azure.cosmos.models.IndexingMode.LAZY => IndexingMode.LAZY
+                case com.azure.cosmos.models.IndexingMode.NONE => IndexingMode.NONE
+                case cosmosIndexingMode: com.azure.cosmos.models.IndexingMode =>
+                    throw new IllegalStateException(s"Indexing mode $cosmosIndexingMode is not supported")
+            }
+
+            val includedPathList = new ListBuffer[IncludedPath]()
+            cosmosIndexingPolicy.getIncludedPaths.forEach(includedPath => {
+                includedPathList += new IncludedPath().withPath(includedPath.getPath())
+            })
+
+            val excludedPathList = new ListBuffer[ExcludedPath]()
+            cosmosIndexingPolicy.getExcludedPaths.forEach(excludedPath => {
+                excludedPathList += new ExcludedPath().withPath(excludedPath.getPath())
+            })
+
+            new IndexingPolicy()
+                .withAutomatic(cosmosIndexingPolicy.isAutomatic)
+                .withIndexingMode(indexingMode)
+                .withIncludedPaths(includedPathList.toList.asJava)
+                .withExcludedPaths(excludedPathList.toList.asJava)
+        }
+        //scalastyle:off multiple.string.literals
+    }
+
+    private def getThroughputCreateUpdateOption(properties: Map[String, String]): CreateUpdateOptions = {
+        val createUpdateOptions = new CreateUpdateOptions()
+        CosmosThroughputProperties.getManualThroughput(properties) match {
+            case Some(throughput) =>
+                createUpdateOptions.withThroughput(throughput)
+            case None =>
+                CosmosThroughputProperties.getAutoScaleMaxThroughput(properties) match {
+                    case Some(autoScaleMaxThroughput) =>
+                        createUpdateOptions.withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(autoScaleMaxThroughput))
+                    case None => createUpdateOptions
+                }
         }
     }
-  }
 
     // scalastyle:off cyclomatic.complexity
     // scalastyle:off method.length
@@ -308,18 +314,26 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 } else {
                     ""
                 }
-                val throughputLastModified = ZonedDateTime
-                    .ofInstant(Instant.ofEpochSecond(throughputProperties.ts().longValue()), ZoneOffset.UTC)
-                    .format(DateTimeFormatter.ISO_INSTANT)
 
-                if (throughputProperties.autoscaleSettings().maxThroughput() == 0) { // TODO: validate whether it is 0 or null
-                    s"${prefix}Manual|${throughputProperties.throughput()}|$throughputLastModified"
+                val throughputSnapshotBuilder = new StringBuilder()
+                if (throughputProperties.autoscaleSettings() == null) {
+                    throughputSnapshotBuilder.appendAll(s"${prefix}Manual|${throughputProperties.throughput()}|")
                 } else {
                     // AutoScale|CurrentRU|MaxRU
-                    s"${prefix}AutoScale|${throughputProperties.throughput()}|" +
-                        s"${throughputProperties.autoscaleSettings().maxThroughput()}|" +
-                        s"$throughputLastModified"
+                    throughputSnapshotBuilder.appendAll(s"${prefix}AutoScale|${throughputProperties.throughput()}|" +
+                        s"${throughputProperties.autoscaleSettings().maxThroughput()}|")
                 }
+
+                var throughputLastModified = Option.empty[String]
+                // TODO: Annie: The ts() value has already been always returned as null - need to follow up the expected behavior
+                if (throughputProperties.ts() != null) {
+                    throughputLastModified = Some(ZonedDateTime
+                        .ofInstant(Instant.ofEpochSecond(throughputProperties.ts().longValue()), ZoneOffset.UTC)
+                        .format(DateTimeFormatter.ISO_INSTANT))
+                    throughputSnapshotBuilder.appendAll(s"$throughputLastModified")
+                }
+
+                throughputSnapshotBuilder.toString
             case None => s"Unknown" // Right now should be serverless  - but because serverless isn't GA
             // yet keeping the contract vague here
         }
@@ -368,8 +382,13 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
             .map(throughputPropertiesResource => getMaxThroughput(throughputPropertiesResource._1))
     }
 
-    private def getMaxThroughput(throughputResource: ThroughputSettingsGetPropertiesResource): Integer =
-        Math.max(throughputResource.throughput(), throughputResource.autoscaleSettings().maxThroughput())
+    private def getMaxThroughput(throughputResource: ThroughputSettingsGetPropertiesResource): Integer = {
+        if (throughputResource.autoscaleSettings() != null) {
+            throughputResource.autoscaleSettings().maxThroughput()
+        } else {
+            throughputResource.throughput()
+        }
+    }
 
     private def readContainerThroughputProperties(databaseName: String, containerName: String): SMono[(ThroughputSettingsGetPropertiesResource, Boolean)] = {
         sqlResourcesClient

@@ -409,10 +409,7 @@ class CosmosCatalogBase
             .to(cosmosClientCacheItems => {
                 cosmosClientCacheItems(0).get
                     .sparkCatalogClient
-                    .createContainer(
-                        databaseName,
-                        containerName,
-                        containerProperties)
+                    .createContainer(databaseName, containerName, containerProperties)
                     .block()
             })
 
@@ -505,7 +502,7 @@ class CosmosCatalogBase
                     cosmosClientCacheItems(0).get
                         .sparkCatalogClient
                         .deleteContainer(databaseName, containerName))
-                        .block()
+                .block()
             true
         } catch {
             case _: CosmosCatalogNotFoundException => false

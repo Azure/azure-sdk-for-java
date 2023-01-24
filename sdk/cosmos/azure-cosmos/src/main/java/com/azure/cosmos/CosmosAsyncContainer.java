@@ -1786,12 +1786,12 @@ public class CosmosAsyncContainer {
         this.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, null);
     }
 
-
     /***
-     * Only used internally as a mitigation for the issue:
-     * @param groupConfig
-     * @param globalControlConfig
-     * @param throughputQueryMono
+     * Only used internally.
+     *
+     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
+     * @param throughputQueryMono The throughput query mono.
      */
     void enableGlobalThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
