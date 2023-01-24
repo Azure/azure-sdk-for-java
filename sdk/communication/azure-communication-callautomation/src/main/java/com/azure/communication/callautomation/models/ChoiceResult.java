@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 
 /** The ChoiceResult model. */
 @Fluent
-public final class ChoiceResult {
+public final class ChoiceResult extends RecognizeResult {
     /*
      * Label is the primary identifier for the choice detected
      */
