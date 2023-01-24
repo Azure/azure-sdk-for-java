@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.HTTP_REST_PROXY_SYNC_PROXY_ENABLE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
@@ -113,8 +114,7 @@ class AnalyzeSentimentUtilClient {
                     .setAnalysisInput(
                         new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
-                getNotNullContext(context)
-                    .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                     getDocumentCount(documents)))
                 .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}",
@@ -156,7 +156,8 @@ class AnalyzeSentimentUtilClient {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
-        context = getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        context = enableSyncRestProxy(getNotNullContext(context))
+            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
 
         try {
             return (service != null)
@@ -199,5 +200,9 @@ class AnalyzeSentimentUtilClient {
                 getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
                     serviceVersion, TextAnalyticsServiceVersion.V3_1));
         }
+    }
+
+    private Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 }
