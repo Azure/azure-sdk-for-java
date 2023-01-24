@@ -848,7 +848,7 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient client = new CosmosAsyncClient(this);
 
-        logStartupInfo(stopwatch);
+        logStartupInfo(stopwatch, client);
         return client;
     }
 
@@ -865,27 +865,28 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosClient client = new CosmosClient(this);
 
-        logStartupInfo(stopwatch);
+        logStartupInfo(stopwatch, client.asyncClient());
         return client;
     }
 
-    private void logStartupInfo(StopWatch stopwatch) {
+    private void logStartupInfo(StopWatch stopwatch, CosmosAsyncClient client) {
         stopwatch.stop();
 
         // TODO: do we need special flag/config option to log or not the startup config and time?
 
+        // No need to check client for NPE - it would have thrown exception already when building it.
+        // Client ID could be the telemetry correlation ID if set
         if (LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
             long time = stopwatch.getTime();
-            // NOTE: RxDocumentClientImpl logs some of this info as well, but not all of it and can't calculate overall
-            // startup time since there are calls happening both before and after RxDocumentClientImpl is initialized.
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
-            LOGGER.info("Cosmos Client started up in [{}] ms with the following configuration: " +
-                "serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], consistencyLevel [{}], " +
-                "contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
-                "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}].",
-                time, getEndpoint(), getPreferredRegions(), getConnectionPolicy(), getConsistencyLevel(),
-                isContentResponseOnWriteEnabled(), isSessionCapturingOverrideEnabled(),
-                isConnectionSharingAcrossClientsEnabled(), isClientTelemetryEnabled());
+            LOGGER.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
+                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}]," +
+                    "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}].",
+                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
+                getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
+                isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
+                isClientTelemetryEnabled());
         }
     }
 

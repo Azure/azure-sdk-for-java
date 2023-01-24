@@ -374,13 +374,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
         this.throughputControlEnabled = new AtomicBoolean(false);
 
-        if (logger.isInfoEnabled()) {
-            logger.info(
-                "Initializing DocumentClient [{}] with"
-                    + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
-                this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
-        }
-
         try {
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
             this.configs = configs;
