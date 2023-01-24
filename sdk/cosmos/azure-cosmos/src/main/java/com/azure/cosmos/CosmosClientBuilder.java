@@ -881,10 +881,10 @@ public class CosmosClientBuilder implements
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
             LOGGER.info("Cosmos Client started up in [{}] ms with the following configuration: " +
                 "serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], consistencyLevel [{}], " +
-                "userSuffix [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
+                "contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                 "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}].",
                 time, getEndpoint(), getPreferredRegions(), getConnectionPolicy(), getConsistencyLevel(),
-                getUserAgentSuffix(), isContentResponseOnWriteEnabled(), isSessionCapturingOverrideEnabled(),
+                isContentResponseOnWriteEnabled(), isSessionCapturingOverrideEnabled(),
                 isConnectionSharingAcrossClientsEnabled(), isClientTelemetryEnabled());
         }
     }
