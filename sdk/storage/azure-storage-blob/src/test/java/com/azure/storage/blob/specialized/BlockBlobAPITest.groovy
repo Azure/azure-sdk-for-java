@@ -100,6 +100,23 @@ class BlockBlobAPITest extends APISpec {
         Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
+    def "Stage block async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), data.defaultFlux, data.defaultDataSize, null, null))
+
+        expect:
+        stepVerifier.assertNext({
+            def headers = it.getHeaders()
+            assert it.getStatusCode() == 201
+            assert headers.getValue("x-ms-content-crc64") != null
+            assert headers.getValue("x-ms-request-id") != null
+            assert headers.getValue("x-ms-version") != null
+            assert headers.getValue("Date") != null
+            assert Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+        }).verifyComplete()
+    }
+
+
     // Override name to prevent BinaryData.toString() invocation by test framework.
     @Unroll("#featureName #iterationIndex")
     def "Stage block with BinaryData"() {
@@ -163,6 +180,24 @@ class BlockBlobAPITest extends APISpec {
     }
 
 
+    def "Stage block min async"() {
+        when:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), data.defaultFlux, data.defaultDataSize, null, null, null)
+        .flatMap(resp -> {
+            if (resp.getStatusCode() == 201) {
+                return blockBlobAsyncClient.listBlocks(BlockListType.ALL)
+                .map(bl -> bl.getUncommittedBlocks().size() == 1)
+            }
+            return Mono.just(true)
+        }))
+
+        then:
+        stepVerifier.assertNext({
+            assert it
+        }).verifyComplete()
+
+    }
+
     // Override name to prevent BinaryData.toString() invocation by test framework.
     @Unroll("#featureName #iterationIndex")
     def "Stage block min with BinaryData"() {
@@ -171,6 +206,34 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block min with BinaryData Async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), binaryData))
+            .flatMap(resp -> {
+                if (resp.getStatusCode() == 201) {
+                    return blockBlobAsyncClient.listBlocks(BlockListType.ALL)
+                    .map(bl -> bl.getUncommittedBlocks().size() == 1)
+                }
+                return Mono.just(true)
+            }))
+
+        expect:
+        stepVerifier.assertNext({
+            assert it
+        }).verifyComplete()
 
         where:
         binaryData << [
@@ -207,6 +270,38 @@ class BlockBlobAPITest extends APISpec {
         ]
     }
 
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block does not transform replayable BinaryData Async"() {
+        setup:
+        def wireTap = new WireTapHttpClient(getHttpClient())
+        def wireTapClient = getSpecializedBuilder(environment.primaryAccount.credential,
+            blockBlobAsyncClient.getBlobUrl())
+            .httpClient(wireTap)
+            .buildBlockBlobAsyncClient()
+
+        def stepVerifier = StepVerifier.create(wireTapClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), binaryData))
+            .flatMap(resp -> {
+                if (resp.getStatusCode() == 201) {
+                    return blockBlobAsyncClient.listBlocks(BlockListType.ALL)
+                    .map(bl -> bl.getUncommittedBlocks().size() == 1)
+                }
+                return Mono.just(true)
+            }))
+
+        expect:
+        stepVerifier.assertNext({
+            assert it
+        })
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile)
+        ]
+    }
+
     @Unroll
     def "Stage block illegal arguments"() {
         when:
@@ -222,6 +317,23 @@ class BlockBlobAPITest extends APISpec {
         true       | null                    | data.defaultDataSize     | NullPointerException
         true       | data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
         true       | data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+    @Unroll
+    def "Stage block illegal arguments Async"() {
+        setup:
+        def blockID = (getBlockId) ? getBlockID() : null
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlock(blockID, data == null ? null : stream, dataSize))
+
+        expect:
+        stepVerifier.verifyError(exceptionType)
+
+        where:
+        getBlockId | stream                  | dataSize                 | exceptionType
+        false      | data.defaultFlux        | data.defaultDataSize     | BlobStorageException
+        true       | null                    | data.defaultDataSize     | NullPointerException
+        true       | data.defaultFlux        | data.defaultDataSize + 1 | UnexpectedLengthException
+        true       | data.defaultFlux        | data.defaultDataSize - 1 | UnexpectedLengthException
     }
 
     // Override name to prevent BinaryData.toString() invocation by test framework.
@@ -241,12 +353,36 @@ class BlockBlobAPITest extends APISpec {
         BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize - 1) | UnexpectedLengthException
     }
 
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block illegal arguments with BinaryData Async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlock(getBlockID(), binaryData))
+
+        expect:
+        stepVerifier.verifyError(exceptionType)
+
+        where:
+        binaryData                                                               | exceptionType
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize + 1) | UnexpectedLengthException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize - 1) | UnexpectedLengthException
+    }
+
+
     def "Stage block empty body"() {
         when:
         blockBlobClient.stageBlock(getBlockID(), new ByteArrayInputStream(new byte[0]), 0)
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Stage block empty body Async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlock(getBlockID(), Flux.just(ByteBuffer.wrap(new byte[0])), 0))
+
+        expect:
+        stepVerifier.verifyError(BlobStorageException)
     }
 
     def "Stage block transactionalMD5"() {
@@ -256,6 +392,17 @@ class BlockBlobAPITest extends APISpec {
         expect:
         blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, md5, null, null, null)
             .statusCode == 201
+    }
+
+    def "Stage block transactionalMD5 Async"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
+
+        expect:
+        StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), data.defaultFlux, data.defaultDataSize, md5, null, null))
+            .assertNext({
+                assert it.getStatusCode() == 201
+            }).verifyComplete()
     }
 
     def "Stage block transactionalMD5 fail"() {
@@ -268,16 +415,41 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    def "Stage block transactionalMD5 fail Async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), data.defaultFlux, data.defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null))
+
+        expect:
+        stepVerifier.verifyErrorSatisfies({
+            assert it.getClass().equals(BlobStorageException.class)
+            assert it.getErrorCode() == BlobErrorCode.MD5MISMATCH
+        })
+    }
+
     def "Stage block transactionalMD5 fail BinaryData"() {
         when:
         blockBlobClient.stageBlockWithResponse(
             new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(data.defaultBytes))
                 .setContentMd5(MessageDigest.getInstance("MD5").digest("garbage".getBytes())),
             null, null)
-
         then:
         def e = thrown(BlobStorageException)
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
+
+    def "Stage block transactionalMD5 fail BinaryData Async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(data.defaultBytes))
+                .setContentMd5(MessageDigest.getInstance("MD5").digest("garbage".getBytes()))))
+
+        expect:
+        stepVerifier.verifyErrorSatisfies({
+            assert it.getClass().equals(BlobStorageException.class)
+            assert it.getErrorCode() == BlobErrorCode.MD5MISMATCH
+        })
     }
 
     def "Stage block null body"() {

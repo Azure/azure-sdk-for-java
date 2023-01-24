@@ -1,0 +1,97 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b70e880c0b70e880c61e688369d2e0b3e55274220a1b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "91d62de9-cc37-432e-a8de-364773534049"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DAFE454AFFF1EA",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7a899826-901e-0068-062e-30e51e000000",
+      "Date" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "x-ms-client-request-id" : "91d62de9-cc37-432e-a8de-364773534049"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b70e880c0b70e880c61e688369d2e0b3e55274220a1b/b70e880c1b70e880c61e1344983eb652b7c88413e82c",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "0bc71670-8f35-4cd4-91a5-d752eccbbc85",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454B069468",
+      "x-ms-request-id" : "8d7fba9d-501e-0048-502e-309eb9000000",
+      "x-ms-client-request-id" : "0bc71670-8f35-4cd4-91a5-d752eccbbc85"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b70e880c0b70e880c61e688369d2e0b3e55274220a1b/b70e880c2b70e880c61e28784e121b6b47e034de1b13",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "f9a5237a-0a1e-435b-bd0b-0abbea03ff62",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454B0EEF77",
+      "x-ms-request-id" : "94de7df9-b01e-0040-042e-3084b6000000",
+      "x-ms-client-request-id" : "f9a5237a-0a1e-435b-bd0b-0abbea03ff62"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b70e880c0b70e880c61e688369d2e0b3e55274220a1b/b70e880c2b70e880c61e28784e121b6b47e034de1b13?comp=block&blockid=NzE5YjFjYmMtZmE2Yi00MjViLTlmOGEtMjk4OTM1OTc4N2Ri",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "f701ed6c-de7d-49a2-8ac2-ec394b1157c5",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "841acc3b-201e-007d-342e-30f2ad000000",
+      "Date" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "x-ms-client-request-id" : "f701ed6c-de7d-49a2-8ac2-ec394b1157c5",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b70e880c0b70e880c61e688369d2e0b3e55274220a1b", "b70e880c1b70e880c61e1344983eb652b7c88413e82c", "b70e880c2b70e880c61e28784e121b6b47e034de1b13", "719b1cbc-fa6b-425b-9f8a-2989359787db" ]
+}

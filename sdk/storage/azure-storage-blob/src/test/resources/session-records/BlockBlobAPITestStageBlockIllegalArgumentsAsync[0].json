@@ -1,0 +1,98 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/5f4f7fe305f4f7fe3c5a525377b1aab03128246d5a10?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "4429a261-5e08-4055-a159-6a58ecca8cea"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DAFE454BB1F683",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:58:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b73169ff-901e-0047-172e-30e8d5000000",
+      "Date" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "x-ms-client-request-id" : "4429a261-5e08-4055-a159-6a58ecca8cea"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/5f4f7fe305f4f7fe3c5a525377b1aab03128246d5a10/5f4f7fe315f4f7fe3c5a20651a957b36b2cb24229899",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "892343fc-52d4-4c88-8b58-168dc21bca70",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:58:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454BB6A80A",
+      "x-ms-request-id" : "e53dfd91-001e-00b1-742e-309d9b000000",
+      "x-ms-client-request-id" : "892343fc-52d4-4c88-8b58-168dc21bca70"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/5f4f7fe305f4f7fe3c5a525377b1aab03128246d5a10/5f4f7fe325f4f7fe3c5a401555d45e699f8744b1d8ff",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "930c1a33-1798-49b2-a1fa-1fdb63420523",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:58:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:58:00 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454BBB5DB1",
+      "x-ms-request-id" : "2bf454e7-101e-003b-652e-30c62a000000",
+      "x-ms-client-request-id" : "930c1a33-1798-49b2-a1fa-1fdb63420523"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/5f4f7fe305f4f7fe3c5a525377b1aab03128246d5a10/5f4f7fe325f4f7fe3c5a401555d45e699f8744b1d8ff?comp=block",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "845381a5-cc5f-4229-9aad-bc854151d5d2",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "MissingRequiredQueryParameter",
+      "retry-after" : "0",
+      "Content-Length" : "315",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "b7e5f23e-401e-0036-142e-300efe000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>MissingRequiredQueryParameter</Code><Message>A query parameter that's mandatory for this request is not specified.\nRequestId:b7e5f23e-401e-0036-142e-300efe000000\nTime:2023-01-24T19:58:00.4012818Z</Message><QueryParameterName>blockid</QueryParameterName></Error>",
+      "Date" : "Tue, 24 Jan 2023 19:58:00 GMT",
+      "x-ms-client-request-id" : "845381a5-cc5f-4229-9aad-bc854151d5d2",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "5f4f7fe305f4f7fe3c5a525377b1aab03128246d5a10", "5f4f7fe315f4f7fe3c5a20651a957b36b2cb24229899", "5f4f7fe325f4f7fe3c5a401555d45e699f8744b1d8ff" ]
+}

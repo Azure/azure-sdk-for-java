@@ -1,0 +1,98 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/89b51165089b51165e4063480242fc2d4c42c4a76aa0?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "95d45ac9-ce2c-47d9-a3e0-acece2c9a296"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DAFE454A73E11D",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "318a3d03-a01e-00a8-4d2e-301d20000000",
+      "Date" : "Tue, 24 Jan 2023 19:57:57 GMT",
+      "x-ms-client-request-id" : "95d45ac9-ce2c-47d9-a3e0-acece2c9a296"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/89b51165089b51165e4063480242fc2d4c42c4a76aa0/89b51165189b51165e4000388a8f6033cc025488b89b",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "60c96508-21e2-4008-bbff-d36b98a6cedb",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:57:57 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454A903BAE",
+      "x-ms-request-id" : "c741ba9f-c01e-0038-0c2e-30274e000000",
+      "x-ms-client-request-id" : "60c96508-21e2-4008-bbff-d36b98a6cedb"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/89b51165089b51165e4063480242fc2d4c42c4a76aa0/89b51165289b51165e4090716adaed1a747ed42888e9",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "a615b4a2-f0a3-401b-a0f0-587c120457e0",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:57:57 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454A9C153C",
+      "x-ms-request-id" : "933947df-101e-0076-162e-3009c6000000",
+      "x-ms-client-request-id" : "a615b4a2-f0a3-401b-a0f0-587c120457e0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/89b51165089b51165e4063480242fc2d4c42c4a76aa0/89b51165289b51165e4090716adaed1a747ed42888e9?comp=block&blockid=ZDA4M2NmYTQtNzMyNC00YTdkLWE5MWYtZGQwMGQxMTYyMWZh",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "25294d1c-20e9-47c5-a9ed-1a90c14f250e",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "Md5Mismatch",
+      "retry-after" : "0",
+      "Content-Length" : "405",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "c741baaf-c01e-0038-1b2e-30274e000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>Md5Mismatch</Code><Message>The MD5 value specified in the request did not match with the MD5 value calculated by the server.\nRequestId:c741baaf-c01e-0038-1b2e-30274e000000\nTime:2023-01-24T19:57:58.5418167Z</Message><UserSpecifiedMd5>yOjfiVwsrhZrrQJ/3xUzWw==</UserSpecifiedMd5><ServerCalculatedMd5>wh+Wm18D0z1D4E+PE252gg==</ServerCalculatedMd5></Error>",
+      "Date" : "Tue, 24 Jan 2023 19:57:57 GMT",
+      "x-ms-client-request-id" : "25294d1c-20e9-47c5-a9ed-1a90c14f250e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "89b51165089b51165e4063480242fc2d4c42c4a76aa0", "89b51165189b51165e4000388a8f6033cc025488b89b", "89b51165289b51165e4090716adaed1a747ed42888e9", "d083cfa4-7324-4a7d-a91f-dd00d11621fa" ]
+}
