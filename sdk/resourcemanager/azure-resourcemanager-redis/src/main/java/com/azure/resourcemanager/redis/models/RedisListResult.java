@@ -5,11 +5,17 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** The response of list Redis operation. */
+/**
+ * The response of list Redis operation.
+ */
 @Fluent
 public final class RedisListResult {
     /*
@@ -25,8 +31,14 @@ public final class RedisListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of RedisListResult class.
+     */
+    public RedisListResult() {
+    }
+
+    /**
      * Get the value property: List of Redis cache instances.
-     *
+     * 
      * @return the value value.
      */
     public List<RedisResourceInner> value() {
@@ -35,7 +47,7 @@ public final class RedisListResult {
 
     /**
      * Set the value property: List of Redis cache instances.
-     *
+     * 
      * @param value the value value to set.
      * @return the RedisListResult object itself.
      */
@@ -46,7 +58,7 @@ public final class RedisListResult {
 
     /**
      * Get the nextLink property: Link for next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +67,7 @@ public final class RedisListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

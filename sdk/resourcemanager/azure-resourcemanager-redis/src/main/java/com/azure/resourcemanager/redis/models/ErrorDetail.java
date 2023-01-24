@@ -4,11 +4,17 @@
 
 package com.azure.resourcemanager.redis.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** The error detail. */
+/**
+ * The error detail.
+ */
 @Immutable
 public final class ErrorDetail {
     /*
@@ -42,8 +48,14 @@ public final class ErrorDetail {
     private List<ErrorAdditionalInfo> additionalInfo;
 
     /**
+     * Creates an instance of ErrorDetail class.
+     */
+    public ErrorDetail() {
+    }
+
+    /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -52,7 +64,7 @@ public final class ErrorDetail {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -61,7 +73,7 @@ public final class ErrorDetail {
 
     /**
      * Get the target property: The error target.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -70,7 +82,7 @@ public final class ErrorDetail {
 
     /**
      * Get the details property: The error details.
-     *
+     * 
      * @return the details value.
      */
     public List<ErrorDetail> details() {
@@ -79,7 +91,7 @@ public final class ErrorDetail {
 
     /**
      * Get the additionalInfo property: The error additional info.
-     *
+     * 
      * @return the additionalInfo value.
      */
     public List<ErrorAdditionalInfo> additionalInfo() {
@@ -88,7 +100,7 @@ public final class ErrorDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

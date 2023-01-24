@@ -5,37 +5,46 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** SKU parameters supplied to the create Redis operation. */
+/**
+ * SKU parameters supplied to the create Redis operation.
+ */
 @Fluent
 public final class Sku {
     /*
-     * The type of Redis cache to deploy. Valid values: (Basic, Standard,
-     * Premium)
+     * The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
-     * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P =
-     * Premium).
+     * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
      */
     @JsonProperty(value = "family", required = true)
     private SkuFamily family;
 
     /*
-     * The size of the Redis cache to deploy. Valid values: for C
-     * (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family
-     * (1, 2, 3, 4).
+     * The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P
+     * (Premium) family (1, 2, 3, 4).
      */
     @JsonProperty(value = "capacity", required = true)
     private int capacity;
 
     /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
+
+    /**
      * Get the name property: The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium).
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -44,7 +53,7 @@ public final class Sku {
 
     /**
      * Set the name property: The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium).
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -55,7 +64,7 @@ public final class Sku {
 
     /**
      * Get the family property: The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
-     *
+     * 
      * @return the family value.
      */
     public SkuFamily family() {
@@ -64,7 +73,7 @@ public final class Sku {
 
     /**
      * Set the family property: The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
-     *
+     * 
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -74,9 +83,9 @@ public final class Sku {
     }
 
     /**
-     * Get the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0,
-     * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
-     *
+     * Get the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family
+     * (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
+     * 
      * @return the capacity value.
      */
     public int capacity() {
@@ -84,9 +93,9 @@ public final class Sku {
     }
 
     /**
-     * Set the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0,
-     * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
-     *
+     * Set the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family
+     * (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -97,17 +106,15 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
         if (family() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property family in model Sku"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property family in model Sku"));
         }
     }
 

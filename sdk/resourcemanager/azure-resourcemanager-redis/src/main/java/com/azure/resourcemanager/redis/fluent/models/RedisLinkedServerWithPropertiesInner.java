@@ -5,11 +5,18 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Response to put/get linked server (with properties) for Redis cache. */
+/**
+ * Response to put/get linked server (with properties) for Redis cache.
+ */
 @Fluent
 public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     /*
@@ -19,8 +26,14 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     private RedisLinkedServerProperties innerProperties;
 
     /**
+     * Creates an instance of RedisLinkedServerWithPropertiesInner class.
+     */
+    public RedisLinkedServerWithPropertiesInner() {
+    }
+
+    /**
      * Get the innerProperties property: Properties of the linked server.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RedisLinkedServerProperties innerProperties() {
@@ -29,7 +42,7 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Terminal state of the link between primary and secondary redis cache.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -38,7 +51,7 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
 
     /**
      * Get the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
-     *
+     * 
      * @return the linkedRedisCacheId value.
      */
     public String linkedRedisCacheId() {
@@ -47,7 +60,7 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
 
     /**
      * Set the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
-     *
+     * 
      * @param linkedRedisCacheId the linkedRedisCacheId value to set.
      * @return the RedisLinkedServerWithPropertiesInner object itself.
      */
@@ -61,7 +74,7 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
 
     /**
      * Get the linkedRedisCacheLocation property: Location of the linked redis cache.
-     *
+     * 
      * @return the linkedRedisCacheLocation value.
      */
     public String linkedRedisCacheLocation() {
@@ -70,7 +83,7 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
 
     /**
      * Set the linkedRedisCacheLocation property: Location of the linked redis cache.
-     *
+     * 
      * @param linkedRedisCacheLocation the linkedRedisCacheLocation value to set.
      * @return the RedisLinkedServerWithPropertiesInner object itself.
      */
@@ -84,7 +97,7 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
 
     /**
      * Get the serverRole property: Role of the linked server.
-     *
+     * 
      * @return the serverRole value.
      */
     public ReplicationRole serverRole() {
@@ -93,7 +106,7 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
 
     /**
      * Set the serverRole property: Role of the linked server.
-     *
+     * 
      * @param serverRole the serverRole value to set.
      * @return the RedisLinkedServerWithPropertiesInner object itself.
      */
@@ -106,8 +119,28 @@ public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     }
 
     /**
+     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     * 
+     * @return the geoReplicatedPrimaryHostname value.
+     */
+    public String geoReplicatedPrimaryHostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoReplicatedPrimaryHostname();
+    }
+
+    /**
+     * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
+     * linked redis caches before or after the Geo Failover.
+     * 
+     * @return the primaryHostname value.
+     */
+    public String primaryHostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryHostname();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

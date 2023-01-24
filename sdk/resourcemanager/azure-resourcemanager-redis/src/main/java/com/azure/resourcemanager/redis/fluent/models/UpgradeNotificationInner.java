@@ -4,13 +4,19 @@
 
 package com.azure.resourcemanager.redis.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-/** Properties of upgrade notification. */
+/**
+ * Properties of upgrade notification.
+ */
 @Immutable
 public final class UpgradeNotificationInner {
     /*
@@ -33,8 +39,14 @@ public final class UpgradeNotificationInner {
     private Map<String, String> upsellNotification;
 
     /**
+     * Creates an instance of UpgradeNotificationInner class.
+     */
+    public UpgradeNotificationInner() {
+    }
+
+    /**
      * Get the name property: Name of upgrade notification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +55,7 @@ public final class UpgradeNotificationInner {
 
     /**
      * Get the timestamp property: Timestamp when upgrade notification occurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -52,7 +64,7 @@ public final class UpgradeNotificationInner {
 
     /**
      * Get the upsellNotification property: Details about this upgrade notification.
-     *
+     * 
      * @return the upsellNotification value.
      */
     public Map<String, String> upsellNotification() {
@@ -61,7 +73,7 @@ public final class UpgradeNotificationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

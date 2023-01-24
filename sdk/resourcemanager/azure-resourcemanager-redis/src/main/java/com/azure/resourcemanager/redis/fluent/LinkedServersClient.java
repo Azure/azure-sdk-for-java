@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
@@ -16,14 +18,18 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerWithPropertiesInner;
 import com.azure.resourcemanager.redis.models.RedisLinkedServerCreateParameters;
 import java.nio.ByteBuffer;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LinkedServersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LinkedServersClient.
+ */
 public interface LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -31,16 +37,14 @@ public interface LinkedServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get linked server (with properties) for Redis cache along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return response to put/get linked server (with properties) for Redis cache along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -48,16 +52,14 @@ public interface LinkedServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response to put/get linked server (with properties) for Redis
-     *     cache.
+     * @return the {@link PollerFlux} for polling of response to put/get linked server (with properties) for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RedisLinkedServerWithPropertiesInner>, RedisLinkedServerWithPropertiesInner> beginCreateAsync(
-        String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
+    PollerFlux<PollResult<RedisLinkedServerWithPropertiesInner>, RedisLinkedServerWithPropertiesInner> beginCreateAsync(String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -65,16 +67,14 @@ public interface LinkedServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response to put/get linked server (with properties) for Redis
-     *     cache.
+     * @return the {@link SyncPoller} for polling of response to put/get linked server (with properties) for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RedisLinkedServerWithPropertiesInner>, RedisLinkedServerWithPropertiesInner> beginCreate(
-        String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
+    SyncPoller<PollResult<RedisLinkedServerWithPropertiesInner>, RedisLinkedServerWithPropertiesInner> beginCreate(String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -83,20 +83,14 @@ public interface LinkedServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response to put/get linked server (with properties) for Redis
-     *     cache.
+     * @return the {@link SyncPoller} for polling of response to put/get linked server (with properties) for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RedisLinkedServerWithPropertiesInner>, RedisLinkedServerWithPropertiesInner> beginCreate(
-        String resourceGroupName,
-        String name,
-        String linkedServerName,
-        RedisLinkedServerCreateParameters parameters,
-        Context context);
+    SyncPoller<PollResult<RedisLinkedServerWithPropertiesInner>, RedisLinkedServerWithPropertiesInner> beginCreate(String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters, Context context);
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -104,16 +98,14 @@ public interface LinkedServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get linked server (with properties) for Redis cache on successful completion of {@link
-     *     Mono}.
+     * @return response to put/get linked server (with properties) for Redis cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RedisLinkedServerWithPropertiesInner> createAsync(
-        String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
+    Mono<RedisLinkedServerWithPropertiesInner> createAsync(String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -124,12 +116,11 @@ public interface LinkedServersClient {
      * @return response to put/get linked server (with properties) for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisLinkedServerWithPropertiesInner create(
-        String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
+    RedisLinkedServerWithPropertiesInner create(String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters);
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -141,16 +132,11 @@ public interface LinkedServersClient {
      * @return response to put/get linked server (with properties) for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisLinkedServerWithPropertiesInner create(
-        String resourceGroupName,
-        String name,
-        String linkedServerName,
-        RedisLinkedServerCreateParameters parameters,
-        Context context);
+    RedisLinkedServerWithPropertiesInner create(String resourceGroupName, String name, String linkedServerName, RedisLinkedServerCreateParameters parameters, Context context);
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -160,11 +146,54 @@ public interface LinkedServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String linkedServerName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name, String linkedServerName);
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name, String linkedServerName);
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, String linkedServerName);
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, String linkedServerName, Context context);
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -178,7 +207,7 @@ public interface LinkedServersClient {
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -191,7 +220,7 @@ public interface LinkedServersClient {
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
@@ -199,45 +228,56 @@ public interface LinkedServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String name, String linkedServerName, Context context);
+    void delete(String resourceGroupName, String name, String linkedServerName, Context context);
 
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information about a linked server of a redis cache (requires Premium SKU) along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the detailed information about a linked server of a redis cache (requires Premium SKU) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RedisLinkedServerWithPropertiesInner>> getWithResponseAsync(
-        String resourceGroupName, String name, String linkedServerName);
+    Mono<Response<RedisLinkedServerWithPropertiesInner>> getWithResponseAsync(String resourceGroupName, String name, String linkedServerName);
 
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information about a linked server of a redis cache (requires Premium SKU) on successful
-     *     completion of {@link Mono}.
+     * @return the detailed information about a linked server of a redis cache (requires Premium SKU) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RedisLinkedServerWithPropertiesInner> getAsync(String resourceGroupName, String name, String linkedServerName);
 
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the detailed information about a linked server of a redis cache (requires Premium SKU) along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RedisLinkedServerWithPropertiesInner> getWithResponse(String resourceGroupName, String name, String linkedServerName, Context context);
+
+    /**
+     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
@@ -250,61 +290,41 @@ public interface LinkedServersClient {
     RedisLinkedServerWithPropertiesInner get(String resourceGroupName, String name, String linkedServerName);
 
     /**
-     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param linkedServerName The name of the linked server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information about a linked server of a redis cache (requires Premium SKU) along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RedisLinkedServerWithPropertiesInner> getWithResponse(
-        String resourceGroupName, String name, String linkedServerName, Context context);
-
-    /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of linked servers associated with this redis cache (requires Premium SKU) as paginated response
-     *     with {@link PagedFlux}.
+     * @return the list of linked servers associated with this redis cache (requires Premium SKU) as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RedisLinkedServerWithPropertiesInner> listAsync(String resourceGroupName, String name);
 
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of linked servers associated with this redis cache (requires Premium SKU) as paginated response
-     *     with {@link PagedIterable}.
+     * @return the list of linked servers associated with this redis cache (requires Premium SKU) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RedisLinkedServerWithPropertiesInner> list(String resourceGroupName, String name);
 
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of linked servers associated with this redis cache (requires Premium SKU) as paginated response
-     *     with {@link PagedIterable}.
+     * @return the list of linked servers associated with this redis cache (requires Premium SKU) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RedisLinkedServerWithPropertiesInner> list(String resourceGroupName, String name, Context context);

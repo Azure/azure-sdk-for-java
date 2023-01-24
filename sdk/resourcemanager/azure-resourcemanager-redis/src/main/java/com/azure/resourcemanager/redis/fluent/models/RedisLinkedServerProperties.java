@@ -5,10 +5,17 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Properties of a linked server to be returned in get/put response. */
+/**
+ * Properties of a linked server to be returned in get/put response.
+ */
 @Fluent
 public final class RedisLinkedServerProperties extends RedisLinkedServerCreateProperties {
     /*
@@ -18,29 +25,41 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
     private String provisioningState;
 
     /**
+     * Creates an instance of RedisLinkedServerProperties class.
+     */
+    public RedisLinkedServerProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Terminal state of the link between primary and secondary redis cache.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisLinkedServerProperties withLinkedRedisCacheId(String linkedRedisCacheId) {
         super.withLinkedRedisCacheId(linkedRedisCacheId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisLinkedServerProperties withLinkedRedisCacheLocation(String linkedRedisCacheLocation) {
         super.withLinkedRedisCacheLocation(linkedRedisCacheLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisLinkedServerProperties withServerRole(ReplicationRole serverRole) {
         super.withServerRole(serverRole);
@@ -49,7 +68,7 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

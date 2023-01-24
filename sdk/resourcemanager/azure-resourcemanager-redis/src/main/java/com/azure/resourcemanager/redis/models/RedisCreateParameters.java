@@ -5,14 +5,20 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisCreateProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Parameters supplied to the Create Redis operation. */
+/**
+ * Parameters supplied to the Create Redis operation.
+ */
 @Fluent
 public final class RedisCreateParameters {
     /*
@@ -22,8 +28,7 @@ public final class RedisCreateParameters {
     private RedisCreateProperties innerProperties = new RedisCreateProperties();
 
     /*
-     * A list of availability zones denoting where the resource needs to come
-     * from.
+     * A list of availability zones denoting where the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -48,8 +53,14 @@ public final class RedisCreateParameters {
     private ManagedServiceIdentity identity;
 
     /**
+     * Creates an instance of RedisCreateParameters class.
+     */
+    public RedisCreateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Redis cache properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RedisCreateProperties innerProperties() {
@@ -58,7 +69,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -67,7 +78,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -78,7 +89,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -87,7 +98,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -98,7 +109,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -107,7 +118,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -118,7 +129,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -127,7 +138,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -138,7 +149,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -147,7 +158,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -163,7 +174,7 @@ public final class RedisCreateParameters {
      * Get the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
      * Example format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -174,7 +185,7 @@ public final class RedisCreateParameters {
      * Set the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
      * Example format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -187,9 +198,9 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Get the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
-     * existing Azure Virtual Network; auto assigned by default.
-     *
+     * Get the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside
+     * an existing Azure Virtual Network; auto assigned by default.
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -197,9 +208,9 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Set the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
-     * existing Azure Virtual Network; auto assigned by default.
-     *
+     * Set the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside
+     * an existing Azure Virtual Network; auto assigned by default.
+     * 
      * @param staticIp the staticIp value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -215,7 +226,7 @@ public final class RedisCreateParameters {
      * Get the redisConfiguration property: All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
-     *
+     * 
      * @return the redisConfiguration value.
      */
     public RedisConfiguration redisConfiguration() {
@@ -226,7 +237,7 @@ public final class RedisCreateParameters {
      * Set the redisConfiguration property: All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
-     *
+     * 
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -239,9 +250,10 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
-     *
+     * Get the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
+     * 
      * @return the redisVersion value.
      */
     public String redisVersion() {
@@ -249,9 +261,10 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
-     *
+     * Set the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
+     * 
      * @param redisVersion the redisVersion value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -265,7 +278,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
-     *
+     * 
      * @return the enableNonSslPort value.
      */
     public Boolean enableNonSslPort() {
@@ -274,7 +287,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
-     *
+     * 
      * @param enableNonSslPort the enableNonSslPort value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -288,7 +301,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the replicasPerMaster property: The number of replicas to be created per primary.
-     *
+     * 
      * @return the replicasPerMaster value.
      */
     public Integer replicasPerMaster() {
@@ -297,7 +310,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the replicasPerMaster property: The number of replicas to be created per primary.
-     *
+     * 
      * @param replicasPerMaster the replicasPerMaster value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -311,7 +324,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the replicasPerPrimary property: The number of replicas to be created per primary.
-     *
+     * 
      * @return the replicasPerPrimary value.
      */
     public Integer replicasPerPrimary() {
@@ -320,7 +333,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the replicasPerPrimary property: The number of replicas to be created per primary.
-     *
+     * 
      * @param replicasPerPrimary the replicasPerPrimary value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -334,7 +347,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the tenantSettings property: A dictionary of tenant settings.
-     *
+     * 
      * @return the tenantSettings value.
      */
     public Map<String, String> tenantSettings() {
@@ -343,7 +356,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the tenantSettings property: A dictionary of tenant settings.
-     *
+     * 
      * @param tenantSettings the tenantSettings value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -357,7 +370,7 @@ public final class RedisCreateParameters {
 
     /**
      * Get the shardCount property: The number of shards to be created on a Premium Cluster Cache.
-     *
+     * 
      * @return the shardCount value.
      */
     public Integer shardCount() {
@@ -366,7 +379,7 @@ public final class RedisCreateParameters {
 
     /**
      * Set the shardCount property: The number of shards to be created on a Premium Cluster Cache.
-     *
+     * 
      * @param shardCount the shardCount value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -381,7 +394,7 @@ public final class RedisCreateParameters {
     /**
      * Get the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
      * connect (e,g, '1.0', '1.1', '1.2').
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public TlsVersion minimumTlsVersion() {
@@ -391,7 +404,7 @@ public final class RedisCreateParameters {
     /**
      * Set the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
      * connect (e,g, '1.0', '1.1', '1.2').
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -404,10 +417,10 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache.  Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
      * access method. Default value is 'Enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -415,10 +428,10 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache.  Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
      * access method. Default value is 'Enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RedisCreateParameters object itself.
      */
@@ -432,22 +445,17 @@ public final class RedisCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RedisCreateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model RedisCreateParameters"));
         } else {
             innerProperties().validate();
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model RedisCreateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property location in model RedisCreateParameters"));
         }
         if (identity() != null) {
             identity().validate();

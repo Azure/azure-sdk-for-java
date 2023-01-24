@@ -5,15 +5,21 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ErrorDetail;
 import com.azure.resourcemanager.redis.models.OperationStatusResult;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-/** Asynchronous operation status. */
+/**
+ * Asynchronous operation status.
+ */
 @Fluent
 public final class OperationStatusInner extends OperationStatusResult {
     /*
@@ -24,8 +30,14 @@ public final class OperationStatusInner extends OperationStatusResult {
     private Map<String, Object> properties;
 
     /**
+     * Creates an instance of OperationStatusInner class.
+     */
+    public OperationStatusInner() {
+    }
+
+    /**
      * Get the properties property: Additional properties from RP, only when operation is successful.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> properties() {
@@ -34,7 +46,7 @@ public final class OperationStatusInner extends OperationStatusResult {
 
     /**
      * Set the properties property: Additional properties from RP, only when operation is successful.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -43,56 +55,72 @@ public final class OperationStatusInner extends OperationStatusResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withPercentComplete(Float percentComplete) {
         super.withPercentComplete(percentComplete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withOperations(List<OperationStatusResult> operations) {
         super.withOperations(operations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationStatusInner withError(ErrorDetail error) {
         super.withError(error);
@@ -101,7 +129,7 @@ public final class OperationStatusInner extends OperationStatusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -5,11 +5,17 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Create properties for a linked server. */
+/**
+ * Create properties for a linked server.
+ */
 @Fluent
 public class RedisLinkedServerCreateProperties {
     /*
@@ -30,9 +36,29 @@ public class RedisLinkedServerCreateProperties {
     @JsonProperty(value = "serverRole", required = true)
     private ReplicationRole serverRole;
 
+    /*
+     * The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
+     * seamless Geo Failover experience.
+     */
+    @JsonProperty(value = "geoReplicatedPrimaryHostName", access = JsonProperty.Access.WRITE_ONLY)
+    private String geoReplicatedPrimaryHostname;
+
+    /*
+     * The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
+     * after the Geo Failover.
+     */
+    @JsonProperty(value = "primaryHostName", access = JsonProperty.Access.WRITE_ONLY)
+    private String primaryHostname;
+
+    /**
+     * Creates an instance of RedisLinkedServerCreateProperties class.
+     */
+    public RedisLinkedServerCreateProperties() {
+    }
+
     /**
      * Get the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
-     *
+     * 
      * @return the linkedRedisCacheId value.
      */
     public String linkedRedisCacheId() {
@@ -41,7 +67,7 @@ public class RedisLinkedServerCreateProperties {
 
     /**
      * Set the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
-     *
+     * 
      * @param linkedRedisCacheId the linkedRedisCacheId value to set.
      * @return the RedisLinkedServerCreateProperties object itself.
      */
@@ -52,7 +78,7 @@ public class RedisLinkedServerCreateProperties {
 
     /**
      * Get the linkedRedisCacheLocation property: Location of the linked redis cache.
-     *
+     * 
      * @return the linkedRedisCacheLocation value.
      */
     public String linkedRedisCacheLocation() {
@@ -61,7 +87,7 @@ public class RedisLinkedServerCreateProperties {
 
     /**
      * Set the linkedRedisCacheLocation property: Location of the linked redis cache.
-     *
+     * 
      * @param linkedRedisCacheLocation the linkedRedisCacheLocation value to set.
      * @return the RedisLinkedServerCreateProperties object itself.
      */
@@ -72,7 +98,7 @@ public class RedisLinkedServerCreateProperties {
 
     /**
      * Get the serverRole property: Role of the linked server.
-     *
+     * 
      * @return the serverRole value.
      */
     public ReplicationRole serverRole() {
@@ -81,7 +107,7 @@ public class RedisLinkedServerCreateProperties {
 
     /**
      * Set the serverRole property: Role of the linked server.
-     *
+     * 
      * @param serverRole the serverRole value to set.
      * @return the RedisLinkedServerCreateProperties object itself.
      */
@@ -91,29 +117,39 @@ public class RedisLinkedServerCreateProperties {
     }
 
     /**
+     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     * 
+     * @return the geoReplicatedPrimaryHostname value.
+     */
+    public String geoReplicatedPrimaryHostname() {
+        return this.geoReplicatedPrimaryHostname;
+    }
+
+    /**
+     * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
+     * linked redis caches before or after the Geo Failover.
+     * 
+     * @return the primaryHostname value.
+     */
+    public String primaryHostname() {
+        return this.primaryHostname;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (linkedRedisCacheId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedRedisCacheId in model RedisLinkedServerCreateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property linkedRedisCacheId in model RedisLinkedServerCreateProperties"));
         }
         if (linkedRedisCacheLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedRedisCacheLocation in model"
-                            + " RedisLinkedServerCreateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property linkedRedisCacheLocation in model RedisLinkedServerCreateProperties"));
         }
         if (serverRole() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverRole in model RedisLinkedServerCreateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property serverRole in model RedisLinkedServerCreateProperties"));
         }
     }
 

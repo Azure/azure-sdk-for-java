@@ -5,10 +5,16 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Specifies which Redis access keys to reset. */
+/**
+ * Specifies which Redis access keys to reset.
+ */
 @Fluent
 public final class RedisRegenerateKeyParameters {
     /*
@@ -18,8 +24,14 @@ public final class RedisRegenerateKeyParameters {
     private RedisKeyType keyType;
 
     /**
+     * Creates an instance of RedisRegenerateKeyParameters class.
+     */
+    public RedisRegenerateKeyParameters() {
+    }
+
+    /**
      * Get the keyType property: The Redis access key to regenerate.
-     *
+     * 
      * @return the keyType value.
      */
     public RedisKeyType keyType() {
@@ -28,7 +40,7 @@ public final class RedisRegenerateKeyParameters {
 
     /**
      * Set the keyType property: The Redis access key to regenerate.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the RedisRegenerateKeyParameters object itself.
      */
@@ -39,15 +51,12 @@ public final class RedisRegenerateKeyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyType in model RedisRegenerateKeyParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property keyType in model RedisRegenerateKeyParameters"));
         }
     }
 

@@ -5,15 +5,23 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RedisCommonProperties;
 import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Patchable properties of the redis cache. */
+/**
+ * Patchable properties of the redis cache.
+ */
 @Fluent
 public final class RedisUpdateProperties extends RedisCommonProperties {
     /*
@@ -23,8 +31,14 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
     private Sku sku;
 
     /**
+     * Creates an instance of RedisUpdateProperties class.
+     */
+    public RedisUpdateProperties() {
+    }
+
+    /**
      * Get the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -33,7 +47,7 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
 
     /**
      * Set the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RedisUpdateProperties object itself.
      */
@@ -42,63 +56,81 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withRedisVersion(String redisVersion) {
         super.withRedisVersion(redisVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withEnableNonSslPort(Boolean enableNonSslPort) {
         super.withEnableNonSslPort(enableNonSslPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withReplicasPerMaster(Integer replicasPerMaster) {
         super.withReplicasPerMaster(replicasPerMaster);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withReplicasPerPrimary(Integer replicasPerPrimary) {
         super.withReplicasPerPrimary(replicasPerPrimary);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withTenantSettings(Map<String, String> tenantSettings) {
         super.withTenantSettings(tenantSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withShardCount(Integer shardCount) {
         super.withShardCount(shardCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         super.withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
@@ -107,7 +139,7 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

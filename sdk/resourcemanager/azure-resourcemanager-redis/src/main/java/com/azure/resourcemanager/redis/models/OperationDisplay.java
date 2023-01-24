@@ -5,9 +5,15 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** The object that describes the operation. */
+/**
+ * The object that describes the operation.
+ */
 @Fluent
 public final class OperationDisplay {
     /*
@@ -35,8 +41,14 @@ public final class OperationDisplay {
     private String description;
 
     /**
+     * Creates an instance of OperationDisplay class.
+     */
+    public OperationDisplay() {
+    }
+
+    /**
      * Get the provider property: Friendly name of the resource provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -45,7 +57,7 @@ public final class OperationDisplay {
 
     /**
      * Set the provider property: Friendly name of the resource provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
      */
@@ -56,7 +68,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: Operation type: read, write, delete, listKeys/action, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -65,7 +77,7 @@ public final class OperationDisplay {
 
     /**
      * Set the operation property: Operation type: read, write, delete, listKeys/action, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.
      */
@@ -76,7 +88,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: Resource type on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -85,7 +97,7 @@ public final class OperationDisplay {
 
     /**
      * Set the resource property: Resource type on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationDisplay object itself.
      */
@@ -96,7 +108,7 @@ public final class OperationDisplay {
 
     /**
      * Get the description property: Friendly name of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -105,7 +117,7 @@ public final class OperationDisplay {
 
     /**
      * Set the description property: Friendly name of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationDisplay object itself.
      */
@@ -116,7 +128,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,7 +5,14 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
 /**
  * Parameters required for creating a firewall rule on redis cache. (Note, you can just use the FirewallRule type
@@ -13,14 +20,24 @@ import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
  */
 @Fluent
 public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleInner {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of RedisFirewallRuleCreateParameters class.
+     */
+    public RedisFirewallRuleCreateParameters() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisFirewallRuleCreateParameters withStartIp(String startIp) {
         super.withStartIp(startIp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisFirewallRuleCreateParameters withEndIp(String endIp) {
         super.withEndIp(endIp);
@@ -29,7 +46,7 @@ public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
