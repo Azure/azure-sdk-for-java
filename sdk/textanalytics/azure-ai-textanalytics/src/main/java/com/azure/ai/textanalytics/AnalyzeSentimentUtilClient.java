@@ -42,20 +42,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing sentiment analysis endpoint.
  */
-class AnalyzeSentimentClient {
-    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeSentimentClient.class);
+class AnalyzeSentimentUtilClient {
+    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeSentimentUtilClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    AnalyzeSentimentClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    AnalyzeSentimentUtilClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeSentimentClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    AnalyzeSentimentUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
                                 TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;

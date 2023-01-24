@@ -183,7 +183,7 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class AnalyzeActionsClient {
+class AnalyzeActionsUtilClient {
     // Legacy Tasks
     private static final String ENTITY_RECOGNITION_TASKS = "entityRecognitionTasks";
     private static final String ENTITY_RECOGNITION_PII_TASKS = "entityRecognitionPiiTasks";
@@ -221,7 +221,7 @@ class AnalyzeActionsClient {
             CUSTOM_ENTITY_RECOGNITION, CUSTOM_SINGLE_LABEL_CLASSIFICATION, CUSTOM_MULTI_LABEL_CLASSIFICATION);
 
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeActionsClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeActionsUtilClient.class);
 
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
@@ -235,13 +235,13 @@ class AnalyzeActionsClient {
         PATTERN_LANGUAGE_API = Pattern.compile(REGEX_ACTION_ERROR_TARGET_LANGUAGE_API, Pattern.MULTILINE);
     }
 
-    AnalyzeActionsClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    AnalyzeActionsUtilClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeActionsClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
+    AnalyzeActionsUtilClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
         this.serviceVersion = serviceVersion;
@@ -331,8 +331,7 @@ class AnalyzeActionsClient {
                     TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
-            context = enableSyncRestProxy(context);
-            final Context finalContext = getNotNullContext(context)
+            final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()

@@ -49,20 +49,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing recognize Personally Identifiable Information entity endpoint.
  */
-class RecognizePiiEntityClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RecognizePiiEntityClient.class);
+class RecognizePiiEntityUtilClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RecognizePiiEntityUtilClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    RecognizePiiEntityClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    RecognizePiiEntityUtilClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    RecognizePiiEntityClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    RecognizePiiEntityUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
@@ -219,8 +219,7 @@ class RecognizePiiEntityClient {
                 TextAnalyticsServiceVersion.V3_1));
         inputDocumentsValidation(documents);
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
-        context = enableSyncRestProxy(context);
-        final Context finalContext = getNotNullContext(context)
+        final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
         final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
         final String finalModelVersion = options.getModelVersion();

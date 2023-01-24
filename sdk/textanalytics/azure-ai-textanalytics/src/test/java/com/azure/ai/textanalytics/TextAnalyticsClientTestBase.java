@@ -1519,7 +1519,25 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint(isStaticResource))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion);
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else {
+            builder.credential(new AzureKeyCredential(getApiKey(isStaticResource)));
+        }
+        return builder;
+    }
+
+    TextAnalyticsClientBuilder getTextAnalyticsClientBuilder(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
+        TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
+            .endpoint(getEndpoint(isStaticResource))
+            .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
         if (getTestMode() == TestMode.RECORD) {

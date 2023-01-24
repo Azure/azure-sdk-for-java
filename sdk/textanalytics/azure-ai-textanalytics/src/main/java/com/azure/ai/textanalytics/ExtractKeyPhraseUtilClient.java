@@ -47,20 +47,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing extract key phrase endpoint.
  */
-class ExtractKeyPhraseClient {
-    private static final ClientLogger LOGGER = new ClientLogger(ExtractKeyPhraseClient.class);
+class ExtractKeyPhraseUtilClient {
+    private static final ClientLogger LOGGER = new ClientLogger(ExtractKeyPhraseUtilClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    ExtractKeyPhraseClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    ExtractKeyPhraseUtilClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    ExtractKeyPhraseClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    ExtractKeyPhraseUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
@@ -180,7 +180,8 @@ class ExtractKeyPhraseClient {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        context = enableSyncRestProxy(context);
+        context = enableSyncRestProxy(getNotNullContext(context))
+            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
         try {
             return (service != null)
                 ? toResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
@@ -192,13 +193,13 @@ class ExtractKeyPhraseClient {
                         .setAnalysisInput(
                             new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                     options.isIncludeStatistics(),
-                    getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)))
+                    context))
                 : toResultCollectionResponseLegacyApi(legacyService.keyPhrasesWithResponseSync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                     options.getModelVersion(),
                     options.isIncludeStatistics(),
                     options.isServiceLogsDisabled(),
-                    getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)));
+                    context));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }

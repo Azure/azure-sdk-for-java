@@ -43,20 +43,20 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing detect language endpoint.
  */
-class DetectLanguageClient {
-    private static final ClientLogger LOGGER = new ClientLogger(DetectLanguageClient.class);
+class DetectLanguageUtilClient {
+    private static final ClientLogger LOGGER = new ClientLogger(DetectLanguageUtilClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    DetectLanguageClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+    DetectLanguageUtilClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
         this.serviceVersion = serviceVersion;
     }
 
-    DetectLanguageClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    DetectLanguageUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;

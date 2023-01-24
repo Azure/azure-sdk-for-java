@@ -40,6 +40,7 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedFlux;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -132,9 +133,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
+    }
+
     private TextAnalyticsAsyncClient getTextAnalyticsAsyncClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
-        return getTextAnalyticsAsyncClientBuilder(httpClient, serviceVersion, isStaticResource).buildAsyncClient();
+        return getTextAnalyticsAsyncClientBuilder(
+            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+                : httpClient), serviceVersion, isStaticResource).buildAsyncClient();
     }
 
     // Detected Languages

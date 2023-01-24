@@ -40,13 +40,13 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * Helper class for managing dynamic classification endpoints.
  */
-class DynamicClassificationClient {
-    private static final ClientLogger LOGGER = new ClientLogger(DynamicClassificationClient.class);
+class DynamicClassificationUtilClient {
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicClassificationUtilClient.class);
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    DynamicClassificationClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+    DynamicClassificationUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
         TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
@@ -106,7 +106,6 @@ class DynamicClassificationClient {
                 TextAnalyticsServiceVersion.V2022_10_01_PREVIEW));
         inputDocumentsValidation(documents);
         options = getNotNullDynamicClassificationOptions(options);
-        context = enableSyncRestProxy(context);
 
         final com.azure.ai.textanalytics.models.ClassificationType finalClassificationType =
             options.getClassificationType();
@@ -123,7 +122,8 @@ class DynamicClassificationClient {
                             .setLoggingOptOut(options.isServiceLogsDisabled()))
                     .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
-                getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)));
+                enableSyncRestProxy(getNotNullContext(context))
+                    .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }

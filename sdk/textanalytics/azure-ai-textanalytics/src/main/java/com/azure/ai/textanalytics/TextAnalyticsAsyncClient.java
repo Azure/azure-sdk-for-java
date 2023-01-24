@@ -100,18 +100,18 @@ public final class TextAnalyticsAsyncClient {
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
-    final DetectLanguageClient detectLanguageClient;
-    final AnalyzeSentimentClient analyzeSentimentClient;
-    final ExtractKeyPhraseClient extractKeyPhraseClient;
-    final RecognizeEntityClient recognizeEntityClient;
-    final RecognizePiiEntityClient recognizePiiEntityClient;
-    final RecognizeLinkedEntityClient recognizeLinkedEntityClient;
-    final RecognizeCustomEntitiesClient recognizeCustomEntitiesClient;
-    final LabelClassifyClient labelClassifyClient;
-    final AnalyzeHealthcareEntityClient analyzeHealthcareEntityClient;
-    final AnalyzeActionsClient analyzeActionsClient;
+    final DetectLanguageUtilClient detectLanguageUtilClient;
+    final AnalyzeSentimentUtilClient analyzeSentimentUtilClient;
+    final ExtractKeyPhraseUtilClient extractKeyPhraseUtilClient;
+    final RecognizeEntityUtilClient recognizeEntityUtilClient;
+    final RecognizePiiEntityUtilClient recognizePiiEntityUtilClient;
+    final RecognizeLinkedEntityUtilClient recognizeLinkedEntityUtilClient;
+    final RecognizeCustomEntitiesUtilClient recognizeCustomEntitiesUtilClient;
+    final LabelClassifyUtilClient labelClassifyUtilClient;
+    final AnalyzeHealthcareEntityUtilClient analyzeHealthcareEntityUtilClient;
+    final AnalyzeActionsUtilClient analyzeActionsUtilClient;
 
-    final DynamicClassificationClient dynamicClassificationClient;
+    final DynamicClassificationUtilClient dynamicClassificationUtilClient;
 
     /**
      * Creates a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics service's endpoint. Each
@@ -129,17 +129,17 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;
-        this.detectLanguageClient = new DetectLanguageClient(legacyService, serviceVersion);
-        this.analyzeSentimentClient = new AnalyzeSentimentClient(legacyService, serviceVersion);
-        this.extractKeyPhraseClient = new ExtractKeyPhraseClient(legacyService, serviceVersion);
-        this.recognizeEntityClient = new RecognizeEntityClient(legacyService, serviceVersion);
-        this.recognizePiiEntityClient = new RecognizePiiEntityClient(legacyService, serviceVersion);
-        this.recognizeLinkedEntityClient = new RecognizeLinkedEntityClient(legacyService, serviceVersion);
-        this.recognizeCustomEntitiesClient = new RecognizeCustomEntitiesClient(null, serviceVersion);
-        this.analyzeHealthcareEntityClient = new AnalyzeHealthcareEntityClient(legacyService, serviceVersion);
-        this.analyzeActionsClient = new AnalyzeActionsClient(legacyService, serviceVersion);
-        this.labelClassifyClient = new LabelClassifyClient(null, serviceVersion);
-        this.dynamicClassificationClient = new DynamicClassificationClient(null, serviceVersion);
+        this.detectLanguageUtilClient = new DetectLanguageUtilClient(legacyService, serviceVersion);
+        this.analyzeSentimentUtilClient = new AnalyzeSentimentUtilClient(legacyService, serviceVersion);
+        this.extractKeyPhraseUtilClient = new ExtractKeyPhraseUtilClient(legacyService, serviceVersion);
+        this.recognizeEntityUtilClient = new RecognizeEntityUtilClient(legacyService, serviceVersion);
+        this.recognizePiiEntityUtilClient = new RecognizePiiEntityUtilClient(legacyService, serviceVersion);
+        this.recognizeLinkedEntityUtilClient = new RecognizeLinkedEntityUtilClient(legacyService, serviceVersion);
+        this.recognizeCustomEntitiesUtilClient = new RecognizeCustomEntitiesUtilClient(null, serviceVersion);
+        this.analyzeHealthcareEntityUtilClient = new AnalyzeHealthcareEntityUtilClient(legacyService, serviceVersion);
+        this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(legacyService, serviceVersion);
+        this.labelClassifyUtilClient = new LabelClassifyUtilClient(null, serviceVersion);
+        this.dynamicClassificationUtilClient = new DynamicClassificationUtilClient(null, serviceVersion);
     }
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
@@ -149,19 +149,19 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;
-        this.detectLanguageClient = new DetectLanguageClient(service, serviceVersion);
-        this.analyzeSentimentClient = new AnalyzeSentimentClient(service, serviceVersion);
-        this.extractKeyPhraseClient = new ExtractKeyPhraseClient(service, serviceVersion);
-        this.recognizeEntityClient = new RecognizeEntityClient(service, serviceVersion);
-        this.recognizePiiEntityClient = new RecognizePiiEntityClient(service, serviceVersion);
-        this.recognizeLinkedEntityClient = new RecognizeLinkedEntityClient(service, serviceVersion);
-        this.recognizeCustomEntitiesClient = new RecognizeCustomEntitiesClient(
+        this.detectLanguageUtilClient = new DetectLanguageUtilClient(service, serviceVersion);
+        this.analyzeSentimentUtilClient = new AnalyzeSentimentUtilClient(service, serviceVersion);
+        this.extractKeyPhraseUtilClient = new ExtractKeyPhraseUtilClient(service, serviceVersion);
+        this.recognizeEntityUtilClient = new RecognizeEntityUtilClient(service, serviceVersion);
+        this.recognizePiiEntityUtilClient = new RecognizePiiEntityUtilClient(service, serviceVersion);
+        this.recognizeLinkedEntityUtilClient = new RecognizeLinkedEntityUtilClient(service, serviceVersion);
+        this.recognizeCustomEntitiesUtilClient = new RecognizeCustomEntitiesUtilClient(
             new AnalyzeTextsImpl(service), serviceVersion);
-        this.analyzeHealthcareEntityClient = new AnalyzeHealthcareEntityClient(new AnalyzeTextsImpl(service),
+        this.analyzeHealthcareEntityUtilClient = new AnalyzeHealthcareEntityUtilClient(new AnalyzeTextsImpl(service),
             serviceVersion);
-        this.analyzeActionsClient = new AnalyzeActionsClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.labelClassifyClient = new LabelClassifyClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.dynamicClassificationClient = new DynamicClassificationClient(service, serviceVersion);
+        this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.labelClassifyUtilClient = new LabelClassifyUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.dynamicClassificationUtilClient = new DynamicClassificationUtilClient(service, serviceVersion);
     }
 
     /**
@@ -386,7 +386,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
-        return detectLanguageClient.detectLanguageBatch(documents, options);
+        return detectLanguageUtilClient.detectLanguageBatch(documents, options);
     }
 
     // Categorized Entity
@@ -466,7 +466,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CategorizedEntityCollection> recognizeEntities(String document, String language) {
-        return recognizeEntityClient.recognizeEntities(document, language);
+        return recognizeEntityUtilClient.recognizeEntities(document, language);
     }
 
     /**
@@ -580,7 +580,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        return recognizeEntityClient.recognizeEntitiesBatch(documents, options);
+        return recognizeEntityUtilClient.recognizeEntitiesBatch(documents, options);
     }
 
     // PII Entity
@@ -668,7 +668,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PiiEntityCollection> recognizePiiEntities(String document, String language) {
-        return recognizePiiEntityClient.recognizePiiEntities(document, language, null);
+        return recognizePiiEntityUtilClient.recognizePiiEntities(document, language, null);
     }
 
     /**
@@ -716,7 +716,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
         RecognizePiiEntitiesOptions options) {
-        return recognizePiiEntityClient.recognizePiiEntities(document, language, options);
+        return recognizePiiEntityUtilClient.recognizePiiEntities(document, language, options);
     }
 
     /**
@@ -844,7 +844,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
-        return recognizePiiEntityClient.recognizePiiEntitiesBatch(documents, options);
+        return recognizePiiEntityUtilClient.recognizePiiEntitiesBatch(documents, options);
     }
 
     // Linked Entities
@@ -926,7 +926,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedEntityCollection> recognizeLinkedEntities(String document, String language) {
-        return recognizeLinkedEntityClient.recognizeLinkedEntities(document, language);
+        return recognizeLinkedEntityUtilClient.recognizeLinkedEntities(document, language);
     }
 
     /**
@@ -1055,7 +1055,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        return recognizeLinkedEntityClient.recognizeLinkedEntitiesBatch(documents, options);
+        return recognizeLinkedEntityUtilClient.recognizeLinkedEntitiesBatch(documents, options);
     }
 
     // Key Phrases
@@ -1121,7 +1121,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhrasesCollection> extractKeyPhrases(String document, String language) {
-        return extractKeyPhraseClient.extractKeyPhrasesSingleText(document, language);
+        return extractKeyPhraseUtilClient.extractKeyPhrasesSingleText(document, language);
     }
 
     /**
@@ -1237,7 +1237,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        return extractKeyPhraseClient.extractKeyPhrasesWithResponse(documents, options);
+        return extractKeyPhraseUtilClient.extractKeyPhrasesWithResponse(documents, options);
     }
 
     // Sentiment
@@ -1614,7 +1614,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        return analyzeSentimentClient.analyzeSentimentBatch(documents, new AnalyzeSentimentOptions()
+        return analyzeSentimentUtilClient.analyzeSentimentBatch(documents, new AnalyzeSentimentOptions()
             .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
             .setModelVersion(options == null ? null : options.getModelVersion()));
     }
@@ -1691,7 +1691,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
-        return analyzeSentimentClient.analyzeSentimentBatch(documents, options);
+        return analyzeSentimentUtilClient.analyzeSentimentBatch(documents, options);
     }
 
     /**
@@ -1819,7 +1819,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options) {
-        return dynamicClassificationClient.dynamicClassifyBatch(documents, options);
+        return dynamicClassificationUtilClient.dynamicClassifyBatch(documents, options);
     }
 
     /**
@@ -2100,7 +2100,7 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options) {
-        return analyzeHealthcareEntityClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
+        return analyzeHealthcareEntityUtilClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
     }
 
     // Custom Entities Recognition
@@ -2335,7 +2335,7 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux>
         beginRecognizeCustomEntities(Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
             RecognizeCustomEntitiesOptions options) {
-        return recognizeCustomEntitiesClient.recognizeCustomEntities(documents, projectName, deploymentName,
+        return recognizeCustomEntitiesUtilClient.recognizeCustomEntities(documents, projectName, deploymentName,
             options, Context.NONE);
     }
 
@@ -2575,7 +2575,7 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginSingleLabelClassify(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         SingleLabelClassifyOptions options) {
-        return labelClassifyClient.singleLabelClassify(documents, projectName, deploymentName,
+        return labelClassifyUtilClient.singleLabelClassify(documents, projectName, deploymentName,
             options, Context.NONE);
     }
 
@@ -2800,7 +2800,7 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginMultiLabelClassify(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         MultiLabelClassifyOptions options) {
-        return labelClassifyClient.multiLabelClassify(documents, projectName, deploymentName,
+        return labelClassifyUtilClient.multiLabelClassify(documents, projectName, deploymentName,
             options, Context.NONE);
     }
 
@@ -3042,6 +3042,6 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options) {
-        return analyzeActionsClient.beginAnalyzeActions(documents, actions, options, Context.NONE);
+        return analyzeActionsUtilClient.beginAnalyzeActions(documents, actions, options, Context.NONE);
     }
 }
