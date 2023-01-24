@@ -1735,18 +1735,16 @@ public final class TableClient {
             return scheduledFuture.get(timeoutInMillis, TimeUnit.MILLISECONDS);
         }
         catch (Exception ex) {
-            Exception exception = ex;
-            if (exception instanceof ExecutionException
-            && exception.getCause() instanceof Exception) {
-                Throwable cause = exception.getCause();
-                exception = new Exception(cause);
+            Throwable exception = ex;
+            if (exception instanceof ExecutionException) {
+                exception = exception.getCause();
             }
             Throwable cause = exception.getCause();
             if (cause instanceof TableTransactionFailedException) {
                 TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
                 throw logger.logExceptionAsError(failedException);
             } else {
-                throw logger.logExceptionAsError((RuntimeException) (mapThrowableToTableServiceException(exception)));
+                throw logger.logExceptionAsError(new RuntimeException(mapThrowableToTableServiceException(exception)));
             }
         }
     }
