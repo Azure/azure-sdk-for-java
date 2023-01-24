@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOsnicCustomization;
 import com.azure.resourcemanager.vmwarecloudsimple.models.NicType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Virtual NIC model. */
 @Fluent
 public final class VirtualNicInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNicInner.class);
-
     /*
      * guest OS customization for nic
      */
@@ -64,6 +61,10 @@ public final class VirtualNicInner {
      */
     @JsonProperty(value = "virtualNicName", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualNicName;
+
+    /** Creates an instance of VirtualNicInner class. */
+    public VirtualNicInner() {
+    }
 
     /**
      * Get the customization property: guest OS customization for nic.
@@ -224,16 +225,18 @@ public final class VirtualNicInner {
             customization().validate();
         }
         if (network() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property network in model VirtualNicInner"));
         } else {
             network().validate();
         }
         if (nicType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nicType in model VirtualNicInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNicInner.class);
 }

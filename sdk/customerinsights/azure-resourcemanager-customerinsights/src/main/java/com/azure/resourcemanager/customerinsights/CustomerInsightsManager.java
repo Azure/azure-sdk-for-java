@@ -8,15 +8,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -61,6 +64,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Entry point to CustomerInsightsManager. The Azure Customer Insights management API provides a RESTful set of web
@@ -130,6 +134,19 @@ public final class CustomerInsightsManager {
     }
 
     /**
+     * Creates an instance of CustomerInsights service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the CustomerInsights service API instance.
+     */
+    public static CustomerInsightsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new CustomerInsightsManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create CustomerInsightsManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -140,12 +157,14 @@ public final class CustomerInsightsManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -185,6 +204,17 @@ public final class CustomerInsightsManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -196,15 +226,30 @@ public final class CustomerInsightsManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -226,7 +271,7 @@ public final class CustomerInsightsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.customerinsights")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -240,20 +285,38 @@ public final class CustomerInsightsManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -265,7 +328,11 @@ public final class CustomerInsightsManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -273,7 +340,11 @@ public final class CustomerInsightsManager {
         return operations;
     }
 
-    /** @return Resource collection API of Hubs. */
+    /**
+     * Gets the resource collection API of Hubs. It manages Hub.
+     *
+     * @return Resource collection API of Hubs.
+     */
     public Hubs hubs() {
         if (this.hubs == null) {
             this.hubs = new HubsImpl(clientObject.getHubs(), this);
@@ -281,7 +352,11 @@ public final class CustomerInsightsManager {
         return hubs;
     }
 
-    /** @return Resource collection API of Profiles. */
+    /**
+     * Gets the resource collection API of Profiles. It manages ProfileResourceFormat.
+     *
+     * @return Resource collection API of Profiles.
+     */
     public Profiles profiles() {
         if (this.profiles == null) {
             this.profiles = new ProfilesImpl(clientObject.getProfiles(), this);
@@ -289,7 +364,11 @@ public final class CustomerInsightsManager {
         return profiles;
     }
 
-    /** @return Resource collection API of Interactions. */
+    /**
+     * Gets the resource collection API of Interactions. It manages InteractionResourceFormat.
+     *
+     * @return Resource collection API of Interactions.
+     */
     public Interactions interactions() {
         if (this.interactions == null) {
             this.interactions = new InteractionsImpl(clientObject.getInteractions(), this);
@@ -297,7 +376,11 @@ public final class CustomerInsightsManager {
         return interactions;
     }
 
-    /** @return Resource collection API of Relationships. */
+    /**
+     * Gets the resource collection API of Relationships. It manages RelationshipResourceFormat.
+     *
+     * @return Resource collection API of Relationships.
+     */
     public Relationships relationships() {
         if (this.relationships == null) {
             this.relationships = new RelationshipsImpl(clientObject.getRelationships(), this);
@@ -305,7 +388,11 @@ public final class CustomerInsightsManager {
         return relationships;
     }
 
-    /** @return Resource collection API of RelationshipLinks. */
+    /**
+     * Gets the resource collection API of RelationshipLinks. It manages RelationshipLinkResourceFormat.
+     *
+     * @return Resource collection API of RelationshipLinks.
+     */
     public RelationshipLinks relationshipLinks() {
         if (this.relationshipLinks == null) {
             this.relationshipLinks = new RelationshipLinksImpl(clientObject.getRelationshipLinks(), this);
@@ -313,7 +400,11 @@ public final class CustomerInsightsManager {
         return relationshipLinks;
     }
 
-    /** @return Resource collection API of AuthorizationPolicies. */
+    /**
+     * Gets the resource collection API of AuthorizationPolicies. It manages AuthorizationPolicyResourceFormat.
+     *
+     * @return Resource collection API of AuthorizationPolicies.
+     */
     public AuthorizationPolicies authorizationPolicies() {
         if (this.authorizationPolicies == null) {
             this.authorizationPolicies = new AuthorizationPoliciesImpl(clientObject.getAuthorizationPolicies(), this);
@@ -321,7 +412,11 @@ public final class CustomerInsightsManager {
         return authorizationPolicies;
     }
 
-    /** @return Resource collection API of Connectors. */
+    /**
+     * Gets the resource collection API of Connectors. It manages ConnectorResourceFormat.
+     *
+     * @return Resource collection API of Connectors.
+     */
     public Connectors connectors() {
         if (this.connectors == null) {
             this.connectors = new ConnectorsImpl(clientObject.getConnectors(), this);
@@ -329,7 +424,11 @@ public final class CustomerInsightsManager {
         return connectors;
     }
 
-    /** @return Resource collection API of ConnectorMappings. */
+    /**
+     * Gets the resource collection API of ConnectorMappings. It manages ConnectorMappingResourceFormat.
+     *
+     * @return Resource collection API of ConnectorMappings.
+     */
     public ConnectorMappings connectorMappings() {
         if (this.connectorMappings == null) {
             this.connectorMappings = new ConnectorMappingsImpl(clientObject.getConnectorMappings(), this);
@@ -337,7 +436,11 @@ public final class CustomerInsightsManager {
         return connectorMappings;
     }
 
-    /** @return Resource collection API of Kpis. */
+    /**
+     * Gets the resource collection API of Kpis. It manages KpiResourceFormat.
+     *
+     * @return Resource collection API of Kpis.
+     */
     public Kpis kpis() {
         if (this.kpis == null) {
             this.kpis = new KpisImpl(clientObject.getKpis(), this);
@@ -345,7 +448,11 @@ public final class CustomerInsightsManager {
         return kpis;
     }
 
-    /** @return Resource collection API of WidgetTypes. */
+    /**
+     * Gets the resource collection API of WidgetTypes.
+     *
+     * @return Resource collection API of WidgetTypes.
+     */
     public WidgetTypes widgetTypes() {
         if (this.widgetTypes == null) {
             this.widgetTypes = new WidgetTypesImpl(clientObject.getWidgetTypes(), this);
@@ -353,7 +460,11 @@ public final class CustomerInsightsManager {
         return widgetTypes;
     }
 
-    /** @return Resource collection API of Views. */
+    /**
+     * Gets the resource collection API of Views. It manages ViewResourceFormat.
+     *
+     * @return Resource collection API of Views.
+     */
     public Views views() {
         if (this.views == null) {
             this.views = new ViewsImpl(clientObject.getViews(), this);
@@ -361,7 +472,11 @@ public final class CustomerInsightsManager {
         return views;
     }
 
-    /** @return Resource collection API of Links. */
+    /**
+     * Gets the resource collection API of Links. It manages LinkResourceFormat.
+     *
+     * @return Resource collection API of Links.
+     */
     public Links links() {
         if (this.links == null) {
             this.links = new LinksImpl(clientObject.getLinks(), this);
@@ -369,7 +484,11 @@ public final class CustomerInsightsManager {
         return links;
     }
 
-    /** @return Resource collection API of Roles. */
+    /**
+     * Gets the resource collection API of Roles.
+     *
+     * @return Resource collection API of Roles.
+     */
     public Roles roles() {
         if (this.roles == null) {
             this.roles = new RolesImpl(clientObject.getRoles(), this);
@@ -377,7 +496,11 @@ public final class CustomerInsightsManager {
         return roles;
     }
 
-    /** @return Resource collection API of RoleAssignments. */
+    /**
+     * Gets the resource collection API of RoleAssignments. It manages RoleAssignmentResourceFormat.
+     *
+     * @return Resource collection API of RoleAssignments.
+     */
     public RoleAssignments roleAssignments() {
         if (this.roleAssignments == null) {
             this.roleAssignments = new RoleAssignmentsImpl(clientObject.getRoleAssignments(), this);
@@ -385,7 +508,11 @@ public final class CustomerInsightsManager {
         return roleAssignments;
     }
 
-    /** @return Resource collection API of Images. */
+    /**
+     * Gets the resource collection API of Images.
+     *
+     * @return Resource collection API of Images.
+     */
     public Images images() {
         if (this.images == null) {
             this.images = new ImagesImpl(clientObject.getImages(), this);
@@ -393,7 +520,11 @@ public final class CustomerInsightsManager {
         return images;
     }
 
-    /** @return Resource collection API of Predictions. */
+    /**
+     * Gets the resource collection API of Predictions. It manages PredictionResourceFormat.
+     *
+     * @return Resource collection API of Predictions.
+     */
     public Predictions predictions() {
         if (this.predictions == null) {
             this.predictions = new PredictionsImpl(clientObject.getPredictions(), this);

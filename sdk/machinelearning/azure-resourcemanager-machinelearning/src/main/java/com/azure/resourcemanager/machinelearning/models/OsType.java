@@ -17,6 +17,15 @@ public final class OsType extends ExpandableStringEnum<OsType> {
     public static final OsType WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of OsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OsType() {
+    }
+
+    /**
      * Creates or finds a OsType from its string representation.
      *
      * @param name a name to look for.

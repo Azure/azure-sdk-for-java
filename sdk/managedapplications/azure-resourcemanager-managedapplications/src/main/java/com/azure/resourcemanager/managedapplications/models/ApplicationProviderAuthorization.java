@@ -6,30 +6,29 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The managed application provider authorization. */
 @Fluent
 public final class ApplicationProviderAuthorization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationProviderAuthorization.class);
-
     /*
-     * The provider's principal identifier. This is the identity that the
-     * provider will use to call ARM to manage the managed application
-     * resources.
+     * The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
+     * managed application resources.
      */
     @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
-     * The provider's role definition identifier. This role will define all the
-     * permissions that the provider must have on the managed application's
-     * container resource group. This role definition cannot have permission to
-     * delete the resource group.
+     * The provider's role definition identifier. This role will define all the permissions that the provider must have
+     * on the managed application's container resource group. This role definition cannot have permission to delete the
+     * resource group.
      */
     @JsonProperty(value = "roleDefinitionId", required = true)
     private String roleDefinitionId;
+
+    /** Creates an instance of ApplicationProviderAuthorization class. */
+    public ApplicationProviderAuthorization() {
+    }
 
     /**
      * Get the principalId property: The provider's principal identifier. This is the identity that the provider will
@@ -84,16 +83,18 @@ public final class ApplicationProviderAuthorization {
      */
     public void validate() {
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalId in model ApplicationProviderAuthorization"));
         }
         if (roleDefinitionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property roleDefinitionId in model ApplicationProviderAuthorization"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationProviderAuthorization.class);
 }

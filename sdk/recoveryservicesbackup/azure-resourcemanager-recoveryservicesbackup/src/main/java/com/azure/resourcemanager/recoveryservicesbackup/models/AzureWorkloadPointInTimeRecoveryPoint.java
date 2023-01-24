@@ -87,6 +87,14 @@ public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecovery
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadPointInTimeRecoveryPoint withRecoveryPointProperties(
+        RecoveryPointProperties recoveryPointProperties) {
+        super.withRecoveryPointProperties(recoveryPointProperties);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

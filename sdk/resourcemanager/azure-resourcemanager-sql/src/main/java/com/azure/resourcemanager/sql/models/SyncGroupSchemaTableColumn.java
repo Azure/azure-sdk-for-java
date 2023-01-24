@@ -28,6 +28,10 @@ public final class SyncGroupSchemaTableColumn {
     @JsonProperty(value = "dataType")
     private String dataType;
 
+    /** Creates an instance of SyncGroupSchemaTableColumn class. */
+    public SyncGroupSchemaTableColumn() {
+    }
+
     /**
      * Get the quotedName property: Quoted name of sync group table column.
      *

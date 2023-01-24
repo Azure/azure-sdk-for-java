@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CosmosDbSettings;
 import com.azure.resourcemanager.machinelearning.models.ServiceManagedResourcesSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ServiceManagedResourcesSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ServiceManagedResourcesSettings model =
             BinaryData
                 .fromString("{\"cosmosDb\":{\"collectionsThroughput\":775754231}}")
@@ -20,8 +19,8 @@ public final class ServiceManagedResourcesSettingsTests {
         Assertions.assertEquals(775754231, model.cosmosDb().collectionsThroughput());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ServiceManagedResourcesSettings model =
             new ServiceManagedResourcesSettings()
                 .withCosmosDb(new CosmosDbSettings().withCollectionsThroughput(775754231));

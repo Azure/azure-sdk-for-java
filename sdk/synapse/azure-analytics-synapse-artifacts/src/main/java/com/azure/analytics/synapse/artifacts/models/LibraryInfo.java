@@ -57,6 +57,9 @@ public final class LibraryInfo {
     @JsonProperty(value = "creatorId", access = JsonProperty.Access.WRITE_ONLY)
     private String creatorId;
 
+    /** Creates an instance of LibraryInfo class. */
+    public LibraryInfo() {}
+
     /**
      * Get the name property: Name of the library.
      *

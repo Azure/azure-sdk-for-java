@@ -19,6 +19,10 @@ public final class SyncAgentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SyncAgentProperties innerProperties;
 
+    /** Creates an instance of SyncAgentInner class. */
+    public SyncAgentInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

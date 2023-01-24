@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.35.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -80,6 +80,8 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+    <javadoc.excludePackageNames/>
+
   </properties>
 
   <developers>

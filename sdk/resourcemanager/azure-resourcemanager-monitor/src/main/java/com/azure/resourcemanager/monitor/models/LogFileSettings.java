@@ -16,6 +16,10 @@ public class LogFileSettings {
     @JsonProperty(value = "text")
     private LogFileSettingsText text;
 
+    /** Creates an instance of LogFileSettings class. */
+    public LogFileSettings() {
+    }
+
     /**
      * Get the text property: Text settings.
      *

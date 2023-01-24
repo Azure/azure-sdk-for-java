@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerAutomaticTuning Get. */
 public final class ServerAutomaticTuningGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerAutomaticTuningGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAutomaticTuningGet.json
      */
     /**
      * Sample code: Get a server's automatic tuning settings.

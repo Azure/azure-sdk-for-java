@@ -14,7 +14,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkI
 /** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
 public interface VirtualNetworksClient {
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -22,13 +24,15 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkInner> list(String regionId, String pcName, String resourcePoolName);
 
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -37,13 +41,33 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkInner> list(String regionId, String pcName, String resourcePoolName, Context context);
 
     /**
-     * Return virtual network by its name.
+     * Implements virtual network GET method
+     *
+     * <p>Return virtual network by its name.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param pcName The private cloud name.
+     * @param virtualNetworkName virtual network id (vsphereId).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual network model along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualNetworkInner> getWithResponse(
+        String regionId, String pcName, String virtualNetworkName, Context context);
+
+    /**
+     * Implements virtual network GET method
+     *
+     * <p>Return virtual network by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -55,20 +79,4 @@ public interface VirtualNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkInner get(String regionId, String pcName, String virtualNetworkName);
-
-    /**
-     * Return virtual network by its name.
-     *
-     * @param regionId The region Id (westus, eastus).
-     * @param pcName The private cloud name.
-     * @param virtualNetworkName virtual network id (vsphereId).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> getWithResponse(
-        String regionId, String pcName, String virtualNetworkName, Context context);
 }

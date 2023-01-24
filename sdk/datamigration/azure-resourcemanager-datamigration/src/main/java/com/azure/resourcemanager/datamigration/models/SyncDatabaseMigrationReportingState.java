@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncDatabaseMigrationReportingState. */
+/** Enum of the different state of database level online migration. */
 public final class SyncDatabaseMigrationReportingState
     extends ExpandableStringEnum<SyncDatabaseMigrationReportingState> {
     /** Static value UNDEFINED for SyncDatabaseMigrationReportingState. */
@@ -45,6 +45,15 @@ public final class SyncDatabaseMigrationReportingState
     public static final SyncDatabaseMigrationReportingState FAILED = fromString("FAILED");
 
     /**
+     * Creates a new instance of SyncDatabaseMigrationReportingState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncDatabaseMigrationReportingState() {
+    }
+
+    /**
      * Creates or finds a SyncDatabaseMigrationReportingState from its string representation.
      *
      * @param name a name to look for.
@@ -55,7 +64,11 @@ public final class SyncDatabaseMigrationReportingState
         return fromString(name, SyncDatabaseMigrationReportingState.class);
     }
 
-    /** @return known SyncDatabaseMigrationReportingState values. */
+    /**
+     * Gets known SyncDatabaseMigrationReportingState values.
+     *
+     * @return known SyncDatabaseMigrationReportingState values.
+     */
     public static Collection<SyncDatabaseMigrationReportingState> values() {
         return values(SyncDatabaseMigrationReportingState.class);
     }

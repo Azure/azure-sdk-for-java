@@ -23,6 +23,9 @@ public final class NotebookListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NotebookListResponse class. */
+    public NotebookListResponse() {}
+
     /**
      * Get the value property: List of Notebooks.
      *

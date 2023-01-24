@@ -32,6 +32,9 @@ public final class AutoScaleProperties {
     @JsonProperty(value = "maxNodeCount")
     private Integer maxNodeCount;
 
+    /** Creates an instance of AutoScaleProperties class. */
+    public AutoScaleProperties() {}
+
     /**
      * Get the minNodeCount property: The minimum number of nodes the Big Data pool can support.
      *

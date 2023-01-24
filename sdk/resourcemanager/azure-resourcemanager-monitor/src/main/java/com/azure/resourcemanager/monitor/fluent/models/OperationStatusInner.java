@@ -48,6 +48,10 @@ public final class OperationStatusInner {
     @JsonProperty(value = "error")
     private ManagementError error;
 
+    /** Creates an instance of OperationStatusInner class. */
+    public OperationStatusInner() {
+    }
+
     /**
      * Get the id property: The operation Id.
      *

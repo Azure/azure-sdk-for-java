@@ -100,21 +100,6 @@ public interface ServerKeysClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerKeyInner get(String resourceGroupName, String serverName, String keyName);
-
-    /**
-     * Gets a server key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param keyName The name of the server key to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,6 +111,21 @@ public interface ServerKeysClient {
         String resourceGroupName, String serverName, String keyName, Context context);
 
     /**
+     * Gets a server key.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param keyName The name of the server key to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerKeyInner get(String resourceGroupName, String serverName, String keyName);
+
+    /**
      * Creates or updates a server key.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -133,8 +133,8 @@ public interface ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,8 +153,8 @@ public interface ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,8 +173,8 @@ public interface ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -193,8 +193,8 @@ public interface ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,8 +214,8 @@ public interface ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,8 +234,8 @@ public interface ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -254,8 +254,8 @@ public interface ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

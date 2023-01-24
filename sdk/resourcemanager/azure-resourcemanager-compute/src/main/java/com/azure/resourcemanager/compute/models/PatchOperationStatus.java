@@ -29,6 +29,15 @@ public final class PatchOperationStatus extends ExpandableStringEnum<PatchOperat
     public static final PatchOperationStatus COMPLETED_WITH_WARNINGS = fromString("CompletedWithWarnings");
 
     /**
+     * Creates a new instance of PatchOperationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PatchOperationStatus() {
+    }
+
+    /**
      * Creates or finds a PatchOperationStatus from its string representation.
      *
      * @param name a name to look for.

@@ -45,6 +45,10 @@ public final class LiveEventInput {
     @JsonProperty(value = "endpoints")
     private List<LiveEventEndpoint> endpoints;
 
+    /** Creates an instance of LiveEventInput class. */
+    public LiveEventInput() {
+    }
+
     /**
      * Get the streamingProtocol property: The input protocol for the live event. This is specified at creation time and
      * cannot be updated.

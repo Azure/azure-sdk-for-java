@@ -41,6 +41,10 @@ public final class ElasticPoolEditionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of ElasticPoolEditionCapability class. */
+    public ElasticPoolEditionCapability() {
+    }
+
     /**
      * Get the name property: The elastic pool edition name.
      *

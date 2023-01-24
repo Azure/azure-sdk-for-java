@@ -105,6 +105,13 @@ public interface DataMigrationService {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datamigration.fluent.models.DataMigrationServiceInner object.
      *
      * @return the inner object.
@@ -353,7 +360,23 @@ public interface DataMigrationService {
     DataMigrationService refresh(Context context);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * performs a health check and returns the status of the service and virtual machine size.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service health status along with {@link Response}.
+     */
+    Response<DataMigrationServiceStatusResponse> checkStatusWithResponse(Context context);
+
+    /**
+     * Check service health status
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * performs a health check and returns the status of the service and virtual machine size.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -363,19 +386,9 @@ public interface DataMigrationService {
     DataMigrationServiceStatusResponse checkStatus();
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
-     * performs a health check and returns the status of the service and virtual machine size.
+     * Start service
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
-     */
-    Response<DataMigrationServiceStatusResponse> checkStatusWithResponse(Context context);
-
-    /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -384,7 +397,9 @@ public interface DataMigrationService {
     void start();
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action
+     * Start service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
      * starts the service and the service can be used for data migration.
      *
      * @param context The context to associate with this operation.
@@ -395,9 +410,11 @@ public interface DataMigrationService {
     void start(Context context);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -405,9 +422,11 @@ public interface DataMigrationService {
     void stop();
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This action stops
-     * the service and the service cannot be used for data migration. The service owner won't be billed when the service
-     * is stopped.
+     * Stop service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This action
+     * stops the service and the service cannot be used for data migration. The service owner won't be billed when the
+     * service is stopped.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -417,7 +436,24 @@ public interface DataMigrationService {
     void stop(Context context);
 
     /**
-     * This method checks whether a proposed nested resource name is valid and available.
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
+     *
+     * @param parameters Requested name to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return indicates whether a proposed resource name is available along with {@link Response}.
+     */
+    Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
+        NameAvailabilityRequest parameters, Context context);
+
+    /**
+     * Check nested resource name validity and availability
+     *
+     * <p>This method checks whether a proposed nested resource name is valid and available.
      *
      * @param parameters Requested name to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -426,17 +462,4 @@ public interface DataMigrationService {
      * @return indicates whether a proposed resource name is available.
      */
     NameAvailabilityResponse nestedCheckNameAvailability(NameAvailabilityRequest parameters);
-
-    /**
-     * This method checks whether a proposed nested resource name is valid and available.
-     *
-     * @param parameters Requested name to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return indicates whether a proposed resource name is available.
-     */
-    Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
-        NameAvailabilityRequest parameters, Context context);
 }

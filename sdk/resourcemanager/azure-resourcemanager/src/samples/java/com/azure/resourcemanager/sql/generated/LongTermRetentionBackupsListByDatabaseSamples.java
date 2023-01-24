@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LongTermRetentionBackups ListByDatabase. */
 public final class LongTermRetentionBackupsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/LongTermRetentionBackupListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionBackupListByDatabase.json
      */
     /**
      * Sample code: Get all long term retention backups under the database.

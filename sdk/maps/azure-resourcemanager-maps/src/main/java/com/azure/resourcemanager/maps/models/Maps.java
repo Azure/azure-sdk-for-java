@@ -14,7 +14,7 @@ public interface Maps {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of operations available for Maps.
+     * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationDetail> listOperations();
 
@@ -25,7 +25,27 @@ public interface Maps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of operations available for Maps.
+     * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationDetail> listOperations(Context context);
+
+    /**
+     * List operations available for the Maps Resource Provider.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<OperationDetail> list();
+
+    /**
+     * List operations available for the Maps Resource Provider.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<OperationDetail> list(Context context);
 }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Summary of database results in the migration. */
 @Immutable
 public final class DatabaseSummaryResult extends DataItemMigrationSummaryResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseSummaryResult.class);
-
     /*
      * Size of the database in megabytes
      */
     @JsonProperty(value = "sizeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Double sizeMB;
+
+    /** Creates an instance of DatabaseSummaryResult class. */
+    public DatabaseSummaryResult() {
+    }
 
     /**
      * Get the sizeMB property: Size of the database in megabytes.

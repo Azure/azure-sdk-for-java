@@ -6,17 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ScheduleActionBase;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleActionBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScheduleActionBase model =
             BinaryData.fromString("{\"actionType\":\"ScheduleActionBase\"}").toObject(ScheduleActionBase.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScheduleActionBase model = new ScheduleActionBase();
         model = BinaryData.fromObject(model).toObject(ScheduleActionBase.class);
     }

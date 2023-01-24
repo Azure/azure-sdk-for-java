@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.subscription.fluent.AliasClient;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AliasClient. */
 public final class AliasClientImpl implements AliasClient {
-    private final ClientLogger logger = new ClientLogger(AliasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AliasService service;
 
@@ -62,7 +59,7 @@ public final class AliasClientImpl implements AliasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SubscriptionClientAl")
-    private interface AliasService {
+    public interface AliasService {
         @Headers({"Content-Type: application/json"})
         @Put("/providers/Microsoft.Subscription/aliases/{aliasName}")
         @ExpectedResponses({200, 201})
@@ -111,12 +108,15 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return subscription Information with the alias along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String aliasName, PutAliasRequest body) {
@@ -145,13 +145,16 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return subscription Information with the alias along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -179,14 +182,16 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return the {@link PollerFlux} for polling of subscription Information with the alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PutAliasResponseInner>, PutAliasResponseInner> beginCreateAsync(
         String aliasName, PutAliasRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(aliasName, body);
@@ -197,21 +202,23 @@ public final class AliasClientImpl implements AliasClient {
                 this.client.getHttpPipeline(),
                 PutAliasResponseInner.class,
                 PutAliasResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return the {@link PollerFlux} for polling of subscription Information with the alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PutAliasResponseInner>, PutAliasResponseInner> beginCreateAsync(
         String aliasName, PutAliasRequest body, Context context) {
         context = this.client.mergeContext(context);
@@ -225,45 +232,51 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return the {@link SyncPoller} for polling of subscription Information with the alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PutAliasResponseInner>, PutAliasResponseInner> beginCreate(
         String aliasName, PutAliasRequest body) {
-        return beginCreateAsync(aliasName, body).getSyncPoller();
+        return this.beginCreateAsync(aliasName, body).getSyncPoller();
     }
 
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return the {@link SyncPoller} for polling of subscription Information with the alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PutAliasResponseInner>, PutAliasResponseInner> beginCreate(
         String aliasName, PutAliasRequest body, Context context) {
-        return beginCreateAsync(aliasName, body, context).getSyncPoller();
+        return this.beginCreateAsync(aliasName, body, context).getSyncPoller();
     }
 
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return subscription Information with the alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PutAliasResponseInner> createAsync(String aliasName, PutAliasRequest body) {
@@ -273,13 +286,15 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription Information with the alias.
+     * @return subscription Information with the alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PutAliasResponseInner> createAsync(String aliasName, PutAliasRequest body, Context context) {
@@ -289,7 +304,9 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -304,7 +321,9 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Create Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param body The parameters required to create a new subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,11 +339,13 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Get Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return alias Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PutAliasResponseInner>> getWithResponseAsync(String aliasName) {
@@ -347,12 +368,14 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Get Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return alias Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PutAliasResponseInner>> getWithResponseAsync(String aliasName, Context context) {
@@ -374,48 +397,30 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Get Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return alias Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PutAliasResponseInner> getAsync(String aliasName) {
-        return getWithResponseAsync(aliasName)
-            .flatMap(
-                (Response<PutAliasResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(aliasName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Alias Subscription.
      *
-     * @param aliasName Alias Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PutAliasResponseInner get(String aliasName) {
-        return getAsync(aliasName).block();
-    }
-
-    /**
-     * Get Alias Subscription.
-     *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return alias Subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PutAliasResponseInner> getWithResponse(String aliasName, Context context) {
@@ -423,13 +428,31 @@ public final class AliasClientImpl implements AliasClient {
     }
 
     /**
-     * Delete Alias.
+     * Get Alias Subscription.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return alias Subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PutAliasResponseInner get(String aliasName) {
+        return getWithResponse(aliasName, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete Alias.
+     *
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String aliasName) {
@@ -452,12 +475,14 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Delete Alias.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String aliasName, Context context) {
@@ -479,39 +504,30 @@ public final class AliasClientImpl implements AliasClient {
     /**
      * Delete Alias.
      *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String aliasName) {
-        return deleteWithResponseAsync(aliasName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(aliasName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete Alias.
      *
-     * @param aliasName Alias Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String aliasName) {
-        deleteAsync(aliasName).block();
-    }
-
-    /**
-     * Delete Alias.
-     *
-     * @param aliasName Alias Name.
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String aliasName, Context context) {
@@ -519,11 +535,26 @@ public final class AliasClientImpl implements AliasClient {
     }
 
     /**
+     * Delete Alias.
+     *
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     *     as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription
+     *     creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String aliasName) {
+        deleteWithResponse(aliasName, Context.NONE);
+    }
+
+    /**
      * Get Alias Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return alias Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PutAliasListResultInner>> listWithResponseAsync() {
@@ -547,7 +578,7 @@ public final class AliasClientImpl implements AliasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return alias Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PutAliasListResultInner>> listWithResponseAsync(Context context) {
@@ -568,19 +599,25 @@ public final class AliasClientImpl implements AliasClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return alias Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PutAliasListResultInner> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<PutAliasListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Alias Subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return alias Subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PutAliasListResultInner> listWithResponse(Context context) {
+        return listWithResponseAsync(context).block();
     }
 
     /**
@@ -592,20 +629,6 @@ public final class AliasClientImpl implements AliasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PutAliasListResultInner list() {
-        return listAsync().block();
-    }
-
-    /**
-     * Get Alias Subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PutAliasListResultInner> listWithResponse(Context context) {
-        return listWithResponseAsync(context).block();
+        return listWithResponse(Context.NONE).getValue();
     }
 }

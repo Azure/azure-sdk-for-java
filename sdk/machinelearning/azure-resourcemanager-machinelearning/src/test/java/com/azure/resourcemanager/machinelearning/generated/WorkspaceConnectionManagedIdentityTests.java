@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionManagedIdentity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceConnectionManagedIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkspaceConnectionManagedIdentity model =
             BinaryData
                 .fromString("{\"resourceId\":\"ivensrpmeyyvpk\",\"clientId\":\"tlbijpzg\"}")
@@ -20,8 +19,8 @@ public final class WorkspaceConnectionManagedIdentityTests {
         Assertions.assertEquals("tlbijpzg", model.clientId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkspaceConnectionManagedIdentity model =
             new WorkspaceConnectionManagedIdentity().withResourceId("ivensrpmeyyvpk").withClientId("tlbijpzg");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionManagedIdentity.class);

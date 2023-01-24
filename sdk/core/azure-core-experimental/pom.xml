@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-experimental</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.35</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+  <version>1.0.0-beta.36</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
 
   <name>Microsoft Azure Java Core Experimental Library</name>
   <description>This package contains experimental core types for Azure Java clients.</description>
@@ -56,6 +56,8 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+
+    <javadoc.excludePackageNames/>
   </properties>
 
   <developers>
@@ -69,7 +71,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.35.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>

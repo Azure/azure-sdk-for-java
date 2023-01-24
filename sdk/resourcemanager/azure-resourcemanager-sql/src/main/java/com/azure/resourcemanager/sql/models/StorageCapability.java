@@ -28,6 +28,10 @@ public final class StorageCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of StorageCapability class. */
+    public StorageCapability() {
+    }
+
     /**
      * Get the storageAccountType property: The storage account type for the database's backups.
      *

@@ -16,12 +16,14 @@ public interface Connectors {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
+     * @return a connector in the hub along with {@link Response}.
      */
-    ConnectorResourceFormat get(String resourceGroupName, String hubName, String connectorName);
+    Response<ConnectorResourceFormat> getWithResponse(
+        String resourceGroupName, String hubName, String connectorName, Context context);
 
     /**
      * Gets a connector in the hub.
@@ -29,14 +31,12 @@ public interface Connectors {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a connector in the hub.
      */
-    Response<ConnectorResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, Context context);
+    ConnectorResourceFormat get(String resourceGroupName, String hubName, String connectorName);
 
     /**
      * Deletes a connector in the hub.
@@ -71,7 +71,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectorResourceFormat> listByHub(String resourceGroupName, String hubName);
 
@@ -84,7 +84,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectorResourceFormat> listByHub(String resourceGroupName, String hubName, Context context);
 
@@ -95,7 +95,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
+     * @return a connector in the hub along with {@link Response}.
      */
     ConnectorResourceFormat getById(String id);
 
@@ -107,7 +107,7 @@ public interface Connectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
+     * @return a connector in the hub along with {@link Response}.
      */
     Response<ConnectorResourceFormat> getByIdWithResponse(String id, Context context);
 

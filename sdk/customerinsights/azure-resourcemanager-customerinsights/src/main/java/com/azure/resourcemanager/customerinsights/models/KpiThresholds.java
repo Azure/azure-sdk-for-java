@@ -6,15 +6,12 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 /** Defines the KPI Threshold limits. */
 @Fluent
 public final class KpiThresholds {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiThresholds.class);
-
     /*
      * The lower threshold limit.
      */
@@ -32,6 +29,10 @@ public final class KpiThresholds {
      */
     @JsonProperty(value = "increasingKpi", required = true)
     private boolean increasingKpi;
+
+    /** Creates an instance of KpiThresholds class. */
+    public KpiThresholds() {
+    }
 
     /**
      * Get the lowerLimit property: The lower threshold limit.
@@ -100,14 +101,16 @@ public final class KpiThresholds {
      */
     public void validate() {
         if (lowerLimit() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property lowerLimit in model KpiThresholds"));
         }
         if (upperLimit() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property upperLimit in model KpiThresholds"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KpiThresholds.class);
 }

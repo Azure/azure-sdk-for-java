@@ -13,22 +13,21 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -53,6 +52,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
+
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
@@ -100,7 +100,7 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * new data will get appended to the existing blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -110,8 +110,27 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * Creates and opens an output stream to write data to the append blob. If overwrite is specified {@code true},
+     * the existing blob will be deleted and recreated, should data exist on the blob. If overwrite is specified
+     * {@code false}, new data will get appended to the existing blob.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(boolean overwrite) {
+        AppendBlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            requestConditions = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        } else {
+            // creating new blob to overwrite existing blob
+            create(true);
+        }
+        return getBlobOutputStream(requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the append blob.
      *
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
@@ -370,8 +389,8 @@ public final class AppendBlobClient extends BlobClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES, true);
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
-            fbb.subscribeOn(Schedulers.boundedElastic()), length, contentMd5, appendBlobRequestConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,
+            appendBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

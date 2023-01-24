@@ -23,6 +23,15 @@ public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
     public static final OSDiskType EPHEMERAL = fromString("Ephemeral");
 
     /**
+     * Creates a new instance of OSDiskType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OSDiskType() {
+    }
+
+    /**
      * Creates or finds a OSDiskType from its string representation.
      *
      * @param name a name to look for.

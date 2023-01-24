@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.FqdnEndpoints;
 import com.azure.resourcemanager.machinelearning.models.FqdnEndpointsProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ExternalFqdnResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ExternalFqdnResponseInner model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class ExternalFqdnResponseInnerTests {
         Assertions.assertEquals("jflcxog", model.value().get(0).properties().category());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ExternalFqdnResponseInner model =
             new ExternalFqdnResponseInner()
                 .withValue(

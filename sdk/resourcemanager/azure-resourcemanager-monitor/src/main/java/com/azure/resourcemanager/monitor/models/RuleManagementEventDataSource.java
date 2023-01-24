@@ -70,6 +70,10 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     @JsonProperty(value = "claims")
     private RuleManagementEventClaimsDataSource claims;
 
+    /** Creates an instance of RuleManagementEventDataSource class. */
+    public RuleManagementEventDataSource() {
+    }
+
     /**
      * Get the eventName property: the event name.
      *

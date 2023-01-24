@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.models.Kind;
@@ -13,16 +12,13 @@ import com.azure.resourcemanager.peering.models.PeeringPropertiesDirect;
 import com.azure.resourcemanager.peering.models.PeeringPropertiesExchange;
 import com.azure.resourcemanager.peering.models.PeeringSku;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location. */
-@JsonFlatten
 @Fluent
-public class PeeringInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringInner.class);
-
+public final class PeeringInner extends ProxyResource {
     /*
      * The SKU that defines the tier and kind of the peering.
      */
@@ -36,6 +32,12 @@ public class PeeringInner extends ProxyResource {
     private Kind kind;
 
     /*
+     * The properties that define a peering.
+     */
+    @JsonProperty(value = "properties")
+    private PeeringProperties innerProperties;
+
+    /*
      * The location of the resource.
      */
     @JsonProperty(value = "location", required = true)
@@ -45,31 +47,12 @@ public class PeeringInner extends ProxyResource {
      * The resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The properties that define a direct peering.
-     */
-    @JsonProperty(value = "properties.direct")
-    private PeeringPropertiesDirect direct;
-
-    /*
-     * The properties that define an exchange peering.
-     */
-    @JsonProperty(value = "properties.exchange")
-    private PeeringPropertiesExchange exchange;
-
-    /*
-     * The location of the peering.
-     */
-    @JsonProperty(value = "properties.peeringLocation")
-    private String peeringLocation;
-
-    /*
-     * The provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    /** Creates an instance of PeeringInner class. */
+    public PeeringInner() {
+    }
 
     /**
      * Get the sku property: The SKU that defines the tier and kind of the peering.
@@ -109,6 +92,15 @@ public class PeeringInner extends ProxyResource {
     public PeeringInner withKind(Kind kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: The properties that define a peering.
+     *
+     * @return the innerProperties value.
+     */
+    private PeeringProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -157,7 +149,7 @@ public class PeeringInner extends ProxyResource {
      * @return the direct value.
      */
     public PeeringPropertiesDirect direct() {
-        return this.direct;
+        return this.innerProperties() == null ? null : this.innerProperties().direct();
     }
 
     /**
@@ -167,7 +159,10 @@ public class PeeringInner extends ProxyResource {
      * @return the PeeringInner object itself.
      */
     public PeeringInner withDirect(PeeringPropertiesDirect direct) {
-        this.direct = direct;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringProperties();
+        }
+        this.innerProperties().withDirect(direct);
         return this;
     }
 
@@ -177,7 +172,7 @@ public class PeeringInner extends ProxyResource {
      * @return the exchange value.
      */
     public PeeringPropertiesExchange exchange() {
-        return this.exchange;
+        return this.innerProperties() == null ? null : this.innerProperties().exchange();
     }
 
     /**
@@ -187,7 +182,10 @@ public class PeeringInner extends ProxyResource {
      * @return the PeeringInner object itself.
      */
     public PeeringInner withExchange(PeeringPropertiesExchange exchange) {
-        this.exchange = exchange;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringProperties();
+        }
+        this.innerProperties().withExchange(exchange);
         return this;
     }
 
@@ -197,7 +195,7 @@ public class PeeringInner extends ProxyResource {
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
-        return this.peeringLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringLocation();
     }
 
     /**
@@ -207,7 +205,10 @@ public class PeeringInner extends ProxyResource {
      * @return the PeeringInner object itself.
      */
     public PeeringInner withPeeringLocation(String peeringLocation) {
-        this.peeringLocation = peeringLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringProperties();
+        }
+        this.innerProperties().withPeeringLocation(peeringLocation);
         return this;
     }
 
@@ -217,7 +218,7 @@ public class PeeringInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -227,27 +228,26 @@ public class PeeringInner extends ProxyResource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model PeeringInner"));
         } else {
             sku().validate();
         }
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model PeeringInner"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model PeeringInner"));
         }
-        if (direct() != null) {
-            direct().validate();
-        }
-        if (exchange() != null) {
-            exchange().validate();
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringInner.class);
 }

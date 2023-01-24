@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryPerformanceInsightResetDataResultState. */
+/** Indicates result of the operation. */
 public final class QueryPerformanceInsightResetDataResultState
     extends ExpandableStringEnum<QueryPerformanceInsightResetDataResultState> {
     /** Static value Succeeded for QueryPerformanceInsightResetDataResultState. */
@@ -16,6 +16,15 @@ public final class QueryPerformanceInsightResetDataResultState
 
     /** Static value Failed for QueryPerformanceInsightResetDataResultState. */
     public static final QueryPerformanceInsightResetDataResultState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of QueryPerformanceInsightResetDataResultState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryPerformanceInsightResetDataResultState() {
+    }
 
     /**
      * Creates or finds a QueryPerformanceInsightResetDataResultState from its string representation.
@@ -28,7 +37,11 @@ public final class QueryPerformanceInsightResetDataResultState
         return fromString(name, QueryPerformanceInsightResetDataResultState.class);
     }
 
-    /** @return known QueryPerformanceInsightResetDataResultState values. */
+    /**
+     * Gets known QueryPerformanceInsightResetDataResultState values.
+     *
+     * @return known QueryPerformanceInsightResetDataResultState values.
+     */
     public static Collection<QueryPerformanceInsightResetDataResultState> values() {
         return values(QueryPerformanceInsightResetDataResultState.class);
     }

@@ -515,7 +515,7 @@ public final class WebPubSubServiceClientBuilder implements
      *      and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public WebPubSubServiceAsyncClient buildAsyncClient() {
-        return new WebPubSubServiceAsyncClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential, version);
+        return new WebPubSubServiceAsyncClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential);
     }
 
     /**
@@ -526,7 +526,7 @@ public final class WebPubSubServiceClientBuilder implements
      *      and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public WebPubSubServiceClient buildClient() {
-        return new WebPubSubServiceClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential, version);
+        return new WebPubSubServiceClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential);
     }
 
     private Map<String, String> parseConnectionString(final String cs) {

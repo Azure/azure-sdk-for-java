@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AssignedUser;
 import com.azure.resourcemanager.machinelearning.models.PersonalComputeInstanceSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PersonalComputeInstanceSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PersonalComputeInstanceSettings model =
             BinaryData
                 .fromString("{\"assignedUser\":{\"objectId\":\"emc\",\"tenantId\":\"jk\"}}")
@@ -21,8 +20,8 @@ public final class PersonalComputeInstanceSettingsTests {
         Assertions.assertEquals("jk", model.assignedUser().tenantId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PersonalComputeInstanceSettings model =
             new PersonalComputeInstanceSettings()
                 .withAssignedUser(new AssignedUser().withObjectId("emc").withTenantId("jk"));

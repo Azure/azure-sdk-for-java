@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReportTimeframeType. */
+/** The time frame for pulling data for the report. If custom, then a specific time period must be provided. */
 public final class ReportTimeframeType extends ExpandableStringEnum<ReportTimeframeType> {
     /** Static value WeekToDate for ReportTimeframeType. */
     public static final ReportTimeframeType WEEK_TO_DATE = fromString("WeekToDate");
@@ -23,6 +23,15 @@ public final class ReportTimeframeType extends ExpandableStringEnum<ReportTimefr
     public static final ReportTimeframeType CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of ReportTimeframeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReportTimeframeType() {
+    }
+
+    /**
      * Creates or finds a ReportTimeframeType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ReportTimeframeType extends ExpandableStringEnum<ReportTimefr
         return fromString(name, ReportTimeframeType.class);
     }
 
-    /** @return known ReportTimeframeType values. */
+    /**
+     * Gets known ReportTimeframeType values.
+     *
+     * @return known ReportTimeframeType values.
+     */
     public static Collection<ReportTimeframeType> values() {
         return values(ReportTimeframeType.class);
     }

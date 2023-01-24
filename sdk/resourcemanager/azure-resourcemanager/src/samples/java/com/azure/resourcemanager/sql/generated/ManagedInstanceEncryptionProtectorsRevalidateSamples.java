@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 /** Samples for ManagedInstanceEncryptionProtectors Revalidate. */
 public final class ManagedInstanceEncryptionProtectorsRevalidateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ManagedInstanceEncryptionProtectorRevalidate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceEncryptionProtectorRevalidate.json
      */
     /**
      * Sample code: Revalidates the encryption protector.

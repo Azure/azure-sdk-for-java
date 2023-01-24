@@ -50,6 +50,7 @@
       --add-opens com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <checkstyle.excludes>**/generatedtestsources/**/*.java</checkstyle.excludes>
+    <javadoc.excludePackageNames/>
   </properties>
 
   <developers>
@@ -63,12 +64,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.35.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.35</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.36</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>

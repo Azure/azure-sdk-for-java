@@ -6,16 +6,12 @@ package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties that define an exchange peering. */
 @Fluent
 public final class PeeringPropertiesExchange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringPropertiesExchange.class);
-
     /*
      * The set of connections that constitute an exchange peering.
      */
@@ -27,6 +23,10 @@ public final class PeeringPropertiesExchange {
      */
     @JsonProperty(value = "peerAsn")
     private SubResource peerAsn;
+
+    /** Creates an instance of PeeringPropertiesExchange class. */
+    public PeeringPropertiesExchange() {
+    }
 
     /**
      * Get the connections property: The set of connections that constitute an exchange peering.

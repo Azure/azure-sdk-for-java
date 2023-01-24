@@ -20,6 +20,15 @@ public final class InterleaveOutput extends ExpandableStringEnum<InterleaveOutpu
     public static final InterleaveOutput INTERLEAVED_OUTPUT = fromString("InterleavedOutput");
 
     /**
+     * Creates a new instance of InterleaveOutput value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InterleaveOutput() {
+    }
+
+    /**
      * Creates or finds a InterleaveOutput from its string representation.
      *
      * @param name a name to look for.

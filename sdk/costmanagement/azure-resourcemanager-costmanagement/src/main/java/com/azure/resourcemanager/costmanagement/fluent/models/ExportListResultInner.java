@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of listing exports. It contains a list of available exports in the scope provided. */
 @Immutable
 public final class ExportListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportListResultInner.class);
-
     /*
      * The list of exports.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExportInner> value;
+
+    /** Creates an instance of ExportListResultInner class. */
+    public ExportListResultInner() {
+    }
 
     /**
      * Get the value property: The list of exports.

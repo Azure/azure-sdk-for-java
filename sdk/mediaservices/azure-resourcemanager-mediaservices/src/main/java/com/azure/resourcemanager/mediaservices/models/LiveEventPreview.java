@@ -47,6 +47,10 @@ public final class LiveEventPreview {
     @JsonProperty(value = "alternativeMediaId")
     private String alternativeMediaId;
 
+    /** Creates an instance of LiveEventPreview class. */
+    public LiveEventPreview() {
+    }
+
     /**
      * Get the endpoints property: The endpoints for preview. Do not share the preview URL with the live event audience.
      *

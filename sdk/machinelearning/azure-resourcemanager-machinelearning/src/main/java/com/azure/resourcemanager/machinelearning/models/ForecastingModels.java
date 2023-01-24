@@ -68,6 +68,15 @@ public final class ForecastingModels extends ExpandableStringEnum<ForecastingMod
     public static final ForecastingModels XGBOOST_REGRESSOR = fromString("XGBoostRegressor");
 
     /**
+     * Creates a new instance of ForecastingModels value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForecastingModels() {
+    }
+
+    /**
      * Creates or finds a ForecastingModels from its string representation.
      *
      * @param name a name to look for.

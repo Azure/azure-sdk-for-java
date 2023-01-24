@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.BanditPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BanditPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BanditPolicy model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class BanditPolicyTests {
         Assertions.assertEquals(43.063473F, model.slackFactor());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BanditPolicy model =
             new BanditPolicy()
                 .withDelayEvaluation(364097944)

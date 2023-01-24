@@ -26,6 +26,15 @@ public final class ProtectionStatus extends ExpandableStringEnum<ProtectionStatu
     public static final ProtectionStatus PROTECTION_FAILED = fromString("ProtectionFailed");
 
     /**
+     * Creates a new instance of ProtectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectionStatus() {
+    }
+
+    /**
      * Creates or finds a ProtectionStatus from its string representation.
      *
      * @param name a name to look for.

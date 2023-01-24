@@ -19,7 +19,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Policy> list(String resourceGroupName, String labName, String policySetName);
 
@@ -37,7 +37,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Policy> list(
         String resourceGroupName,
@@ -56,12 +56,15 @@ public interface Policies {
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
      * @param name The name of the policy.
+     * @param expand Specify the $expand query. Example: 'properties($select=description)'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy.
+     * @return policy along with {@link Response}.
      */
-    Policy get(String resourceGroupName, String labName, String policySetName, String name);
+    Response<Policy> getWithResponse(
+        String resourceGroupName, String labName, String policySetName, String name, String expand, Context context);
 
     /**
      * Get policy.
@@ -70,15 +73,28 @@ public interface Policies {
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
      * @param name The name of the policy.
-     * @param expand Specify the $expand query. Example: 'properties($select=description)'.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy.
      */
-    Response<Policy> getWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, String expand, Context context);
+    Policy get(String resourceGroupName, String labName, String policySetName, String name);
+
+    /**
+     * Delete policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param policySetName The name of the policy set.
+     * @param name The name of the policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String labName, String policySetName, String name, Context context);
 
     /**
      * Delete policy.
@@ -94,29 +110,13 @@ public interface Policies {
     void delete(String resourceGroupName, String labName, String policySetName, String name);
 
     /**
-     * Delete policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param policySetName The name of the policy set.
-     * @param name The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, Context context);
-
-    /**
      * Get policy.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy.
+     * @return policy along with {@link Response}.
      */
     Policy getById(String id);
 
@@ -129,7 +129,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy.
+     * @return policy along with {@link Response}.
      */
     Response<Policy> getByIdWithResponse(String id, String expand, Context context);
 
@@ -151,7 +151,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

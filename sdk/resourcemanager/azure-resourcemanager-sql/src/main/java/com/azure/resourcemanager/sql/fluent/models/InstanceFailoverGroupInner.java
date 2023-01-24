@@ -23,6 +23,10 @@ public final class InstanceFailoverGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private InstanceFailoverGroupProperties innerProperties;
 
+    /** Creates an instance of InstanceFailoverGroupInner class. */
+    public InstanceFailoverGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

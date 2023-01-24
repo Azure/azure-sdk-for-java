@@ -28,6 +28,10 @@ public final class MinCapacityCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of MinCapacityCapability class. */
+    public MinCapacityCapability() {
+    }
+
     /**
      * Get the value property: Min capacity value.
      *

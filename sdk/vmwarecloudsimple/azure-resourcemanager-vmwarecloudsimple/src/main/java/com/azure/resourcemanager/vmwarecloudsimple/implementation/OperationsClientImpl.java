@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.OperationsClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.AvailableOperationInner;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.OperationResourceInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationsService service;
 
@@ -60,7 +57,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleOpe")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.VMwareCloudSimple/operations")
         @ExpectedResponses({200})
@@ -99,11 +96,13 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableOperationInner>> listSinglePageAsync() {
@@ -130,13 +129,15 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableOperationInner>> listSinglePageAsync(Context context) {
@@ -162,11 +163,13 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableOperationInner> listAsync() {
@@ -174,13 +177,15 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableOperationInner> listAsync(Context context) {
@@ -189,11 +194,13 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableOperationInner> list() {
@@ -201,13 +208,15 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableOperationInner> list(Context context) {
@@ -215,17 +224,20 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return an async operation.
+     * Implements get of async operation
+     *
+     * <p>Return an async operation.
      *
      * @param regionId The region Id (westus, eastus).
+     * @param referer referer url.
      * @param operationId operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status response.
+     * @return operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationsGetResponse> getWithResponseAsync(String regionId, String operationId) {
+    private Mono<OperationsGetResponse> getWithResponseAsync(String regionId, String referer, String operationId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -241,10 +253,8 @@ public final class OperationsClientImpl implements OperationsClient {
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
         }
-        if (this.client.getReferer() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.client.getReferer() is required and cannot be null."));
+        if (referer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter referer is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -259,7 +269,7 @@ public final class OperationsClientImpl implements OperationsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             regionId,
-                            this.client.getReferer(),
+                            referer,
                             operationId,
                             accept,
                             context))
@@ -267,18 +277,22 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Return an async operation.
+     * Implements get of async operation
+     *
+     * <p>Return an async operation.
      *
      * @param regionId The region Id (westus, eastus).
+     * @param referer referer url.
      * @param operationId operation id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status response.
+     * @return operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationsGetResponse> getWithResponseAsync(String regionId, String operationId, Context context) {
+    private Mono<OperationsGetResponse> getWithResponseAsync(
+        String regionId, String referer, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -294,10 +308,8 @@ public final class OperationsClientImpl implements OperationsClient {
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
         }
-        if (this.client.getReferer() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.client.getReferer() is required and cannot be null."));
+        if (referer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter referer is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -310,54 +322,37 @@ public final class OperationsClientImpl implements OperationsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 regionId,
-                this.client.getReferer(),
+                referer,
                 operationId,
                 accept,
                 context);
     }
 
     /**
-     * Return an async operation.
+     * Implements get of async operation
+     *
+     * <p>Return an async operation.
      *
      * @param regionId The region Id (westus, eastus).
+     * @param referer referer url.
      * @param operationId operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status response.
+     * @return operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationResourceInner> getAsync(String regionId, String operationId) {
-        return getWithResponseAsync(regionId, operationId)
-            .flatMap(
-                (OperationsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<OperationResourceInner> getAsync(String regionId, String referer, String operationId) {
+        return getWithResponseAsync(regionId, referer, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Return an async operation.
+     * Implements get of async operation
+     *
+     * <p>Return an async operation.
      *
      * @param regionId The region Id (westus, eastus).
-     * @param operationId operation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResourceInner get(String regionId, String operationId) {
-        return getAsync(regionId, operationId).block();
-    }
-
-    /**
-     * Return an async operation.
-     *
-     * @param regionId The region Id (westus, eastus).
+     * @param referer referer url.
      * @param operationId operation id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,18 +361,37 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationsGetResponse getWithResponse(String regionId, String operationId, Context context) {
-        return getWithResponseAsync(regionId, operationId, context).block();
+    public OperationsGetResponse getWithResponse(String regionId, String referer, String operationId, Context context) {
+        return getWithResponseAsync(regionId, referer, operationId, context).block();
+    }
+
+    /**
+     * Implements get of async operation
+     *
+     * <p>Return an async operation.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param referer referer url.
+     * @param operationId operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationResourceInner get(String regionId, String referer, String operationId) {
+        return getWithResponse(regionId, referer, operationId, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableOperationInner>> listNextSinglePageAsync(String nextLink) {
@@ -408,12 +422,13 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableOperationInner>> listNextSinglePageAsync(String nextLink, Context context) {

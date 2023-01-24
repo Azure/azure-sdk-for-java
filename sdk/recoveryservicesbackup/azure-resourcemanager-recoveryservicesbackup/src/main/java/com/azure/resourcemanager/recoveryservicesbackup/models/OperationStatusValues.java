@@ -26,6 +26,15 @@ public final class OperationStatusValues extends ExpandableStringEnum<OperationS
     public static final OperationStatusValues CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of OperationStatusValues value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationStatusValues() {
+    }
+
+    /**
      * Creates or finds a OperationStatusValues from its string representation.
      *
      * @param name a name to look for.

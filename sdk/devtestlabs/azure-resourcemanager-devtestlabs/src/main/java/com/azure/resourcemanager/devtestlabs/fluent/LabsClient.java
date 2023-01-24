@@ -27,7 +27,7 @@ public interface LabsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabInner> list();
@@ -43,7 +43,7 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabInner> list(String expand, String filter, Integer top, String orderby, Context context);
@@ -55,7 +55,7 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabInner> listByResourceGroup(String resourceGroupName);
@@ -72,11 +72,27 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabInner> listByResourceGroup(
         String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+
+    /**
+     * Get lab.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lab along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LabInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String name, String expand, Context context);
 
     /**
      * Get lab.
@@ -92,22 +108,6 @@ public interface LabsClient {
     LabInner getByResourceGroup(String resourceGroupName, String name);
 
     /**
-     * Get lab.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context);
-
-    /**
      * Create or replace an existing lab. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
@@ -116,9 +116,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
+     * @return the {@link SyncPoller} for polling of a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String name, LabInner lab);
 
     /**
@@ -131,9 +131,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
+     * @return the {@link SyncPoller} for polling of a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(
         String resourceGroupName, String name, LabInner lab, Context context);
 
@@ -174,9 +174,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
 
     /**
@@ -188,9 +188,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
 
     /**
@@ -224,6 +224,21 @@ public interface LabsClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param lab A lab.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a lab along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LabInner> updateWithResponse(String resourceGroupName, String name, LabFragment lab, Context context);
+
+    /**
+     * Allows modifying tags of labs. All other properties will be ignored.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param lab A lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,21 +248,6 @@ public interface LabsClient {
     LabInner update(String resourceGroupName, String name, LabFragment lab);
 
     /**
-     * Allows modifying tags of labs. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabInner> updateWithResponse(String resourceGroupName, String name, LabFragment lab, Context context);
-
-    /**
      * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
@@ -255,9 +255,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name);
 
     /**
@@ -269,9 +269,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name, Context context);
 
     /**
@@ -308,9 +308,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
         String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
 
@@ -324,9 +324,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
         String resourceGroupName,
         String name,
@@ -374,9 +374,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
         String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters);
 
@@ -390,9 +390,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
         String resourceGroupName,
         String name,
@@ -430,6 +430,22 @@ public interface LabsClient {
         String name,
         ExportResourceUsageParameters exportResourceUsageParameters,
         Context context);
+
+    /**
+     * Generate a URI for uploading custom disk images to a Lab.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param generateUploadUriParameter Properties for generating an upload URI.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for generating an upload URI along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GenerateUploadUriResponseInner> generateUploadUriWithResponse(
+        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
@@ -447,22 +463,6 @@ public interface LabsClient {
         String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter);
 
     /**
-     * Generate a URI for uploading custom disk images to a Lab.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param generateUploadUriParameter Properties for generating an upload URI.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GenerateUploadUriResponseInner> generateUploadUriWithResponse(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
-
-    /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
@@ -472,9 +472,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
         String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
 
@@ -489,9 +489,9 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
         String resourceGroupName,
         String name,
@@ -540,7 +540,7 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabVhdInner> listVhds(String resourceGroupName, String name);
@@ -554,7 +554,7 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabVhdInner> listVhds(String resourceGroupName, String name, Context context);

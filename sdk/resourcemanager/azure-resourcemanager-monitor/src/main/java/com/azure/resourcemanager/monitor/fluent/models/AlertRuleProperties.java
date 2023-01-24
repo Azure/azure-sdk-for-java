@@ -46,6 +46,10 @@ public final class AlertRuleProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of AlertRuleProperties class. */
+    public AlertRuleProperties() {
+    }
+
     /**
      * Get the scopes property: A list of resource IDs that will be used as prefixes. The alert will only apply to
      * Activity Log events with resource IDs that fall under one of these prefixes. This list must include at least one

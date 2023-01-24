@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuCapability;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuLocationInfo;
 import com.azure.resourcemanager.storagepool.models.ResourceSkuRestrictions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Resource SKU Details. */
 @Immutable
 public final class ResourceSkuInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuInfoInner.class);
-
     /*
      * StoragePool RP API version
      */
@@ -37,8 +33,7 @@ public final class ResourceSkuInfoInner {
     private List<ResourceSkuCapability> capabilities;
 
     /*
-     * Zones and zone capabilities in those locations where the SKU is
-     * available.
+     * Zones and zone capabilities in those locations where the SKU is available.
      */
     @JsonProperty(value = "locationInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuLocationInfo locationInfo;
@@ -56,11 +51,14 @@ public final class ResourceSkuInfoInner {
     private String tier;
 
     /*
-     * The restrictions because of which SKU cannot be used. This is empty if
-     * there are no restrictions.
+     * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
     @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuRestrictions> restrictions;
+
+    /** Creates an instance of ResourceSkuInfoInner class. */
+    public ResourceSkuInfoInner() {
+    }
 
     /**
      * Get the apiVersion property: StoragePool RP API version.

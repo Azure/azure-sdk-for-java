@@ -12,10 +12,9 @@ import com.azure.resourcemanager.billing.fluent.BillingPropertiesClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
 import com.azure.resourcemanager.billing.models.BillingProperties;
 import com.azure.resourcemanager.billing.models.BillingProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingPropertiesImpl implements BillingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPropertiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingPropertiesImpl.class);
 
     private final BillingPropertiesClient innerClient;
 
@@ -25,15 +24,6 @@ public final class BillingPropertiesImpl implements BillingProperties {
         BillingPropertiesClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public BillingProperty get() {
-        BillingPropertyInner inner = this.serviceClient().get();
-        if (inner != null) {
-            return new BillingPropertyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<BillingProperty> getWithResponse(Context context) {
@@ -49,8 +39,8 @@ public final class BillingPropertiesImpl implements BillingProperties {
         }
     }
 
-    public BillingProperty update(BillingPropertyInner parameters) {
-        BillingPropertyInner inner = this.serviceClient().update(parameters);
+    public BillingProperty get() {
+        BillingPropertyInner inner = this.serviceClient().get();
         if (inner != null) {
             return new BillingPropertyImpl(inner, this.manager());
         } else {
@@ -66,6 +56,15 @@ public final class BillingPropertiesImpl implements BillingProperties {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BillingPropertyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingProperty update(BillingPropertyInner parameters) {
+        BillingPropertyInner inner = this.serviceClient().update(parameters);
+        if (inner != null) {
+            return new BillingPropertyImpl(inner, this.manager());
         } else {
             return null;
         }

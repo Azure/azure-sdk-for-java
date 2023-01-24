@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyRequestBodyCheck. */
+/** Describes if policy managed rules will inspect the request body content. */
 public final class PolicyRequestBodyCheck extends ExpandableStringEnum<PolicyRequestBodyCheck> {
     /** Static value Disabled for PolicyRequestBodyCheck. */
     public static final PolicyRequestBodyCheck DISABLED = fromString("Disabled");
 
     /** Static value Enabled for PolicyRequestBodyCheck. */
     public static final PolicyRequestBodyCheck ENABLED = fromString("Enabled");
+
+    /**
+     * Creates a new instance of PolicyRequestBodyCheck value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyRequestBodyCheck() {
+    }
 
     /**
      * Creates or finds a PolicyRequestBodyCheck from its string representation.
@@ -27,7 +36,11 @@ public final class PolicyRequestBodyCheck extends ExpandableStringEnum<PolicyReq
         return fromString(name, PolicyRequestBodyCheck.class);
     }
 
-    /** @return known PolicyRequestBodyCheck values. */
+    /**
+     * Gets known PolicyRequestBodyCheck values.
+     *
+     * @return known PolicyRequestBodyCheck values.
+     */
     public static Collection<PolicyRequestBodyCheck> values() {
         return values(PolicyRequestBodyCheck.class);
     }

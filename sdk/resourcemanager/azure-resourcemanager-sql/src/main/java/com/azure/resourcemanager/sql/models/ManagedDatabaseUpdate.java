@@ -27,6 +27,10 @@ public final class ManagedDatabaseUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ManagedDatabaseUpdate class. */
+    public ManagedDatabaseUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *
@@ -171,7 +175,8 @@ public final class ManagedDatabaseUpdate {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @return the createMode value.
      */
@@ -185,7 +190,8 @@ public final class ManagedDatabaseUpdate {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseUpdate object itself.
@@ -355,6 +361,52 @@ public final class ManagedDatabaseUpdate {
             this.innerProperties = new ManagedDatabaseProperties();
         }
         this.innerProperties().withLongTermRetentionBackupResourceId(longTermRetentionBackupResourceId);
+        return this;
+    }
+
+    /**
+     * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @return the autoCompleteRestore value.
+     */
+    public Boolean autoCompleteRestore() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoCompleteRestore();
+    }
+
+    /**
+     * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @param autoCompleteRestore the autoCompleteRestore value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withAutoCompleteRestore(Boolean autoCompleteRestore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withAutoCompleteRestore(autoCompleteRestore);
+        return this;
+    }
+
+    /**
+     * Get the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @return the lastBackupName value.
+     */
+    public String lastBackupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastBackupName();
+    }
+
+    /**
+     * Set the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @param lastBackupName the lastBackupName value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withLastBackupName(String lastBackupName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withLastBackupName(lastBackupName);
         return this;
     }
 
