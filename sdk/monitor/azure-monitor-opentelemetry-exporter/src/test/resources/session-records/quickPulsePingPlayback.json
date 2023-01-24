@@ -2,7 +2,7 @@
   "networkCallRecords": [
     {
       "Method": "POST",
-      "Uri": "https://REDACTED.services.visualstudio.com/QuickPulseService.svc/ping?ikey=ikey123",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/ping?ikey=ikey123",
       "Headers": {},
       "Response": {
         "content-length": "0",
@@ -14,7 +14,7 @@
         "retry-after": "0",
         "StatusCode": "200",
         "Date": "Tue, 17 Aug 2021 19:16:11 GMT",
-        "Request-Context": "appId=cid-v1:f2ce62bd-2d53-4529-bb5c-c9826082918f",
+        "Request-Context": "appId=cid-v1:ikey123",
         "X-Powered-By": "ASP.NET"
       },
       "Exception": null

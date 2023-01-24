@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed NullPointerException when deserializing AMQP message with null body. [32939](https://github.com/Azure/azure-sdk-for-java/issues/32939)
+
 ### Other Changes
 
 ## 5.15.1 (2023-01-18)
