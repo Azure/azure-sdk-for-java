@@ -10,10 +10,6 @@ parameters:
   displayName: 'Should publish'
   type: boolean
   default: true
-- name: StageOnly
-  displayName: 'Stage Only'
-  type: boolean
-  default: false
 
 resources:
   repositories:
@@ -70,7 +66,7 @@ jobs:
       BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
       JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
       ShouldPublish: ${{ parameters.ShouldPublish }}
-      StageOnly: ${{ parameters.StageOnly }}
+      StageOnly: false
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
       ArtifactName: packages-mavencentral-$(System.JobAttempt)
