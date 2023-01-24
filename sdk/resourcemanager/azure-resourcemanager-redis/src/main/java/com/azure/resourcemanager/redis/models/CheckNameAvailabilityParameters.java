@@ -5,15 +5,10 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Parameters body to pass for resource name availability check.
- */
+/** Parameters body to pass for resource name availability check. */
 @Fluent
 public final class CheckNameAvailabilityParameters {
     /*
@@ -29,15 +24,13 @@ public final class CheckNameAvailabilityParameters {
     @JsonProperty(value = "type", required = true)
     private String type;
 
-    /**
-     * Creates an instance of CheckNameAvailabilityParameters class.
-     */
+    /** Creates an instance of CheckNameAvailabilityParameters class. */
     public CheckNameAvailabilityParameters() {
     }
 
     /**
      * Get the name property: Resource name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -46,7 +39,7 @@ public final class CheckNameAvailabilityParameters {
 
     /**
      * Set the name property: Resource name.
-     * 
+     *
      * @param name the name value to set.
      * @return the CheckNameAvailabilityParameters object itself.
      */
@@ -58,7 +51,7 @@ public final class CheckNameAvailabilityParameters {
     /**
      * Get the type property: Resource type. The only legal value of this property for checking redis cache name
      * availability is 'Microsoft.Cache/redis'.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -68,7 +61,7 @@ public final class CheckNameAvailabilityParameters {
     /**
      * Set the type property: Resource type. The only legal value of this property for checking redis cache name
      * availability is 'Microsoft.Cache/redis'.
-     * 
+     *
      * @param type the type value to set.
      * @return the CheckNameAvailabilityParameters object itself.
      */
@@ -79,15 +72,21 @@ public final class CheckNameAvailabilityParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model CheckNameAvailabilityParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model CheckNameAvailabilityParameters"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property type in model CheckNameAvailabilityParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property type in model CheckNameAvailabilityParameters"));
         }
     }
 

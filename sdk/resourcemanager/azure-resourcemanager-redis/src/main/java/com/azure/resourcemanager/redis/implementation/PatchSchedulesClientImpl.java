@@ -25,40 +25,31 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.PatchSchedulesClient;
 import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.DefaultName;
 import com.azure.resourcemanager.redis.models.RedisPatchScheduleListResult;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in PatchSchedulesClient.
- */
+/** An instance of this class provides access to all the operations defined in PatchSchedulesClient. */
 public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final PatchSchedulesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final RedisManagementClientImpl client;
 
     /**
      * Initializes an instance of PatchSchedulesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
-     PatchSchedulesClientImpl(RedisManagementClientImpl client) {
-        this.service = RestProxy.create(PatchSchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    PatchSchedulesClientImpl(RedisManagementClientImpl client) {
+        this.service =
+            RestProxy.create(PatchSchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,119 +60,205 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
     public interface PatchSchedulesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/patchSchedules")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
+                + "/{cacheName}/patchSchedules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisPatchScheduleListResult>> listByRedisResource(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RedisPatchScheduleListResult>> listByRedisResource(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/patchSchedules/{default}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
+                + "/patchSchedules/{default}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisPatchScheduleInner>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("default") DefaultName defaultParameter, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") RedisPatchScheduleInner parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RedisPatchScheduleInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("default") DefaultName defaultParameter,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") RedisPatchScheduleInner parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/patchSchedules/{default}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
+                + "/patchSchedules/{default}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("default") DefaultName defaultParameter, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("default") DefaultName defaultParameter,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/patchSchedules/{default}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
+                + "/patchSchedules/{default}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisPatchScheduleInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("default") DefaultName defaultParameter, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RedisPatchScheduleInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("default") DefaultName defaultParameter,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisPatchScheduleListResult>> listByRedisResourceNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RedisPatchScheduleListResult>> listByRedisResourceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all patch schedules in the specified redis cache (there is only one) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisPatchScheduleInner>> listByRedisResourceSinglePageAsync(String resourceGroupName, String cacheName) {
+    private Mono<PagedResponse<RedisPatchScheduleInner>> listByRedisResourceSinglePageAsync(
+        String resourceGroupName, String cacheName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByRedisResource(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, cacheName, accept, context))
-            .<PagedResponse<RedisPatchScheduleInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByRedisResource(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            cacheName,
+                            accept,
+                            context))
+            .<PagedResponse<RedisPatchScheduleInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all patch schedules in the specified redis cache (there is only one) along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisPatchScheduleInner>> listByRedisResourceSinglePageAsync(String resourceGroupName, String cacheName, Context context) {
+    private Mono<PagedResponse<RedisPatchScheduleInner>> listByRedisResourceSinglePageAsync(
+        String resourceGroupName, String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cacheName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByRedisResource(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, cacheName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByRedisResource(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                cacheName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link PagedFlux}.
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RedisPatchScheduleInner> listByRedisResourceAsync(String resourceGroupName, String cacheName) {
@@ -192,17 +269,19 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link PagedFlux}.
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RedisPatchScheduleInner> listByRedisResourceAsync(String resourceGroupName, String cacheName, Context context) {
+    private PagedFlux<RedisPatchScheduleInner> listByRedisResourceAsync(
+        String resourceGroupName, String cacheName, Context context) {
         return new PagedFlux<>(
             () -> listByRedisResourceSinglePageAsync(resourceGroupName, cacheName, context),
             nextLink -> listByRedisResourceNextSinglePageAsync(nextLink, context));
@@ -210,13 +289,14 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link PagedIterable}.
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisPatchScheduleInner> listByRedisResource(String resourceGroupName, String cacheName) {
@@ -225,23 +305,25 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link PagedIterable}.
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisPatchScheduleInner> listByRedisResource(String resourceGroupName, String cacheName, Context context) {
+    public PagedIterable<RedisPatchScheduleInner> listByRedisResource(
+        String resourceGroupName, String cacheName, Context context) {
         return new PagedIterable<>(listByRedisResourceAsync(resourceGroupName, cacheName, context));
     }
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -249,24 +331,34 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get patch schedules for Redis cache along with {@link Response} on successful completion of {@link Mono}.
+     * @return response to put/get patch schedules for Redis cache along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
+    public Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (defaultParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -274,13 +366,26 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
             parameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, defaultParameter, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            defaultParameter,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -289,24 +394,38 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get patch schedules for Redis cache along with {@link Response} on successful completion of {@link Mono}.
+     * @return response to put/get patch schedules for Redis cache along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters, Context context) {
+    private Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        DefaultName defaultParameter,
+        RedisPatchScheduleInner parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (defaultParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -315,12 +434,22 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, defaultParameter, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                defaultParameter,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -331,13 +460,15 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @return response to put/get patch schedules for Redis cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
+    public Mono<RedisPatchScheduleInner> createOrUpdateAsync(
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, defaultParameter, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -349,13 +480,18 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @return response to put/get patch schedules for Redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RedisPatchScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters, Context context) {
+    public Response<RedisPatchScheduleInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String name,
+        DefaultName defaultParameter,
+        RedisPatchScheduleInner parameters,
+        Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, defaultParameter, parameters, context).block();
     }
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -366,13 +502,15 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @return response to put/get patch schedules for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
-        return createOrUpdateWithResponse(resourceGroupName, name, defaultParameter, parameters, Context.NONE).getValue();
+    public RedisPatchScheduleInner createOrUpdate(
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, name, defaultParameter, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
      * Deletes the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -382,30 +520,51 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, DefaultName defaultParameter) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String name, DefaultName defaultParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (defaultParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name, defaultParameter, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            defaultParameter,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -416,30 +575,48 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (defaultParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, name, defaultParameter, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                defaultParameter,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
      * Deletes the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -450,12 +627,12 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name, DefaultName defaultParameter) {
-        return deleteWithResponseAsync(resourceGroupName, name, defaultParameter)
-            .flatMap(ignored -> Mono.empty());}
+        return deleteWithResponseAsync(resourceGroupName, name, defaultParameter).flatMap(ignored -> Mono.empty());
+    }
 
     /**
      * Deletes the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -466,13 +643,14 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
         return deleteWithResponseAsync(resourceGroupName, name, defaultParameter, context).block();
     }
 
     /**
      * Deletes the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -487,40 +665,62 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
     /**
      * Gets the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache along with {@link Response} on successful completion of {@link Mono}.
+     * @return the patching schedule of a redis cache along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisPatchScheduleInner>> getWithResponseAsync(String resourceGroupName, String name, DefaultName defaultParameter) {
+    public Mono<Response<RedisPatchScheduleInner>> getWithResponseAsync(
+        String resourceGroupName, String name, DefaultName defaultParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (defaultParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, name, defaultParameter, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            defaultParameter,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -528,33 +728,52 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache along with {@link Response} on successful completion of {@link Mono}.
+     * @return the patching schedule of a redis cache along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RedisPatchScheduleInner>> getWithResponseAsync(String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
+    private Mono<Response<RedisPatchScheduleInner>> getWithResponseAsync(
+        String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (defaultParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, name, defaultParameter, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                defaultParameter,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
      * Gets the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -566,11 +785,12 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisPatchScheduleInner> getAsync(String resourceGroupName, String name, DefaultName defaultParameter) {
         return getWithResponseAsync(resourceGroupName, name, defaultParameter)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
 
     /**
      * Gets the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -581,13 +801,14 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @return the patching schedule of a redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RedisPatchScheduleInner> getWithResponse(String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
+    public Response<RedisPatchScheduleInner> getWithResponse(
+        String resourceGroupName, String name, DefaultName defaultParameter, Context context) {
         return getWithResponseAsync(resourceGroupName, name, defaultParameter, context).block();
     }
 
     /**
      * Gets the patching schedule of a redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -603,14 +824,14 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list patch schedules Redis operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of list patch schedules Redis operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisPatchScheduleInner>> listByRedisResourceNextSinglePageAsync(String nextLink) {
@@ -618,49 +839,63 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByRedisResourceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RedisPatchScheduleInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.listByRedisResourceNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RedisPatchScheduleInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list patch schedules Redis operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response of list patch schedules Redis operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisPatchScheduleInner>> listByRedisResourceNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<RedisPatchScheduleInner>> listByRedisResourceNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByRedisResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByRedisResourceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

@@ -4,16 +4,10 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * The resource management error additional info.
- */
+/** The resource management error additional info. */
 @Immutable
 public final class ErrorAdditionalInfo {
     /*
@@ -28,15 +22,13 @@ public final class ErrorAdditionalInfo {
     @JsonProperty(value = "info", access = JsonProperty.Access.WRITE_ONLY)
     private Object info;
 
-    /**
-     * Creates an instance of ErrorAdditionalInfo class.
-     */
+    /** Creates an instance of ErrorAdditionalInfo class. */
     public ErrorAdditionalInfo() {
     }
 
     /**
      * Get the type property: The additional info type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -45,7 +37,7 @@ public final class ErrorAdditionalInfo {
 
     /**
      * Get the info property: The additional info.
-     * 
+     *
      * @return the info value.
      */
     public Object info() {
@@ -54,7 +46,7 @@ public final class ErrorAdditionalInfo {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

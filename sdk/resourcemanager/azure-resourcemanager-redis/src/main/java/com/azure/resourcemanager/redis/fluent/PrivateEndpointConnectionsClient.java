@@ -8,98 +8,102 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.redis.fluent.models.PrivateEndpointConnectionInner;
 import java.nio.ByteBuffer;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
- */
+/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public interface PrivateEndpointConnectionsClient {
     /**
      * List all the private endpoint connections associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account as paginated response with {@link PagedFlux}.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String cacheName);
 
     /**
      * List all the private endpoint connections associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account as paginated response with {@link PagedIterable}.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String cacheName);
 
     /**
      * List all the private endpoint connections associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account as paginated response with {@link PagedIterable}.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String cacheName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the redis cache along with {@link Response} on successful completion of {@link Mono}.
+     * @return the specified private endpoint connection associated with the redis cache along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName, String cacheName, String privateEndpointConnectionName);
+    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName);
 
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the redis cache on successful completion of {@link Mono}.
+     * @return the specified private endpoint connection associated with the redis cache on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName, String cacheName, String privateEndpointConnectionName);
+    Mono<PrivateEndpointConnectionInner> getAsync(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName);
 
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,43 +111,53 @@ public interface PrivateEndpointConnectionsClient {
      * @return the specified private endpoint connection associated with the redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private endpoint connection associated with the redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(String resourceGroupName, String cacheName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName);
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(String resourceGroupName, String cacheName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties);
+    Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,14 +165,19 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPutAsync(String resourceGroupName, String cacheName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties);
+    PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPutAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,14 +185,19 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPut(String resourceGroupName, String cacheName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties);
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPut(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param properties The private endpoint connection properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,14 +206,20 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPut(String resourceGroupName, String cacheName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context);
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginPut(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context);
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,14 +227,19 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> putAsync(String resourceGroupName, String cacheName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties);
+    Mono<PrivateEndpointConnectionInner> putAsync(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,14 +247,19 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner put(String resourceGroupName, String cacheName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties);
+    PrivateEndpointConnectionInner put(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param properties The private endpoint connection properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,28 +268,36 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner put(String resourceGroupName, String cacheName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context);
+    PrivateEndpointConnectionInner put(
+        String resourceGroupName,
+        String cacheName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String cacheName, String privateEndpointConnectionName);
+    Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -260,10 +308,11 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,14 +320,16 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

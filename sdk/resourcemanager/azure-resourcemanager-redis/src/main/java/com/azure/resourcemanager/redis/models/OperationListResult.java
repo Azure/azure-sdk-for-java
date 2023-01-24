@@ -5,13 +5,9 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the
@@ -31,15 +27,13 @@ public final class OperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of OperationListResult class.
-     */
+    /** Creates an instance of OperationListResult class. */
     public OperationListResult() {
     }
 
     /**
      * Get the value property: List of operations supported by the resource provider.
-     * 
+     *
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -48,7 +42,7 @@ public final class OperationListResult {
 
     /**
      * Set the value property: List of operations supported by the resource provider.
-     * 
+     *
      * @param value the value value to set.
      * @return the OperationListResult object itself.
      */
@@ -59,7 +53,7 @@ public final class OperationListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -68,7 +62,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * Parameters for Redis import operation.
- */
+/** Parameters for Redis import operation. */
 @Fluent
 public final class ImportRdbParameters {
     /*
@@ -36,15 +31,13 @@ public final class ImportRdbParameters {
     @JsonProperty(value = "preferred-data-archive-auth-method")
     private String preferredDataArchiveAuthMethod;
 
-    /**
-     * Creates an instance of ImportRdbParameters class.
-     */
+    /** Creates an instance of ImportRdbParameters class. */
     public ImportRdbParameters() {
     }
 
     /**
      * Get the format property: File format.
-     * 
+     *
      * @return the format value.
      */
     public String format() {
@@ -53,7 +46,7 @@ public final class ImportRdbParameters {
 
     /**
      * Set the format property: File format.
-     * 
+     *
      * @param format the format value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -64,7 +57,7 @@ public final class ImportRdbParameters {
 
     /**
      * Get the files property: files to import.
-     * 
+     *
      * @return the files value.
      */
     public List<String> files() {
@@ -73,7 +66,7 @@ public final class ImportRdbParameters {
 
     /**
      * Set the files property: files to import.
-     * 
+     *
      * @param files the files value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -83,9 +76,9 @@ public final class ImportRdbParameters {
     }
 
     /**
-     * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used
-     * for data archive, specify SAS or ManagedIdentity, default value is SAS.
-     * 
+     * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     *
      * @return the preferredDataArchiveAuthMethod value.
      */
     public String preferredDataArchiveAuthMethod() {
@@ -93,9 +86,9 @@ public final class ImportRdbParameters {
     }
 
     /**
-     * Set the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used
-     * for data archive, specify SAS or ManagedIdentity, default value is SAS.
-     * 
+     * Set the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     *
      * @param preferredDataArchiveAuthMethod the preferredDataArchiveAuthMethod value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -106,12 +99,14 @@ public final class ImportRdbParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (files() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property files in model ImportRdbParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property files in model ImportRdbParameters"));
         }
     }
 

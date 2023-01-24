@@ -5,15 +5,10 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Specifies a range of IP addresses permitted to connect to the cache.
- */
+/** Specifies a range of IP addresses permitted to connect to the cache. */
 @Fluent
 public final class RedisFirewallRuleProperties {
     /*
@@ -28,15 +23,13 @@ public final class RedisFirewallRuleProperties {
     @JsonProperty(value = "endIP", required = true)
     private String endIp;
 
-    /**
-     * Creates an instance of RedisFirewallRuleProperties class.
-     */
+    /** Creates an instance of RedisFirewallRuleProperties class. */
     public RedisFirewallRuleProperties() {
     }
 
     /**
      * Get the startIp property: lowest IP address included in the range.
-     * 
+     *
      * @return the startIp value.
      */
     public String startIp() {
@@ -45,7 +38,7 @@ public final class RedisFirewallRuleProperties {
 
     /**
      * Set the startIp property: lowest IP address included in the range.
-     * 
+     *
      * @param startIp the startIp value to set.
      * @return the RedisFirewallRuleProperties object itself.
      */
@@ -56,7 +49,7 @@ public final class RedisFirewallRuleProperties {
 
     /**
      * Get the endIp property: highest IP address included in the range.
-     * 
+     *
      * @return the endIp value.
      */
     public String endIp() {
@@ -65,7 +58,7 @@ public final class RedisFirewallRuleProperties {
 
     /**
      * Set the endIp property: highest IP address included in the range.
-     * 
+     *
      * @param endIp the endIp value to set.
      * @return the RedisFirewallRuleProperties object itself.
      */
@@ -76,15 +69,21 @@ public final class RedisFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startIp() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property startIp in model RedisFirewallRuleProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property startIp in model RedisFirewallRuleProperties"));
         }
         if (endIp() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property endIp in model RedisFirewallRuleProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property endIp in model RedisFirewallRuleProperties"));
         }
     }
 

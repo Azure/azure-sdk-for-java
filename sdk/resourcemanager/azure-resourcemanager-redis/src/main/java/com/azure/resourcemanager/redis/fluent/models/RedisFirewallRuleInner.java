@@ -5,12 +5,9 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
 /**
  * A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted to connect.
@@ -23,15 +20,13 @@ public class RedisFirewallRuleInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private RedisFirewallRuleProperties innerProperties = new RedisFirewallRuleProperties();
 
-    /**
-     * Creates an instance of RedisFirewallRuleInner class.
-     */
+    /** Creates an instance of RedisFirewallRuleInner class. */
     public RedisFirewallRuleInner() {
     }
 
     /**
      * Get the innerProperties property: redis cache firewall rule properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RedisFirewallRuleProperties innerProperties() {
@@ -40,7 +35,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
 
     /**
      * Get the startIp property: lowest IP address included in the range.
-     * 
+     *
      * @return the startIp value.
      */
     public String startIp() {
@@ -49,7 +44,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
 
     /**
      * Set the startIp property: lowest IP address included in the range.
-     * 
+     *
      * @param startIp the startIp value to set.
      * @return the RedisFirewallRuleInner object itself.
      */
@@ -63,7 +58,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
 
     /**
      * Get the endIp property: highest IP address included in the range.
-     * 
+     *
      * @return the endIp value.
      */
     public String endIp() {
@@ -72,7 +67,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
 
     /**
      * Set the endIp property: highest IP address included in the range.
-     * 
+     *
      * @param endIp the endIp value to set.
      * @return the RedisFirewallRuleInner object itself.
      */
@@ -86,12 +81,15 @@ public class RedisFirewallRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model RedisFirewallRuleInner"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model RedisFirewallRuleInner"));
         } else {
             innerProperties().validate();
         }

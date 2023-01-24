@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * The response of list firewall rules Redis operation.
- */
+/** The response of list firewall rules Redis operation. */
 @Fluent
 public final class RedisFirewallRuleListResult {
     /*
@@ -30,15 +24,13 @@ public final class RedisFirewallRuleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of RedisFirewallRuleListResult class.
-     */
+    /** Creates an instance of RedisFirewallRuleListResult class. */
     public RedisFirewallRuleListResult() {
     }
 
     /**
      * Get the value property: Results of the list firewall rules operation.
-     * 
+     *
      * @return the value value.
      */
     public List<RedisFirewallRuleInner> value() {
@@ -47,7 +39,7 @@ public final class RedisFirewallRuleListResult {
 
     /**
      * Set the value property: Results of the list firewall rules operation.
-     * 
+     *
      * @param value the value value to set.
      * @return the RedisFirewallRuleListResult object itself.
      */
@@ -58,7 +50,7 @@ public final class RedisFirewallRuleListResult {
 
     /**
      * Get the nextLink property: Link for next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -67,7 +59,7 @@ public final class RedisFirewallRuleListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

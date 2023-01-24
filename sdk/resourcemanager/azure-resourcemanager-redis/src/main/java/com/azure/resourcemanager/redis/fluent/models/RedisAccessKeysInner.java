@@ -4,16 +4,10 @@
 
 package com.azure.resourcemanager.redis.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.regex.Pattern;
 
-/**
- * Redis cache access keys.
- */
+/** Redis cache access keys. */
 @Immutable
 public final class RedisAccessKeysInner {
     /*
@@ -28,15 +22,13 @@ public final class RedisAccessKeysInner {
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
-    /**
-     * Creates an instance of RedisAccessKeysInner class.
-     */
+    /** Creates an instance of RedisAccessKeysInner class. */
     public RedisAccessKeysInner() {
     }
 
     /**
      * Get the primaryKey property: The current primary key that clients can use to authenticate with Redis cache.
-     * 
+     *
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -45,7 +37,7 @@ public final class RedisAccessKeysInner {
 
     /**
      * Get the secondaryKey property: The current secondary key that clients can use to authenticate with Redis cache.
-     * 
+     *
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -54,7 +46,7 @@ public final class RedisAccessKeysInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

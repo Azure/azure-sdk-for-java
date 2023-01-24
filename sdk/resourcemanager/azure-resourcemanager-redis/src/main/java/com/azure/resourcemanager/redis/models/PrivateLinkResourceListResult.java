@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.PrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.regex.Pattern;
 
-/**
- * A list of private link resources.
- */
+/** A list of private link resources. */
 @Fluent
 public final class PrivateLinkResourceListResult {
     /*
@@ -24,15 +18,13 @@ public final class PrivateLinkResourceListResult {
     @JsonProperty(value = "value")
     private List<PrivateLinkResourceInner> value;
 
-    /**
-     * Creates an instance of PrivateLinkResourceListResult class.
-     */
+    /** Creates an instance of PrivateLinkResourceListResult class. */
     public PrivateLinkResourceListResult() {
     }
 
     /**
      * Get the value property: Array of private link resources.
-     * 
+     *
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -41,7 +33,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Set the value property: Array of private link resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the PrivateLinkResourceListResult object itself.
      */
@@ -52,7 +44,7 @@ public final class PrivateLinkResourceListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

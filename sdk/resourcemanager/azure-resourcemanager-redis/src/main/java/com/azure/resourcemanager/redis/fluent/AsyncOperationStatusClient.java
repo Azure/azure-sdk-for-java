@@ -7,20 +7,15 @@ package com.azure.resourcemanager.redis.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.fluent.models.OperationStatusInner;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in AsyncOperationStatusClient.
- */
+/** An instance of this class provides access to all the operations defined in AsyncOperationStatusClient. */
 public interface AsyncOperationStatusClient {
     /**
      * For checking the ongoing status of an operation.
-     * 
+     *
      * @param location The location at which operation was triggered.
      * @param operationId The ID of asynchronous operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +28,7 @@ public interface AsyncOperationStatusClient {
 
     /**
      * For checking the ongoing status of an operation.
-     * 
+     *
      * @param location The location at which operation was triggered.
      * @param operationId The ID of asynchronous operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +41,7 @@ public interface AsyncOperationStatusClient {
 
     /**
      * For checking the ongoing status of an operation.
-     * 
+     *
      * @param location The location at which operation was triggered.
      * @param operationId The ID of asynchronous operation.
      * @param context The context to associate with this operation.
@@ -60,7 +55,7 @@ public interface AsyncOperationStatusClient {
 
     /**
      * For checking the ongoing status of an operation.
-     * 
+     *
      * @param location The location at which operation was triggered.
      * @param operationId The ID of asynchronous operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
