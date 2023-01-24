@@ -880,7 +880,7 @@ public class CosmosClientBuilder implements
             long time = stopwatch.getTime();
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
             LOGGER.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
-                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}]," +
+                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                     "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}].",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
