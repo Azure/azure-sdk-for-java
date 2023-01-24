@@ -3,18 +3,26 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
+import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteAllParticipantsOptions;
+import com.azure.communication.callautomation.models.MuteParticipantOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.UnmuteAllParticipantsOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -27,6 +35,7 @@ import java.util.AbstractMap.SimpleEntry;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -269,5 +278,181 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(removeParticipantsResultResponse);
         assertEquals(202, removeParticipantsResultResponse.getStatusCode());
         assertNotNull(removeParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void muteParticipant() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        MuteParticipantsResult muteParticipantsResult =
+            callConnection.muteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
+
+        assertNotNull(muteParticipantsResult);
+        assertNull(muteParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void muteParticipantWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        MuteParticipantOptions muteParticipantOptions = new MuteParticipantOptions(
+            new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        Response<MuteParticipantsResult> muteParticipantsResultResponse =
+            callConnection.muteParticipantWithResponse(muteParticipantOptions, Context.NONE);
+
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void muteAllParticipantsWithInitiator() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        MuteParticipantsResult muteParticipantsResult =
+            callConnection.muteAllParticipants(new CommunicationUserIdentifier(CALL_TARGET_ID));
+
+        assertNotNull(muteParticipantsResult);
+        assertNull(muteParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void muteAllParticipantsWithResponseWithInitiator() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        MuteAllParticipantsOptions muteParticipantOptions = new MuteAllParticipantsOptions()
+            .setRequestInitiator(new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        Response<MuteParticipantsResult> muteParticipantsResultResponse =
+            callConnection.muteAllParticipantsWithResponse(muteParticipantOptions, Context.NONE);
+
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void muteAllParticipantsWithoutInitiator() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        MuteParticipantsResult muteParticipantsResult = callConnection.muteAllParticipants(null);
+
+        assertNotNull(muteParticipantsResult);
+        assertNull(muteParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void muteAllParticipantsWithResponseWithoutInitiator() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        MuteAllParticipantsOptions muteParticipantOptions = new MuteAllParticipantsOptions()
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        Response<MuteParticipantsResult> muteParticipantsResultResponse =
+            callConnection.muteAllParticipantsWithResponse(muteParticipantOptions, Context.NONE);
+
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void unmuteParticipant() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        UnmuteParticipantsResult unmuteParticipantsResult =
+            callConnection.unmuteParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
+
+        assertNotNull(unmuteParticipantsResult);
+        assertNull(unmuteParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void unmuteParticipantWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        UnmuteParticipantOptions muteParticipantOptions = new UnmuteParticipantOptions(
+            new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse =
+            callConnection.unmuteParticipantWithResponse(muteParticipantOptions, Context.NONE);
+
+        assertNotNull(unmuteParticipantsResultResponse);
+        assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
+        assertNotNull(unmuteParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void unmuteAllParticipantsWithInitiator() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        UnmuteParticipantsResult unmuteParticipantsResult = callConnection.unmuteAllParticipants();
+
+        assertNotNull(unmuteParticipantsResult);
+        assertNull(unmuteParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void unmuteAllParticipantsWithResponseWithInitiator() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        UnmuteAllParticipantsOptions unmuteAllParticipantOptions = new UnmuteAllParticipantsOptions()
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse =
+            callConnection.unmuteAllParticipantsWithResponse(unmuteAllParticipantOptions, Context.NONE);
+
+        assertNotNull(unmuteParticipantsResultResponse);
+        assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
+        assertNotNull(unmuteParticipantsResultResponse.getValue());
     }
 }
