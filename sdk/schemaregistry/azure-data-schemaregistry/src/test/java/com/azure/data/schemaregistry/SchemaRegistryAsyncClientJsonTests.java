@@ -110,7 +110,7 @@ public class SchemaRegistryAsyncClientJsonTests extends TestBase {
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
 
         // Act & Assert
-        testBase.registerAndGetSchemaTwice(client1,client2, schemaName, SCHEMA_CONTENT, schemaContentModified);
+        testBase.registerAndGetSchemaTwice(client1, client2, schemaName, SCHEMA_CONTENT, schemaContentModified);
     }
 
     /**
