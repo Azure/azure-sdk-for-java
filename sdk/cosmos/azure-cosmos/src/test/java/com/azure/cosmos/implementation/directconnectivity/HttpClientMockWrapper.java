@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import org.mockito.Mockito;
@@ -138,7 +139,7 @@ public class HttpClientMockWrapper {
             } else {
                 return Mono.delay(Duration.ofMillis(responseAfterMillis)).flatMap(t -> httpResponseOrException(httpResponse, e));
             }
-        }).when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+        }).when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class));
     }
 
     public HttpClientMockWrapper(HttpClientBehaviourBuilder builder) {

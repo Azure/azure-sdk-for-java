@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -76,10 +78,10 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
 
         doAnswer((Answer<Mono<HttpResponse>>) invocationOnMock -> {
             HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-            Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
+            HttpTimeoutPolicy timeoutPolicy = invocationOnMock.getArgument(1, HttpTimeoutPolicy.class);
             httpRequests.add(httpRequest);
-            return origHttpClient.send(httpRequest, responseTimeout);
-        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+            return origHttpClient.send(httpRequest, timeoutPolicy);
+        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class));
 
         return super.createRxGatewayProxy(sessionContainer,
                 consistencyLevel,

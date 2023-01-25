@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import org.mockito.Mockito;
 
 import java.time.Duration;
@@ -39,7 +40,7 @@ public class HttpClientUnderTestWrapper {
             HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
             Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
             capturedRequests.add(httpRequest);
-            return origHttpClient.send(httpRequest, responseTimeout);
-        }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+            return origHttpClient.send(httpRequest, HttpTimeoutPolicyDefault.instance);
+        }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class));
     }
 }

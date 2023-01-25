@@ -28,6 +28,8 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -850,7 +852,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyDefault.class)))
                 .thenReturn(Mono.error(new CosmosException(400, "TestBadRequest")));
             RxStoreModel rxGatewayStoreModel = rxGatewayStoreModel = ReflectionUtils.getGatewayProxy((RxDocumentClientImpl) client.asyncClient().getDocClientWrapper());
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);

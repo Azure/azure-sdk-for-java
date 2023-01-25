@@ -38,6 +38,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -738,7 +739,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
             CosmosException throttlingException = new CosmosException(429, "Throttling Test");
 
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
@@ -751,7 +752,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
             mockHttpClient = Mockito.mock(HttpClient.class);
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
@@ -767,7 +768,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(429);
 
             mockHttpClient = Mockito.mock(HttpClient.class);
-            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class)))
                 .thenReturn(Mono.error(throttlingException), Mono.error(throttlingException),
                     Mono.just(createResponse((201))));
             ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);

@@ -49,8 +49,8 @@ public class SharedGatewayHttpClient implements HttpClient {
     }
 
     @Override
-    public Mono<HttpResponse> send(HttpRequest request, Duration responseTimeout) {
-        return httpClient.send(request, responseTimeout);
+    public Mono<HttpResponse> send(HttpRequest request, HttpTimeoutPolicy timeoutPolicy) {
+        return httpClient.send(request, timeoutPolicy);
     }
 
     public int getReferenceCounter() {

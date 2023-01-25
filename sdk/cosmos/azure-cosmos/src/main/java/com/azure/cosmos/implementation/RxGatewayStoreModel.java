@@ -17,6 +17,9 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
@@ -234,14 +237,12 @@ class RxGatewayStoreModel implements RxStoreModel {
                     httpHeaders,
                     contentAsByteArray);
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
-            if (OperationType.QueryPlan.equals(request.getOperationType())) {
-                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
-            } else if (request.isAddressRefresh()) {
-                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            HttpTimeoutPolicy timeoutPolicy = HttpTimeoutPolicyDefault.instance;
+            if (OperationType.QueryPlan.equals(request.getOperationType()) || request.isAddressRefresh()) {
+                timeoutPolicy = HttpTimeoutPolicyControlPlaneHotPath.instance;
             }
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, timeoutPolicy);
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {

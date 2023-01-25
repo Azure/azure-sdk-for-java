@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
@@ -277,7 +278,7 @@ public class RxDocumentClientImplTest {
             }
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request, Duration responseTimeout) {
+            public Mono<HttpResponse> send(HttpRequest request, HttpTimeoutPolicy timeoutPolicy) {
                 return null;
             }
 

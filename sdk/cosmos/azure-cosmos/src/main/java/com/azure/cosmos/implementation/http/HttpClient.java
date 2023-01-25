@@ -12,6 +12,8 @@ import java.time.Duration;
  */
 public interface HttpClient {
 
+
+
     /**
      * Send the provided request asynchronously.
      *
@@ -24,10 +26,10 @@ public interface HttpClient {
      * Send the provided request asynchronously.
      *
      * @param request The HTTP request to send
-     * @param responseTimeout response timeout value for this http request
+     * @param timeoutPolicy response timeout policy for this http request
      * @return A {@link Mono} that emits response asynchronously
      */
-    Mono<HttpResponse> send(HttpRequest request, Duration responseTimeout);
+    Mono<HttpResponse> send(HttpRequest request, HttpTimeoutPolicy timeoutPolicy);
 
     /**
      * Create HttpClient with FixedChannelPool {@link HttpClientConfig}

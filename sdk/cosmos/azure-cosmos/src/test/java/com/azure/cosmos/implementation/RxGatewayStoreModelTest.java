@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
@@ -82,7 +83,7 @@ public class RxGatewayStoreModelTest {
                 .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-                .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+                .when(httpClient).send(any(HttpRequest.class), any(HttpTimeoutPolicyDefault.class));
 
         GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         Mockito.doReturn(ConsistencyLevel.SESSION)
@@ -124,7 +125,7 @@ public class RxGatewayStoreModelTest {
                .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(new SocketException("Dummy SocketException")))
-               .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+               .when(httpClient).send(any(HttpRequest.class), any(HttpTimeoutPolicyDefault.class));
 
         GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         Mockito.doReturn(ConsistencyLevel.SESSION)
@@ -177,7 +178,7 @@ public class RxGatewayStoreModelTest {
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
-            .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+            .when(httpClient).send(any(HttpRequest.class), any(HttpTimeoutPolicyDefault.class));
 
         GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
         Mockito.doReturn(defaultConsistency)

@@ -44,6 +44,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
@@ -392,12 +393,12 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<HttpResponse> httpResponseMono;
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
             httpResponseMono = this.httpClient.send(httpRequest,
-                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
+                HttpTimeoutPolicyControlPlaneHotPath.instance);
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(httpHeaders)
                 .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
-                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
+                    HttpTimeoutPolicyControlPlaneHotPath.instance));
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono, httpRequest);
@@ -737,12 +738,12 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
             httpResponseMono = this.httpClient.send(httpRequest,
-                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
+                HttpTimeoutPolicyControlPlaneHotPath.instance);
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(defaultHttpHeaders)
                 .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
-                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
+                    HttpTimeoutPolicyControlPlaneHotPath.instance));
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, this.clientContext, httpResponseMono, httpRequest);

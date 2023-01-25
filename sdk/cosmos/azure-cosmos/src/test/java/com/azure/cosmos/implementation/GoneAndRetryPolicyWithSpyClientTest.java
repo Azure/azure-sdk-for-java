@@ -18,6 +18,8 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -115,7 +117,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
 
         Mono<HttpResponse> responseObservable;
         if (invocation.getArguments().length == 2) {
-            responseObservable = originalClient.send(request, invocation.getArgument(1, Duration.class));
+            responseObservable = originalClient.send(request, invocation.getArgument(1, HttpTimeoutPolicy.class));
         } else {
             responseObservable = originalClient.send(request);
         }
@@ -159,7 +161,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
         .when(spyHttpClient)
         .send(
             Mockito.any(HttpRequest.class),
-            Mockito.any(Duration.class));
+            Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class));
 
         doAnswer(invocation -> this.captureAndLogRequest(
             invocation, origHttpClient, forceRefreshHeaderSeen, null))
@@ -296,7 +298,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .when(spyHttpClient)
             .send(
                 Mockito.any(HttpRequest.class),
-                Mockito.any(Duration.class));
+                Mockito.any(HttpTimeoutPolicyControlPlaneHotPath.class));
 
         doAnswer(invocation -> this.captureAndLogRequest(
             invocation, origHttpClient, forceRefreshHeaderSeen, forceCollectionRoutingMapRefreshHeaderSeen))

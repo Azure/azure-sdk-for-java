@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -297,7 +298,7 @@ public class ClientTelemetry {
                         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, targetEndpoint,
                             targetEndpoint.getPort(), httpHeaders, fluxBytes);
                         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
-                            Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
+                            HttpTimeoutPolicyDefault.instance);
                         return httpResponseMono.flatMap(response -> {
                             if (response.statusCode() != HttpConstants.StatusCodes.OK) {
                                 logger.error("Client telemetry request did not succeeded, status code {}",
