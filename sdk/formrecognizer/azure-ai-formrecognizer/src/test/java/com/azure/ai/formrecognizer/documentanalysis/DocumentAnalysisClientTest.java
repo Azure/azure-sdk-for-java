@@ -15,6 +15,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -1459,6 +1460,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @DoNotRecord(skipInPlayback = true)
     public void analyzeDataWithInvalidLength(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {

@@ -28,6 +28,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -310,7 +311,10 @@ public final class DocumentAnalysisAsyncClient {
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
-     * @throws IllegalArgumentException If {@code document}, {@code modelId} or {@code document.length} is null.
+     * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} length is null or unspecified.
+     * Use {@link BinaryData#fromStream(InputStream, Long)} to create an instance of the {@code document}
+     * from given {@link InputStream} with length.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<OperationResult, AnalyzeResult>
