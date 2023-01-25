@@ -259,7 +259,7 @@ public final class DocumentAnalysisClient {
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
-     * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document}, {@code modelId} or {@code document.length} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, AnalyzeResult>
@@ -269,6 +269,11 @@ public final class DocumentAnalysisClient {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
+        }
+
+        if (document.getLength() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                + " be null"));
         }
 
         final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);

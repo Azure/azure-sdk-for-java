@@ -1219,4 +1219,16 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             validateW2Data(syncPoller.getFinalResult());
         }, W2_JPG);
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void analyzeDocumentInvalidLength(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
+                () -> client.beginAnalyzeDocument("prebuilt-tax.us.w2", BinaryData.fromStream(data))
+                .setPollInterval(durationTestMode).getSyncPoller());
+            Assertions.assertEquals("'document length' is required and cannot be null", illegalArgumentException.getMessage());
+        }, W2_JPG);
+    }
 }

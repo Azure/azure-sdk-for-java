@@ -310,7 +310,7 @@ public final class DocumentAnalysisAsyncClient {
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
-     * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document}, {@code modelId} or {@code document.length} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<OperationResult, AnalyzeResult>
@@ -327,6 +327,11 @@ public final class DocumentAnalysisAsyncClient {
             if (CoreUtils.isNullOrEmpty(modelId)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                     + " be null or empty"));
+            }
+
+            if (document.getLength() == null) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                    + " be null"));
             }
 
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
