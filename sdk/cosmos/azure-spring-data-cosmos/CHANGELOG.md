@@ -3,6 +3,7 @@
 ### 3.32.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added a new flag `overwritePolicy` to `CosmosIndexingPolicy` that when set to false will allow the user to not overwrite the policy defined in the portal - See [PR 33171](https://github.com/Azure/azure-sdk-for-java/pull/33171)
 
 #### Breaking Changes
 
