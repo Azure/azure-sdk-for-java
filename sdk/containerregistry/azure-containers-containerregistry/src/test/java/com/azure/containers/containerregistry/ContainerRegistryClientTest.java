@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,12 +33,25 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     private HttpClient httpClient;
     private final String repositoryName = HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
+
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
+    }
     private ContainerRegistryClient getContainerRegistryClient(HttpClient client) {
-        return getContainerRegistryBuilder(client).buildClient();
+        return getContainerRegistryBuilder(buildSyncAssertingClient(client == null ? interceptorManager.getPlaybackClient() : client)).buildClient();
     }
 
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient client) {
-        return getContainerRegistryBuilder(client).buildAsyncClient();
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(client == null ? interceptorManager.getPlaybackClient() : client)).buildAsyncClient();
     }
 
     @BeforeEach
