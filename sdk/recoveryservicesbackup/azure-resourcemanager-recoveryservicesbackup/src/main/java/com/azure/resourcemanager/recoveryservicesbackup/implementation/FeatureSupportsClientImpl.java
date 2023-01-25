@@ -52,7 +52,7 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface FeatureSupportsService {
+    public interface FeatureSupportsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}"

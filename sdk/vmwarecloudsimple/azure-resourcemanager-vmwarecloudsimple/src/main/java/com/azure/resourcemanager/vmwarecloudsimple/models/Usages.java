@@ -10,18 +10,22 @@ import com.azure.core.util.Context;
 /** Resource collection API of Usages. */
 public interface Usages {
     /**
-     * Returns list of usage in region.
+     * Implements Usages List method
+     *
+     * <p>Returns list of usage in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of usages.
+     * @return list of usages as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> list(String regionId);
 
     /**
-     * Returns list of usage in region.
+     * Implements Usages List method
+     *
+     * <p>Returns list of usage in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param filter The filter to apply on the list operation. only name.value is allowed here as a filter e.g.
@@ -30,7 +34,7 @@ public interface Usages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of usages.
+     * @return list of usages as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> list(String regionId, String filter, Context context);
 }

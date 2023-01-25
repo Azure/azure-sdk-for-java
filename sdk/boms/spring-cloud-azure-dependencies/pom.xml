@@ -303,6 +303,11 @@
         <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-redis</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

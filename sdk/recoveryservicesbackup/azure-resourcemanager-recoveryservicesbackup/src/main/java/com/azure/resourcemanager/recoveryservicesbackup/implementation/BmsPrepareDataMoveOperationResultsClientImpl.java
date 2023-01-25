@@ -56,7 +56,7 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BmsPrepareDataMoveOperationResultsService {
+    public interface BmsPrepareDataMoveOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

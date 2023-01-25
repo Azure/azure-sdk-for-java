@@ -868,10 +868,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     *
      * @return Information about the created resource.
+     * @deprecated See {@link #flush(long, boolean)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public PathInfo flush(long position) {
         return flush(position, false);
     }

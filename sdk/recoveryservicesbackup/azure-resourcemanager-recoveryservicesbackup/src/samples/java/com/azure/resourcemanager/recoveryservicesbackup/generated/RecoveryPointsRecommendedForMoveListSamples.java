@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
 import java.util.Arrays;
 
 /** Samples for RecoveryPointsRecommendedForMove List. */
 public final class RecoveryPointsRecommendedForMoveListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
      */
     /**
      * Sample code: Get Protected Azure Vm Recovery Points Recommended for Move.
@@ -31,6 +30,6 @@ public final class RecoveryPointsRecommendedForMoveListSamples {
                 new ListRecoveryPointsRecommendedForMoveRequest()
                     .withObjectType("ListRecoveryPointsRecommendedForMoveRequest")
                     .withExcludedRPList(Arrays.asList("348916168024334", "348916168024335")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

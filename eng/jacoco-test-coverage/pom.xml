@@ -213,7 +213,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.8.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -243,7 +243,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
+      <version>4.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -546,6 +546,11 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
       <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-redis</artifactId>
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-redis;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

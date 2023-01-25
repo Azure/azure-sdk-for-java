@@ -13,15 +13,12 @@ import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
 import com.azure.resourcemanager.storagepool.models.SystemMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for iSCSI Target requests. */
 @Fluent
 public final class IscsiTargetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetInner.class);
-
     /*
      * Properties for iSCSI Target operations.
      */
@@ -35,8 +32,7 @@ public final class IscsiTargetInner extends ProxyResource {
     private SystemMetadata systemData;
 
     /*
-     * Azure resource id. Indicates if this resource is managed by another
-     * Azure resource.
+     * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
     @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
@@ -46,6 +42,10 @@ public final class IscsiTargetInner extends ProxyResource {
      */
     @JsonProperty(value = "managedByExtended", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> managedByExtended;
+
+    /** Creates an instance of IscsiTargetInner class. */
+    public IscsiTargetInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties for iSCSI Target operations.
@@ -269,7 +269,7 @@ public final class IscsiTargetInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model IscsiTargetInner"));
@@ -280,4 +280,6 @@ public final class IscsiTargetInner extends ProxyResource {
             systemData().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetInner.class);
 }

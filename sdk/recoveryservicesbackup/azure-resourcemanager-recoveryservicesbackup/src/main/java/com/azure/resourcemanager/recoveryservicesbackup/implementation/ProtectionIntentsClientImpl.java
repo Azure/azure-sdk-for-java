@@ -56,7 +56,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionIntentsService {
+    public interface ProtectionIntentsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}"

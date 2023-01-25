@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Deprecated the always-failing API `DataLakeFileClient.flush(long)` to avoid confusion regarding overwrite semantics in DataLake.
 
 ## 12.13.2 (2023-01-10)
 

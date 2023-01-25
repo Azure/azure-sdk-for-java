@@ -32,6 +32,15 @@ public final class ProtectionIntentItemType extends ExpandableStringEnum<Protect
         fromString("AzureWorkloadSQLAutoProtectionIntent");
 
     /**
+     * Creates a new instance of ProtectionIntentItemType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectionIntentItemType() {
+    }
+
+    /**
      * Creates or finds a ProtectionIntentItemType from its string representation.
      *
      * @param name a name to look for.
