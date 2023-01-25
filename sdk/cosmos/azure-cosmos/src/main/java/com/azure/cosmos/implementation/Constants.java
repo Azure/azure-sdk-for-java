@@ -99,6 +99,7 @@ public final class Constants {
 
         //Indexing Policy.
         public static final String INDEXING_POLICY = "indexingPolicy";
+        public static final String OVERWRITE_POLICY = "overwritePolicy";
         public static final String AUTOMATIC = "automatic";
         public static final String STRING_PRECISION = "StringPrecision";
         public static final String NUMERIC_PRECISION = "NumericPrecision";

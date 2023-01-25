@@ -13,13 +13,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for cosmos indexing policy
+ * Annotation for cosmos indexing policy.
+ * Using this annotation will overwrite the cosmos indexing policy currently in Portal,
+ * unless the policy are identical or overwritePolicy is set to false.
  */
 @Persistent
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface CosmosIndexingPolicy {
+    /**
+     * Whether or not to overwrite the indexing policy specified in the Portal.
+     * @return default as true
+     */
+    boolean overwritePolicy() default Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY;
+
     /**
      * To set automatic indexing
      * @return default as true

@@ -306,6 +306,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private IndexingPolicy getIndexingPolicy(Class<?> domainType) {
         final IndexingPolicy policy = new IndexingPolicy();
 
+        policy.setOverwritePolicy(this.getIndexingPolicyOverwritePolicy(domainType));
         policy.setAutomatic(this.getIndexingPolicyAutomatic(domainType));
         policy.setIndexingMode(this.getIndexingPolicyMode(domainType));
         policy.setIncludedPaths(this.getIndexingPolicyIncludePaths(domainType));
@@ -424,6 +425,16 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return ttl;
     }
 
+    private Boolean getIndexingPolicyOverwritePolicy(Class<?> domainType) {
+        Boolean isOverwritePolicy = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
+
+        if (annotation != null) {
+            isOverwritePolicy = Boolean.valueOf(annotation.overwritePolicy());
+        }
+
+        return isOverwritePolicy;
+    }
 
     private Boolean getIndexingPolicyAutomatic(Class<?> domainType) {
         Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC);

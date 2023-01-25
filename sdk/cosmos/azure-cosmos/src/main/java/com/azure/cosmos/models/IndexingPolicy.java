@@ -19,7 +19,6 @@ import java.util.List;
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
-
     private List<IncludedPath> includedPaths;
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
@@ -33,6 +32,7 @@ public final class IndexingPolicy {
     public IndexingPolicy() {
         this.jsonSerializable = new JsonSerializable();
 
+        this.setOverwritePolicy(true);
         this.setAutomatic(true);
         this.setIndexingMode(IndexingMode.CONSISTENT);
     }
@@ -84,6 +84,26 @@ public final class IndexingPolicy {
      */
     IndexingPolicy(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
+    }
+
+    /**
+     * Gets whether the policy defined in the portal should be overwritten.
+     *
+     * @return the overwritePolicy
+     */
+    public Boolean isOverwritePolicy() {
+        return this.jsonSerializable.getBoolean(Constants.Properties.OVERWRITE_POLICY);
+    }
+
+    /**
+     * Sets whether the policy defined in portal should be overwritten.
+     *
+     * @param overwritePolicy the overwritePolicy
+     * @return the Indexing Policy.
+     */
+    public IndexingPolicy setOverwritePolicy(boolean overwritePolicy) {
+        this.jsonSerializable.set(Constants.Properties.OVERWRITE_POLICY, overwritePolicy);
+        return this;
     }
 
     /**

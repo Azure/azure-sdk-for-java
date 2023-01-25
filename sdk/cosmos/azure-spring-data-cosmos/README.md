@@ -479,8 +479,12 @@ public class SampleApplication {
 }
 ```
 #### Indexing Policy
-- By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
+- By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 5 attributes to customize, see following:
 ```java readme-sample-CosmosIndexingPolicyCodeSnippet
+// Indicate if you want to overwrite the plicy currently defined in portal or not
+// Default value is true
+boolean overwritePolicy() default Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY;
+
 // Indicate if indexing policy use automatic or not
 // Default value is true
 boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;

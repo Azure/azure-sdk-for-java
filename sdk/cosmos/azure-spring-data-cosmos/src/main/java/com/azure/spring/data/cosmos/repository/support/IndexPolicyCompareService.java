@@ -23,11 +23,12 @@ public class IndexPolicyCompareService {
      * @return Whether the policy needs updating.
      */
     public static boolean policyNeedsUpdate(IndexingPolicy existingPolicy, IndexingPolicy newPolicy) {
-        return !hasSameIncludedPaths(existingPolicy.getIncludedPaths(), newPolicy.getIncludedPaths())
+        return ((!hasSameIncludedPaths(existingPolicy.getIncludedPaths(), newPolicy.getIncludedPaths())
             || !hasSameExcludedPaths(existingPolicy.getExcludedPaths(), newPolicy.getExcludedPaths())
             || !existingPolicy.getCompositeIndexes().equals(newPolicy.getCompositeIndexes())
             || !existingPolicy.getIndexingMode().equals(newPolicy.getIndexingMode())
-            || !existingPolicy.isAutomatic().equals(newPolicy.isAutomatic());
+            || !existingPolicy.isAutomatic().equals(newPolicy.isAutomatic()))
+            && newPolicy.isOverwritePolicy());
     }
 
     // Returns true if the lists are the same or the only difference is that the existing paths contain "/*"
