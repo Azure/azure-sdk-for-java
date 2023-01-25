@@ -43,7 +43,7 @@ com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-metricsadvisor;1.1.10;1.2.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-textanalytics;5.2.2;5.3.0-beta.2
+com.azure:azure-ai-textanalytics;5.2.3;5.3.0-beta.2
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-purview-catalog;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.2;1.0.0-beta.3
@@ -107,7 +107,7 @@ com.azure:azure-developer-devcenter;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.7.3;1.8.0-beta.2
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-iot-deviceupdate;1.0.2;1.1.0-beta.1
+com.azure:azure-iot-deviceupdate;1.0.3;1.1.0-beta.1
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-weather;1.0.0-beta.1;1.0.0-beta.2
@@ -142,7 +142,7 @@ com.azure:azure-monitor-query;1.1.0;1.2.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.5.2;11.6.0-beta.5
+com.azure:azure-search-documents;11.5.3;11.6.0-beta.5
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.9;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.5;1.1.0-beta.1
