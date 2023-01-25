@@ -251,8 +251,8 @@ public class ReactorNettyClient implements HttpClient {
 
     private static Boolean isOutOfRetries( HttpTimeoutPolicy timeoutPolicy, Instant startTimeUtc,
                                            Iterator<ResponseTimeoutAndDelays> timeoutAndDelaysIterator) {
-        return Duration.between(Instant.now(), startTimeUtc).toSeconds() >
-            timeoutPolicy.maximumRetryTimeLimit().toSeconds() || !timeoutAndDelaysIterator.hasNext();
+        return Duration.between(Instant.now(), startTimeUtc).toMillis() >
+            timeoutPolicy.maximumRetryTimeLimit().toMillis() || !timeoutAndDelaysIterator.hasNext();
     }
 
     private static String getActivityId(Mono<HttpResponse> responseMono) {
