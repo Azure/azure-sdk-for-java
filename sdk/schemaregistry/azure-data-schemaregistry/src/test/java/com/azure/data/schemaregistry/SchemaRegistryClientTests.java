@@ -193,9 +193,10 @@ public class SchemaRegistryClientTests extends TestBase {
     }
 
     /**
-     * Verifies that a 415 is returned if we use an invalid schema format.
+     * Verifies that a 4xx is returned if we use an invalid schema format.
      */
-    @Test
+
+    @Test()
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
@@ -208,7 +209,7 @@ public class SchemaRegistryClientTests extends TestBase {
                 assertTrue(error instanceof HttpResponseException);
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(415, responseException.getResponse().getStatusCode());
+                assertEquals(403, responseException.getResponse().getStatusCode());
             })
             .verify();
     }

@@ -104,7 +104,7 @@ public class SchemaRegistryAsyncClientJsonTests extends TestBase {
     @Test
     public void registerAndGetSchemaTwice() {
         // Arrange
-        final String schemaContentModified = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" },{ \"name\" : \"Sign\", \"type\" : \"string\" }]}";
+        final String schemaContentModified = "{ \"$id\": \"https://example.com/person.schema.json\", \"$schema\": \"https://json-schema.org/draft/2020-12/schema\", \"title\": \"Person\", \"type\": \"object\", \"properties\": { \"firstName\": { \"type\": \"string\", \"description\": \"The person's first name.\" }, \"lastName\": { \"type\": \"string\", \"description\": \"The person's last name.\" }, \"age\": { \"description\": \"Age in years which must be equal to or greater than 1.\", \"type\": \"integer\", \"minimum\": 1 } } }";
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();

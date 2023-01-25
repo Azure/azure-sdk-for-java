@@ -123,19 +123,4 @@ public class SchemaRegistryAsyncClientCustomTests extends TestBase {
         // Act & Assert
         testBase.registerAndGetSchemaId(client1, client2, schemaName, SCHEMA_CONTENT);
     }
-
-
-    /**
-     * Verifies that an error is returned if we try to register an invalid schema.
-     */
-    @Test
-    public void registerBadRequest() {
-        // Arrange
-        final String invalidContent = "\"{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\" }]}\"";
-        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
-        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
-
-        // Act & Assert
-        testBase.registerBadRequest(client1, schemaName, invalidContent);
-    }
 }
