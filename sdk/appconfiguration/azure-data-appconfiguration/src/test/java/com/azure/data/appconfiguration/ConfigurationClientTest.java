@@ -85,14 +85,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        //skip paging requests until #30031 resolved
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return callerMethod.contains("list");
-        };
-
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
+            .skipRequest((ignored, ignored1) -> false)
             .assertSync()
             .build();
     }

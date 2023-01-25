@@ -90,14 +90,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        //skip paging requests until #30031 resolved
-        BiFunction<HttpRequest, com.azure.core.util.Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return callerMethod.contains("list");
-        };
-
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
+            .skipRequest((ignored, ignored1) -> false)
             .assertAsync()
             .build();
     }
