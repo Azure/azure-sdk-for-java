@@ -155,7 +155,7 @@ jobs:
 
       - script: |
           pip install markdown2 BeautifulSoup4
-        displayName: 'pip install markdown2 and BeautifulSoup4'
+        displayName: 'pip install markdown2==2.4.6 and BeautifulSoup4==4.11.1'
 
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
