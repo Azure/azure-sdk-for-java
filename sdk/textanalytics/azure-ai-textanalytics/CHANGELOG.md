@@ -3,14 +3,15 @@
 ## 5.3.0-beta.2 (Unreleased)
 
 ### Features Added
-- Integrate synchronous workflow for sync clients so that they do not block on async client APIs.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
-
+- Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 
+  It simplifies stack traces and improves debugging experience.
+  
 ## 5.3.0-beta.1 (2022-11-18)
 
 ### Features Added

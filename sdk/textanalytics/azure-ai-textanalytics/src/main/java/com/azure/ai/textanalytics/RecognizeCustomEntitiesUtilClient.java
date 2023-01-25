@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.HTTP_REST_PROXY_SYNC_PROXY_ENABLE;
+import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
@@ -420,9 +420,5 @@ class RecognizeCustomEntitiesUtilClient {
     private RecognizeCustomEntitiesOptions getNotNullRecognizeCustomEntitiesOptions(
         RecognizeCustomEntitiesOptions options) {
         return options == null ? new RecognizeCustomEntitiesOptions() : options;
-    }
-
-    private Context enableSyncRestProxy(Context context) {
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 }

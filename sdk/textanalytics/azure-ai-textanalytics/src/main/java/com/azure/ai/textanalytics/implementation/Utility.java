@@ -1262,6 +1262,18 @@ public final class Utility {
     }
 
     /**
+     * Enable the sync stack rest proxy.
+     *
+     * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
+     * Most applications do not need to pass arbitrary data to the pipeline and can pass Context.NONE or null.
+     *
+     * @return The Context.
+     */
+    public static Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+
+    /**
      * Get the non-null {@link Context}. The default value is {@link Context#NONE}.
      *
      * @param context It offers a means of passing arbitrary data (key-value pairs) to pipeline policies.

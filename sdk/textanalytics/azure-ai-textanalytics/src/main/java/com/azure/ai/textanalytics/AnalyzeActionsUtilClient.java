@@ -159,6 +159,7 @@ import java.util.regex.Pattern;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
@@ -377,10 +378,6 @@ class AnalyzeActionsUtilClient {
         return (pollingContext, activationResponse) -> {
             throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
         };
-    }
-
-    private Context enableSyncRestProxy(Context context) {
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     private List<AnalyzeTextLROTask> getAnalyzeTextLROTasks(TextAnalyticsActions actions) {
