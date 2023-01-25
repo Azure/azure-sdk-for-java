@@ -72,14 +72,12 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
             return Mono.just(digest);
         }
 
-        Mono<String> getTagMono = isDigest(tagOrDigest)
-            ? Mono.just(tagOrDigest)
-            : this.getTagProperties(tagOrDigest).map(a -> a.getDigest());
+        if (isDigest(tagOrDigest)) {
+            return Mono.just(tagOrDigest);
+        }
 
-        return getTagMono.flatMap(res -> {
-            this.digest = res;
-            return Mono.just(res);
-        });
+        return this.getTagProperties(tagOrDigest)
+            .map(a -> a.getDigest());
     }
 
     /**
