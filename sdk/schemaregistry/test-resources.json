@@ -62,7 +62,7 @@
     }
   },
   "variables": {
-    "apiVersion": "2018-01-01-preview",
+    "apiVersion": "2022-10-01-preview",
     "baseNameAvro": "[concat(parameters('baseName'), '-avro')]",
     "baseNameCustom": "[concat(parameters('baseName'), '-custom')]",
     "baseNameJson": "[concat(parameters('baseName'), '-json')]",
@@ -70,11 +70,7 @@
     "schemaRegistryEndpointAvro": "[format('https://{0}.servicebus.windows.net', variables('baseNameAvro'))]",
     "schemaRegistryEndpointCustom": "[format('https://{0}.servicebus.windows.net', variables('baseNameCustom'))]",
     "schemaRegistryEndpointJson": "[format('https://{0}.servicebus.windows.net', variables('baseNameJson'))]",
-    "schemaRegistryGroup": "azsdk_java_group",
-
-    "authorizationNameAvro": "[concat(variables('baseNameAvro'), '/RootManageSharedAccessKey')]",
-    "authorizationNameCustom": "[concat(variables('baseNameCustom'), '/RootManageSharedAccessKey')]",
-    "authorizationNameJson": "[concat(variables('baseNameJson'), '/RootManageSharedAccessKey')]"
+    "schemaRegistryGroup": "azsdk_java_group"
   },
   "resources": [
     {
@@ -126,37 +122,6 @@
         "isAutoInflateEnabled": false,
         "maximumThroughputUnits": 0,
         "kafkaEnabled": true
-      }
-    },
-
-    {
-      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-      "apiVersion": "[variables('apiVersion')]",
-      "name": "[variables('authorizationNameAvro')]",
-      "location": "[parameters('location')]",
-      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('baseNameAvro'))]"],
-      "properties": {
-        "rights": ["Listen", "Manage", "Send"]
-      }
-    },
-    {
-      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-      "apiVersion": "[variables('apiVersion')]",
-      "name": "[variables('authorizationNameJson')]",
-      "location": "[parameters('location')]",
-      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('baseNameJson'))]"],
-      "properties": {
-        "rights": ["Listen", "Manage", "Send"]
-      }
-    },
-    {
-      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-      "apiVersion": "[variables('apiVersion')]",
-      "name": "[variables('authorizationNameCustom')]",
-      "location": "[parameters('location')]",
-      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('baseNameCustom'))]"],
-      "properties": {
-        "rights": ["Listen", "Manage", "Send"]
       }
     },
 
@@ -222,18 +187,7 @@
       "type": "string",
       "value": "[variables('schemaRegistryEndpointCustom')]"
     },
-    "EVENTHUB_AVRO_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('baseNameAvro'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
-    },
-    "EVENTHUB_JSON_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('baseNameJson'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
-    },
-    "EVENTHUB_CUSTOM_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('baseNameCustom'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
-    },
+
     "SCHEMA_REGISTRY_GROUP": {
       "type": "string",
       "value": "[variables('schemaRegistryGroup')]"
