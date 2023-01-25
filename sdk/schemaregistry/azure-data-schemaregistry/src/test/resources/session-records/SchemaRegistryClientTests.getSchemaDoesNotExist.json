@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/59f112cf-ff02-40e6-aca9-0d30ed7f7f94?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "86921512-222d-4e33-8239-35fcd3e871ac"
+      "x-ms-client-request-id" : "3b184250-2e2d-4948-bb33-8c47b3e40368"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,8 +13,8 @@
       "x-ms-error-code" : "ItemNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema id 59f112cf-ff02-40e6-aca9-0d30ed7f7f94 does not exist. TrackingId:bdb02dac-f485-4f87-8045-471c46695563_G10, SystemTracker:conniey4-avro.servicebus.windows.net:$schemaGroups\\/$schemas\\/59f112cf-ff02-40e6-aca9-0d30ed7f7f94, Timestamp:2022-11-14T23:15:39\"}}",
-      "Date" : "Mon, 14 Nov 2022 23:15:39 GMT",
+      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema id 59f112cf-ff02-40e6-aca9-0d30ed7f7f94 does not exist. TrackingId:73524952-fc6f-47ab-a29d-0fc12ff46aca_G19, SystemTracker:conniey-rg4-avro.servicebus.windows.net:$schemaGroups\\/$schemas\\/59f112cf-ff02-40e6-aca9-0d30ed7f7f94, Timestamp:2023-01-25T20:07:41\"}}",
+      "Date" : "Wed, 25 Jan 2023 20:07:40 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

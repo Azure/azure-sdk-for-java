@@ -1,24 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch03538b399?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch12155bf63?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8602c6fb-8c41-4dbb-99c2-d69f68979f85",
+      "x-ms-client-request-id" : "5fb66541-73cb-47ab-8f09-91419f4bbcaa",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=31536000",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "InvalidRequest",
+      "x-ms-error-code" : "NotAvaliable",
       "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Missing required header for PUT request. Schema\\/serialization type must be provided. TrackingId:016a19c5-b800-460a-9234-06f69cd9823f_G10, SystemTracker:conniey4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch03538b399, Timestamp:2022-11-14T23:15:46\"}}",
-      "Date" : "Mon, 14 Nov 2022 23:15:46 GMT",
+      "StatusCode" : "403",
+      "Body" : "{\"error\":{\"code\":\"NotAvaliable\",\"message\":\"SubCode=40301, Schema of type Custom cannot be created within group 'azsdk_java_group' that support Avro schema type. TrackingId:30014049-014f-4714-9c5e-1115be790584_G1, SystemTracker:NoSystemTracker, Timestamp:2023-01-25T20:07:52\"}}",
+      "Date" : "Wed, 25 Jan 2023 20:07:51 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch03538b399" ]
+  "variables" : [ "sch12155bf63" ]
 }

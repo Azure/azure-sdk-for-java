@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/bar:get-id?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e0046414-d461-4396-b354-1d54d0e28210",
+      "x-ms-client-request-id" : "ef41978d-17e7-46b8-8cb3-b3cd5a268dc3",
       "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
@@ -14,8 +14,8 @@
       "x-ms-error-code" : "ItemNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema azsdk_java_group\\/bar does not exist. TrackingId:6a1a1c76-c094-4f3d-afce-4552ce4fbdf7_G27, SystemTracker:conniey4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/bar:get-id, Timestamp:2022-11-14T23:15:37\"}}",
-      "Date" : "Mon, 14 Nov 2022 23:15:36 GMT",
+      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema azsdk_java_group\\/bar does not exist. TrackingId:1248a050-a153-4291-a503-acae3250dbcf_G19, SystemTracker:conniey-rg4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/bar:get-id, Timestamp:2023-01-25T20:07:34\"}}",
+      "Date" : "Wed, 25 Jan 2023 20:07:34 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

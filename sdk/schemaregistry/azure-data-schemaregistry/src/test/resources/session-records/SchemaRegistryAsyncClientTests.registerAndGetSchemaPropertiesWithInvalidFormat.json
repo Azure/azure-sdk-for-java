@@ -1,48 +1,48 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch602914d60?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch145232f50?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d16af1a7-9067-4fa6-89b9-97d2f9852293",
+      "x-ms-client-request-id" : "6bf14295-5b65-4337-b799-0780c2131282",
       "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
-      "content-length" : "0",
       "Schema-Version" : "1",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch602914d60",
+      "Schema-Name" : "sch145232f50",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/$schemas/57e14b0b70f6424bae39730abe2696e5?api-version=2022-10",
+      "Schema-Id-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/$schemas/7198c9f031fe4240973d308b29435459?api-version=2022-10",
       "StatusCode" : "204",
-      "Date" : "Mon, 14 Nov 2022 23:15:52 GMT",
+      "Date" : "Wed, 25 Jan 2023 20:07:57 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "57e14b0b70f6424bae39730abe2696e5",
+      "Schema-Id" : "7198c9f031fe4240973d308b29435459",
       "Schema-Group-Name" : "azsdk_java_group",
-      "Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch602914d60/versions/1?api-version=2022-10",
-      "Schema-Versions-Location" : "https://conniey4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch602914d60/versions?api-version=2022-10"
+      "Content-Length" : "0",
+      "Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch145232f50/versions/1?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch145232f50/versions?api-version=2022-10"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch602914d60:get-id?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch145232f50:get-id?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ef4940cb-e70a-4c96-8fec-b0bcbc2e5d1b",
+      "x-ms-client-request-id" : "c359cb3b-be1c-476c-8aa0-bfb08c2ad677",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=31536000",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "InvalidSchemaType",
+      "x-ms-error-code" : "ItemNotFound",
       "retry-after" : "0",
-      "StatusCode" : "415",
-      "Body" : "{\"error\":{\"code\":\"InvalidSchemaType\",\"message\":\"Invalid schema type for POST request. '' is not supported. TrackingId:9bf807d2-8ba9-4018-ad3f-6a8cf4dcd826_G10, SystemTracker:conniey4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch602914d60:get-id, Timestamp:2022-11-14T23:15:54\"}}",
-      "Date" : "Mon, 14 Nov 2022 23:15:54 GMT",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"ItemNotFound\",\"message\":\"Schema azsdk_java_group\\/sch145232f50 does not exist. TrackingId:5a6b67e7-ae06-4f09-bf4d-ba349a643365_G5, SystemTracker:conniey-rg4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch145232f50:get-id, Timestamp:2023-01-25T20:08:01\"}}",
+      "Date" : "Wed, 25 Jan 2023 20:08:00 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch602914d60" ]
+  "variables" : [ "sch145232f50" ]
 }
