@@ -459,6 +459,14 @@ public final class ModelHelper {
             : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 
+    public static long getBlobLength(HttpHeaders headers) {
+        String contentRange = headers.getValue(HttpHeaderName.CONTENT_RANGE);
+
+        return (contentRange == null)
+            ? Long.parseLong(headers.getValue(HttpHeaderName.CONTENT_LENGTH))
+            : ChunkedDownloadUtils.extractTotalBlobLength(contentRange);
+    }
+
     private ModelHelper() {
     }
 }

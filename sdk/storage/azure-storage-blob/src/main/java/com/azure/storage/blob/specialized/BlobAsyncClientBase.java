@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -33,7 +34,6 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstru
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
-import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
@@ -51,7 +51,6 @@ import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
-import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -1270,10 +1269,7 @@ public class BlobAsyncClientBase {
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
             firstRangeContext)
             .map(response -> {
-                BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
-                String eTag = blobsDownloadHeaders.getETag();
-                BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
-                    blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
+                String eTag = response.getHeaders().getValue(HttpHeaderName.ETAG);
 
                 /*
                  * If the customer did not specify a count, they are reading to the end of the blob. Extract this value
@@ -1282,7 +1278,7 @@ public class BlobAsyncClientBase {
                 long finalCount;
                 long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
-                    long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
+                    long blobLength = ModelHelper.getBlobLength(response.getHeaders());
                     finalCount = blobLength - initialOffset;
                 } else {
                     finalCount = finalRange.getCount();
