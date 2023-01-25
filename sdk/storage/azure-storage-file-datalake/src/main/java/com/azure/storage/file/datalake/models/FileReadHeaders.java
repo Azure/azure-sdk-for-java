@@ -44,6 +44,7 @@ public final class FileReadHeaders {
     private byte[] fileContentMD5;
     private byte[] contentCrc64;
     private String errorCode;
+    private String encryptionContext;
 
     /**
      * Get the lastModified property: Returns the date and time the container
@@ -809,6 +810,27 @@ public final class FileReadHeaders {
      */
     public FileReadHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the encryptionContext property: Encryption context for this path.
+     *
+     * @return the encryptionContext value.
+     */
+    public String getEncryptionContext() {
+        return encryptionContext;
+    }
+
+    /**
+     * Encryption context that can be set on the file. Encryption context is intended to store metadata that
+     * can be used to decrypt the blob.
+     *
+     * @param encryptionContext the encryption context to be set on the file.
+     * @return the FileReadHeaders object itself.
+     */
+    public FileReadHeaders setEncryptionContext(String encryptionContext) {
+        this.encryptionContext = encryptionContext;
         return this;
     }
 }

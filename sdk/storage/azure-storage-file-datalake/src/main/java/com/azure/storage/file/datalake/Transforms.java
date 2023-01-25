@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -298,7 +299,7 @@ class Transforms {
             .setMaxRetryRequests(dataLakeOptions.getMaxRetryRequests());
     }
 
-    static PathProperties toPathProperties(BlobProperties properties) {
+    static PathProperties toPathProperties(BlobProperties properties, String encryptionContext) {
         if (properties == null) {
             return null;
         } else {
@@ -315,8 +316,15 @@ class Transforms {
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
                 properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
 
-            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope());
+            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext);
         }
+    }
+
+    static String getEncryptionContext(Response<?> r) {
+        if (r == null) {
+            return null;
+        }
+        return r.getHeaders().getValue("x-ms-encryption-context");
     }
 
 
@@ -361,7 +369,7 @@ class Transforms {
             path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
             path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
 
-        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope());
+        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
@@ -405,10 +413,10 @@ class Transforms {
             return null;
         }
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
-            Transforms.toPathReadHeaders(r.getDeserializedHeaders()));
+            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), getEncryptionContext(r)));
     }
 
-    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h) {
+    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext) {
         if (h == null) {
             return null;
         }
@@ -442,7 +450,8 @@ class Transforms {
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
-            .setErrorCode(h.getErrorCode());
+            .setErrorCode(h.getErrorCode())
+            .setEncryptionContext(encryptionContext);
     }
 
     static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {
