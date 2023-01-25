@@ -126,6 +126,21 @@
     },
 
     {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[concat(parameters('baseNameAvro'), '/', parameters('eventHubName'))]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', parameters('baseNameAvro'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 5,
+        "status": "Active"
+      }
+    },
+
+    {
       "type": "Microsoft.EventHub/namespaces/schemagroups",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[format('{0}/{1}', variables('baseNameAvro'), variables('schemaRegistryGroup'))]",
@@ -175,6 +190,12 @@
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
+
+    "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME": {
+      "type": "string",
+      "value": "[parameters('eventHubName')]"
+    },
+
     "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE": {
       "type": "string",
       "value": "[variables('schemaRegistryEndpointAvro')]"
