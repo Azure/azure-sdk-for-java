@@ -9,6 +9,7 @@ import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
@@ -43,7 +44,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
 public final class RestProxyTestsWireMockServer {
-    private static final JacksonAdapter JACKSON_ADAPTER = new JacksonAdapter();
+    private static final SerializerAdapter JACKSON_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final Random RANDOM = new Random();
 
     public static WireMockServer getRestProxyTestsServer() {

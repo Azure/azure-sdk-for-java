@@ -24,6 +24,7 @@ import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNe
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNetworkProfile;
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetVMProfile;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FlatteningSerializerTests {
-    private static final JacksonAdapter ADAPTER = new JacksonAdapter();
+    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void canFlatten() {

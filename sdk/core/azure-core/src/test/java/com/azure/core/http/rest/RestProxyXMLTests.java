@@ -9,6 +9,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.util.serializer.AccessPolicy;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SignedIdentifierInner;
 import com.azure.core.util.serializer.SignedIdentifiersWrapper;
 import com.azure.core.util.serializer.Slideshow;
@@ -76,16 +77,16 @@ public class RestProxyXMLTests {
     }
 
     @Test
-    public void canReadXMLResponse() throws Exception {
+    public void canReadXMLResponse() {
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockXMLHTTPClient())
             .build();
 
         //
-        MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
-            pipeline,
-            new JacksonAdapter());
+        MyXMLService myXMLService = RestProxy.create(MyXMLService.class, pipeline,
+            JacksonAdapter.createDefaultSerializerAdapter());
+
         List<SignedIdentifierInner> identifiers = myXMLService.getContainerACLs().signedIdentifiers();
         assertNotNull(identifiers);
         assertNotEquals(0, identifiers.size());
@@ -126,7 +127,7 @@ public class RestProxyXMLTests {
         si.withAccessPolicy(ap);
         List<SignedIdentifierInner> expectedAcls = Collections.singletonList(si);
 
-        JacksonAdapter serializer = new JacksonAdapter();
+        SerializerAdapter serializer = JacksonAdapter.createDefaultSerializerAdapter();
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -164,7 +165,7 @@ public class RestProxyXMLTests {
 
     @Test
     public void canDeserializeXMLWithAttributes() throws Exception {
-        JacksonAdapter serializer = new JacksonAdapter();
+        SerializerAdapter serializer = JacksonAdapter.createDefaultSerializerAdapter();
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockXMLHTTPClient())

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class SerializationBenchmark {
-    private JacksonAdapter serializer;
+    private SerializerAdapter serializer;
     private ObjectMapper mapper;
     private OuterModel simpleModel;
     private OuterModel additionalPropertiesModel;
@@ -34,7 +34,7 @@ public class SerializationBenchmark {
 
     @Setup
     public void setup() {
-        this.serializer = new JacksonAdapter();
+        this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
         this.mapper = new ObjectMapper();
         this.simpleModel = new OuterModel("foo", "bar", "baz", Test.PLAIN);
         this.additionalPropertiesModel = new OuterModel("foo", "bar", "baz", Test.ADDITIONAL_PROPERTIES);

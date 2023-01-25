@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -19,10 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  * Constructs and configures {@link ObjectMapper} instances.
  */
 final class ObjectMapperFactory {
-    // ObjectMapperFactory is a commonly used factory, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperFactory.class);
-
-    public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
+    public static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
         ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())

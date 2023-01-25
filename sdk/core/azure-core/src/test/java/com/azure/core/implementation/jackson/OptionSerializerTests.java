@@ -4,9 +4,8 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.implementation.Option;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,25 +15,26 @@ import java.io.IOException;
  * Tests for {@link Option} that can represent tri-sate (non-null-value, null-value, or no-value).
  */
 public class OptionSerializerTests {
-    private static final JacksonAdapter ADAPTER = new JacksonAdapter((outerMapper, innerMapper) -> outerMapper.registerModule(new OptionModule()));
+    private static final ObjectMapper MAPPER = ObjectMapperFactory.INSTANCE.createSimpleMapper()
+        .registerModule(new OptionModule());
 
     @Test
     public void canSerializeExplicitNull() throws IOException {
         PatchModel model = new PatchModel();
 
         model.setSku(Option.of(null));
-        String serialized = ADAPTER.serialize(model, SerializerEncoding.JSON);
+        String serialized = MAPPER.writeValueAsString(model);
         Assertions.assertEquals("{\"sku\":null}", serialized);
 
         model.setSku(Option.empty());
-        serialized = ADAPTER.serialize(model, SerializerEncoding.JSON);
+        serialized = MAPPER.writeValueAsString(model);
         Assertions.assertEquals("{\"sku\":null}", serialized);
     }
 
     @Test
     public void shouldIgnoreImplicitNull() throws IOException {
         PatchModel model = new PatchModel();
-        String serialized = ADAPTER.serialize(model, SerializerEncoding.JSON);
+        String serialized = MAPPER.writeValueAsString(model);
         Assertions.assertEquals("{}", serialized);
     }
 
@@ -42,7 +42,7 @@ public class OptionSerializerTests {
     public void shouldIgnoreUninitialized() throws IOException {
         PatchModel model = new PatchModel();
         model.setSku(Option.uninitialized());
-        String serialized = ADAPTER.serialize(model, SerializerEncoding.JSON);
+        String serialized = MAPPER.writeValueAsString(model);
         Assertions.assertEquals("{}", serialized);
     }
 
@@ -50,7 +50,7 @@ public class OptionSerializerTests {
     public void canSerializeNonNullValue() throws IOException {
         PatchModel model = new PatchModel();
         model.setSku(Option.of("basic"));
-        String serialized = ADAPTER.serialize(model, SerializerEncoding.JSON);
+        String serialized = MAPPER.writeValueAsString(model);
         Assertions.assertEquals("{\"sku\":\"basic\"}", serialized);
     }
 
@@ -58,12 +58,12 @@ public class OptionSerializerTests {
     public void canSerializeRawType() throws IOException {
         @SuppressWarnings("rawtypes")
         final Option rawOption = Option.of(new RawModel().setName("test"));
-        String serialized = ADAPTER.serialize(rawOption, SerializerEncoding.JSON);
+        String serialized = MAPPER.writeValueAsString(rawOption);
         Assertions.assertEquals("{\"name\":\"test\"}", serialized);
 
         @SuppressWarnings("rawtypes")
         final Option rawOption1 = Option.of("test");
-        String serialized1 = ADAPTER.serialize(rawOption1, SerializerEncoding.JSON);
+        String serialized1 = MAPPER.writeValueAsString(rawOption1);
         Assertions.assertEquals("\"test\"", serialized1);
     }
 

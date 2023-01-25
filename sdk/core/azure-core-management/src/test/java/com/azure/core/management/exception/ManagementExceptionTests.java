@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ManagementExceptionTests {
 
     @Test
@@ -25,7 +27,8 @@ public class ManagementExceptionTests {
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         ManagementError managementError = serializerAdapter.deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
-        Assertions.assertEquals("ResourceGroupNotFound", managementError.getCode());
+        assertEquals("ResourceGroupNotFound", managementError.getCode());
+        assertEquals("Resource group 'rg-not-exist' could not be found.", managementError.getMessage());
     }
 
     @Test
@@ -34,13 +37,18 @@ public class ManagementExceptionTests {
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         WebError webError = serializerAdapter.deserialize(errorBody, WebError.class, SerializerEncoding.JSON);
-        Assertions.assertEquals("WepAppError", webError.getCode());
+        assertEquals("WepAppError", webError.getCode());
+        assertEquals("Web app error.", webError.getMessage());
+        assertEquals("Deployment error.", webError.getInnererror());
+        assertEquals(1, webError.getDetails().size());
+        assertEquals("Inner error.", webError.getDetails().get(0).getInnererror());
 
         // The response is actually not a valid management error response. But still accommodate.
         final String errorBodyWithoutErrorProperty = "{\"code\":\"ResourceGroupNotFound\",\"message\":\"Resource group 'rg-not-exist' could not be found.\"}";
 
         ManagementError managementError = serializerAdapter.deserialize(errorBodyWithoutErrorProperty, ManagementError.class, SerializerEncoding.JSON);
-        Assertions.assertEquals("ResourceGroupNotFound", managementError.getCode());
+        assertEquals("ResourceGroupNotFound", managementError.getCode());
+        assertEquals("Resource group 'rg-not-exist' could not be found.", managementError.getMessage());
     }
 
     @Test
@@ -49,10 +57,10 @@ public class ManagementExceptionTests {
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         WebError webError = serializerAdapter.deserialize(errorBody, WebError.class, SerializerEncoding.JSON);
-        Assertions.assertEquals("WepAppError", webError.getCode());
-        Assertions.assertEquals("Web app error.", webError.getMessage());
-        Assertions.assertEquals(1, webError.getDetails().size());
-        Assertions.assertEquals("foo", webError.getTarget());
+        assertEquals("WepAppError", webError.getCode());
+        assertEquals("Web app error.", webError.getMessage());
+        assertEquals(1, webError.getDetails().size());
+        assertEquals("foo", webError.getTarget());
     }
 
     @Test

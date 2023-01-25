@@ -23,7 +23,7 @@ import java.util.Objects;
  * An HTTP response that is created to simulate a HTTP request.
  */
 public class MockHttpResponse extends HttpResponse {
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
     private final int statusCode;
 

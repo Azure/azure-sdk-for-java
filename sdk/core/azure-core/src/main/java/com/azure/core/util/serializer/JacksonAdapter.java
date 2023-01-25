@@ -46,7 +46,7 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     // Enum Singleton Pattern
-    private enum GlobalXmlMapper {
+    enum GlobalXmlMapper {
         XML_MAPPER(ObjectMapperShim.createXmlMapper());
 
         private final ObjectMapperShim xmlMapper;
@@ -57,6 +57,35 @@ public class JacksonAdapter implements SerializerAdapter {
 
         private ObjectMapperShim getXmlMapper() {
             return xmlMapper;
+        }
+    }
+
+    enum GlobalJsonMapper {
+        JSON_MAPPER(ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
+            (ignored, ignored2) -> { }));
+
+        private final ObjectMapperShim jsonMapper;
+
+        GlobalJsonMapper(ObjectMapperShim jsonMapper) {
+            this.jsonMapper = jsonMapper;
+        }
+
+        private ObjectMapperShim getJsonMapper() {
+            return jsonMapper;
+        }
+    }
+
+    enum GlobalHeaderMapper {
+        HEADER_MAPPER(ObjectMapperShim.createHeaderMapper());
+
+        private final ObjectMapperShim headerMapper;
+
+        GlobalHeaderMapper(ObjectMapperShim headerMapper) {
+            this.headerMapper = headerMapper;
+        }
+
+        private ObjectMapperShim getHeaderMapper() {
+            return headerMapper;
         }
     }
 
@@ -75,18 +104,6 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     /**
-     * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
-     */
-    private final ObjectMapperShim mapper;
-    private final ObjectMapperShim headerMapper;
-
-    /**
-     * Raw mappers are needed only to support deprecated simpleMapper() and serializer().
-     */
-    private ObjectMapper rawOuterMapper;
-    private ObjectMapper rawInnerMapper;
-
-    /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
@@ -102,43 +119,31 @@ public class JacksonAdapter implements SerializerAdapter {
      * are pre-configured for Azure serialization needs, but only outer mapper capable of flattening and populating
      * additionalProperties. Outer mapper is used by {@code JacksonAdapter} for all serialization needs.
      * <p>
-     * Register modules on the outer instance to add custom (de)serializers similar to {@code new JacksonAdapter((outer,
-     * inner) -> outer.registerModule(new MyModule()))}
+     * Register modules on the outer instance to add custom (de)serializers similar to
+     * {@code new JacksonAdapter((outer, inner) -> outer.registerModule(new MyModule()))}
      *
      * Use inner mapper for chaining serialization logic in your (de)serializers.
      *
      * @param configureSerialization Applies additional configuration to outer mapper using inner mapper for module
      * chaining.
+     * @throws NullPointerException If {@code configureSerialization} is null.
      */
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
-        this.headerMapper = ObjectMapperShim.createHeaderMapper();
-        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
-            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
-    }
-
-    /**
-     * Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper() and
-     * serializer()
-     */
-    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper,
-        BiConsumer<ObjectMapper, ObjectMapper> configure) {
-        this.rawOuterMapper = outerMapper;
-        this.rawInnerMapper = innerMapper;
-
-        configure.accept(outerMapper, innerMapper);
     }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
      *
      * @return an instance of {@link ObjectMapper}.
+     * @throws UnsupportedOperationException Always, API is unsupported and shouldn't be used.
      * @deprecated deprecated, use {@code JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>)} constructor to
      * configure modules.
      */
     @Deprecated
     protected ObjectMapper simpleMapper() {
-        return rawInnerMapper;
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+            "JacksonAdapter.simpleMapper() is no longer supported and shouldn't be used."));
     }
 
     /**
@@ -152,12 +157,14 @@ public class JacksonAdapter implements SerializerAdapter {
 
     /**
      * @return the original serializer type.
+     * @throws UnsupportedOperationException Always, API is unsupported and shouldn't be used.
      * @deprecated deprecated to avoid direct {@link ObjectMapper} usage in favor of using more resilient and debuggable
      * {@link JacksonAdapter} APIs.
      */
     @Deprecated
     public ObjectMapper serializer() {
-        return rawOuterMapper;
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+            "JacksonAdapter.serializer() is no longer supported and shouldn't be used."));
     }
 
     @Override
@@ -172,7 +179,7 @@ public class JacksonAdapter implements SerializerAdapter {
             } else if (encoding == SerializerEncoding.TEXT) {
                 return object.toString();
             } else {
-                return mapper.writeValueAsString(object);
+                return getJsonMapper().writeValueAsString(object);
             }
         });
     }
@@ -189,7 +196,7 @@ public class JacksonAdapter implements SerializerAdapter {
             } else if (encoding == SerializerEncoding.TEXT) {
                 return object.toString().getBytes(StandardCharsets.UTF_8);
             } else {
-                return mapper.writeValueAsBytes(object);
+                return getJsonMapper().writeValueAsBytes(object);
             }
         });
     }
@@ -206,7 +213,7 @@ public class JacksonAdapter implements SerializerAdapter {
             } else if (encoding == SerializerEncoding.TEXT) {
                 outputStream.write(object.toString().getBytes(StandardCharsets.UTF_8));
             } else {
-                mapper.writeValue(outputStream, object);
+                getJsonMapper().writeValue(outputStream, object);
             }
 
             return null;
@@ -291,7 +298,7 @@ public class JacksonAdapter implements SerializerAdapter {
             } else if (encoding == SerializerEncoding.TEXT) {
                 return deserializeText(value, type);
             } else {
-                return mapper.readValue(value, type);
+                return getJsonMapper().readValue(value, type);
             }
         });
     }
@@ -309,7 +316,7 @@ public class JacksonAdapter implements SerializerAdapter {
             } else if (encoding == SerializerEncoding.TEXT) {
                 return deserializeText(CoreUtils.bomAwareToString(bytes, null), type);
             } else {
-                return mapper.readValue(bytes, type);
+                return getJsonMapper().readValue(bytes, type);
             }
         });
     }
@@ -335,7 +342,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
                 return deserializeText(outputStream.bomAwareToString(null), type);
             } else {
-                return mapper.readValue(inputStream, type);
+                return getJsonMapper().readValue(inputStream, type);
             }
         });
     }
@@ -394,17 +401,25 @@ public class JacksonAdapter implements SerializerAdapter {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
-        return (T) useAccessHelper(() -> headerMapper.deserialize(headers, deserializedHeadersType));
+        return (T) useAccessHelper(() -> getHeaderMapper().deserialize(headers, deserializedHeadersType));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T deserializeHeader(Header header, Type type) throws IOException {
-        return (T) useAccessHelper(() -> headerMapper.readValue(header.getValue(), type));
+        return (T) useAccessHelper(() -> getHeaderMapper().readValue(header.getValue(), type));
     }
 
     private ObjectMapperShim getXmlMapper() {
         return GlobalXmlMapper.XML_MAPPER.getXmlMapper();
+    }
+
+    private ObjectMapperShim getJsonMapper() {
+        return GlobalJsonMapper.JSON_MAPPER.getJsonMapper();
+    }
+
+    private ObjectMapperShim getHeaderMapper() {
+        return GlobalHeaderMapper.HEADER_MAPPER.getHeaderMapper();
     }
 
     @SuppressWarnings("removal")

@@ -15,6 +15,7 @@ import com.azure.core.models.GeoPolygon;
 import com.azure.core.models.GeoPolygonCollection;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ import java.util.stream.Stream;
  * Tests {@link GeoJsonDeserializer}.
  */
 public class GeoJsonDeserializerTests {
-    private static final JacksonAdapter ADAPTER = new JacksonAdapter();
+    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void jsonWithoutTypeThrows() {

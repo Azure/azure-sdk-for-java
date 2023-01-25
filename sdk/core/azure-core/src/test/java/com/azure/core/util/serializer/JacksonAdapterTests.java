@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class JacksonAdapterTests {
-    private static final JacksonAdapter ADAPTER = new JacksonAdapter();
+    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void emptyMap() throws IOException {

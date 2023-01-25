@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class StronglyTypedHeadersBenchmark {
-    private static final JacksonAdapter MAPPER = new JacksonAdapter();
+    private static final SerializerAdapter MAPPER = JacksonAdapter.createDefaultSerializerAdapter();
 
     private static final HttpHeaders HEADERS = new HttpHeaders()
         .set("Date", "Tue, 04 May 2021 23:22:58 GMT")
