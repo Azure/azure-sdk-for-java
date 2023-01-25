@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/com.example.Person:get-id?api-version=2021-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/com.example.Person:get-id?api-version=2022-10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8893e68c-a057-472f-ad12-8730f4f3485e",

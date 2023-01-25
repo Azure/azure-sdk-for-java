@@ -53,9 +53,9 @@ import static org.mockito.Mockito.when;
  * Tests end to end experience of the schema registry class.
  */
 public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase {
-    static final String SCHEMA_REGISTRY_ENDPOINT = "SCHEMA_REGISTRY_ENDPOINT";
+    static final String SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
-    static final String SCHEMA_REGISTRY_EVENT_HUB_NAME = "SCHEMA_REGISTRY_EVENT_HUB_NAME";
+    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME";
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
     static final String PLAYBACK_TEST_GROUP = "mygroup";
@@ -84,8 +84,8 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
             eventHubName = "javaeventhub";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
-            eventHubName = System.getenv(SCHEMA_REGISTRY_EVENT_HUB_NAME);
+            endpoint = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            eventHubName = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 
             assertNotNull(eventHubName, "'eventHubName' cannot be null in LIVE/RECORD mode.");
