@@ -22,7 +22,7 @@ variables:
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=$(MavenLogLevel) -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   MemoryOptions: '-Xmx4096m'
   DefaultSkipOptions: '-Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false'
-  DefaultTestOptions: '$(DefaultOptions) $(DefaultSkipOptions) -pl $(ProjectList)'
+  DefaultTestOptions: '$(DefaultOptions) -Dgpg.skip -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
 
@@ -38,6 +38,8 @@ variables:
   # "$(TestFromSource)" instead of true/false. It'll be overwritten when the test
   # matrix has been processed
   TestFromSource: false
+  # This will be overwritten by the test matrix, if configured.
+  RunAggregateReports: false
 
   skipComponentGovernanceDetection: true
   DisableDockerDetector: true

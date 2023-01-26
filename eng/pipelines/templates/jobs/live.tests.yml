@@ -90,7 +90,6 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
-          SkipAggregateReports: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
