@@ -55,14 +55,13 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class ContainerRepositoryAsync {
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRepositoryAsync.class);
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
     private final String endpoint;
     private final String apiVersion;
     private final HttpPipeline httpPipeline;
     private final String registryLoginServer;
-
-    private final ClientLogger logger = new ClientLogger(ContainerRepositoryAsync.class);
 
     /**
      * Creates a ContainerRepositoryAsyncClient that sends requests to the given repository in the container registry service at {@code endpoint}.
@@ -75,7 +74,7 @@ public final class ContainerRepositoryAsync {
     ContainerRepositoryAsync(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
         Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
         if (repositoryName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }
 
         AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
@@ -95,7 +94,7 @@ public final class ContainerRepositoryAsync {
             this.registryLoginServer = endpointUrl.getHost();
         } catch (MalformedURLException ex) {
             // This will not happen.
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
     }
 
@@ -148,7 +147,7 @@ public final class ContainerRepositoryAsync {
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -257,7 +256,7 @@ public final class ContainerRepositoryAsync {
     private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
-                return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
+                return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
             final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
@@ -267,7 +266,7 @@ public final class ContainerRepositoryAsync {
                         registryLoginServer)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -279,7 +278,7 @@ public final class ContainerRepositoryAsync {
                         registryLoginServer)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -314,7 +313,7 @@ public final class ContainerRepositoryAsync {
             return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -373,7 +372,7 @@ public final class ContainerRepositoryAsync {
     private Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
         try {
             if (repositoryProperties == null) {
-                return monoError(logger, new NullPointerException("'value' cannot be null."));
+                return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
             }
 
             RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
@@ -386,7 +385,7 @@ public final class ContainerRepositoryAsync {
             return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 

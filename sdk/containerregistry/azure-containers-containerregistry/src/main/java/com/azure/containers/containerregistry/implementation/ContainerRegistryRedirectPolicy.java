@@ -37,7 +37,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         context.setHttpRequest(context.getHttpRequest().copy());
         return next.clone().process()
             .flatMap(httpResponse -> {
-                if (!isRedirecResponse(httpResponse)) {
+                if (!isRedirectResponse(httpResponse)) {
                     return Mono.just(httpResponse);
                 }
 
@@ -49,7 +49,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         context.setHttpRequest(context.getHttpRequest().copy());
         HttpResponse httpResponse = next.clone().processSync();
-        if (!isRedirecResponse(httpResponse)) {
+        if (!isRedirectResponse(httpResponse)) {
             return httpResponse;
         }
 
@@ -62,11 +62,6 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
             newResponse.getHeaders().set(DOCKER_DIGEST_HEADER_NAME, digest);
         }
         return newResponse;
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return this.attemptRedirectSync(context, next, context.getHttpRequest(), 1, new HashSet<>());
     }
 
     /**
@@ -85,7 +80,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         context.setHttpRequest(redirectRequest.copy());
 
         return next.clone().process().flatMap((httpResponse) -> {
-            if (!isRedirecResponse(httpResponse)) {
+            if (!isRedirectResponse(httpResponse)) {
                 return Mono.just(mapResponse(redirectResponse, httpResponse));
             }
 
@@ -106,7 +101,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         context.setHttpRequest(redirectRequest.copy());
 
         HttpResponse httpResponse = next.clone().processSync();
-        if (!isRedirecResponse(httpResponse)) {
+        if (!isRedirectResponse(httpResponse)) {
             return mapResponse(redirectResponse, httpResponse);
         }
 
@@ -152,7 +147,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
     }
 
 
-    private boolean isRedirecResponse(HttpResponse httpResponse) {
+    private boolean isRedirectResponse(HttpResponse httpResponse) {
         int responseStatusCode = httpResponse.getStatusCode();
         HttpMethod requestMethod = httpResponse.getRequest().getHttpMethod();
 

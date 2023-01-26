@@ -63,6 +63,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * This is the utility class that includes helper methods used across our clients.
  */
 public final class UtilsImpl {
+    private static final ClientLogger LOGGER = new ClientLogger(UtilsImpl.class);
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-containers-containerregistry.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
@@ -70,7 +71,6 @@ public final class UtilsImpl {
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
     private static final HttpHeaderName CONTINUATION_LINK_HEADER_NAME = HttpHeaderName.fromString("Link");
     private static final Pattern CONTINUATION_LINK_PATTERN = Pattern.compile("<(.+)>;.*");
-    private static final ClientLogger LOGGER = new ClientLogger(UtilsImpl.class);;
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
@@ -106,8 +106,7 @@ public final class UtilsImpl {
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
         String endpoint,
-        ContainerRegistryServiceVersion serviceVersion,
-        ClientLogger logger) {
+        ContainerRegistryServiceVersion serviceVersion) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -132,7 +131,7 @@ public final class UtilsImpl {
         // we want to be able to use the same pipeline (minus the credential policy) to have uniformity in the policy
         // pipelines across all ACR endpoints.
         if (credential == null) {
-            logger.verbose("Credentials are null, enabling anonymous access");
+            LOGGER.verbose("Credentials are null, enabling anonymous access");
         }
 
         ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);

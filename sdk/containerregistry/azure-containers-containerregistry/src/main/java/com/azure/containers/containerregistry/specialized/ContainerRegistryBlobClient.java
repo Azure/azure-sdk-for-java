@@ -56,7 +56,8 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.tr
  */
 @ServiceClient(builder = ContainerRegistryBlobClientBuilder.class)
 public class ContainerRegistryBlobClient {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryBlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobClient.class);
+
     private final ContainerRegistryBlobsImpl blobsImpl;
     private final ContainerRegistriesImpl registriesImpl;
     private final String endpoint;
@@ -165,7 +166,7 @@ public class ContainerRegistryBlobClient {
                 new UploadManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
                 response.getDeserializedHeaders());
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -183,7 +184,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBlobResult uploadBlob(BinaryData data) {
-        return this.uploadBlobWithResponse(data, Context.NONE).getValue();
+        return uploadBlobWithResponse(data, Context.NONE).getValue();
     }
 
     /**
@@ -227,7 +228,7 @@ public class ContainerRegistryBlobClient {
                 new UploadBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest()),
                 completeUploadResponse.getDeserializedHeaders());
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -270,7 +271,7 @@ public class ContainerRegistryBlobClient {
                 this.registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
                     UtilsImpl.OCI_MANIFEST_MEDIA_TYPE, enableSync(getTracingContext(context)));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
         String digest = UtilsImpl.getDigestFromHeader(response.getHeaders());
         ManifestWrapper wrapper = response.getValue();
@@ -290,7 +291,7 @@ public class ContainerRegistryBlobClient {
                 response.getHeaders(),
                 new DownloadManifestResult(digest, ociManifest, BinaryData.fromObject(ociManifest)));
         } else {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new ServiceResponseException("The digest in the response does not match the expected digest."));
         }
     }
@@ -320,11 +321,13 @@ public class ContainerRegistryBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DownloadBlobResult> downloadBlobWithResponse(String digest, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
+
+        context = enableSync(getTracingContext(context));
         Response<BinaryData> streamResponse;
         try {
             streamResponse = this.blobsImpl.getBlobWithResponse(repositoryName, digest, context);
         } catch (HttpResponseException exception) {
-            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse(),
+            throw LOGGER.logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse(),
                 exception));
         }
         String resDigest = UtilsImpl.getDigestFromHeader(streamResponse.getHeaders());
@@ -341,7 +344,7 @@ public class ContainerRegistryBlobClient {
                 streamResponse.getHeaders(),
                 new DownloadBlobResult(resDigest, binaryData));
         } else {
-            throw logger.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
+            throw LOGGER.logExceptionAsError(new ServiceResponseException("The digest in the response does not match the expected digest."));
         }
     }
 
@@ -369,6 +372,8 @@ public class ContainerRegistryBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBlobWithResponse(String digest, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
+
+        context = enableSync(getTracingContext(context));
         try {
             Response<BinaryData> streamResponse =
                 this.blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(getTracingContext(context)));
@@ -380,7 +385,7 @@ public class ContainerRegistryBlobClient {
                 return new SimpleResponse<Void>(response.getRequest(), 202,
                     response.getHeaders(), null);
             } else {
-                throw logger.logExceptionAsError(ex);
+                throw LOGGER.logExceptionAsError(ex);
             }
         }
     }
@@ -414,13 +419,14 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteManifestWithResponse(String digest, Context context) {
+        context = enableSync(getTracingContext(context));
         try {
             Response<Void> response = this.registriesImpl.deleteManifestWithResponse(repositoryName, digest,
                 enableSync(getTracingContext(context)));
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 }

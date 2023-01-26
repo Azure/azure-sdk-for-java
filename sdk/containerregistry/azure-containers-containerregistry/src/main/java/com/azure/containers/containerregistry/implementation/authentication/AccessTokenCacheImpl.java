@@ -26,13 +26,13 @@ public class AccessTokenCacheImpl {
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
+    private static final ClientLogger LOGGER = new ClientLogger(AccessTokenCacheImpl.class);
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private final ContainerRegistryRefreshTokenCredential tokenCredential;
     private ContainerRegistryTokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
-    private final ClientLogger logger = new ClientLogger(AccessTokenCacheImpl.class);
 
     /**
      * Creates an instance of AccessTokenCacheImpl with default scheme "Bearer".
@@ -131,7 +131,7 @@ public class AccessTokenCacheImpl {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                logger.atInfo()
+                LOGGER.atInfo()
                     .addKeyValue("expiresAt", () -> cache == null ? "-" : cache.getExpiresAt().toString())
                     .addKeyValue("retry-after-sec", REFRESH_DELAY.getSeconds())
                     .log("Acquired a new access token");
@@ -140,7 +140,7 @@ public class AccessTokenCacheImpl {
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return Mono.just(accessToken);
             } else if (signal.isOnError() && error != null) { // ERROR
-                logger.atError()
+                LOGGER.atError()
                     .addKeyValue("expiresAt", () -> cache == null ? "-" : cache.getExpiresAt().toString())
                     .addKeyValue("retry-after-sec", REFRESH_DELAY.getSeconds())
                     .log("Failed to acquire a new access token");

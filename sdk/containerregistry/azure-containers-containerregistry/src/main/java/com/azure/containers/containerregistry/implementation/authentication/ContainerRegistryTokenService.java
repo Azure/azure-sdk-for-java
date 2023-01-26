@@ -23,7 +23,7 @@ public class ContainerRegistryTokenService implements TokenCredential {
     private AccessTokenCacheImpl refreshTokenCache;
     private TokenServiceImpl tokenService;
     private boolean isAnonymousAccess;
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryTokenService.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryTokenService.class);
 
     /**
      * Creates an instance of AccessTokenCache with default scheme "Bearer".
@@ -70,7 +70,7 @@ public class ContainerRegistryTokenService implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
         if (!(tokenRequestContext instanceof ContainerRegistryTokenRequestContext)) {
-            return monoError(logger, new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
+            return monoError(LOGGER, new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
         }
 
         ContainerRegistryTokenRequestContext requestContext =
