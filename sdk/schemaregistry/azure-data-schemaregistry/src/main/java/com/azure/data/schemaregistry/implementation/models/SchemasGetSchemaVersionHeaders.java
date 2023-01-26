@@ -60,10 +60,7 @@ public final class SchemasGetSchemaVersionHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SchemasGetSchemaVersionHeaders(HttpHeaders rawHeaders) {
-        String schemaVersion = rawHeaders.getValue("Schema-Version");
-        if (schemaVersion != null) {
-            this.schemaVersion = Integer.parseInt(schemaVersion);
-        }
+        this.schemaVersion = Integer.parseInt(rawHeaders.getValue("Schema-Version"));
         this.schemaId = rawHeaders.getValue("Schema-Id");
         this.schemaGroupName = rawHeaders.getValue("Schema-Group-Name");
         this.schemaName = rawHeaders.getValue("Schema-Name");
