@@ -142,31 +142,26 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
 
-        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(writeTimeout);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        RequestProgressReportingHandler reportingHandler = (progressReporter == null)
-            ? null : new RequestProgressReportingHandler(progressReporter);
-
-        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(responseTimeout);
-        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(readTimeout);
-
         ConnectionObserver observer = (connection, newState) -> {
             if (newState == HttpClientState.REQUEST_PREPARED) {
-                writeTimeoutHandler.startWriteTimeout();
-                if (reportingHandler != null) {
-                    reportingHandler.startProgressReporting();
+                connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
+                if (progressReporter != null) {
+                    connection.addHandlerLast(RequestProgressReportingHandler.HANDLER_NAME,
+                        new RequestProgressReportingHandler(progressReporter));
                 }
             } else if (newState == HttpClientState.REQUEST_SENT) {
-                writeTimeoutHandler.endWriteTimeout();
-                if (reportingHandler != null) {
-                    reportingHandler.endProgressReporting();
+                connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME);
+                if (progressReporter != null) {
+                    connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
                 }
-                responseTimeoutHandler.startResponseTimeout();
+                connection.addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME,
+                    new ResponseTimeoutHandler(responseTimeout));
             } else if (newState == HttpClientState.RESPONSE_RECEIVED) {
-                responseTimeoutHandler.endResponseTimeout();
-                readTimeoutHandler.startReadTimeout();
+                connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME);
+                connection.addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(readTimeout));
             } else if (newState == HttpClientState.RESPONSE_COMPLETED) {
-                readTimeoutHandler.endReadTimeout();
+                connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
             }
         };
 
@@ -186,13 +181,6 @@ class NettyAsyncHttpClient implements HttpClient {
                             proxyChallengeHolder));
                     }
                 }
-
-                channel.pipeline().addLast(WriteTimeoutHandler.HANDLER_NAME, writeTimeoutHandler);
-                if (reportingHandler != null) {
-                    channel.pipeline().addLast(RequestProgressReportingHandler.HANDLER_NAME, reportingHandler);
-                }
-                channel.pipeline().addLast(ResponseTimeoutHandler.HANDLER_NAME, responseTimeoutHandler);
-                channel.pipeline().addLast(ReadTimeoutHandler.HANDLER_NAME, readTimeoutHandler);
             });
 
         return configuredClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
@@ -382,49 +370,6 @@ class NettyAsyncHttpClient implements HttpClient {
                     disableBufferCopy, headersEagerlyConverted));
             }
         };
-    }
-
-    /*
-     * Adds request handlers:
-     * - write timeout handler once the request is ready to begin sending.
-     * - progress handler if progress tracking has been requested.
-     */
-    private void addRequestHandlers(Connection connection, Context context) {
-        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-        if (progressReporter != null) {
-            connection.addHandlerLast(
-                RequestProgressReportingHandler.HANDLER_NAME, new RequestProgressReportingHandler(progressReporter));
-        }
-    }
-
-    /*
-     * After request has been sent:
-     * - Remove Progress Handler
-     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
-     * handler.
-     */
-    private static void doAfterRequest(Connection connection, long responseTimeoutMillis) {
-        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(responseTimeoutMillis));
-    }
-
-    /*
-     * Remove response timeout handler from the connection as the response has been received, then add read timeout
-     * handler.
-     */
-    private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
-    }
-
-    /*
-     * Remove read timeout handler as the complete response has been received.
-     */
-    private static void removeReadTimeoutHandler(Connection connection) {
-        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
     }
 
     private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {

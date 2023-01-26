@@ -21,32 +21,20 @@ public final class RequestProgressReportingHandler extends ChannelOutboundHandle
 
     private final ProgressReporter progressReporter;
 
-    private boolean reportProgress = false;
-
     public RequestProgressReportingHandler(ProgressReporter progressReporter) {
         this.progressReporter = Objects.requireNonNull(progressReporter, "'progressReporter' must not be null");
     }
 
-    public void startProgressReporting() {
-        this.reportProgress = true;
-    }
-
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
-        if (reportProgress) {
-            if (msg instanceof ByteBuf) {
-                progressReporter.reportProgress(((ByteBuf) msg).readableBytes());
-            } else if (msg instanceof ByteBufHolder) {
-                progressReporter.reportProgress(((ByteBufHolder) msg).content().readableBytes());
-            } else if (msg instanceof FileRegion) {
-                progressReporter.reportProgress(((FileRegion) msg).count());
-            }
+        if (msg instanceof ByteBuf) {
+            progressReporter.reportProgress(((ByteBuf) msg).readableBytes());
+        } else if (msg instanceof ByteBufHolder) {
+            progressReporter.reportProgress(((ByteBufHolder) msg).content().readableBytes());
+        } else if (msg instanceof FileRegion) {
+            progressReporter.reportProgress(((FileRegion) msg).count());
         }
 
         ctx.write(msg, promise.unvoid());
-    }
-
-    public void endProgressReporting() {
-        this.reportProgress = false;
     }
 }
