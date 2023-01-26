@@ -19,9 +19,9 @@ val cosmosContainerName = "sampleContainer"
 
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.auth.type" -> authType,
-    "spark.cosmos.auth.aad.subscriptionId" -> subscriptionId,
-    "spark.cosmos.auth.aad.tenantId" -> tenantId,
-    "spark.cosmos.auth.aad.resourceGroupName" -> resourceGroupName,
+    "spark.cosmos.account.subscriptionId" -> subscriptionId,
+    "spark.cosmos.account.tenantId" -> tenantId,
+    "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
     "spark.cosmos.auth.aad.clientId" -> clientId,
     "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
     "spark.cosmos.database" -> cosmosDatabaseName,
@@ -30,9 +30,9 @@ val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.auth.type" -> authType,
-    "spark.cosmos.auth.aad.subscriptionId" -> subscriptionId,
-    "spark.cosmos.auth.aad.tenantId" -> tenantId,
-    "spark.cosmos.auth.aad.resourceGroupName" -> resourceGroupName,
+    "spark.cosmos.account.subscriptionId" -> subscriptionId,
+    "spark.cosmos.account.tenantId" -> tenantId,
+    "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
     "spark.cosmos.auth.aad.clientId" -> clientId,
     "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
     "spark.cosmos.database" -> cosmosDatabaseName,
@@ -46,9 +46,9 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
 spark.conf.set(s"spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
 spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
 spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.type", authType)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.aad.subscriptionId", subscriptionId)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.aad.tenantId", tenantId)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.aad.resourceGroupName", resourceGroupName)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.subscriptionId", subscriptionId)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.tenantId", tenantId)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.resourceGroupName", resourceGroupName)
 spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.aad.clientId", clientId)
 spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.aad.clientSecret", clientSecret)
 

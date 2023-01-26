@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.spark
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
 
@@ -16,6 +17,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -24,7 +26,11 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -79,6 +85,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -87,7 +94,11 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -142,6 +153,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -150,7 +162,11 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -205,6 +221,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -213,7 +230,11 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -266,6 +287,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -274,7 +296,11 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -343,6 +369,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -351,7 +378,11 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)

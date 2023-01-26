@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.spark
 
 import java.nio.charset.StandardCharsets
@@ -15,6 +16,7 @@ class PartitionMetadataSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
   private[this] val clientCfg = CosmosClientConfiguration(
     UUID.randomUUID().toString,
+    UUID.randomUUID().toString,
     CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
     None,
     UUID.randomUUID().toString,
@@ -23,7 +25,11 @@ class PartitionMetadataSpec extends UnitSpec {
     enableClientTelemetry = false,
     disableTcpConnectionEndpointRediscovery = false,
     clientTelemetryEndpoint = None,
-    preferredRegionsList = Option.empty)
+    preferredRegionsList = Option.empty,
+    subscriptionId = None,
+    tenantId = None,
+    resourceGroupName = None,
+    azureEnvironment = AzureEnvironment.AZURE)
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
   private[this] val lLsn = rnd.nextInt(10000000) + 10
@@ -48,6 +54,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -56,7 +63,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 1
@@ -120,6 +131,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -128,7 +140,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 1
@@ -192,6 +208,7 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -200,7 +217,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 10
@@ -246,6 +267,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "clone the meta data for a new sub range" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -254,7 +276,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 10
@@ -295,6 +321,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate weighted gap when document count per LSN is > 1" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -303,7 +330,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -338,6 +369,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "weighted gap should be at least 1" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -346,7 +378,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -381,6 +417,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate weighted gap when document count per LSN is < 1" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -389,7 +426,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -424,6 +465,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate weighted gap when latestLsn==startLsn" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -432,7 +474,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -467,6 +513,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate avg. document count per LSN correctly when there are no documents" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -475,7 +522,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -510,6 +561,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate avg. document count per LSN correctly" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -518,7 +570,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -570,6 +626,7 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate avg. document count per LSN correctly when firstLsn was empty" in {
     val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
       CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
       None,
       UUID.randomUUID().toString,
@@ -578,7 +635,11 @@ class PartitionMetadataSpec extends UnitSpec {
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)

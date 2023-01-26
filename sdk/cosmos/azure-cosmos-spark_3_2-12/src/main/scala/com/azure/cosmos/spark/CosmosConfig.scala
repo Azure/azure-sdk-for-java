@@ -4,10 +4,9 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.implementation.routing.LocationHelper
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange}
-import com.azure.cosmos.spark.AzureEnvironmentType.AzureEnvironmentType
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
@@ -44,13 +43,13 @@ import scala.collection.JavaConverters._
 private[spark] object CosmosConfigNames {
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
   val AccountKey = "spark.cosmos.accountKey"
+  val SubscriptionId = "spark.cosmos.account.subscriptionId"
+  val TenantId = "spark.cosmos.account.tenantId"
+  val ResourceGroupName = "spark.cosmos.account.resourceGroupName"
+  val AzureEnvironment = "spark.cosmos.account.azureEnvironment"
   val AuthType = "spark.cosmos.auth.type"
-  val SubscriptionId = "spark.cosmos.auth.aad.subscriptionId"
-  val TenantId = "spark.cosmos.auth.aad.tenantId"
-  val ResourceGroupName = "spark.cosmos.auth.aad.resourceGroupName"
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
-  val AzureEnvironment = "spark.cosmos.auth.aad.azureEnvironment"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -286,9 +285,15 @@ private case class CosmosAccountConfig(endpoint: String,
                                        applicationName: Option[String],
                                        useGatewayMode: Boolean,
                                        disableTcpConnectionEndpointRediscovery: Boolean,
-                                       preferredRegionsList: Option[Array[String]])
+                                       preferredRegionsList: Option[Array[String]],
+                                       subscriptionId: Option[String],
+                                       tenantId: Option[String],
+                                       resourceGroupName: Option[String],
+                                       azureEnvironment: AzureEnvironment)
 
 private object CosmosAccountConfig {
+  private val DefaultAzureEnvironmentType = AzureEnvironmentType.Azure
+
   private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
@@ -366,12 +371,50 @@ private object CosmosAccountConfig {
         "rediscovery should only be disabled when using custom domain names with private endpoints"
     )
 
+  private val SubscriptionId = CosmosConfigEntry[String](key = CosmosConfigNames.SubscriptionId,
+      defaultValue = None,
+      mandatory = false,
+      parseFromStringFunction = subscriptionId => subscriptionId,
+      helpMessage = "The subscriptionId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+
+  private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
+      defaultValue = None,
+      mandatory = false,
+      parseFromStringFunction = tenantId => tenantId,
+      helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+
+  private val ResourceGroupName = CosmosConfigEntry[String](key = CosmosConfigNames.ResourceGroupName,
+      defaultValue = None,
+      mandatory = false,
+      parseFromStringFunction = resourceGroupName => resourceGroupName,
+      helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+
+  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironment](key = CosmosConfigNames.AzureEnvironment,
+      defaultValue = Option.apply(AzureEnvironment.AZURE),
+      mandatory = false,
+      parseFromStringFunction = azureEnvironmentTypeAsString => {
+          val azureEnvironmentType = CosmosConfigEntry.parseEnumeration(azureEnvironmentTypeAsString, AzureEnvironmentType)
+          azureEnvironmentType match {
+              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE
+              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA
+              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY
+              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT
+              case _ => throw new IllegalArgumentException(s"Azure environment type ${azureEnvironmentType} is not supported")
+          }
+      },
+      helpMessage = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.")
+
   def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val authConfig = CosmosAuthConfig.parseCosmosAuthConfig(cfg)
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
+    val subscriptionIdOpt = CosmosConfigEntry.parse(cfg, SubscriptionId)
+    val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
+    val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
+    val azureEnvironmentOpt = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
+
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
     val allowDuplicateJsonPropertiesOverride = CosmosConfigEntry.parse(cfg, AllowInvalidJsonWithDuplicateJsonProperties)
@@ -383,6 +426,15 @@ private object CosmosAccountConfig {
     // parsing above already validated these assertions
     assert(endpointOpt.isDefined)
     assert(accountName.isDefined)
+    assert(azureEnvironmentOpt.isDefined)
+
+    authConfig match {
+        case _: CosmosAadAuthConfig =>
+            assert(subscriptionIdOpt.isDefined)
+            assert(resourceGroupNameOpt.isDefined)
+            assert(tenantIdOpt.isDefined)
+        case  _ =>
+    }
 
     if (preferredRegionsListOpt.isDefined) {
       // scalastyle:off null
@@ -412,7 +464,11 @@ private object CosmosAccountConfig {
       applicationName,
       useGatewayMode.get,
       disableTcpConnectionEndpointRediscovery.get,
-      preferredRegionsListOpt)
+      preferredRegionsListOpt,
+      subscriptionIdOpt,
+      tenantIdOpt,
+      resourceGroupNameOpt,
+      azureEnvironmentOpt.get)
   }
 }
 
@@ -429,30 +485,13 @@ private object AzureEnvironmentType extends Enumeration {
 trait CosmosAuthConfig {}
 
 private case class CosmosMasterKeyAuthConfig(accountKey: String) extends CosmosAuthConfig
-private case class CosmosAadAuthConfig(subscriptionId: String,
-                                       resourceGroupName: String,
+private case class CosmosAadAuthConfig(
                                        clientId: String,
                                        tenantId: String,
-                                       clientSecret: String,
-                                       azureEnvironment: AzureEnvironment,
-                                       databaseAccountName: String) extends CosmosAuthConfig
+                                       clientSecret: String) extends CosmosAuthConfig
 
 private object CosmosAuthConfig {
     private val DefaultAuthType = CosmosAuthType.MasterKey
-    private val DefaultAzureEnvironmentType = AzureEnvironmentType.Azure
-
-    private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
-        mandatory = true,
-        parseFromStringFunction = accountEndpointUri => {
-            val url = new URL(accountEndpointUri)
-            val separatorIndex = url.getHost.indexOf('.')
-            if (separatorIndex > 0) {
-                url.getHost.substring(0, separatorIndex)
-            } else {
-                url.getHost
-            }
-        },
-        helpMessage = "Cosmos DB Account Name")
 
     private val CosmosKey = CosmosConfigEntry[String](key = CosmosConfigNames.AccountKey,
         defaultValue = None,
@@ -468,87 +507,45 @@ private object CosmosAuthConfig {
         helpMessage = "There are two auth types are supported currently: " +
             "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrinciple`")
 
-    private val SubscriptionId = CosmosConfigEntry[String](key = CosmosConfigNames.SubscriptionId,
-        defaultValue = None,
-        mandatory = false,
-        parseFromStringFunction = subscriptionId => subscriptionId,
-        helpMessage = "Used for service principle authentication. The subscriptionId of the service principle. ")
-
-    private val ResourceGroupName = CosmosConfigEntry[String](key = CosmosConfigNames.ResourceGroupName,
-        defaultValue = None,
-        mandatory = false,
-        parseFromStringFunction = resourceGroupName => resourceGroupName,
-        helpMessage = "Used for service principle authentication. The resource group of the service principle. ")
-
     private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = tenantId => tenantId,
-        helpMessage = "Used for service principle authentication. The tenantId of the service principle. ")
+        helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
 
     private val ClientId = CosmosConfigEntry[String](key = CosmosConfigNames.ClientId,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientId => clientId,
-        helpMessage = "Used for service principle authentication. The clientId/ApplicationId of the service principle. ")
+        helpMessage = "The clientId/ApplicationId of the service principle. Required for `ServicePrinciple` authentication. ")
 
     private val ClientSecret = CosmosConfigEntry[String](key = CosmosConfigNames.ClientSecret,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientSecret => clientSecret,
-        helpMessage = "Used for service principle authentication. The client secret/password of the service principle. ")
-
-    private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironmentType](key = CosmosConfigNames.AzureEnvironment,
-        defaultValue = Option.apply(DefaultAzureEnvironmentType),
-        mandatory = false,
-        parseFromStringFunction = azureEnvironmentTypeAsString =>
-            CosmosConfigEntry.parseEnumeration(azureEnvironmentTypeAsString, AzureEnvironmentType),
-        helpMessage = "Used for service principle authentication. " +
-            " The azure environment of the service principle: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`")
+        helpMessage = "The client secret/password of the service principle. Required for `ServicePrinciple` authentication. ")
 
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
         val key = CosmosConfigEntry.parse(cfg, CosmosKey)
-        val subscriptionId = CosmosConfigEntry.parse(cfg, SubscriptionId)
-        val resourceGroupName = CosmosConfigEntry.parse(cfg, ResourceGroupName)
         val clientId = CosmosConfigEntry.parse(cfg, ClientId)
         val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
         val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
-        val azureEnvironmentType = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
-        val databaseAccount = CosmosConfigEntry.parse(cfg, CosmosAccountName)
 
         assert(authType.isDefined)
-        assert(databaseAccount.isDefined)
 
         if (authType.get == CosmosAuthType.MasterKey) {
             assert(key.isDefined)
             CosmosMasterKeyAuthConfig(key.get)
         } else {
-            assert(subscriptionId.isDefined)
-            assert(resourceGroupName.isDefined)
             assert(clientId.isDefined)
             assert(tenantId.isDefined)
             assert(clientSecret.isDefined)
-            assert(azureEnvironmentType.isDefined)
-            assert(databaseAccount.isDefined)
-
-            var azureEnvironment = AzureEnvironment.AZURE
-            azureEnvironmentType.get match {
-                case AzureEnvironmentType.Azure => azureEnvironment = AzureEnvironment.AZURE
-                case AzureEnvironmentType.AzureChina => azureEnvironment = AzureEnvironment.AZURE_CHINA
-                case AzureEnvironmentType.AzureGermany => azureEnvironment = AzureEnvironment.AZURE_GERMANY
-                case AzureEnvironmentType.AzureUsGovernment => azureEnvironment = AzureEnvironment.AZURE_US_GOVERNMENT
-                case _ => throw new IllegalArgumentException(s"Azure environment type ${azureEnvironmentType.get} is not supported")
-            }
 
             CosmosAadAuthConfig(
-                subscriptionId.get,
-                resourceGroupName.get,
                 clientId.get,
                 tenantId.get,
-                clientSecret.get,
-                azureEnvironment,
-                databaseAccount.get)
+                clientSecret.get)
         }
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
 import com.azure.core.management.profile.AzureProfile
 import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
@@ -137,9 +138,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             case aadAuthConfig: CosmosAadAuthConfig =>
                 sparkCatalogClient =
                     CosmosCatalogManagementSDKClient(
-                        aadAuthConfig.resourceGroupName,
-                        aadAuthConfig.databaseAccountName,
-                        createCosmosManagementClient(aadAuthConfig),
+                        cosmosClientConfiguration.resourceGroupName.get,
+                        cosmosClientConfiguration.databaseAccountName,
+                        createCosmosManagementClient(
+                            cosmosClientConfiguration.subscriptionId.get,
+                            cosmosClientConfiguration.azureEnvironment,
+                            aadAuthConfig),
                         cosmosAsyncClient)
             case _ =>
         }
@@ -183,7 +187,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
           case aadAuthConfig: CosmosAadAuthConfig =>
               val tokenCredential = new ClientSecretCredentialBuilder()
-                  .authorityHost(aadAuthConfig.azureEnvironment.getActiveDirectoryEndpoint())
+                  .authorityHost(cosmosClientConfiguration.azureEnvironment.getActiveDirectoryEndpoint())
                   .tenantId(aadAuthConfig.tenantId)
                   .clientId(aadAuthConfig.clientId)
                   .clientSecret(aadAuthConfig.clientSecret)
@@ -309,10 +313,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
 
-  private[this] def createCosmosManagementClient(authConfig: CosmosAadAuthConfig): CosmosManager = {
-      val azureProfile = new AzureProfile(authConfig.tenantId, authConfig.subscriptionId, authConfig.azureEnvironment)
+  private[this] def createCosmosManagementClient(
+                                                    subscriptionId: String,
+                                                    azureEnvironment: AzureEnvironment,
+                                                    authConfig: CosmosAadAuthConfig): CosmosManager = {
+      val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
       val tokenCredential = new ClientSecretCredentialBuilder()
-          .authorityHost(authConfig.azureEnvironment.getActiveDirectoryEndpoint())
+          .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
           .tenantId(authConfig.tenantId)
           .clientId(authConfig.clientId)
           .clientSecret(authConfig.clientSecret)

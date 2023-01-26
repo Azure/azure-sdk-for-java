@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
 import com.azure.cosmos.spark.catalog.CosmosCatalogCosmosSDKClient
@@ -42,6 +43,7 @@ class CosmosClientCacheITest
         "StandardCtorWithoutPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
+          "SampleDatabaseAccountName",
           CosmosMasterKeyAuthConfig(cosmosMasterKey),
           Some("SampleApplicationName"),
           "SampleApplicationName",
@@ -50,12 +52,17 @@ class CosmosClientCacheITest
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = None)
+          preferredRegionsList = None,
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
+          "SampleDatabaseAccountName",
           CosmosMasterKeyAuthConfig(cosmosMasterKey),
           Some("SampleApplicationName"),
           "SampleApplicationName",
@@ -64,12 +71,17 @@ class CosmosClientCacheITest
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]()))
+          preferredRegionsList = Some(Array[String]()),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
       ),
       (
         "StandardCtorWithOnePreferredRegion",
         CosmosClientConfiguration(
           cosmosEndpoint,
+          "SampleDatabaseAccountName",
           CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
           "SampleApplicationName",
@@ -78,12 +90,17 @@ class CosmosClientCacheITest
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]("North Europe")))
+          preferredRegionsList = Some(Array[String]("North Europe")),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
+          "SampleDatabaseAccountName",
           CosmosMasterKeyAuthConfig(cosmosMasterKey),
           None,
           "SampleApplicationName",
@@ -92,7 +109,11 @@ class CosmosClientCacheITest
           enableClientTelemetry = false,
           disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]("North Europe", "West Europe")))
+          preferredRegionsList = Some(Array[String]("North Europe", "West Europe")),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE)
       )
     )
 
@@ -102,6 +123,7 @@ class CosmosClientCacheITest
       val userConfig = userConfigPair._2
       val userConfigShallowCopy = CosmosClientConfiguration(
         userConfig.endpoint,
+        userConfig.databaseAccountName,
         userConfig.authConfig,
         userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
@@ -113,7 +135,11 @@ class CosmosClientCacheITest
         userConfig.preferredRegionsList match {
           case Some(array) => Some(array.clone())
           case None => None
-        }
+        },
+        userConfig.subscriptionId,
+        userConfig.tenantId,
+        userConfig.resourceGroupName,
+        userConfig.azureEnvironment
       )
 
       logInfo(s"TestCase: {$testCaseName}")
