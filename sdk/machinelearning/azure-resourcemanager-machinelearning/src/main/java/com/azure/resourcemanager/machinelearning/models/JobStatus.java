@@ -53,6 +53,15 @@ public final class JobStatus extends ExpandableStringEnum<JobStatus> {
     public static final JobStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of JobStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobStatus() {
+    }
+
+    /**
      * Creates or finds a JobStatus from its string representation.
      *
      * @param name a name to look for.

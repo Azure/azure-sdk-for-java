@@ -7,6 +7,8 @@ import com.azure.core.util.CoreUtils
 import com.azure.cosmos.implementation.HttpConstants
 import reactor.util.concurrent.Queues
 
+import java.time.Duration
+
 // cosmos db related constants
 private object CosmosConstants {
   private[this] val propertiesFileName = "azure-cosmos-spark.properties"

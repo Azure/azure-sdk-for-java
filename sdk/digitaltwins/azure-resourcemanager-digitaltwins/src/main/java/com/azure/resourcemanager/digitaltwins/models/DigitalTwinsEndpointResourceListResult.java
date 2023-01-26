@@ -24,6 +24,10 @@ public final class DigitalTwinsEndpointResourceListResult {
     @JsonProperty(value = "value")
     private List<DigitalTwinsEndpointResourceInner> value;
 
+    /** Creates an instance of DigitalTwinsEndpointResourceListResult class. */
+    public DigitalTwinsEndpointResourceListResult() {
+    }
+
     /**
      * Get the nextLink property: The link used to get the next page of DigitalTwinsInstance Endpoints.
      *

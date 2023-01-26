@@ -12,12 +12,10 @@ import com.azure.resourcemanager.mariadb.fluent.LocationBasedRecommendedActionSe
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendedActionSessionsOperationStatusInner;
 import com.azure.resourcemanager.mariadb.models.LocationBasedRecommendedActionSessionsOperationStatus;
 import com.azure.resourcemanager.mariadb.models.RecommendedActionSessionsOperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
     implements LocationBasedRecommendedActionSessionsOperationStatus {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(LocationBasedRecommendedActionSessionsOperationStatusImpl.class);
 
     private final LocationBasedRecommendedActionSessionsOperationStatusClient innerClient;
@@ -31,15 +29,6 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
         this.serviceManager = serviceManager;
     }
 
-    public RecommendedActionSessionsOperationStatus get(String locationName, String operationId) {
-        RecommendedActionSessionsOperationStatusInner inner = this.serviceClient().get(locationName, operationId);
-        if (inner != null) {
-            return new RecommendedActionSessionsOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RecommendedActionSessionsOperationStatus> getWithResponse(
         String locationName, String operationId, Context context) {
         Response<RecommendedActionSessionsOperationStatusInner> inner =
@@ -50,6 +39,15 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RecommendedActionSessionsOperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RecommendedActionSessionsOperationStatus get(String locationName, String operationId) {
+        RecommendedActionSessionsOperationStatusInner inner = this.serviceClient().get(locationName, operationId);
+        if (inner != null) {
+            return new RecommendedActionSessionsOperationStatusImpl(inner, this.manager());
         } else {
             return null;
         }

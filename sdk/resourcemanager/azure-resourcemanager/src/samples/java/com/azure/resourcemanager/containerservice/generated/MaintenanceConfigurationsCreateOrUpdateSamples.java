@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.MaintenanceConfigurationInner;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for MaintenanceConfigurations CreateOrUpdate. */
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/MaintenanceConfigurationsCreate_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/MaintenanceConfigurationsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration.
@@ -41,6 +40,6 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
                                 new TimeSpan()
                                     .withStart(OffsetDateTime.parse("2020-11-26T03:00:00Z"))
                                     .withEnd(OffsetDateTime.parse("2020-11-30T12:00:00Z")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -18,8 +18,7 @@ public final class CheckNameRequest {
     private String name;
 
     /*
-     * The type of resource, for instance
-     * Microsoft.DigitalTwins/digitalTwinsInstances.
+     * The type of resource, for instance Microsoft.DigitalTwins/digitalTwinsInstances.
      */
     @JsonProperty(value = "type", required = true)
     private String type = "Microsoft.DigitalTwins/digitalTwinsInstances";

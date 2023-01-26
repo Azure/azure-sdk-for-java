@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The swagger custom dynamic tree parameter. */
 @Fluent
 public final class SwaggerCustomDynamicTreeParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerCustomDynamicTreeParameter.class);
-
     /*
-     * Gets or sets a path to a property in the currently selected item to pass
-     * as a value to a parameter for the given operation.
+     * Gets or sets a path to a property in the currently selected item to pass as a value to a parameter for the given
+     * operation.
      */
     @JsonProperty(value = "selectedItemValuePath")
     private String selectedItemValuePath;
@@ -38,6 +34,10 @@ public final class SwaggerCustomDynamicTreeParameter {
      */
     @JsonProperty(value = "required")
     private Boolean required;
+
+    /** Creates an instance of SwaggerCustomDynamicTreeParameter class. */
+    public SwaggerCustomDynamicTreeParameter() {
+    }
 
     /**
      * Get the selectedItemValuePath property: Gets or sets a path to a property in the currently selected item to pass

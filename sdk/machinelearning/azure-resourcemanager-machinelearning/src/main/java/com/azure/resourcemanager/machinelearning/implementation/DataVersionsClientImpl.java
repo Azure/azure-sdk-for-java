@@ -59,7 +59,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface DataVersionsService {
+    public interface DataVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

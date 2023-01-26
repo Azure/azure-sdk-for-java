@@ -19,6 +19,8 @@ import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
+import com.azure.spring.messaging.implementation.converter.ObjectMapperHolder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -120,15 +122,18 @@ public class AzureEventHubsMessagingAutoConfiguration {
             return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
-        /**
-         * Creates an Event Hubs message converter.
-         *
-         * @return An Event Hubs message converter.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsMessageConverter eventHubsMessageConverter() {
-            return new EventHubsMessageConverter();
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
+        EventHubsMessageConverter defaultEventHubsMessageConverter() {
+            return new EventHubsMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
+        EventHubsMessageConverter eventHubsMessageConverter(ObjectMapper objectMapper) {
+            return new EventHubsMessageConverter(objectMapper);
         }
 
         /**

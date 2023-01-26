@@ -24,6 +24,10 @@ public final class VaultList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of VaultList class. */
+    public VaultList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

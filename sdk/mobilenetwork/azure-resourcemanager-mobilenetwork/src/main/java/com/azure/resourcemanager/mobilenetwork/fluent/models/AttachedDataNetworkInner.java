@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.NaptConfiguration;
@@ -14,22 +15,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Attached data network resource. */
+/** Attached data network resource. Must be created in the same location as its parent packet core data plane. */
 @Fluent
 public final class AttachedDataNetworkInner extends Resource {
     /*
-     * Data network properties.
+     * Attached data network properties.
      */
     @JsonProperty(value = "properties", required = true)
     private AttachedDataNetworkPropertiesFormat innerProperties = new AttachedDataNetworkPropertiesFormat();
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of AttachedDataNetworkInner class. */
+    public AttachedDataNetworkInner() {
+    }
+
     /**
-     * Get the innerProperties property: Data network properties.
+     * Get the innerProperties property: Attached data network properties.
      *
      * @return the innerProperties value.
      */
     private AttachedDataNetworkPropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -81,7 +101,8 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Get the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network.
+     * Get the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
      *
      * @return the dnsAddresses value.
      */
@@ -90,7 +111,8 @@ public final class AttachedDataNetworkInner extends Resource {
     }
 
     /**
-     * Set the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network.
+     * Set the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
      *
      * @param dnsAddresses the dnsAddresses value to set.
      * @return the AttachedDataNetworkInner object itself.

@@ -24,6 +24,10 @@ public final class TimeSeriesDatabaseConnectionListResult {
     @JsonProperty(value = "value")
     private List<TimeSeriesDatabaseConnectionInner> value;
 
+    /** Creates an instance of TimeSeriesDatabaseConnectionListResult class. */
+    public TimeSeriesDatabaseConnectionListResult() {
+    }
+
     /**
      * Get the nextLink property: The link used to get the next page of results.
      *

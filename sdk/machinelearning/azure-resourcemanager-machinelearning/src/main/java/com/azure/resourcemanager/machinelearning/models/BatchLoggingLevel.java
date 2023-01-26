@@ -23,6 +23,15 @@ public final class BatchLoggingLevel extends ExpandableStringEnum<BatchLoggingLe
     public static final BatchLoggingLevel DEBUG = fromString("Debug");
 
     /**
+     * Creates a new instance of BatchLoggingLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BatchLoggingLevel() {
+    }
+
+    /**
      * Creates or finds a BatchLoggingLevel from its string representation.
      *
      * @param name a name to look for.

@@ -5,273 +5,33 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** A Disk. */
-@JsonFlatten
 @Fluent
-public class DiskInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskInner.class);
-
+public final class DiskInner extends Resource {
     /*
-     * The storage type for the disk (i.e. Standard, Premium).
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.diskType")
-    private StorageType diskType;
+    @JsonProperty(value = "properties", required = true)
+    private DiskProperties innerProperties = new DiskProperties();
 
-    /*
-     * The size of the disk in Gibibytes.
-     */
-    @JsonProperty(value = "properties.diskSizeGiB")
-    private Integer diskSizeGiB;
-
-    /*
-     * The resource ID of the VM to which this disk is leased.
-     */
-    @JsonProperty(value = "properties.leasedByLabVmId")
-    private String leasedByLabVmId;
-
-    /*
-     * When backed by a blob, the name of the VHD blob without extension.
-     */
-    @JsonProperty(value = "properties.diskBlobName")
-    private String diskBlobName;
-
-    /*
-     * When backed by a blob, the URI of underlying blob.
-     */
-    @JsonProperty(value = "properties.diskUri")
-    private String diskUri;
-
-    /*
-     * When backed by a blob, the storage account where the blob is.
-     */
-    @JsonProperty(value = "properties.storageAccountId")
-    private String storageAccountId;
-
-    /*
-     * The creation date of the disk.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The host caching policy of the disk (i.e. None, ReadOnly, ReadWrite).
-     */
-    @JsonProperty(value = "properties.hostCaching")
-    private String hostCaching;
-
-    /*
-     * When backed by managed disk, this is the ID of the compute disk
-     * resource.
-     */
-    @JsonProperty(value = "properties.managedDiskId")
-    private String managedDiskId;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
-
-    /**
-     * Get the diskType property: The storage type for the disk (i.e. Standard, Premium).
-     *
-     * @return the diskType value.
-     */
-    public StorageType diskType() {
-        return this.diskType;
+    /** Creates an instance of DiskInner class. */
+    public DiskInner() {
     }
 
     /**
-     * Set the diskType property: The storage type for the disk (i.e. Standard, Premium).
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @param diskType the diskType value to set.
-     * @return the DiskInner object itself.
+     * @return the innerProperties value.
      */
-    public DiskInner withDiskType(StorageType diskType) {
-        this.diskType = diskType;
-        return this;
-    }
-
-    /**
-     * Get the diskSizeGiB property: The size of the disk in Gibibytes.
-     *
-     * @return the diskSizeGiB value.
-     */
-    public Integer diskSizeGiB() {
-        return this.diskSizeGiB;
-    }
-
-    /**
-     * Set the diskSizeGiB property: The size of the disk in Gibibytes.
-     *
-     * @param diskSizeGiB the diskSizeGiB value to set.
-     * @return the DiskInner object itself.
-     */
-    public DiskInner withDiskSizeGiB(Integer diskSizeGiB) {
-        this.diskSizeGiB = diskSizeGiB;
-        return this;
-    }
-
-    /**
-     * Get the leasedByLabVmId property: The resource ID of the VM to which this disk is leased.
-     *
-     * @return the leasedByLabVmId value.
-     */
-    public String leasedByLabVmId() {
-        return this.leasedByLabVmId;
-    }
-
-    /**
-     * Set the leasedByLabVmId property: The resource ID of the VM to which this disk is leased.
-     *
-     * @param leasedByLabVmId the leasedByLabVmId value to set.
-     * @return the DiskInner object itself.
-     */
-    public DiskInner withLeasedByLabVmId(String leasedByLabVmId) {
-        this.leasedByLabVmId = leasedByLabVmId;
-        return this;
-    }
-
-    /**
-     * Get the diskBlobName property: When backed by a blob, the name of the VHD blob without extension.
-     *
-     * @return the diskBlobName value.
-     */
-    public String diskBlobName() {
-        return this.diskBlobName;
-    }
-
-    /**
-     * Set the diskBlobName property: When backed by a blob, the name of the VHD blob without extension.
-     *
-     * @param diskBlobName the diskBlobName value to set.
-     * @return the DiskInner object itself.
-     */
-    public DiskInner withDiskBlobName(String diskBlobName) {
-        this.diskBlobName = diskBlobName;
-        return this;
-    }
-
-    /**
-     * Get the diskUri property: When backed by a blob, the URI of underlying blob.
-     *
-     * @return the diskUri value.
-     */
-    public String diskUri() {
-        return this.diskUri;
-    }
-
-    /**
-     * Set the diskUri property: When backed by a blob, the URI of underlying blob.
-     *
-     * @param diskUri the diskUri value to set.
-     * @return the DiskInner object itself.
-     */
-    public DiskInner withDiskUri(String diskUri) {
-        this.diskUri = diskUri;
-        return this;
-    }
-
-    /**
-     * Get the storageAccountId property: When backed by a blob, the storage account where the blob is.
-     *
-     * @return the storageAccountId value.
-     */
-    public String storageAccountId() {
-        return this.storageAccountId;
-    }
-
-    /**
-     * Set the storageAccountId property: When backed by a blob, the storage account where the blob is.
-     *
-     * @param storageAccountId the storageAccountId value to set.
-     * @return the DiskInner object itself.
-     */
-    public DiskInner withStorageAccountId(String storageAccountId) {
-        this.storageAccountId = storageAccountId;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the disk.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the hostCaching property: The host caching policy of the disk (i.e. None, ReadOnly, ReadWrite).
-     *
-     * @return the hostCaching value.
-     */
-    public String hostCaching() {
-        return this.hostCaching;
-    }
-
-    /**
-     * Set the hostCaching property: The host caching policy of the disk (i.e. None, ReadOnly, ReadWrite).
-     *
-     * @param hostCaching the hostCaching value to set.
-     * @return the DiskInner object itself.
-     */
-    public DiskInner withHostCaching(String hostCaching) {
-        this.hostCaching = hostCaching;
-        return this;
-    }
-
-    /**
-     * Get the managedDiskId property: When backed by managed disk, this is the ID of the compute disk resource.
-     *
-     * @return the managedDiskId value.
-     */
-    public String managedDiskId() {
-        return this.managedDiskId;
-    }
-
-    /**
-     * Set the managedDiskId property: When backed by managed disk, this is the ID of the compute disk resource.
-     *
-     * @param managedDiskId the managedDiskId value to set.
-     * @return the DiskInner object itself.
-     */
-    public DiskInner withManagedDiskId(String managedDiskId) {
-        this.managedDiskId = managedDiskId;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
+    private DiskProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -289,10 +49,230 @@ public class DiskInner extends Resource {
     }
 
     /**
+     * Get the diskType property: The storage type for the disk (i.e. Standard, Premium).
+     *
+     * @return the diskType value.
+     */
+    public StorageType diskType() {
+        return this.innerProperties() == null ? null : this.innerProperties().diskType();
+    }
+
+    /**
+     * Set the diskType property: The storage type for the disk (i.e. Standard, Premium).
+     *
+     * @param diskType the diskType value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withDiskType(StorageType diskType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withDiskType(diskType);
+        return this;
+    }
+
+    /**
+     * Get the diskSizeGiB property: The size of the disk in Gibibytes.
+     *
+     * @return the diskSizeGiB value.
+     */
+    public Integer diskSizeGiB() {
+        return this.innerProperties() == null ? null : this.innerProperties().diskSizeGiB();
+    }
+
+    /**
+     * Set the diskSizeGiB property: The size of the disk in Gibibytes.
+     *
+     * @param diskSizeGiB the diskSizeGiB value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withDiskSizeGiB(Integer diskSizeGiB) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withDiskSizeGiB(diskSizeGiB);
+        return this;
+    }
+
+    /**
+     * Get the leasedByLabVmId property: The resource ID of the VM to which this disk is leased.
+     *
+     * @return the leasedByLabVmId value.
+     */
+    public String leasedByLabVmId() {
+        return this.innerProperties() == null ? null : this.innerProperties().leasedByLabVmId();
+    }
+
+    /**
+     * Set the leasedByLabVmId property: The resource ID of the VM to which this disk is leased.
+     *
+     * @param leasedByLabVmId the leasedByLabVmId value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withLeasedByLabVmId(String leasedByLabVmId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withLeasedByLabVmId(leasedByLabVmId);
+        return this;
+    }
+
+    /**
+     * Get the diskBlobName property: When backed by a blob, the name of the VHD blob without extension.
+     *
+     * @return the diskBlobName value.
+     */
+    public String diskBlobName() {
+        return this.innerProperties() == null ? null : this.innerProperties().diskBlobName();
+    }
+
+    /**
+     * Set the diskBlobName property: When backed by a blob, the name of the VHD blob without extension.
+     *
+     * @param diskBlobName the diskBlobName value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withDiskBlobName(String diskBlobName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withDiskBlobName(diskBlobName);
+        return this;
+    }
+
+    /**
+     * Get the diskUri property: When backed by a blob, the URI of underlying blob.
+     *
+     * @return the diskUri value.
+     */
+    public String diskUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().diskUri();
+    }
+
+    /**
+     * Set the diskUri property: When backed by a blob, the URI of underlying blob.
+     *
+     * @param diskUri the diskUri value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withDiskUri(String diskUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withDiskUri(diskUri);
+        return this;
+    }
+
+    /**
+     * Get the storageAccountId property: When backed by a blob, the storage account where the blob is.
+     *
+     * @return the storageAccountId value.
+     */
+    public String storageAccountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountId();
+    }
+
+    /**
+     * Set the storageAccountId property: When backed by a blob, the storage account where the blob is.
+     *
+     * @param storageAccountId the storageAccountId value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withStorageAccountId(String storageAccountId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withStorageAccountId(storageAccountId);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the disk.
+     *
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the hostCaching property: The host caching policy of the disk (i.e. None, ReadOnly, ReadWrite).
+     *
+     * @return the hostCaching value.
+     */
+    public String hostCaching() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostCaching();
+    }
+
+    /**
+     * Set the hostCaching property: The host caching policy of the disk (i.e. None, ReadOnly, ReadWrite).
+     *
+     * @param hostCaching the hostCaching value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withHostCaching(String hostCaching) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withHostCaching(hostCaching);
+        return this;
+    }
+
+    /**
+     * Get the managedDiskId property: When backed by managed disk, this is the ID of the compute disk resource.
+     *
+     * @return the managedDiskId value.
+     */
+    public String managedDiskId() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedDiskId();
+    }
+
+    /**
+     * Set the managedDiskId property: When backed by managed disk, this is the ID of the compute disk resource.
+     *
+     * @param managedDiskId the managedDiskId value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withManagedDiskId(String managedDiskId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withManagedDiskId(managedDiskId);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     *
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model DiskInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiskInner.class);
 }

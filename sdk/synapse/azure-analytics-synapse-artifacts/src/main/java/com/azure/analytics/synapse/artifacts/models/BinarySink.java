@@ -20,6 +20,9 @@ public final class BinarySink extends CopySink {
     @JsonProperty(value = "storeSettings")
     private StoreWriteSettings storeSettings;
 
+    /** Creates an instance of BinarySink class. */
+    public BinarySink() {}
+
     /**
      * Get the storeSettings property: Binary store settings.
      *

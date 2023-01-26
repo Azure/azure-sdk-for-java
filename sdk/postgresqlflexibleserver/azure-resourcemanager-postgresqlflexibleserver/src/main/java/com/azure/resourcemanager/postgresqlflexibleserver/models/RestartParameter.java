@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents server restart parameters. */
 @Fluent
 public final class RestartParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestartParameter.class);
-
     /*
      * Indicates whether to restart the server with failover.
      */
@@ -25,6 +21,10 @@ public final class RestartParameter {
      */
     @JsonProperty(value = "failoverMode")
     private FailoverMode failoverMode;
+
+    /** Creates an instance of RestartParameter class. */
+    public RestartParameter() {
+    }
 
     /**
      * Get the restartWithFailover property: Indicates whether to restart the server with failover.

@@ -17,6 +17,15 @@ public final class FeatureLags extends ExpandableStringEnum<FeatureLags> {
     public static final FeatureLags AUTO = fromString("Auto");
 
     /**
+     * Creates a new instance of FeatureLags value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FeatureLags() {
+    }
+
+    /**
      * Creates or finds a FeatureLags from its string representation.
      *
      * @param name a name to look for.

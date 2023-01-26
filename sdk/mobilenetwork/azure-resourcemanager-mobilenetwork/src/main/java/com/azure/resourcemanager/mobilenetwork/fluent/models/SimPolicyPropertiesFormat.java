@@ -8,12 +8,15 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
-/** SIM policy properties. */
+/** SIM policy properties. Must be created in the same location as its parent mobile network. */
 @Fluent
 public final class SimPolicyPropertiesFormat {
     /*
@@ -23,23 +26,29 @@ public final class SimPolicyPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Aggregate maximum bit rate across all non-GBR QoS flows of all PDU
-     * sessions of a given UE. See 3GPP TS23.501 section 5.7.2.6 for a full
-     * description of the UE-AMBR.
+     * A dictionary of sites to the provisioning state of this SIM policy on that site.
+     */
+    @JsonProperty(value = "siteProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, SiteProvisioningState> siteProvisioningState;
+
+    /*
+     * Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given UE. See 3GPP TS23.501
+     * section 5.7.2.6 for a full description of the UE-AMBR.
      */
     @JsonProperty(value = "ueAmbr", required = true)
     private Ambr ueAmbr;
 
     /*
-     * The default slice to use if the UE does not explicitly specify it. This
-     * slice must exist in the `sliceConfigurations` map.
+     * The default slice to use if the UE does not explicitly specify it. This slice must exist in the
+     * `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "defaultSlice", required = true)
     private SliceResourceId defaultSlice;
 
     /*
-     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This
-     * is an optional setting and by default is unspecified.
+     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an optional setting and by default is
+     * unspecified.
      */
     @JsonProperty(value = "rfspIndex")
     private Integer rfspIndex;
@@ -51,11 +60,15 @@ public final class SimPolicyPropertiesFormat {
     private Integer registrationTimer;
 
     /*
-     * The allowed slices and the settings to use for them. The list must not
-     * contain duplicate items and must contain at least one item.
+     * The allowed slices and the settings to use for them. The list must not contain duplicate items and must contain
+     * at least one item.
      */
     @JsonProperty(value = "sliceConfigurations", required = true)
     private List<SliceConfiguration> sliceConfigurations;
+
+    /** Creates an instance of SimPolicyPropertiesFormat class. */
+    public SimPolicyPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM policy resource.
@@ -64,6 +77,16 @@ public final class SimPolicyPropertiesFormat {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
+     * that site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        return this.siteProvisioningState;
     }
 
     /**
@@ -90,7 +113,7 @@ public final class SimPolicyPropertiesFormat {
 
     /**
      * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @return the defaultSlice value.
      */
@@ -100,7 +123,7 @@ public final class SimPolicyPropertiesFormat {
 
     /**
      * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @param defaultSlice the defaultSlice value to set.
      * @return the SimPolicyPropertiesFormat object itself.

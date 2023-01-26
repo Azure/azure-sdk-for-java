@@ -23,6 +23,15 @@ public final class RunQueryFilterOperator extends ExpandableStringEnum<RunQueryF
     public static final RunQueryFilterOperator NOT_IN = fromString("NotIn");
 
     /**
+     * Creates a new instance of RunQueryFilterOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunQueryFilterOperator() {
+    }
+
+    /**
      * Creates or finds a RunQueryFilterOperator from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,15 @@ public final class IntegrationRuntimeEdition extends ExpandableStringEnum<Integr
     public static final IntegrationRuntimeEdition ENTERPRISE = fromString("Enterprise");
 
     /**
+     * Creates a new instance of IntegrationRuntimeEdition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeEdition() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeEdition from its string representation.
      *
      * @param name a name to look for.

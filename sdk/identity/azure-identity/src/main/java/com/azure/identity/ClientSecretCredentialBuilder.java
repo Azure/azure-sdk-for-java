@@ -6,8 +6,6 @@ package com.azure.identity;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
-import java.util.HashMap;
-
 /**
  * Fluent credential builder for instantiating a {@link ClientSecretCredential}.
  *
@@ -15,6 +13,7 @@ import java.util.HashMap;
  */
 public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<ClientSecretCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ClientSecretCredentialBuilder.class);
+    private static final String CLASS_NAME = ClientSecretCredentialBuilder.class.getSimpleName();
 
     private String clientSecret;
 
@@ -71,11 +70,9 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("tenantId", tenantId);
-                put("clientSecret", clientSecret);
-            }}, LOGGER);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
+            "clientSecret", clientSecret);
+
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
     }
 }

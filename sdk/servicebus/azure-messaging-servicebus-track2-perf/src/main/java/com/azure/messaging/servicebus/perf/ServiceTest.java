@@ -36,6 +36,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     final ServiceBusReceiverAsyncClient receiverAsync;
     final ServiceBusSenderClient sender;
     final ServiceBusSenderAsyncClient senderAsync;
+    final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
 
     /**
      *
@@ -64,7 +65,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
             .transportType(AmqpTransportType.AMQP)
             .connectionString(connectionString);
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = baseBuilder
+        receiverBuilder = baseBuilder
             .receiver()
             .receiveMode(receiveMode)
             .queueName(queueName);

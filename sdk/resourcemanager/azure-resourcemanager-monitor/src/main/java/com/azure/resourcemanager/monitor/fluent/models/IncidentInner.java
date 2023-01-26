@@ -41,6 +41,10 @@ public final class IncidentInner {
     @JsonProperty(value = "resolvedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resolvedTime;
 
+    /** Creates an instance of IncidentInner class. */
+    public IncidentInner() {
+    }
+
     /**
      * Get the name property: Incident name.
      *

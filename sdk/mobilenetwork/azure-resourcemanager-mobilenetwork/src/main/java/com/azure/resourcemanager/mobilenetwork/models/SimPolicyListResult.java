@@ -24,6 +24,10 @@ public final class SimPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SimPolicyListResult class. */
+    public SimPolicyListResult() {
+    }
+
     /**
      * Get the value property: A list of SIM policies.
      *

@@ -7,14 +7,11 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.StoragePoolOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a StoragePool RP Operation. */
 @Fluent
 public final class StoragePoolRPOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StoragePoolRPOperationInner.class);
-
     /*
      * The name of the operation being performed on this particular object
      */
@@ -40,11 +37,15 @@ public final class StoragePoolRPOperationInner {
     private StoragePoolOperationDisplay display;
 
     /*
-     * The intended executor of the operation; governs the display of the
-     * operation in the RBAC UX and the audit logs UX.
+     * The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
+     * UX.
      */
     @JsonProperty(value = "origin")
     private String origin;
+
+    /** Creates an instance of StoragePoolRPOperationInner class. */
+    public StoragePoolRPOperationInner() {
+    }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object.
@@ -155,13 +156,13 @@ public final class StoragePoolRPOperationInner {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model StoragePoolRPOperationInner"));
         }
         if (display() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property display in model StoragePoolRPOperationInner"));
@@ -169,4 +170,6 @@ public final class StoragePoolRPOperationInner {
             display().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StoragePoolRPOperationInner.class);
 }

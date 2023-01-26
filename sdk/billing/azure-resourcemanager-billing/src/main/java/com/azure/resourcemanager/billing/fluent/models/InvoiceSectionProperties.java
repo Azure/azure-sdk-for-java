@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.InvoiceSectionState;
 import com.azure.resourcemanager.billing.models.TargetCloud;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** The properties of an invoice section. */
 @Fluent
 public final class InvoiceSectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionProperties.class);
-
     /*
      * The name of the invoice section.
      */
@@ -44,21 +40,23 @@ public final class InvoiceSectionProperties {
     private String systemId;
 
     /*
-     * Dictionary of metadata associated with the invoice section. Maximum
-     * key/value length supported of 256 characters. Keys/value should not
-     * empty value nor null. Keys can not contain < > % & \ ? /
+     * Dictionary of metadata associated with the invoice section. Maximum key/value length supported of 256
+     * characters. Keys/value should not empty value nor null. Keys can not contain < > % & \ ? /
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * Identifies the cloud environments that are associated with an invoice
-     * section. This is a system managed optional field and gets updated as the
-     * invoice section gets associated with accounts in various clouds.
+     * Identifies the cloud environments that are associated with an invoice section. This is a system managed optional
+     * field and gets updated as the invoice section gets associated with accounts in various clouds.
      */
     @JsonProperty(value = "targetCloud", access = JsonProperty.Access.WRITE_ONLY)
     private TargetCloud targetCloud;
+
+    /** Creates an instance of InvoiceSectionProperties class. */
+    public InvoiceSectionProperties() {
+    }
 
     /**
      * Get the displayName property: The name of the invoice section.

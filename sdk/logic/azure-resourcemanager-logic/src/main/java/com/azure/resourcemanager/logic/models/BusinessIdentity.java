@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration account partner's business identity. */
 @Fluent
 public class BusinessIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BusinessIdentity.class);
-
     /*
      * The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
      */
@@ -25,6 +22,10 @@ public class BusinessIdentity {
      */
     @JsonProperty(value = "value", required = true)
     private String value;
+
+    /** Creates an instance of BusinessIdentity class. */
+    public BusinessIdentity() {
+    }
 
     /**
      * Get the qualifier property: The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32.
@@ -73,14 +74,16 @@ public class BusinessIdentity {
      */
     public void validate() {
         if (qualifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property qualifier in model BusinessIdentity"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model BusinessIdentity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BusinessIdentity.class);
 }

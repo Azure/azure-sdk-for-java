@@ -11,7 +11,7 @@ import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Data network resource. */
+/** Data network resource. Must be created in the same location as its parent mobile network. */
 @Fluent
 public final class DataNetworkInner extends Resource {
     /*
@@ -21,11 +21,14 @@ public final class DataNetworkInner extends Resource {
     private DataNetworkPropertiesFormat innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of DataNetworkInner class. */
+    public DataNetworkInner() {
+    }
 
     /**
      * Get the innerProperties property: Data network properties.

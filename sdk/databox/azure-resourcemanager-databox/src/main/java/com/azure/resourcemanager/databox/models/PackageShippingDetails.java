@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Shipping details. */
 @Immutable
 public final class PackageShippingDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PackageShippingDetails.class);
-
     /*
      * Name of the carrier.
      */
@@ -31,6 +27,10 @@ public final class PackageShippingDetails {
      */
     @JsonProperty(value = "trackingUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingUrl;
+
+    /** Creates an instance of PackageShippingDetails class. */
+    public PackageShippingDetails() {
+    }
 
     /**
      * Get the carrierName property: Name of the carrier.

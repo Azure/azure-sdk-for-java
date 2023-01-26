@@ -96,6 +96,10 @@ public final class MetricAlertPropertiesPatch {
     @JsonProperty(value = "isMigrated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMigrated;
 
+    /** Creates an instance of MetricAlertPropertiesPatch class. */
+    public MetricAlertPropertiesPatch() {
+    }
+
     /**
      * Get the description property: the description of the metric alert that will be included in the alert email.
      *

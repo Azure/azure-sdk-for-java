@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ItemLevelRecoveryConnections Revoke. */
 public final class ItemLevelRecoveryConnectionsRevokeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Revoke_Ilr.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/Revoke_Ilr.json
      */
     /**
      * Sample code: Revoke Instant Item Level Recovery for Azure Vm.
@@ -27,6 +25,6 @@ public final class ItemLevelRecoveryConnectionsRevokeSamples {
                 "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
                 "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
                 "1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

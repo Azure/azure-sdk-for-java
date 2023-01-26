@@ -15,12 +15,12 @@ import java.time.Duration;
 public class ConsumerProperties extends CommonProperties implements ServiceBusReceiverClientProperties {
 
     private Boolean sessionEnabled;
-    private Boolean autoComplete = true;
+    private Boolean autoComplete;
     private Integer prefetchCount;
-    private SubQueue subQueue = SubQueue.NONE;
-    private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
+    private SubQueue subQueue;
+    private ServiceBusReceiveMode receiveMode;
     private String subscriptionName;
-    private Duration maxAutoLockRenewDuration = Duration.ofMinutes(5);
+    private Duration maxAutoLockRenewDuration;
 
     @Override
     public Boolean getSessionEnabled() {

@@ -24,6 +24,9 @@ public class AzureTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName", required = true)
     private Object tableName;
 
+    /** Creates an instance of AzureTableDataset class. */
+    public AzureTableDataset() {}
+
     /**
      * Get the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
      * resultType string).

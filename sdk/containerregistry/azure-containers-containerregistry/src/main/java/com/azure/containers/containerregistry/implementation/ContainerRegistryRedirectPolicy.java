@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -49,6 +50,11 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         return this.attemptRedirect(context, next, context.getHttpRequest(), 1, new HashSet<>());
     }
 
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return this.attemptRedirectSync(context, next, context.getHttpRequest(), 1, new HashSet<>());
+    }
+
     /**
      * Function to process through the HTTP Response received in the pipeline
      * and redirect sending the request with new redirect url.
@@ -71,6 +77,24 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
                 return Mono.just(httpResponse);
             }
         });
+    }
+
+    private HttpResponse attemptRedirectSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next, HttpRequest originalHttpRequest, int redirectAttempt, Set<String> attemptedRedirectUrls) {
+        context.setHttpRequest(originalHttpRequest.copy());
+        HttpResponse httpResponse = next.clone().processSync();
+        if (this.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
+            HttpRequest redirectRequestCopy = this.createRedirectRequest(httpResponse);
+            httpResponse.getBodyAsBinaryData();
+            HttpResponse newResponse =
+                attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
+            String digest = getDigestFromHeader(httpResponse.getHeaders());
+            if (digest != null) {
+                newResponse.getHeaders().set(DOCKER_DIGEST_HEADER_NAME, digest);
+            }
+            return newResponse;
+        } else {
+            return httpResponse;
+        }
     }
 
     public boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount, Set<String> attemptedRedirectUrls) {

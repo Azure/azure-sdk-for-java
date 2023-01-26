@@ -6,28 +6,39 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** TargetCopySetting Target copy settings. */
+/**
+ * TargetCopySetting
+ *
+ * <p>Target copy settings.
+ */
 @Fluent
 public final class TargetCopySetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetCopySetting.class);
-
     /*
-     * CopyOption It can be CustomCopyOption or ImmediateCopyOption.
+     * CopyOption
+     *
+     * It can be CustomCopyOption or ImmediateCopyOption.
      */
     @JsonProperty(value = "copyAfter", required = true)
     private CopyOption copyAfter;
 
     /*
-     * DataStoreInfoBase Info of target datastore
+     * DataStoreInfoBase
+     *
+     * Info of target datastore
      */
     @JsonProperty(value = "dataStore", required = true)
     private DataStoreInfoBase dataStore;
 
+    /** Creates an instance of TargetCopySetting class. */
+    public TargetCopySetting() {
+    }
+
     /**
-     * Get the copyAfter property: CopyOption It can be CustomCopyOption or ImmediateCopyOption.
+     * Get the copyAfter property: CopyOption
+     *
+     * <p>It can be CustomCopyOption or ImmediateCopyOption.
      *
      * @return the copyAfter value.
      */
@@ -36,7 +47,9 @@ public final class TargetCopySetting {
     }
 
     /**
-     * Set the copyAfter property: CopyOption It can be CustomCopyOption or ImmediateCopyOption.
+     * Set the copyAfter property: CopyOption
+     *
+     * <p>It can be CustomCopyOption or ImmediateCopyOption.
      *
      * @param copyAfter the copyAfter value to set.
      * @return the TargetCopySetting object itself.
@@ -47,7 +60,9 @@ public final class TargetCopySetting {
     }
 
     /**
-     * Get the dataStore property: DataStoreInfoBase Info of target datastore.
+     * Get the dataStore property: DataStoreInfoBase
+     *
+     * <p>Info of target datastore.
      *
      * @return the dataStore value.
      */
@@ -56,7 +71,9 @@ public final class TargetCopySetting {
     }
 
     /**
-     * Set the dataStore property: DataStoreInfoBase Info of target datastore.
+     * Set the dataStore property: DataStoreInfoBase
+     *
+     * <p>Info of target datastore.
      *
      * @param dataStore the dataStore value to set.
      * @return the TargetCopySetting object itself.
@@ -73,18 +90,20 @@ public final class TargetCopySetting {
      */
     public void validate() {
         if (copyAfter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property copyAfter in model TargetCopySetting"));
         } else {
             copyAfter().validate();
         }
         if (dataStore() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataStore in model TargetCopySetting"));
         } else {
             dataStore().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetCopySetting.class);
 }

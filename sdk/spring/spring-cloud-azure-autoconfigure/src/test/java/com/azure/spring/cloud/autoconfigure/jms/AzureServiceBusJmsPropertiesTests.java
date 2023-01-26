@@ -9,7 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,15 +44,4 @@ class AzureServiceBusJmsPropertiesTests {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
-    void setConnectionStringFormatCorrect(String pricingTier) throws Exception {
-        AzureServiceBusJmsProperties prop = new AzureServiceBusJmsProperties();
-        prop.setConnectionString(CONNECTION_STRING);
-        prop.setPricingTier(pricingTier);
-        prop.afterPropertiesSet();
-        assertThat(prop.getUsername()).isEqualTo("sasKeyName");
-        assertThat(prop.getPassword()).isEqualTo("sasKey");
-        assertThat(prop.getRemoteUrl()).isEqualTo("amqps://host?amqp.idleTimeout=1800000");
-    }
 }

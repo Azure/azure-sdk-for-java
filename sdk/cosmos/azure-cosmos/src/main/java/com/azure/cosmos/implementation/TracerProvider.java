@@ -74,7 +74,7 @@ public class TracerProvider {
         boolean isClientMetricsEnabled) {
 
         if (tracer == null &&
-            isSendClientTelemetryToServiceEnabled || isClientMetricsEnabled) {
+            (isSendClientTelemetryToServiceEnabled || isClientMetricsEnabled)) {
 
             this.tracer = NoOpTracer.INSTANCE;
 

@@ -35,6 +35,9 @@ public final class DataFlowDebugStatisticsRequest {
     @JsonProperty(value = "columns")
     private List<String> columns;
 
+    /** Creates an instance of DataFlowDebugStatisticsRequest class. */
+    public DataFlowDebugStatisticsRequest() {}
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

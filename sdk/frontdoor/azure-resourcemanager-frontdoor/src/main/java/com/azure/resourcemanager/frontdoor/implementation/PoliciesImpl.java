@@ -13,10 +13,9 @@ import com.azure.resourcemanager.frontdoor.fluent.PoliciesClient;
 import com.azure.resourcemanager.frontdoor.fluent.models.WebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.frontdoor.models.Policies;
 import com.azure.resourcemanager.frontdoor.models.WebApplicationFirewallPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PoliciesImpl implements Policies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PoliciesImpl.class);
 
     private final PoliciesClient innerClient;
 
@@ -40,16 +39,6 @@ public final class PoliciesImpl implements Policies {
         return Utils.mapPage(inner, inner1 -> new WebApplicationFirewallPolicyImpl(inner1, this.manager()));
     }
 
-    public WebApplicationFirewallPolicy getByResourceGroup(String resourceGroupName, String policyName) {
-        WebApplicationFirewallPolicyInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, policyName);
-        if (inner != null) {
-            return new WebApplicationFirewallPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WebApplicationFirewallPolicy> getByResourceGroupWithResponse(
         String resourceGroupName, String policyName, Context context) {
         Response<WebApplicationFirewallPolicyInner> inner =
@@ -60,6 +49,16 @@ public final class PoliciesImpl implements Policies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WebApplicationFirewallPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WebApplicationFirewallPolicy getByResourceGroup(String resourceGroupName, String policyName) {
+        WebApplicationFirewallPolicyInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, policyName);
+        if (inner != null) {
+            return new WebApplicationFirewallPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -76,7 +75,7 @@ public final class PoliciesImpl implements Policies {
     public WebApplicationFirewallPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,7 +83,7 @@ public final class PoliciesImpl implements Policies {
         }
         String policyName = Utils.getValueFromIdByName(id, "FrontDoorWebApplicationFirewallPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -99,7 +98,7 @@ public final class PoliciesImpl implements Policies {
     public Response<WebApplicationFirewallPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +106,7 @@ public final class PoliciesImpl implements Policies {
         }
         String policyName = Utils.getValueFromIdByName(id, "FrontDoorWebApplicationFirewallPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +121,7 @@ public final class PoliciesImpl implements Policies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class PoliciesImpl implements Policies {
         }
         String policyName = Utils.getValueFromIdByName(id, "FrontDoorWebApplicationFirewallPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,7 +144,7 @@ public final class PoliciesImpl implements Policies {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +152,7 @@ public final class PoliciesImpl implements Policies {
         }
         String policyName = Utils.getValueFromIdByName(id, "FrontDoorWebApplicationFirewallPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

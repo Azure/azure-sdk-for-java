@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceConnectionPropertiesV2BasicResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkspaceConnectionPropertiesV2BasicResourceInner model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class WorkspaceConnectionPropertiesV2BasicResourceInnerTests {
         Assertions.assertEquals(ValueFormat.JSON, model.properties().valueFormat());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkspaceConnectionPropertiesV2BasicResourceInner model =
             new WorkspaceConnectionPropertiesV2BasicResourceInner()
                 .withProperties(

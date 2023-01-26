@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class AcrManifests {
     /*
-     * Registry login server name. This is likely to be similar to
-     * {registry-name}.azurecr.io.
+     * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry")
     private String registryLoginServer;
@@ -35,6 +34,9 @@ public final class AcrManifests {
      */
     @JsonProperty(value = "link")
     private String link;
+
+    /** Creates an instance of AcrManifests class. */
+    public AcrManifests() {}
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to

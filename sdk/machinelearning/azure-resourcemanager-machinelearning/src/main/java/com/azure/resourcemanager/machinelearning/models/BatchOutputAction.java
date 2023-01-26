@@ -17,6 +17,15 @@ public final class BatchOutputAction extends ExpandableStringEnum<BatchOutputAct
     public static final BatchOutputAction APPEND_ROW = fromString("AppendRow");
 
     /**
+     * Creates a new instance of BatchOutputAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BatchOutputAction() {
+    }
+
+    /**
      * Creates or finds a BatchOutputAction from its string representation.
      *
      * @param name a name to look for.

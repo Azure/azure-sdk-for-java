@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StopMode. */
+/** mode indicates a type of stop operation - reboot, suspend, shutdown or power-off. */
 public enum StopMode {
     /** Enum value reboot. */
     REBOOT("reboot"),
@@ -36,6 +36,9 @@ public enum StopMode {
      */
     @JsonCreator
     public static StopMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StopMode[] items = StopMode.values();
         for (StopMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum StopMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

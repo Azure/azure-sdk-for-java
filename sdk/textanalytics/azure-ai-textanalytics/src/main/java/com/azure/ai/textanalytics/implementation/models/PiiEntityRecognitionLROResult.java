@@ -21,6 +21,9 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     @JsonProperty(value = "results", required = true)
     private PiiResult results;
 
+    /** Creates an instance of PiiEntityRecognitionLROResult class. */
+    public PiiEntityRecognitionLROResult() {}
+
     /**
      * Get the results property: The results property.
      *

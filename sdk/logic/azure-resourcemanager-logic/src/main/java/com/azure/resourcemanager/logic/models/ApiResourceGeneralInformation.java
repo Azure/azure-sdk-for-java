@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The API general information. */
 @Fluent
 public final class ApiResourceGeneralInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiResourceGeneralInformation.class);
-
     /*
      * The icon url.
      */
@@ -49,6 +45,10 @@ public final class ApiResourceGeneralInformation {
      */
     @JsonProperty(value = "tier")
     private ApiTier tier;
+
+    /** Creates an instance of ApiResourceGeneralInformation class. */
+    public ApiResourceGeneralInformation() {
+    }
 
     /**
      * Get the iconUrl property: The icon url.

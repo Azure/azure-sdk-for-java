@@ -11,7 +11,6 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetwork;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.azure.resourcemanager.mobilenetwork.models.SimIdListResult;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
 import java.util.Map;
@@ -168,14 +167,6 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
                 .getByResourceGroupWithResponse(resourceGroupName, mobileNetworkName, context)
                 .getValue();
         return this;
-    }
-
-    public SimIdListResult listSimIds() {
-        return serviceManager.mobileNetworks().listSimIds(resourceGroupName, mobileNetworkName);
-    }
-
-    public SimIdListResult listSimIds(Context context) {
-        return serviceManager.mobileNetworks().listSimIds(resourceGroupName, mobileNetworkName, context);
     }
 
     public MobileNetworkImpl withRegion(Region location) {

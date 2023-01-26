@@ -4,26 +4,30 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
+import com.azure.storage.StoragePerfUtils;
 import com.azure.storage.blob.perf.core.AbstractDownloadTest;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
 
 public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
+    private final OutputStream devNull = new NullOutputStream();
 
-    private final byte[] buffer = new byte[BUFFER_SIZE];
+    private final int bufferSize;
+    private final byte[] buffer;
 
     public DownloadBlobTest(BlobPerfStressOptions options) {
         super(options);
+
+        this.bufferSize = StoragePerfUtils.getDynamicDownloadBufferSize(options.getSize());
+        this.buffer = new byte[bufferSize];
     }
 
 
     // Perform the API call to be tested here
     @Override
     public void run() {
-        blobClient.download(DEV_NULL);
+        blobClient.download(devNull);
     }
 
 
@@ -34,7 +38,7 @@ public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions
                 int readCount = 0;
                 int remaining = b.remaining();
                 while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
                     b.get(buffer, 0, expectedReadCount);
                     readCount += expectedReadCount;
                 }

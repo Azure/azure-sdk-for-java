@@ -26,6 +26,10 @@ public final class PortRange {
     @JsonProperty(value = "maxPort")
     private Integer maxPort;
 
+    /** Creates an instance of PortRange class. */
+    public PortRange() {
+    }
+
     /**
      * Get the minPort property: The minimum port number.
      *

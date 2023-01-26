@@ -17,6 +17,15 @@ public final class Network extends ExpandableStringEnum<Network> {
     public static final Network HOST = fromString("Host");
 
     /**
+     * Creates a new instance of Network value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Network() {
+    }
+
+    /**
      * Creates or finds a Network from its string representation.
      *
      * @param name a name to look for.

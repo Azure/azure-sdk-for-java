@@ -14,6 +14,15 @@ public final class ConfigurationName extends ExpandableStringEnum<ConfigurationN
     public static final ConfigurationName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ConfigurationName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigurationName() {
+    }
+
+    /**
      * Creates or finds a ConfigurationName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class ConfigurationName extends ExpandableStringEnum<ConfigurationN
         return fromString(name, ConfigurationName.class);
     }
 
-    /** @return known ConfigurationName values. */
+    /**
+     * Gets known ConfigurationName values.
+     *
+     * @return known ConfigurationName values.
+     */
     public static Collection<ConfigurationName> values() {
         return values(ConfigurationName.class);
     }

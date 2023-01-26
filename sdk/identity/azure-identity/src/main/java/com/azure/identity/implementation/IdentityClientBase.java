@@ -6,19 +6,22 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -29,17 +32,17 @@ import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.IClientCredential;
-import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.TokenProviderResult;
-import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
@@ -66,13 +69,11 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Random;
-
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -80,14 +81,12 @@ import java.util.regex.Pattern;
 
 public abstract class IdentityClientBase {
     static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
-    static final Random RANDOM = new Random();
     static final String WINDOWS_STARTER = "cmd.exe";
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
     static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
     static final Pattern LINUX_MAC_PROCESS_ERROR_MESSAGE = Pattern.compile("(.*)az:(.*)not found");
-    static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
     static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
@@ -95,6 +94,7 @@ public abstract class IdentityClientBase {
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
     static final String MSI_ENDPOINT_VERSION = "2017-09-01";
+    static final String ARC_MANAGED_IDENTITY_ENDPOINT_API_VERSION = "2019-11-01";
     static final String ADFS_TENANT = "adfs";
     static final String HTTP_LOCALHOST = "http://localhost";
     static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
@@ -141,7 +141,7 @@ public abstract class IdentityClientBase {
                    Duration clientAssertionTimeout, IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = IdentityUtil.DEFAULT_TENANT;
-            options.setAdditionallyAllowedTenants(Arrays.asList(IdentityUtil.ALL_TENANTS));
+            options.setAdditionallyAllowedTenants(Collections.singletonList(IdentityUtil.ALL_TENANTS));
         }
         if (options == null) {
             options = new IdentityClientOptions();
@@ -353,8 +353,7 @@ public abstract class IdentityClientBase {
             applicationBuilder.executorService(options.getExecutorService());
         }
 
-        ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
-        return confidentialClientApplication;
+        return applicationBuilder.build();
     }
 
     DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder buildDeviceCodeFlowParameters(TokenRequestContext request, Consumer<DeviceCodeInfo> deviceCodeConsumer) {
@@ -442,7 +441,7 @@ public abstract class IdentityClientBase {
 
             StringBuilder output = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
-                StandardCharsets.UTF_8.name()))) {
+                StandardCharsets.UTF_8))) {
                 String line;
                 while (true) {
                     line = reader.readLine();
@@ -504,10 +503,12 @@ public abstract class IdentityClientBase {
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
-            if (CoreUtils.isNullOrEmpty(DEFAULT_WINDOWS_SYSTEM_ROOT)) {
+            String windowsSystemRoot = System.getenv("SystemRoot");
+            if (CoreUtils.isNullOrEmpty(windowsSystemRoot)) {
                 return null;
             }
-            return DEFAULT_WINDOWS_SYSTEM_ROOT + "\\system32";
+
+            return windowsSystemRoot + "\\system32";
         } else {
             return DEFAULT_MAC_LINUX_PATH;
         }
@@ -527,18 +528,29 @@ public abstract class IdentityClientBase {
 
     HttpPipeline setupPipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        HttpLogOptions httpLogOptions = new HttpLogOptions();
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
 
-        userAgent = UserAgentUtil.toUserAgentString(null, clientName, clientVersion, buildConfiguration);
+        HttpLogOptions httpLogOptions = (options.getHttpLogOptions() == null) ? new HttpLogOptions() : options.getHttpLogOptions();
+
+        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(options.getClientOptions(), httpLogOptions), clientName, clientVersion, buildConfiguration);
         policies.add(new UserAgentPolicy(userAgent));
 
+        if (options.getClientOptions() != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            options.getClientOptions().getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
+        policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RetryPolicy());
+        // Add retry policy.
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(options.getRetryPolicy(), options.getRetryOptions()));
+        policies.addAll(options.getPerRetryPolicies());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         return new HttpPipelineBuilder().httpClient(httpClient)
@@ -569,7 +581,7 @@ public abstract class IdentityClientBase {
             return Files.readAllBytes(Paths.get(certificatePath));
         } else if (certificate != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
             int read = certificate.read(buffer, 0, buffer.length);
             while (read != -1) {
                 outputStream.write(buffer, 0, read);

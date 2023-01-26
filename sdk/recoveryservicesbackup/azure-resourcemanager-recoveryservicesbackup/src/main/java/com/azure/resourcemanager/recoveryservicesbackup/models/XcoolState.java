@@ -20,6 +20,15 @@ public final class XcoolState extends ExpandableStringEnum<XcoolState> {
     public static final XcoolState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of XcoolState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public XcoolState() {
+    }
+
+    /**
      * Creates or finds a XcoolState from its string representation.
      *
      * @param name a name to look for.

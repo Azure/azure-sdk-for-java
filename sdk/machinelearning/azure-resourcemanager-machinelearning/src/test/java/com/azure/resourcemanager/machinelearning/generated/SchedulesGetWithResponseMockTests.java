@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.Schedule;
 import java.nio.ByteBuffer;
@@ -60,7 +59,8 @@ public final class SchedulesGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Schedule response = manager.schedules().getWithResponse("mw", "bios", "qsykq", Context.NONE).getValue();
+        Schedule response =
+            manager.schedules().getWithResponse("mw", "bios", "qsykq", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("popikzeb", response.properties().description());
         Assertions.assertEquals("fywtkqowsdlk", response.properties().properties().get("czygpmgfjcu"));

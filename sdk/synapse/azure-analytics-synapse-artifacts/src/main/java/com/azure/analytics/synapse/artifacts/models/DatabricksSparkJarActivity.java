@@ -37,6 +37,9 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
 
+    /** Creates an instance of DatabricksSparkJarActivity class. */
+    public DatabricksSparkJarActivity() {}
+
     /**
      * Get the mainClassName property: The full name of the class containing the main method to be executed. This class
      * must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).

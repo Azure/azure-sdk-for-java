@@ -41,6 +41,10 @@ public final class AzureFunctionReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
+    /** Creates an instance of AzureFunctionReceiver class. */
+    public AzureFunctionReceiver() {
+    }
+
     /**
      * Get the name property: The name of the azure function receiver. Names must be unique across all receivers within
      * an action group.

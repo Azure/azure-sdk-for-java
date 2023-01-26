@@ -64,6 +64,10 @@ public final class AlertRule {
     @JsonProperty(value = "lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTime;
 
+    /** Creates an instance of AlertRule class. */
+    public AlertRule() {
+    }
+
     /**
      * Get the name property: the name of the alert rule.
      *

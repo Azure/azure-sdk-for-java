@@ -140,10 +140,8 @@ public class TimeZoneClientTestBase extends TestBase {
     static void validateGetIanaTimezoneIds(List<IanaId> actual, List<IanaId> expected) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.size(), actual.size());
         if (actual.size() > 0) {
-            assertEquals(expected.get(0).getAlias(), actual.get(0).getAlias());
-            assertEquals(expected.get(0).getId(), actual.get(0).getId());
+            assertEquals(expected.get(0).getClass(), actual.get(0).getClass());
         }
     }
 

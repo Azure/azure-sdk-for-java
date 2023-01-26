@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.DataVersionBase;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
@@ -74,7 +73,7 @@ public final class DataVersionsListMockTests {
                     "fdbdfmmxj",
                     "naj",
                     ListViewType.ACTIVE_ONLY,
-                    Context.NONE);
+                    com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("jk", response.iterator().next().properties().description());
         Assertions.assertEquals("xrwzo", response.iterator().next().properties().properties().get("uzmsxgam"));

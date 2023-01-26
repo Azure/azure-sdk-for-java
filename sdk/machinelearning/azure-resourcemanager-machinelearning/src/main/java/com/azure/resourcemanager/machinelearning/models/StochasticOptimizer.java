@@ -23,6 +23,15 @@ public final class StochasticOptimizer extends ExpandableStringEnum<StochasticOp
     public static final StochasticOptimizer ADAMW = fromString("Adamw");
 
     /**
+     * Creates a new instance of StochasticOptimizer value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StochasticOptimizer() {
+    }
+
+    /**
      * Creates or finds a StochasticOptimizer from its string representation.
      *
      * @param name a name to look for.

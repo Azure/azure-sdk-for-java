@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatadogApiKey model. */
 @Fluent
 public final class DatadogApiKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogApiKeyInner.class);
-
     /*
      * The user that created the API key.
      */
@@ -37,6 +34,10 @@ public final class DatadogApiKeyInner {
      */
     @JsonProperty(value = "created")
     private String created;
+
+    /** Creates an instance of DatadogApiKeyInner class. */
+    public DatadogApiKeyInner() {
+    }
 
     /**
      * Get the createdBy property: The user that created the API key.
@@ -125,9 +126,11 @@ public final class DatadogApiKeyInner {
      */
     public void validate() {
         if (key() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property key in model DatadogApiKeyInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatadogApiKeyInner.class);
 }

@@ -47,6 +47,10 @@ public final class EventHubReceiver {
     @JsonProperty(value = "subscriptionId", required = true)
     private String subscriptionId;
 
+    /** Creates an instance of EventHubReceiver class. */
+    public EventHubReceiver() {
+    }
+
     /**
      * Get the name property: The name of the Event hub receiver. Names must be unique across all receivers within an
      * action group.

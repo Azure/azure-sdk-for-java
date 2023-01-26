@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a payment. */
 @Fluent
 public final class PaymentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PaymentProperties.class);
-
     /*
      * The type of payment.
      */
@@ -44,6 +40,10 @@ public final class PaymentProperties {
      */
     @JsonProperty(value = "paymentMethodType", access = JsonProperty.Access.WRITE_ONLY)
     private String paymentMethodType;
+
+    /** Creates an instance of PaymentProperties class. */
+    public PaymentProperties() {
+    }
 
     /**
      * Get the paymentType property: The type of payment.

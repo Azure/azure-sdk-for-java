@@ -17,6 +17,15 @@ public final class ScaleSetPriority extends ExpandableStringEnum<ScaleSetPriorit
     public static final ScaleSetPriority REGULAR = fromString("Regular");
 
     /**
+     * Creates a new instance of ScaleSetPriority value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScaleSetPriority() {
+    }
+
+    /**
      * Creates or finds a ScaleSetPriority from its string representation.
      *
      * @param name a name to look for.

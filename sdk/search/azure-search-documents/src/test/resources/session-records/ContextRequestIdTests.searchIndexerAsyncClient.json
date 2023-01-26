@@ -3,29 +3,28 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.search.windows.net/indexers('indexer')?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aa76d666-a7f3-41b6-8d1c-f5fdd5c50ad4"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0"
     },
     "Response" : {
-      "content-length" : "93",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "aa76d666-a7f3-41b6-8d1c-f5fdd5c50ad4",
+      "request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:14:38 GMT",
+      "Date" : "Tue, 17 Jan 2023 20:21:15 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "aa76d666-a7f3-41b6-8d1c-f5fdd5c50ad4",
-      "elapsed-time" : "6",
-      "OData-Version" : "4.0",
+      "client-request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0",
+      "elapsed-time" : "7",
       "Expires" : "-1",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'indexer' was not found in service 'alzimmer-test'.\"}}",
-      "Content-Language" : "en",
-      "x-ms-client-request-id" : "aa76d666-a7f3-41b6-8d1c-f5fdd5c50ad4",
+      "Content-Length" : "94",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'indexer' was not found in service 'alzimmer-basic'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+      "x-ms-client-request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "aa76d666-a7f3-41b6-8d1c-f5fdd5c50ad4" ]
+  "variables" : [ "33f59111-19cb-4b86-936c-1c88cb4b01f0" ]
 }

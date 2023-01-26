@@ -250,7 +250,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
         String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate) {
-        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate).getSyncPoller();
     }
 
     /**
@@ -268,7 +268,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
         String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context) {
-        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context).getSyncPoller();
     }
 
     /**

@@ -29,6 +29,10 @@ public final class EmailNotification {
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
+    /** Creates an instance of EmailNotification class. */
+    public EmailNotification() {
+    }
+
     /**
      * Get the sendToSubscriptionAdministrator property: a value indicating whether to send email to subscription
      * administrator.

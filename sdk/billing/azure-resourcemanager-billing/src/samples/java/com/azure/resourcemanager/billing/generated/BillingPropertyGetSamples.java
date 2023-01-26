@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingProperty Get. */
 public final class BillingPropertyGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class BillingPropertyGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProperty(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProperties().getWithResponse(Context.NONE);
+        manager.billingProperties().getWithResponse(com.azure.core.util.Context.NONE);
     }
 }

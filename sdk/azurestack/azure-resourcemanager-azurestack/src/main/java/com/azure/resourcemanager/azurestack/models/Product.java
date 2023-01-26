@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurestack.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.azurestack.fluent.models.ProductInner;
 import java.util.List;
 
@@ -32,11 +31,11 @@ public interface Product {
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
      *
-     * @return the systemData value.
+     * @return the etag value.
      */
-    SystemData systemData();
+    String etag();
 
     /**
      * Gets the displayName property: The display name of the product.
@@ -163,13 +162,6 @@ public interface Product {
      * @return the compatibility value.
      */
     Compatibility compatibility();
-
-    /**
-     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.ProductInner object.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncAgentState. */
+/** State of the sync agent. */
 public final class SyncAgentState extends ExpandableStringEnum<SyncAgentState> {
     /** Static value Online for SyncAgentState. */
     public static final SyncAgentState ONLINE = fromString("Online");

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Jobs List. */
 public final class JobsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/JobCRUD/ListJobs.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/JobCRUD/ListJobs.json
      */
     /**
      * Sample code: Get Jobs.
@@ -17,6 +15,6 @@ public final class JobsListSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getJobs(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.jobs().list("BugBash1", "BugBashVaultForCCYv11", Context.NONE);
+        manager.jobs().list("BugBash1", "BugBashVaultForCCYv11", com.azure.core.util.Context.NONE);
     }
 }

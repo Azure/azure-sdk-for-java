@@ -17,6 +17,10 @@ public final class AttachedDataNetworkResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of AttachedDataNetworkResourceId class. */
+    public AttachedDataNetworkResourceId() {
+    }
+
     /**
      * Get the id property: Attached data network resource ID.
      *

@@ -47,6 +47,12 @@ public interface BlobServiceProperties
     /** @return whether blob versioning is enabled */
     Boolean isBlobVersioningEnabled();
 
+    /** @return whether last access time tracking policy is enabled */
+    boolean isLastAccessTimeTrackingPolicyEnabled();
+
+    /** @return the last access time tracking policy */
+    LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy();
+
     /** The entirety of the BlobServiceProperties definition. */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithCreate {
@@ -195,6 +201,32 @@ public interface BlobServiceProperties
             WithCreate withBlobVersioningEnabled();
         }
 
+        /** The stage of the blobserviceproperties definition allowing to specify last access time tracking policy. */
+        interface WithLastAccessTimeTrackingPolicy {
+            /**
+             * Enables last access time tracking policy with default settings.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @return the next definition stage
+             */
+            WithCreate withLastAccessTimeTrackingPolicyEnabled();
+
+            /**
+             * Specify last access time tracking policy.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @param policy the last access time tracking policy
+             * @return the next definition stage
+             */
+            WithCreate withLastAccessTimeTrackingPolicy(LastAccessTimeTrackingPolicy policy);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
@@ -205,7 +237,8 @@ public interface BlobServiceProperties
                 DefinitionStages.WithDefaultServiceVersion,
                 DefinitionStages.WithDeleteRetentionPolicy,
                 DefinitionStages.WithBlobVersioning,
-                DefinitionStages.WithContainerDeleteRetentionPolicy {
+                DefinitionStages.WithContainerDeleteRetentionPolicy,
+                DefinitionStages.WithLastAccessTimeTrackingPolicy {
         }
     }
     /** The template for a BlobServiceProperties update operation, containing all the settings that can be modified. */
@@ -215,7 +248,8 @@ public interface BlobServiceProperties
             UpdateStages.WithDefaultServiceVersion,
             UpdateStages.WithDeleteRetentionPolicy,
             UpdateStages.WithBlobVersioning,
-            UpdateStages.WithContainerDeleteRetentionPolicy {
+            UpdateStages.WithContainerDeleteRetentionPolicy,
+            UpdateStages.WithLastAccessTimeTrackingPolicy {
     }
 
     /** Grouping of BlobServiceProperties update stages. */
@@ -371,6 +405,39 @@ public interface BlobServiceProperties
              * @return the next update stage
              */
             Update withBlobVersioningDisabled();
+        }
+
+        /** The stage of the blobserviceproperties update allowing to specify last access time tracking policy. */
+        interface WithLastAccessTimeTrackingPolicy {
+            /**
+             * Enables last access time tracking policy with default settings.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @return the next update stage
+             */
+            Update withLastAccessTimeTrackingPolicyEnabled();
+
+            /**
+             * Specify last access time tracking policy.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @param policy the last access time tracking policy
+             * @return the next update stage
+             */
+            Update withLastAccessTimeTrackingPolicy(LastAccessTimeTrackingPolicy policy);
+
+            /**
+             * Disables last access time tracking policy.
+             *
+             * @return the next update stage
+             */
+            Update withLastAccessTimeTrackingPolicyDisabled();
         }
     }
 }

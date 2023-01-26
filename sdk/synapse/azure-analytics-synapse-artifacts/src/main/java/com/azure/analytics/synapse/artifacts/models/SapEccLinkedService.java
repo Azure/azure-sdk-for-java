@@ -45,6 +45,9 @@ public class SapEccLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
+    /** Creates an instance of SapEccLinkedService class. */
+    public SapEccLinkedService() {}
+
     /**
      * Get the url property: The URL of SAP ECC OData API. For example,
      * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
