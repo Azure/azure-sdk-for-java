@@ -10,9 +10,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -23,8 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ContainerRegistryRedirectPolicyTests {
-    @Test
-    @Disabled("MockHttpResponse.getHeader() returns a new HttpHeader list instead of response header directly.")
+    @SyncAsyncTest
     public void redirectHeaderCheck() throws Exception {
         HttpRequest callThatRedirects = new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/somecall"));
@@ -49,7 +49,10 @@ public class ContainerRegistryRedirectPolicyTests {
             .policies(new ContainerRegistryRedirectPolicy())
             .build();
 
-        HttpResponse response = pipeline.send(callThatRedirects).block();
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(callThatRedirects, Context.NONE),
+            () -> pipeline.send(callThatRedirects)
+        );
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getHeaders().getValue(UtilsImpl.DOCKER_DIGEST_HEADER_NAME));
     }
@@ -68,6 +71,11 @@ public class ContainerRegistryRedirectPolicyTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest httpRequest) {
             return Mono.just(requestToResponse.get(getRequestUrl(httpRequest)));
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
+            return requestToResponse.get(getRequestUrl(httpRequest));
         }
     }
 }
