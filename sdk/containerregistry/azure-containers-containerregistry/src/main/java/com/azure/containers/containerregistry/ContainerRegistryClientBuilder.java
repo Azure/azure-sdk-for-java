@@ -118,7 +118,8 @@ public final class ContainerRegistryClientBuilder implements
     EndpointTrait<ContainerRegistryClientBuilder>,
     HttpTrait<ContainerRegistryClientBuilder>,
     TokenCredentialTrait<ContainerRegistryClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryClientBuilder.class);
+
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private ClientOptions clientOptions;
@@ -145,7 +146,7 @@ public final class ContainerRegistryClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = endpoint;
@@ -202,7 +203,7 @@ public final class ContainerRegistryClientBuilder implements
     @Override
     public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.httpPipeline = httpPipeline;
         return this;
@@ -238,7 +239,7 @@ public final class ContainerRegistryClientBuilder implements
     @Override
     public ContainerRegistryClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
         this.httpClient = httpClient;
         return this;
@@ -441,7 +442,6 @@ public final class ContainerRegistryClientBuilder implements
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
-            this.version,
-            this.logger);
+            this.version);
     }
 }
