@@ -4,6 +4,7 @@
 package com.azure.containers.containerregistry.implementation;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -47,7 +48,34 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return this.attemptRedirect(context, next, context.getHttpRequest(), 1, new HashSet<>());
+        context.setHttpRequest(context.getHttpRequest().copy());
+        return next.clone().process()
+            .flatMap(httpResponse -> {
+                if (!isRedirecResponse(httpResponse)) {
+                    return Mono.just(httpResponse);
+                }
+
+                return attemptRedirect(context, next, httpResponse,1, new HashSet<>());
+            });
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        context.setHttpRequest(context.getHttpRequest().copy());
+        HttpResponse httpResponse = next.clone().processSync();
+        if (!isRedirecResponse(httpResponse)) {
+            return httpResponse;
+        }
+
+        return attemptRedirectSync(context, next, httpResponse, 1, new HashSet<>());
+    }
+
+    private static HttpResponse mapResponse(HttpResponse oldResponse, HttpResponse newResponse) {
+        String digest = getDigestFromHeader(oldResponse.getHeaders());
+        if (digest != null) {
+            newResponse.getHeaders().set(DOCKER_DIGEST_HEADER_NAME, digest);
+        }
+        return newResponse;
     }
 
     @Override
@@ -59,8 +87,17 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
      * Function to process through the HTTP Response received in the pipeline
      * and redirect sending the request with new redirect url.
      */
-    private Mono<HttpResponse> attemptRedirect(HttpPipelineCallContext context, HttpPipelineNextPolicy next, HttpRequest originalHttpRequest, int redirectAttempt, Set<String> attemptedRedirectUrls) {
-        context.setHttpRequest(originalHttpRequest.copy());
+    private Mono<HttpResponse> attemptRedirect(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
+                                               HttpResponse redirectResponse,
+                                               int redirectAttempt, Set<String> attemptedRedirectUrls) {
+        final String redirectUrl = redirectResponse.getHeaderValue(HttpHeaderName.LOCATION);
+        if (!shouldAttemptRedirect(redirectUrl, redirectAttempt + 1, attemptedRedirectUrls)) {
+            return Mono.just(redirectResponse);
+        }
+
+        HttpRequest redirectRequest = createRedirectRequest(redirectResponse, redirectUrl);
+        context.setHttpRequest(redirectRequest.copy());
+
         return next.clone().process().flatMap((httpResponse) -> {
             if (this.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
                 HttpRequest redirectRequestCopy = this.createRedirectRequest(httpResponse);
@@ -76,60 +113,33 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
             } else {
                 return Mono.just(httpResponse);
             }
+
+            return attemptRedirect(context, next, httpResponse, redirectAttempt + 1, attemptedRedirectUrls);
         });
     }
 
-    private HttpResponse attemptRedirectSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next, HttpRequest originalHttpRequest, int redirectAttempt, Set<String> attemptedRedirectUrls) {
-        context.setHttpRequest(originalHttpRequest.copy());
+    private HttpResponse attemptRedirectSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
+                                             HttpResponse redirectResponse,
+                                             int redirectAttempt, Set<String> attemptedRedirectUrls) {
+
+        final String redirectUrl = redirectResponse.getHeaderValue(HttpHeaderName.LOCATION);
+        if (!shouldAttemptRedirect(redirectUrl,redirectAttempt + 1, attemptedRedirectUrls)) {
+            return redirectResponse;
+        }
+
+        HttpRequest redirectRequest = createRedirectRequest(redirectResponse, redirectUrl);
+        context.setHttpRequest(redirectRequest.copy());
+
         HttpResponse httpResponse = next.clone().processSync();
-        if (this.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-            HttpRequest redirectRequestCopy = this.createRedirectRequest(httpResponse);
-            httpResponse.getBodyAsBinaryData();
-            HttpResponse newResponse =
-                attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
-            String digest = getDigestFromHeader(httpResponse.getHeaders());
-            if (digest != null) {
-                newResponse.getHeaders().set(DOCKER_DIGEST_HEADER_NAME, digest);
-            }
-            return newResponse;
-        } else {
-            return httpResponse;
+        if (!isRedirecResponse(httpResponse)) {
+            return mapResponse(redirectResponse, httpResponse);
         }
+
+        return attemptRedirectSync(context, next, httpResponse, redirectAttempt + 1, attemptedRedirectUrls);
+
     }
 
-    public boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount, Set<String> attemptedRedirectUrls) {
-        if (this.isValidRedirectStatusCode(httpResponse.getStatusCode()) && this.isValidRedirectCount(tryCount) && this.isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
-            String redirectUrl = this.tryGetRedirectHeader(httpResponse.getHeaders(), REDIRECT_LOCATION_HEADER_NAME);
-            if (redirectUrl != null && !this.alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.verbose("[Redirecting] Try count:" + tryCount + ", Attempted Redirect URLs:" + String.join(",", attemptedRedirectUrls));
-                attemptedRedirectUrls.add(redirectUrl);
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    private HttpRequest createRedirectRequest(HttpResponse httpResponse) {
-        String responseLocation = this.tryGetRedirectHeader(httpResponse.getHeaders(), REDIRECT_LOCATION_HEADER_NAME);
-        HttpRequest request = httpResponse.getRequest();
-        request.setUrl(responseLocation);
-        request.getHeaders().remove(AUTHORIZATION);
-        return httpResponse.getRequest().setUrl(responseLocation);
-    }
-
-    private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
-        if (attemptedRedirectUrls.contains(redirectUrl)) {
-            LOGGER.error("Request was redirected more than once to:" + redirectUrl);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isValidRedirectCount(int tryCount) {
+    public boolean shouldAttemptRedirect(String redirectUrl, int tryCount, Set<String> attemptedRedirectUrls) {
         if (tryCount >= MAX_REDIRECT_ATTEMPTS) {
             LOGGER.error("Request has been redirected more than " + MAX_REDIRECT_ATTEMPTS + "times");
             return false;
@@ -138,27 +148,14 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         }
     }
 
-    private boolean isAllowedRedirectMethod(HttpMethod httpMethod) {
-        if (REDIRECT_ALLOWED_METHODS.contains(httpMethod)) {
-            return true;
-        } else {
-            LOGGER.error("Request was redirected from an invalid redirect allowed method:" + httpMethod);
-            return false;
-        }
+
+    private HttpRequest createRedirectRequest(HttpResponse httpResponse, String redirectUrl) {
+        httpResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+        return httpResponse.getRequest().setUrl(redirectUrl);
     }
 
     private boolean isValidRedirectStatusCode(int statusCode) {
         return statusCode == PERMANENT_REDIRECT_STATUS_CODE || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
-    }
-
-    String tryGetRedirectHeader(HttpHeaders headers, String headerName) {
-        String headerValue = headers.getValue(headerName);
-        if (CoreUtils.isNullOrEmpty(headerValue)) {
-            LOGGER.error("Redirect url was null for header name:" + headerName + " request redirect was terminated.");
-            return null;
-        } else {
-            return headerValue;
-        }
     }
 }
 
