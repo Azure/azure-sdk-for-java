@@ -18,12 +18,15 @@ import com.azure.data.schemaregistry.models.SchemaProperties;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Helper to access private-package methods of models.
  */
 public final class SchemaRegistryHelper {
     private static final HashMap<String, SchemaFormatImpl> SCHEMA_FORMAT_HASH_MAP = new HashMap<>();
+    private static final Pattern SCHEMA_FORMAT_PATTERN = Pattern.compile("\\s");
+
     private static SchemaRegistryModelsAccessor accessor;
 
     static {
@@ -113,7 +116,8 @@ public final class SchemaRegistryHelper {
             return null;
         }
 
-        final String replaced = contentType.replaceAll("\\s", "").toLowerCase(Locale.ROOT);
+        final String replaced = SCHEMA_FORMAT_PATTERN.matcher(contentType).replaceAll("")
+            .toLowerCase(Locale.ROOT);
 
         // Default value if nothing matches is CUSTOM.
         final SchemaFormatImpl implementationFormat = SCHEMA_FORMAT_HASH_MAP
