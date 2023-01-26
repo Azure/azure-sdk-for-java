@@ -53,12 +53,13 @@ import static org.mockito.Mockito.when;
  * Tests end to end experience of the schema registry class.
  */
 public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase {
-    static final String SCHEMA_REGISTRY_ENDPOINT = "SCHEMA_REGISTRY_ENDPOINT";
+    static final String SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
-    static final String SCHEMA_REGISTRY_EVENT_HUB_NAME = "SCHEMA_REGISTRY_EVENT_HUB_NAME";
+    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME";
+    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING";
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
-    static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_TEST_GROUP = "azsdk_java_group";
     static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private TokenCredential tokenCredential;
@@ -66,6 +67,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
     private SchemaRegistryClientBuilder builder;
     private String endpoint;
     private String eventHubName;
+    private String connectionString;
 
     @Override
     protected void beforeTest() {
@@ -82,15 +84,18 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
 
             endpoint = PLAYBACK_ENDPOINT;
             eventHubName = "javaeventhub";
+            connectionString = "foo-bar";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
-            eventHubName = System.getenv(SCHEMA_REGISTRY_EVENT_HUB_NAME);
+            endpoint = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            eventHubName = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
+            connectionString = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING);
 
             assertNotNull(eventHubName, "'eventHubName' cannot be null in LIVE/RECORD mode.");
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
+            assertNotNull(connectionString, "'connectionString' cannot be null in LIVE/RECORD mode.");
         }
 
         builder = new SchemaRegistryClientBuilder()
@@ -196,10 +201,10 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         EventHubConsumerAsyncClient consumer = null;
         try {
             producer = new EventHubClientBuilder()
-                .credential(endpoint, eventHubName, tokenCredential)
+                .connectionString(connectionString, eventHubName)
                 .buildProducerClient();
             consumer = new EventHubClientBuilder()
-                .credential(endpoint, eventHubName, tokenCredential)
+                .connectionString(connectionString, eventHubName)
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .buildAsyncConsumerClient();
 
