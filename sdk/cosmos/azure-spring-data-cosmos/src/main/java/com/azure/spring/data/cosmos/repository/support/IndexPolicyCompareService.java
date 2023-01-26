@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.support;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -23,12 +24,15 @@ public class IndexPolicyCompareService {
      * @return Whether the policy needs updating.
      */
     public static boolean policyNeedsUpdate(IndexingPolicy existingPolicy, IndexingPolicy newPolicy) {
+        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
+            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
+
         return ((!hasSameIncludedPaths(existingPolicy.getIncludedPaths(), newPolicy.getIncludedPaths())
             || !hasSameExcludedPaths(existingPolicy.getExcludedPaths(), newPolicy.getExcludedPaths())
             || !existingPolicy.getCompositeIndexes().equals(newPolicy.getCompositeIndexes())
             || !existingPolicy.getIndexingMode().equals(newPolicy.getIndexingMode())
             || !existingPolicy.isAutomatic().equals(newPolicy.isAutomatic()))
-            && newPolicy.isOverwritePolicy());
+            && accessor.isOverwritePolicy(newPolicy));
     }
 
     // Returns true if the lists are the same or the only difference is that the existing paths contain "/*"

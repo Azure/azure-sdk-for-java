@@ -4,8 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -13,6 +17,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Represents the indexing policy configuration for a container in the Azure Cosmos DB database service.
@@ -32,7 +39,9 @@ public final class IndexingPolicy {
     public IndexingPolicy() {
         this.jsonSerializable = new JsonSerializable();
 
-        this.setOverwritePolicy(true);
+        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
+            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
+        accessor.setOverwritePolicy(this, true);
         this.setAutomatic(true);
         this.setIndexingMode(IndexingMode.CONSISTENT);
     }
@@ -84,26 +93,6 @@ public final class IndexingPolicy {
      */
     IndexingPolicy(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
-    }
-
-    /**
-     * Gets whether the policy defined in the portal should be overwritten.
-     *
-     * @return the overwritePolicy
-     */
-    public Boolean isOverwritePolicy() {
-        return this.jsonSerializable.getBoolean(Constants.Properties.OVERWRITE_POLICY);
-    }
-
-    /**
-     * Sets whether the policy defined in portal should be overwritten.
-     *
-     * @param overwritePolicy the overwritePolicy
-     * @return the Indexing Policy.
-     */
-    public IndexingPolicy setOverwritePolicy(boolean overwritePolicy) {
-        this.jsonSerializable.set(Constants.Properties.OVERWRITE_POLICY, overwritePolicy);
-        return this;
     }
 
     /**
@@ -307,4 +296,37 @@ public final class IndexingPolicy {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.IndexingPolicyHelper.setIndexingPolicyAccessor(
+            new ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor() {
+
+                /**
+                 * Gets whether the policy defined in the portal should be overwritten.
+                 *
+                 * @return the overwritePolicy
+                 */
+                @Override
+                public Boolean isOverwritePolicy(IndexingPolicy indexingPolicy) {
+                    return indexingPolicy.jsonSerializable.getBoolean(Constants.Properties.OVERWRITE_POLICY);
+                }
+
+                /**
+                 * Sets whether the policy defined in portal should be overwritten.
+                 *
+                 * @param overwritePolicy the overwritePolicy
+                 * @return the Indexing Policy.
+                 */
+                @Override
+                public IndexingPolicy setOverwritePolicy(IndexingPolicy indexingPolicy, boolean overwritePolicy) {
+                    indexingPolicy.jsonSerializable.set(Constants.Properties.OVERWRITE_POLICY, overwritePolicy);
+                    return indexingPolicy;
+                }
+            });
+    }
+
+    static { initialize(); }
 }

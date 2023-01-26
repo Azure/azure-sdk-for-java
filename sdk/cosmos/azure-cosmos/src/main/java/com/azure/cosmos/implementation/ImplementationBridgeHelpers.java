@@ -37,6 +37,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -1122,6 +1123,42 @@ public class ImplementationBridgeHelpers {
             CosmosClientTelemetryConfig createSnapshot(
                 CosmosClientTelemetryConfig config,
                 boolean effectiveIsClientTelemetryEnabled);
+        }
+    }
+
+    public static final class IndexingPolicyHelper {
+        private final static AtomicBoolean indexingPolicyClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<IndexingPolicyAccessor> accessor = new AtomicReference<>();
+
+        private IndexingPolicyHelper() {}
+
+        public static void setIndexingPolicyAccessor(final IndexingPolicyAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("IndexingPolicyAccessor already initialized!");
+            } else {
+                logger.debug("Setting IndexingPolicyAccessor...");
+                indexingPolicyClassLoaded.set(true);
+            }
+        }
+
+        public static IndexingPolicyAccessor getIndexingPolicyAccessor() {
+            if (!indexingPolicyClassLoaded.get()) {
+                logger.debug("Initializing IndexingPolicyAccessor...");
+                initializeAllAccessors();
+            }
+
+            IndexingPolicyAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("IndexingPolicyAccessor is not initialized yet!");
+                System.exit(9703); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface IndexingPolicyAccessor {
+            Boolean isOverwritePolicy(IndexingPolicy indexingPolicy);
+            IndexingPolicy setOverwritePolicy(IndexingPolicy indexingPolicy, boolean overwritePolicy);
         }
     }
 }

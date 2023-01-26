@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
@@ -111,7 +112,9 @@ public class IndexPolicyUpdateIT {
 
         // set new index policy
         IndexingPolicy newIndexPolicy = new IndexingPolicy();
-        newIndexPolicy.setOverwritePolicy(false);
+        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
+            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
+        accessor.setOverwritePolicy(newIndexPolicy, false);
         newIndexPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
         newIndexPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/\"_etag\"/?")));
 

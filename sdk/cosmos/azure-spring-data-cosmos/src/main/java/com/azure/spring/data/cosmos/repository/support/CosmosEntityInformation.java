@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository.support;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
@@ -306,7 +307,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private IndexingPolicy getIndexingPolicy(Class<?> domainType) {
         final IndexingPolicy policy = new IndexingPolicy();
 
-        policy.setOverwritePolicy(this.getIndexingPolicyOverwritePolicy(domainType));
+        ImplementationBridgeHelpers.IndexingPolicyHelper.IndexingPolicyAccessor accessor =
+            ImplementationBridgeHelpers.IndexingPolicyHelper.getIndexingPolicyAccessor();
+        accessor.setOverwritePolicy(policy, this.getIndexingPolicyOverwritePolicy(domainType));
         policy.setAutomatic(this.getIndexingPolicyAutomatic(domainType));
         policy.setIndexingMode(this.getIndexingPolicyMode(domainType));
         policy.setIncludedPaths(this.getIndexingPolicyIncludePaths(domainType));
