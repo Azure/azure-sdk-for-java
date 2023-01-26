@@ -34,10 +34,10 @@ pr:
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
 
 parameters:
-  - name: release_dependsonlivetests
-    displayName: 'Release depends on live tests'
-    type: boolean
-    default: true
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
