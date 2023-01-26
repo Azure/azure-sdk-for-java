@@ -28,7 +28,7 @@ public final class JobCredentialsCreateOrUpdateSamples {
                 "server1",
                 "agent1",
                 "cred1",
-                new JobCredentialInner().withUsername("myuser").withPassword("<password>"),
+                new JobCredentialInner().withUsername("myuser").withPassword("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }
