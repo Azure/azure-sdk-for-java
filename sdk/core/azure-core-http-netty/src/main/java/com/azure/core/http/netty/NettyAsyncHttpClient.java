@@ -42,10 +42,12 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
+import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.netty.http.client.HttpClientState;
 import reactor.netty.transport.AddressUtils;
 import reactor.util.retry.Retry;
 
@@ -54,7 +56,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -141,29 +142,65 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
 
-        reactor.netty.http.client.HttpClient configuredClient = nettyClient;
-        if (addProxyHandler) {
-            configuredClient = configuredClient.doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
-                /*
-                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
-                 * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
-                 * before any request data is sent.
-                 *
-                 * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
-                 */
-                if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
-                    channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
-                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder));
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(writeTimeout);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        RequestProgressReportingHandler reportingHandler = (progressReporter == null)
+            ? null : new RequestProgressReportingHandler(progressReporter);
+
+        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(responseTimeout);
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(readTimeout);
+
+        ConnectionObserver observer = (connection, newState) -> {
+            if (newState == HttpClientState.REQUEST_PREPARED) {
+                writeTimeoutHandler.startWriteTimeout();
+                if (reportingHandler != null) {
+                    reportingHandler.startProgressReporting();
                 }
+            } else if (newState == HttpClientState.REQUEST_SENT) {
+                writeTimeoutHandler.endWriteTimeout();
+                if (reportingHandler != null) {
+                    reportingHandler.endProgressReporting();
+                }
+                responseTimeoutHandler.startResponseTimeout();
+            } else if (newState == HttpClientState.RESPONSE_RECEIVED) {
+                responseTimeoutHandler.endResponseTimeout();
+                readTimeoutHandler.startReadTimeout();
+            } else if (newState == HttpClientState.RESPONSE_COMPLETED) {
+                readTimeoutHandler.endReadTimeout();
+            }
+        };
+
+        reactor.netty.http.client.HttpClient configuredClient = nettyClient.observe(observer)
+            .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+                if (addProxyHandler) {
+                    /*
+                     * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
+                     * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
+                     * before any request data is sent.
+                     *
+                     * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
+                     */
+                    if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
+                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
+                            AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler,
+                            proxyChallengeHolder));
+                    }
+                }
+
+                channel.pipeline().addLast(WriteTimeoutHandler.HANDLER_NAME, writeTimeoutHandler);
+                if (reportingHandler != null) {
+                    channel.pipeline().addLast(RequestProgressReportingHandler.HANDLER_NAME, reportingHandler);
+                }
+                channel.pipeline().addLast(ResponseTimeoutHandler.HANDLER_NAME, responseTimeoutHandler);
+                channel.pipeline().addLast(ReadTimeoutHandler.HANDLER_NAME, readTimeoutHandler);
             });
-        }
 
         return configuredClient.doOnRequest((r, connection) -> addRequestHandlers(connection, context))
             .doAfterRequest((r, connection) -> doAfterRequest(connection, responseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(toReactorNettyHttpMethod(request.getHttpMethod()))
-            .uri(URI.create(request.getUrl().toString()))
+            .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
                 headersEagerlyConverted))
@@ -410,17 +447,27 @@ class NettyAsyncHttpClient implements HttpClient {
 
     private static HttpMethod toReactorNettyHttpMethod(com.azure.core.http.HttpMethod azureHttpMethod) {
         switch (azureHttpMethod) {
-            case GET: return HttpMethod.GET;
-            case PUT: return HttpMethod.PUT;
-            case HEAD: return HttpMethod.HEAD;
-            case POST: return HttpMethod.POST;
-            case DELETE: return  HttpMethod.DELETE;
-            case PATCH: return HttpMethod.PATCH;
-            case TRACE: return HttpMethod.TRACE;
-            case CONNECT: return HttpMethod.CONNECT;
-            case OPTIONS: return HttpMethod.OPTIONS;
-            default: throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HttpMethod '"
-                + azureHttpMethod + "'.")); // Should never happen
+            case GET:
+                return HttpMethod.GET;
+            case PUT:
+                return HttpMethod.PUT;
+            case HEAD:
+                return HttpMethod.HEAD;
+            case POST:
+                return HttpMethod.POST;
+            case DELETE:
+                return HttpMethod.DELETE;
+            case PATCH:
+                return HttpMethod.PATCH;
+            case TRACE:
+                return HttpMethod.TRACE;
+            case CONNECT:
+                return HttpMethod.CONNECT;
+            case OPTIONS:
+                return HttpMethod.OPTIONS;
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HttpMethod '"
+                    + azureHttpMethod + "'.")); // Should never happen
         }
     }
 }

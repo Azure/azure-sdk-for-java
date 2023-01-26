@@ -28,6 +28,7 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
 
     private final long timeoutMillis;
 
+    private ChannelHandlerContext ctx;
     private boolean closed;
     private long lastWriteMillis;
     private long lastWriteProgress;
@@ -56,12 +57,20 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
         ctx.write(msg, promise.unvoid()).addListener(writeListener);
     }
 
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) {
+    public void startWriteTimeout() {
         if (timeoutMillis > 0) {
             this.writeTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx),
                 timeoutMillis, timeoutMillis, TimeUnit.MILLISECONDS);
         }
+    }
+
+    public void endWriteTimeout() {
+        disposeWatcher();
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        this.ctx = ctx;
     }
 
     @Override

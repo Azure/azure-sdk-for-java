@@ -23,6 +23,7 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     private final long timeoutMillis;
 
+    private ChannelHandlerContext ctx;
     private boolean closed;
     private ScheduledFuture<?> responseTimeoutWatcher;
 
@@ -41,15 +42,19 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        if (timeoutMillis > 0) {
-            this.responseTimeoutWatcher = ctx.executor().schedule(() -> responseTimedOut(ctx), timeoutMillis,
-                TimeUnit.MILLISECONDS);
-        }
+        this.ctx = ctx;
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
         disposeWatcher();
+    }
+
+    public void startResponseTimeout() {
+        if (timeoutMillis > 0) {
+            this.responseTimeoutWatcher = ctx.executor().schedule(() -> responseTimedOut(ctx), timeoutMillis,
+                TimeUnit.MILLISECONDS);
+        }
     }
 
     void responseTimedOut(ChannelHandlerContext ctx) {
@@ -59,6 +64,10 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
             ctx.close();
             closed = true;
         }
+    }
+
+    public void endResponseTimeout() {
+        disposeWatcher();
     }
 
     private void disposeWatcher() {
