@@ -16,6 +16,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -60,6 +61,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.encodedBlan
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.invalidSourceUrlRunner;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.urlRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     private DocumentAnalysisClient client;
@@ -1463,5 +1465,21 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             AtomicInteger i = new AtomicInteger(0);
             actualWords.forEach(documentWord -> assertEquals(expectedWords.get(i.getAndIncrement()), documentWord.getContent()));
         }, INVOICE_PDF);
+    }
+
+    /**
+     * Verifies license card data from a document using file data as source.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @DoNotRecord(skipInPlayback = true)
+    public void analyzeDataWithInvalidLength(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
+                () -> client.beginAnalyzeDocument("prebuilt-idDocument", BinaryData.fromStream(data, null))
+                .setPollInterval(durationTestMode));
+            Assertions.assertEquals("'document length' is required and cannot be null", illegalArgumentException.getMessage());
+        }, LICENSE_PNG);
     }
 }
