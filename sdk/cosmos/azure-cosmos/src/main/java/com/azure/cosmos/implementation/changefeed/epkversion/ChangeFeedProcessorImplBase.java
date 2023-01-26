@@ -210,9 +210,9 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                                 .setHostName(lease.getOwner())
                                                 .setLeaseToken(lease.getLeaseToken());
 
-                                        int latestLsn = 0;
-                                        int estimatedLag = 0;
-                                        int currentLsn = 0;
+                                        long latestLsn;
+                                        long estimatedLag = 0;
+                                        long currentLsn;
                                         try {
                                             latestLsn = getLsnFromEncodedContinuationToken(feedResponse.getContinuationToken());
                                             changeFeedProcessorState.setContinuationToken(feedResponse.getContinuationToken());
@@ -241,8 +241,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 );
     }
 
-    private int getLsnFromEncodedContinuationToken(String continuationToken) {
-        int lsn;
+    private long getLsnFromEncodedContinuationToken(String continuationToken) {
+        long lsn;
         ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuationToken);
         String token = changeFeedState
                 .getContinuation()
@@ -250,7 +250,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 .getToken();
         //   Remove extra quotes from token.
         token = token.replace("\"", "");
-        lsn = Integer.parseInt(token);
+        lsn = Long.parseLong(token);
         return lsn;
     }
 

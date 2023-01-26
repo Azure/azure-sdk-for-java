@@ -12,7 +12,7 @@ public class ChangeFeedProcessorState {
     private String leaseToken;
     private String hostName;
     private String continuationToken;
-    private int estimatedLag;
+    private long estimatedLag;
 
     /**
      * Gets the token of the lease item representing the persistent state of a change feed processor worker.
@@ -89,7 +89,7 @@ public class ChangeFeedProcessorState {
      * @return the estimated lag.
      */
     public int getEstimatedLag() {
-        return this.estimatedLag;
+        return Long.valueOf(this.estimatedLag).intValue();
     }
 
     /**
@@ -98,7 +98,7 @@ public class ChangeFeedProcessorState {
      * @param estimatedLag the estimated lag.
      * @return the current ChangeFeedProcessorState instance.
      */
-    public ChangeFeedProcessorState setEstimatedLag(int estimatedLag) {
+    public ChangeFeedProcessorState setEstimatedLag(long estimatedLag) {
         this.estimatedLag = estimatedLag;
         return this;
     }
