@@ -1,5 +1,6 @@
 parameters:
   ServiceDirectory: ''
+  SDKType: 'client'
   TestResourceDirectories:
   Artifacts: []
   AdditionalModules: []
