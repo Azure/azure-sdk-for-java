@@ -27,8 +27,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -62,19 +60,14 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     private static String manifestDigest;
     private static BinaryData configData;
     private static BinaryData layerData;
-    private static Boolean isWindowsOS;
 
     @BeforeAll
     static void beforeAll() {
-        String layer = "654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed";
-        String config = "config.json";
-        Path configPath = Paths.get("src", "test", "resources", "oci-artifact", config);
-        Path layerPath = Paths.get("src", "test", "resources", "oci-artifact", layer);
-        configData = BinaryData.fromFile(configPath);
-        layerData = BinaryData.fromFile(layerPath);
+        configData = BinaryData.fromString("{}");
+        layerData = BinaryData.fromString("hello world");
         configDigest = UtilsImpl.computeDigest(configData.toByteBuffer());
+        assertEquals("sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a", configDigest);
         layerDigest = UtilsImpl.computeDigest(layerData.toByteBuffer());
-        isWindowsOS = System.getProperty("os.name").toLowerCase().startsWith("win");
     }
 
     @AfterEach
