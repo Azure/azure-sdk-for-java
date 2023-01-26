@@ -17,12 +17,12 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
     public static final SchemaFormat AVRO = fromString("avro");
 
     /**
-     * Apache Avro format
+     * JSON schema format.
      */
     public static final SchemaFormat JSON = fromString("json");
 
     /**
-     * Apache Avro format
+     * Custom schema format.
      */
     public static final SchemaFormat CUSTOM = fromString("custom");
 
