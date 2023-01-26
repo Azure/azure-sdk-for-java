@@ -8,14 +8,11 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.AzureNettyHttpClientAttr;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
-import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
-import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
-import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
-import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -42,12 +39,10 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
-import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.http.client.HttpClientState;
 import reactor.netty.transport.AddressUtils;
 import reactor.util.retry.Retry;
 
@@ -86,9 +81,6 @@ class NettyAsyncHttpClient implements HttpClient {
     private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     final boolean disableBufferCopy;
-    final long readTimeout;
-    final long writeTimeout;
-    final long responseTimeout;
 
     final boolean addProxyHandler;
     final ProxyOptions proxyOptions;
@@ -105,14 +97,10 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
-        long readTimeout, long writeTimeout, long responseTimeout, boolean addProxyHandler, ProxyOptions proxyOptions,
-        Pattern nonProxyHostsPattern, AuthorizationChallengeHandler handler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
+        boolean addProxyHandler, ProxyOptions proxyOptions, Pattern nonProxyHostsPattern,
+        AuthorizationChallengeHandler handler, AtomicReference<ChallengeHolder> proxyChallengeHolder) {
         this.nettyClient = nettyClient;
         this.disableBufferCopy = disableBufferCopy;
-        this.readTimeout = readTimeout;
-        this.writeTimeout = writeTimeout;
-        this.responseTimeout = responseTimeout;
         this.addProxyHandler = addProxyHandler;
         this.proxyOptions = proxyOptions;
         this.nonProxyHostsPattern = nonProxyHostsPattern;
@@ -137,35 +125,15 @@ class NettyAsyncHttpClient implements HttpClient {
         boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
         boolean headersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
-        long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
+        Long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
-            .orElse(this.responseTimeout);
-
+            .orElse(null);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        ConnectionObserver observer = (connection, newState) -> {
-            if (newState == HttpClientState.REQUEST_PREPARED) {
-                connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
-                if (progressReporter != null) {
-                    connection.addHandlerLast(RequestProgressReportingHandler.HANDLER_NAME,
-                        new RequestProgressReportingHandler(progressReporter));
-                }
-            } else if (newState == HttpClientState.REQUEST_SENT) {
-                connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME);
-                if (progressReporter != null) {
-                    connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-                }
-                connection.addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME,
-                    new ResponseTimeoutHandler(responseTimeout));
-            } else if (newState == HttpClientState.RESPONSE_RECEIVED) {
-                connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME);
-                connection.addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(readTimeout));
-            } else if (newState == HttpClientState.RESPONSE_COMPLETED) {
-                connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
-            }
-        };
 
-        reactor.netty.http.client.HttpClient configuredClient = nettyClient.observe(observer)
+        reactor.netty.http.client.HttpClient configuredClient = nettyClient
+            .attr(AzureNettyHttpClientAttr.ATTRIBUTE_KEY, new AzureNettyHttpClientAttr(responseTimeout,
+                progressReporter))
             .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
                 if (addProxyHandler) {
                     /*

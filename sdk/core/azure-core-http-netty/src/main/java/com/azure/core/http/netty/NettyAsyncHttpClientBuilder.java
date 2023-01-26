@@ -5,6 +5,7 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.AzureTimeoutConnectionObserver;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
@@ -156,7 +157,10 @@ public class NettyAsyncHttpClientBuilder {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout,
                 DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
-            .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false));
+            .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
+            .observe(new AzureTimeoutConnectionObserver(getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
+                getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT),
+                getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT)));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -207,9 +211,7 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
-        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy,
-            getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
-            getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT), addProxyHandler, buildProxyOptions,
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, addProxyHandler, buildProxyOptions,
             nonProxyHostsPattern, handler, proxyChallengeHolder);
     }
 
