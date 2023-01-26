@@ -140,7 +140,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         return getTextAnalyticsClientBuilder(
             buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion, isStaticResource).buildClient();
+            serviceVersion,
+            isStaticResource)
+            .buildClient();
     }
     // Detect language
 

@@ -1515,24 +1515,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 
-    TextAnalyticsClientBuilder getTextAnalyticsAsyncClientBuilder(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
-        TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint(isStaticResource))
-            .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
-        if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(FAKE_API_KEY));
-        } else {
-            builder.credential(new AzureKeyCredential(getApiKey(isStaticResource)));
-        }
-        return builder;
-    }
-
     TextAnalyticsClientBuilder getTextAnalyticsClientBuilder(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()

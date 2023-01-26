@@ -142,9 +142,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     private TextAnalyticsAsyncClient getTextAnalyticsAsyncClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
-        return getTextAnalyticsAsyncClientBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-                : httpClient), serviceVersion, isStaticResource).buildAsyncClient();
+        return getTextAnalyticsClientBuilder(
+            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            serviceVersion,
+            isStaticResource)
+            .buildAsyncClient();
     }
 
     // Detected Languages
