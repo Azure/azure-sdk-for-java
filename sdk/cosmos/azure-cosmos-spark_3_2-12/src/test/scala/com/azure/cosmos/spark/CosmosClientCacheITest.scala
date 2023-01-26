@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
+import com.azure.cosmos.spark.catalog.CosmosCatalogCosmosSDKClient
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.mockito.Mockito.mock
 
@@ -129,8 +130,8 @@ class CosmosClientCacheITest
            .to(clients2 => {
              clients2(0).get.cosmosClient should be theSameInstanceAs
              clients(0).get.cosmosClient
-             clients2(0).get.sparkCatalogClient should be (asInstanceOf[CosmosAsyncClient])
-             clients(0).get.sparkCatalogClient should be (asInstanceOf[CosmosAsyncClient])
+             clients2(0).get.sparkCatalogClient should be (asInstanceOf[CosmosCatalogCosmosSDKClient])
+             clients(0).get.sparkCatalogClient should be (asInstanceOf[CosmosCatalogCosmosSDKClient])
 
                val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")

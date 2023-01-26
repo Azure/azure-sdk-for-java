@@ -14,8 +14,8 @@ stages:
       SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
       TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
       ResourceGroupName: 'oltp-spark-ci'
-      ClientId: $(ClientId)
-      ClientSecret: $(ClientSecret)
+      ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       DatabricksEndpoint: $(spark-databricks-endpoint)
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-1_2-12'
@@ -28,8 +28,8 @@ stages:
       SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
       TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
       ResourceGroupName: 'oltp-spark-ci'
-      ClientId: $(ClientId)
-      ClientSecret: $(ClientSecret)
+      ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-2_2-12'
       ClusterName: 'oltp-ci-spark32-2workers-ds3v2'
@@ -41,8 +41,8 @@ stages:
       SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
       TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
       ResourceGroupName: 'oltp-spark-ci'
-      ClientId: $(ClientId)
-      ClientSecret: $(ClientSecret)
+      ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-3_2-12'
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'

@@ -160,6 +160,14 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void throughputGlobalControlWithThroughputQuery() {
+        // Will need to use a new client here to make sure the throughput query mono will be passed down to throughputContainerController
+        CosmosAsyncClient client = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .buildAsyncClient();
+
+        CosmosAsyncContainer testContainer = client.getDatabase(database.getId()).getContainer(container.getId());
+
         String controlContainerId = "throughputControlContainer";
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
@@ -186,20 +194,20 @@ public class ThroughputControlTests extends TestSuiteBase {
             ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()
-                .enableGlobalThroughputControlGroup(container, groupConfig, globalControlConfig, throughputQueryMono);
+                .enableGlobalThroughputControlGroup(testContainer, groupConfig, globalControlConfig, throughputQueryMono);
 
             CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
             requestOptions.setContentResponseOnWriteEnabled(true);
             requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
-            CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+            CosmosItemResponse<TestItem> createItemResponse = testContainer.createItem(getDocumentDefinition(), requestOptions).block();
             TestItem createdItem = createItemResponse.getItem();
             this.validateRequestNotThrottled(
                 createItemResponse.getDiagnostics().toString(),
                 BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
             // second request to same group. which will get throttled
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, OperationType.Create, createdItem, groupConfig.getGroupName());
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, OperationType.Create, createdItem, groupConfig.getGroupName());
             this.validateRequestThrottled(
                 cosmosDiagnostics.toString(),
                 BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
@@ -209,6 +217,10 @@ public class ThroughputControlTests extends TestSuiteBase {
             controlContainer
                 .delete()
                 .block();
+
+            if (client != null) {
+                client.close();
+            }
         }
     }
 
