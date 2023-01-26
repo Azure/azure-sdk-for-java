@@ -162,13 +162,14 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
     }
 
     private Mono<Response<Void>> deleteTagWithResponse(String tag, Context context) {
+        if (tag == null) {
+            return monoError(LOGGER, new NullPointerException("'tag' cannot be null"));
+        }
+        if (tag.isEmpty()) {
+            return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
+        }
+
         try {
-            if (tag == null) {
-                return monoError(LOGGER, new NullPointerException("'tag' cannot be null"));
-            }
-            if (tag.isEmpty()) {
-                return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
-            }
             return this.serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);

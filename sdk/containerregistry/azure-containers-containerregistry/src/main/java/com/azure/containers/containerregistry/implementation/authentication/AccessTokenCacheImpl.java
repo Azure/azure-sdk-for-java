@@ -107,7 +107,7 @@ public class AccessTokenCacheImpl {
                     }
                     return tokenRefresh
                         .materialize()
-                        .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                        .flatMap(processTokenRefreshResult(sinksOne, fallback))
                         .doOnError(sinksOne::tryEmitError)
                         .doFinally(ignored -> wip.set(null));
                 } else {
@@ -126,18 +126,25 @@ public class AccessTokenCacheImpl {
     }
 
     private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(
-        Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
+        Sinks.One<AccessToken> sinksOne, Mono<AccessToken> fallback) {
         return signal -> {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                logger.info(refreshLog(cache, now, "Acquired a new access token"));
+                logger.atInfo()
+                    .addKeyValue("expiresAt", () -> cache == null ? "-" : cache.getExpiresAt().toString())
+                    .addKeyValue("retry-after-sec", REFRESH_DELAY.getSeconds())
+                    .log("Acquired a new access token");
                 cache = accessToken;
                 sinksOne.tryEmitValue(accessToken);
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return Mono.just(accessToken);
             } else if (signal.isOnError() && error != null) { // ERROR
-                logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
+                logger.atError()
+                    .addKeyValue("expiresAt", () -> cache == null ? "-" : cache.getExpiresAt().toString())
+                    .addKeyValue("retry-after-sec", REFRESH_DELAY.getSeconds())
+                    .log("Failed to acquire a new access token");
+
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
@@ -147,19 +154,4 @@ public class AccessTokenCacheImpl {
         };
     }
 
-    private static String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
-        StringBuilder info = new StringBuilder(log);
-        if (cache == null) {
-            info.append(".");
-        } else {
-            Duration tte = Duration.between(now, cache.getExpiresAt());
-            info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
-                .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_DELAY.getSeconds()).append(" seconds.");
-            if (!tte.isNegative()) {
-                info.append(" The token currently cached will be used.");
-            }
-        }
-        return info.toString();
-    }
 }

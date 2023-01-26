@@ -19,6 +19,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Objects;
+
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
@@ -194,9 +196,7 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRepositoryWithResponse(String repositoryName, Context context) {
-        if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' cannot be null."));
-        }
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
 
         if (repositoryName.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' cannot be empty."));

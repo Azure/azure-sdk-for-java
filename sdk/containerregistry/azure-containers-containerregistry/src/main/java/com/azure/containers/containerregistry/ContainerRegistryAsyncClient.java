@@ -168,15 +168,15 @@ public final class ContainerRegistryAsyncClient {
     }
 
     private Mono<Response<Void>> deleteRepositoryWithResponse(String repositoryName, Context context) {
+        if (repositoryName == null) {
+            return monoError(logger, new NullPointerException("'repositoryName' cannot be null."));
+        }
+
+        if (repositoryName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'repositoryName' cannot be empty."));
+        }
+
         try {
-            if (repositoryName == null) {
-                return monoError(logger, new NullPointerException("'repositoryName' cannot be null."));
-            }
-
-            if (repositoryName.isEmpty()) {
-                return monoError(logger, new IllegalArgumentException("'repositoryName' cannot be empty."));
-            }
-
             return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);

@@ -28,6 +28,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -72,10 +73,7 @@ public final class ContainerRepositoryAsync {
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
     ContainerRepositoryAsync(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
-        if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null."));
-        }
-
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
         if (repositoryName.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }

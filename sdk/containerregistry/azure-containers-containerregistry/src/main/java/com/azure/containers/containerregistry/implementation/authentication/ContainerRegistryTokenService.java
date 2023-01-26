@@ -14,6 +14,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * A token service for obtaining tokens to be used by the container registry service.
  */
@@ -68,8 +70,7 @@ public class ContainerRegistryTokenService implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
         if (!(tokenRequestContext instanceof ContainerRegistryTokenRequestContext)) {
-            logger.info("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext");
-            return Mono.empty();
+            return monoError(logger, new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
         }
 
         ContainerRegistryTokenRequestContext requestContext =
@@ -78,15 +79,13 @@ public class ContainerRegistryTokenService implements TokenCredential {
         String scope = requestContext.getScope();
         String serviceName = requestContext.getServiceName();
 
-        return Mono.defer(() -> {
-            if (this.isAnonymousAccess) {
-                return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, TokenGrantType.PASSWORD);
-            }
+        if (this.isAnonymousAccess) {
+            return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, TokenGrantType.PASSWORD);
+        }
 
-            return this.refreshTokenCache.getToken(requestContext)
-                .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope,
-                    serviceName, TokenGrantType.REFRESH_TOKEN));
-        }).doOnError(err -> logger.error("Could not fetch the ACR error token.", err));
+        return this.refreshTokenCache.getToken(requestContext)
+            .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope,
+                serviceName, TokenGrantType.REFRESH_TOKEN));
     }
 
     public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {

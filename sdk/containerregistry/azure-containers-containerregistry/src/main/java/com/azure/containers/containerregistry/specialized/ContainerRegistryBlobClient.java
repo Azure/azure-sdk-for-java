@@ -105,9 +105,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadManifestResult uploadManifest(OciManifest manifest) {
-        if (manifest == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'manifest' can't be null."));
-        }
+        Objects.requireNonNull(manifest, "'manifest' cannot be null.");
         return this.uploadManifest(new UploadManifestOptions(manifest));
     }
 
@@ -147,10 +145,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UploadManifestResult> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
-        if (options == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'options' can't be null."));
-        }
-
+        Objects.requireNonNull(options, "'options' cannot be null.");
         BinaryData data = options.getManifest().toReplayableBinaryData();
         String tagOrDigest = options.getTag() != null ? options.getTag() : UtilsImpl.computeDigest(data.toByteBuffer());
         try {
@@ -207,9 +202,8 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UploadBlobResult> uploadBlobWithResponse(BinaryData data, Context context) {
-        if (data == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'data' can't be null."));
-        }
+        Objects.requireNonNull(data, "'data' cannot be null.");
+
         context = enableSync(getTracingContext(context));
 
         String digest = UtilsImpl.computeDigest(data.toByteBuffer());
@@ -267,9 +261,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DownloadManifestResult> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
-        if (options == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'options' can't be null."));
-        }
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         String tagOrDigest = options.getTag() != null ? options.getTag() : options.getDigest();
         Response<ManifestWrapper> response;
@@ -327,9 +319,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DownloadBlobResult> downloadBlobWithResponse(String digest, Context context) {
-        if (digest == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null."));
-        }
+        Objects.requireNonNull(digest, "'digest' cannot be null.");
         Response<BinaryData> streamResponse;
         try {
             streamResponse = this.blobsImpl.getBlobWithResponse(repositoryName, digest, context);
@@ -378,11 +368,8 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBlobWithResponse(String digest, Context context) {
+        Objects.requireNonNull(digest, "'digest' cannot be null.");
         try {
-            if (digest == null) {
-                throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null."));
-            }
-
             Response<BinaryData> streamResponse =
                 this.blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(getTracingContext(context)));
             return deleteResponseToSuccess(streamResponse);

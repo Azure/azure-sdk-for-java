@@ -29,6 +29,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
@@ -76,10 +77,7 @@ public final class ContainerRepository {
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
     ContainerRepository(String repositoryName, HttpPipeline httpPipeline, String endpoint, String version) {
-        if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null."));
-        }
-
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
         if (repositoryName.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }
@@ -440,9 +438,7 @@ public final class ContainerRepository {
     }
 
     private Response<ContainerRepositoryProperties> updatePropertiesWithResponseSync(ContainerRepositoryProperties repositoryProperties, Context context) {
-        if (repositoryProperties == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'value' cannot be null."));
-        }
+        Objects.requireNonNull(repositoryProperties, "'repositoryProperties' cannot be null");
 
         RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
             .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
