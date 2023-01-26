@@ -141,6 +141,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                         aadAuthConfig.databaseAccountName,
                         createCosmosManagementClient(aadAuthConfig),
                         cosmosAsyncClient)
+            case _ =>
         }
 
         val epochNowInMs = Instant.now.toEpochMilli

@@ -11,9 +11,9 @@ stages:
     parameters:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
-      SubscriptionId: $(SubscriptionId)
-      TenantId: $(TenantId)
-      ResourceGroupName: $(ResourceGroupName)
+      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
+      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+      ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(ClientId)
       ClientSecret: $(ClientSecret)
       DatabricksEndpoint: $(spark-databricks-endpoint)
@@ -25,9 +25,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint)
-      SubscriptionId: $(SubscriptionId)
-      TenantId: $(TenantId)
-      ResourceGroupName: $(ResourceGroupName)
+      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
+      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+      ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(ClientId)
       ClientSecret: $(ClientSecret)
       DatabricksToken: $(spark-databricks-token)
@@ -38,9 +38,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint)
-      SubscriptionId: $(SubscriptionId)
-      TenantId: $(TenantId)
-      ResourceGroupName: $(ResourceGroupName)
+      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
+      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+      ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(ClientId)
       ClientSecret: $(ClientSecret)
       DatabricksToken: $(spark-databricks-token)
