@@ -195,11 +195,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 channel.pipeline().addLast(ReadTimeoutHandler.HANDLER_NAME, readTimeoutHandler);
             });
 
-        return configuredClient.doOnRequest((r, connection) -> addRequestHandlers(connection, context))
-            .doAfterRequest((r, connection) -> doAfterRequest(connection, responseTimeout))
-            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
-            .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
-            .request(toReactorNettyHttpMethod(request.getHttpMethod()))
+        return configuredClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
