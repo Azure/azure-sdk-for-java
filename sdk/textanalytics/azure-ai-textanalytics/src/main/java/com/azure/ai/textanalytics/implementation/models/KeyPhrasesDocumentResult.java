@@ -18,6 +18,9 @@ public class KeyPhrasesDocumentResult extends DocumentResult {
     @JsonProperty(value = "keyPhrases", required = true)
     private List<String> keyPhrases;
 
+    /** Creates an instance of KeyPhrasesDocumentResult class. */
+    public KeyPhrasesDocumentResult() {}
+
     /**
      * Get the keyPhrases property: A list of representative words or phrases. The number of key phrases returned is
      * proportional to the number of words in the input document.
