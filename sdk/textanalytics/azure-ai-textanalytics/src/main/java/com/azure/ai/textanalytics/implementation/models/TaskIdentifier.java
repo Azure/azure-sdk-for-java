@@ -16,6 +16,9 @@ public class TaskIdentifier {
     @JsonProperty(value = "taskName")
     private String taskName;
 
+    /** Creates an instance of TaskIdentifier class. */
+    public TaskIdentifier() {}
+
     /**
      * Get the taskName property: The taskName property.
      *

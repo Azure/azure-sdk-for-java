@@ -24,6 +24,9 @@ public final class AnalyzeTextJobState extends JobState {
     @JsonProperty(value = "statistics")
     private RequestStatistics statistics;
 
+    /** Creates an instance of AnalyzeTextJobState class. */
+    public AnalyzeTextJobState() {}
+
     /**
      * Get the tasks property: The tasks property.
      *

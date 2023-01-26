@@ -9,6 +9,9 @@ import com.azure.core.annotation.Fluent;
 /** Supported parameters for a Custom Multi Classification task. */
 @Fluent
 public final class CustomMultiLabelClassificationTaskParameters extends CustomTaskParameters {
+    /** Creates an instance of CustomMultiLabelClassificationTaskParameters class. */
+    public CustomMultiLabelClassificationTaskParameters() {}
+
     /** {@inheritDoc} */
     @Override
     public CustomMultiLabelClassificationTaskParameters setProjectName(String projectName) {
