@@ -59,7 +59,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
     static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING";
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
-    static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_TEST_GROUP = "azsdk_java_group";
     static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private TokenCredential tokenCredential;
