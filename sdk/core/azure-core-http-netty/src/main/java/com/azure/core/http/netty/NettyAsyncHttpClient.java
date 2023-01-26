@@ -158,7 +158,8 @@ class NettyAsyncHttpClient implements HttpClient {
             });
         }
 
-        return configuredClient.doOnRequest((r, connection) -> addRequestHandlers(connection, context))
+        return configuredClient.observe((connection, newState) -> { })
+            .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
             .doAfterRequest((r, connection) -> doAfterRequest(connection, responseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
