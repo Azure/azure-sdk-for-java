@@ -262,7 +262,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                     .map(valueList -> {
                         Map<String, Integer> result = new ConcurrentHashMap<>();
                         for (Pair<String, Long> pair : valueList) {
-                            result.put(pair.getKey(), Integer.valueOf(pair.getValue().intValue()));
+                            result.put(pair.getKey(), pair.getValue().intValue());
                         }
                         return result;
                     })
