@@ -17,6 +17,9 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<ExtractedSummaryDocumentResultWithDetectedLanguage> documents;
 
+    /** Creates an instance of ExtractiveSummarizationResult class. */
+    public ExtractiveSummarizationResult() {}
+
     /**
      * Get the documents property: Response by document.
      *

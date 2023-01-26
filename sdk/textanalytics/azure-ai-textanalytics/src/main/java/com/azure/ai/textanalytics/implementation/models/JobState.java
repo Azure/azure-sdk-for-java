@@ -60,6 +60,9 @@ public class JobState {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of JobState class. */
+    public JobState() {}
+
     /**
      * Get the displayName property: The displayName property.
      *
