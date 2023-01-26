@@ -9,7 +9,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
@@ -65,19 +64,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         StepVerifier.resetDefaultTimeout();
     }
 
-    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
-            .assertAsync()
-            .build();
-    }
     private DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
                                                                        DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentAnalysisBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion,
-            false)
-            .buildAsyncClient();
+        return getDocumentAnalysisBuilder(httpClient, serviceVersion, false).buildAsyncClient();
     }
 
     // Receipt recognition
