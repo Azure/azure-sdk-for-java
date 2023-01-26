@@ -15,24 +15,29 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
-import com.azure.storage.common.implementation.Constants;
+import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResponseValidationPolicyTest {
+
+    public static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
+    public static final String TEST_CLIENT_REQUEST_ID = "test-client-request-id";
+
     private static HttpPipelinePolicy getResponseValidationPolicy() {
         return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho("x-ms-client-request-id")
+            .addOptionalEcho(X_MS_CLIENT_REQUEST_ID)
             .build();
     }
     @SyncAsyncTest
-    public void responseValidationPolicyTestHeader() {
+    public void responseValidationPolicyTestHeader() throws MalformedURLException {
         final HttpHeaders headers = new HttpHeaders();
-        headers.set("x-ms-client-request-id", "test-client-request-id");
-        HttpResponse mockResponse = new MockHttpResponse(null, 200, headers);
+        headers.set(X_MS_CLIENT_REQUEST_ID, TEST_CLIENT_REQUEST_ID);
+        HttpResponse mockResponse = new MockHttpResponse(getRequestWithHeaders(headers), 200, headers);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
@@ -45,18 +50,23 @@ public class ResponseValidationPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"), headers), Context.NONE),
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"), headers))
+            () -> pipeline.sendSync(getRequestWithHeaders(headers), Context.NONE),
+            () -> pipeline.send(getRequestWithHeaders(headers))
         );
 
-        assertEquals("test-client-request-id", response.getHeaderValue(Constants.HeaderConstants.CLIENT_REQUEST_ID));
+        assertEquals(TEST_CLIENT_REQUEST_ID, response.getHeaderValue(X_MS_CLIENT_REQUEST_ID));
+    }
+
+    @NotNull
+    private static HttpRequest getRequestWithHeaders(HttpHeaders headers) throws MalformedURLException {
+        return new HttpRequest(HttpMethod.GET, new URL("http://localhost/"), headers);
     }
 
     @SyncAsyncTest
-    public void responseValidationPolicyTestError() {
+    public void responseValidationPolicyTestError() throws MalformedURLException {
         final HttpHeaders headers = new HttpHeaders();
-        headers.set("x-ms-client-request-id", "test-client-request-id");
-        HttpResponse mockResponse = new MockHttpResponse(null, 200, headers);
+        headers.set(X_MS_CLIENT_REQUEST_ID, TEST_CLIENT_REQUEST_ID);
+        HttpResponse mockResponse = new MockHttpResponse(getRequest(), 200, headers);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
@@ -69,10 +79,15 @@ public class ResponseValidationPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), Context.NONE),
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")))
+            () -> pipeline.sendSync(getRequest(), Context.NONE),
+            () -> pipeline.send(getRequest())
         );
 
-        assertEquals("test-client-request-id", response.getHeaderValue("x-ms-client-request-id"));
+        assertEquals(TEST_CLIENT_REQUEST_ID, response.getHeaderValue(X_MS_CLIENT_REQUEST_ID));
+    }
+
+    @NotNull
+    private static HttpRequest getRequest() throws MalformedURLException {
+        return new HttpRequest(HttpMethod.GET, new URL("http://localhost/"));
     }
 }
