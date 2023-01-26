@@ -53,9 +53,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -589,62 +595,6 @@ public final class FormRecognizerClientImpl {
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param analyzeRequest Analyze request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
-            String modelId,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            AnalyzeDocumentRequest analyzeRequest) {
-        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
-            String modelId,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            AnalyzeDocumentRequest analyzeRequest,
-            Context context) {
-        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -686,15 +636,140 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeDocument(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
             String modelId,
             String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest) {
-        analyzeDocumentWithResponse(modelId, pages, locale, stringIndexType, analyzeRequest, Context.NONE);
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze document
+     *
+     * <p>Analyzes document with document model.
+     *
+     * @param modelId Unique document model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId, pages, locale, stringIndexType, analyzeRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze document
+     *
+     * <p>Analyzes document with document model.
+     *
+     * @param modelId Unique document model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId, pages, locale, stringIndexType, analyzeRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze document
+     *
+     * <p>Analyzes document with document model.
+     *
+     * @param modelId Unique document model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId, pages, locale, stringIndexType, analyzeRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -801,10 +876,10 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
             String modelId,
             ContentType contentType,
             String pages,
@@ -812,9 +887,18 @@ public final class FormRecognizerClientImpl {
             StringIndexType stringIndexType,
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength) {
-        return analyzeDocumentWithResponseAsync(
-                        modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength)
-                .flatMap(ignored -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -834,10 +918,10 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
             String modelId,
             ContentType contentType,
             String pages,
@@ -846,9 +930,25 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength,
             Context context) {
-        return analyzeDocumentWithResponseAsync(
-                        modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, context)
-                .flatMap(ignored -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                analyzeRequest,
+                                contentLength,
+                                context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -952,72 +1052,6 @@ public final class FormRecognizerClientImpl {
      * @param stringIndexType Method used to compute string offset and length.
      * @param analyzeRequest Analyze request parameters.
      * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
-            String modelId,
-            ContentType contentType,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            BinaryData analyzeRequest,
-            Long contentLength) {
-        return analyzeDocumentWithResponseAsync(
-                        modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param contentType Upload file type.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param contentLength The Content-Length header for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
-            String modelId,
-            ContentType contentType,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            BinaryData analyzeRequest,
-            Long contentLength,
-            Context context) {
-        return analyzeDocumentWithResponseAsync(
-                        modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Analyze document
-     *
-     * <p>Analyzes document with document model.
-     *
-     * @param modelId Unique document model name.
-     * @param contentType Upload file type.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1065,9 +1099,10 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeDocument(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
             String modelId,
             ContentType contentType,
             String pages,
@@ -1075,8 +1110,166 @@ public final class FormRecognizerClientImpl {
             StringIndexType stringIndexType,
             BinaryData analyzeRequest,
             Long contentLength) {
-        analyzeDocumentWithResponse(
-                modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, Context.NONE);
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze document
+     *
+     * <p>Analyzes document with document model.
+     *
+     * @param modelId Unique document model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            BinaryData analyzeRequest,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                analyzeRequest,
+                                contentLength,
+                                context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze document
+     *
+     * <p>Analyzes document with document model.
+     *
+     * @param modelId Unique document model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            BinaryData analyzeRequest,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                analyzeRequest,
+                                contentLength,
+                                Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze document
+     *
+     * <p>Analyzes document with document model.
+     *
+     * @param modelId Unique document model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            BinaryData analyzeRequest,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                analyzeRequest,
+                                contentLength,
+                                context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1244,39 +1437,6 @@ public final class FormRecognizerClientImpl {
      * <p>Builds a custom document analysis model.
      *
      * @param buildRequest Building request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> buildDocumentModelAsync(BuildDocumentModelRequest buildRequest) {
-        return buildDocumentModelWithResponseAsync(buildRequest).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
-     *
-     * @param buildRequest Building request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> buildDocumentModelAsync(BuildDocumentModelRequest buildRequest, Context context) {
-        return buildDocumentModelWithResponseAsync(buildRequest, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Build document model
-     *
-     * <p>Builds a custom document analysis model.
-     *
-     * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1299,10 +1459,99 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void buildDocumentModel(BuildDocumentModelRequest buildRequest) {
-        buildDocumentModelWithResponse(buildRequest, Context.NONE);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginBuildDocumentModelAsync(BuildDocumentModelRequest buildRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.buildDocumentModelWithResponseAsync(buildRequest),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Build document model
+     *
+     * <p>Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginBuildDocumentModelAsync(
+            BuildDocumentModelRequest buildRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.buildDocumentModelWithResponseAsync(buildRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Build document model
+     *
+     * <p>Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginBuildDocumentModel(BuildDocumentModelRequest buildRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.buildDocumentModelWithResponse(buildRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Build document model
+     *
+     * <p>Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginBuildDocumentModel(
+            BuildDocumentModelRequest buildRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.buildDocumentModelWithResponse(buildRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1351,39 +1600,6 @@ public final class FormRecognizerClientImpl {
      * <p>Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> composeDocumentModelAsync(ComposeDocumentModelRequest composeRequest) {
-        return composeDocumentModelWithResponseAsync(composeRequest).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
-     *
-     * @param composeRequest Compose request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> composeDocumentModelAsync(ComposeDocumentModelRequest composeRequest, Context context) {
-        return composeDocumentModelWithResponseAsync(composeRequest, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Compose document model
-     *
-     * <p>Creates a new document model from document types of existing document models.
-     *
-     * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1407,10 +1623,100 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void composeDocumentModel(ComposeDocumentModelRequest composeRequest) {
-        composeDocumentModelWithResponse(composeRequest, Context.NONE);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginComposeDocumentModelAsync(
+            ComposeDocumentModelRequest composeRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.composeDocumentModelWithResponseAsync(composeRequest),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Compose document model
+     *
+     * <p>Creates a new document model from document types of existing document models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginComposeDocumentModelAsync(
+            ComposeDocumentModelRequest composeRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.composeDocumentModelWithResponseAsync(composeRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Compose document model
+     *
+     * <p>Creates a new document model from document types of existing document models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginComposeDocumentModel(ComposeDocumentModelRequest composeRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.composeDocumentModelWithResponse(composeRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Compose document model
+     *
+     * <p>Creates a new document model from document types of existing document models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginComposeDocumentModel(
+            ComposeDocumentModelRequest composeRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.composeDocumentModelWithResponse(composeRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1587,41 +1893,6 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> copyDocumentModelToAsync(String modelId, CopyAuthorization copyToRequest) {
-        return copyDocumentModelToWithResponseAsync(modelId, copyToRequest).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
-     *
-     * @param modelId Unique document model name.
-     * @param copyToRequest Copy to request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> copyDocumentModelToAsync(String modelId, CopyAuthorization copyToRequest, Context context) {
-        return copyDocumentModelToWithResponseAsync(modelId, copyToRequest, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Copy document model
-     *
-     * <p>Copies document model to the target resource, region, and modelId.
-     *
-     * @param modelId Unique document model name.
-     * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1646,10 +1917,104 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void copyDocumentModelTo(String modelId, CopyAuthorization copyToRequest) {
-        copyDocumentModelToWithResponse(modelId, copyToRequest, Context.NONE);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCopyDocumentModelToAsync(
+            String modelId, CopyAuthorization copyToRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.copyDocumentModelToWithResponseAsync(modelId, copyToRequest),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Copy document model
+     *
+     * <p>Copies document model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique document model name.
+     * @param copyToRequest Copy to request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCopyDocumentModelToAsync(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.copyDocumentModelToWithResponseAsync(modelId, copyToRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Copy document model
+     *
+     * <p>Copies document model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique document model name.
+     * @param copyToRequest Copy to request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCopyDocumentModelTo(
+            String modelId, CopyAuthorization copyToRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.copyDocumentModelToWithResponse(modelId, copyToRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Copy document model
+     *
+     * <p>Copies document model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique document model name.
+     * @param copyToRequest Copy to request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCopyDocumentModelTo(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.copyDocumentModelToWithResponse(modelId, copyToRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
