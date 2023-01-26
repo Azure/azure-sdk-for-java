@@ -50,7 +50,6 @@ private[spark] object CosmosConfigNames {
   val ResourceGroupName = "spark.cosmos.auth.aad.resourceGroupName"
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
-  val AuthorityHost = "spark.cosmos.auth.aad.authorityHost"
   val AzureEnvironment = "spark.cosmos.auth.aad.azureEnvironment"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
@@ -127,7 +126,6 @@ private[spark] object CosmosConfigNames {
     ResourceGroupName,
     ClientId,
     ClientSecret,
-    AuthorityHost,
     AzureEnvironment,
     Database,
     Container,
@@ -436,14 +434,12 @@ private case class CosmosAadAuthConfig(subscriptionId: String,
                                        clientId: String,
                                        tenantId: String,
                                        clientSecret: String,
-                                       authorityHost: String,
                                        azureEnvironment: AzureEnvironment,
                                        databaseAccountName: String) extends CosmosAuthConfig
 
 private object CosmosAuthConfig {
     private val DefaultAuthType = CosmosAuthType.MasterKey
     private val DefaultAzureEnvironmentType = AzureEnvironmentType.Azure
-    private val DefaultAuthorityHost = "https://login.microsoftonline.com"
 
     private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
         mandatory = true,
@@ -502,12 +498,6 @@ private object CosmosAuthConfig {
         parseFromStringFunction = clientSecret => clientSecret,
         helpMessage = "Used for service principle authentication. The client secret/password of the service principle. ")
 
-    private val AuthorityHost = CosmosConfigEntry[String](key = CosmosConfigNames.AuthorityHost,
-        defaultValue = Some(DefaultAuthorityHost),
-        mandatory = false,
-        parseFromStringFunction = authorityHost => authorityHost,
-        helpMessage = "Used for service principle authentication. The authorityHost of the service principle. ")
-
     private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironmentType](key = CosmosConfigNames.AzureEnvironment,
         defaultValue = Option.apply(DefaultAzureEnvironmentType),
         mandatory = false,
@@ -524,7 +514,6 @@ private object CosmosAuthConfig {
         val clientId = CosmosConfigEntry.parse(cfg, ClientId)
         val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
         val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
-        val authorityHost = CosmosConfigEntry.parse(cfg, AuthorityHost)
         val azureEnvironmentType = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
         val databaseAccount = CosmosConfigEntry.parse(cfg, CosmosAccountName)
 
@@ -540,7 +529,6 @@ private object CosmosAuthConfig {
             assert(clientId.isDefined)
             assert(tenantId.isDefined)
             assert(clientSecret.isDefined)
-            assert(authorityHost.isDefined)
             assert(azureEnvironmentType.isDefined)
             assert(databaseAccount.isDefined)
 
@@ -559,7 +547,6 @@ private object CosmosAuthConfig {
                 clientId.get,
                 tenantId.get,
                 clientSecret.get,
-                authorityHost.get,
                 azureEnvironment,
                 databaseAccount.get)
         }

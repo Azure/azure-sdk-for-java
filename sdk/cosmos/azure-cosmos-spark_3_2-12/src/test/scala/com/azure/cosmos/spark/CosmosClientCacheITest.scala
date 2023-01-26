@@ -128,10 +128,9 @@ class CosmosClientCacheITest
             Some(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
            ))
            .to(clients2 => {
-             clients2(0).get.cosmosClient should be theSameInstanceAs
-             clients(0).get.cosmosClient
-             clients2(0).get.sparkCatalogClient should be (asInstanceOf[CosmosCatalogCosmosSDKClient])
-             clients(0).get.sparkCatalogClient should be (asInstanceOf[CosmosCatalogCosmosSDKClient])
+             clients2(0).get.cosmosClient should be theSameInstanceAs clients(0).get.cosmosClient
+             clients2(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
+             clients(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
 
                val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")

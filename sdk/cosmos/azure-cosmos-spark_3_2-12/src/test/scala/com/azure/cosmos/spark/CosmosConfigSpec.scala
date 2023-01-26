@@ -65,13 +65,10 @@ class CosmosConfigSpec extends UnitSpec {
       aadAuthConfig.clientId shouldEqual testAadAuthClientId
       aadAuthConfig.clientSecret shouldEqual testAadAuthClientSecret
       aadAuthConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE
-      aadAuthConfig.authorityHost shouldEqual "https://login.microsoftonline.com"
       aadAuthConfig.databaseAccountName shouldEqual "boson-test"
   }
 
   "Config Parser" should "parse account AAD authentication credentials" in {
-      val testAuthorityHost = "https://login-test.microsoftonline.com"
-
       val userConfig = Map(
           "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
           "spark.cosmos.auth.type" -> "ServicePrinciple",
@@ -80,7 +77,6 @@ class CosmosConfigSpec extends UnitSpec {
           "spark.cosmos.auth.aad.resourceGroupName" -> testAadAuthResourceGroupName,
           "spark.cosmos.auth.aad.clientId" -> testAadAuthClientId,
           "spark.cosmos.auth.aad.clientSecret" -> testAadAuthClientSecret,
-          "spark.cosmos.auth.aad.authorityHost" -> testAuthorityHost,
           "spark.cosmos.auth.aad.azureEnvironment" -> "AzureUsGovernment"
       )
 
@@ -95,7 +91,6 @@ class CosmosConfigSpec extends UnitSpec {
       aadAuthConfig.clientId shouldEqual testAadAuthClientId
       aadAuthConfig.clientSecret shouldEqual testAadAuthClientSecret
       aadAuthConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT
-      aadAuthConfig.authorityHost shouldEqual testAuthorityHost
       aadAuthConfig.databaseAccountName shouldEqual "boson-test"
   }
 

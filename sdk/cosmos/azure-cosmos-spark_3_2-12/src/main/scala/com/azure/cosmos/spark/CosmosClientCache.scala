@@ -183,7 +183,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
           case aadAuthConfig: CosmosAadAuthConfig =>
               val tokenCredential = new ClientSecretCredentialBuilder()
-                  .authorityHost(aadAuthConfig.authorityHost)
+                  .authorityHost(aadAuthConfig.azureEnvironment.getActiveDirectoryEndpoint())
                   .tenantId(aadAuthConfig.tenantId)
                   .clientId(aadAuthConfig.clientId)
                   .clientSecret(aadAuthConfig.clientSecret)
@@ -310,14 +310,14 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:on cyclomatic.complexity
 
   private[this] def createCosmosManagementClient(authConfig: CosmosAadAuthConfig): CosmosManager = {
-      val azureEnvironment = new AzureProfile(authConfig.tenantId, authConfig.subscriptionId, authConfig.azureEnvironment)
+      val azureProfile = new AzureProfile(authConfig.tenantId, authConfig.subscriptionId, authConfig.azureEnvironment)
       val tokenCredential = new ClientSecretCredentialBuilder()
-          .authorityHost(authConfig.authorityHost)
+          .authorityHost(authConfig.azureEnvironment.getActiveDirectoryEndpoint())
           .tenantId(authConfig.tenantId)
           .clientId(authConfig.clientId)
           .clientSecret(authConfig.clientSecret)
           .build()
-      CosmosManager.authenticate(tokenCredential, azureEnvironment)
+      CosmosManager.authenticate(tokenCredential, azureProfile)
   }
 
   private[this] def onCleanup(): Unit = {

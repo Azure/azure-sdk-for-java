@@ -17,7 +17,7 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
   "spark.cosmos.container" -> cosmosContainerName,
-  "spark.cosmos.read.inferSchema.enabled" -> "true"                          
+  "spark.cosmos.read.inferSchema.enabled" -> "true"
 )
 
 // COMMAND ----------
@@ -69,3 +69,7 @@ import org.apache.spark.sql.functions.col
 df.filter(col("isAlive") === true)
  .withColumn("age", col("age") + 1)
  .show()
+
+// clean up
+spark.sql(s"DROP TABLE IF EXISTS cosmosCatalog.$cosmosDatabaseName.$cosmosContainerName;")
+spark.sql(s"DROP DATABASE IF EXISTS cosmosCatalog.$cosmosDatabaseName;")
