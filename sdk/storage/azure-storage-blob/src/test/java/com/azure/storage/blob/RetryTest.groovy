@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpResponse
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Mono
@@ -34,6 +35,18 @@ class RetryTest extends Specification {
             }).verifyComplete()
     }
 
+    def "Retries until success sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assert response.getStatusCode() == 200
+        assert retryTestFactory.getTryNumber() == 6
+    }
+
     def "Retries until max retries"() {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES, retryTestOptions)
@@ -44,11 +57,28 @@ class RetryTest extends Specification {
         then:
         StepVerifier.create(responseMono)
             .assertNext({
-                assert it.getStatusCode() == 503
-                assert retryTestFactory.getTryNumber() == retryTestOptions.getMaxTries()
+                assertMaxTries(it, retryTestFactory)
             }).verifyComplete()
+
     }
 
+    def "Retries until max retries sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assertMaxTries(response, retryTestFactory)
+    }
+
+    private void assertMaxTries(HttpResponse it, RequestRetryTestFactory retryTestFactory) {
+        assert it.getStatusCode() == 503
+        assert retryTestFactory.getTryNumber() == retryTestOptions.getMaxTries()
+    }
+
+    // TODO: write sync use case
     def "Retries until max retries with exception"() {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES_WITH_EXCEPTION, retryTestOptions)
@@ -85,9 +115,24 @@ class RetryTest extends Specification {
         then:
         StepVerifier.create(responseMono)
             .assertNext({
-                assert it.getStatusCode() == 400
-                assert retryTestFactory.getTryNumber() == 1
+                assertNonRetryable(it, retryTestFactory)
             }).verifyComplete()
+    }
+
+    def "Retries non retryable sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assertNonRetryable(response, retryTestFactory)
+    }
+
+    private void assertNonRetryable(HttpResponse it, RequestRetryTestFactory retryTestFactory) {
+        assert it.getStatusCode() == 400
+        assert retryTestFactory.getTryNumber() == 1
     }
 
     def "Retries non retryable secondary"() {
@@ -100,9 +145,24 @@ class RetryTest extends Specification {
         then:
         StepVerifier.create(responseMono)
             .assertNext({
-                assert it.getStatusCode() == 400
-                assert retryTestFactory.getTryNumber() == 2
+                assertNonRetrySecondary(it, retryTestFactory)
             }).verifyComplete()
+    }
+
+    def "Retries non retryable secondary sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE_SECONDARY, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assertNonRetrySecondary(response, retryTestFactory)
+    }
+
+    private void assertNonRetrySecondary(HttpResponse it, RequestRetryTestFactory retryTestFactory) {
+        assert it.getStatusCode() == 400
+        assert retryTestFactory.getTryNumber() == 2
     }
 
     def "Retries network error"() {
@@ -115,9 +175,24 @@ class RetryTest extends Specification {
         then:
         StepVerifier.create(responseMono)
             .assertNext({
-                assert it.getStatusCode() == 200
-                assert retryTestFactory.getTryNumber() == 3
+                assertNetworkError(it, retryTestFactory)
             }).verifyComplete()
+    }
+
+    def "Retries network error sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_NETWORK_ERROR, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assertNetworkError(response, retryTestFactory)
+    }
+
+    private void assertNetworkError(HttpResponse it, RequestRetryTestFactory retryTestFactory) {
+        assert it.getStatusCode() == 200
+        assert retryTestFactory.getTryNumber() == 3
     }
 
     def "Retries wrapped network error"() {
@@ -130,9 +205,24 @@ class RetryTest extends Specification {
         then:
         StepVerifier.create(responseMono)
             .assertNext({
-                assert it.getStatusCode() == 200
-                assert retryTestFactory.getTryNumber() == 3
+                assertWrappedNetworkError(it, retryTestFactory)
             }).verifyComplete()
+    }
+
+    def "Retries wrapped network error sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR, retryTestOptions)
+
+        when:
+        def response =  retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assertWrappedNetworkError(response, retryTestFactory)
+    }
+
+    private void assertWrappedNetworkError(HttpResponse it, RequestRetryTestFactory retryTestFactory) {
+        assert it.getStatusCode() == 200
+        assert retryTestFactory.getTryNumber() == 3
     }
 
     def "Retries wrapped timeout error"() {
@@ -194,6 +284,30 @@ class RetryTest extends Specification {
                 assert retryTestFactory.getTryNumber() == 4
             }).verifyComplete()
     }
+
+//    def "Retries exponential delay sync"() {
+//        setup:
+//        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING, retryTestOptions)
+//
+//        when:
+//        def response = retryTestFactory.sendSync(retryTestURL)
+//
+//        then:
+//        assert response.getStatusCode() == 200
+//        assert retryTestFactory.getTryNumber() == 6
+//    }
+//
+//    def "Retries fixed delay sync"() {
+//        setup:
+//        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING, retryTestOptions)
+//
+//        when:
+//        def response = retryTestFactory.sendSync(retryTestURL)
+//
+//        then:
+//        assert response.getStatusCode() == 200
+//        assert retryTestFactory.getTryNumber() == 4
+//    }
 
     def "Retries non replyable flux"() {
         setup:
