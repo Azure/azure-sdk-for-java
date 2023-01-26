@@ -50,14 +50,6 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        if (timeoutMillis > 0) {
-            this.readTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> readTimeoutRunnable(ctx),
-                timeoutMillis, timeoutMillis, TimeUnit.MILLISECONDS);
-        }
-    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) {
         this.ctx = ctx;
     }
 
