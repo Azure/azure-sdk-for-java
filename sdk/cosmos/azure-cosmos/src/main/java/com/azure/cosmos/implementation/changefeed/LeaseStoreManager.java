@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * Defines an interface for operations with {@link Lease}.
@@ -67,6 +68,14 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
      * @return a representation of the deferred computation of this call.
      */
     Mono<Void> delete(Lease lease);
+
+    /**
+     * DELETE all the leases passed in.
+     *
+     * @param leases the leases to be removed.
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> deleteAll(List<Lease> leases);
 
     /**
      * Acquire ownership of the lease.

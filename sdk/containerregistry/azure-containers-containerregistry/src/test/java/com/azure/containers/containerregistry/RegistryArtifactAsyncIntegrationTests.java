@@ -10,6 +10,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -31,6 +32,7 @@ import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME_PLAYBACK;
+import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static com.azure.containers.containerregistry.TestUtils.TAG_UNKNOWN;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
@@ -57,20 +59,34 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
                 V4_TAG_NAME));
     }
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+            .assertAsync()
+            .build();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+            .assertSync()
+            .build();
+    }
+
     private String getDigest(HttpClient httpClient) {
-        return getContainerRegistryBuilder(httpClient)
+        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getArtifact(HELLO_WORLD_REPOSITORY_NAME, LATEST_TAG_NAME).getManifestProperties().getDigest();
     }
 
     private RegistryArtifactAsync getRegistryArtifactAsyncClient(HttpClient httpClient, String digest) {
-        return getContainerRegistryBuilder(httpClient)
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildAsyncClient()
             .getArtifact(HELLO_WORLD_REPOSITORY_NAME, digest);
     }
 
     private RegistryArtifact getRegistryArtifactClient(HttpClient httpClient, String digest) {
-        return getContainerRegistryBuilder(httpClient)
+        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getArtifact(HELLO_WORLD_REPOSITORY_NAME, digest);
     }

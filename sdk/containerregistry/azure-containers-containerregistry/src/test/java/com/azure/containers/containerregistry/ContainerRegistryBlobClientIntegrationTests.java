@@ -17,6 +17,7 @@ import com.azure.containers.containerregistry.models.UploadManifestResult;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -39,8 +41,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegistryClientsTestBase {
     private ContainerRegistryBlobClient client;
 
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+            .assertSync()
+            .build();
+    }
     private ContainerRegistryBlobClient getBlobClient(String repositoryName, HttpClient httpClient) {
-        return getBlobClientBuilder(repositoryName, httpClient).buildClient();
+        return getBlobClientBuilder(repositoryName, buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
     }
 
     private static String configDigest;
