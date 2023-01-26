@@ -22,7 +22,7 @@ import reactor.test.StepVerifier;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_ENDPOINT;
+import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,8 +30,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue that cannot
- * be reproduced with the latest client.
+ * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue that cannot be
+ * reproduced with the latest client.
  */
 public class SchemaRegistryAsyncClientPlaybackTests {
     private TokenCredential tokenCredential;
@@ -85,6 +85,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(interceptorManager.getPlaybackClient())
+            .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "f45b841fcb88401e961ca45477906be9";
 
@@ -99,8 +100,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
     }
 
     /**
-     * Verifies that the new serializer works with 1.0.0 schema registry client.
-     * https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
+     * Verifies that the new serializer works with 1.0.0 schema registry client. https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
      */
     @Test
     public void getSchemaBackCompatibility() {
@@ -109,6 +109,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(interceptorManager.getPlaybackClient())
+            .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "e5691f79e3964309ac712ec52abcccca";
 
