@@ -48,9 +48,6 @@ public final class ModelInfo {
     @JsonProperty(value = "attributes")
     private Attributes attributes;
 
-    /** Creates an instance of ModelInfo class. */
-    public ModelInfo() {}
-
     /**
      * Get the modelId property: Model identifier.
      *

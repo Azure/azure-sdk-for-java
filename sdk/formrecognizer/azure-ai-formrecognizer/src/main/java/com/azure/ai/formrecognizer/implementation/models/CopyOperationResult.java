@@ -35,9 +35,6 @@ public final class CopyOperationResult {
     @JsonProperty(value = "copyResult")
     private CopyResult copyResult;
 
-    /** Creates an instance of CopyOperationResult class. */
-    public CopyOperationResult() {}
-
     /**
      * Get the status property: Operation status.
      *

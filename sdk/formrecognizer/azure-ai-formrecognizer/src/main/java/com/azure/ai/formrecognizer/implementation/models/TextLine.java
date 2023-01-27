@@ -35,9 +35,6 @@ public final class TextLine {
     @JsonProperty(value = "appearance")
     private Appearance appearance;
 
-    /** Creates an instance of TextLine class. */
-    public TextLine() {}
-
     /**
      * Get the text property: The text content of the line.
      *

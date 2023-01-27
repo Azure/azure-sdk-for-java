@@ -54,7 +54,8 @@ public final class DataTableCell {
     private float confidence;
 
     /*
-     * When includeTextDetails is set to true, a list of references to the text elements constituting this table cell.
+     * When includeTextDetails is set to true, a list of references to the text
+     * elements constituting this table cell.
      */
     @JsonProperty(value = "elements")
     private List<String> elements;
@@ -70,9 +71,6 @@ public final class DataTableCell {
      */
     @JsonProperty(value = "isFooter")
     private Boolean isFooter;
-
-    /** Creates an instance of DataTableCell class. */
-    public DataTableCell() {}
 
     /**
      * Get the rowIndex property: Row index of the cell.

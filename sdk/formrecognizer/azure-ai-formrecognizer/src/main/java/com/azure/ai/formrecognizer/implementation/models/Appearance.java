@@ -16,9 +16,6 @@ public final class Appearance {
     @JsonProperty(value = "style", required = true)
     private Style style;
 
-    /** Creates an instance of Appearance class. */
-    public Appearance() {}
-
     /**
      * Get the style property: An object representing the style of the text line.
      *

@@ -24,9 +24,6 @@ public final class CopyResult {
     @JsonProperty(value = "errors")
     private List<ErrorInformation> errors;
 
-    /** Creates an instance of CopyResult class. */
-    public CopyResult() {}
-
     /**
      * Get the modelId property: Identifier of the target model.
      *

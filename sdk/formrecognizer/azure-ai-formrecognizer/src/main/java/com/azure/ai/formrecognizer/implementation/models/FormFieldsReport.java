@@ -22,9 +22,6 @@ public final class FormFieldsReport {
     @JsonProperty(value = "accuracy", required = true)
     private float accuracy;
 
-    /** Creates an instance of FormFieldsReport class. */
-    public FormFieldsReport() {}
-
     /**
      * Get the fieldName property: Training field name.
      *

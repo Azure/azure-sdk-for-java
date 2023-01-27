@@ -29,9 +29,6 @@ public final class SelectionMark {
     @JsonProperty(value = "state", required = true)
     private SelectionMarkState state;
 
-    /** Creates an instance of SelectionMark class. */
-    public SelectionMark() {}
-
     /**
      * Get the boundingBox property: Bounding box of the selection mark.
      *

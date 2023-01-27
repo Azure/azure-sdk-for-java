@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Status of the training operation. */
+/** Defines values for TrainStatus. */
 public enum TrainStatus {
     /** Enum value succeeded. */
     SUCCEEDED("succeeded"),
@@ -33,9 +33,6 @@ public enum TrainStatus {
      */
     @JsonCreator
     public static TrainStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         TrainStatus[] items = TrainStatus.values();
         for (TrainStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +42,6 @@ public enum TrainStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

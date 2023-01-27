@@ -98,7 +98,8 @@ public final class FieldValue {
     private Float confidence;
 
     /*
-     * When includeTextDetails is set to true, a list of references to the text elements constituting this field.
+     * When includeTextDetails is set to true, a list of references to the text
+     * elements constituting this field.
      */
     @JsonProperty(value = "elements")
     private List<String> elements;
@@ -108,9 +109,6 @@ public final class FieldValue {
      */
     @JsonProperty(value = "page")
     private Integer page;
-
-    /** Creates an instance of FieldValue class. */
-    public FieldValue() {}
 
     /**
      * Get the type property: Type of field value.

@@ -34,9 +34,6 @@ public final class TrainRequest {
     @JsonProperty(value = "modelName")
     private String modelName;
 
-    /** Creates an instance of TrainRequest class. */
-    public TrainRequest() {}
-
     /**
      * Get the source property: Source path containing the training documents.
      *

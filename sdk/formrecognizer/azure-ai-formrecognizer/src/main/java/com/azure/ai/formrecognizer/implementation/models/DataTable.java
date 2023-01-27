@@ -35,9 +35,6 @@ public final class DataTable {
     @JsonProperty(value = "boundingBox", required = true)
     private List<Float> boundingBox;
 
-    /** Creates an instance of DataTable class. */
-    public DataTable() {}
-
     /**
      * Get the rows property: Number of rows.
      *

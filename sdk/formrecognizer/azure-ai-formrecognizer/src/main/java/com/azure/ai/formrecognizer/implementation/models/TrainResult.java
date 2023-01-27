@@ -13,13 +13,15 @@ import java.util.UUID;
 @Fluent
 public final class TrainResult {
     /*
-     * List of the documents used to train the model and any errors reported in each document.
+     * List of the documents used to train the model and any errors reported in
+     * each document.
      */
     @JsonProperty(value = "trainingDocuments", required = true)
     private List<TrainingDocumentInfo> trainingDocuments;
 
     /*
-     * List of fields used to train the model and the train operation error reported by each.
+     * List of fields used to train the model and the train operation error
+     * reported by each.
      */
     @JsonProperty(value = "fields")
     private List<FormFieldsReport> fields;
@@ -41,9 +43,6 @@ public final class TrainResult {
      */
     @JsonProperty(value = "errors")
     private List<ErrorInformation> errors;
-
-    /** Creates an instance of TrainResult class. */
-    public TrainResult() {}
 
     /**
      * Get the trainingDocuments property: List of the documents used to train the model and any errors reported in each

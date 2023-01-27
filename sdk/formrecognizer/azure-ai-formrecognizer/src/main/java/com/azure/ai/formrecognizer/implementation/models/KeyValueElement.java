@@ -30,14 +30,11 @@ public final class KeyValueElement {
     private List<Float> boundingBox;
 
     /*
-     * When includeTextDetails is set to true, a list of references to the text elements constituting this key or
-     * value.
+     * When includeTextDetails is set to true, a list of references to the text
+     * elements constituting this key or value.
      */
     @JsonProperty(value = "elements")
     private List<String> elements;
-
-    /** Creates an instance of KeyValueElement class. */
-    public KeyValueElement() {}
 
     /**
      * Get the type property: Semantic data type of the key value element.

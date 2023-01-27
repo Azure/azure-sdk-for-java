@@ -24,9 +24,6 @@ public final class ComposeRequest {
     @JsonProperty(value = "modelName")
     private String modelName;
 
-    /** Creates an instance of ComposeRequest class. */
-    public ComposeRequest() {}
-
     /**
      * Get the modelIds property: List of model ids to compose.
      *

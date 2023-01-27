@@ -19,7 +19,8 @@ public final class ReadResult {
     private int page;
 
     /*
-     * The general orientation of the text in clockwise direction, measured in degrees between (-180, 180].
+     * The general orientation of the text in clockwise direction, measured in
+     * degrees between (-180, 180].
      */
     @JsonProperty(value = "angle", required = true)
     private float angle;
@@ -37,17 +38,20 @@ public final class ReadResult {
     private float height;
 
     /*
-     * The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the
-     * unit is "inch".
+     * The unit used by the width, height and boundingBox properties. For
+     * images, the unit is "pixel". For PDF, the unit is "inch".
      */
     @JsonProperty(value = "unit", required = true)
     private LengthUnit unit;
 
     /*
-     * When includeTextDetails is set to true, a list of recognized text lines. The maximum number of lines returned is
-     * 300 per page. The lines are sorted top to bottom, left to right, although in certain cases proximity is treated
-     * with higher priority. As the sorting order depends on the detected text, it may change across images and OCR
-     * version updates. Thus, business logic should be built upon the actual line location instead of order.
+     * When includeTextDetails is set to true, a list of recognized text lines.
+     * The maximum number of lines returned is 300 per page. The lines are
+     * sorted top to bottom, left to right, although in certain cases proximity
+     * is treated with higher priority. As the sorting order depends on the
+     * detected text, it may change across images and OCR version updates.
+     * Thus, business logic should be built upon the actual line location
+     * instead of order.
      */
     @JsonProperty(value = "lines")
     private List<TextLine> lines;
@@ -57,9 +61,6 @@ public final class ReadResult {
      */
     @JsonProperty(value = "selectionMarks")
     private List<SelectionMark> selectionMarks;
-
-    /** Creates an instance of ReadResult class. */
-    public ReadResult() {}
 
     /**
      * Get the page property: The 1-based page number in the input document.

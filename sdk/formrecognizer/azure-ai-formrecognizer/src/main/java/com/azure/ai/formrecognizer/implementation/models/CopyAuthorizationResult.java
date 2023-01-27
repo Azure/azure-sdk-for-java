@@ -23,14 +23,11 @@ public final class CopyAuthorizationResult {
     private String accessToken;
 
     /*
-     * The time when the access token expires. The date is represented as the number of seconds from 1970-01-01T0:0:0Z
-     * UTC until the expiration time.
+     * The time when the access token expires. The date is represented as the
+     * number of seconds from 1970-01-01T0:0:0Z UTC until the expiration time.
      */
     @JsonProperty(value = "expirationDateTimeTicks", required = true)
     private long expirationDateTimeTicks;
-
-    /** Creates an instance of CopyAuthorizationResult class. */
-    public CopyAuthorizationResult() {}
 
     /**
      * Get the modelId property: Model identifier.

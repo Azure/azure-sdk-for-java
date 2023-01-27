@@ -30,9 +30,6 @@ public enum ReadingOrder {
      */
     @JsonCreator
     public static ReadingOrder fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         ReadingOrder[] items = ReadingOrder.values();
         for (ReadingOrder item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +39,6 @@ public enum ReadingOrder {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

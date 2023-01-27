@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Semantic data type of the field value. */
+/** Defines values for FieldValueType. */
 public enum FieldValueType {
     /** Enum value string. */
     STRING("string"),
@@ -54,9 +54,6 @@ public enum FieldValueType {
      */
     @JsonCreator
     public static FieldValueType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         FieldValueType[] items = FieldValueType.values();
         for (FieldValueType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -66,7 +63,6 @@ public enum FieldValueType {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

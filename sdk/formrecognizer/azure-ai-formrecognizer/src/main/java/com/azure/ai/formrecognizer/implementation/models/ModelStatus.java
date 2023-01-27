@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Status of the model. */
+/** Defines values for ModelStatus. */
 public enum ModelStatus {
     /** Enum value creating. */
     CREATING("creating"),
@@ -33,9 +33,6 @@ public enum ModelStatus {
      */
     @JsonCreator
     public static ModelStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         ModelStatus[] items = ModelStatus.values();
         for (ModelStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +42,6 @@ public enum ModelStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

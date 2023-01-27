@@ -35,9 +35,6 @@ public final class AnalyzeOperationResult {
     @JsonProperty(value = "analyzeResult")
     private AnalyzeResult analyzeResult;
 
-    /** Creates an instance of AnalyzeOperationResult class. */
-    public AnalyzeOperationResult() {}
-
     /**
      * Get the status property: Operation status.
      *

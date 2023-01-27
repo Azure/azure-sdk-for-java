@@ -22,9 +22,6 @@ public final class Style {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of Style class. */
-    public Style() {}
-
     /**
      * Get the name property: The text line style name, including handwriting and other.
      *

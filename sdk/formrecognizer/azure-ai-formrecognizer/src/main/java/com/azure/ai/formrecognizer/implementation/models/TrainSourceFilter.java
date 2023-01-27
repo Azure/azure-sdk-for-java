@@ -11,21 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TrainSourceFilter {
     /*
-     * A case-sensitive prefix string to filter documents in the source path for training. For example, when using a
-     * Azure storage blob Uri, use the prefix to restrict sub folders for training.
+     * A case-sensitive prefix string to filter documents in the source path
+     * for training. For example, when using a Azure storage blob Uri, use the
+     * prefix to restrict sub folders for training.
      */
     @JsonProperty(value = "prefix")
     private String prefix;
 
     /*
-     * A flag to indicate if sub folders within the set of prefix folders will also need to be included when searching
-     * for content to be preprocessed.
+     * A flag to indicate if sub folders within the set of prefix folders will
+     * also need to be included when searching for content to be preprocessed.
      */
     @JsonProperty(value = "includeSubFolders")
     private Boolean includeSubFolders;
-
-    /** Creates an instance of TrainSourceFilter class. */
-    public TrainSourceFilter() {}
 
     /**
      * Get the prefix property: A case-sensitive prefix string to filter documents in the source path for training. For

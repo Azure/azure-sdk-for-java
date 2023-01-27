@@ -5,8 +5,6 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AnalyzeWithCustomModelHeaders model. */
@@ -17,18 +15,6 @@ public final class AnalyzeWithCustomModelHeaders {
      */
     @JsonProperty(value = "Operation-Location")
     private String operationLocation;
-
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of AnalyzeWithCustomModelHeaders class.
-     *
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public AnalyzeWithCustomModelHeaders(HttpHeaders rawHeaders) {
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
-    }
 
     /**
      * Get the operationLocation property: The Operation-Location property.
