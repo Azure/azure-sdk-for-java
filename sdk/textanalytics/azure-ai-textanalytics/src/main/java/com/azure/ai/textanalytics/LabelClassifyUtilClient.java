@@ -11,7 +11,9 @@ import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobState;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROResult;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROTask;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.CustomLabelClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.CustomMultiLabelClassificationLROResult;
 import com.azure.ai.textanalytics.implementation.models.CustomMultiLabelClassificationLROTask;
@@ -20,6 +22,7 @@ import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassif
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationLROTask;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.State;
@@ -33,6 +36,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -45,6 +49,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -57,9 +62,11 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
@@ -72,13 +79,13 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class LabelClassifyAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(LabelClassifyAsyncClient.class);
+class LabelClassifyUtilClient {
+    private static final ClientLogger LOGGER = new ClientLogger(LabelClassifyUtilClient.class);
     private final AnalyzeTextsImpl service;
 
     private final TextAnalyticsServiceVersion serviceVersion;
 
-    LabelClassifyAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
+    LabelClassifyUtilClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
@@ -136,7 +143,7 @@ class LabelClassifyAsyncClient {
         }
     }
 
-    PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> singleLabelClassifyPagedIterable(
+    SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> singleLabelClassifyPagedIterable(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         SingleLabelClassifyOptions options, Context context) {
         try {
@@ -146,46 +153,30 @@ class LabelClassifyAsyncClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
-            final Context finalContext = getNotNullContext(context)
+            final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final String displayName = options.getDisplayName();
-
-            return new PollerFlux<>(
+            final CustomSingleLabelClassificationLROTask task =
+                new CustomSingleLabelClassificationLROTask().setParameters(
+                    new CustomSingleLabelClassificationTaskParameters()
+                        .setProjectName(projectName)
+                        .setDeploymentName(deploymentName)
+                        .setLoggingOptOut(finalLoggingOptOut));
+            return SyncPoller.createPoller(
                 DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    service.submitJobWithResponseAsync(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(
-                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(
-                                new CustomSingleLabelClassificationLROTask().setParameters(
-                                    new CustomSingleLabelClassificationTaskParameters()
-                                        .setProjectName(projectName)
-                                        .setDeploymentName(deploymentName)
-                                        .setLoggingOptOut(finalLoggingOptOut)))),
-                        finalContext)
-                        .map(responseBase -> {
-                            final ClassifyDocumentOperationDetail operationDetail =
-                                new ClassifyDocumentOperationDetail();
-                            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })),
-                pollingOperationTextJob(
-                    operationId -> service.jobStatusWithResponseAsync(operationId,
-                        finalIncludeStatistics, null, null, finalContext)),
-                cancelOperationTextJob(
-                    operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperationIterable(
-                    operationId -> Mono.just(new ClassifyDocumentPagedIterable(
-                        getClassifyDocumentPagedFlux(operationId, null, null,
-                            finalIncludeStatistics, finalContext))))
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    activationOperationSync(documents, task, displayName, finalContext).apply(cxt)),
+                pollingOperationTextJobSync(operationId -> service.jobStatusWithResponse(operationId,
+                    finalIncludeStatistics, null, null, finalContext)),
+                cancelOperationTextJobSync(operationId -> service.cancelJobWithResponse(operationId, finalContext)),
+                fetchingOperationSync(
+                    operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
+                        finalIncludeStatistics, finalContext))
             );
-        } catch (RuntimeException ex) {
-            return PollerFlux.error(ex);
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 
@@ -242,7 +233,7 @@ class LabelClassifyAsyncClient {
         }
     }
 
-    PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> multiLabelClassifyPagedIterable(
+    SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> multiLabelClassifyPagedIterable(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         MultiLabelClassifyOptions options, Context context) {
         try {
@@ -252,46 +243,29 @@ class LabelClassifyAsyncClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
-            final Context finalContext = getNotNullContext(context)
+            final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final String displayName = options.getDisplayName();
-
-            return new PollerFlux<>(
+            final CustomMultiLabelClassificationLROTask task = new CustomMultiLabelClassificationLROTask()
+                .setParameters(
+                    new CustomMultiLabelClassificationTaskParameters()
+                        .setProjectName(projectName)
+                        .setDeploymentName(deploymentName)
+                        .setLoggingOptOut(finalLoggingOptOut));
+            return SyncPoller.createPoller(
                 DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    service.submitJobWithResponseAsync(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(
-                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(
-                                new CustomMultiLabelClassificationLROTask().setParameters(
-                                    new CustomMultiLabelClassificationTaskParameters()
-                                        .setProjectName(projectName)
-                                        .setDeploymentName(deploymentName)
-                                        .setLoggingOptOut(finalLoggingOptOut)))),
-                        finalContext)
-                        .map(responseBase -> {
-                            final ClassifyDocumentOperationDetail operationDetail =
-                                new ClassifyDocumentOperationDetail();
-                            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })),
-                pollingOperationTextJob(
-                    operationId -> service.jobStatusWithResponseAsync(operationId,
-                        finalIncludeStatistics, null, null, finalContext)),
-                cancelOperationTextJob(
-                    operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperationIterable(
-                    operationId -> Mono.just(new ClassifyDocumentPagedIterable(
-                        getClassifyDocumentPagedFlux(operationId, null, null,
-                            finalIncludeStatistics, finalContext))))
-            );
-        } catch (RuntimeException ex) {
-            return PollerFlux.error(ex);
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    activationOperationSync(documents, task, displayName, finalContext).apply(cxt)),
+                pollingOperationTextJobSync(operationId -> service.jobStatusWithResponse(operationId,
+                    finalIncludeStatistics, null, null, finalContext)),
+                cancelOperationTextJobSync(operationId -> service.cancelJobWithResponse(operationId, finalContext)),
+                fetchingOperationSync(
+                    operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
+                        finalIncludeStatistics, finalContext)));
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
         }
     }
 
@@ -300,6 +274,13 @@ class LabelClassifyAsyncClient {
         return new ClassifyDocumentPagedFlux(
             () -> (continuationToken, pageSize) ->
                 getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
+    }
+
+    ClassifyDocumentPagedIterable getClassifyDocumentPagedIterable(
+        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+        return new ClassifyDocumentPagedIterable(
+            () -> (continuationToken, pageSize) ->
+                getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
     }
 
     Mono<PagedResponse<ClassifyDocumentResultCollection>> getPagedResult(String continuationToken,
@@ -322,6 +303,18 @@ class LabelClassifyAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    PagedResponse<ClassifyDocumentResultCollection> getPagedResultSync(String continuationToken,
+        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+        if (continuationToken != null) {
+            final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
+            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+        }
+        return toClassifyDocumentResultCollectionPagedResponse(service.jobStatusWithResponse(
+            operationId, showStats, top, skip, context));
     }
 
     private PagedResponse<ClassifyDocumentResultCollection> toClassifyDocumentResultCollectionPagedResponse(
@@ -389,6 +382,25 @@ class LabelClassifyAsyncClient {
         };
     }
 
+    private Function<PollingContext<ClassifyDocumentOperationDetail>, ClassifyDocumentOperationDetail>
+        activationOperationSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
+            Context context) {
+        return pollingContext -> {
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
+                service.submitJobWithResponse(
+                    new AnalyzeTextJobsInput()
+                        .setDisplayName(displayName)
+                        .setAnalysisInput(new MultiLanguageAnalysisInput()
+                            .setDocuments(toMultiLanguageInput(documents)))
+                        .setTasks(Arrays.asList(task)),
+                    context);
+            final ClassifyDocumentOperationDetail operationDetail = new ClassifyDocumentOperationDetail();
+            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationDetail;
+        };
+    }
+
     // Polling operation
     private Function<PollingContext<ClassifyDocumentOperationDetail>,
         Mono<PollResponse<ClassifyDocumentOperationDetail>>> pollingOperationTextJob(
@@ -400,11 +412,22 @@ class LabelClassifyAsyncClient {
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
                     .flatMap(modelResponse ->
-                        processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse))
+                        Mono.just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
+        };
+    }
+
+    private Function<PollingContext<ClassifyDocumentOperationDetail>,
+        PollResponse<ClassifyDocumentOperationDetail>> pollingOperationTextJobSync(
+        Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
+        return pollingContext -> {
+            final PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse =
+                pollingContext.getLatestResponse();
+            final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+            return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
     }
 
@@ -419,6 +442,15 @@ class LabelClassifyAsyncClient {
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
+        };
+    }
+
+    private Function<PollingContext<ClassifyDocumentOperationDetail>,
+        ClassifyDocumentPagedIterable> fetchingOperationSync(
+        final Function<UUID, ClassifyDocumentPagedIterable> fetchingFunction) {
+        return pollingContext -> {
+            final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
+            return fetchingFunction.apply(resultUuid);
         };
     }
 
@@ -443,21 +475,21 @@ class LabelClassifyAsyncClient {
         };
     }
 
-    // Fetching iterable operation
-    private Function<PollingContext<ClassifyDocumentOperationDetail>,
-        Mono<ClassifyDocumentPagedIterable>> fetchingOperationIterable(
-        final Function<UUID, Mono<ClassifyDocumentPagedIterable>> fetchingFunction) {
-        return pollingContext -> {
-            try {
-                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
-                return fetchingFunction.apply(resultUuid);
-            } catch (RuntimeException ex) {
-                return monoError(LOGGER, ex);
-            }
+    private BiFunction<PollingContext<ClassifyDocumentOperationDetail>,
+        PollResponse<ClassifyDocumentOperationDetail>,
+        ClassifyDocumentOperationDetail> cancelOperationTextJobSync(
+        Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
+        return (activationResponse, pollingContext) -> {
+            final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
+            ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
+            final ClassifyDocumentOperationDetail operationResult = new ClassifyDocumentOperationDetail();
+            ClassifyDocumentOperationDetailPropertiesHelper.setOperationId(operationResult,
+                parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
+            return operationResult;
         };
     }
 
-    private Mono<PollResponse<ClassifyDocumentOperationDetail>> processAnalyzeTextModelResponse(
+    private PollResponse<ClassifyDocumentOperationDetail> processAnalyzeTextModelResponse(
         Response<AnalyzeTextJobState> analyzeOperationResultResponse,
         PollResponse<ClassifyDocumentOperationDetail> operationResultPollResponse) {
         LongRunningOperationStatus status;
@@ -480,7 +512,7 @@ class LabelClassifyAsyncClient {
             operationResultPollResponse.getValue(), analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
         ClassifyDocumentOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
-        return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
+        return new PollResponse<>(status, operationResultPollResponse.getValue());
     }
 
     private SingleLabelClassifyOptions getNotNullSingleLabelClassifyOptions(SingleLabelClassifyOptions options) {

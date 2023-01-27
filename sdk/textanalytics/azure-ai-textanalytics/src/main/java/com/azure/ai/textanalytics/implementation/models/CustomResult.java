@@ -35,6 +35,9 @@ public class CustomResult {
     @JsonProperty(value = "deploymentName", required = true)
     private String deploymentName;
 
+    /** Creates an instance of CustomResult class. */
+    public CustomResult() {}
+
     /**
      * Get the errors property: Errors by document id.
      *

@@ -26,6 +26,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
@@ -164,6 +165,38 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImpl {
                 @BodyParam("application/json") AnalyzeTextTask body,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Post("/:analyze-text")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeTextTaskResult> analyzeTextSync(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @BodyParam("application/json") AnalyzeTextTask body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+    }
+
+    /**
+     * Request text analysis over a collection of documents.
+     *
+     * <p>Submit a collection of text documents for analysis. Specify a single unique task to be executed immediately.
+     *
+     * @param body Collection of documents to analyze and a single task to execute.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AnalyzeTextTaskResult>> analyzeTextWithResponseAsync(AnalyzeTextTask body, Boolean showStats) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeText(
+                                this.getEndpoint(), this.getApiVersion(), showStats, body, accept, context));
     }
 
     /**
@@ -184,5 +217,77 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImpl {
             AnalyzeTextTask body, Boolean showStats, Context context) {
         final String accept = "application/json";
         return service.analyzeText(this.getEndpoint(), this.getApiVersion(), showStats, body, accept, context);
+    }
+
+    /**
+     * Request text analysis over a collection of documents.
+     *
+     * <p>Submit a collection of text documents for analysis. Specify a single unique task to be executed immediately.
+     *
+     * @param body Collection of documents to analyze and a single task to execute.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeTextTaskResult> analyzeTextAsync(AnalyzeTextTask body, Boolean showStats) {
+        return analyzeTextWithResponseAsync(body, showStats).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Request text analysis over a collection of documents.
+     *
+     * <p>Submit a collection of text documents for analysis. Specify a single unique task to be executed immediately.
+     *
+     * @param body Collection of documents to analyze and a single task to execute.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeTextTaskResult> analyzeTextAsync(AnalyzeTextTask body, Boolean showStats, Context context) {
+        return analyzeTextWithResponseAsync(body, showStats, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Request text analysis over a collection of documents.
+     *
+     * <p>Submit a collection of text documents for analysis. Specify a single unique task to be executed immediately.
+     *
+     * @param body Collection of documents to analyze and a single task to execute.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeTextTaskResult> analyzeTextWithResponse(
+            AnalyzeTextTask body, Boolean showStats, Context context) {
+        final String accept = "application/json";
+        return service.analyzeTextSync(this.getEndpoint(), this.getApiVersion(), showStats, body, accept, context);
+    }
+
+    /**
+     * Request text analysis over a collection of documents.
+     *
+     * <p>Submit a collection of text documents for analysis. Specify a single unique task to be executed immediately.
+     *
+     * @param body Collection of documents to analyze and a single task to execute.
+     * @param showStats (Optional) if set to true, response will contain request and document level statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeTextTaskResult analyzeText(AnalyzeTextTask body, Boolean showStats) {
+        return analyzeTextWithResponse(body, showStats, Context.NONE).getValue();
     }
 }

@@ -81,7 +81,7 @@ stages:
           displayName: 'Set versions for source build'
           inputs:
             scriptPath: 'eng/versioning/set_versions.py'
-            arguments: '--build-type client --pst'
+            arguments: '--build-type client --pst --project-list $(ProjectList)'
 
         - task: PythonScript@0
           displayName: 'Update versions for source build'
@@ -208,6 +208,7 @@ stages:
             Artifacts: ${{ parameters.Artifacts }}
             AdditionalModules: ${{ parameters.AdditionalModules }}
             JobType: 'AnalyzeAndVerify'
+            UseCache: false
 
         - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
           parameters:
@@ -219,7 +220,7 @@ stages:
           displayName: 'Set versions for source build'
           inputs:
             scriptPath: 'eng/versioning/set_versions.py'
-            arguments: '--build-type client --pst'
+            arguments: '--build-type client --pst --project-list $(ProjectList)'
 
         - task: PythonScript@0
           displayName: 'Update versions for source build'

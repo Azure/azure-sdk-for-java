@@ -1,53 +1,53 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch52826f006?api-version=2021-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch278234d9c?api-version=2022-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "41413842-bcdb-4fbf-95fe-413b7e7bbf53",
-      "Content-Type" : "application/json; serialization=avro"
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "de9e649c-422f-4f10-8715-6cfd97d43c4d",
+      "Content-Type" : "application/json; serialization=Avro"
     },
     "Response" : {
-      "content-length" : "0",
       "Schema-Version" : "1",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch52826f006",
+      "Schema-Name" : "sch278234d9c",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/ca8e4ec56f31452bb3b793f4f25ec1d6?api-version=2021-10",
+      "Schema-Id-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/$schemas/226e2dd02cbc422e9eb3d8a36bf87a34?api-version=2022-10",
       "StatusCode" : "204",
-      "Date" : "Fri, 07 Jan 2022 16:51:47 GMT",
+      "Date" : "Wed, 25 Jan 2023 20:07:53 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "ca8e4ec56f31452bb3b793f4f25ec1d6",
-      "Schema-Group-Name" : "mygroup",
-      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch52826f006/versions/1?api-version=2021-10",
-      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch52826f006/versions?api-version=2021-10"
+      "Schema-Id" : "226e2dd02cbc422e9eb3d8a36bf87a34",
+      "Schema-Group-Name" : "azsdk_java_group",
+      "Content-Length" : "0",
+      "Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions/1?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions?api-version=2022-10"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/ca8e4ec56f31452bb3b793f4f25ec1d6?api-version=2021-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/226e2dd02cbc422e9eb3d8a36bf87a34?api-version=2022-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d7b0ecdf-ac70-45ac-aa34-462ddc354f38"
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4a050197-9d91-48c2-b581-1c11f6bcbfe8"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Schema-Version" : "1",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "Schema-Name" : "sch52826f006",
+      "Schema-Name" : "sch278234d9c",
       "retry-after" : "0",
-      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/ca8e4ec56f31452bb3b793f4f25ec1d6?api-version=2021-10",
+      "Schema-Id-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/$schemas/226e2dd02cbc422e9eb3d8a36bf87a34?api-version=2022-10",
       "StatusCode" : "200",
-      "Date" : "Fri, 07 Jan 2022 16:51:51 GMT",
+      "Date" : "Wed, 25 Jan 2023 20:08:00 GMT",
       "Strict-Transport-Security" : "max-age=31536000",
-      "Schema-Id" : "ca8e4ec56f31452bb3b793f4f25ec1d6",
-      "Schema-Group-Name" : "mygroup",
+      "Schema-Id" : "226e2dd02cbc422e9eb3d8a36bf87a34",
+      "Schema-Group-Name" : "azsdk_java_group",
       "Body" : "{\"type\":\"record\",\"namespace\":\"TestSchema\",\"name\":\"Employee\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"Age\",\"type\":\"int\"}]}",
       "Content-Type" : "application/json;serialization=Avro",
-      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch52826f006/versions/1?api-version=2021-10",
-      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch52826f006/versions?api-version=2021-10"
+      "Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions/1?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey-rg4-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/sch278234d9c/versions?api-version=2022-10"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch52826f006" ]
+  "variables" : [ "sch278234d9c" ]
 }

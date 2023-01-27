@@ -53,7 +53,7 @@ function ConvertToPatchInfo([ArtifactInfo]$ArInfo) {
     $patchInfo.PipelineName = $ArInfo.PipelineName
     $patchInfo.FutureReleasePatchVersion = $arInfo.FutureReleasePatchVersion
 
-    return $patchInfo    
+    return $patchInfo
 }
 
 # Get version info for all the maven artifacts under the groupId = 'com.azure'
@@ -126,7 +126,7 @@ function CreateForwardLookingVersions($ArtifactInfos) {
                 $latestVersion = $sortedVersions[0].RawVersion
                 }
             }
-            
+
             $allDependenciesWithVersion[$depId] = $latestVersion
         }
     }
@@ -234,7 +234,7 @@ function GetTopologicalSort($ArtifactIds, $ArtifactInfos) {
         if($null -ne $visited[$arId]) {
             continue;
         }
-        
+
         $visited[$arId] = $true
         $pipelineName = $ArtifactInfos[$arId].PipelineName
         $pipelineOrdered += @{
@@ -315,19 +315,19 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
-        Write-Host "git checkout -b $BomFileBranchName $remoteName/main "
-        $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main 
+        Write-Host "git checkout -b $BomFileBranchName $remoteName/main"
+        $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main
         $bomFileContent.Save($BomFilePath)
         Write-Host "git add $BomFilePath"
         git add $BomFilePath
         $content = GetChangeLogContentFromMessage -ContentMessage '- Updated Azure SDK dependency versions to the latest releases.'
         UpdateChangeLogEntry -ChangeLogPath $BomChangeLogPath -PatchVersion $patchVersion -ArtifactId "azure-sdk-bom" -Content $content
         GitCommit -Message "Prepare BOM for release version $releaseVersion"
-        Write-Host 'git push -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" -f $remoteName $BomFileBranchName'
+        Write-Host "git push -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" -f $remoteName $BomFileBranchName"
         git push -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" -f $remoteName $BomFileBranchName
     }
     finally {
-        Write-Host 'git checkout $currentBranchName'
+        Write-Host "git checkout $currentBranchName"
         git checkout $currentBranchName
     }
 }
@@ -367,7 +367,7 @@ function GenerateHtmlReport($Artifacts, $PatchBranchName, $BomFileBranchName) {
         $html += "<td>$artifactId</td>"
         $html += "</tr>"
     }
-    
+
     $html += "<tr><td>$BomFileBranchName</td><td>azure-sdk-bom</td></tr>"
     $html += "</table>"
     $currentDate = Get-Date -Format "dddd MM/dd/yyyy HH:mm K"
@@ -427,7 +427,7 @@ $ArtifactPatchInfos = @()
 Write-Output "Preparing patch releases for BOM updates."
 try {
     $patchBranchName = "PatchSet_$bomPatchVersion"
-    Write-Host 'git checkout -b $patchBranchName $RemoteName/main'
+    Write-Host "git checkout -b $patchBranchName $RemoteName/main"
     git checkout -b $patchBranchName $RemoteName/main
     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
@@ -439,7 +439,7 @@ try {
         GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 
-    Write-Host 'git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $RemoteName $patchBranchName'
+    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $RemoteName $patchBranchName"
     $cmdOutput = git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $RemoteName $patchBranchName
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not push the changes to $RemoteName/$BranchName. Exiting..."
@@ -448,7 +448,7 @@ try {
     Write-Output "Pushed the changes to remote:$RemoteName, Branch:$BranchName"
 }
 finally {
-    Write-Host 'git checkout $CurrentBranchName'
+    Write-Host "git checkout $CurrentBranchName"
     $cmdOutput = git checkout $CurrentBranchName
 }
 
