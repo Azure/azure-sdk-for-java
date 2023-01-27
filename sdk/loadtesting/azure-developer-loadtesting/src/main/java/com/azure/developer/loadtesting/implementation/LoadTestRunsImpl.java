@@ -197,7 +197,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMetricNamespaces(
+        Mono<Response<BinaryData>> getMetricNamespaces(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -217,7 +217,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMetricDefinitions(
+        Mono<Response<BinaryData>> getMetricDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("metricNamespace") String metricNamespace,
@@ -2934,12 +2934,12 @@ public final class LoadTestRunsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricNamespacesWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricNamespacesWithResponseAsync(
             String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listMetricNamespaces(
+                        service.getMetricNamespaces(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2976,10 +2976,10 @@ public final class LoadTestRunsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricNamespacesWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricNamespacesWithResponseAsync(
             String testRunId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.listMetricNamespaces(
+        return service.getMetricNamespaces(
                 this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
@@ -3014,8 +3014,8 @@ public final class LoadTestRunsImpl {
      * @return represents collection of metric namespaces along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
-        return listMetricNamespacesWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> getMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
+        return getMetricNamespacesWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -3063,12 +3063,12 @@ public final class LoadTestRunsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDefinitionsWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricDefinitionsWithResponseAsync(
             String testRunId, String metricNamespace, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listMetricDefinitions(
+                        service.getMetricDefinitions(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 metricNamespace,
@@ -3124,10 +3124,10 @@ public final class LoadTestRunsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDefinitionsWithResponseAsync(
+    public Mono<Response<BinaryData>> getMetricDefinitionsWithResponseAsync(
             String testRunId, String metricNamespace, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.listMetricDefinitions(
+        return service.getMetricDefinitions(
                 this.client.getEndpoint(),
                 testRunId,
                 metricNamespace,
@@ -3181,9 +3181,9 @@ public final class LoadTestRunsImpl {
      * @return represents collection of metric definitions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricDefinitionsWithResponse(
+    public Response<BinaryData> getMetricDefinitionsWithResponse(
             String testRunId, String metricNamespace, RequestOptions requestOptions) {
-        return listMetricDefinitionsWithResponseAsync(testRunId, metricNamespace, requestOptions).block();
+        return getMetricDefinitionsWithResponseAsync(testRunId, metricNamespace, requestOptions).block();
     }
 
     /**

@@ -39,19 +39,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the LoadTestingClient type. */
-@ServiceClientBuilder(
-        serviceClients = {
-            LoadTestAdministrationClient.class,
-            LoadTestRunClient.class,
-            LoadTestAdministrationAsyncClient.class,
-            LoadTestRunAsyncClient.class
-        })
-public final class LoadTestingClientBuilder
-        implements HttpTrait<LoadTestingClientBuilder>,
-                ConfigurationTrait<LoadTestingClientBuilder>,
-                TokenCredentialTrait<LoadTestingClientBuilder>,
-                EndpointTrait<LoadTestingClientBuilder> {
+/** A builder for creating a new instance of the LoadTestRunClient type. */
+@ServiceClientBuilder(serviceClients = {LoadTestRunClient.class, LoadTestRunAsyncClient.class})
+public final class LoadTestRunClientBuilder
+        implements HttpTrait<LoadTestRunClientBuilder>,
+                ConfigurationTrait<LoadTestRunClientBuilder>,
+                TokenCredentialTrait<LoadTestRunClientBuilder>,
+                EndpointTrait<LoadTestRunClientBuilder> {
 
     @Generated private static final String SDK_NAME = "name";
 
@@ -65,9 +59,9 @@ public final class LoadTestingClientBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the LoadTestingClientBuilder. */
+    /** Create an instance of the LoadTestRunClientBuilder. */
     @Generated
-    public LoadTestingClientBuilder() {
+    public LoadTestRunClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -79,7 +73,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder pipeline(HttpPipeline pipeline) {
+    public LoadTestRunClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,7 +86,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder httpClient(HttpClient httpClient) {
+    public LoadTestRunClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -105,7 +99,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public LoadTestRunClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -119,7 +113,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder clientOptions(ClientOptions clientOptions) {
+    public LoadTestRunClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -132,7 +126,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder retryOptions(RetryOptions retryOptions) {
+    public LoadTestRunClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -140,7 +134,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public LoadTestRunClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -154,7 +148,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder configuration(Configuration configuration) {
+    public LoadTestRunClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -167,7 +161,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder credential(TokenCredential tokenCredential) {
+    public LoadTestRunClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -180,7 +174,7 @@ public final class LoadTestingClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public LoadTestingClientBuilder endpoint(String endpoint) {
+    public LoadTestRunClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -194,10 +188,10 @@ public final class LoadTestingClientBuilder
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the LoadTestingClientBuilder.
+     * @return the LoadTestRunClientBuilder.
      */
     @Generated
-    public LoadTestingClientBuilder serviceVersion(LoadTestingServiceVersion serviceVersion) {
+    public LoadTestRunClientBuilder serviceVersion(LoadTestingServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -212,10 +206,10 @@ public final class LoadTestingClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the LoadTestingClientBuilder.
+     * @return the LoadTestRunClientBuilder.
      */
     @Generated
-    public LoadTestingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public LoadTestRunClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -288,34 +282,13 @@ public final class LoadTestingClientBuilder
     }
 
     /**
-     * Builds an instance of LoadTestAdministrationAsyncClient class.
-     *
-     * @return an instance of LoadTestAdministrationAsyncClient.
-     */
-    @Generated
-    public LoadTestAdministrationAsyncClient buildLoadTestAdministrationAsyncClient() {
-        return new LoadTestAdministrationAsyncClient(buildInnerClient().getLoadTestAdministrations());
-    }
-
-    /**
      * Builds an instance of LoadTestRunAsyncClient class.
      *
      * @return an instance of LoadTestRunAsyncClient.
      */
     @Generated
-    public LoadTestRunAsyncClient buildLoadTestRunAsyncClient() {
+    public LoadTestRunAsyncClient buildAsyncClient() {
         return new LoadTestRunAsyncClient(buildInnerClient().getLoadTestRuns());
-    }
-
-    /**
-     * Builds an instance of LoadTestAdministrationClient class.
-     *
-     * @return an instance of LoadTestAdministrationClient.
-     */
-    @Generated
-    public LoadTestAdministrationClient buildLoadTestAdministrationClient() {
-        return new LoadTestAdministrationClient(
-                new LoadTestAdministrationAsyncClient(buildInnerClient().getLoadTestAdministrations()));
     }
 
     /**
@@ -324,7 +297,7 @@ public final class LoadTestingClientBuilder
      * @return an instance of LoadTestRunClient.
      */
     @Generated
-    public LoadTestRunClient buildLoadTestRunClient() {
+    public LoadTestRunClient buildClient() {
         return new LoadTestRunClient(new LoadTestRunAsyncClient(buildInnerClient().getLoadTestRuns()));
     }
 }
