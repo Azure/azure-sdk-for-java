@@ -16,6 +16,9 @@ public final class Attributes {
     @JsonProperty(value = "isComposed")
     private Boolean isComposed;
 
+    /** Creates an instance of Attributes class. */
+    public Attributes() {}
+
     /**
      * Get the isComposed property: Is this model composed? (default: false).
      *

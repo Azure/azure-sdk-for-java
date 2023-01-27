@@ -29,6 +29,9 @@ public final class ModelsSummary {
     @JsonProperty(value = "lastUpdatedDateTime", required = true)
     private OffsetDateTime lastUpdatedDateTime;
 
+    /** Creates an instance of ModelsSummary class. */
+    public ModelsSummary() {}
+
     /**
      * Get the count property: Current count of trained custom models.
      *

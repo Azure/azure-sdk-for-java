@@ -35,6 +35,9 @@ public final class PageResult {
     @JsonProperty(value = "tables")
     private List<DataTable> tables;
 
+    /** Creates an instance of PageResult class. */
+    public PageResult() {}
+
     /**
      * Get the page property: Page number.
      *

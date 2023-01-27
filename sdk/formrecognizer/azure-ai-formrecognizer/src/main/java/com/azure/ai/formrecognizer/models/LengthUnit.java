@@ -7,7 +7,10 @@ package com.azure.ai.formrecognizer.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for LengthUnit. */
+/**
+ * The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit is
+ * "inch".
+ */
 public enum LengthUnit {
     /** Enum value pixel. */
     PIXEL("pixel"),
@@ -30,6 +33,9 @@ public enum LengthUnit {
      */
     @JsonCreator
     public static LengthUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LengthUnit[] items = LengthUnit.values();
         for (LengthUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum LengthUnit {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

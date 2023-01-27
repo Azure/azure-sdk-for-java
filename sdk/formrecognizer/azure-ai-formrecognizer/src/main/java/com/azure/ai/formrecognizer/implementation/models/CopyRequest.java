@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CopyRequest {
     /*
-     * Azure Resource Id of the target Form Recognizer resource where the model
-     * is copied to.
+     * Azure Resource Id of the target Form Recognizer resource where the model is copied to.
      */
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
-     * Location of the target Azure resource. A valid Azure region name
-     * supported by Cognitive Services.
+     * Location of the target Azure resource. A valid Azure region name supported by Cognitive Services.
      */
     @JsonProperty(value = "targetResourceRegion", required = true)
     private String targetResourceRegion;
@@ -32,6 +30,9 @@ public final class CopyRequest {
      */
     @JsonProperty(value = "copyAuthorization", required = true)
     private CopyAuthorizationResult copyAuthorization;
+
+    /** Creates an instance of CopyRequest class. */
+    public CopyRequest() {}
 
     /**
      * Get the targetResourceId property: Azure Resource Id of the target Form Recognizer resource where the model is

@@ -4,22 +4,22 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeBusinessCardAsyncResponse;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeIdDocumentAsyncResponse;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeInvoiceAsyncResponse;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeLayoutAsyncResponse;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeBusinessCardAsyncHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeIdDocumentAsyncHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeInvoiceAsyncHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeLayoutAsyncHeaders;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncResponse;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelResponse;
-import com.azure.ai.formrecognizer.implementation.models.ComposeCustomModelsAsyncResponse;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelHeaders;
+import com.azure.ai.formrecognizer.implementation.models.ComposeCustomModelsAsyncHeaders;
 import com.azure.ai.formrecognizer.implementation.models.ComposeRequest;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult;
-import com.azure.ai.formrecognizer.implementation.models.CopyCustomModelResponse;
+import com.azure.ai.formrecognizer.implementation.models.CopyCustomModelHeaders;
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
-import com.azure.ai.formrecognizer.implementation.models.GenerateModelCopyAuthorizationResponse;
+import com.azure.ai.formrecognizer.implementation.models.GenerateModelCopyAuthorizationHeaders;
 import com.azure.ai.formrecognizer.implementation.models.Language;
 import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.Model;
@@ -27,7 +27,7 @@ import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.Models;
 import com.azure.ai.formrecognizer.implementation.models.ReadingOrder;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
-import com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncResponse;
+import com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncHeaders;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -53,15 +53,24 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -84,18 +93,6 @@ public final class FormRecognizerClientImpl {
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Form Recognizer API version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Form Recognizer API version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -127,16 +124,14 @@ public final class FormRecognizerClientImpl {
      *
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(String endpoint, String apiVersion) {
+    FormRecognizerClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+                endpoint);
     }
 
     /**
@@ -145,10 +140,9 @@ public final class FormRecognizerClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**
@@ -158,14 +152,11 @@ public final class FormRecognizerClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
         this.service =
                 RestProxy.create(FormRecognizerClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -174,15 +165,23 @@ public final class FormRecognizerClientImpl {
      * The interface defining all the services for FormRecognizerClient to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{endpoint}/formrecognizer/{ApiVersion}")
+    @Host("{endpoint}/formrecognizer/v2.1")
     @ServiceInterface(name = "FormRecognizerClient")
     public interface FormRecognizerClientService {
         @Post("/custom/models")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<TrainCustomModelAsyncResponse> trainCustomModelAsync(
+        Mono<ResponseBase<TrainCustomModelAsyncHeaders, Void>> trainCustomModelAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @BodyParam("application/json") TrainRequest trainRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/custom/models")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<TrainCustomModelAsyncHeaders, Void> trainCustomModelAsyncSync(
+                @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") TrainRequest trainRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -192,7 +191,16 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Model>> getCustomModel(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("modelId") UUID modelId,
+                @QueryParam("includeKeys") Boolean includeKeys,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/custom/models/{modelId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Model> getCustomModelSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeKeys") Boolean includeKeys,
                 @HeaderParam("Accept") String accept,
@@ -203,7 +211,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deleteCustomModel(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("modelId") UUID modelId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/custom/models/{modelId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> deleteCustomModelSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -211,9 +227,8 @@ public final class FormRecognizerClientImpl {
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(
+        Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModel(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
@@ -226,9 +241,48 @@ public final class FormRecognizerClientImpl {
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(
+        Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModel(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("modelId") UUID modelId,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/custom/models/{modelId}/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeWithCustomModelHeaders, Void> analyzeWithCustomModelSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") UUID modelId,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/custom/models/{modelId}/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModel(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") UUID modelId,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("pages") String pages,
+                @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/custom/models/{modelId}/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeWithCustomModelHeaders, Void> analyzeWithCustomModelSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
@@ -241,7 +295,16 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResult(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("modelId") UUID modelId,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeOperationResult> getAnalyzeFormResultSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
@@ -250,9 +313,18 @@ public final class FormRecognizerClientImpl {
         @Post("/custom/models/{modelId}/copy")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<CopyCustomModelResponse> copyCustomModel(
+        Mono<ResponseBase<CopyCustomModelHeaders, Void>> copyCustomModel(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("modelId") UUID modelId,
+                @BodyParam("application/json") CopyRequest copyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/custom/models/{modelId}/copy")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<CopyCustomModelHeaders, Void> copyCustomModelSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @BodyParam("application/json") CopyRequest copyRequest,
                 @HeaderParam("Accept") String accept,
@@ -263,7 +335,16 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<CopyOperationResult>> getCustomModelCopyResult(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("modelId") UUID modelId,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/custom/models/{modelId}/copyResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<CopyOperationResult> getCustomModelCopyResultSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
@@ -272,18 +353,30 @@ public final class FormRecognizerClientImpl {
         @Post("/custom/models/copyAuthorization")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorization(
+        Mono<ResponseBase<GenerateModelCopyAuthorizationHeaders, CopyAuthorizationResult>>
+                generateModelCopyAuthorization(
+                        @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/custom/models/copyAuthorization")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<GenerateModelCopyAuthorizationHeaders, CopyAuthorizationResult> generateModelCopyAuthorizationSync(
+                @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/custom/models/compose")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<ComposeCustomModelsAsyncHeaders, Void>> composeCustomModelsAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @BodyParam("application/json") ComposeRequest composeRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/custom/models/compose")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsync(
+        ResponseBase<ComposeCustomModelsAsyncHeaders, Void> composeCustomModelsAsyncSync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") ComposeRequest composeRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -291,9 +384,8 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/businessCard/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsync(
+        Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -306,9 +398,48 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/businessCard/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsync(
+        Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void> analyzeBusinessCardAsyncSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void> analyzeBusinessCardAsyncSync(
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -321,7 +452,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResult(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/prebuilt/businessCard/analyzeResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeOperationResult> getAnalyzeBusinessCardResultSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -329,9 +468,8 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/invoice/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsync(
+        Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -344,9 +482,48 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/invoice/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsync(
+        Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/invoice/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeInvoiceAsyncHeaders, Void> analyzeInvoiceAsyncSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/invoice/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/invoice/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeInvoiceAsyncHeaders, Void> analyzeInvoiceAsyncSync(
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -359,7 +536,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResult(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/prebuilt/invoice/analyzeResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeOperationResult> getAnalyzeInvoiceResultSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -367,9 +552,8 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/idDocument/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsync(
+        Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
                 @HeaderParam("Content-Type") ContentType contentType,
@@ -381,9 +565,45 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/idDocument/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsync(
+        Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/idDocument/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void> analyzeIdDocumentAsyncSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/idDocument/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("pages") String pages,
+                @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/idDocument/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void> analyzeIdDocumentAsyncSync(
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("pages") String pages,
                 @BodyParam("application/json") SourcePath fileStream,
@@ -395,7 +615,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeIdDocumentResult(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/prebuilt/idDocument/analyzeResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeOperationResult> getAnalyzeIdDocumentResultSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -403,9 +631,8 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(
+        Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -418,9 +645,48 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(
+        Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/receipt/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeReceiptAsyncHeaders, Void> analyzeReceiptAsyncSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/receipt/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") Locale locale,
+                @QueryParam("pages") String pages,
+                @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/prebuilt/receipt/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeReceiptAsyncHeaders, Void> analyzeReceiptAsyncSync(
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @QueryParam("locale") Locale locale,
                 @QueryParam("pages") String pages,
@@ -433,7 +699,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResult(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/prebuilt/receipt/analyzeResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeOperationResult> getAnalyzeReceiptResultSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -441,9 +715,8 @@ public final class FormRecognizerClientImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(
+        Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("pages") String pages,
                 @QueryParam("language") Language language,
                 @QueryParam("readingOrder") ReadingOrder readingOrder,
@@ -456,9 +729,48 @@ public final class FormRecognizerClientImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(
+        Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsync(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("pages") String pages,
+                @QueryParam("language") Language language,
+                @QueryParam("readingOrder") ReadingOrder readingOrder,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/layout/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeLayoutAsyncHeaders, Void> analyzeLayoutAsyncSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("pages") String pages,
+                @QueryParam("language") Language language,
+                @QueryParam("readingOrder") ReadingOrder readingOrder,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData fileStream,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/layout/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("pages") String pages,
+                @QueryParam("language") Language language,
+                @QueryParam("readingOrder") ReadingOrder readingOrder,
+                @BodyParam("application/json") SourcePath fileStream,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/layout/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<AnalyzeLayoutAsyncHeaders, Void> analyzeLayoutAsyncSync(
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("pages") String pages,
                 @QueryParam("language") Language language,
                 @QueryParam("readingOrder") ReadingOrder readingOrder,
@@ -471,7 +783,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResult(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("resultId") UUID resultId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/layout/analyzeResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<AnalyzeOperationResult> getAnalyzeLayoutResultSync(
+                @HostParam("endpoint") String endpoint,
                 @PathParam("resultId") UUID resultId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -481,7 +801,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Models>> listCustomModels(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("op") String op,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/custom/models")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Models> listCustomModelsSync(
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("op") String op,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -491,7 +819,15 @@ public final class FormRecognizerClientImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Models>> getCustomModels(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("op") String op,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/custom/models")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Models> getCustomModelsSync(
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("op") String op,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -502,13 +838,23 @@ public final class FormRecognizerClientImpl {
         Mono<Response<Models>> listCustomModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Models> listCustomModelsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * Train Custom Model
+     *
+     * <p>Create and train a custom model. The request must include a source parameter that is either an externally
      * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
      * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
      * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
@@ -521,19 +867,20 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
+    public Mono<ResponseBase<TrainCustomModelAsyncHeaders, Void>> trainCustomModelAsyncWithResponseAsync(
+            TrainRequest trainRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.trainCustomModelAsync(
-                                this.getEndpoint(), this.getApiVersion(), trainRequest, accept, context));
+                context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, accept, context));
     }
 
     /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * Train Custom Model
+     *
+     * <p>Create and train a custom model. The request must include a source parameter that is either an externally
      * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
      * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
      * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
@@ -547,39 +894,19 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(
+    public Mono<ResponseBase<TrainCustomModelAsyncHeaders, Void>> trainCustomModelAsyncWithResponseAsync(
             TrainRequest trainRequest, Context context) {
         final String accept = "application/json";
-        return service.trainCustomModelAsync(this.getEndpoint(), this.getApiVersion(), trainRequest, accept, context);
+        return service.trainCustomModelAsync(this.getEndpoint(), trainRequest, accept, context);
     }
 
     /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally
-     * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
-     * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
-     * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
-     * configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be
-     * trained is expected to be under the source folder or sub folders under it. Models are trained using documents
-     * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or
-     * 'image/bmp'. Other type of content is ignored.
+     * Train Custom Model
      *
-     * @param trainRequest Training request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> trainCustomModelAsyncAsync(TrainRequest trainRequest) {
-        return trainCustomModelAsyncWithResponseAsync(trainRequest)
-                .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * <p>Create and train a custom model. The request must include a source parameter that is either an externally
      * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
      * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
      * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
@@ -593,16 +920,19 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> trainCustomModelAsyncAsync(TrainRequest trainRequest, Context context) {
-        return trainCustomModelAsyncWithResponseAsync(trainRequest, context)
-                .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
+    public ResponseBase<TrainCustomModelAsyncHeaders, Void> trainCustomModelAsyncWithResponse(
+            TrainRequest trainRequest, Context context) {
+        final String accept = "application/json";
+        return service.trainCustomModelAsyncSync(this.getEndpoint(), trainRequest, accept, context);
     }
 
     /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * Train Custom Model
+     *
+     * <p>Create and train a custom model. The request must include a source parameter that is either an externally
      * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
      * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
      * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
@@ -615,14 +945,26 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trainCustomModelAsync(TrainRequest trainRequest) {
-        trainCustomModelAsyncAsync(trainRequest).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginTrainCustomModelAsyncAsync(TrainRequest trainRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.trainCustomModelAsyncWithResponseAsync(trainRequest),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally
+     * Train Custom Model
+     *
+     * <p>Create and train a custom model. The request must include a source parameter that is either an externally
      * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
      * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
      * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
@@ -636,34 +978,112 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrainCustomModelAsyncResponse trainCustomModelAsyncWithResponse(TrainRequest trainRequest, Context context) {
-        return trainCustomModelAsyncWithResponseAsync(trainRequest, context).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginTrainCustomModelAsyncAsync(
+            TrainRequest trainRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.trainCustomModelAsyncWithResponseAsync(trainRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Get detailed information about a custom model.
+     * Train Custom Model
+     *
+     * <p>Create and train a custom model. The request must include a source parameter that is either an externally
+     * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
+     * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
+     * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
+     * configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be
+     * trained is expected to be under the source folder or sub folders under it. Models are trained using documents
+     * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or
+     * 'image/bmp'. Other type of content is ignored.
+     *
+     * @param trainRequest Training request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginTrainCustomModelAsync(TrainRequest trainRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.trainCustomModelAsyncWithResponse(trainRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Train Custom Model
+     *
+     * <p>Create and train a custom model. The request must include a source parameter that is either an externally
+     * accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data
+     * folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format
+     * and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}'
+     * configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be
+     * trained is expected to be under the source folder or sub folders under it. Models are trained using documents
+     * that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or
+     * 'image/bmp'. Other type of content is ignored.
+     *
+     * @param trainRequest Training request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginTrainCustomModelAsync(TrainRequest trainRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.trainCustomModelAsyncWithResponse(trainRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Custom Model
+     *
+     * <p>Get detailed information about a custom model.
      *
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about a custom model.
+     * @return detailed information about a custom model along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getCustomModel(
-                                this.getEndpoint(), this.getApiVersion(), modelId, includeKeys, accept, context));
+                context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, accept, context));
     }
 
     /**
-     * Get detailed information about a custom model.
+     * Get Custom Model
+     *
+     * <p>Get detailed information about a custom model.
      *
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
@@ -671,39 +1091,36 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about a custom model.
+     * @return detailed information about a custom model along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys, Context context) {
         final String accept = "application/json";
-        return service.getCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, includeKeys, accept, context);
+        return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, accept, context);
     }
 
     /**
-     * Get detailed information about a custom model.
+     * Get Custom Model
+     *
+     * <p>Get detailed information about a custom model.
      *
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about a custom model.
+     * @return detailed information about a custom model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Model> getCustomModelAsync(UUID modelId, Boolean includeKeys) {
-        return getCustomModelWithResponseAsync(modelId, includeKeys)
-                .flatMap(
-                        (Response<Model> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getCustomModelWithResponseAsync(modelId, includeKeys).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get detailed information about a custom model.
+     * Get Custom Model
+     *
+     * <p>Get detailed information about a custom model.
      *
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
@@ -711,23 +1128,37 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about a custom model.
+     * @return detailed information about a custom model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Model> getCustomModelAsync(UUID modelId, Boolean includeKeys, Context context) {
         return getCustomModelWithResponseAsync(modelId, includeKeys, context)
-                .flatMap(
-                        (Response<Model> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get detailed information about a custom model.
+     * Get Custom Model
+     *
+     * <p>Get detailed information about a custom model.
+     *
+     * @param modelId Model identifier.
+     * @param includeKeys Include list of extracted keys in model information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information about a custom model along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Model> getCustomModelWithResponse(UUID modelId, Boolean includeKeys, Context context) {
+        final String accept = "application/json";
+        return service.getCustomModelSync(this.getEndpoint(), modelId, includeKeys, accept, context);
+    }
+
+    /**
+     * Get Custom Model
+     *
+     * <p>Get detailed information about a custom model.
      *
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
@@ -738,89 +1169,99 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Model getCustomModel(UUID modelId, Boolean includeKeys) {
-        return getCustomModelAsync(modelId, includeKeys).block();
+        return getCustomModelWithResponse(modelId, includeKeys, Context.NONE).getValue();
     }
 
     /**
-     * Get detailed information about a custom model.
+     * Delete Custom Model
      *
-     * @param modelId Model identifier.
-     * @param includeKeys Include list of extracted keys in model information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about a custom model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Model> getCustomModelWithResponse(UUID modelId, Boolean includeKeys, Context context) {
-        return getCustomModelWithResponseAsync(modelId, includeKeys, context).block();
-    }
-
-    /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
+     * <p>Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, accept, context));
+        return FluxUtil.withContext(context -> service.deleteCustomModel(this.getEndpoint(), modelId, accept, context));
     }
 
     /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
+     * Delete Custom Model
+     *
+     * <p>Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
      *
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId, Context context) {
         final String accept = "application/json";
-        return service.deleteCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, accept, context);
+        return service.deleteCustomModel(this.getEndpoint(), modelId, accept, context);
     }
 
     /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
+     * Delete Custom Model
+     *
+     * <p>Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCustomModelAsync(UUID modelId) {
-        return deleteCustomModelWithResponseAsync(modelId).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteCustomModelWithResponseAsync(modelId).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
+     * Delete Custom Model
+     *
+     * <p>Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
      *
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCustomModelAsync(UUID modelId, Context context) {
-        return deleteCustomModelWithResponseAsync(modelId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteCustomModelWithResponseAsync(modelId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
+     * Delete Custom Model
+     *
+     * <p>Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
+     *
+     * @param modelId Model identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteCustomModelWithResponse(UUID modelId, Context context) {
+        final String accept = "application/json";
+        return service.deleteCustomModelSync(this.getEndpoint(), modelId, accept, context);
+    }
+
+    /**
+     * Delete Custom Model
+     *
+     * <p>Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,27 +1270,14 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteCustomModel(UUID modelId) {
-        deleteCustomModelAsync(modelId).block();
+        deleteCustomModelWithResponse(modelId, Context.NONE);
     }
 
     /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
+     * Analyze Form
      *
-     * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCustomModelWithResponse(UUID modelId, Context context) {
-        return deleteCustomModelWithResponseAsync(modelId, context).block();
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -859,14 +1287,14 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModelWithResponseAsync(
             UUID modelId,
             ContentType contentType,
             Boolean includeTextDetails,
@@ -875,12 +1303,13 @@ public final class FormRecognizerClientImpl {
             Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeWithCustomModel(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
                                 modelId,
                                 includeTextDetails,
                                 pagesConverted,
@@ -892,8 +1321,10 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -903,15 +1334,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModelWithResponseAsync(
             UUID modelId,
             ContentType contentType,
             Boolean includeTextDetails,
@@ -921,10 +1352,11 @@ public final class FormRecognizerClientImpl {
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeWithCustomModel(
                 this.getEndpoint(),
-                this.getApiVersion(),
                 modelId,
                 includeTextDetails,
                 pagesConverted,
@@ -936,8 +1368,10 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -947,28 +1381,39 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeWithCustomModelAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeWithCustomModelAsync(
             UUID modelId,
             ContentType contentType,
             Boolean includeTextDetails,
             List<String> pages,
             Flux<ByteBuffer> fileStream,
             Long contentLength) {
-        return analyzeWithCustomModelWithResponseAsync(
-                        modelId, contentType, includeTextDetails, pages, fileStream, contentLength)
-                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponseAsync(
+                                modelId, contentType, includeTextDetails, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -978,15 +1423,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeWithCustomModelAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeWithCustomModelAsync(
             UUID modelId,
             ContentType contentType,
             Boolean includeTextDetails,
@@ -994,14 +1439,25 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             Long contentLength,
             Context context) {
-        return analyzeWithCustomModelWithResponseAsync(
-                        modelId, contentType, includeTextDetails, pages, fileStream, contentLength, context)
-                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponseAsync(
+                                modelId, contentType, includeTextDetails, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -1011,82 +1467,341 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeWithCustomModel(
+    public Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModelWithResponseAsync(
             UUID modelId,
             ContentType contentType,
             Boolean includeTextDetails,
             List<String> pages,
-            Flux<ByteBuffer> fileStream,
+            BinaryData fileStream,
             Long contentLength) {
-        analyzeWithCustomModelAsync(modelId, contentType, includeTextDetails, pages, fileStream, contentLength).block();
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
-     * analyzed.
-     *
-     * @param modelId Model identifier.
-     * @param contentType Upload file type.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeWithCustomModelResponse analyzeWithCustomModelWithResponse(
-            UUID modelId,
-            ContentType contentType,
-            Boolean includeTextDetails,
-            List<String> pages,
-            Flux<ByteBuffer> fileStream,
-            Long contentLength,
-            Context context) {
-        return analyzeWithCustomModelWithResponseAsync(
-                        modelId, contentType, includeTextDetails, pages, fileStream, contentLength, context)
-                .block();
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
-     * analyzed.
-     *
-     * @param modelId Model identifier.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
-            UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeWithCustomModel(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                modelId,
+                                includeTextDetails,
+                                pagesConverted,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModelWithResponseAsync(
+            UUID modelId,
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeWithCustomModel(
+                this.getEndpoint(),
+                modelId,
+                includeTextDetails,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeWithCustomModelHeaders, Void> analyzeWithCustomModelWithResponse(
+            UUID modelId,
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeWithCustomModelSync(
+                this.getEndpoint(),
+                modelId,
+                includeTextDetails,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeWithCustomModelAsync(
+            UUID modelId,
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponseAsync(
+                                modelId, contentType, includeTextDetails, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeWithCustomModelAsync(
+            UUID modelId,
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponseAsync(
+                                modelId, contentType, includeTextDetails, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeWithCustomModel(
+            UUID modelId,
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponse(
+                                modelId,
+                                contentType,
+                                includeTextDetails,
+                                pages,
+                                fileStream,
+                                contentLength,
+                                Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeWithCustomModel(
+            UUID modelId,
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponse(
+                                modelId, contentType, includeTextDetails, pages, fileStream, contentLength, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModelWithResponseAsync(
+            UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeWithCustomModel(
+                                this.getEndpoint(),
                                 modelId,
                                 includeTextDetails,
                                 pagesConverted,
@@ -1096,8 +1811,10 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -1110,51 +1827,25 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeWithCustomModelHeaders, Void>> analyzeWithCustomModelWithResponseAsync(
             UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeWithCustomModel(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                modelId,
-                includeTextDetails,
-                pagesConverted,
-                fileStream,
-                accept,
-                context);
+                this.getEndpoint(), modelId, includeTextDetails, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
-     * analyzed.
+     * Analyze Form
      *
-     * @param modelId Model identifier.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeWithCustomModelAsync(
-            UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
-        return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, pages, fileStream)
-                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -1167,18 +1858,25 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeWithCustomModelAsync(
+    public ResponseBase<AnalyzeWithCustomModelHeaders, Void> analyzeWithCustomModelWithResponse(
             UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, pages, fileStream, context)
-                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeWithCustomModelSync(
+                this.getEndpoint(), modelId, includeTextDetails, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -1190,16 +1888,28 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeWithCustomModel(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeWithCustomModelAsync(
             UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
-        analyzeWithCustomModelAsync(modelId, includeTextDetails, pages, fileStream).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, pages, fileStream),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
      * analyzed.
      *
@@ -1212,35 +1922,118 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeWithCustomModelResponse analyzeWithCustomModelWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeWithCustomModelAsync(
             UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, pages, fileStream, context).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponseAsync(
+                                modelId, includeTextDetails, pages, fileStream, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Obtain current status and the result of the analyze form operation.
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeWithCustomModel(
+            UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeWithCustomModelWithResponse(
+                                modelId, includeTextDetails, pages, fileStream, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Form
+     *
+     * <p>Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be
+     * analyzed.
+     *
+     * @param modelId Model identifier.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeWithCustomModel(
+            UUID modelId, Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeWithCustomModelWithResponse(modelId, includeTextDetails, pages, fileStream, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Analyze Form Result
+     *
+     * <p>Obtain current status and the result of the analyze form operation.
      *
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAnalyzeFormResult(
-                                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context));
+                context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, accept, context));
     }
 
     /**
-     * Obtain current status and the result of the analyze form operation.
+     * Get Analyze Form Result
+     *
+     * <p>Obtain current status and the result of the analyze form operation.
      *
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
@@ -1248,41 +2041,38 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeFormResult(
-                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context);
+        return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, accept, context);
     }
 
     /**
-     * Obtain current status and the result of the analyze form operation.
+     * Get Analyze Form Result
+     *
+     * <p>Obtain current status and the result of the analyze form operation.
      *
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeFormResultAsync(UUID modelId, UUID resultId) {
         return getAnalyzeFormResultWithResponseAsync(modelId, resultId)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Obtain current status and the result of the analyze form operation.
+     * Get Analyze Form Result
+     *
+     * <p>Obtain current status and the result of the analyze form operation.
      *
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
@@ -1290,23 +2080,38 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeFormResultAsync(UUID modelId, UUID resultId, Context context) {
         return getAnalyzeFormResultWithResponseAsync(modelId, resultId, context)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Obtain current status and the result of the analyze form operation.
+     * Get Analyze Form Result
+     *
+     * <p>Obtain current status and the result of the analyze form operation.
+     *
+     * @param modelId Model identifier.
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeOperationResult> getAnalyzeFormResultWithResponse(
+            UUID modelId, UUID resultId, Context context) {
+        final String accept = "application/json";
+        return service.getAnalyzeFormResultSync(this.getEndpoint(), modelId, resultId, accept, context);
+    }
+
+    /**
+     * Get Analyze Form Result
+     *
+     * <p>Obtain current status and the result of the analyze form operation.
      *
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
@@ -1317,47 +2122,33 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeOperationResult getAnalyzeFormResult(UUID modelId, UUID resultId) {
-        return getAnalyzeFormResultAsync(modelId, resultId).block();
+        return getAnalyzeFormResultWithResponse(modelId, resultId, Context.NONE).getValue();
     }
 
     /**
-     * Obtain current status and the result of the analyze form operation.
+     * Copy Custom Model
      *
-     * @param modelId Model identifier.
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeOperationResult> getAnalyzeFormResultWithResponse(
-            UUID modelId, UUID resultId, Context context) {
-        return getAnalyzeFormResultWithResponseAsync(modelId, resultId, context).block();
-    }
-
-    /**
-     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * <p>Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
      * @param copyRequest Copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(UUID modelId, CopyRequest copyRequest) {
+    public Mono<ResponseBase<CopyCustomModelHeaders, Void>> copyCustomModelWithResponseAsync(
+            UUID modelId, CopyRequest copyRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.copyCustomModel(
-                                this.getEndpoint(), this.getApiVersion(), modelId, copyRequest, accept, context));
+                context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, accept, context));
     }
 
     /**
-     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * Copy Custom Model
+     *
+     * <p>Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
      * @param copyRequest Copy request parameters.
@@ -1365,33 +2156,19 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(
+    public Mono<ResponseBase<CopyCustomModelHeaders, Void>> copyCustomModelWithResponseAsync(
             UUID modelId, CopyRequest copyRequest, Context context) {
         final String accept = "application/json";
-        return service.copyCustomModel(this.getEndpoint(), this.getApiVersion(), modelId, copyRequest, accept, context);
+        return service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, accept, context);
     }
 
     /**
-     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * Copy Custom Model
      *
-     * @param modelId Model identifier.
-     * @param copyRequest Copy request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> copyCustomModelAsync(UUID modelId, CopyRequest copyRequest) {
-        return copyCustomModelWithResponseAsync(modelId, copyRequest)
-                .flatMap((CopyCustomModelResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * <p>Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
      * @param copyRequest Copy request parameters.
@@ -1399,30 +2176,45 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> copyCustomModelAsync(UUID modelId, CopyRequest copyRequest, Context context) {
-        return copyCustomModelWithResponseAsync(modelId, copyRequest, context)
-                .flatMap((CopyCustomModelResponse res) -> Mono.empty());
+    public ResponseBase<CopyCustomModelHeaders, Void> copyCustomModelWithResponse(
+            UUID modelId, CopyRequest copyRequest, Context context) {
+        final String accept = "application/json";
+        return service.copyCustomModelSync(this.getEndpoint(), modelId, copyRequest, accept, context);
     }
 
     /**
-     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * Copy Custom Model
+     *
+     * <p>Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
      * @param copyRequest Copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void copyCustomModel(UUID modelId, CopyRequest copyRequest) {
-        copyCustomModelAsync(modelId, copyRequest).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCopyCustomModelAsync(UUID modelId, CopyRequest copyRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.copyCustomModelWithResponseAsync(modelId, copyRequest),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     * Copy Custom Model
+     *
+     * <p>Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
      *
      * @param modelId Model identifier.
      * @param copyRequest Copy request parameters.
@@ -1430,34 +2222,101 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyCustomModelResponse copyCustomModelWithResponse(UUID modelId, CopyRequest copyRequest, Context context) {
-        return copyCustomModelWithResponseAsync(modelId, copyRequest, context).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCopyCustomModelAsync(
+            UUID modelId, CopyRequest copyRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.copyCustomModelWithResponseAsync(modelId, copyRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Obtain current status and the result of a custom model copy operation.
+     * Copy Custom Model
+     *
+     * <p>Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     *
+     * @param modelId Model identifier.
+     * @param copyRequest Copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCopyCustomModel(UUID modelId, CopyRequest copyRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.copyCustomModelWithResponse(modelId, copyRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Copy Custom Model
+     *
+     * <p>Copy custom model stored in this resource (the source) to user specified target Form Recognizer resource.
+     *
+     * @param modelId Model identifier.
+     * @param copyRequest Copy request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCopyCustomModel(
+            UUID modelId, CopyRequest copyRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.copyCustomModelWithResponse(modelId, copyRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Custom Model Copy Result
+     *
+     * <p>Obtain current status and the result of a custom model copy operation.
      *
      * @param modelId Model identifier.
      * @param resultId Copy operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued copy operation.
+     * @return status and result of the queued copy operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(UUID modelId, UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getCustomModelCopyResult(
-                                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context));
+                context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, accept, context));
     }
 
     /**
-     * Obtain current status and the result of a custom model copy operation.
+     * Get Custom Model Copy Result
+     *
+     * <p>Obtain current status and the result of a custom model copy operation.
      *
      * @param modelId Model identifier.
      * @param resultId Copy operation result identifier.
@@ -1465,41 +2324,38 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued copy operation.
+     * @return status and result of the queued copy operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getCustomModelCopyResult(
-                this.getEndpoint(), this.getApiVersion(), modelId, resultId, accept, context);
+        return service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, accept, context);
     }
 
     /**
-     * Obtain current status and the result of a custom model copy operation.
+     * Get Custom Model Copy Result
+     *
+     * <p>Obtain current status and the result of a custom model copy operation.
      *
      * @param modelId Model identifier.
      * @param resultId Copy operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued copy operation.
+     * @return status and result of the queued copy operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyOperationResult> getCustomModelCopyResultAsync(UUID modelId, UUID resultId) {
         return getCustomModelCopyResultWithResponseAsync(modelId, resultId)
-                .flatMap(
-                        (Response<CopyOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Obtain current status and the result of a custom model copy operation.
+     * Get Custom Model Copy Result
+     *
+     * <p>Obtain current status and the result of a custom model copy operation.
      *
      * @param modelId Model identifier.
      * @param resultId Copy operation result identifier.
@@ -1507,23 +2363,38 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued copy operation.
+     * @return status and result of the queued copy operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyOperationResult> getCustomModelCopyResultAsync(UUID modelId, UUID resultId, Context context) {
         return getCustomModelCopyResultWithResponseAsync(modelId, resultId, context)
-                .flatMap(
-                        (Response<CopyOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Obtain current status and the result of a custom model copy operation.
+     * Get Custom Model Copy Result
+     *
+     * <p>Obtain current status and the result of a custom model copy operation.
+     *
+     * @param modelId Model identifier.
+     * @param resultId Copy operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued copy operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CopyOperationResult> getCustomModelCopyResultWithResponse(
+            UUID modelId, UUID resultId, Context context) {
+        final String accept = "application/json";
+        return service.getCustomModelCopyResultSync(this.getEndpoint(), modelId, resultId, accept, context);
+    }
+
+    /**
+     * Get Custom Model Copy Result
+     *
+     * <p>Obtain current status and the result of a custom model copy operation.
      *
      * @param modelId Model identifier.
      * @param resultId Copy operation result identifier.
@@ -1534,102 +2405,101 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyOperationResult getCustomModelCopyResult(UUID modelId, UUID resultId) {
-        return getCustomModelCopyResultAsync(modelId, resultId).block();
+        return getCustomModelCopyResultWithResponse(modelId, resultId, Context.NONE).getValue();
     }
 
     /**
-     * Obtain current status and the result of a custom model copy operation.
+     * Generate Copy Authorization
      *
-     * @param modelId Model identifier.
-     * @param resultId Copy operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued copy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyOperationResult> getCustomModelCopyResultWithResponse(
-            UUID modelId, UUID resultId, Context context) {
-        return getCustomModelCopyResultWithResponseAsync(modelId, resultId, context).block();
-    }
-
-    /**
-     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * <p>Generate authorization to copy a model into the target Form Recognizer resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request parameter that contains authorization claims for copy operation.
+     * @return request parameter that contains authorization claims for copy operation along with {@link ResponseBase}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorizationWithResponseAsync() {
+    public Mono<ResponseBase<GenerateModelCopyAuthorizationHeaders, CopyAuthorizationResult>>
+            generateModelCopyAuthorizationWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.generateModelCopyAuthorization(
-                                this.getEndpoint(), this.getApiVersion(), accept, context));
+                context -> service.generateModelCopyAuthorization(this.getEndpoint(), accept, context));
     }
 
     /**
-     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * Generate Copy Authorization
+     *
+     * <p>Generate authorization to copy a model into the target Form Recognizer resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request parameter that contains authorization claims for copy operation.
+     * @return request parameter that contains authorization claims for copy operation along with {@link ResponseBase}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorizationWithResponseAsync(
-            Context context) {
+    public Mono<ResponseBase<GenerateModelCopyAuthorizationHeaders, CopyAuthorizationResult>>
+            generateModelCopyAuthorizationWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.generateModelCopyAuthorization(this.getEndpoint(), this.getApiVersion(), accept, context);
+        return service.generateModelCopyAuthorization(this.getEndpoint(), accept, context);
     }
 
     /**
-     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * Generate Copy Authorization
+     *
+     * <p>Generate authorization to copy a model into the target Form Recognizer resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request parameter that contains authorization claims for copy operation.
+     * @return request parameter that contains authorization claims for copy operation on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorizationResult> generateModelCopyAuthorizationAsync() {
-        return generateModelCopyAuthorizationWithResponseAsync()
-                .flatMap(
-                        (GenerateModelCopyAuthorizationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return generateModelCopyAuthorizationWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * Generate Copy Authorization
+     *
+     * <p>Generate authorization to copy a model into the target Form Recognizer resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request parameter that contains authorization claims for copy operation.
+     * @return request parameter that contains authorization claims for copy operation on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorizationResult> generateModelCopyAuthorizationAsync(Context context) {
         return generateModelCopyAuthorizationWithResponseAsync(context)
-                .flatMap(
-                        (GenerateModelCopyAuthorizationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * Generate Copy Authorization
+     *
+     * <p>Generate authorization to copy a model into the target Form Recognizer resource.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return request parameter that contains authorization claims for copy operation along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<GenerateModelCopyAuthorizationHeaders, CopyAuthorizationResult>
+            generateModelCopyAuthorizationWithResponse(Context context) {
+        final String accept = "application/json";
+        return service.generateModelCopyAuthorizationSync(this.getEndpoint(), accept, context);
+    }
+
+    /**
+     * Generate Copy Authorization
+     *
+     * <p>Generate authorization to copy a model into the target Form Recognizer resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1637,45 +2507,33 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyAuthorizationResult generateModelCopyAuthorization() {
-        return generateModelCopyAuthorizationAsync().block();
+        return generateModelCopyAuthorizationWithResponse(Context.NONE).getValue();
     }
 
     /**
-     * Generate authorization to copy a model into the target Form Recognizer resource.
+     * Compose trained with labels models into one composed model.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request parameter that contains authorization claims for copy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateModelCopyAuthorizationResponse generateModelCopyAuthorizationWithResponse(Context context) {
-        return generateModelCopyAuthorizationWithResponseAsync(context).block();
-    }
-
-    /**
-     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * <p>Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
      * @param composeRequest Compose models.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsyncWithResponseAsync(
+    public Mono<ResponseBase<ComposeCustomModelsAsyncHeaders, Void>> composeCustomModelsAsyncWithResponseAsync(
             ComposeRequest composeRequest) {
         final String accept = "application/json, text/json";
         return FluxUtil.withContext(
-                context ->
-                        service.composeCustomModelsAsync(
-                                this.getEndpoint(), this.getApiVersion(), composeRequest, accept, context));
+                context -> service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, accept, context));
     }
 
     /**
-     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * Compose trained with labels models into one composed model.
+     *
+     * <p>Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
      * @param composeRequest Compose models.
@@ -1683,34 +2541,19 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsyncWithResponseAsync(
+    public Mono<ResponseBase<ComposeCustomModelsAsyncHeaders, Void>> composeCustomModelsAsyncWithResponseAsync(
             ComposeRequest composeRequest, Context context) {
         final String accept = "application/json, text/json";
-        return service.composeCustomModelsAsync(
-                this.getEndpoint(), this.getApiVersion(), composeRequest, accept, context);
+        return service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, accept, context);
     }
 
     /**
-     * Compose request would include list of models ids. It would validate what all models either trained with labels
-     * model or composed model. It would validate limit of models put together.
+     * Compose trained with labels models into one composed model.
      *
-     * @param composeRequest Compose models.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> composeCustomModelsAsyncAsync(ComposeRequest composeRequest) {
-        return composeCustomModelsAsyncWithResponseAsync(composeRequest)
-                .flatMap((ComposeCustomModelsAsyncResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * <p>Compose request would include list of models ids. It would validate what all models either trained with labels
      * model or composed model. It would validate limit of models put together.
      *
      * @param composeRequest Compose models.
@@ -1718,48 +2561,128 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> composeCustomModelsAsyncAsync(ComposeRequest composeRequest, Context context) {
-        return composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
-                .flatMap((ComposeCustomModelsAsyncResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Compose request would include list of models ids. It would validate what all models either trained with labels
-     * model or composed model. It would validate limit of models put together.
-     *
-     * @param composeRequest Compose models.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void composeCustomModelsAsync(ComposeRequest composeRequest) {
-        composeCustomModelsAsyncAsync(composeRequest).block();
-    }
-
-    /**
-     * Compose request would include list of models ids. It would validate what all models either trained with labels
-     * model or composed model. It would validate limit of models put together.
-     *
-     * @param composeRequest Compose models.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComposeCustomModelsAsyncResponse composeCustomModelsAsyncWithResponse(
+    public ResponseBase<ComposeCustomModelsAsyncHeaders, Void> composeCustomModelsAsyncWithResponse(
             ComposeRequest composeRequest, Context context) {
-        return composeCustomModelsAsyncWithResponseAsync(composeRequest, context).block();
+        final String accept = "application/json, text/json";
+        return service.composeCustomModelsAsyncSync(this.getEndpoint(), composeRequest, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Compose trained with labels models into one composed model.
+     *
+     * <p>Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Compose models.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginComposeCustomModelsAsyncAsync(ComposeRequest composeRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.composeCustomModelsAsyncWithResponseAsync(composeRequest),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Compose trained with labels models into one composed model.
+     *
+     * <p>Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Compose models.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginComposeCustomModelsAsyncAsync(
+            ComposeRequest composeRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.composeCustomModelsAsyncWithResponseAsync(composeRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Compose trained with labels models into one composed model.
+     *
+     * <p>Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Compose models.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginComposeCustomModelsAsync(ComposeRequest composeRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.composeCustomModelsAsyncWithResponse(composeRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Compose trained with labels models into one composed model.
+     *
+     * <p>Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Compose models.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginComposeCustomModelsAsync(
+            ComposeRequest composeRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.composeCustomModelsAsyncWithResponse(composeRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
@@ -1769,14 +2692,14 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -1785,12 +2708,13 @@ public final class FormRecognizerClientImpl {
             Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeBusinessCardAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -1802,8 +2726,10 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
@@ -1813,15 +2739,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -1831,10 +2757,11 @@ public final class FormRecognizerClientImpl {
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeBusinessCardAsync(
                 this.getEndpoint(),
-                this.getApiVersion(),
                 includeTextDetails,
                 locale,
                 pagesConverted,
@@ -1846,8 +2773,10 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
@@ -1857,28 +2786,39 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeBusinessCardAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBusinessCardAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
             Flux<ByteBuffer> fileStream,
             Long contentLength) {
-        return analyzeBusinessCardAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength)
-                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
@@ -1888,15 +2828,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeBusinessCardAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBusinessCardAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -1904,14 +2844,25 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             Long contentLength,
             Context context) {
-        return analyzeBusinessCardAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
-                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Upload file type.
@@ -1921,83 +2872,341 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeBusinessCardAsync(
+    public Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
-            Flux<ByteBuffer> fileStream,
+            BinaryData fileStream,
             Long contentLength) {
-        analyzeBusinessCardAsyncAsync(contentType, includeTextDetails, locale, pages, fileStream, contentLength)
-                .block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param contentType Upload file type.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeBusinessCardAsyncResponse analyzeBusinessCardAsyncWithResponse(
-            ContentType contentType,
-            Boolean includeTextDetails,
-            Locale locale,
-            List<String> pages,
-            Flux<ByteBuffer> fileStream,
-            Long contentLength,
-            Context context) {
-        return analyzeBusinessCardAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
-                .block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
-            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeBusinessCardAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                includeTextDetails,
+                                locale,
+                                pagesConverted,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsyncWithResponseAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeBusinessCardAsync(
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void> analyzeBusinessCardAsyncWithResponse(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeBusinessCardAsyncSync(
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBusinessCardAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBusinessCardAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBusinessCardAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponse(
+                                contentType,
+                                includeTextDetails,
+                                locale,
+                                pages,
+                                fileStream,
+                                contentLength,
+                                Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBusinessCardAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponse(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsyncWithResponseAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeBusinessCardAsync(
+                                this.getEndpoint(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -2007,8 +3216,10 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
@@ -2021,51 +3232,25 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void>> analyzeBusinessCardAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeBusinessCardAsync(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                includeTextDetails,
-                locale,
-                pagesConverted,
-                fileStream,
-                accept,
-                context);
+                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * Analyze Business Card
      *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeBusinessCardAsyncAsync(
-            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        return analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream)
-                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
@@ -2078,18 +3263,25 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeBusinessCardAsyncAsync(
+    public ResponseBase<AnalyzeBusinessCardAsyncHeaders, Void> analyzeBusinessCardAsyncWithResponse(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context)
-                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeBusinessCardAsyncSync(
+                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
@@ -2101,16 +3293,28 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeBusinessCardAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBusinessCardAsyncAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        analyzeBusinessCardAsyncAsync(includeTextDetails, locale, pages, fileStream).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given business card document. The input document must be of one of
-     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
@@ -2123,98 +3327,189 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeBusinessCardAsyncResponse analyzeBusinessCardAsyncWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBusinessCardAsyncAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context)
-                .block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponseAsync(
+                                includeTextDetails, locale, pages, fileStream, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze business card operation.
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBusinessCardAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeBusinessCardAsyncWithResponse(
+                                includeTextDetails, locale, pages, fileStream, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Business Card
+     *
+     * <p>Extract field text and semantic values from a given business card document. The input document must be of one
+     * of the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBusinessCardAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeBusinessCardAsyncWithResponse(includeTextDetails, locale, pages, fileStream, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Analyze Business Card Result
+     *
+     * <p>Track the progress and obtain the result of the analyze business card operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAnalyzeBusinessCardResult(
-                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
+                context -> service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze business card operation.
+     * Get Analyze Business Card Result
+     *
+     * <p>Track the progress and obtain the result of the analyze business card operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeBusinessCardResult(
-                this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
+        return service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
-     * Track the progress and obtain the result of the analyze business card operation.
+     * Get Analyze Business Card Result
+     *
+     * <p>Track the progress and obtain the result of the analyze business card operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeBusinessCardResultAsync(UUID resultId) {
-        return getAnalyzeBusinessCardResultWithResponseAsync(resultId)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getAnalyzeBusinessCardResultWithResponseAsync(resultId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze business card operation.
+     * Get Analyze Business Card Result
+     *
+     * <p>Track the progress and obtain the result of the analyze business card operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeBusinessCardResultAsync(UUID resultId, Context context) {
         return getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze business card operation.
+     * Get Analyze Business Card Result
+     *
+     * <p>Track the progress and obtain the result of the analyze business card operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeOperationResult> getAnalyzeBusinessCardResultWithResponse(UUID resultId, Context context) {
+        final String accept = "application/json";
+        return service.getAnalyzeBusinessCardResultSync(this.getEndpoint(), resultId, accept, context);
+    }
+
+    /**
+     * Get Analyze Business Card Result
+     *
+     * <p>Track the progress and obtain the result of the analyze business card operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2224,26 +3519,13 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeOperationResult getAnalyzeBusinessCardResult(UUID resultId) {
-        return getAnalyzeBusinessCardResultAsync(resultId).block();
+        return getAnalyzeBusinessCardResultWithResponse(resultId, Context.NONE).getValue();
     }
 
     /**
-     * Track the progress and obtain the result of the analyze business card operation.
+     * Analyze Invoice Document
      *
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeOperationResult> getAnalyzeBusinessCardResultWithResponse(UUID resultId, Context context) {
-        return getAnalyzeBusinessCardResultWithResponseAsync(resultId, context).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2254,14 +3536,14 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -2270,12 +3552,13 @@ public final class FormRecognizerClientImpl {
             Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeInvoiceAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -2287,7 +3570,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2298,15 +3583,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -2316,10 +3601,11 @@ public final class FormRecognizerClientImpl {
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeInvoiceAsync(
                 this.getEndpoint(),
-                this.getApiVersion(),
                 includeTextDetails,
                 locale,
                 pagesConverted,
@@ -2331,7 +3617,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2342,27 +3630,38 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeInvoiceAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeInvoiceAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
             Flux<ByteBuffer> fileStream,
             Long contentLength) {
-        return analyzeInvoiceAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength)
-                .flatMap((AnalyzeInvoiceAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeInvoiceAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2373,15 +3672,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeInvoiceAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeInvoiceAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -2389,13 +3688,24 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             Long contentLength,
             Context context) {
-        return analyzeInvoiceAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
-                .flatMap((AnalyzeInvoiceAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeInvoiceAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2406,82 +3716,341 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeInvoiceAsync(
+    public Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
-            Flux<ByteBuffer> fileStream,
+            BinaryData fileStream,
             Long contentLength) {
-        analyzeInvoiceAsyncAsync(contentType, includeTextDetails, locale, pages, fileStream, contentLength).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param contentType Upload file type.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeInvoiceAsyncResponse analyzeInvoiceAsyncWithResponse(
-            ContentType contentType,
-            Boolean includeTextDetails,
-            Locale locale,
-            List<String> pages,
-            Flux<ByteBuffer> fileStream,
-            Long contentLength,
-            Context context) {
-        return analyzeInvoiceAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
-                .block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
-            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeInvoiceAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                includeTextDetails,
+                                locale,
+                                pagesConverted,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsyncWithResponseAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeInvoiceAsync(
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeInvoiceAsyncHeaders, Void> analyzeInvoiceAsyncWithResponse(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeInvoiceAsyncSync(
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeInvoiceAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeInvoiceAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeInvoiceAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeInvoiceAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeInvoiceAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeInvoiceAsyncWithResponse(
+                                contentType,
+                                includeTextDetails,
+                                locale,
+                                pages,
+                                fileStream,
+                                contentLength,
+                                Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeInvoiceAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeInvoiceAsyncWithResponse(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsyncWithResponseAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeInvoiceAsync(
+                                this.getEndpoint(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -2491,7 +4060,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2505,50 +4076,24 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeInvoiceAsyncResponse> analyzeInvoiceAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeInvoiceAsyncHeaders, Void>> analyzeInvoiceAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeInvoiceAsync(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                includeTextDetails,
-                locale,
-                pagesConverted,
-                fileStream,
-                accept,
-                context);
+                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * Analyze Invoice Document
      *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeInvoiceAsyncAsync(
-            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        return analyzeInvoiceAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream)
-                .flatMap((AnalyzeInvoiceAsyncResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2562,17 +4107,24 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeInvoiceAsyncAsync(
+    public ResponseBase<AnalyzeInvoiceAsyncHeaders, Void> analyzeInvoiceAsyncWithResponse(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeInvoiceAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context)
-                .flatMap((AnalyzeInvoiceAsyncResponse res) -> Mono.empty());
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeInvoiceAsyncSync(
+                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2585,15 +4137,27 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeInvoiceAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeInvoiceAsyncAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        analyzeInvoiceAsyncAsync(includeTextDetails, locale, pages, fileStream).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeInvoiceAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2607,96 +4171,185 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeInvoiceAsyncResponse analyzeInvoiceAsyncWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeInvoiceAsyncAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeInvoiceAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeInvoiceAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze invoice operation.
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeInvoiceAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeInvoiceAsyncWithResponse(includeTextDetails, locale, pages, fileStream, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Invoice Document
+     *
+     * <p>Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeInvoiceAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeInvoiceAsyncWithResponse(includeTextDetails, locale, pages, fileStream, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Analyze Invoice Result
+     *
+     * <p>Track the progress and obtain the result of the analyze invoice operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAnalyzeInvoiceResult(
-                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
+                context -> service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze invoice operation.
+     * Get Analyze Invoice Result
+     *
+     * <p>Track the progress and obtain the result of the analyze invoice operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeInvoiceResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
+        return service.getAnalyzeInvoiceResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
-     * Track the progress and obtain the result of the analyze invoice operation.
+     * Get Analyze Invoice Result
+     *
+     * <p>Track the progress and obtain the result of the analyze invoice operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeInvoiceResultAsync(UUID resultId) {
-        return getAnalyzeInvoiceResultWithResponseAsync(resultId)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getAnalyzeInvoiceResultWithResponseAsync(resultId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze invoice operation.
+     * Get Analyze Invoice Result
+     *
+     * <p>Track the progress and obtain the result of the analyze invoice operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeInvoiceResultAsync(UUID resultId, Context context) {
         return getAnalyzeInvoiceResultWithResponseAsync(resultId, context)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze invoice operation.
+     * Get Analyze Invoice Result
+     *
+     * <p>Track the progress and obtain the result of the analyze invoice operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeOperationResult> getAnalyzeInvoiceResultWithResponse(UUID resultId, Context context) {
+        final String accept = "application/json";
+        return service.getAnalyzeInvoiceResultSync(this.getEndpoint(), resultId, accept, context);
+    }
+
+    /**
+     * Get Analyze Invoice Result
+     *
+     * <p>Track the progress and obtain the result of the analyze invoice operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2706,26 +4359,13 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeOperationResult getAnalyzeInvoiceResult(UUID resultId) {
-        return getAnalyzeInvoiceResultAsync(resultId).block();
+        return getAnalyzeInvoiceResultWithResponse(resultId, Context.NONE).getValue();
     }
 
     /**
-     * Track the progress and obtain the result of the analyze invoice operation.
+     * Analyze ID Document
      *
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeOperationResult> getAnalyzeInvoiceResultWithResponse(UUID resultId, Context context) {
-        return getAnalyzeInvoiceResultWithResponseAsync(resultId, context).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2734,14 +4374,14 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             List<String> pages,
@@ -2749,12 +4389,13 @@ public final class FormRecognizerClientImpl {
             Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeIdDocumentAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
                                 includeTextDetails,
                                 pagesConverted,
                                 contentType,
@@ -2765,7 +4406,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2774,15 +4417,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             List<String> pages,
@@ -2791,10 +4434,11 @@ public final class FormRecognizerClientImpl {
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeIdDocumentAsync(
                 this.getEndpoint(),
-                this.getApiVersion(),
                 includeTextDetails,
                 pagesConverted,
                 contentType,
@@ -2805,7 +4449,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2814,26 +4460,37 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeIdDocumentAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeIdDocumentAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             List<String> pages,
             Flux<ByteBuffer> fileStream,
             Long contentLength) {
-        return analyzeIdDocumentAsyncWithResponseAsync(
-                        contentType, includeTextDetails, pages, fileStream, contentLength)
-                .flatMap((AnalyzeIdDocumentAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeIdDocumentAsyncWithResponseAsync(
+                                contentType, includeTextDetails, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2842,28 +4499,39 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeIdDocumentAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeIdDocumentAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             List<String> pages,
             Flux<ByteBuffer> fileStream,
             Long contentLength,
             Context context) {
-        return analyzeIdDocumentAsyncWithResponseAsync(
-                        contentType, includeTextDetails, pages, fileStream, contentLength, context)
-                .flatMap((AnalyzeIdDocumentAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeIdDocumentAsyncWithResponseAsync(
+                                contentType, includeTextDetails, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2872,116 +4540,287 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeIdDocumentAsync(
+    public Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             List<String> pages,
-            Flux<ByteBuffer> fileStream,
+            BinaryData fileStream,
             Long contentLength) {
-        analyzeIdDocumentAsyncAsync(contentType, includeTextDetails, pages, fileStream, contentLength).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param contentType Upload file type.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeIdDocumentAsyncResponse analyzeIdDocumentAsyncWithResponse(
-            ContentType contentType,
-            Boolean includeTextDetails,
-            List<String> pages,
-            Flux<ByteBuffer> fileStream,
-            Long contentLength,
-            Context context) {
-        return analyzeIdDocumentAsyncWithResponseAsync(
-                        contentType, includeTextDetails, pages, fileStream, contentLength, context)
-                .block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsyncWithResponseAsync(
-            Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeIdDocumentAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
                                 includeTextDetails,
                                 pagesConverted,
+                                contentType,
                                 fileStream,
+                                contentLength,
                                 accept,
                                 context));
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
+     * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeIdDocumentAsyncResponse> analyzeIdDocumentAsyncWithResponseAsync(
-            Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
+    public Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsyncWithResponseAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeIdDocumentAsync(
                 this.getEndpoint(),
-                this.getApiVersion(),
                 includeTextDetails,
                 pagesConverted,
+                contentType,
                 fileStream,
+                contentLength,
                 accept,
                 context);
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void> analyzeIdDocumentAsyncWithResponse(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeIdDocumentAsyncSync(
+                this.getEndpoint(),
+                includeTextDetails,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeIdDocumentAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeIdDocumentAsyncWithResponseAsync(
+                                contentType, includeTextDetails, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeIdDocumentAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeIdDocumentAsyncWithResponseAsync(
+                                contentType, includeTextDetails, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeIdDocumentAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeIdDocumentAsyncWithResponse(
+                                contentType, includeTextDetails, pages, fileStream, contentLength, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeIdDocumentAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeIdDocumentAsyncWithResponse(
+                                contentType, includeTextDetails, pages, fileStream, contentLength, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -2992,17 +4831,26 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeIdDocumentAsyncAsync(
+    public Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsyncWithResponseAsync(
             Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
-        return analyzeIdDocumentAsyncWithResponseAsync(includeTextDetails, pages, fileStream)
-                .flatMap((AnalyzeIdDocumentAsyncResponse res) -> Mono.empty());
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeIdDocumentAsync(
+                                this.getEndpoint(), includeTextDetails, pagesConverted, fileStream, accept, context));
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3014,35 +4862,24 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeIdDocumentAsyncAsync(
+    public Mono<ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void>> analyzeIdDocumentAsyncWithResponseAsync(
             Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeIdDocumentAsyncWithResponseAsync(includeTextDetails, pages, fileStream, context)
-                .flatMap((AnalyzeIdDocumentAsyncResponse res) -> Mono.empty());
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeIdDocumentAsync(
+                this.getEndpoint(), includeTextDetails, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * Analyze ID Document
      *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeIdDocumentAsync(Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
-        analyzeIdDocumentAsyncAsync(includeTextDetails, pages, fileStream).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3054,96 +4891,241 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeIdDocumentAsyncResponse analyzeIdDocumentAsyncWithResponse(
+    public ResponseBase<AnalyzeIdDocumentAsyncHeaders, Void> analyzeIdDocumentAsyncWithResponse(
             Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeIdDocumentAsyncWithResponseAsync(includeTextDetails, pages, fileStream, context).block();
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeIdDocumentAsyncSync(
+                this.getEndpoint(), includeTextDetails, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Track the progress and obtain the result of the analyze ID operation.
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeIdDocumentAsyncAsync(
+            Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeIdDocumentAsyncWithResponseAsync(includeTextDetails, pages, fileStream),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeIdDocumentAsyncAsync(
+            Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeIdDocumentAsyncWithResponseAsync(includeTextDetails, pages, fileStream, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeIdDocumentAsync(
+            Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeIdDocumentAsyncWithResponse(includeTextDetails, pages, fileStream, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze ID Document
+     *
+     * <p>Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeIdDocumentAsync(
+            Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeIdDocumentAsyncWithResponse(includeTextDetails, pages, fileStream, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Analyze ID Document Result
+     *
+     * <p>Track the progress and obtain the result of the analyze ID operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeIdDocumentResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAnalyzeIdDocumentResult(
-                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
+                context -> service.getAnalyzeIdDocumentResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze ID operation.
+     * Get Analyze ID Document Result
+     *
+     * <p>Track the progress and obtain the result of the analyze ID operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeIdDocumentResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeIdDocumentResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
+        return service.getAnalyzeIdDocumentResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
-     * Track the progress and obtain the result of the analyze ID operation.
+     * Get Analyze ID Document Result
+     *
+     * <p>Track the progress and obtain the result of the analyze ID operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeIdDocumentResultAsync(UUID resultId) {
-        return getAnalyzeIdDocumentResultWithResponseAsync(resultId)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getAnalyzeIdDocumentResultWithResponseAsync(resultId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze ID operation.
+     * Get Analyze ID Document Result
+     *
+     * <p>Track the progress and obtain the result of the analyze ID operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeIdDocumentResultAsync(UUID resultId, Context context) {
         return getAnalyzeIdDocumentResultWithResponseAsync(resultId, context)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze ID operation.
+     * Get Analyze ID Document Result
+     *
+     * <p>Track the progress and obtain the result of the analyze ID operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeOperationResult> getAnalyzeIdDocumentResultWithResponse(UUID resultId, Context context) {
+        final String accept = "application/json";
+        return service.getAnalyzeIdDocumentResultSync(this.getEndpoint(), resultId, accept, context);
+    }
+
+    /**
+     * Get Analyze ID Document Result
+     *
+     * <p>Track the progress and obtain the result of the analyze ID operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3153,26 +5135,13 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeOperationResult getAnalyzeIdDocumentResult(UUID resultId) {
-        return getAnalyzeIdDocumentResultAsync(resultId).block();
+        return getAnalyzeIdDocumentResultWithResponse(resultId, Context.NONE).getValue();
     }
 
     /**
-     * Track the progress and obtain the result of the analyze ID operation.
+     * Analyze Receipt
      *
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeOperationResult> getAnalyzeIdDocumentResultWithResponse(UUID resultId, Context context) {
-        return getAnalyzeIdDocumentResultWithResponseAsync(resultId, context).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3183,14 +5152,14 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -3199,12 +5168,13 @@ public final class FormRecognizerClientImpl {
             Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeReceiptAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -3216,7 +5186,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3227,15 +5199,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -3245,10 +5217,11 @@ public final class FormRecognizerClientImpl {
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeReceiptAsync(
                 this.getEndpoint(),
-                this.getApiVersion(),
                 includeTextDetails,
                 locale,
                 pagesConverted,
@@ -3260,7 +5233,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3271,27 +5246,38 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeReceiptAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeReceiptAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
             Flux<ByteBuffer> fileStream,
             Long contentLength) {
-        return analyzeReceiptAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeReceiptAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3302,15 +5288,15 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeReceiptAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeReceiptAsyncAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
@@ -3318,13 +5304,24 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             Long contentLength,
             Context context) {
-        return analyzeReceiptAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeReceiptAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3335,82 +5332,341 @@ public final class FormRecognizerClientImpl {
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeReceiptAsync(
+    public Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsyncWithResponseAsync(
             ContentType contentType,
             Boolean includeTextDetails,
             Locale locale,
             List<String> pages,
-            Flux<ByteBuffer> fileStream,
+            BinaryData fileStream,
             Long contentLength) {
-        analyzeReceiptAsyncAsync(contentType, includeTextDetails, locale, pages, fileStream, contentLength).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param contentType Upload file type.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeReceiptAsyncResponse analyzeReceiptAsyncWithResponse(
-            ContentType contentType,
-            Boolean includeTextDetails,
-            Locale locale,
-            List<String> pages,
-            Flux<ByteBuffer> fileStream,
-            Long contentLength,
-            Context context) {
-        return analyzeReceiptAsyncWithResponseAsync(
-                        contentType, includeTextDetails, locale, pages, fileStream, contentLength, context)
-                .block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
-            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeReceiptAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                includeTextDetails,
+                                locale,
+                                pagesConverted,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsyncWithResponseAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeReceiptAsync(
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeReceiptAsyncHeaders, Void> analyzeReceiptAsyncWithResponse(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeReceiptAsyncSync(
+                this.getEndpoint(),
+                includeTextDetails,
+                locale,
+                pagesConverted,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeReceiptAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeReceiptAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeReceiptAsyncAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeReceiptAsyncWithResponseAsync(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeReceiptAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeReceiptAsyncWithResponse(
+                                contentType,
+                                includeTextDetails,
+                                locale,
+                                pages,
+                                fileStream,
+                                contentLength,
+                                Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeReceiptAsync(
+            ContentType contentType,
+            Boolean includeTextDetails,
+            Locale locale,
+            List<String> pages,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeReceiptAsyncWithResponse(
+                                contentType, includeTextDetails, locale, pages, fileStream, contentLength, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsyncWithResponseAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeReceiptAsync(
+                                this.getEndpoint(),
                                 includeTextDetails,
                                 locale,
                                 pagesConverted,
@@ -3420,7 +5676,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3434,50 +5692,24 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeReceiptAsyncHeaders, Void>> analyzeReceiptAsyncWithResponseAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeReceiptAsync(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                includeTextDetails,
-                locale,
-                pagesConverted,
-                fileStream,
-                accept,
-                context);
+                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
-     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * Analyze Receipt
      *
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
-     *     en-US(default).
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeReceiptAsyncAsync(
-            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3491,17 +5723,24 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeReceiptAsyncAsync(
+    public ResponseBase<AnalyzeReceiptAsyncHeaders, Void> analyzeReceiptAsyncWithResponse(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context)
-                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeReceiptAsyncSync(
+                this.getEndpoint(), includeTextDetails, locale, pagesConverted, fileStream, accept, context);
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3514,15 +5753,27 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeReceiptAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeReceiptAsyncAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        analyzeReceiptAsyncAsync(includeTextDetails, locale, pages, fileStream).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
@@ -3536,96 +5787,185 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeReceiptAsyncResponse analyzeReceiptAsyncWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeReceiptAsyncAsync(
             Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
-        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, pages, fileStream, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze receipt operation.
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeReceiptAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeReceiptAsyncWithResponse(includeTextDetails, locale, pages, fileStream, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Receipt
+     *
+     * <p>Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     *     en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeReceiptAsync(
+            Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeReceiptAsyncWithResponse(includeTextDetails, locale, pages, fileStream, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Analyze Receipt Result
+     *
+     * <p>Track the progress and obtain the result of the analyze receipt operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAnalyzeReceiptResult(
-                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
+                context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze receipt operation.
+     * Get Analyze Receipt Result
+     *
+     * <p>Track the progress and obtain the result of the analyze receipt operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeReceiptResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
+        return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
-     * Track the progress and obtain the result of the analyze receipt operation.
+     * Get Analyze Receipt Result
+     *
+     * <p>Track the progress and obtain the result of the analyze receipt operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeReceiptResultAsync(UUID resultId) {
-        return getAnalyzeReceiptResultWithResponseAsync(resultId)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getAnalyzeReceiptResultWithResponseAsync(resultId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze receipt operation.
+     * Get Analyze Receipt Result
+     *
+     * <p>Track the progress and obtain the result of the analyze receipt operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeReceiptResultAsync(UUID resultId, Context context) {
         return getAnalyzeReceiptResultWithResponseAsync(resultId, context)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze receipt operation.
+     * Get Analyze Receipt Result
+     *
+     * <p>Track the progress and obtain the result of the analyze receipt operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeOperationResult> getAnalyzeReceiptResultWithResponse(UUID resultId, Context context) {
+        final String accept = "application/json";
+        return service.getAnalyzeReceiptResultSync(this.getEndpoint(), resultId, accept, context);
+    }
+
+    /**
+     * Get Analyze Receipt Result
+     *
+     * <p>Track the progress and obtain the result of the analyze receipt operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3635,26 +5975,13 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeOperationResult getAnalyzeReceiptResult(UUID resultId) {
-        return getAnalyzeReceiptResultAsync(resultId).block();
+        return getAnalyzeReceiptResultWithResponse(resultId, Context.NONE).getValue();
     }
 
     /**
-     * Track the progress and obtain the result of the analyze receipt operation.
+     * Analyze Layout
      *
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeOperationResult> getAnalyzeReceiptResultWithResponse(UUID resultId, Context context) {
-        return getAnalyzeReceiptResultWithResponseAsync(resultId, context).block();
-    }
-
-    /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -3680,14 +6007,14 @@ public final class FormRecognizerClientImpl {
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsyncWithResponseAsync(
             ContentType contentType,
             List<String> pages,
             Language language,
@@ -3696,12 +6023,13 @@ public final class FormRecognizerClientImpl {
             Long contentLength) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeLayoutAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
                                 pagesConverted,
                                 language,
                                 readingOrder,
@@ -3713,7 +6041,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -3739,15 +6069,15 @@ public final class FormRecognizerClientImpl {
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsyncWithResponseAsync(
             ContentType contentType,
             List<String> pages,
             Language language,
@@ -3757,10 +6087,11 @@ public final class FormRecognizerClientImpl {
             Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeLayoutAsync(
                 this.getEndpoint(),
-                this.getApiVersion(),
                 pagesConverted,
                 language,
                 readingOrder,
@@ -3772,7 +6103,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -3798,27 +6131,38 @@ public final class FormRecognizerClientImpl {
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeLayoutAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeLayoutAsyncAsync(
             ContentType contentType,
             List<String> pages,
             Language language,
             ReadingOrder readingOrder,
             Flux<ByteBuffer> fileStream,
             Long contentLength) {
-        return analyzeLayoutAsyncWithResponseAsync(
-                        contentType, pages, language, readingOrder, fileStream, contentLength)
-                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeLayoutAsyncWithResponseAsync(
+                                contentType, pages, language, readingOrder, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -3844,15 +6188,15 @@ public final class FormRecognizerClientImpl {
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeLayoutAsyncAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeLayoutAsyncAsync(
             ContentType contentType,
             List<String> pages,
             Language language,
@@ -3860,13 +6204,24 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             Long contentLength,
             Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(
-                        contentType, pages, language, readingOrder, fileStream, contentLength, context)
-                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeLayoutAsyncWithResponseAsync(
+                                contentType, pages, language, readingOrder, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -3892,112 +6247,440 @@ public final class FormRecognizerClientImpl {
      * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
      *     basic(default), natural.
      * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeLayoutAsync(
+    public Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsyncWithResponseAsync(
             ContentType contentType,
             List<String> pages,
             Language language,
             ReadingOrder readingOrder,
-            Flux<ByteBuffer> fileStream,
+            BinaryData fileStream,
             Long contentLength) {
-        analyzeLayoutAsyncAsync(contentType, pages, language, readingOrder, fileStream, contentLength).block();
-    }
-
-    /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
-     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
-     * @param contentType Upload file type.
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
-     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
-     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
-     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
-     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
-     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
-     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
-     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
-     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
-     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
-     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
-     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
-     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
-     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
-     *     identification and multi language documents, so only provide a language code if you would like to force the
-     *     documented to be processed as that specific language.
-     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
-     *     basic(default), natural.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeLayoutAsyncResponse analyzeLayoutAsyncWithResponse(
-            ContentType contentType,
-            List<String> pages,
-            Language language,
-            ReadingOrder readingOrder,
-            Flux<ByteBuffer> fileStream,
-            Long contentLength,
-            Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(
-                        contentType, pages, language, readingOrder, fileStream, contentLength, context)
-                .block();
-    }
-
-    /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
-     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
-     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
-     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
-     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
-     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
-     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
-     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
-     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
-     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
-     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
-     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
-     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
-     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
-     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
-     *     identification and multi language documents, so only provide a language code if you would like to force the
-     *     documented to be processed as that specific language.
-     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
-     *     basic(default), natural.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
-            List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeLayoutAsync(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                pagesConverted,
+                                language,
+                                readingOrder,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsyncWithResponseAsync(
+            ContentType contentType,
+            List<String> pages,
+            Language language,
+            ReadingOrder readingOrder,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeLayoutAsync(
+                this.getEndpoint(),
+                pagesConverted,
+                language,
+                readingOrder,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeLayoutAsyncHeaders, Void> analyzeLayoutAsyncWithResponse(
+            ContentType contentType,
+            List<String> pages,
+            Language language,
+            ReadingOrder readingOrder,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeLayoutAsyncSync(
+                this.getEndpoint(),
+                pagesConverted,
+                language,
+                readingOrder,
+                contentType,
+                fileStream,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeLayoutAsyncAsync(
+            ContentType contentType,
+            List<String> pages,
+            Language language,
+            ReadingOrder readingOrder,
+            BinaryData fileStream,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeLayoutAsyncWithResponseAsync(
+                                contentType, pages, language, readingOrder, fileStream, contentLength),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeLayoutAsyncAsync(
+            ContentType contentType,
+            List<String> pages,
+            Language language,
+            ReadingOrder readingOrder,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeLayoutAsyncWithResponseAsync(
+                                contentType, pages, language, readingOrder, fileStream, contentLength, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeLayoutAsync(
+            ContentType contentType,
+            List<String> pages,
+            Language language,
+            ReadingOrder readingOrder,
+            BinaryData fileStream,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeLayoutAsyncWithResponse(
+                                contentType, pages, language, readingOrder, fileStream, contentLength, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeLayoutAsync(
+            ContentType contentType,
+            List<String> pages,
+            Language language,
+            ReadingOrder readingOrder,
+            BinaryData fileStream,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeLayoutAsyncWithResponse(
+                                contentType, pages, language, readingOrder, fileStream, contentLength, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsyncWithResponseAsync(
+            List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream) {
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeLayoutAsync(
+                                this.getEndpoint(),
                                 pagesConverted,
                                 language,
                                 readingOrder,
@@ -4007,7 +6690,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -4036,65 +6721,24 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
+    public Mono<ResponseBase<AnalyzeLayoutAsyncHeaders, Void>> analyzeLayoutAsyncWithResponseAsync(
             List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
         final String accept = "application/json";
         String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.analyzeLayoutAsync(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                pagesConverted,
-                language,
-                readingOrder,
-                fileStream,
-                accept,
-                context);
+                this.getEndpoint(), pagesConverted, language, readingOrder, fileStream, accept, context);
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
-     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * Analyze Layout
      *
-     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
-     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
-     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
-     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
-     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
-     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
-     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
-     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
-     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
-     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
-     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
-     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
-     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
-     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
-     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
-     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
-     *     identification and multi language documents, so only provide a language code if you would like to force the
-     *     documented to be processed as that specific language.
-     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
-     *     basic(default), natural.
-     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeLayoutAsyncAsync(
-            List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream) {
-        return analyzeLayoutAsyncWithResponseAsync(pages, language, readingOrder, fileStream)
-                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -4123,17 +6767,24 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeLayoutAsyncAsync(
+    public ResponseBase<AnalyzeLayoutAsyncHeaders, Void> analyzeLayoutAsyncWithResponse(
             List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(pages, language, readingOrder, fileStream, context)
-                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
+        final String accept = "application/json";
+        String pagesConverted =
+                (pages == null)
+                        ? null
+                        : pages.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeLayoutAsyncSync(
+                this.getEndpoint(), pagesConverted, language, readingOrder, fileStream, accept, context);
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -4161,15 +6812,27 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeLayoutAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeLayoutAsyncAsync(
             List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream) {
-        analyzeLayoutAsyncAsync(pages, language, readingOrder, fileStream).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeLayoutAsyncWithResponseAsync(pages, language, readingOrder, fileStream),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      *
@@ -4198,96 +6861,215 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeLayoutAsyncResponse analyzeLayoutAsyncWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeLayoutAsyncAsync(
             List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
-        return analyzeLayoutAsyncWithResponseAsync(pages, language, readingOrder, fileStream, context).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.analyzeLayoutAsyncWithResponseAsync(pages, language, readingOrder, fileStream, context),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeLayoutAsync(
+            List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeLayoutAsyncWithResponse(pages, language, readingOrder, fileStream, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyze Layout
+     *
+     * <p>Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     *
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     *     get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     *     (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’),
+     *     Crimean Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian
+     *     (‘et’), Fijian (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’),
+     *     German (‘de’), Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw
+     *     (‘mww’), Hungarian (‘hu’), Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian
+     *     (‘it’), Japanese (‘ja’), Javanese (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’),
+     *     Kashubian (‘csb’), Khasi (‘kha’), Korean (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’),
+     *     Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’), Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish
+     *     (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese
+     *     (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’),
+     *     Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük
+     *     (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are
+     *     supported (print – seventy-three languages and handwritten – English only). Layout supports auto language
+     *     identification and multi language documents, so only provide a language code if you would like to force the
+     *     documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     *     basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeLayoutAsync(
+            List<String> pages, Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.analyzeLayoutAsyncWithResponse(pages, language, readingOrder, fileStream, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{endpoint}/formrecognizer/v2.1".replace("{endpoint}", this.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Get Analyze Layout Result
+     *
+     * <p>Track the progress and obtain the result of the analyze layout operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAnalyzeLayoutResult(
-                                this.getEndpoint(), this.getApiVersion(), resultId, accept, context));
+                context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, accept, context));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
+     * Get Analyze Layout Result
+     *
+     * <p>Track the progress and obtain the result of the analyze layout operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(
             UUID resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeLayoutResult(this.getEndpoint(), this.getApiVersion(), resultId, accept, context);
+        return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, accept, context);
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
+     * Get Analyze Layout Result
+     *
+     * <p>Track the progress and obtain the result of the analyze layout operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeLayoutResultAsync(UUID resultId) {
-        return getAnalyzeLayoutResultWithResponseAsync(resultId)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getAnalyzeLayoutResultWithResponseAsync(resultId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
+     * Get Analyze Layout Result
+     *
+     * <p>Track the progress and obtain the result of the analyze layout operation.
      *
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return status and result of the queued analyze operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeLayoutResultAsync(UUID resultId, Context context) {
         return getAnalyzeLayoutResultWithResponseAsync(resultId, context)
-                .flatMap(
-                        (Response<AnalyzeOperationResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
+     * Get Analyze Layout Result
+     *
+     * <p>Track the progress and obtain the result of the analyze layout operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeOperationResult> getAnalyzeLayoutResultWithResponse(UUID resultId, Context context) {
+        final String accept = "application/json";
+        return service.getAnalyzeLayoutResultSync(this.getEndpoint(), resultId, accept, context);
+    }
+
+    /**
+     * Get Analyze Layout Result
+     *
+     * <p>Track the progress and obtain the result of the analyze layout operation.
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4297,38 +7079,24 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeOperationResult getAnalyzeLayoutResult(UUID resultId) {
-        return getAnalyzeLayoutResultAsync(resultId).block();
+        return getAnalyzeLayoutResultWithResponse(resultId, Context.NONE).getValue();
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
+     * List Custom Models
      *
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeOperationResult> getAnalyzeLayoutResultWithResponse(UUID resultId, Context context) {
-        return getAnalyzeLayoutResultWithResponseAsync(resultId, context).block();
-    }
-
-    /**
-     * Get information about all custom models.
+     * <p>Get information about all custom models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
         final String op = "full";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context))
+        return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4341,19 +7109,22 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Get information about all custom models.
+     * List Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
         final String op = "full";
         final String accept = "application/json";
-        return service.listCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context)
+        return service.listCustomModels(this.getEndpoint(), op, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4366,11 +7137,13 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Get information about all custom models.
+     * List Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelInfo> listCustomModelsAsync() {
@@ -4379,13 +7152,15 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Get information about all custom models.
+     * List Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelInfo> listCustomModelsAsync(Context context) {
@@ -4395,106 +7170,172 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Get information about all custom models.
+     * List Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelInfo> listCustomModels() {
-        return new PagedIterable<>(listCustomModelsAsync());
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ModelInfo> listCustomModelsSinglePage() {
+        final String op = "full";
+        final String accept = "application/json";
+        Response<Models> res = service.listCustomModelsSync(this.getEndpoint(), op, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getModelList(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
-     * Get information about all custom models.
+     * List Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelInfo> listCustomModels(Context context) {
-        return new PagedIterable<>(listCustomModelsAsync(context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ModelInfo> listCustomModelsSinglePage(Context context) {
+        final String op = "full";
+        final String accept = "application/json";
+        Response<Models> res = service.listCustomModelsSync(this.getEndpoint(), op, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getModelList(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
-     * Get information about all custom models.
+     * List Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelInfo> listCustomModels() {
+        return new PagedIterable<>(
+                () -> listCustomModelsSinglePage(Context.NONE), nextLink -> listCustomModelsNextSinglePage(nextLink));
+    }
+
+    /**
+     * List Custom Models
+     *
+     * <p>Get information about all custom models.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all custom models as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelInfo> listCustomModels(Context context) {
+        return new PagedIterable<>(
+                () -> listCustomModelsSinglePage(context),
+                nextLink -> listCustomModelsNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get Custom Models
+     *
+     * <p>Get information about all custom models.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all custom models along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Models>> getCustomModelsWithResponseAsync() {
         final String op = "summary";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.getCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context));
+        return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, accept, context));
     }
 
     /**
-     * Get information about all custom models.
+     * Get Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Models>> getCustomModelsWithResponseAsync(Context context) {
         final String op = "summary";
         final String accept = "application/json";
-        return service.getCustomModels(this.getEndpoint(), this.getApiVersion(), op, accept, context);
+        return service.getCustomModels(this.getEndpoint(), op, accept, context);
     }
 
     /**
-     * Get information about all custom models.
+     * Get Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Models> getCustomModelsAsync() {
-        return getCustomModelsWithResponseAsync()
-                .flatMap(
-                        (Response<Models> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getCustomModelsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get information about all custom models.
+     * Get Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return information about all custom models on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Models> getCustomModelsAsync(Context context) {
-        return getCustomModelsWithResponseAsync(context)
-                .flatMap(
-                        (Response<Models> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getCustomModelsWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get information about all custom models.
+     * Get Custom Models
+     *
+     * <p>Get information about all custom models.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all custom models along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Models> getCustomModelsWithResponse(Context context) {
+        final String op = "summary";
+        final String accept = "application/json";
+        return service.getCustomModelsSync(this.getEndpoint(), op, accept, context);
+    }
+
+    /**
+     * Get Custom Models
+     *
+     * <p>Get information about all custom models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4502,39 +7343,25 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Models getCustomModels() {
-        return getCustomModelsAsync().block();
-    }
-
-    /**
-     * Get information about all custom models.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Models> getCustomModelsWithResponse(Context context) {
-        return getCustomModelsWithResponseAsync(context).block();
+        return getCustomModelsWithResponse(Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation.
+     * @return response to the list custom models operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listCustomModelsNext(
-                                        nextLink, this.getEndpoint(), this.getApiVersion(), accept, context))
+                        context -> service.listCustomModelsNext(nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4549,17 +7376,19 @@ public final class FormRecognizerClientImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation.
+     * @return response to the list custom models operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
-        return service.listCustomModelsNext(nextLink, this.getEndpoint(), this.getApiVersion(), accept, context)
+        return service.listCustomModelsNext(nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4569,5 +7398,52 @@ public final class FormRecognizerClientImpl {
                                         res.getValue().getModelList(),
                                         res.getValue().getNextLink(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to the list custom models operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ModelInfo> listCustomModelsNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<Models> res = service.listCustomModelsNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getModelList(),
+                res.getValue().getNextLink(),
+                null);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to the list custom models operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ModelInfo> listCustomModelsNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<Models> res = service.listCustomModelsNextSync(nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getModelList(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

@@ -43,6 +43,9 @@ public final class DocumentResult {
     @JsonProperty(value = "fields", required = true)
     private Map<String, FieldValue> fields;
 
+    /** Creates an instance of DocumentResult class. */
+    public DocumentResult() {}
+
     /**
      * Get the docType property: Document type.
      *

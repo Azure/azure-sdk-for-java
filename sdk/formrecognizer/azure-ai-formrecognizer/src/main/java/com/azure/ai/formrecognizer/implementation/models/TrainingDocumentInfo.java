@@ -35,6 +35,9 @@ public final class TrainingDocumentInfo {
     @JsonProperty(value = "status", required = true)
     private TrainStatus status;
 
+    /** Creates an instance of TrainingDocumentInfo class. */
+    public TrainingDocumentInfo() {}
+
     /**
      * Get the documentName property: Training document name.
      *
