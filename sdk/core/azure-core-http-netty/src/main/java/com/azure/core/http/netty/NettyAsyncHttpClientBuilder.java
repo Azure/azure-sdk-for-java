@@ -5,8 +5,13 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.AzureTimeoutConnectionObserver;
+import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
+import com.azure.core.http.netty.implementation.HttpProxyHandler;
+import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
+import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
+import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
+import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -18,11 +23,17 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
+import reactor.netty.Connection;
+import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.transport.AddressUtils;
 import reactor.netty.transport.ProxyProvider;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
@@ -147,6 +158,10 @@ public class NettyAsyncHttpClientBuilder {
             addressResolverWasSetByBuilder = true;
         }
 
+        long writeTimeout = getTimeoutMillis(this.writeTimeout, DEFAULT_WRITE_TIMEOUT);
+        long responseTimeout = getTimeoutMillis(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
+        long readTimeout = getTimeoutMillis(this.readTimeout, DEFAULT_READ_TIMEOUT);
+
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
@@ -158,9 +173,10 @@ public class NettyAsyncHttpClientBuilder {
                 DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
-            .observe(new AzureTimeoutConnectionObserver(getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
-                getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT),
-                getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT)));
+            .doOnRequest((request, connection) -> doOnRequest(request, connection, writeTimeout))
+            .doAfterRequest((request, connection) -> doAfterRequest(request, connection, responseTimeout))
+            .doOnResponse((ignored, connection) -> doOnResponse(connection, readTimeout))
+            .doAfterResponseSuccess((ignored, connection) -> doAfterResponseSuccess(connection));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -181,7 +197,6 @@ public class NettyAsyncHttpClientBuilder {
         AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
 
         boolean addProxyHandler = false;
-        Pattern nonProxyHostsPattern = null;
 
         if (eventLoopGroup != null) {
             nettyHttpClient = nettyHttpClient.runOn(eventLoopGroup);
@@ -191,10 +206,24 @@ public class NettyAsyncHttpClientBuilder {
         if (buildProxyOptions != null) {
             // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
             if (handler != null) {
+                /*
+                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
+                 * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
+                 * before any request data is sent.
+                 */
                 addProxyHandler = true;
-                nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
+                Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
                     ? null
                     : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+                nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
+                    if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
+                        channel.pipeline()
+                            .addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
+                                AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
+                                handler, proxyChallengeHolder));
+                    }
+                });
             } else {
                 nettyHttpClient = nettyHttpClient.proxy(proxy ->
                     proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
@@ -211,8 +240,7 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
-        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, addProxyHandler, buildProxyOptions,
-            nonProxyHostsPattern, handler, proxyChallengeHolder);
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, addProxyHandler);
     }
 
     /**
@@ -497,5 +525,78 @@ public class NettyAsyncHttpClientBuilder {
 
         // Return the maximum of the timeout period and the minimum allowed timeout period.
         return Math.max(configuredTimeout.toMillis(), MINIMUM_TIMEOUT);
+    }
+
+    private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {
+        if (nonProxyHostsPattern == null) {
+            return true;
+        }
+
+        if (!(socketAddress instanceof InetSocketAddress)) {
+            return true;
+        }
+
+        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
+
+        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
+    }
+
+    /*
+     * Adds request handlers:
+     * - write timeout handler once the request is ready to begin sending.
+     * - progress handler if progress tracking has been requested.
+     */
+    private void doOnRequest(HttpClientRequest request, Connection connection, long writeTimeout) {
+        if (writeTimeout > 0) {
+            connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
+        }
+
+        AzureNettyHttpClientContext attr = request.currentContextView().getOrDefault(
+            AzureNettyHttpClientContext.KEY, null);
+        if (attr != null && attr.getProgressReporter() != null) {
+            connection.addHandlerLast(RequestProgressReportingHandler.HANDLER_NAME,
+                new RequestProgressReportingHandler(attr.getProgressReporter()));
+        }
+    }
+
+    /*
+     * After request has been sent:
+     * - Remove Progress Handler
+     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
+     * handler.
+     */
+    private static void doAfterRequest(HttpClientRequest request, Connection connection, long responseTimeout) {
+        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME);
+        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
+
+        AzureNettyHttpClientContext attr = request.currentContextView().getOrDefault(
+            AzureNettyHttpClientContext.KEY, null);
+        long responseTimeoutMillis = (attr != null && attr.getResponseTimeoutOverride() != null)
+            ? attr.getResponseTimeoutOverride()
+            : responseTimeout;
+
+        if (responseTimeoutMillis > 0) {
+            connection.addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME,
+                new ResponseTimeoutHandler(responseTimeoutMillis));
+        }
+    }
+
+    /*
+     * Remove response timeout handler from the connection as the response has been received, then add read timeout
+     * handler.
+     */
+    private static void doOnResponse(Connection connection, long readTimeout) {
+        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME);
+
+        if (readTimeout > 0) {
+            connection.addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(readTimeout));
+        }
+    }
+
+    /*
+     * Remove read timeout handler as the complete response has been received.
+     */
+    private static void doAfterResponseSuccess(Connection connection) {
+        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
     }
 }

@@ -8,9 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.AzureNettyHttpClientAttr;
-import com.azure.core.http.netty.implementation.ChallengeHolder;
-import com.azure.core.http.netty.implementation.HttpProxyHandler;
+import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -20,7 +18,6 @@ import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
-import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -43,21 +40,16 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.transport.AddressUtils;
 import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
-import java.util.regex.Pattern;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
@@ -83,10 +75,6 @@ class NettyAsyncHttpClient implements HttpClient {
     final boolean disableBufferCopy;
 
     final boolean addProxyHandler;
-    final ProxyOptions proxyOptions;
-    final Pattern nonProxyHostsPattern;
-    final AuthorizationChallengeHandler handler;
-    final AtomicReference<ChallengeHolder> proxyChallengeHolder;
 
     final reactor.netty.http.client.HttpClient nettyClient;
 
@@ -97,15 +85,10 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
-        boolean addProxyHandler, ProxyOptions proxyOptions, Pattern nonProxyHostsPattern,
-        AuthorizationChallengeHandler handler, AtomicReference<ChallengeHolder> proxyChallengeHolder) {
+        boolean addProxyHandler) {
         this.nettyClient = nettyClient;
         this.disableBufferCopy = disableBufferCopy;
         this.addProxyHandler = addProxyHandler;
-        this.proxyOptions = proxyOptions;
-        this.nonProxyHostsPattern = nonProxyHostsPattern;
-        this.handler = handler;
-        this.proxyChallengeHolder = proxyChallengeHolder;
     }
 
     /**
@@ -131,31 +114,13 @@ class NettyAsyncHttpClient implements HttpClient {
             .orElse(null);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        reactor.netty.http.client.HttpClient configuredClient = nettyClient
-            .attr(AzureNettyHttpClientAttr.ATTRIBUTE_KEY, new AzureNettyHttpClientAttr(responseTimeout,
-                progressReporter))
-            .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
-                if (addProxyHandler) {
-                    /*
-                     * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
-                     * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
-                     * before any request data is sent.
-                     *
-                     * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
-                     */
-                    if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
-                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
-                            AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler,
-                            proxyChallengeHolder));
-                    }
-                }
-            });
-
-        return configuredClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
+        return nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
                 headersEagerlyConverted))
+            .contextWrite(reactor.util.context.Context.of(AzureNettyHttpClientContext.KEY,
+                new AzureNettyHttpClientContext(responseTimeout, progressReporter)))
             .single()
             .flatMap(response -> {
                 if (addProxyHandler && response.getStatusCode() == 407) {
@@ -338,20 +303,6 @@ class NettyAsyncHttpClient implements HttpClient {
                     disableBufferCopy, headersEagerlyConverted));
             }
         };
-    }
-
-    private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {
-        if (nonProxyHostsPattern == null) {
-            return true;
-        }
-
-        if (!(socketAddress instanceof InetSocketAddress)) {
-            return true;
-        }
-
-        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
-
-        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
     }
 
     private static HttpMethod toReactorNettyHttpMethod(com.azure.core.http.HttpMethod azureHttpMethod) {

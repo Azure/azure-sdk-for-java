@@ -4,18 +4,16 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.util.ProgressReporter;
-import io.netty.util.AttributeKey;
 
 /**
- * A holder for all attributes that may be passed through the Netty HttpClient.
+ * A holder for all context that may be passed through the Netty HttpClient.
  */
-public final class AzureNettyHttpClientAttr {
-    public static final AttributeKey<AzureNettyHttpClientAttr> ATTRIBUTE_KEY =
-        AttributeKey.newInstance("azure-sdk-pipeline-data");
+public final class AzureNettyHttpClientContext {
+    public static final String KEY = "azure-sdk-pipeline-data";
     private final Long responseTimeoutOverride;
     private final ProgressReporter progressReporter;
 
-    public AzureNettyHttpClientAttr(Long responseTimeoutOverride, ProgressReporter progressReporter) {
+    public AzureNettyHttpClientContext(Long responseTimeoutOverride, ProgressReporter progressReporter) {
         this.responseTimeoutOverride = responseTimeoutOverride;
         this.progressReporter = progressReporter;
     }
