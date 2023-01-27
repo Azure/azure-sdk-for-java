@@ -114,14 +114,19 @@ class NettyAsyncHttpClient implements HttpClient {
             .orElse(null);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        return nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
+        Flux<HttpResponse> requestAndResponseFlux = nettyClient
+            .request(toReactorNettyHttpMethod(request.getHttpMethod()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
-                headersEagerlyConverted))
-            .contextWrite(reactor.util.context.Context.of(AzureNettyHttpClientContext.KEY,
-                new AzureNettyHttpClientContext(responseTimeout, progressReporter)))
-            .single()
+                headersEagerlyConverted));
+
+        if (responseTimeout != null || progressReporter != null) {
+            requestAndResponseFlux = requestAndResponseFlux.contextWrite(ctx -> ctx.put(AzureNettyHttpClientContext.KEY,
+                new AzureNettyHttpClientContext(responseTimeout, progressReporter)));
+        }
+
+        return requestAndResponseFlux.single()
             .flatMap(response -> {
                 if (addProxyHandler && response.getStatusCode() == 407) {
                     return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
