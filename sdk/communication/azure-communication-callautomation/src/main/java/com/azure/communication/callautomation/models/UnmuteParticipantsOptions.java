@@ -14,7 +14,7 @@ import java.util.UUID;
  * The options for unmuting a participant.
  */
 @Fluent
-public final class UnmuteParticipantOptions {
+public final class UnmuteParticipantsOptions {
     /**
      * The participants to unmute.
      *  Only one participant currently supported.
@@ -36,7 +36,7 @@ public final class UnmuteParticipantOptions {
      *
      * @param targetParticipant The participants to unmute.
      */
-    public UnmuteParticipantOptions(List<CommunicationIdentifier> targetParticipant) {
+    public UnmuteParticipantsOptions(List<CommunicationIdentifier> targetParticipant) {
         this.targetParticipant = targetParticipant;
         this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
@@ -74,7 +74,7 @@ public final class UnmuteParticipantOptions {
      * @param repeatabilityHeaders The repeatability headers configuration.
      * @return the RemoveParticipantsOptions object itself.
      */
-    public UnmuteParticipantOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+    public UnmuteParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
@@ -85,7 +85,7 @@ public final class UnmuteParticipantOptions {
      * @param operationContext the operationContext to set
      * @return the RemoveParticipantsOptions object itself.
      */
-    public UnmuteParticipantOptions setOperationContext(String operationContext) {
+    public UnmuteParticipantsOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

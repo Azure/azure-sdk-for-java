@@ -10,15 +10,13 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
-import com.azure.communication.callautomation.models.MuteAllParticipantsOptions;
-import com.azure.communication.callautomation.models.MuteParticipantOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
-import com.azure.communication.callautomation.models.UnmuteAllParticipantsOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -238,36 +236,13 @@ public class CallConnection {
 
     /**
      * Mute a single participant in the call.
-     * @param muteParticipantOptions - Options for the request.
+     * @param muteParticipantsOptions - Options for the request.
      * @param context A {@link Context} representing the request context.
      * @return a Response containing the MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResult> muteParticipantWithResponse(MuteParticipantOptions muteParticipantOptions, Context context) {
-        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantOptions, context).block();
-    }
-
-    /**
-     * Mute all participants in the call, except for the initiator.
-     * @param requestInitiator Optional - if passed, this participant won't be muted. If not passed,
-     *                         the server won't be muted.
-     * @return a MuteParticipantsResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResult muteAllParticipants(CommunicationIdentifier requestInitiator) {
-        return callConnectionAsync.muteAllParticipantsAsync(requestInitiator).block();
-    }
-
-
-    /**
-     * Mute all participants in the call, except for the initiator.
-     * @param options - Options for the operation.
-     * @param context A {@link Context} representing the request context.
-     * @return a Response containing a MuteParticipantsResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResult> muteAllParticipantsWithResponse(MuteAllParticipantsOptions options, Context context) {
-        return callConnectionAsync.muteAllParticipantsWithResponseInternal(options, context).block();
+    public Response<MuteParticipantsResult> muteParticipantWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantsOptions, context).block();
     }
 
     /**
@@ -282,34 +257,13 @@ public class CallConnection {
 
     /**
      * Mute a single participant in the call.
-     * @param unmuteParticipantOptions - Options for the request.
+     * @param unmuteParticipantsOptions - Options for the request.
      * @param context A {@link Context} representing the request context.
      * @return a Response containing the UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResult> unmuteParticipantWithResponse(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
-        return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantOptions, context).block();
-    }
-
-    /**
-     * Unmute all participants in the call.
-     * @return an UnmuteParticipantsResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResult unmuteAllParticipants() {
-        return callConnectionAsync.unmuteAllParticipantsAsync().block();
-    }
-
-
-    /**
-     * Unmute all participants in the call, except for the initiator.
-     * @param options - Options for the operation.
-     * @param context A {@link Context} representing the request context.
-     * @return a Response containing an UnmuteParticipantsResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResult> unmuteAllParticipantsWithResponse(UnmuteAllParticipantsOptions options, Context context) {
-        return callConnectionAsync.unmuteAllParticipantsWithResponseInternal(options, context).block();
+    public Response<UnmuteParticipantsResult> unmuteParticipantWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions, Context context) {
+        return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context).block();
     }
 
     //region Content management Actions
