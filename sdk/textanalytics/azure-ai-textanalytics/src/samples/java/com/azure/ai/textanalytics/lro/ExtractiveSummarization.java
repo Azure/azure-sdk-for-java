@@ -56,9 +56,7 @@ public class ExtractiveSummarization {
             client.beginExtractSummary(documents,
                 "en",
                 new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK));
-
         syncPoller.waitForCompletion();
-
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (ExtractSummaryResult documentResult : resultCollection) {
                 if (!documentResult.isError()) {

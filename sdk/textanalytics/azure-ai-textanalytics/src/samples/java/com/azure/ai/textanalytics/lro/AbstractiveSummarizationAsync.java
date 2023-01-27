@@ -80,7 +80,6 @@ public class AbstractiveSummarizationAsync {
     }
 
     private static void processResult(AbstractSummaryResultCollection actionsResult) {
-
         for (AbstractSummaryResult documentResult : actionsResult) {
             if (!documentResult.isError()) {
                 System.out.println("\tAbstract summary sentences:");

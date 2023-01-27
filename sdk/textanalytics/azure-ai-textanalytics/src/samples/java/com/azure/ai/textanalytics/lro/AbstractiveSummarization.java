@@ -57,9 +57,7 @@ public class AbstractiveSummarization {
             client.beginAbstractSummary(documents,
                 "en",
                 new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setMaxSentenceCount(3));
-
         syncPoller.waitForCompletion();
-
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (AbstractSummaryResult documentResult : resultCollection) {
                 if (!documentResult.isError()) {
