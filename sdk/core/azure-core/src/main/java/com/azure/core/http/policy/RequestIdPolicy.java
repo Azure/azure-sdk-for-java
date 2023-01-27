@@ -33,17 +33,6 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
     private final HttpHeaderName requestIdHeaderName;
 
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            HttpHeaders headers = context.getHttpRequest().getHeaders();
-            String requestId = headers.getValue(requestIdHeaderName);
-            if (requestId == null) {
-                headers.set(requestIdHeaderName, UUID.randomUUID().toString());
-            }
-        }
-    };
-
     /**
      * Creates  {@link RequestIdPolicy} with provided {@code requestIdHeaderName}.
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
@@ -62,11 +51,22 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        setRequestIdHeader(requestIdHeaderName, context.getHttpRequest().getHeaders());
+
+        return next.process();
     }
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        setRequestIdHeader(requestIdHeaderName, context.getHttpRequest().getHeaders());
+
+        return next.processSync();
+    }
+
+    private static void setRequestIdHeader(HttpHeaderName requestIdHeaderName, HttpHeaders headers) {
+        String requestId = headers.getValue(requestIdHeaderName);
+        if (requestId == null) {
+            headers.set(requestIdHeaderName, UUID.randomUUID().toString());
+        }
     }
 }
 

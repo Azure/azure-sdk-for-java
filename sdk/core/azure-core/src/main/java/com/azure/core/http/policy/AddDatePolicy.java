@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -25,18 +26,6 @@ public class AddDatePolicy implements HttpPipelinePolicy {
             .withZone(ZoneOffset.UTC)
             .withLocale(Locale.US);
 
-    private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-            try {
-                context.getHttpRequest().setHeader(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
-            } catch (IllegalArgumentException ignored) {
-                context.getHttpRequest().setHeader(HttpHeaderName.DATE, FORMATTER.format(now));
-            }
-        }
-    };
-
     /**
      * Creates a new instance of {@link AddDatePolicy}.
      */
@@ -45,11 +34,24 @@ public class AddDatePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return INNER.process(context, next);
+        addDateHeader(context.getHttpRequest().getHeaders());
+
+        return next.process();
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return INNER.processSync(context, next);
+        addDateHeader(context.getHttpRequest().getHeaders());
+
+        return next.processSync();
+    }
+
+    private static void addDateHeader(HttpHeaders headers) {
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        try {
+            headers.set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
+        } catch (IllegalArgumentException ignored) {
+            headers.set(HttpHeaderName.DATE, FORMATTER.format(now));
+        }
     }
 }
