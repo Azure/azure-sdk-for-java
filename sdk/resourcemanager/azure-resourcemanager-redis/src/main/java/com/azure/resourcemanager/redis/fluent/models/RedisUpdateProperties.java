@@ -22,6 +22,10 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /** Creates an instance of RedisUpdateProperties class. */
+    public RedisUpdateProperties() {
+    }
+
     /**
      * Get the sku property: The SKU of the Redis cache to deploy.
      *

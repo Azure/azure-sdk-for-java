@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Redis ListUpgradeNotifications. */
 public final class RedisListUpgradeNotificationsSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheListUpgradeNotifications.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheListUpgradeNotifications.json
      */
     /**
      * Sample code: RedisCacheListUpgradeNotifications.

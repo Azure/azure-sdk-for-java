@@ -63,7 +63,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientV")
-    private interface VirtualNetworkRulesService {
+    public interface VirtualNetworkRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

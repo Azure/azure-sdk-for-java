@@ -26,6 +26,9 @@ public final class AgeResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of AgeResolution class. */
+    public AgeResolution() {}
+
     /**
      * Get the unit property: The Age Unit of measurement.
      *

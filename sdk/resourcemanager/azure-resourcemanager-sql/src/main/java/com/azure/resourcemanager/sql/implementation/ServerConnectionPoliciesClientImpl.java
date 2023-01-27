@@ -64,7 +64,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerConnectionPoliciesService {
+    public interface ServerConnectionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
