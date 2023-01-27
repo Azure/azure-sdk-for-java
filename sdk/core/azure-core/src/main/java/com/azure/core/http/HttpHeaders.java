@@ -105,18 +105,16 @@ public class HttpHeaders implements Iterable<HttpHeader> {
             return this;
         }
 
-        headers.compute(formattedName, (key, header) -> addCompute(key, header, name, value));
+        headers.compute(formattedName, (key, header) -> {
+            if (header == null) {
+                return new HttpHeader(name, value);
+            } else {
+                header.addValue(value);
+                return header;
+            }
+        });
 
         return this;
-    }
-
-    private static HttpHeader addCompute(String key, HttpHeader header, String name, String value) {
-        if (header == null) {
-            return new HttpHeader(name, value);
-        } else {
-            header.addValue(value);
-            return header;
-        }
     }
 
     /**

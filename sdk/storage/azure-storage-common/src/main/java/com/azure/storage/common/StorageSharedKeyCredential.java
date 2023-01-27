@@ -20,6 +20,7 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.URL;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -239,7 +240,8 @@ public final class StorageSharedKeyCredential {
         final StringBuilder canonicalizedHeaders = new StringBuilder(
             stringBuilderSize + (2 * xmsHeaders.size()) - 1);
 
-        xmsHeaders.sort((o1, o2) -> ROOT_COLLATOR.compare(o1.getName(), o2.getName()));
+        xmsHeaders.sort(Comparator.comparing(Header::getName));
+        //xmsHeaders.sort((o1, o2) -> ROOT_COLLATOR.compare(o1.getName(), o2.getName()));
 
         for (Header xmsHeader : xmsHeaders) {
             if (canonicalizedHeaders.length() > 0) {
