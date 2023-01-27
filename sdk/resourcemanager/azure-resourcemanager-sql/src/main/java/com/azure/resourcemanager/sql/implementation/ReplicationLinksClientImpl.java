@@ -62,7 +62,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
-    private interface ReplicationLinksService {
+    public interface ReplicationLinksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

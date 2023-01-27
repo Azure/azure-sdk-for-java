@@ -72,7 +72,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceAzureADOnlyAuthenticationsService {
+    public interface ManagedInstanceAzureADOnlyAuthenticationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

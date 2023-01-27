@@ -72,7 +72,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedBackupShortTermRetentionPoliciesService {
+    public interface ManagedBackupShortTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

@@ -81,7 +81,7 @@ public final class ManagedInstancesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstancesService {
+    public interface ManagedInstancesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances")
         @ExpectedResponses({200})
