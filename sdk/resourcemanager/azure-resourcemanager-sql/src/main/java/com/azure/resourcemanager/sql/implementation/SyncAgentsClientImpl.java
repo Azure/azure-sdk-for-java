@@ -67,7 +67,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface SyncAgentsService {
+    public interface SyncAgentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

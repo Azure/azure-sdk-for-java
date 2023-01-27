@@ -70,7 +70,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientL")
-    private interface LongTermRetentionManagedInstanceBackupsService {
+    public interface LongTermRetentionManagedInstanceBackupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"

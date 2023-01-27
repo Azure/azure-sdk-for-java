@@ -66,7 +66,7 @@ public final class ManagedDatabaseTransparentDataEncryptionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseTransparentDataEncryptionsService {
+    public interface ManagedDatabaseTransparentDataEncryptionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
