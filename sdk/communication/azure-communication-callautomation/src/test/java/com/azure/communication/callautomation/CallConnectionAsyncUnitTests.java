@@ -24,11 +24,13 @@ import com.azure.communication.callautomation.models.TransferToParticipantCallOp
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -351,6 +353,38 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertThrows(CallingServerErrorException.class, () ->  callConnectionAsync.muteParticipantsAsync(
             new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
     }
+
+    @Test
+    public void muteNotAcsParticipant() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>("", 400)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        assertThrows(CallingServerErrorException.class, () ->  callConnectionAsync.muteParticipantsAsync(
+            new PhoneNumberIdentifier("+11234567890")).block());
+    }
+
+    @Test
+    public void muteMoreThanOneParticipantWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>("", 400)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MuteParticipantsOptions muteParticipantOptions = new MuteParticipantsOptions(
+            Arrays.asList(
+                new CommunicationUserIdentifier(CALL_TARGET_ID),
+                new CommunicationUserIdentifier(CALL_TARGET_ID)
+            ))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        assertThrows(CallingServerErrorException.class,
+            () ->  callConnectionAsync.muteParticipantsWithResponse(muteParticipantOptions).block());
+    }
+
     @Test
     public void unmuteParticipants() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
@@ -380,6 +414,18 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void unmuteNotAcsParticipant() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>("", 400)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        assertThrows(CallingServerErrorException.class, () ->  callConnectionAsync.unmuteParticipantsAsync(
+            new PhoneNumberIdentifier("+11234567890")).block());
+    }
+
+    @Test
     public void unmuteParticipantsWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -403,5 +449,24 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(repeatabilityHeaders);
         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+    }
+
+    @Test
+    public void unmuteMoreThanOneParticipantWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>("", 400)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        UnmuteParticipantsOptions muteParticipantOptions = new UnmuteParticipantsOptions(
+            Arrays.asList(
+                new CommunicationUserIdentifier(CALL_TARGET_ID),
+                new CommunicationUserIdentifier(CALL_TARGET_ID)
+            ))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        assertThrows(CallingServerErrorException.class,
+            () ->  callConnectionAsync.unmuteParticipantsWithResponse(muteParticipantOptions).block());
     }
 }

@@ -398,7 +398,7 @@ public class CallConnectionAsync {
 
     /**
      * Mutes participants in the call.
-     * @param targetParticipant - Participant to be muted.
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -444,7 +444,7 @@ public class CallConnectionAsync {
 
     /**
      * Unmutes participants in the call.
-     * @param targetParticipant - Participant to be unmuted.
+     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
      * @return An UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

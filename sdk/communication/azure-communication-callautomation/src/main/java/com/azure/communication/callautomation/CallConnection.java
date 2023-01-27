@@ -226,7 +226,7 @@ public class CallConnection {
     /**
      * Mutes participants in the call.
      *
-     * @param targetParticipant - Participant to be muted.
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -235,7 +235,7 @@ public class CallConnection {
     }
 
     /**
-     * Mute a single participant in the call.
+     * Mute participants in the call.
      * @param muteParticipantsOptions - Options for the request.
      * @param context A {@link Context} representing the request context.
      * @return a Response containing the MuteParticipantsResult object.
@@ -247,7 +247,7 @@ public class CallConnection {
 
     /**
      * Unmutes participants in the call.
-     * @param targetParticipant - Participant to be muted.
+     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
      * @return An UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -256,7 +256,7 @@ public class CallConnection {
     }
 
     /**
-     * Mute a single participant in the call.
+     * Unmutes participants in the call.
      * @param unmuteParticipantsOptions - Options for the request.
      * @param context A {@link Context} representing the request context.
      * @return a Response containing the UnmuteParticipantsResult object.

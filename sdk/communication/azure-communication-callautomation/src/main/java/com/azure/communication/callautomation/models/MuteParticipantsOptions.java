@@ -18,6 +18,7 @@ public final class MuteParticipantsOptions {
     /**
      * The participants to mute.
      * Only one participant currently supported.
+     * Only ACS Users are currently supported.
      */
     private final List<CommunicationIdentifier> targetParticipant;
 

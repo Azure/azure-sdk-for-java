@@ -18,6 +18,7 @@ public final class UnmuteParticipantsOptions {
     /**
      * The participants to unmute.
      *  Only one participant currently supported.
+     *  Only ACS Users are currently supported.
      */
     private final List<CommunicationIdentifier> targetParticipant;
 
