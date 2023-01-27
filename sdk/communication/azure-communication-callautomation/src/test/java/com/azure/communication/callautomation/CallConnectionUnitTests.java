@@ -279,7 +279,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void muteParticipant() {
+    public void muteParticipants() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(serializeObject(new MuteParticipantsResponseInternal()), 202)
@@ -287,14 +287,14 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         MuteParticipantsResult muteParticipantsResult =
-            callConnection.muteParticipant(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+            callConnection.muteParticipants(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         assertNotNull(muteParticipantsResult);
         assertNull(muteParticipantsResult.getOperationContext());
     }
 
     @Test
-    public void muteParticipantWithResponse() {
+    public void muteParticipantsWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(serializeObject(new MuteParticipantsResponseInternal()
@@ -307,7 +307,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
         Response<MuteParticipantsResult> muteParticipantsResultResponse =
-            callConnection.muteParticipantWithResponse(muteParticipantsOptions, Context.NONE);
+            callConnection.muteParticipantsWithResponse(muteParticipantsOptions, Context.NONE);
 
         assertNotNull(muteParticipantsResultResponse);
         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
@@ -323,7 +323,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         UnmuteParticipantsResult unmuteParticipantsResult =
-            callConnection.unmuteParticipant(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+            callConnection.unmuteParticipants(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         assertNotNull(unmuteParticipantsResult);
         assertNull(unmuteParticipantsResult.getOperationContext());
@@ -343,7 +343,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
         Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse =
-            callConnection.unmuteParticipantWithResponse(muteParticipantOptions, Context.NONE);
+            callConnection.unmuteParticipantsWithResponse(muteParticipantOptions, Context.NONE);
 
         assertNotNull(unmuteParticipantsResultResponse);
         assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());

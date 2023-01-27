@@ -50,6 +50,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -397,12 +398,14 @@ public class CallConnectionAsync {
 
     /**
      * Mutes participants in the call.
-     * @param targetParticipants - Participants to be muted. Only one participant currently supported.
+     * @param targetParticipant - Participant to be muted.
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResult> muteParticipantAsync(List<CommunicationIdentifier> targetParticipants) {
-        return muteParticipantWithResponseInternal(new MuteParticipantsOptions(targetParticipants), null)
+    public Mono<MuteParticipantsResult> muteParticipantsAsync(CommunicationIdentifier targetParticipant) {
+        return muteParticipantWithResponseInternal(
+            new MuteParticipantsOptions(Collections.singletonList(targetParticipant)),
+            null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -412,7 +415,7 @@ public class CallConnectionAsync {
      * @return a Response containing the MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResult>> muteParticipantWithResponse(MuteParticipantsOptions muteParticipantsOptions) {
+    public Mono<Response<MuteParticipantsResult>> muteParticipantsWithResponse(MuteParticipantsOptions muteParticipantsOptions) {
         return withContext(context -> muteParticipantWithResponseInternal(muteParticipantsOptions, context));
     }
 
@@ -441,12 +444,14 @@ public class CallConnectionAsync {
 
     /**
      * Unmutes participants in the call.
-     * @param targetParticipant - Participants to be unmuted. Only one participant currently supported.
+     * @param targetParticipant - Participant to be unmuted.
      * @return An UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResult> unmuteParticipantAsync(List<CommunicationIdentifier> targetParticipant) {
-        return unmuteParticipantWithResponseInternal(new UnmuteParticipantsOptions(targetParticipant), null)
+    public Mono<UnmuteParticipantsResult> unmuteParticipantsAsync(CommunicationIdentifier targetParticipant) {
+        return unmuteParticipantWithResponseInternal(
+            new UnmuteParticipantsOptions(Collections.singletonList(targetParticipant)),
+            null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -456,7 +461,7 @@ public class CallConnectionAsync {
      * @return a Response containing the UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResult>> unmuteParticipantWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions) {
+    public Mono<Response<UnmuteParticipantsResult>> unmuteParticipantsWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions) {
         return withContext(context -> unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context));
     }
 

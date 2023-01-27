@@ -226,12 +226,12 @@ public class CallConnection {
     /**
      * Mutes participants in the call.
      *
-     * @param targetParticipants - Participants to be muted. Only one participant currently supported.
+     * @param targetParticipant - Participant to be muted.
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResult muteParticipant(List<CommunicationIdentifier> targetParticipants) {
-        return callConnectionAsync.muteParticipantAsync(targetParticipants).block();
+    public MuteParticipantsResult muteParticipants(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.muteParticipantsAsync(targetParticipant).block();
     }
 
     /**
@@ -241,18 +241,18 @@ public class CallConnection {
      * @return a Response containing the MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResult> muteParticipantWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
+    public Response<MuteParticipantsResult> muteParticipantsWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
         return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantsOptions, context).block();
     }
 
     /**
      * Unmutes participants in the call.
-     * @param targetParticipants - Participants to be muted. Only one participant currently supported.
+     * @param targetParticipant - Participant to be muted.
      * @return An UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResult unmuteParticipant(List<CommunicationIdentifier> targetParticipants) {
-        return callConnectionAsync.unmuteParticipantAsync(targetParticipants).block();
+    public UnmuteParticipantsResult unmuteParticipants(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.unmuteParticipantsAsync(targetParticipant).block();
     }
 
     /**
@@ -262,7 +262,7 @@ public class CallConnection {
      * @return a Response containing the UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResult> unmuteParticipantWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions, Context context) {
+    public Response<UnmuteParticipantsResult> unmuteParticipantsWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions, Context context) {
         return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context).block();
     }
 
