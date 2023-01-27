@@ -160,7 +160,52 @@ public interface LinkedServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, String linkedServerName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String name, String linkedServerName);
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name, String linkedServerName);
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, String linkedServerName);
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String name, String linkedServerName, Context context);
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
@@ -199,10 +244,9 @@ public interface LinkedServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String name, String linkedServerName, Context context);
+    void delete(String resourceGroupName, String name, String linkedServerName, Context context);
 
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
@@ -241,20 +285,6 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information about a linked server of a redis cache (requires Premium SKU).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisLinkedServerWithPropertiesInner get(String resourceGroupName, String name, String linkedServerName);
-
-    /**
-     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param linkedServerName The name of the linked server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -265,6 +295,20 @@ public interface LinkedServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RedisLinkedServerWithPropertiesInner> getWithResponse(
         String resourceGroupName, String name, String linkedServerName, Context context);
+
+    /**
+     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the detailed information about a linked server of a redis cache (requires Premium SKU).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RedisLinkedServerWithPropertiesInner get(String resourceGroupName, String name, String linkedServerName);
 
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).

@@ -493,7 +493,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SchemaRegistryApacheAvroSerializerIntegrationTest.SCHEMA_REGISTRY_ENDPOINT);
+            endpoint = System.getenv(SchemaRegistryApacheAvroSerializerIntegrationTest.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
         }

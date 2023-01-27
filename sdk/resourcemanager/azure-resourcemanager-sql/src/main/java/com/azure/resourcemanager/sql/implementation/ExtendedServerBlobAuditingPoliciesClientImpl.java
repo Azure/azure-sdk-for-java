@@ -68,7 +68,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientE")
-    private interface ExtendedServerBlobAuditingPoliciesService {
+    public interface ExtendedServerBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

@@ -2677,6 +2677,7 @@
       <Class name="com.azure.core.implementation.util.FileContent"/>
       <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
       <Class name="com.azure.core.implementation.util.InputStreamContent"/>
+      <Class name="com.azure.core.implementation.util.ListByteBufferContent"/>
       <Class name="com.azure.core.implementation.util.SerializableContent"/>
       <Class name="com.azure.core.implementation.util.StringContent"/>
     </Or>

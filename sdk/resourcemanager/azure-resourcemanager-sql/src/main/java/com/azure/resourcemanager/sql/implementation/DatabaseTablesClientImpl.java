@@ -55,7 +55,7 @@ public final class DatabaseTablesClientImpl implements DatabaseTablesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseTablesService {
+    public interface DatabaseTablesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

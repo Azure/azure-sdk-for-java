@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Added additional `SchemaFormat`s, `SchemaFormat.JSON`, and `SchemaFormat.CUSTOM`.
+- Added new service version, `SchemaRegistryVersion.V2022_10`.
+- Updated the latest service version to `SchemaRegistryVersion.V2022_10`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

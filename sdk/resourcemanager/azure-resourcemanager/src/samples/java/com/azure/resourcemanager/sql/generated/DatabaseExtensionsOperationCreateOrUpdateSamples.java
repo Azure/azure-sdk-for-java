@@ -33,11 +33,10 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
                 new DatabaseExtensions()
                     .withOperationMode(OperationMode.IMPORT)
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey(
-                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                    .withStorageKey("fakeTokenPlaceholder")
                     .withStorageUri("https://teststorage.blob.core.windows.net/testcontainer/Manifest.xml")
                     .withAdministratorLogin("login")
-                    .withAdministratorLoginPassword("password")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withAuthenticationType("Sql"),
                 Context.NONE);
     }
@@ -64,11 +63,10 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
                 new DatabaseExtensions()
                     .withOperationMode(OperationMode.EXPORT)
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey(
-                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                    .withStorageKey("fakeTokenPlaceholder")
                     .withStorageUri("https://teststorage.blob.core.windows.net/testcontainer/Manifest.xml")
                     .withAdministratorLogin("login")
-                    .withAdministratorLoginPassword("password")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withAuthenticationType("Sql"),
                 Context.NONE);
     }
@@ -95,8 +93,7 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
                 new DatabaseExtensions()
                     .withOperationMode(OperationMode.POLYBASE_IMPORT)
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey(
-                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                    .withStorageKey("fakeTokenPlaceholder")
                     .withStorageUri("https://teststorage.blob.core.windows.net/testcontainer/Manifest.xml"),
                 Context.NONE);
     }

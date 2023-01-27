@@ -5,6 +5,7 @@ package com.azure.containers.containerregistry.implementation.authentication;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -45,10 +46,8 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String SCOPES_PARAMETER = "scope";
     public static final String SERVICE_PARAMETER = "service";
-    public static final String AUTHORIZATION = "Authorization";
 
     private final ContainerRegistryTokenService tokenService;
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryCredentialsPolicy.class);
 
     /**
      * Creates an instance of ContainerRegistryCredentialsPolicy.
@@ -82,7 +81,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
     public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return tokenService.getToken(tokenRequestContext)
             .flatMap((token) -> {
-                context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
+                context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
                 return Mono.empty();
             });
     }
@@ -100,7 +99,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
 
         HttpPipelineNextPolicy nextPolicy = next.clone();
         return authorizeRequest(context)
-            .then(Mono.defer(() -> next.process()))
+            .then(next.process())
             .flatMap(httpResponse -> {
                 String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
                 if (httpResponse.getStatusCode() == 401 && authHeader != null) {
@@ -137,22 +136,20 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        return Mono.defer(() -> {
-            String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
-            if (!(response.getStatusCode() == 401 && authHeader != null)) {
-                return Mono.just(false);
-            } else {
-                Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
-                if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
-                    String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
-                    String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
-                    return setAuthorizationHeader(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
-                        .then(Mono.defer(() -> Mono.just(true)));
-                }
-
-                return Mono.just(false);
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        if (!(response.getStatusCode() == 401 && authHeader != null)) {
+            return Mono.just(false);
+        } else {
+            Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
+            if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
+                String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
+                String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
+                return setAuthorizationHeader(context, new ContainerRegistryTokenRequestContext(serviceName, scope))
+                    .thenReturn(true);
             }
-        });
+
+            return Mono.just(false);
+        }
     }
 
     /**
@@ -175,7 +172,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
     @Override
     public void setAuthorizationHeaderSync(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         AccessToken token = tokenService.getTokenSync(tokenRequestContext);
-        context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
     }
 
     @Override

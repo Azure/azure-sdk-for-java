@@ -55,7 +55,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseRecommendedActionsService {
+    public interface DatabaseRecommendedActionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

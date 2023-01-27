@@ -57,7 +57,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
-    private interface RecoverableManagedDatabasesService {
+    public interface RecoverableManagedDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
