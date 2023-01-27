@@ -18,6 +18,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -85,6 +86,16 @@ public class StorageImplUtils {
     private static final DateTimeFormatter NO_SECONDS_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
             .withLocale(Locale.ROOT);
+
+    private static final Provider HMACSHA256_PROVIDER;
+
+    static {
+        try {
+            HMACSHA256_PROVIDER = Mac.getInstance("HmacSHA256").getProvider();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("Unable to get HmacSHA256 provider.", e);
+        }
+    }
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -198,7 +209,7 @@ public class StorageImplUtils {
         }
 
         try {
-            Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
+            Mac hmacSHA256 = Mac.getInstance("HmacSHA256", HMACSHA256_PROVIDER);
             hmacSHA256.init(new SecretKeySpec(key, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSHA256.doFinal(utf8Bytes));
