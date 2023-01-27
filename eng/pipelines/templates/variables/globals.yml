@@ -23,7 +23,6 @@ variables:
   MemoryOptions: '-Xmx4096m'
   DefaultSkipOptions: '-Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false'
   DefaultTestOptions: '$(DefaultOptions) $(DefaultSkipOptions) -pl $(ProjectList)'
-  TestCoverageOptions: '$(DefaultOptions) -Dgpg.skip -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
 
