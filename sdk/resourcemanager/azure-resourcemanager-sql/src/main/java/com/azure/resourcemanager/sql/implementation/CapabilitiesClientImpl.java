@@ -51,7 +51,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientC")
-    private interface CapabilitiesService {
+    public interface CapabilitiesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/capabilities")
         @ExpectedResponses({200})

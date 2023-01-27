@@ -73,7 +73,7 @@ public final class VirtualClustersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientV")
-    private interface VirtualClustersService {
+    public interface VirtualClustersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters")
         @ExpectedResponses({200})

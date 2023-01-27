@@ -245,7 +245,7 @@
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.sql",
     "args": "--tag=package-2021-11 --rename-model=SecurityAlertsPolicyState:SecurityAlertPolicyState",
-    "note": "Use commit id 9e49f0510fc57175d0c66460ba742c849ac01123 on azure-rest-api-specs"
+    "note": "Add '\"x-ms-long-running-operation\": true' to TransparentDataEncryptions_CreateOrUpdate in specs file TransparentDataEncryptions.json"
   },
   "storage": {
     "dir": "azure-resourcemanager-storage",
