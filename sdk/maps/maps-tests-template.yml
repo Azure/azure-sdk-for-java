@@ -24,17 +24,6 @@ stages:
           groupId: com.azure
           safeName: ${{ parameters.SafeName }}
       ServiceDirectory: maps
-      PreSteps:
-        - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
-          condition: not(startsWith(variables['System.StageName'], 'Public'))
-      PostSteps:
-        - task: PublishCodeCoverageResults@1
-          condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), startsWith(variables['System.StageName'], 'Public'))
-          inputs:
-            codeCoverageTool: JaCoCo
-            summaryFileLocation: sdk/maps/${{ parameters.PackageName }}/target/site/jacoco/jacoco.xml
-            reportDirectory: sdk/maps/${{ parameters.PackageName }}/target/site/jacoco/
-            failIfCoverageEmpty: true
       EnvVars:
         #SKIP_LIVE_TEST: TRUE
         ${{ each var in parameters.EnVars }}:
