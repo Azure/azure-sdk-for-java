@@ -32,12 +32,14 @@ public class RedisConfigurationTests {
     public void testConfigurationUtils() {
         RedisConfiguration configuration = new RedisConfiguration()
             .withRdbBackupEnabled("true")
+            .withAofBackupEnabled("true")
             .withAofStorageConnectionString0("connection");
 
         Map<String, String> map = ConfigurationUtils.toMap(configuration);
-        Assertions.assertEquals(2, map.size());
+        Assertions.assertEquals(3, map.size());
         Assertions.assertEquals("true", map.get("rdb-backup-enabled"));
         Assertions.assertEquals("connection", map.get("aof-storage-connection-string-0"));
+        Assertions.assertEquals("true", map.get("aof-backup-enabled"));
 
         RedisConfiguration configuration1 = ConfigurationUtils.toConfiguration(map);
         Assertions.assertEquals("true", configuration1.rdbBackupEnabled());
@@ -47,7 +49,7 @@ public class RedisConfigurationTests {
         configuration
             .withAdditionalProperties(Collections.singletonMap("key1", "value1"));
         map = ConfigurationUtils.toMap(configuration);
-        Assertions.assertEquals(3, map.size());
+        Assertions.assertEquals(4, map.size());
         Assertions.assertEquals("value1", map.get("key1"));
 
         configuration1 = ConfigurationUtils.toConfiguration(map);
@@ -55,12 +57,15 @@ public class RedisConfigurationTests {
         Assertions.assertEquals("connection", configuration1.aofStorageConnectionString0());
         Assertions.assertEquals(1, configuration1.additionalProperties().size());
         Assertions.assertEquals("value1", configuration1.additionalProperties().get("key1"));
+        Assertions.assertEquals("true", configuration1.aofBackupEnabled());
 
         configuration = new RedisConfiguration();
         ConfigurationUtils.putConfiguration(configuration, "rdb-backup-enabled", "true");
         Assertions.assertEquals("true", configuration.rdbBackupEnabled());
         ConfigurationUtils.putConfiguration(configuration, "key1", "value1");
         Assertions.assertEquals("value1", configuration1.additionalProperties().get("key1"));
+        ConfigurationUtils.putConfiguration(configuration, "aof-backup-enabled", "true");
+        Assertions.assertEquals("true", configuration.aofBackupEnabled());
 
         ConfigurationUtils.removeConfiguration(configuration, "rdb-backup-enabled");
         Assertions.assertNull(configuration.rdbBackupEnabled());
@@ -68,6 +73,8 @@ public class RedisConfigurationTests {
         Assertions.assertEquals("value1", configuration1.additionalProperties().get("key1"));
         ConfigurationUtils.removeConfiguration(configuration, "key1");
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(configuration.additionalProperties()));
+        ConfigurationUtils.removeConfiguration(configuration, "aof-backup-enabled");
+        Assertions.assertNull(configuration.aofBackupEnabled());
     }
 
     private static String generateToMap() {
@@ -84,7 +91,7 @@ public class RedisConfigurationTests {
         });
 
         sb.append("        if (configuration.additionalProperties() != null) {\n");
-        sb.append("            configuration.additionalProperties().forEach((key1, value) -> map.put(key1, value.toString()));\n");
+        sb.append("            configuration.additionalProperties().forEach((key1, value) -> map.put(key1, value));\n");
         sb.append("        }\n");
         sb.append("    }\n");
         sb.append("    return map;\n");
