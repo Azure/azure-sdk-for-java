@@ -302,7 +302,9 @@ public final class StorageSharedKeyCredential {
 
         for (Map.Entry<String, List<String>> queryParam : pieces.entrySet()) {
             List<String> queryParamValues = queryParam.getValue();
-            queryParamValues.sort(ROOT_COLLATOR);
+            if (queryParamValues.size() > 1) {
+                queryParamValues.sort(ROOT_COLLATOR);
+            }
             canonicalizedResource.append('\n').append(queryParam.getKey()).append(':');
 
             int size = queryParamValues.size();

@@ -60,7 +60,7 @@ public class AsyncRestProxy extends RestProxyBase {
     @SuppressWarnings("try")
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method);
+        RestProxyUtils.validateResumeOperationIsNotPresent(methodParser);
 
         context = startTracingSpan(methodParser, context);
 

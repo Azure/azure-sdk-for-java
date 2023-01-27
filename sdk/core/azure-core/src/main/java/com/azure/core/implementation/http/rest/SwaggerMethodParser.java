@@ -104,6 +104,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final boolean ignoreResponseBody;
     private final boolean headersEagerlyConverted;
     private final String spanName;
+    private final boolean resumeOperationAnnotationPresent;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -117,6 +118,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
+    @SuppressWarnings("deprecation")
     SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
         this.rawHost = interfaceParser.getHost();
 
@@ -280,6 +282,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
         this.ignoreResponseBody = isResponseBodyIgnored(unwrappedReturnType);
         this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
+        this.resumeOperationAnnotationPresent = swaggerMethod.isAnnotationPresent(
+            com.azure.core.annotation.ResumeOperation.class);
     }
 
     /**
@@ -725,6 +729,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public String getSpanName() {
         return spanName;
+    }
+
+    /**
+     * Whether the ResumeOperation annotation is present on the method.
+     *
+     * @return Whether the ResumeOperation annotation is present on the method.
+     */
+    public boolean isResumeOperationAnnotationPresent() {
+        return resumeOperationAnnotationPresent;
     }
 
     public static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {

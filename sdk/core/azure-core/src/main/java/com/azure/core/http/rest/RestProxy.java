@@ -76,11 +76,11 @@ public final class RestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method);
-
         // Note: request options need to be evaluated here, as it is a public class with package private methods.
         // Evaluating here allows the package private methods to be invoked here for downstream use.
         final SwaggerMethodParser methodParser = getMethodParser(method);
+        RestProxyUtils.validateResumeOperationIsNotPresent(methodParser);
+
         RequestOptions options = methodParser.setRequestOptions(args);
         Context context = methodParser.setContext(args);
         boolean isReactive = methodParser.isReactive();

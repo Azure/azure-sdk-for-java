@@ -25,8 +25,7 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(response -> Mono.just(scrubETagHeader(response)));
+        return next.process().map(ScrubEtagPolicy::scrubETagHeader);
     }
 
 
@@ -35,7 +34,7 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
     response returns an eTag value, and if it does, remove any quotes that may be present to give the user a more
     predictable format to work with.
      */
-    private HttpResponse scrubETagHeader(HttpResponse unprocessedResponse) {
+    private static HttpResponse scrubETagHeader(HttpResponse unprocessedResponse) {
         HttpHeader eTagHeader = unprocessedResponse.getHeaders().get(HttpHeaderName.ETAG);
         if (eTagHeader == null) {
             return unprocessedResponse;

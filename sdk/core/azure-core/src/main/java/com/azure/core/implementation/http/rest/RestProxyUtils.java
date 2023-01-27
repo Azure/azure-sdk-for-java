@@ -27,7 +27,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +69,7 @@ public final class RestProxyUtils {
                         throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
                             bodyLength, expectedLength), bodyLength, expectedLength);
                     }
-                } else  {
+                } else {
                     request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
                 }
             }
@@ -115,6 +114,7 @@ public final class RestProxyUtils {
 
     /**
      * Validates the Length of the input request matches its configured Content Length.
+     *
      * @param request the input request to validate.
      * @return the requests body as BinaryData on successful validation.
      */
@@ -182,14 +182,14 @@ public final class RestProxyUtils {
 
     /**
      * Validates the input Method is not annotated with Resume Operation
-     * @param method the method input to validate
+     *
+     * @param methodParser The SwaggerMethodParser to validate.
      * @throws IllegalStateException if the input method is annotated with the Resume Operation.
      */
-    @SuppressWarnings("deprecation")
-    public static void validateResumeOperationIsNotPresent(Method method) {
+    public static void validateResumeOperationIsNotPresent(SwaggerMethodParser methodParser) {
         // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
         // marked as deprecated.
-        if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
+        if (methodParser.isResumeOperationAnnotationPresent()) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
         }
     }
