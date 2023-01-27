@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
@@ -19,6 +21,8 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -39,6 +43,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AbstractSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
@@ -48,6 +54,8 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -2690,6 +2698,372 @@ public final class TextAnalyticsClient {
             String deploymentName, MultiLabelClassifyOptions options, Context context) {
         return client.labelClassifyUtilClient.multiLabelClassifyPagedIterable(
             documents, projectName, deploymentName, options, context);
+    }
+
+    // Abstractive Summarization
+    /**
+     * Returns a list of abstract summary for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>..
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> beginAbstractSummary(
+        Iterable<String> documents) {
+        return beginAbstractSummary(documents, client.getDefaultLanguage(), null);
+    }
+
+    /**
+     * Returns a list of abstract summary for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> beginAbstractSummary(
+        Iterable<String> documents, String language, AbstractSummaryOptions options) {
+        return client.abstractSummaryUtilClient.abstractSummaryPagedIterable(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE);
+    }
+
+    /**
+     * Returns a list of abstract summary for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;,
+     *         options, Context.NONE&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> beginAbstractSummary(
+        Iterable<TextDocumentInput> documents, AbstractSummaryOptions options, Context context) {
+        return client.abstractSummaryUtilClient.abstractSummaryPagedIterable(documents, options, context);
+    }
+
+    // Extractive Summarization
+    /**
+     * Returns a list of extract summaries for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> beginExtractSummary(
+        Iterable<String> documents) {
+        return beginExtractSummary(documents, client.getDefaultLanguage(), null);
+    }
+
+    /**
+     * Returns a list of  extract summaries for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> beginExtractSummary(
+        Iterable<String> documents, String language, ExtractSummaryOptions options) {
+        return client.extractSummaryUtilClient.extractSummaryPagedIterable(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE);
+    }
+
+    /**
+     * Returns a list of extract summaries for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;,
+     *         options, Context.NONE&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> beginExtractSummary(
+        Iterable<TextDocumentInput> documents, ExtractSummaryOptions options, Context context) {
+        return client.extractSummaryUtilClient.extractSummaryPagedIterable(documents, options, context);
     }
 
     /**

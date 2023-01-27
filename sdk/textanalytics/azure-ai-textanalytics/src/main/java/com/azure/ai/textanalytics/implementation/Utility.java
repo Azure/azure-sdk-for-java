@@ -1561,9 +1561,13 @@ public final class Utility {
                     toTextAnalyticsError(documentError.getError())));
         }
 
-        return new AbstractSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
+        final AbstractSummaryResultCollection resultCollection = new AbstractSummaryResultCollection(summaryResults);
+        AbstractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+            abstractiveSummarizationResult.getModelVersion());
+        AbstractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             abstractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
+        return resultCollection;
     }
 
     public static AbstractSummaryResult toAbstractiveSummaryResult(
@@ -1636,10 +1640,13 @@ public final class Utility {
             extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
-        return new ExtractSummaryResultCollection(extractSummaryResults,
-            extractiveSummarizationResult.getModelVersion(),
+        final ExtractSummaryResultCollection resultCollection = new ExtractSummaryResultCollection(extractSummaryResults);
+        ExtractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+            extractiveSummarizationResult.getModelVersion());
+        ExtractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             extractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(extractiveSummarizationResult.getStatistics()));
+        return resultCollection;
     }
 
     private static ExtractSummaryResult toExtractSummaryResult(

@@ -1355,7 +1355,7 @@ final class TestUtils {
     static ExtractSummaryResultCollection getExpectedExtractSummaryResultCollection(
         ExtractSummaryResult extractSummaryResult) {
         final ExtractSummaryResultCollection expectResultCollection = new ExtractSummaryResultCollection(
-            asList(extractSummaryResult), null, null);
+            asList(extractSummaryResult));
         return expectResultCollection;
     }
 

@@ -6,6 +6,8 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
 import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
@@ -20,7 +22,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
+import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
@@ -37,6 +40,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AbstractSummaryPagedFlux;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
@@ -44,7 +49,10 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryPagedFlux;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -110,8 +118,9 @@ public final class TextAnalyticsAsyncClient {
     final LabelClassifyUtilClient labelClassifyUtilClient;
     final AnalyzeHealthcareEntityUtilClient analyzeHealthcareEntityUtilClient;
     final AnalyzeActionsUtilClient analyzeActionsUtilClient;
-
     final DynamicClassificationUtilClient dynamicClassificationUtilClient;
+    final AbstractSummaryUtilClient abstractSummaryUtilClient;
+    final ExtractSummaryUtilClient extractSummaryUtilClient;
 
     /**
      * Creates a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics service's endpoint. Each
@@ -140,6 +149,8 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(legacyService, serviceVersion);
         this.labelClassifyUtilClient = new LabelClassifyUtilClient(null, serviceVersion);
         this.dynamicClassificationUtilClient = new DynamicClassificationUtilClient(null, serviceVersion);
+        this.abstractSummaryUtilClient = new AbstractSummaryUtilClient(null, serviceVersion);
+        this.extractSummaryUtilClient = new ExtractSummaryUtilClient(null, serviceVersion);
     }
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
@@ -162,6 +173,8 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
         this.labelClassifyUtilClient = new LabelClassifyUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
         this.dynamicClassificationUtilClient = new DynamicClassificationUtilClient(service, serviceVersion);
+        this.abstractSummaryUtilClient = new AbstractSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.extractSummaryUtilClient = new ExtractSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
     }
 
     /**
@@ -2802,6 +2815,448 @@ public final class TextAnalyticsAsyncClient {
         MultiLabelClassifyOptions options) {
         return labelClassifyUtilClient.multiLabelClassify(documents, projectName, deploymentName,
             options, Context.NONE);
+    }
+
+    // Abstractive Summarization
+
+    /**
+     * Returns a list of abstract summary for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     *
+     * @return A {@link PollerFlux} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
+        Iterable<String> documents) {
+        return beginAbstractSummary(documents, defaultLanguage, null);
+    }
+
+    /**
+     * Returns a list of abstract summary for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     *
+     * @return A {@link PollerFlux} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
+        Iterable<String> documents, String language, AbstractSummaryOptions options) {
+        return beginAbstractSummary(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
+    }
+
+    /**
+     * Returns a list of abstract summary for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     *
+     * @return A {@link PollerFlux} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AbstractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.r.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
+        Iterable<TextDocumentInput> documents, AbstractSummaryOptions options) {
+        return abstractSummaryUtilClient.abstractSummaryAsync(documents, options, Context.NONE);
+    }
+
+    // Extractive Summarization
+
+    /**
+     * Returns a list of extract summaries for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.med.
+     *
+     * @return A {@link PollerFlux} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
+        Iterable<String> documents) {
+        return beginExtractSummary(documents, defaultLanguage, null);
+    }
+
+    /**
+     * Returns a list of extract summaries for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     *
+     * @return A {@link PollerFlux} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
+        Iterable<String> documents, String language, ExtractSummaryOptions options) {
+        return beginExtractSummary(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
+    }
+
+    /**
+     * Returns a list of extract summaries for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     *
+     * @return A {@link PollerFlux} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link ExtractSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
+        Iterable<TextDocumentInput> documents, ExtractSummaryOptions options) {
+        return extractSummaryUtilClient.extractSummaryAsync(documents, options, Context.NONE);
     }
 
     /**
