@@ -62,7 +62,7 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseSecurityAlertPoliciesService {
+    public interface DatabaseSecurityAlertPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

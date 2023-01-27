@@ -19,6 +19,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Objects;
+
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
@@ -62,7 +64,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class)
 public final class ContainerRegistryClient {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryClient.class);
     private final ContainerRegistriesImpl registriesImplClient;
     private final HttpPipeline httpPipeline;
     private final String endpoint;
@@ -134,14 +136,14 @@ public final class ContainerRegistryClient {
 
     private PagedResponse<String> listRepositoryNamesSinglePageSync(Integer pageSize, Context context) {
         if (pageSize != null && pageSize < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
 
         try {
             return this.registriesImplClient.getRepositoriesSinglePage(null,
                 pageSize, enableSync(getTracingContext(context)));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -150,7 +152,7 @@ public final class ContainerRegistryClient {
             return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink,
                 enableSync(getTracingContext(context)));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
@@ -194,12 +196,10 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRepositoryWithResponse(String repositoryName, Context context) {
-        if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' cannot be null."));
-        }
+        Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null");
 
         if (repositoryName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' cannot be empty."));
         }
 
         try {
@@ -207,7 +207,7 @@ public final class ContainerRegistryClient {
                 this.registriesImplClient.deleteRepositoryWithResponse(repositoryName,
                     enableSync(getTracingContext(context))));
         } catch (AcrErrorsException exception) {
-            throw logger.logExceptionAsError(mapAcrErrorsException(exception));
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
