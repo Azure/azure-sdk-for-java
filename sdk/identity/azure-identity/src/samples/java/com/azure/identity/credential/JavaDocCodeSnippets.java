@@ -74,7 +74,7 @@ public final class JavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link ClientCertificateCredential}
+     * Method to insert code snippets for {@link ChainedTokenCredential}
      */
     public void chainedTokenCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.chainedtokencredential.construct
@@ -93,4 +93,65 @@ public final class JavaDocCodeSnippets {
             .build();
         // END: com.azure.identity.credential.chainedtokencredential.construct
     }
+    
+    /**
+     * Method to insert code snippets for {@link DefaultAzureCredential}
+     */
+    public void defaultAzureCredentialCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.defaultazurecredential.construct
+        DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
+            .build();
+        // END: com.azure.identity.credential.defaultazurecredential.construct
+
+        // BEGIN: com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity
+        DefaultAzureCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId("<Managed-Identity-Client-Id")
+            .build();
+        // END: com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity
+    }
+    
+    /**
+     * Method to insert code snippets for {@link InteractiveBrowserCredential}
+     */
+    public void interactiveBrowserCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.interactivebrowsercredential.construct
+        InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+            .clientId(clientId)
+            .redirectUrl("http://localhost:8765")
+            .build();
+        // END: com.azure.identity.credential.interactivebrowsercredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link ManagedIdentityCredential}
+     */
+    public void managedIdentityCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.managedidentitycredential.construct
+        ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+            .clientId(clientId) // specify client id only if targeting a user-assigned managed identity.
+            .build();
+        // END: com.azure.identity.credential.managedidentitycredential.construct
+    }
+    
+    
+    /**
+     * Method to insert code snippets for {@link AzureCliCredential}
+     */
+    public void azureCliCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.azureclicredential.construct
+        AzureCliCredential azureCliCredential = new AzureCliCredentialBuilder()
+            .build();
+        // END: com.azure.identity.credential.azureclicredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link IntelliJCredential}
+     */
+    public void intelliJCredentialsCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.intellijcredential.construct
+        IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
+            .build();
+        // END: com.azure.identity.credential.intellijcredential.construct
+    }    
+
 }
