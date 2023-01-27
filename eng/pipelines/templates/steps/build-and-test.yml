@@ -147,7 +147,7 @@ steps:
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@1
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'))
+    condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
       codeCoverageTool: JaCoCo
       summaryFileLocation: target/site/test-coverage/jacoco.xml
