@@ -34,6 +34,9 @@ public final class RepositoryWriteableProperties {
     @JsonProperty(value = "readEnabled")
     private Boolean readEnabled;
 
+    /** Creates an instance of RepositoryWriteableProperties class. */
+    public RepositoryWriteableProperties() {}
+
     /**
      * Get the deleteEnabled property: Delete enabled.
      *

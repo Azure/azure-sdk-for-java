@@ -35,6 +35,10 @@ public final class SmsReceiver {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
 
+    /** Creates an instance of SmsReceiver class. */
+    public SmsReceiver() {
+    }
+
     /**
      * Get the name property: The name of the SMS receiver. Names must be unique across all receivers within an action
      * group.

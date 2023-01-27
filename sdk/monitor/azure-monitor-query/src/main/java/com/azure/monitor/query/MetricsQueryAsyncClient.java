@@ -128,7 +128,7 @@ public final class MetricsQueryAsyncClient {
     public PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
         return metricsNamespaceClient
                 .getMetricNamespaces()
-                .listAsync(resourceUri, startTime.toString())
+                .listAsync(resourceUri, startTime == null ? null : startTime.toString())
                 .mapPage(this::mapMetricNamespace);
     }
 

@@ -59,7 +59,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupResourceStorageConfigsNonCrrsService {
+    public interface BackupResourceStorageConfigsNonCrrsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

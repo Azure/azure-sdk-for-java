@@ -25,7 +25,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 /**
  * This class is an implementation of OpenTelemetry {@link MetricExporter}
  */
-public final class AzureMonitorMetricExporter implements MetricExporter {
+class AzureMonitorMetricExporter implements MetricExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricExporter.class);
     private static final OperationLogger OPERATION_LOGGER =

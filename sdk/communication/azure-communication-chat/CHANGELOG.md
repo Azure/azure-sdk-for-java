@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.3.4 (2023-01-19)
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-communication-common` to 1.2.4
+- Upgraded `azure-core` to 1.35.0
+
 ## 1.3.3 (2022-11-10)
 ### Other Changes
 #### Dependency Updates

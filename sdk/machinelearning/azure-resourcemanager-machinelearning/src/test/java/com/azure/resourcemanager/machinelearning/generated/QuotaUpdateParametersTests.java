@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.QuotaUnit;
 import com.azure.resourcemanager.machinelearning.models.QuotaUpdateParameters;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class QuotaUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         QuotaUpdateParameters model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class QuotaUpdateParametersTests {
         Assertions.assertEquals("kvxod", model.location());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         QuotaUpdateParameters model =
             new QuotaUpdateParameters()
                 .withValue(

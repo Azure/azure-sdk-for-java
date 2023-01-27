@@ -20,6 +20,15 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
     public static final TriggerRunStatus INPROGRESS = fromString("Inprogress");
 
     /**
+     * Creates a new instance of TriggerRunStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TriggerRunStatus() {
+    }
+
+    /**
      * Creates or finds a TriggerRunStatus from its string representation.
      *
      * @param name a name to look for.

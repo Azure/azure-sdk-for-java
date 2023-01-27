@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This class contains all the details about a critical operation. */
 @Immutable
 public final class ResourceGuardOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardOperation.class);
-
     /*
      * Name of the critical operation.
      */
@@ -25,6 +21,10 @@ public final class ResourceGuardOperation {
      */
     @JsonProperty(value = "requestResourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String requestResourceType;
+
+    /** Creates an instance of ResourceGuardOperation class. */
+    public ResourceGuardOperation() {
+    }
 
     /**
      * Get the vaultCriticalOperation property: Name of the critical operation.

@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.purview.fluent.AccountsClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AccountsClient. */
 public final class AccountsClientImpl implements AccountsClient {
-    private final ClientLogger logger = new ClientLogger(AccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AccountsService service;
 
@@ -72,7 +69,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PurviewManagementCli")
-    private interface AccountsService {
+    public interface AccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts")
         @ExpectedResponses({200})
@@ -225,14 +222,17 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @param skipToken The skip token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listByResourceGroupSinglePageAsync(
@@ -279,7 +279,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @param skipToken The skip token.
@@ -287,7 +289,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listByResourceGroupSinglePageAsync(
@@ -331,14 +334,16 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @param skipToken The skip token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listByResourceGroupAsync(String resourceGroupName, String skipToken) {
@@ -348,13 +353,15 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -365,7 +372,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @param skipToken The skip token.
@@ -373,7 +382,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listByResourceGroupAsync(
@@ -384,13 +393,15 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> listByResourceGroup(String resourceGroupName) {
@@ -399,7 +410,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in ResourceGroup.
+     * Gets the accounts resources by resource group.
+     *
+     * <p>List accounts in ResourceGroup.
      *
      * @param resourceGroupName The resource group name.
      * @param skipToken The skip token.
@@ -407,7 +420,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> listByResourceGroup(
@@ -416,13 +429,16 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @param skipToken The skip token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listSinglePageAsync(String skipToken) {
@@ -463,14 +479,17 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @param skipToken The skip token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listSinglePageAsync(String skipToken, Context context) {
@@ -508,13 +527,15 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @param skipToken The skip token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listAsync(String skipToken) {
@@ -523,11 +544,13 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listAsync() {
@@ -537,14 +560,16 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @param skipToken The skip token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccountInner> listAsync(String skipToken, Context context) {
@@ -554,11 +579,13 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> list() {
@@ -567,14 +594,16 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List accounts in Subscription.
+     * Gets the accounts resources by subscription.
+     *
+     * <p>List accounts in Subscription.
      *
      * @param skipToken The skip token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> list(String skipToken, Context context) {
@@ -582,14 +611,16 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get an account.
+     * Gets the account resource.
+     *
+     * <p>Get an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account.
+     * @return an account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(
@@ -630,7 +661,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get an account.
+     * Gets the account resource.
+     *
+     * <p>Get an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -638,7 +671,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account.
+     * @return an account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(
@@ -676,30 +709,46 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Get an account.
+     * Gets the account resource.
+     *
+     * <p>Get an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account.
+     * @return an account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<AccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get an account.
+     * Gets the account resource.
+     *
+     * <p>Get an account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccountInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Gets the account resource.
+     *
+     * <p>Get an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -710,28 +759,13 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        return getByResourceGroupAsync(resourceGroupName, accountName).block();
+        return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
-     * Get an account.
+     * Create or update an account resource
      *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
-    }
-
-    /**
-     * Creates or updates an account.
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -739,7 +773,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -786,7 +820,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -795,7 +831,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -839,7 +875,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -847,9 +885,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link PollerFlux} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, AccountInner account) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -857,11 +895,13 @@ public final class AccountsClientImpl implements AccountsClient {
         return this
             .client
             .<AccountInner, AccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, this.client.getContext());
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -870,9 +910,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link PollerFlux} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
         context = this.client.mergeContext(context);
@@ -885,7 +925,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -893,16 +935,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link SyncPoller} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, AccountInner account) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, account).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, account).getSyncPoller();
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -911,16 +955,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link SyncPoller} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, AccountInner account, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -928,7 +974,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> createOrUpdateAsync(String resourceGroupName, String accountName, AccountInner account) {
@@ -938,7 +984,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -947,7 +995,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> createOrUpdateAsync(
@@ -958,7 +1006,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -974,7 +1024,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Creates or updates an account.
+     * Create or update an account resource
+     *
+     * <p>Creates or updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -992,14 +1044,16 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
@@ -1039,7 +1093,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1047,7 +1103,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1085,25 +1141,30 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1111,9 +1172,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -1124,22 +1185,26 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1147,23 +1212,25 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
@@ -1171,7 +1238,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1179,7 +1248,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, Context context) {
@@ -1189,7 +1258,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1203,7 +1274,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Deletes an account resource.
+     * Deletes the account resource.
+     *
+     * <p>Deletes an account resource.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1218,7 +1291,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1226,7 +1301,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1275,7 +1350,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1284,7 +1361,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1333,7 +1410,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1341,9 +1420,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link PollerFlux} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
         String resourceGroupName, String accountName, AccountUpdateParameters accountUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1351,11 +1430,13 @@ public final class AccountsClientImpl implements AccountsClient {
         return this
             .client
             .<AccountInner, AccountInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, this.client.getContext());
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1364,9 +1445,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link PollerFlux} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -1382,7 +1463,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1390,16 +1473,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link SyncPoller} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName, String accountName, AccountUpdateParameters accountUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, accountUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, accountUpdateParameters).getSyncPoller();
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1408,19 +1493,21 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return the {@link SyncPoller} for polling of account resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName,
         String accountName,
         AccountUpdateParameters accountUpdateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, accountUpdateParameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, accountUpdateParameters, context).getSyncPoller();
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1428,7 +1515,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> updateAsync(
@@ -1439,7 +1526,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1448,7 +1537,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return account resource.
+     * @return account resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> updateAsync(
@@ -1462,7 +1551,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1479,7 +1570,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Updates an account.
+     * Patches the account resource.
+     *
+     * <p>Updates an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1500,14 +1593,16 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List the authorization keys associated with this account.
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Account access keys.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String accountName) {
@@ -1547,7 +1642,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List the authorization keys associated with this account.
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1555,7 +1652,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Account access keys.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
@@ -1593,30 +1690,46 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List the authorization keys associated with this account.
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Account access keys.
+     * @return the Account access keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String accountName) {
         return listKeysWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<AccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * List the authorization keys associated with this account.
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Account access keys along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessKeysInner> listKeysWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1627,28 +1740,13 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner listKeys(String resourceGroupName, String accountName) {
-        return listKeysAsync(resourceGroupName, accountName).block();
+        return listKeysWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
-     * List the authorization keys associated with this account.
+     * Add the administrator for root collection.
      *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Account access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessKeysInner> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
-    }
-
-    /**
-     * Add the administrator for root collection associated with this account.
+     * <p>Add the administrator for root collection associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1656,7 +1754,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> addRootCollectionAdminWithResponseAsync(
@@ -1704,7 +1802,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Add the administrator for root collection associated with this account.
+     * Add the administrator for root collection.
+     *
+     * <p>Add the administrator for root collection associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1713,7 +1813,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> addRootCollectionAdminWithResponseAsync(
@@ -1758,7 +1858,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Add the administrator for root collection associated with this account.
+     * Add the administrator for root collection.
+     *
+     * <p>Add the administrator for root collection associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1766,17 +1868,40 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> addRootCollectionAdminAsync(
         String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate) {
         return addRootCollectionAdminWithResponseAsync(resourceGroupName, accountName, collectionAdminUpdate)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Add the administrator for root collection associated with this account.
+     * Add the administrator for root collection.
+     *
+     * <p>Add the administrator for root collection associated with this account.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param collectionAdminUpdate The collection admin update payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addRootCollectionAdminWithResponse(
+        String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate, Context context) {
+        return addRootCollectionAdminWithResponseAsync(resourceGroupName, accountName, collectionAdminUpdate, context)
+            .block();
+    }
+
+    /**
+     * Add the administrator for root collection.
+     *
+     * <p>Add the administrator for root collection associated with this account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -1788,36 +1913,20 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addRootCollectionAdmin(
         String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate) {
-        addRootCollectionAdminAsync(resourceGroupName, accountName, collectionAdminUpdate).block();
+        addRootCollectionAdminWithResponse(resourceGroupName, accountName, collectionAdminUpdate, Context.NONE);
     }
 
     /**
-     * Add the administrator for root collection associated with this account.
+     * Checks the account name availability.
      *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param collectionAdminUpdate The collection admin update payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addRootCollectionAdminWithResponse(
-        String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate, Context context) {
-        return addRootCollectionAdminWithResponseAsync(resourceGroupName, accountName, collectionAdminUpdate, context)
-            .block();
-    }
-
-    /**
-     * Checks if account name is available.
+     * <p>Checks if account name is available.
      *
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for CheckNameAvailability API.
+     * @return the response payload for CheckNameAvailability API along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -1858,14 +1967,17 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Checks if account name is available.
+     * Checks the account name availability.
+     *
+     * <p>Checks if account name is available.
      *
      * @param checkNameAvailabilityRequest The check name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for CheckNameAvailability API.
+     * @return the response payload for CheckNameAvailability API along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -1903,30 +2015,45 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Checks if account name is available.
+     * Checks the account name availability.
+     *
+     * <p>Checks if account name is available.
      *
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for CheckNameAvailability API.
+     * @return the response payload for CheckNameAvailability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
         CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequest)
-            .flatMap(
-                (Response<CheckNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Checks if account name is available.
+     * Checks the account name availability.
+     *
+     * <p>Checks if account name is available.
+     *
+     * @param checkNameAvailabilityRequest The check name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for CheckNameAvailability API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+        return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequest, context).block();
+    }
+
+    /**
+     * Checks the account name availability.
+     *
+     * <p>Checks if account name is available.
      *
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1937,33 +2064,19 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(
         CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        return checkNameAvailabilityAsync(checkNameAvailabilityRequest).block();
-    }
-
-    /**
-     * Checks if account name is available.
-     *
-     * @param checkNameAvailabilityRequest The check name availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for CheckNameAvailability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequest, context).block();
+        return checkNameAvailabilityWithResponse(checkNameAvailabilityRequest, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1995,12 +2108,14 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -2031,11 +2146,13 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2067,12 +2184,14 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of account resources.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {

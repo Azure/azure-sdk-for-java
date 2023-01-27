@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import com.azure.resourcemanager.machinelearning.models.UriFolderJobOutput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UriFolderJobOutputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UriFolderJobOutput model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class UriFolderJobOutputTests {
         Assertions.assertEquals("caatsdohzniucbda", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UriFolderJobOutput model =
             new UriFolderJobOutput()
                 .withDescription("b")

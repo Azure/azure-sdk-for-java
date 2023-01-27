@@ -71,6 +71,9 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureDataLakeAnalyticsLinkedService class. */
+    public AzureDataLakeAnalyticsLinkedService() {}
+
     /**
      * Get the accountName property: The Azure Data Lake Analytics account name. Type: string (or Expression with
      * resultType string).

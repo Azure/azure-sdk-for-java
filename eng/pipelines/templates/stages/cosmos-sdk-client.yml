@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20221201.3
+      ref: refs/tags/azure-sdk-build-tools_20230112.1
 
 parameters:
 - name: Artifacts
@@ -80,7 +80,7 @@ stages:
           PreSteps:
           - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
             parameters:
-              StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
+              StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /partitioncount=50 /consistency=Strong'
           - powershell: |
               $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
               $password = ConvertTo-SecureString -String $Key -Force -AsPlainText

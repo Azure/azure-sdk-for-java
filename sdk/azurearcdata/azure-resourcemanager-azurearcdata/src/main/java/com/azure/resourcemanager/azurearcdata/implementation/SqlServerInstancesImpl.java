@@ -13,10 +13,9 @@ import com.azure.resourcemanager.azurearcdata.fluent.SqlServerInstancesClient;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlServerInstanceInner;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlServerInstancesImpl implements SqlServerInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlServerInstancesImpl.class);
 
     private final SqlServerInstancesClient innerClient;
 
@@ -50,16 +49,6 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
         return Utils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
     }
 
-    public SqlServerInstance getByResourceGroup(String resourceGroupName, String sqlServerInstanceName) {
-        SqlServerInstanceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, sqlServerInstanceName);
-        if (inner != null) {
-            return new SqlServerInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlServerInstance> getByResourceGroupWithResponse(
         String resourceGroupName, String sqlServerInstanceName, Context context) {
         Response<SqlServerInstanceInner> inner =
@@ -70,6 +59,16 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlServerInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlServerInstance getByResourceGroup(String resourceGroupName, String sqlServerInstanceName) {
+        SqlServerInstanceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, sqlServerInstanceName);
+        if (inner != null) {
+            return new SqlServerInstanceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -86,7 +85,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
     public SqlServerInstance getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
         }
         String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +106,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
     public Response<SqlServerInstance> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
         }
         String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
         }
         String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
         }
         String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

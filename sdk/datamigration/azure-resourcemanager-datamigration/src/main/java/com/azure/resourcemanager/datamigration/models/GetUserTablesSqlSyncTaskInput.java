@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that collects user tables for the given list of databases. */
 @Fluent
 public final class GetUserTablesSqlSyncTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetUserTablesSqlSyncTaskInput.class);
-
     /*
      * Connection information for SQL Server
      */
@@ -38,6 +35,10 @@ public final class GetUserTablesSqlSyncTaskInput {
      */
     @JsonProperty(value = "selectedTargetDatabases", required = true)
     private List<String> selectedTargetDatabases;
+
+    /** Creates an instance of GetUserTablesSqlSyncTaskInput class. */
+    public GetUserTablesSqlSyncTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for SQL Server.
@@ -126,7 +127,7 @@ public final class GetUserTablesSqlSyncTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model GetUserTablesSqlSyncTaskInput"));
@@ -134,7 +135,7 @@ public final class GetUserTablesSqlSyncTaskInput {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model GetUserTablesSqlSyncTaskInput"));
@@ -142,16 +143,18 @@ public final class GetUserTablesSqlSyncTaskInput {
             targetConnectionInfo().validate();
         }
         if (selectedSourceDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedSourceDatabases in model GetUserTablesSqlSyncTaskInput"));
         }
         if (selectedTargetDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedTargetDatabases in model GetUserTablesSqlSyncTaskInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GetUserTablesSqlSyncTaskInput.class);
 }

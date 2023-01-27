@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceMoveState. */
+/** The State of the Resource after the move operation. */
 public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveState> {
     /** Static value Unknown for ResourceMoveState. */
     public static final ResourceMoveState UNKNOWN = fromString("Unknown");

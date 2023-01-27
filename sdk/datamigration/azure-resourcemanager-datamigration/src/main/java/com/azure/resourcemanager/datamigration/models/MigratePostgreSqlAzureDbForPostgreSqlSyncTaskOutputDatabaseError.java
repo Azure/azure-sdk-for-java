@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,10 +16,6 @@ import java.util.List;
 @Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError
     extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError.class);
-
     /*
      * Error message
      */
@@ -33,6 +27,10 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseEr
      */
     @JsonProperty(value = "events")
     private List<SyncMigrationDatabaseErrorEvent> events;
+
+    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError class. */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError() {
+    }
 
     /**
      * Get the errorMessage property: Error message.

@@ -22,6 +22,10 @@ public final class Snssai {
     @JsonProperty(value = "sd")
     private String sd;
 
+    /** Creates an instance of Snssai class. */
+    public Snssai() {
+    }
+
     /**
      * Get the sst property: Slice/service type (SST).
      *

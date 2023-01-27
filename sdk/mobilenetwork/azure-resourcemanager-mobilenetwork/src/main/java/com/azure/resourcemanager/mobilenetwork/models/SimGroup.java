@@ -76,7 +76,8 @@ public interface SimGroup {
     KeyVaultKey encryptionKey();
 
     /**
-     * Gets the mobileNetwork property: Mobile network that this SIM belongs to.
+     * Gets the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network must be in the
+     * same location as the SIM group.
      *
      * @return the mobileNetwork value.
      */
@@ -207,9 +208,11 @@ public interface SimGroup {
         /** The stage of the SimGroup definition allowing to specify mobileNetwork. */
         interface WithMobileNetwork {
             /**
-             * Specifies the mobileNetwork property: Mobile network that this SIM belongs to.
+             * Specifies the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network
+             * must be in the same location as the SIM group..
              *
-             * @param mobileNetwork Mobile network that this SIM belongs to.
+             * @param mobileNetwork Mobile network that this SIM group belongs to. The mobile network must be in the
+             *     same location as the SIM group.
              * @return the next definition stage.
              */
             WithCreate withMobileNetwork(MobileNetworkResourceId mobileNetwork);

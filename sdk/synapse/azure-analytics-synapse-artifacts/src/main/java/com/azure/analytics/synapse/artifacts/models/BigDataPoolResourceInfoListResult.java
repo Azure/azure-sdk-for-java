@@ -27,6 +27,9 @@ public final class BigDataPoolResourceInfoListResult {
     @JsonProperty(value = "value")
     private List<BigDataPoolResourceInfo> value;
 
+    /** Creates an instance of BigDataPoolResourceInfoListResult class. */
+    public BigDataPoolResourceInfoListResult() {}
+
     /**
      * Get the nextLink property: Link to the next page of results.
      *

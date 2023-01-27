@@ -53,6 +53,10 @@ public final class AutomationRunbookReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
+    /** Creates an instance of AutomationRunbookReceiver class. */
+    public AutomationRunbookReceiver() {
+    }
+
     /**
      * Get the automationAccountId property: The Azure automation account Id which holds this runbook and authenticate
      * to Azure resource.

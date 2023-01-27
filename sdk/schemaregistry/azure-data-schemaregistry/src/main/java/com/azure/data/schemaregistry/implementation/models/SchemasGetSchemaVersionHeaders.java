@@ -5,7 +5,6 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -52,17 +51,7 @@ public final class SchemasGetSchemaVersionHeaders {
      * The Content-Type property.
      */
     @JsonProperty(value = "Content-Type")
-    private String contentType;
-
-    private static final HttpHeaderName SCHEMA_VERSION = HttpHeaderName.fromString("Schema-Version");
-
-    private static final HttpHeaderName SCHEMA_ID = HttpHeaderName.fromString("Schema-Id");
-
-    private static final HttpHeaderName SCHEMA_GROUP_NAME = HttpHeaderName.fromString("Schema-Group-Name");
-
-    private static final HttpHeaderName SCHEMA_NAME = HttpHeaderName.fromString("Schema-Name");
-
-    private static final HttpHeaderName SCHEMA_ID_LOCATION = HttpHeaderName.fromString("Schema-Id-Location");
+    private SchemaFormatImpl contentType;
 
     // HttpHeaders containing the raw property values.
     /**
@@ -71,16 +60,16 @@ public final class SchemasGetSchemaVersionHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SchemasGetSchemaVersionHeaders(HttpHeaders rawHeaders) {
-        String schemaVersion = rawHeaders.getValue(SCHEMA_VERSION);
-        if (schemaVersion != null) {
-            this.schemaVersion = Integer.parseInt(schemaVersion);
+        this.schemaVersion = Integer.parseInt(rawHeaders.getValue("Schema-Version"));
+        this.schemaId = rawHeaders.getValue("Schema-Id");
+        this.schemaGroupName = rawHeaders.getValue("Schema-Group-Name");
+        this.schemaName = rawHeaders.getValue("Schema-Name");
+        this.schemaIdLocation = rawHeaders.getValue("Schema-Id-Location");
+        this.location = rawHeaders.getValue("Location");
+        String contentType = rawHeaders.getValue("Content-Type");
+        if (contentType != null) {
+            this.contentType = SchemaFormatImpl.fromString(contentType);
         }
-        this.schemaId = rawHeaders.getValue(SCHEMA_ID);
-        this.schemaGroupName = rawHeaders.getValue(SCHEMA_GROUP_NAME);
-        this.schemaName = rawHeaders.getValue(SCHEMA_NAME);
-        this.schemaIdLocation = rawHeaders.getValue(SCHEMA_ID_LOCATION);
-        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
-        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**
@@ -208,7 +197,7 @@ public final class SchemasGetSchemaVersionHeaders {
      *
      * @return the contentType value.
      */
-    public String getContentType() {
+    public SchemaFormatImpl getContentType() {
         return this.contentType;
     }
 
@@ -218,7 +207,7 @@ public final class SchemasGetSchemaVersionHeaders {
      * @param contentType the contentType value to set.
      * @return the SchemasGetSchemaVersionHeaders object itself.
      */
-    public SchemasGetSchemaVersionHeaders setContentType(String contentType) {
+    public SchemasGetSchemaVersionHeaders setContentType(SchemaFormatImpl contentType) {
         this.contentType = contentType;
         return this;
     }

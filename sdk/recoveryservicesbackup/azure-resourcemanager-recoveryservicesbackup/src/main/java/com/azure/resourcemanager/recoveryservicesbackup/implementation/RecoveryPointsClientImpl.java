@@ -55,7 +55,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface RecoveryPointsService {
+    public interface RecoveryPointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"

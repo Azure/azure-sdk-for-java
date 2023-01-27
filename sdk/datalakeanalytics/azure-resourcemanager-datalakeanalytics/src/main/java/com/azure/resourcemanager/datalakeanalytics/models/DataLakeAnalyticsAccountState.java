@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DataLakeAnalyticsAccountState. */
+/** The state of the Data Lake Analytics account. */
 public enum DataLakeAnalyticsAccountState {
     /** Enum value Active. */
     ACTIVE("Active"),
@@ -30,6 +30,9 @@ public enum DataLakeAnalyticsAccountState {
      */
     @JsonCreator
     public static DataLakeAnalyticsAccountState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DataLakeAnalyticsAccountState[] items = DataLakeAnalyticsAccountState.values();
         for (DataLakeAnalyticsAccountState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum DataLakeAnalyticsAccountState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

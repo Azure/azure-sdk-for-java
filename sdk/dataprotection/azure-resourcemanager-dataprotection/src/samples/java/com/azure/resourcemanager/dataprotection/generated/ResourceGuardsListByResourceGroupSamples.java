@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGuards ListByResourceGroup. */
 public final class ResourceGuardsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
      */
     /**
      * Sample code: Get ResourceGuards in ResourceGroup.
@@ -18,6 +16,6 @@ public final class ResourceGuardsListByResourceGroupSamples {
      */
     public static void getResourceGuardsInResourceGroup(
         com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.resourceGuards().listByResourceGroup("SampleResourceGroup", Context.NONE);
+        manager.resourceGuards().listByResourceGroup("SampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

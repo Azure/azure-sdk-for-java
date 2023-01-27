@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for Sims CreateOrUpdate. */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimCreate.json
      */
     /**
      * Sample code: Create SIM.
@@ -27,9 +27,9 @@ public final class SimsCreateOrUpdateSamples {
             .define("testSim")
             .withExistingSimGroup("rg1", "testSimGroup")
             .withInternationalMobileSubscriberIdentity("00000")
-            .withIntegratedCircuitCardIdentifier("8900000000000000000")
             .withAuthenticationKey("00000000000000000000000000000000")
             .withOperatorKeyCode("00000000000000000000000000000000")
+            .withIntegratedCircuitCardIdentifier("8900000000000000000")
             .withDeviceType("Video camera")
             .withSimPolicy(
                 new SimPolicyResourceId()

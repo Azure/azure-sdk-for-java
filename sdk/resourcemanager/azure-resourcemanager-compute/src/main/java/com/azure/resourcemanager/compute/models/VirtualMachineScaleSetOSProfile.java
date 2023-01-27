@@ -84,6 +84,12 @@ public final class VirtualMachineScaleSetOSProfile {
     @JsonProperty(value = "allowExtensionOperations")
     private Boolean allowExtensionOperations;
 
+    /*
+     * Optional property which must either be set to True or omitted.
+     */
+    @JsonProperty(value = "requireGuestProvisionSignal")
+    private Boolean requireGuestProvisionSignal;
+
     /** Creates an instance of VirtualMachineScaleSetOSProfile class. */
     public VirtualMachineScaleSetOSProfile() {
     }
@@ -301,6 +307,26 @@ public final class VirtualMachineScaleSetOSProfile {
      */
     public VirtualMachineScaleSetOSProfile withAllowExtensionOperations(Boolean allowExtensionOperations) {
         this.allowExtensionOperations = allowExtensionOperations;
+        return this;
+    }
+
+    /**
+     * Get the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
+     *
+     * @return the requireGuestProvisionSignal value.
+     */
+    public Boolean requireGuestProvisionSignal() {
+        return this.requireGuestProvisionSignal;
+    }
+
+    /**
+     * Set the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
+     *
+     * @param requireGuestProvisionSignal the requireGuestProvisionSignal value to set.
+     * @return the VirtualMachineScaleSetOSProfile object itself.
+     */
+    public VirtualMachineScaleSetOSProfile withRequireGuestProvisionSignal(Boolean requireGuestProvisionSignal) {
+        this.requireGuestProvisionSignal = requireGuestProvisionSignal;
         return this;
     }
 

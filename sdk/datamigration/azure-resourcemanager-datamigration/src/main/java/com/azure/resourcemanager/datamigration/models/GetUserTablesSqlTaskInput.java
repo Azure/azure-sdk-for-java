@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that collects user tables for the given list of databases. */
 @Fluent
 public final class GetUserTablesSqlTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetUserTablesSqlTaskInput.class);
-
     /*
      * Connection information for SQL Server
      */
@@ -26,6 +23,10 @@ public final class GetUserTablesSqlTaskInput {
      */
     @JsonProperty(value = "selectedDatabases", required = true)
     private List<String> selectedDatabases;
+
+    /** Creates an instance of GetUserTablesSqlTaskInput class. */
+    public GetUserTablesSqlTaskInput() {
+    }
 
     /**
      * Get the connectionInfo property: Connection information for SQL Server.
@@ -74,7 +75,7 @@ public final class GetUserTablesSqlTaskInput {
      */
     public void validate() {
         if (connectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionInfo in model GetUserTablesSqlTaskInput"));
@@ -82,10 +83,12 @@ public final class GetUserTablesSqlTaskInput {
             connectionInfo().validate();
         }
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model GetUserTablesSqlTaskInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GetUserTablesSqlTaskInput.class);
 }

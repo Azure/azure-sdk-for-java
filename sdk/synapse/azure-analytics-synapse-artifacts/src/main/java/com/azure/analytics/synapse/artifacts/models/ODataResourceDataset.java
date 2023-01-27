@@ -24,6 +24,9 @@ public class ODataResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path")
     private Object path;
 
+    /** Creates an instance of ODataResourceDataset class. */
+    public ODataResourceDataset() {}
+
     /**
      * Get the path property: The OData resource path. Type: string (or Expression with resultType string).
      *

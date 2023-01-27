@@ -3,14 +3,14 @@
 
 package com.azure.storage.file.share;
 
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageOutputStream;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.models.ShareStorageException;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  * Provides an output stream to write a given storage file resource.
@@ -41,12 +41,11 @@ public class StorageFileOutputStream extends StorageOutputStream {
             return Mono.empty();
         }
 
-        Flux<ByteBuffer> fbb = Flux.range(0, 1)
-            .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
+        Flux<ByteBuffer> fbb = Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)).flux();
 
         long fileOffset = this.offsetPos;
         this.offsetPos = this.offsetPos + writeLength;
 
-        return this.uploadData(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength, fileOffset);
+        return this.uploadData(fbb, writeLength, fileOffset);
     }
 }

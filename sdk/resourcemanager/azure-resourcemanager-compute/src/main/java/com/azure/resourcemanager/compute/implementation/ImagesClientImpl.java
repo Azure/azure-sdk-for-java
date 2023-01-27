@@ -215,7 +215,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -273,7 +273,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -348,7 +348,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
     }
 
     /**
@@ -366,7 +366,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -480,7 +480,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -538,7 +538,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -612,7 +612,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
     }
 
     /**
@@ -630,7 +630,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -735,7 +735,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -785,7 +785,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -851,7 +851,7 @@ public final class ImagesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName) {
-        return beginDeleteAsync(resourceGroupName, imageName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, imageName).getSyncPoller();
     }
 
     /**
@@ -867,7 +867,7 @@ public final class ImagesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName, Context context) {
-        return beginDeleteAsync(resourceGroupName, imageName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, imageName, context).getSyncPoller();
     }
 
     /**
@@ -965,7 +965,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1017,7 +1017,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1111,7 +1111,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1166,7 +1166,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1273,7 +1273,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1317,7 +1317,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

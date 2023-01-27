@@ -26,6 +26,15 @@ public final class TargetAggregationFunction extends ExpandableStringEnum<Target
     public static final TargetAggregationFunction MEAN = fromString("Mean");
 
     /**
+     * Creates a new instance of TargetAggregationFunction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetAggregationFunction() {
+    }
+
+    /**
      * Creates or finds a TargetAggregationFunction from its string representation.
      *
      * @param name a name to look for.

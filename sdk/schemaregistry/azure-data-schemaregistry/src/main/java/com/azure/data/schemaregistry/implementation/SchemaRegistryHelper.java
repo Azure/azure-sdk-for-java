@@ -2,8 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.data.schemaregistry.implementation;
 
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.util.BinaryData;
+//<<<<<<< HEAD
+//import com.azure.core.http.rest.ResponseBase;
+//import com.azure.core.util.BinaryData;
+//=======
+import com.azure.core.http.HttpHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
+//>>>>>>> upstream/main
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
@@ -15,14 +20,28 @@ import com.azure.data.schemaregistry.implementation.models.SchemasRegisterRespon
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 
-import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Helper to access private-package methods of models.
  */
 public final class SchemaRegistryHelper {
+    private static final HashMap<String, SchemaFormatImpl> SCHEMA_FORMAT_HASH_MAP = new HashMap<>();
+    private static final Pattern SCHEMA_FORMAT_PATTERN = Pattern.compile("\\s");
+
     private static SchemaRegistryModelsAccessor accessor;
+
+    static {
+        SchemaFormatImpl.values().forEach(value -> {
+            final String mimeTypeLower = value.toString().replaceAll("\\s", "")
+                .toLowerCase(Locale.ROOT);
+
+            SCHEMA_FORMAT_HASH_MAP.put(mimeTypeLower, value);
+        });
+    }
 
     /**
      * Accessor interface.
@@ -41,33 +60,101 @@ public final class SchemaRegistryHelper {
         accessor = Objects.requireNonNull(modelsAccessor, "'modelsAccessor' cannot be null.");
     }
 
-    public static SchemaProperties getSchemaPropertiesFromSchemasGetSchemaVersionHeaders(ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response) {
-        final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
-
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
-            headers.getSchemaName(), headers.getSchemaVersion());
-    }
-
-    public static SchemaProperties getSchemaPropertiesFromSchemasQueryIdByContentHeaders(ResponseBase<SchemasQueryIdByContentHeaders, Void> response) {
-        final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
-
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
-            headers.getSchemaName(), headers.getSchemaVersion());
-    }
-
-    public static SchemaProperties getSchemaPropertiesFromSchemasGetByIdHeaders(ResponseBase<SchemasGetByIdHeaders, BinaryData> response) {
-        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
-
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
-            headers.getSchemaName(), headers.getSchemaVersion());
-    }
-
-    public static SchemaProperties getSchemaPropertiesFromSchemaRegisterHeaders(ResponseBase<SchemasRegisterHeaders, Void> response) {
+//<<<<<<< HEAD
+//    public static SchemaProperties getSchemaPropertiesFromSchemasGetSchemaVersionHeaders(ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response) {
+//        final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
+//=======
+    public static SchemaProperties getSchemaProperties(SchemasRegisterResponse response, SchemaFormat fallbackFormat) {
         final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat responseFormat = getSchemaFormat(response.getHeaders());
+        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
+//>>>>>>> upstream/main
 
-        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
+//<<<<<<< HEAD
+//    public static SchemaProperties getSchemaPropertiesFromSchemasQueryIdByContentHeaders(ResponseBase<SchemasQueryIdByContentHeaders, Void> response) {
+//        final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
+//=======
+    public static SchemaProperties getSchemaProperties(SchemasGetByIdResponse response) {
+        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
+//>>>>>>> upstream/main
+
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
+            headers.getSchemaName(), headers.getSchemaVersion());
+    }
+
+//<<<<<<< HEAD
+//    public static SchemaProperties getSchemaPropertiesFromSchemasGetByIdHeaders(ResponseBase<SchemasGetByIdHeaders, BinaryData> response) {
+//        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
+//=======
+    public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentResponse response,
+        SchemaFormat fallbackFormat) {
+
+        final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat responseFormat = getSchemaFormat(response.getHeaders());
+        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
+//>>>>>>> upstream/main
+
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
+            headers.getSchemaName(), headers.getSchemaVersion());
+    }
+
+//<<<<<<< HEAD
+//    public static SchemaProperties getSchemaPropertiesFromSchemaRegisterHeaders(ResponseBase<SchemasRegisterHeaders, Void> response) {
+//        final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
+//=======
+    public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionResponse response) {
+        final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
+//>>>>>>> upstream/main
+
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
+            headers.getSchemaName(), headers.getSchemaVersion());
+    }
+
+    public static SchemaFormatImpl getContentType(SchemaFormat schemaFormat) {
+        Objects.requireNonNull(schemaFormat, "'schemaFormat' cannot be null.'");
+
+        if (schemaFormat == SchemaFormat.AVRO) {
+            return SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO;
+        } else if (schemaFormat == SchemaFormat.JSON) {
+            return SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON;
+        } else {
+            return SchemaFormatImpl.TEXT_PLAIN_CHARSET_UTF8;
+        }
+    }
+
+    /**
+     * Extracts "Content-Type" from HttpHeaders and translates it into {@link SchemaFormat}.
+     *
+     * @param headers Headers to read.
+     * @return The corresponding {@link SchemaFormat} or {@code null} if the header does not exist.
+     */
+    public static SchemaFormat getSchemaFormat(HttpHeaders headers) {
+        final String contentType = headers.getValue("Content-Type");
+
+        if (contentType == null) {
+            return null;
+        }
+
+        final String replaced = SCHEMA_FORMAT_PATTERN.matcher(contentType).replaceAll("")
+            .toLowerCase(Locale.ROOT);
+
+        // Default value if nothing matches is CUSTOM.
+        final SchemaFormatImpl implementationFormat = SCHEMA_FORMAT_HASH_MAP
+            .getOrDefault(replaced, SchemaFormatImpl.TEXT_PLAIN_CHARSET_UTF8);
+
+        if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_AVRO.equals(implementationFormat)) {
+            return SchemaFormat.AVRO;
+        } else if (SchemaFormatImpl.APPLICATION_JSON_SERIALIZATION_JSON.equals(implementationFormat)) {
+            return SchemaFormat.JSON;
+        } else {
+            return SchemaFormat.CUSTOM;
+        }
+    }
 }
 

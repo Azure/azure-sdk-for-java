@@ -14,10 +14,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
 import com.azure.resourcemanager.hybridcompute.models.Machines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MachinesImpl implements Machines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MachinesImpl.class);
 
     private final MachinesClient innerClient;
 
@@ -29,21 +28,13 @@ public final class MachinesImpl implements Machines {
         this.serviceManager = serviceManager;
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String machineName) {
-        this.serviceClient().delete(resourceGroupName, machineName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String machineName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String machineName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, machineName, context);
     }
 
-    public Machine getByResourceGroup(String resourceGroupName, String machineName) {
-        MachineInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, machineName);
-        if (inner != null) {
-            return new MachineImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void deleteByResourceGroup(String resourceGroupName, String machineName) {
+        this.serviceClient().delete(resourceGroupName, machineName);
     }
 
     public Response<Machine> getByResourceGroupWithResponse(
@@ -56,6 +47,15 @@ public final class MachinesImpl implements Machines {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MachineImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Machine getByResourceGroup(String resourceGroupName, String machineName) {
+        MachineInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, machineName);
+        if (inner != null) {
+            return new MachineImpl(inner, this.manager());
         } else {
             return null;
         }

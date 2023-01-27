@@ -6,14 +6,11 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A REST based health check. */
 @Fluent
 public final class RestHealthCheck {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestHealthCheck.class);
-
     /*
      * A unique name for this check.
      */
@@ -27,12 +24,15 @@ public final class RestHealthCheck {
     private RestRequest request;
 
     /*
-     * The expected response from the health provider. If no expected response
-     * is provided, the default is to expect the received response to have an
-     * HTTP status code of 200 OK.
+     * The expected response from the health provider. If no expected response is provided, the default is to expect
+     * the received response to have an HTTP status code of 200 OK.
      */
     @JsonProperty(value = "response")
     private RestResponse response;
+
+    /** Creates an instance of RestHealthCheck class. */
+    public RestHealthCheck() {
+    }
 
     /**
      * Get the name property: A unique name for this check.
@@ -103,12 +103,12 @@ public final class RestHealthCheck {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RestHealthCheck"));
         }
         if (request() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property request in model RestHealthCheck"));
         } else {
@@ -118,4 +118,6 @@ public final class RestHealthCheck {
             response().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestHealthCheck.class);
 }

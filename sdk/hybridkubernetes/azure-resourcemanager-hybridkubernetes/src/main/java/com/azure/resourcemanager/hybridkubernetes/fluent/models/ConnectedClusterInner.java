@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterIdentity;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** Represents a connected cluster. */
 @Fluent
 public final class ConnectedClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClusterInner.class);
-
     /*
      * The identity of the connected cluster.
      */
@@ -38,6 +35,10 @@ public final class ConnectedClusterInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ConnectedClusterInner class. */
+    public ConnectedClusterInner() {
+    }
 
     /**
      * Get the identity property: The identity of the connected cluster.
@@ -269,14 +270,14 @@ public final class ConnectedClusterInner extends Resource {
      */
     public void validate() {
         if (identity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property identity in model ConnectedClusterInner"));
         } else {
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ConnectedClusterInner"));
@@ -284,4 +285,6 @@ public final class ConnectedClusterInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedClusterInner.class);
 }

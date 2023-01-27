@@ -24,6 +24,10 @@ public final class DatabaseOperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DatabaseOperationListResult class. */
+    public DatabaseOperationListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

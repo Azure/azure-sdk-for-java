@@ -83,20 +83,6 @@ public interface View {
     OffsetDateTime modifiedOn();
 
     /**
-     * Gets the dateRange property: Selected date range for viewing cost in.
-     *
-     * @return the dateRange value.
-     */
-    String dateRange();
-
-    /**
-     * Gets the currency property: Selected currency.
-     *
-     * @return the currency value.
-     */
-    String currency();
-
-    /**
      * Gets the chart property: Chart type of the main view in Cost Analysis. Required.
      *
      * @return the chart value.
@@ -156,18 +142,11 @@ public interface View {
     ReportConfigTimePeriod timePeriod();
 
     /**
-     * Gets the dataSet property: Has definition for data in this report config.
+     * Gets the dataset property: Has definition for data in this report config.
      *
-     * @return the dataSet value.
+     * @return the dataset value.
      */
-    ReportConfigDataset dataSet();
-
-    /**
-     * Gets the includeMonetaryCommitment property: Include monetary commitment.
-     *
-     * @return the includeMonetaryCommitment value.
-     */
-    Boolean includeMonetaryCommitment();
+    ReportConfigDataset dataset();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.ViewInner object.
@@ -226,7 +205,7 @@ public interface View {
                 DefinitionStages.WithTypePropertiesType,
                 DefinitionStages.WithTimeframe,
                 DefinitionStages.WithTimePeriod,
-                DefinitionStages.WithDataSet {
+                DefinitionStages.WithDataset {
             /**
              * Executes the create request.
              *
@@ -392,15 +371,15 @@ public interface View {
              */
             WithCreate withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View definition allowing to specify dataSet. */
-        interface WithDataSet {
+        /** The stage of the View definition allowing to specify dataset. */
+        interface WithDataset {
             /**
-             * Specifies the dataSet property: Has definition for data in this report config..
+             * Specifies the dataset property: Has definition for data in this report config..
              *
-             * @param dataSet Has definition for data in this report config.
+             * @param dataset Has definition for data in this report config.
              * @return the next definition stage.
              */
-            WithCreate withDataSet(ReportConfigDataset dataSet);
+            WithCreate withDataset(ReportConfigDataset dataset);
         }
     }
     /**
@@ -423,7 +402,7 @@ public interface View {
             UpdateStages.WithTypePropertiesType,
             UpdateStages.WithTimeframe,
             UpdateStages.WithTimePeriod,
-            UpdateStages.WithDataSet {
+            UpdateStages.WithDataset {
         /**
          * Executes the update request.
          *
@@ -591,15 +570,15 @@ public interface View {
              */
             Update withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View update allowing to specify dataSet. */
-        interface WithDataSet {
+        /** The stage of the View update allowing to specify dataset. */
+        interface WithDataset {
             /**
-             * Specifies the dataSet property: Has definition for data in this report config..
+             * Specifies the dataset property: Has definition for data in this report config..
              *
-             * @param dataSet Has definition for data in this report config.
+             * @param dataset Has definition for data in this report config.
              * @return the next definition stage.
              */
-            Update withDataSet(ReportConfigDataset dataSet);
+            Update withDataset(ReportConfigDataset dataset);
         }
     }
     /**

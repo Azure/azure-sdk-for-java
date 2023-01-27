@@ -48,6 +48,10 @@ public final class PeeringRegisteredPrefixImpl
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PeeringRegisteredPrefixInner innerModel() {
         return this.innerObject;
     }

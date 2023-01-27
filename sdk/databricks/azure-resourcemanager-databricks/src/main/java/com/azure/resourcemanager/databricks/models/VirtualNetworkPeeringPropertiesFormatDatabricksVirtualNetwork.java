@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork.class);
-
     /*
      * The Id of the databricks virtual network.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork class. */
+    public VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork() {
+    }
 
     /**
      * Get the id property: The Id of the databricks virtual network.

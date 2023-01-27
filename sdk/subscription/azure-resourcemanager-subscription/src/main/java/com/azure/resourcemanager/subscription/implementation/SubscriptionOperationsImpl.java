@@ -17,10 +17,9 @@ import com.azure.resourcemanager.subscription.models.EnabledSubscriptionId;
 import com.azure.resourcemanager.subscription.models.RenamedSubscriptionId;
 import com.azure.resourcemanager.subscription.models.SubscriptionName;
 import com.azure.resourcemanager.subscription.models.SubscriptionOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubscriptionOperationsImpl implements SubscriptionOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionOperationsImpl.class);
 
     private final SubscriptionOperationsClient innerClient;
 
@@ -31,15 +30,6 @@ public final class SubscriptionOperationsImpl implements SubscriptionOperations 
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CanceledSubscriptionId cancel(String subscriptionId) {
-        CanceledSubscriptionIdInner inner = this.serviceClient().cancel(subscriptionId);
-        if (inner != null) {
-            return new CanceledSubscriptionIdImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CanceledSubscriptionId> cancelWithResponse(String subscriptionId, Context context) {
@@ -55,10 +45,10 @@ public final class SubscriptionOperationsImpl implements SubscriptionOperations 
         }
     }
 
-    public RenamedSubscriptionId rename(String subscriptionId, SubscriptionName body) {
-        RenamedSubscriptionIdInner inner = this.serviceClient().rename(subscriptionId, body);
+    public CanceledSubscriptionId cancel(String subscriptionId) {
+        CanceledSubscriptionIdInner inner = this.serviceClient().cancel(subscriptionId);
         if (inner != null) {
-            return new RenamedSubscriptionIdImpl(inner, this.manager());
+            return new CanceledSubscriptionIdImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -79,10 +69,10 @@ public final class SubscriptionOperationsImpl implements SubscriptionOperations 
         }
     }
 
-    public EnabledSubscriptionId enable(String subscriptionId) {
-        EnabledSubscriptionIdInner inner = this.serviceClient().enable(subscriptionId);
+    public RenamedSubscriptionId rename(String subscriptionId, SubscriptionName body) {
+        RenamedSubscriptionIdInner inner = this.serviceClient().rename(subscriptionId, body);
         if (inner != null) {
-            return new EnabledSubscriptionIdImpl(inner, this.manager());
+            return new RenamedSubscriptionIdImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -96,6 +86,15 @@ public final class SubscriptionOperationsImpl implements SubscriptionOperations 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EnabledSubscriptionIdImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EnabledSubscriptionId enable(String subscriptionId) {
+        EnabledSubscriptionIdInner inner = this.serviceClient().enable(subscriptionId);
+        if (inner != null) {
+            return new EnabledSubscriptionIdImpl(inner, this.manager());
         } else {
             return null;
         }

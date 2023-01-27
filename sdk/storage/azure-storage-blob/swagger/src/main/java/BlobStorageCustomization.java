@@ -5,7 +5,9 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.PropertyCustomization;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
@@ -73,34 +75,17 @@ public class BlobStorageCustomization extends Customization {
             .setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
 
         // Changes to JacksonXmlRootElement for classes that aren't serialized to maintain backwards compatibility.
-        blobHttpHeaders.removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"blob-http-headers\")");
-
-        blobContainerEncryptionScope.removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"blob-container-encryption-scope\")");
-
-        models.getClass("CpkInfo").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"cpk-info\")");
-
+        changeJacksonXmlRootElementName(blobHttpHeaders, "blob-http-headers");
+        changeJacksonXmlRootElementName(blobContainerEncryptionScope, "blob-container-encryption-scope");
+        changeJacksonXmlRootElementName(models.getClass("CpkInfo"), "cpk-info");
 
         // Changes to JacksonXmlRootElement for classes that have been renamed.
-        models.getClass("BlobMetrics").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"Metrics\")");
-
-        models.getClass("BlobAnalyticsLogging").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"Logging\")");
-
-        models.getClass("BlobRetentionPolicy").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"RetentionPolicy\")");
-
-        models.getClass("BlobServiceStatistics").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"StorageServiceStats\")");
-
-        models.getClass("BlobSignedIdentifier").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"SignedIdentifier\")");
-
-        models.getClass("BlobAccessPolicy").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"AccessPolicy\")");
+        changeJacksonXmlRootElementName(models.getClass("BlobMetrics"), "Metrics");
+        changeJacksonXmlRootElementName(models.getClass("BlobAnalyticsLogging"), "Logging");
+        changeJacksonXmlRootElementName(models.getClass("BlobRetentionPolicy"), "RetentionPolicy");
+        changeJacksonXmlRootElementName(models.getClass("BlobServiceStatistics"), "StorageServiceStats");
+        changeJacksonXmlRootElementName(models.getClass("BlobSignedIdentifier"), "SignedIdentifier");
+        changeJacksonXmlRootElementName(models.getClass("BlobAccessPolicy"), "AccessPolicy");
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented")
@@ -145,5 +130,24 @@ public class BlobStorageCustomization extends Customization {
             .getJavadoc()
             .setDeprecated("Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}");
 
+        blobErrorCode.getConstant("INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED")
+            .addAnnotation("@Deprecated")
+            .getJavadoc()
+            .setDeprecated("Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}");
+
+    }
+
+    /*
+     * Uses ClassCustomization.customizeAst to replace the 'localName' value of the JacksonXmlRootElement instead of
+     * the previous implementation which removed the JacksonXmlRootElement then added it back with the updated
+     * 'localName'. The previous implementation would occasionally run into an issue where the JacksonXmlRootElement
+     * import wouldn't be added back, causing a failure in CI when validating that code generation was up-to-date.
+     */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private void changeJacksonXmlRootElementName(ClassCustomization classCustomization, String rootElementName) {
+        classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName()).get()
+            .getAnnotationByName("JacksonXmlRootElement").get()
+            .asNormalAnnotationExpr()
+            .setPairs(new NodeList<>(new MemberValuePair("localName", new StringLiteralExpr(rootElementName)))));
     }
 }

@@ -22,6 +22,9 @@ public final class EntityReference {
     @JsonProperty(value = "referenceName")
     private String referenceName;
 
+    /** Creates an instance of EntityReference class. */
+    public EntityReference() {}
+
     /**
      * Get the type property: The type of this referenced entity.
      *

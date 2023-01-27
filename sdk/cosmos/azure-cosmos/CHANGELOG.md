@@ -1,17 +1,30 @@
 ## Release History
 
-### 4.40.0-beta.1 (Unreleased)
+### 4.41.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added internal merge handling - See [PR 31428](https://github.com/Azure/azure-sdk-for-java/pull/31428). See [PR 32097](https://github.com/Azure/azure-sdk-for-java/pull/32097). See [PR 32078](https://github.com/Azure/azure-sdk-for-java/pull/32078). See [PR 32165](https://github.com/Azure/azure-sdk-for-java/pull/32165). See [32259](https://github.com/Azure/azure-sdk-for-java/pull/32259). See [32496](https://github.com/Azure/azure-sdk-for-java/pull/32496)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.40.0 (2023-01-13)
+#### Features Added
+* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Added `CosmosDiagnostics` to `readMany` API - See [PR 32290](https://github.com/Azure/azure-sdk-for-java/pull/32290)
+
+#### Bugs Fixed
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
-* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Fixed issue with `TracerProvider` constructor inadvertently disabling tracing when `isClientMetricsEnabled` is true - See [PR 32787](https://github.com/Azure/azure-sdk-for-java/pull/32787)
+* Added improvement in handling for idle connection being closed unexpectedly - See [PR 32936](https://github.com/Azure/azure-sdk-for-java/pull/32936)
+
+#### Other Changes
+* Reduced log noisiness when bulk ingestion completes and sink is already terminated or cancelled. - See [PR 32601](https://github.com/Azure/azure-sdk-for-java/pull/32601)
 * Optimized the `readMany` API to make use of point reads when a single item is requested for a given physical partition - See [PR 31723](https://github.com/Azure/azure-sdk-for-java/pull/31723)
+* Added cross region retries for data plane, query plan and metadata requests failed with http timeouts - See [PR 32450](https://github.com/Azure/azure-sdk-for-java/pull/32450)
 
 ### 4.39.0 (2022-11-16)
 
@@ -81,6 +94,7 @@
 #### Other Changes
 * Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
 * Reverted changes of [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944) to avoid possible regression when customers use id with special characters and their account is on ComputeGateway already. - See [PR 30283](https://github.com/Azure/azure-sdk-for-java/pull/30283)
+* Added changes for `changeFeed` APIs for handling all versions and deletes changes. See [PR 30161](https://github.com/Azure/azure-sdk-for-java/pull/30161)
 
 ### 4.33.1 (2022-07-22)
 #### Bugs Fixed

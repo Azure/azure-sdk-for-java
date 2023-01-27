@@ -18,6 +18,15 @@ public final class SapCloudForCustomerSinkWriteBehavior
     public static final SapCloudForCustomerSinkWriteBehavior UPDATE = fromString("Update");
 
     /**
+     * Creates a new instance of SapCloudForCustomerSinkWriteBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapCloudForCustomerSinkWriteBehavior() {
+    }
+
+    /**
      * Creates or finds a SapCloudForCustomerSinkWriteBehavior from its string representation.
      *
      * @param name a name to look for.

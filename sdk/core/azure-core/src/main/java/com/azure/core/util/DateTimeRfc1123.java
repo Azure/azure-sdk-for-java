@@ -106,7 +106,7 @@ public final class DateTimeRfc1123 {
      *
      * @throws DateTimeException If the processing character is not digit character.
      */
-    private static int parseInt(final CharSequence date, final int beginIndex, final int endIndex) {
+    private static int parseInt(final String date, final int beginIndex, final int endIndex) {
         int num = 0;
         for (int i = beginIndex; i < endIndex; i++) {
             final char c = date.charAt(i);

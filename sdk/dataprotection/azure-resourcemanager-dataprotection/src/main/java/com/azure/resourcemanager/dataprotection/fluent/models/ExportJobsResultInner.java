@@ -5,18 +5,17 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExportJobsResult The result for export jobs containing blob details. */
+/**
+ * ExportJobsResult
+ *
+ * <p>The result for export jobs containing blob details.
+ */
 @Immutable
 public final class ExportJobsResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsResultInner.class);
-
     /*
-     * URL of the blob into which the serialized string of list of jobs is
-     * exported.
+     * URL of the blob into which the serialized string of list of jobs is exported.
      */
     @JsonProperty(value = "blobUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String blobUrl;
@@ -38,6 +37,10 @@ public final class ExportJobsResultInner {
      */
     @JsonProperty(value = "excelFileBlobSasKey", access = JsonProperty.Access.WRITE_ONLY)
     private String excelFileBlobSasKey;
+
+    /** Creates an instance of ExportJobsResultInner class. */
+    public ExportJobsResultInner() {
+    }
 
     /**
      * Get the blobUrl property: URL of the blob into which the serialized string of list of jobs is exported.

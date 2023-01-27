@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.JobsClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.JobInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobsClient. */
 public final class JobsClientImpl implements JobsClient {
-    private final ClientLogger logger = new ClientLogger(JobsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobsService service;
 
@@ -52,7 +49,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxEdgeManagemen")
-    private interface JobsService {
+    public interface JobsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
@@ -79,7 +76,8 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device.
+     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobInner>> getWithResponseAsync(String deviceName, String name, String resourceGroupName) {
@@ -132,7 +130,8 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device.
+     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobInner>> getWithResponseAsync(
@@ -182,19 +181,31 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device.
+     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobInner> getAsync(String deviceName, String name, String resourceGroupName) {
         return getWithResponseAsync(deviceName, name, resourceGroupName)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
+     *
+     * @param deviceName The device name.
+     * @param name The job name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<JobInner> getWithResponse(
+        String deviceName, String name, String resourceGroupName, Context context) {
+        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
     }
 
     /**
@@ -210,24 +221,6 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner get(String deviceName, String name, String resourceGroupName) {
-        return getAsync(deviceName, name, resourceGroupName).block();
-    }
-
-    /**
-     * Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
-     *
-     * @param deviceName The device name.
-     * @param name The job name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a specified job on a Data Box Edge/Data Box Gateway device.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context) {
-        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
+        return getWithResponse(deviceName, name, resourceGroupName, Context.NONE).getValue();
     }
 }

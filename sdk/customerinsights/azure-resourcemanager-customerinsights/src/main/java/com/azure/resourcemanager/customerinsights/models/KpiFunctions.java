@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KpiFunctions. */
+/** The computation function for the KPI. */
 public enum KpiFunctions {
     /** Enum value Sum. */
     SUM("Sum"),
@@ -48,6 +48,9 @@ public enum KpiFunctions {
      */
     @JsonCreator
     public static KpiFunctions fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KpiFunctions[] items = KpiFunctions.values();
         for (KpiFunctions item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -57,6 +60,7 @@ public enum KpiFunctions {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

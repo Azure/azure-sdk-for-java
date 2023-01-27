@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StandardTierStorageRedundancy. */
+/** The storage redundancy setting of a vault. */
 public final class StandardTierStorageRedundancy extends ExpandableStringEnum<StandardTierStorageRedundancy> {
     /** Static value LocallyRedundant for StandardTierStorageRedundancy. */
     public static final StandardTierStorageRedundancy LOCALLY_REDUNDANT = fromString("LocallyRedundant");

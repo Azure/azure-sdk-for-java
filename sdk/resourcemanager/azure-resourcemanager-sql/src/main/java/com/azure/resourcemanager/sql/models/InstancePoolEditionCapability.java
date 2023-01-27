@@ -35,6 +35,10 @@ public final class InstancePoolEditionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of InstancePoolEditionCapability class. */
+    public InstancePoolEditionCapability() {
+    }
+
     /**
      * Get the name property: The instance pool version name.
      *

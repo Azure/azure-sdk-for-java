@@ -17,6 +17,10 @@ public final class SimPolicyResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of SimPolicyResourceId class. */
+    public SimPolicyResourceId() {
+    }
+
     /**
      * Get the id property: SIM policy resource ID.
      *

@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.ScheduleBase;
 import com.azure.resourcemanager.machinelearning.models.ScheduleProvisioningState;
 import com.azure.resourcemanager.machinelearning.models.ScheduleStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScheduleBase model =
             BinaryData
                 .fromString("{\"id\":\"piudeugfsxzecpa\",\"provisioningStatus\":\"Completed\",\"status\":\"Disabled\"}")
@@ -23,8 +22,8 @@ public final class ScheduleBaseTests {
         Assertions.assertEquals(ScheduleStatus.DISABLED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScheduleBase model =
             new ScheduleBase()
                 .withId("piudeugfsxzecpa")

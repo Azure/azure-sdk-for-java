@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.fluent.models.OperationMetadataInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the request to list REST API operations. */
 @Fluent
 public final class ProviderOperationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperationResult.class);
-
     /*
      * List of operations supported by the resource provider.
      */
@@ -27,6 +23,10 @@ public final class ProviderOperationResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ProviderOperationResult class. */
+    public ProviderOperationResult() {
+    }
 
     /**
      * Get the value property: List of operations supported by the resource provider.

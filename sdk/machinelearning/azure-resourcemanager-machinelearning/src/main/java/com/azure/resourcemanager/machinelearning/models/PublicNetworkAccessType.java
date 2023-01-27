@@ -17,6 +17,15 @@ public final class PublicNetworkAccessType extends ExpandableStringEnum<PublicNe
     public static final PublicNetworkAccessType DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of PublicNetworkAccessType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicNetworkAccessType() {
+    }
+
+    /**
      * Creates or finds a PublicNetworkAccessType from its string representation.
      *
      * @param name a name to look for.

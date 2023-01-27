@@ -219,17 +219,6 @@ public interface ContentKeyPolicy {
      *
      * <p>Get a Content Key Policy including secret values.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Content Key Policy including secret values.
-     */
-    ContentKeyPolicyProperties getPolicyPropertiesWithSecrets();
-
-    /**
-     * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,4 +226,15 @@ public interface ContentKeyPolicy {
      * @return a Content Key Policy including secret values along with {@link Response}.
      */
     Response<ContentKeyPolicyProperties> getPolicyPropertiesWithSecretsWithResponse(Context context);
+
+    /**
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Content Key Policy including secret values.
+     */
+    ContentKeyPolicyProperties getPolicyPropertiesWithSecrets();
 }
