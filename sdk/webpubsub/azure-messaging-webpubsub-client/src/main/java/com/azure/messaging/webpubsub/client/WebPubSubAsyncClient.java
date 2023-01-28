@@ -14,6 +14,7 @@ import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.LoggingUtils;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
+import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubMessageAck;
 import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
@@ -48,10 +49,14 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubAsyncClient implements AsyncCloseable {
@@ -96,6 +101,9 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     // state on stop by user
     private final AtomicBoolean isStoppedByUser = new AtomicBoolean();
     private Sinks.Empty<Void> isStoppedByUserMono = Sinks.empty();
+
+    // groups
+    private final ConcurrentMap<String, WebPubSubGroup> groups = new ConcurrentHashMap<>();
 
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
 
@@ -203,7 +211,16 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
         return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
-            .then(waitForAckMessage(ackId));
+            .then(waitForAckMessage(ackId))
+            .then(Mono.fromRunnable(() -> {
+                groups.compute(group, (k, v) -> {
+                    if (v == null) {
+                        return new WebPubSubGroup(group).setJoined(true);
+                    } else {
+                        return v.setJoined(true);
+                    }
+                });
+            }));
     }
 
     public Mono<WebPubSubResult> leaveGroup(String group) {
@@ -212,7 +229,16 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
         return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
-            .then(waitForAckMessage(ackId));
+            .then(waitForAckMessage(ackId))
+            .then(Mono.fromRunnable(() -> {
+                groups.compute(group, (k, v) -> {
+                    if (v == null) {
+                        return new WebPubSubGroup(group).setJoined(false);
+                    } else {
+                        return v.setJoined(false);
+                    }
+                });
+            }));
     }
 
     public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
@@ -320,6 +346,20 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 logger.atWarning()
                     .log("Failed to close session: " + thr.getMessage());
             });
+        } else {
+            if (autoRestoreGroup) {
+                List<Mono<WebPubSubResult>> restoreGroupMonoList = groups.values().stream()
+                    .filter(WebPubSubGroup::isJoined)
+                    .map(v -> joinGroup(v.getName()).onErrorComplete())
+                    .collect(Collectors.toList());
+
+                Flux.mergeSequentialDelayError(restoreGroupMonoList,
+                    Schedulers.DEFAULT_POOL_SIZE, Schedulers.DEFAULT_POOL_SIZE)
+                    .subscribeOn(Schedulers.boundedElastic()).subscribe(null, thr -> {
+                        logger.atWarning()
+                            .log("Failed to close session: " + thr.getMessage());
+                    });
+            }
         }
     }
 
