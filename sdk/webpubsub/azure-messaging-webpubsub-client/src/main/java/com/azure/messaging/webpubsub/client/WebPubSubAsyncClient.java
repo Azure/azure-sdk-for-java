@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.exception.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
@@ -92,6 +93,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     private final ClientState clientState = new ClientState();
+    private final AtomicBoolean isStoppedByUser = new AtomicBoolean();
+    private Sinks.Empty<Void> isStoppedByUserMono = Sinks.empty();
+
+    private static final Duration TIMEOUT = Duration.ofSeconds(30);
 
     WebPubSubAsyncClient(Mono<String> clientAccessUriProvider,
                          WebPubSubProtocol webPubSubProtocol,
@@ -117,13 +122,14 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     public Mono<Void> start() {
         if (clientState.get() != WebPubSubClientState.STOPPED) {
             return Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to start. Client is not stopped.")));
+                new IllegalStateException("Failed to start. Client is not STOPPED.")));
         }
         return Mono.defer(() -> {
+            isStoppedByUser.set(false);
             boolean success = clientState.changeStateOn(WebPubSubClientState.STOPPED, WebPubSubClientState.CONNECTING);
             if (!success) {
                 return Mono.error(logger.logExceptionAsError(
-                    new IllegalStateException("Failed to start. Client is not stopped.")));
+                    new IllegalStateException("Failed to start. Client is not STOPPED.")));
             } else {
                 return Mono.empty();
             }
@@ -137,23 +143,35 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
             this.session = clientManager.connectToServer(endpoint, config, new URI(uri));
             return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
-            clientState.changeState(WebPubSubClientState.STOPPED);
+            handleClientStop();
         });
     }
 
     public Mono<Void> stop() {
         if (clientState.get() == WebPubSubClientState.CLOSED) {
             return Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to stop. Client is closed.")));
+                new IllegalStateException("Failed to stop. Client is CLOSED.")));
         }
-        return Mono.fromCallable(() -> {
+        return Mono.defer(() -> {
+            isStoppedByUser.set(true);
             if (session != null && session.isOpen()) {
-                session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
+                return Mono.fromCallable(() -> {
+                    session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
+                    return (Void) null;
+                }).subscribeOn(Schedulers.boundedElastic());
             } else {
-                // TODO handle state e.g. CONNECTING, RECOVERING, DISCONNECTED
+                if (clientState.changeStateOn(WebPubSubClientState.DISCONNECTED, WebPubSubClientState.STOPPED)) {
+                    // handle transient state DISCONNECTED, directly change to STOPPED, avoid RECOVERING
+                    handleClientStop();
+                    return Mono.empty();
+                } else {
+                    // handle transient state e.g. CONNECTING, RECOVERING
+                    // isStoppedByUserMono will be signaled in handleSessionOpen when isStoppedByUser
+                    isStoppedByUserMono = Sinks.empty();
+                    return isStoppedByUserMono.asMono();
+                }
             }
-            return (Void) null;
-        }).subscribeOn(Schedulers.boundedElastic());
+        });
     }
 
     public Mono<Void> closeAsync() {
@@ -170,8 +188,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 disconnectedEventSink.emitComplete(
                     emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
 
-                isClosedMono.emitEmpty(
-                    emitFailureHandler("Unable to emit Close"));
+                isClosedMono.emitEmpty(emitFailureHandler("Unable to emit Close"));
             }));
         }
     }
@@ -280,16 +297,134 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 }
             })
             // timeout or stream closed
-            .timeout(Duration.ofSeconds(30), Mono.empty())
+            .timeout(TIMEOUT, Mono.empty())
             .switchIfEmpty(Mono.error(logSendMessageFailedException(
                 "Acknowledge from the service not received.", null, true, ackId)));
     }
 
-    private void handleClose(CloseReason closeReason) {
-        handleStop();
+    private void handleSessionOpen() {
+        clientState.changeState(WebPubSubClientState.CONNECTED);
+
+        if (isStoppedByUser.compareAndSet(true, false)) {
+            // user intended to stop, but issued when session is not open, e.g. CONNECTING, RECOVERING
+            Mono.fromCallable(() -> {
+                if (session != null && session.isOpen()) {
+                    session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
+                }
+                isStoppedByUserMono.emitEmpty(emitFailureHandler("Unable to emit Stopped"));
+                return (Void) null;
+            }).subscribeOn(Schedulers.boundedElastic()).subscribe(null, thr -> {
+                logger.atWarning()
+                    .log("Failed to close session: " + thr.getMessage());
+            });
+        }
     }
 
-    private void handleStop() {
+    private void handleSessionClose(CloseReason closeReason) {
+        if (isStoppedByUser.compareAndSet(true, false)) {
+            // closed by user
+            handleClientStop();
+        } else if (closeReason.getCloseCode() == CloseReason.CloseCodes.VIOLATED_POLICY) {
+            // VIOLATED_POLICY
+            handleClientStop();
+        } else {
+            if (!webPubSubProtocol.isReliable() || reconnectionToken == null || connectionId == null) {
+                handleNoRecovery().subscribe(null, thr -> {
+                    logger.atWarning()
+                        .log("Failed to auto reconnect session: " + thr.getMessage());
+                });
+            } else {
+                handleRecovery().timeout(TIMEOUT, handleNoRecovery()).subscribe(null, thr -> {
+                    logger.atWarning()
+                        .log("Failed to recover session: " + thr.getMessage());
+                });
+            }
+        }
+    }
+
+    private Mono<Void> handleNoRecovery() {
+        return Mono.defer(() -> {
+            if (isStoppedByUser.compareAndSet(true, false)) {
+                // closed by user
+                handleClientStop();
+                return Mono.error(logger.logExceptionAsError(
+                    new IllegalStateException("Client is stopped by user.")));
+            } else if (autoReconnect) {
+                // try reconnect
+
+                clientState.changeState(WebPubSubClientState.DISCONNECTED);
+
+                return Mono.defer(() -> {
+                    boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
+                        WebPubSubClientState.CONNECTING);
+                    if (!success) {
+                        return Mono.error(logger.logExceptionAsError(
+                            new IllegalStateException("Failed to start. Client is not DISCONNECTED.")));
+                    } else {
+                        return Mono.empty();
+                    }
+                }).then(clientAccessUriProvider.flatMap(uri -> Mono.fromCallable(() -> {
+                    this.endpoint = new ClientEndpoint();
+                    ClientEndpointConfig config = ClientEndpointConfig.Builder.create()
+                        .preferredSubprotocols(Collections.singletonList(webPubSubProtocol.getName()))
+                        .encoders(Collections.singletonList(MessageEncoder.class))
+                        .decoders(Collections.singletonList(MessageDecoder.class))
+                        .build();
+                    this.session = clientManager.connectToServer(endpoint, config, new URI(uri));
+                    return (Void) null;
+                }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
+                    handleClientStop();
+                });
+            } else {
+                handleClientStop();
+                return Mono.empty();
+            }
+        });
+    }
+
+    private Mono<Void> handleRecovery() {
+        return Mono.defer(() -> {
+            if (isStoppedByUser.compareAndSet(true, false)) {
+                // closed by user
+                handleClientStop();
+                return Mono.error(logger.logExceptionAsError(
+                    new IllegalStateException("Client is stopped by user.")));
+            } else {
+                // try recovery
+
+                clientState.changeState(WebPubSubClientState.DISCONNECTED);
+
+                return Mono.defer(() -> {
+                    boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
+                        WebPubSubClientState.RECOVERING);
+                    if (!success) {
+                        return Mono.error(logger.logExceptionAsError(
+                            new IllegalStateException("Failed to recover. Client is not DISCONNECTED.")));
+                    } else {
+                        return Mono.empty();
+                    }
+                }).then(clientAccessUriProvider.flatMap(uri -> Mono.fromCallable(() -> {
+                    String recoveryUri = UrlBuilder.parse(uri)
+                        .addQueryParameter("awps_connection_id", connectionId)
+                        .addQueryParameter("awps_reconnection_token", reconnectionToken)
+                        .toString();
+
+                    this.endpoint = new ClientEndpoint();
+                    ClientEndpointConfig config = ClientEndpointConfig.Builder.create()
+                        .preferredSubprotocols(Collections.singletonList(webPubSubProtocol.getName()))
+                        .encoders(Collections.singletonList(MessageEncoder.class))
+                        .decoders(Collections.singletonList(MessageDecoder.class))
+                        .build();
+                    this.session = clientManager.connectToServer(endpoint, config, new URI(recoveryUri));
+                    return (Void) null;
+                }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
+                    handleClientStop();
+                });
+            }
+        });
+    }
+
+    private void handleClientStop() {
         clientState.changeState(WebPubSubClientState.STOPPED);
 
         session = null;
@@ -339,17 +474,17 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 }
             });
 
-            clientState.changeState(WebPubSubClientState.CONNECTED);
+            handleSessionOpen();
         }
 
         @Override
         public void onClose(Session session, CloseReason closeReason) {
-            handleClose(closeReason);
+            handleSessionClose(closeReason);
         }
 
         @Override
         public void onError(Session session, Throwable thr) {
-            logger.atInfo()
+            logger.atWarning()
                 .log("Error from session: " + thr.getMessage());
         }
     }
@@ -400,11 +535,11 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         Mono<Void> verification = Mono.empty();
         if (isDisposed.get()) {
             verification = Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to send message. WebPubSubClient is closed.")));
+                new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
         }
         if (clientState.get() != WebPubSubClientState.CONNECTED) {
             verification = Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to send message. Client is not connected.")));
+                new IllegalStateException("Failed to send message. Client is not CONNECTED.")));
         }
         if (session == null || !session.isOpen()) {
             verification = Mono.error(logSendMessageFailedException(
