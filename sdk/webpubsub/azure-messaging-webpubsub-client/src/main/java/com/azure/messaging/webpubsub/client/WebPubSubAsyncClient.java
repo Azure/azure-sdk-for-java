@@ -161,7 +161,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                     return (Void) null;
                 }).subscribeOn(Schedulers.boundedElastic());
             } else {
-                if (clientState.changeStateOn(WebPubSubClientState.DISCONNECTED, WebPubSubClientState.STOPPED)) {
+                if (clientState.clientState.get() == WebPubSubClientState.STOPPED) {
+                    // already STOPPED
+                    return Mono.empty();
+                } else if (clientState.changeStateOn(WebPubSubClientState.DISCONNECTED, WebPubSubClientState.STOPPED)) {
                     // handle transient state DISCONNECTED, directly change to STOPPED, avoid RECOVERING
                     handleClientStop();
                     return Mono.empty();
@@ -537,9 +540,12 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 return Mono.error(logger.logExceptionAsError(
                     new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
             }
-            if (clientState.get() != WebPubSubClientState.CONNECTED) {
-                return Mono.error(logger.logExceptionAsError(
-                    new IllegalStateException("Failed to send message. Client is not CONNECTED.")));
+            WebPubSubClientState state = clientState.get();
+            if (state != WebPubSubClientState.CONNECTED) {
+                return Mono.error(logSendMessageFailedException(
+                    "Failed to send message. Client is " + state.name() + ".",
+                    null, state == WebPubSubClientState.RECOVERING || state == WebPubSubClientState.CONNECTING,
+                    (Long) null));
             }
             if (session == null || !session.isOpen()) {
                 return Mono.error(logSendMessageFailedException(

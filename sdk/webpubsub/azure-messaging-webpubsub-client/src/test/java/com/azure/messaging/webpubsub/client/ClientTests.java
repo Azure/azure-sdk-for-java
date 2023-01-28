@@ -3,7 +3,6 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.messaging.webpubsub.client.exception.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
@@ -48,6 +47,6 @@ public class ClientTests extends TestBase {
         client.close();
         Assertions.assertEquals(WebPubSubClientState.CLOSED, client.getClientState());
 
-        Assertions.assertThrows(SendMessageFailedException.class, () -> client.joinGroup("group"));
+        Assertions.assertThrows(IllegalStateException.class, () -> client.joinGroup("group"));
     }
 }
