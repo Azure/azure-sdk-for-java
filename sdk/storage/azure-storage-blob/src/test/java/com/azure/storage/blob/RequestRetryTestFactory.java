@@ -177,6 +177,7 @@ class RequestRetryTestFactory {
                 throw new IllegalArgumentException("Try number has exceeded max tries");
             }
 
+
             // Validate the expected preconditions for each try: The correct host is used.
             String expectedHost = RETRY_TEST_PRIMARY_HOST;
             if (this.factory.tryNumber % 2 == 0) {

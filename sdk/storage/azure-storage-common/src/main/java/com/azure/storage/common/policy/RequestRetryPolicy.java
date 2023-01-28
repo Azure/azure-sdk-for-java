@@ -115,24 +115,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             context.getHttpRequest().setBody(bufferedBody);
         }
 
-        if (!tryingPrimary) {
-            UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            builder.setHost(this.requestRetryOptions.getSecondaryHost());
-            try {
-                context.getHttpRequest().setUrl(builder.toUrl());
-            } catch (MalformedURLException e) {
-                return Mono.error(e);
-            }
+        try {
+            updateUrlToSecondaryHost(context, tryingPrimary);
+        } catch (IllegalArgumentException e) {
+            return Mono.error(e);
         }
 
-        // Update the RETRY_COUNT_CONTEXT to log retries.
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
-
-        // Reset progress if progress is tracked.
-        ProgressReporter progressReporter = Contexts.with(context.getContext()).getHttpRequestProgressReporter();
-        if (progressReporter != null) {
-            progressReporter.reset();
-        }
+        updateRetryCountContext(context, attempt);
+        resetProgress(context);
 
         // We want to send the request with a given timeout, but we don't want to kick off that timeout-bound operation
         // until after the retry backoff delay, so we call delaySubscription.
@@ -224,6 +214,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             return Mono.error(throwable);
         });
     }
+
     private HttpResponse attemptSync(final HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
         final HttpRequest originalRequest, final boolean considerSecondary, final int primaryTry, final int attempt,
         final List<Throwable> suppressed) {
@@ -244,33 +235,11 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         context.setHttpRequest(originalRequest.copy());
         BinaryData originalRequestBody = originalRequest.getBodyAsBinaryData();
         if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
-            // Replayable bodies don't require this transformation.
-            // TODO (kasobol-msft) Remove this transformation in favor of
-            // BinaryData.toReplayableBinaryData()
-            // But this should be done together with removal of buffering in chunked uploads.
             context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
         }
-        if (!tryingPrimary) {
-            UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            builder.setHost(this.requestRetryOptions.getSecondaryHost());
-            try {
-                context.getHttpRequest().setUrl(builder.toUrl());
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL", e));
-            }
-        }
-        /*
-        Update the RETRY_COUNT_CONTEXT to log retries.
-         */
-        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
-
-        /*
-        Reset progress if progress is tracked.
-         */
-        ProgressReporter progressReporter = Contexts.with(context.getContext()).getHttpRequestProgressReporter();
-        if (progressReporter != null) {
-            progressReporter.reset();
-        }
+        updateUrlToSecondaryHost(context, tryingPrimary);
+        updateRetryCountContext(context, attempt);
+        resetProgress(context);
 
         try {
             /*
@@ -302,7 +271,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
             boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
-
+            if (!tryingPrimary && statusCode == 404) {
+                newConsiderSecondary = false;
+            }
 
             if (retry && attempt < requestRetryOptions.getMaxTries()) {
                 int newPrimaryTry = getNewPrimaryTry(considerSecondary, primaryTry, tryingPrimary);
@@ -349,6 +320,36 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 suppressed.forEach(throwable::addSuppressed);
             }
             throw LOGGER.logExceptionAsError(throwable);
+        }
+    }
+
+    /*
+     * Update the RETRY_COUNT_CONTEXT to log retries.
+     */
+    private static void updateRetryCountContext(HttpPipelineCallContext context, int attempt) {
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
+    }
+
+    // Reset progress if progress is tracked.
+    private static void resetProgress(HttpPipelineCallContext context) {
+        ProgressReporter progressReporter = Contexts.with(context.getContext()).getHttpRequestProgressReporter();
+        if (progressReporter != null) {
+            progressReporter.reset();
+        }
+    }
+
+    /*
+     * Update secondary host on request URL if not trying primary URL.
+     */
+    private void updateUrlToSecondaryHost(HttpPipelineCallContext context, boolean tryingPrimary) {
+        if (!tryingPrimary) {
+            UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            builder.setHost(this.requestRetryOptions.getSecondaryHost());
+            try {
+                context.getHttpRequest().setUrl(builder.toUrl());
+            } catch (MalformedURLException e) {
+                throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL", e));
+            }
         }
     }
 

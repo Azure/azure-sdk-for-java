@@ -270,6 +270,18 @@ class RetryTest extends Specification {
             }).verifyComplete()
     }
 
+    def "Retries exponential delay sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assert response.getStatusCode() == 200
+        assert retryTestFactory.getTryNumber() == 6
+    }
+
     def "Retries fixed delay"() {
         setup:
         RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING, retryTestOptions)
@@ -285,29 +297,17 @@ class RetryTest extends Specification {
             }).verifyComplete()
     }
 
-//    def "Retries exponential delay sync"() {
-//        setup:
-//        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING, retryTestOptions)
-//
-//        when:
-//        def response = retryTestFactory.sendSync(retryTestURL)
-//
-//        then:
-//        assert response.getStatusCode() == 200
-//        assert retryTestFactory.getTryNumber() == 6
-//    }
-//
-//    def "Retries fixed delay sync"() {
-//        setup:
-//        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING, retryTestOptions)
-//
-//        when:
-//        def response = retryTestFactory.sendSync(retryTestURL)
-//
-//        then:
-//        assert response.getStatusCode() == 200
-//        assert retryTestFactory.getTryNumber() == 4
-//    }
+    def "Retries fixed delay sync"() {
+        setup:
+        RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING, retryTestOptions)
+
+        when:
+        def response = retryTestFactory.sendSync(retryTestURL)
+
+        then:
+        assert response.getStatusCode() == 200
+        assert retryTestFactory.getTryNumber() == 4
+    }
 
     def "Retries non replyable flux"() {
         setup:

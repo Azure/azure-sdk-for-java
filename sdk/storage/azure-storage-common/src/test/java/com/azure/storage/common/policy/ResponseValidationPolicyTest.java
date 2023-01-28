@@ -22,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ResponseValidationPolicyTest {
 
@@ -78,12 +80,12 @@ public class ResponseValidationPolicyTest {
             .policies(getResponseValidationPolicy())
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> SyncAsyncExtension.execute(
             () -> pipeline.sendSync(getRequest(), Context.NONE),
             () -> pipeline.send(getRequest())
-        );
+        ));
 
-        assertEquals(TEST_CLIENT_REQUEST_ID, response.getHeaderValue(X_MS_CLIENT_REQUEST_ID));
+        assertTrue(exception.getMessage().contains("Unexpected header value. "));
     }
 
     @NotNull
