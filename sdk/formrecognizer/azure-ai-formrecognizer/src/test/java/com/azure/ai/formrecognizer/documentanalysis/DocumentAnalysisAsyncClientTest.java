@@ -867,6 +867,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeInvoiceData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -886,6 +887,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeInvoiceDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -944,6 +946,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeMultipageInvoice(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -964,6 +967,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeInvoiceSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
@@ -1015,6 +1019,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void invoiceValidLocale(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {

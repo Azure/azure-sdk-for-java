@@ -1143,6 +1143,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeInvoiceData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -1159,6 +1160,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeInvoiceDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1210,6 +1212,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeMultipageInvoice(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         // confirm if pageResults should be returned for prebuilt model recognition
@@ -1229,6 +1232,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeInvoiceSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
@@ -1276,6 +1280,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void analyzeInvoiceFromUrlIncludeFieldElements(HttpClient httpClient,
                                                           DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1293,6 +1298,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void invoiceValidLocale(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -1309,6 +1315,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("until service regression is fixed #33187")
     public void invoiceSubLineItemsNull(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
