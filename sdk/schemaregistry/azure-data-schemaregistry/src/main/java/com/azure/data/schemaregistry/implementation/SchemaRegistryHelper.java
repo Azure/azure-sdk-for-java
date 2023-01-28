@@ -2,21 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.data.schemaregistry.implementation;
 
-//<<<<<<< HEAD
-//import com.azure.core.http.rest.ResponseBase;
-//import com.azure.core.util.BinaryData;
-//=======
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
-//>>>>>>> upstream/main
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 
@@ -60,57 +52,34 @@ public final class SchemaRegistryHelper {
         accessor = Objects.requireNonNull(modelsAccessor, "'modelsAccessor' cannot be null.");
     }
 
-//<<<<<<< HEAD
-//    public static SchemaProperties getSchemaPropertiesFromSchemasGetSchemaVersionHeaders(ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response) {
-//        final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
-//=======
-    public static SchemaProperties getSchemaProperties(SchemasRegisterResponse response, SchemaFormat fallbackFormat) {
+    public static SchemaProperties getSchemaPropertiesFromSchemaRegisterHeaders(ResponseBase<SchemasRegisterHeaders, Void> response, SchemaFormat fallbackFormat) {
         final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
         final SchemaFormat responseFormat = getSchemaFormat(response.getHeaders());
         final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
-//>>>>>>> upstream/main
 
         return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
-//<<<<<<< HEAD
-//    public static SchemaProperties getSchemaPropertiesFromSchemasQueryIdByContentHeaders(ResponseBase<SchemasQueryIdByContentHeaders, Void> response) {
-//        final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
-//=======
-    public static SchemaProperties getSchemaProperties(SchemasGetByIdResponse response) {
-        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
-        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
-//>>>>>>> upstream/main
-
-        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
-            headers.getSchemaName(), headers.getSchemaVersion());
-    }
-
-//<<<<<<< HEAD
-//    public static SchemaProperties getSchemaPropertiesFromSchemasGetByIdHeaders(ResponseBase<SchemasGetByIdHeaders, BinaryData> response) {
-//        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
-//=======
-    public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentResponse response,
-        SchemaFormat fallbackFormat) {
+    public static SchemaProperties getSchemaPropertiesFromQueryByIdContentHeaders(ResponseBase<SchemasQueryIdByContentHeaders, Void> response, SchemaFormat format) {
 
         final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
         final SchemaFormat responseFormat = getSchemaFormat(response.getHeaders());
-        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
-//>>>>>>> upstream/main
-
+        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : format;
         return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
 
-//<<<<<<< HEAD
-//    public static SchemaProperties getSchemaPropertiesFromSchemaRegisterHeaders(ResponseBase<SchemasRegisterHeaders, Void> response) {
-//        final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
-//=======
-    public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionResponse response) {
+    public static SchemaProperties getSchemaPropertiesFromSchemasGetByIdHeaders(ResponseBase<SchemasGetByIdHeaders, ?> response) {
+        final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
+        final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
+        return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
+            headers.getSchemaName(), headers.getSchemaVersion());
+    }
+
+    public static SchemaProperties getSchemaPropertiesFromGetSchemaVersionHeaders(ResponseBase<SchemasGetSchemaVersionHeaders, ?>  response) {
         final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
         final SchemaFormat schemaFormat = getSchemaFormat(response.getHeaders());
-//>>>>>>> upstream/main
 
         return accessor.getSchemaProperties(headers.getSchemaId(), schemaFormat, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());

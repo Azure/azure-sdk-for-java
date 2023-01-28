@@ -17,10 +17,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
-import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -158,9 +159,10 @@ public final class SchemaRegistryClient {
 
         context = enableSyncRestProxy(context);
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
-        ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas().registerWithResponse(groupName, name, binaryData, binaryData.getLength(), context);
-        final SchemaProperties registered = SchemaRegistryHelper.getSchemaPropertiesFromSchemaRegisterHeaders(response);
+        ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas().registerWithResponse(groupName, name, contentType.toString(), binaryData, binaryData.getLength(), context);
+        final SchemaProperties registered = SchemaRegistryHelper.getSchemaPropertiesFromSchemaRegisterHeaders(response, format);
         return new SimpleResponse<>(
             response.getRequest(), response.getStatusCode(),
             response.getHeaders(), registered);
@@ -260,7 +262,7 @@ public final class SchemaRegistryClient {
         ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response = this.restService.getSchemas().getSchemaVersionWithResponse(groupName, schemaName, schemaVersion,
             context);
         final InputStream schemaInputStream = response.getValue().toStream();
-        final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetSchemaVersionHeaders(response);
+        final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromGetSchemaVersionHeaders(response);
         final String schema;
 
         if (schemaInputStream == null) {
@@ -332,11 +334,12 @@ public final class SchemaRegistryClient {
         context = enableSyncRestProxy(context);
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         try {
             ResponseBase<SchemasQueryIdByContentHeaders, Void>  response = restService.getSchemas()
-                .queryIdByContentWithResponse(groupName, name, binaryData, binaryData.getLength(), context);
-            final SchemaProperties properties = SchemaRegistryHelper.getSchemaPropertiesFromSchemasQueryIdByContentHeaders(response);
+                .queryIdByContentWithResponse(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()), binaryData, binaryData.getLength(), context);
+            final SchemaProperties properties = SchemaRegistryHelper.getSchemaPropertiesFromQueryByIdContentHeaders(response, format);
             return new SimpleResponse<>(
                 response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), properties);

@@ -6,7 +6,6 @@ package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** Object received from the registry containing the list of schema groups and link to next batch page. */
@@ -46,9 +45,6 @@ public final class SchemaGroups {
         this.groups = groups;
         return this;
     }
-
-    /** Creates an instance of SchemaGroups class. */
-    public SchemaGroups() {}
 
     /**
      * Get the nextLink property: URl to next batch of schema groups.

@@ -154,7 +154,6 @@ public final class SchemaRegistryAsyncClient {
 
     Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
         SchemaFormat format, Context context) {
-
         if (Objects.isNull(groupName)) {
             return monoError(logger, new NullPointerException("'groupName' should not be null."));
         } else if (Objects.isNull(name)) {
@@ -171,14 +170,10 @@ public final class SchemaRegistryAsyncClient {
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
         final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType, binaryData,
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType.toString(), binaryData,
                 binaryData.getLength(), context)
             .map(response -> {
-//<<<<<<< HEAD
-//                final SchemaProperties registered = SchemaRegistryHelper.getSchemaPropertiesFromSchemaRegisterHeaders(response);
-//=======
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response, format);
-
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaPropertiesFromSchemaRegisterHeaders(response, format);
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), registered);
@@ -268,21 +263,12 @@ public final class SchemaRegistryAsyncClient {
 
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-            .handle((response, sink) -> {
+            .flatMap(response -> {
                 final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetByIdHeaders(response);
-                final String schema;
-
-                try {
-                    schema = convertToString(response.getValue().toStream());
-                } catch (UncheckedIOException e) {
-                    sink.error(e);
-                    return;
-                }
-
-                sink.next(new SimpleResponse<>(
+                return convertToString(response.getValue())
+                    .map(schema -> new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
-                sink.complete();
             });
     }
 
@@ -297,8 +283,8 @@ public final class SchemaRegistryAsyncClient {
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
-                final Flux<ByteBuffer> schemaFlux = response.getValue().toFluxByteBuffer();
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetSchemaVersionHeaders(response);
+                final Flux<ByteBuffer> schemaFlux = response.getValue();
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromGetSchemaVersionHeaders(response);
 
                 if (schemaFlux == null) {
                     return Mono.error(new IllegalArgumentException(String.format(
@@ -396,15 +382,12 @@ public final class SchemaRegistryAsyncClient {
         final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, contentType, binaryData, binaryData.getLength(),
+            .queryIdByContentWithResponseAsync(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()),
+                binaryData, binaryData.getLength(),
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-<<<<<<< HEAD
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaPropertiesFromSchemasQueryIdByContentHeaders(response);
-=======
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response, format);
->>>>>>> upstream/main
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaPropertiesFromQueryByIdContentHeaders(response, format);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
