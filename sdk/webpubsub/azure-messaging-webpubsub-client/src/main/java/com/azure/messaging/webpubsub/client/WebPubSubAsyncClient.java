@@ -100,7 +100,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     // state on stop by user
     private final AtomicBoolean isStoppedByUser = new AtomicBoolean();
-    private Sinks.Empty<Void> isStoppedByUserMono = Sinks.empty();
+    private Sinks.Empty<Void> isStoppedByUserMono = null;
 
     // groups
     private final ConcurrentMap<String, WebPubSubGroup> groups = new ConcurrentHashMap<>();
@@ -163,6 +163,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         }
         return Mono.defer(() -> {
             isStoppedByUser.set(true);
+            isStoppedByUserMono = null;
             if (session != null && session.isOpen()) {
                 return Mono.fromCallable(() -> {
                     session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
@@ -327,8 +328,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
             })
             // timeout or stream closed
             .timeout(TIMEOUT, Mono.empty())
-            .switchIfEmpty(Mono.error(logSendMessageFailedException(
-                "Acknowledge from the service not received.", null, true, ackId)));
+            .switchIfEmpty(Mono.defer(() -> Mono.error(logSendMessageFailedException(
+                "Acknowledge from the service not received.", null, true, ackId))));
     }
 
     private void handleSessionOpen() {
@@ -340,7 +341,6 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 if (session != null && session.isOpen()) {
                     session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
                 }
-                isStoppedByUserMono.emitEmpty(emitFailureHandler("Unable to emit Stopped"));
                 return (Void) null;
             }).subscribeOn(Schedulers.boundedElastic()).subscribe(null, thr -> {
                 logger.atWarning()
@@ -364,6 +364,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     }
 
     private void handleSessionClose(CloseReason closeReason) {
+        clientState.changeState(WebPubSubClientState.DISCONNECTED);
+
         if (isStoppedByUser.compareAndSet(true, false)) {
             // closed by user
             handleClientStop();
@@ -394,8 +396,6 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                     new IllegalStateException("Client is stopped by user.")));
             } else if (autoReconnect) {
                 // try reconnect
-
-                clientState.changeState(WebPubSubClientState.DISCONNECTED);
 
                 return Mono.defer(() -> {
                     boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
@@ -477,6 +477,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
         ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
         ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
+        if (isStoppedByUserMono != null) {
+            isStoppedByUserMono.emitEmpty(emitFailureHandler("Unable to emit Stopped"));
+        }
     }
 
     private class ClientEndpoint extends Endpoint {
