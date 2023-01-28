@@ -28,7 +28,7 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static com.azure.core.test.utils.TestProxyUtils.getRegexSanitizerRequests;
+import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 
@@ -107,7 +107,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     private void addProxySanitization() {
-        getRegexSanitizerRequests(this.sanitizers)
+        getSanitizerRequests(this.sanitizers)
             .forEach(request -> {
                 request.setHeader("x-recording-id", xRecordingId);
                 client.sendSync(request, Context.NONE);

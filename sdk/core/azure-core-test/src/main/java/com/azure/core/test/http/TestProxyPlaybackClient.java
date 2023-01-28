@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-import static com.azure.core.test.utils.TestProxyUtils.getRegexSanitizerRequests;
+import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -96,7 +96,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     }
 
     private void addProxySanitization() {
-        getRegexSanitizerRequests(this.sanitizers)
+        getSanitizerRequests(this.sanitizers)
             .forEach(request -> {
                 request.setHeader("x-recording-id", xRecordingId);
                 client.sendSync(request, Context.NONE);

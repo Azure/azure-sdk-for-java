@@ -50,6 +50,7 @@ public class TestProxyTests extends TestBase {
 
     static {
         customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY));
+        customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
     }
 
     @BeforeAll
@@ -58,14 +59,11 @@ public class TestProxyTests extends TestBase {
         server = new TestProxyTestServer();
         TestBase.setupClass();
     }
-
     @AfterAll
     public static void teardownClass() {
         TestBase.teardownClass();
         server.close();
     }
-
-
     @Test
     @Tag("Record")
     public void testBasicRecord() {
@@ -240,19 +238,25 @@ public class TestProxyTests extends TestBase {
         }
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        request.setHeader("Content-Type", "application/json");
 
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
         assertEquals(response.getStatusCode(), 200);
 
         assertEquals(200, response.getStatusCode());
+
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
         // default regex sanitizers
         assertEquals("https://REDACTED:3000/fr/path/2", record.getUri());
-        //
+
         // user delegation sanitizers
-        assertTrue(record.getResponse().get("Body").contains(REDACTED));
+        assertTrue(record.getResponse().get("Body").contains("<UserDelegationKey><SignedTid>REDACTED</SignedTid></UserDelegationKey>"));
+        assertTrue(record.getResponse().get("primaryKey").contains("<PrimaryKey>REDACTED</PrimaryKey>"));
+
+        // custom body regex
+        assertTrue(record.getResponse().get("TableName").equals(REDACTED));
     }
 
     private RecordedTestProxyData readDataFromFile() {
