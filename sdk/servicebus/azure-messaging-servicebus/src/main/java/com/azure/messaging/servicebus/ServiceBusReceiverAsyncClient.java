@@ -1542,7 +1542,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // It also requests a new link (i.e. retry) when the current link it holds gets terminated
         // (e.g., when the service decides to close that link).
         //
-        final Flux<ServiceBusReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat();
+        final Flux<ServiceBusReceiveLink> receiveLinkFlux = retryableReceiveLinkMono
+            .repeat()
+            // The repeat() operator will prefetch and cache the existing link as it subscribes to the flatmap().
+            // When the link is doing recover, the repeat() operator may emit the closed link to its downstream
+            // 'ServiceBusReceiveLinkProcessor', resulting in unnecessary work and logging. Thus, we filter out
+            // the closed links before passing them to downstream.
+            .filter(link -> link != null && !link.isDisposed());
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(

@@ -485,7 +485,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
         // It also requests a new link (i.e. retry) when the current link it holds gets terminated
         // (e.g., when the service decides to close that link).
         //
-        final Flux<AmqpReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat();
+        final Flux<AmqpReceiveLink> receiveLinkFlux = retryableReceiveLinkMono
+            .repeat()
+            // The repeat() operator will prefetch and cache the existing link as it subscribes to the flatmap().
+            // When the link is doing recover, the repeat() operator may emit the closed link to its downstream
+            // 'AmqpReceiveLinkProcessor', resulting in unnecessary work and logging. Thus, we filter out
+            // the closed links before passing them to downstream.
+            .filter(link -> link != null && !link.isDisposed());
 
         final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
             new AmqpReceiveLinkProcessor(entityPath, prefetchCount, partitionId, connectionProcessor, instrumentation));
