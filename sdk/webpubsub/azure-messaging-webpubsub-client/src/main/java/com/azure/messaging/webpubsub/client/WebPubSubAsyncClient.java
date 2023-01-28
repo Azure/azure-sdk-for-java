@@ -89,10 +89,11 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private final Sinks.Many<DisconnectedEvent> disconnectedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
+    private final ClientState clientState = new ClientState();
     // state on close
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
-    private final ClientState clientState = new ClientState();
+    // state on stop by user
     private final AtomicBoolean isStoppedByUser = new AtomicBoolean();
     private Sinks.Empty<Void> isStoppedByUserMono = Sinks.empty();
 
@@ -266,8 +267,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     }
 
     private Mono<Void> sendMessage(WebPubSubMessageAck message) {
-        Mono<Void> verification = checkStateBeforeSend();
-        return verification.then(Mono.create(sink -> {
+        return checkStateBeforeSend().then(Mono.create(sink -> {
             session.getAsyncRemote().sendObject(message, sendResult -> {
                 if (sendResult.isOK()) {
                     sink.success();
@@ -532,20 +532,22 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     }
 
     private Mono<Void> checkStateBeforeSend() {
-        Mono<Void> verification = Mono.empty();
-        if (isDisposed.get()) {
-            verification = Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
-        }
-        if (clientState.get() != WebPubSubClientState.CONNECTED) {
-            verification = Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to send message. Client is not CONNECTED.")));
-        }
-        if (session == null || !session.isOpen()) {
-            verification = Mono.error(logSendMessageFailedException(
-                "Failed to send message. Websocket session is not opened.", null, false, (Long) null));
-        }
-        return verification;
+        return Mono.defer(() -> {
+            if (isDisposed.get()) {
+                return Mono.error(logger.logExceptionAsError(
+                    new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
+            }
+            if (clientState.get() != WebPubSubClientState.CONNECTED) {
+                return Mono.error(logger.logExceptionAsError(
+                    new IllegalStateException("Failed to send message. Client is not CONNECTED.")));
+            }
+            if (session == null || !session.isOpen()) {
+                return Mono.error(logSendMessageFailedException(
+                    "Failed to send message. Websocket session is not opened.", null, false, (Long) null));
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     private RuntimeException logSendMessageFailedException(
