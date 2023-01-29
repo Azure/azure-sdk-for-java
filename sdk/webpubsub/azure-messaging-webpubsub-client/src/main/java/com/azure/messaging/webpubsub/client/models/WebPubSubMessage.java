@@ -3,7 +3,14 @@
 
 package com.azure.messaging.webpubsub.client.models;
 
+/**
+ * The superclass of message.
+ */
 public abstract class WebPubSubMessage {
+
+    /**
+     * Creates a new instance of WebPubSubMessage.
+     */
     protected WebPubSubMessage() {
     }
 }

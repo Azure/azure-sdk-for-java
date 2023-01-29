@@ -5,28 +5,56 @@ package com.azure.messaging.webpubsub.client.models;
 
 import com.azure.core.annotation.Fluent;
 
+/**
+ * The options when send event.
+ */
 @Fluent
 public final class SendEventOptions {
 
     private Long ackId;
     private Boolean fireAndForget = false;
 
+    /**
+     * Creates a new instance of SendEventOptions.
+     */
     public SendEventOptions() {
     }
 
+    /**
+     * Gets the ackId option.
+     *
+     * @return the ackId option.
+     */
     public Long getAckId() {
         return ackId;
     }
 
+    /**
+     * Sets the ackId option.
+     *
+     * @param ackId the ackId option.
+     * @return itself.
+     */
     public SendEventOptions setAckId(long ackId) {
         this.ackId = ackId;
         return this;
     }
 
+    /**
+     * Gets the fireAndForget option.
+     *
+     * @return the fireAndForget option.
+     */
     public boolean getFireAndForget() {
         return fireAndForget;
     }
 
+    /**
+     * Sets the fireAndForget option. When true, client does not wait for AckMessage.
+     *
+     * @param fireAndForget the fireAndForget option.
+     * @return itself.
+     */
     public SendEventOptions setFireAndForget(boolean fireAndForget) {
         this.fireAndForget = fireAndForget;
         return this;

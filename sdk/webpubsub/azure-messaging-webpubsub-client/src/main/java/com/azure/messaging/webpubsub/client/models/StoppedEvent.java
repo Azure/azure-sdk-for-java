@@ -5,6 +5,9 @@ package com.azure.messaging.webpubsub.client.models;
 
 import com.azure.core.annotation.Immutable;
 
+/**
+ * The event when stopped.
+ */
 @Immutable
 public final class StoppedEvent {
 }

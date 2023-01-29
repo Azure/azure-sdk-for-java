@@ -14,6 +14,9 @@ import com.azure.messaging.webpubsub.client.protocol.WebPubSubProtocol;
 
 import java.util.Objects;
 
+/**
+ * The builder of WebPubSub client.
+ */
 @ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
 public class WebPubSubClientBuilder {
 
@@ -29,38 +32,81 @@ public class WebPubSubClientBuilder {
 
     private boolean autoRestoreGroup = true;
 
+    /**
+     * Creates a new instance of WebPubSubClientBuilder.
+     */
     public WebPubSubClientBuilder() {
     }
 
+    /**
+     * Sets the credential as the provider for client access URI.
+     *
+     * @param credential the credential as the provider for client access URI.
+     * @return itself.
+     */
     public WebPubSubClientBuilder credential(WebPubSubClientCredential credential) {
         this.credential = Objects.requireNonNull(credential);
         return this;
     }
 
+    /**
+     * Sets the protocol.
+     *
+     * @param webPubSubProtocol the protocol.
+     * @return itself.
+     */
     public WebPubSubClientBuilder webPubSubProtocol(WebPubSubProtocol webPubSubProtocol) {
         this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
         return this;
     }
 
+    /**
+     * Sets the retry options when sending messages.
+     *
+     * @param retryOptions the retry options.
+     * @return itself.
+     */
     public WebPubSubClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions);
         return this;
     }
 
+    /**
+     * Sets whether automatically reconnect after disconnect.
+     *
+     * @param autoReconnect whether automatically reconnect after disconnect.
+     * @return itself.
+     */
     public WebPubSubClientBuilder autoReconnect(boolean autoReconnect) {
         this.autoReconnect = autoReconnect;
         return this;
     }
 
+    /**
+     * Sets whether automatically restore joined groups after reconnect.
+     *
+     * @param autoRestoreGroup whether automatically restore joined groups after reconnect.
+     * @return itself.
+     */
     public WebPubSubClientBuilder autoRestoreGroup(boolean autoRestoreGroup) {
         this.autoRestoreGroup = autoRestoreGroup;
         return this;
     }
 
+    /**
+     * Builds the client.
+     *
+     * @return the client.
+     */
     public WebPubSubClient buildClient() {
         return new WebPubSubClient(this.buildAsyncClient());
     }
 
+    /**
+     * Builds the asynchronous client.
+     *
+     * @return the asynchronous client.
+     */
     public WebPubSubAsyncClient buildAsyncClient() {
         RetryStrategy retryStrategy;
         if (retryOptions != null) {

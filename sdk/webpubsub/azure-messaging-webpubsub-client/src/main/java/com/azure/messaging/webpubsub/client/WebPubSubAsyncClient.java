@@ -73,6 +73,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+/**
+ * The WebPubSubAsync client.
+ */
 @ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubAsyncClient implements AsyncCloseable {
 
@@ -174,10 +177,20 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         });
     }
 
+    /**
+     * Gets the connection ID.
+     *
+     * @return the connection ID.
+     */
     public String getConnectionId() {
         return connectionId;
     }
 
+    /**
+     * Starts the client for connecting to the server.
+     *
+     * @return the task.
+     */
     public Mono<Void> start() {
         if (clientState.get() != WebPubSubClientState.STOPPED) {
             return Mono.error(logger.logExceptionAsError(
@@ -209,6 +222,11 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         });
     }
 
+    /**
+     * Stops the client for disconnecting from the server.
+     *
+     * @return the task.
+     */
     public Mono<Void> stop() {
         if (clientState.get() == WebPubSubClientState.CLOSED) {
             return Mono.error(logger.logExceptionAsError(
@@ -244,6 +262,11 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         });
     }
 
+    /**
+     * Closes the client.
+     *
+     * @return the task.
+     */
     public Mono<Void> closeAsync() {
         if (this.isDisposed.getAndSet(true)) {
             return this.isClosedMono.asMono();
@@ -267,10 +290,23 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         }
     }
 
+    /**
+     * Joins a group.
+     *
+     * @param group the group name.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> joinGroup(String group) {
         return joinGroup(group, nextAckId());
     }
 
+    /**
+     * Joins a group.
+     *
+     * @param group the group name.
+     * @param ackId the ackId.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
         return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
@@ -286,10 +322,23 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
             });
     }
 
+    /**
+     * Leaves a group.
+     *
+     * @param group the group name.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> leaveGroup(String group) {
         return leaveGroup(group, nextAckId());
     }
 
+    /**
+     * Leaves a group.
+     *
+     * @param group the group name.
+     * @param ackId the ackId.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
         return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
@@ -305,10 +354,27 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
             });
     }
 
+    /**
+     * Sends message to group.
+     *
+     * @param group the group name.
+     * @param content the data.
+     * @param dataType the data type.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
         return sendToGroup(group, content, dataType, new SendToGroupOptions().setAckId(nextAckId()));
     }
 
+    /**
+     * Sends message to group.
+     *
+     * @param group the group name.
+     * @param content the data.
+     * @param dataType the data type.
+     * @param options the options.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
                                              SendToGroupOptions options) {
         Objects.requireNonNull(group);
@@ -337,10 +403,27 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
+    /**
+     * Sends event.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataType the data type.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
         return sendEvent(eventName, content, dataType, new SendEventOptions().setAckId(nextAckId()));
     }
 
+    /**
+     * Sends event.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataType the data type.
+     * @param options the options.
+     * @return the result.
+     */
     public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
                                            SendEventOptions options) {
         Objects.requireNonNull(eventName);
@@ -368,22 +451,47 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
+    /**
+     * Receives group message events.
+     *
+     * @return the Publisher of group message events.
+     */
     public Flux<GroupMessageEvent> receiveGroupMessageEvents() {
         return groupMessageEventSink.asFlux();
     }
 
+    /**
+     * Receives server message events.
+     *
+     * @return the Publisher of server message events.
+     */
     public Flux<ServerMessageEvent> receiveServerMessageEvents() {
         return serverMessageEventSink.asFlux();
     }
 
+    /**
+     * Receives connected events.
+     *
+     * @return the Publisher of connected events.
+     */
     public Flux<ConnectedEvent> receiveConnectedEvents() {
         return connectedEventSink.asFlux();
     }
 
+    /**
+     * Receives disconnected events.
+     *
+     * @return the Publisher of disconnected events.
+     */
     public Flux<DisconnectedEvent> receiveDisconnectedEvents() {
         return disconnectedEventSink.asFlux();
     }
 
+    /**
+     * Receives stopped events.
+     *
+     * @return the Publisher of stopped events.
+     */
     public Flux<StoppedEvent> receiveStoppedEvents() {
         return stoppedEventSink.asFlux();
     }
