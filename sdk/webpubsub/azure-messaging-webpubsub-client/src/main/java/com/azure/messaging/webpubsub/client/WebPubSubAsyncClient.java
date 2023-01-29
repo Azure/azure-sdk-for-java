@@ -17,6 +17,7 @@ import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.LoggingUtils;
 import com.azure.messaging.webpubsub.client.implementation.SendEventMessage;
+import com.azure.messaging.webpubsub.client.implementation.SequenceAckMessage;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubMessageAck;
@@ -47,6 +48,7 @@ import jakarta.websocket.MessageHandler;
 import jakarta.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 import org.glassfish.tyrus.core.CloseReasons;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -79,7 +81,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     // options
     private final Mono<String> clientAccessUriProvider;
     private final WebPubSubProtocol webPubSubProtocol;
-    private final RetryStrategy retryStrategy;
+//    private final RetryStrategy retryStrategy;
     private final boolean autoReconnect;
     private final boolean autoRestoreGroup;
 
@@ -112,17 +114,23 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private final Sinks.Many<StoppedEvent> stoppedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
+    // sequence ack
+    private final SequenceAckId sequenceAckId = new SequenceAckId();
+    private final AtomicReference<Disposable> sequenceAckTask = new AtomicReference<>();
+
+    // client state
     private final ClientState clientState = new ClientState();
     // state on close
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     // state on stop by user
     private final AtomicBoolean isStoppedByUser = new AtomicBoolean();
-    private Sinks.Empty<Void> isStoppedByUserMono = null;
+    private final AtomicReference<Sinks.Empty<Void>> isStoppedByUserMono = new AtomicReference<>();
 
     // groups
     private final ConcurrentMap<String, WebPubSubGroup> groups = new ConcurrentHashMap<>();
 
+    // retry
     private final Retry sendMessageRetrySpec;
 
     private static final Duration ACK_TIMEOUT = Duration.ofSeconds(30);
@@ -141,12 +149,12 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
         this.clientAccessUriProvider = Objects.requireNonNull(clientAccessUriProvider);
         this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
-        this.retryStrategy = Objects.requireNonNull(retryStrategy);
         this.autoReconnect = autoReconnect;
         this.autoRestoreGroup = autoRestoreGroup;
 
         this.clientManager = ClientManager.createClient();
 
+        Objects.requireNonNull(retryStrategy);
         this.sendMessageRetrySpec = Retry.from(signals -> {
             AtomicInteger retryCount = new AtomicInteger(0);
             return signals.concatMap(s -> {
@@ -154,8 +162,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 if (s.failure() instanceof SendMessageFailedException) {
                     if (((SendMessageFailedException) s.failure()).isTransient()) {
                         int retryAttempt = retryCount.incrementAndGet();
-                        if (retryAttempt <= this.retryStrategy.getMaxRetries()) {
-                            ret = Mono.delay(this.retryStrategy.calculateRetryDelay(retryAttempt))
+                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
+                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt))
                                 .then(Mono.just(s));
                         }
                     }
@@ -175,7 +183,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 new IllegalStateException("Failed to start. Client is not STOPPED.")));
         }
         return Mono.defer(() -> {
+            // reset
             isStoppedByUser.set(false);
+            sequenceAckId.clear();
+
             boolean success = clientState.changeStateOn(WebPubSubClientState.STOPPED, WebPubSubClientState.CONNECTING);
             if (!success) {
                 return Mono.error(logger.logExceptionAsError(
@@ -205,7 +216,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         return Mono.defer(() -> {
             // reset
             isStoppedByUser.set(true);
-            isStoppedByUserMono = null;
+            isStoppedByUserMono.set(null);
             groups.clear();
 
             if (session != null && session.isOpen()) {
@@ -224,8 +235,9 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 } else {
                     // handle transient state e.g. CONNECTING, RECOVERING
                     // isStoppedByUserMono will be signaled in handleSessionOpen when isStoppedByUser
-                    isStoppedByUserMono = Sinks.empty();
-                    return isStoppedByUserMono.asMono();
+                    Sinks.Empty<Void> sink = Sinks.empty();
+                    isStoppedByUserMono.set(sink);
+                    return sink.asMono();
                 }
             }
         });
@@ -389,7 +401,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         return ackMessageSink.asFlux();
     }
 
-    private Mono<Void> sendMessage(WebPubSubMessageAck message) {
+    private Mono<Void> sendMessage(WebPubSubMessage message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
                 try {
@@ -473,6 +485,28 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                     .log("Failed to close session: " + thr.getMessage());
             });
         } else {
+            // sequenceAck task
+            if (webPubSubProtocol.isReliable()) {
+                Flux<Void> sequenceAckFlux = Flux.interval(Duration.ofSeconds(5)).concatMap(ignored -> {
+                    if (clientState.get() == WebPubSubClientState.CONNECTED && session != null && session.isOpen()) {
+                        Long id = sequenceAckId.getUpdated();
+                        if (id != null) {
+                            return sendMessage(new SequenceAckMessage().setSequenceId(id));
+                        } else {
+                            return Mono.empty();
+                        }
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+
+                Disposable previousTask = sequenceAckTask.getAndSet(sequenceAckFlux.subscribe());
+                if (previousTask != null) {
+                    previousTask.dispose();
+                }
+            }
+
+            // restore group
             if (autoRestoreGroup) {
                 List<Mono<WebPubSubResult>> restoreGroupMonoList = groups.values().stream()
                     .filter(WebPubSubGroup::isJoined)
@@ -617,8 +651,14 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
         ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-        if (isStoppedByUserMono != null) {
-            isStoppedByUserMono.emitEmpty(emitFailureHandler("Unable to emit Stopped"));
+        Sinks.Empty<Void> mono = isStoppedByUserMono.getAndSet(null);
+        if (mono != null) {
+            mono.emitEmpty(emitFailureHandler("Unable to emit Stopped"));
+        }
+
+        Disposable task = sequenceAckTask.getAndSet(null);
+        if (task != null) {
+            task.dispose();
         }
 
         stoppedEventSink.emitNext(new StoppedEvent(), emitFailureHandler("Unable to emit StoppedEvent"));
@@ -645,13 +685,19 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                     }
 
                     if (webPubSubMessage instanceof GroupDataMessage) {
+                        GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
                         groupMessageEventSink.emitNext(
-                            new GroupMessageEvent((GroupDataMessage) webPubSubMessage),
+                            new GroupMessageEvent(groupDataMessage),
                             emitFailureHandler("Unable to emit GroupMessageEvent"));
+
+                        sequenceAckId.update(groupDataMessage.getSequenceId());
                     } else if (webPubSubMessage instanceof ServerDataMessage) {
+                        ServerDataMessage serverDataMessage = (ServerDataMessage) webPubSubMessage;
                         serverMessageEventSink.emitNext(
-                            new ServerMessageEvent((ServerDataMessage) webPubSubMessage),
+                            new ServerMessageEvent(serverDataMessage),
                             emitFailureHandler("Unable to emit ServerMessageEvent"));
+
+                        sequenceAckId.update(serverDataMessage.getSequenceId());
                     } else if (webPubSubMessage instanceof AckMessage) {
                         ackMessageSink.emitNext((AckMessage) webPubSubMessage,
                             emitFailureHandler("Unable to emit GroupMessageEvent"));
@@ -694,8 +740,35 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     }
 
     private static class StopReconnectException extends RuntimeException {
-        public StopReconnectException(String message) {
+        private StopReconnectException(String message) {
             super(message);
+        }
+    }
+
+    private static class SequenceAckId {
+
+        private final AtomicLong sequenceId = new AtomicLong(0);
+        private final AtomicBoolean updated = new AtomicBoolean(false);
+
+        private void clear() {
+            sequenceId.set(0);
+            updated.set(false);
+        }
+
+        private Long getUpdated() {
+            if (updated.compareAndSet(true, false)) {
+                return sequenceId.get();
+            } else {
+                return null;
+            }
+        }
+
+        private void update(long id) {
+            long previousId = sequenceId.getAndUpdate(existId -> Math.max(id, existId));
+
+            if (previousId < id) {
+                updated.set(true);
+            }
         }
     }
 
@@ -742,9 +815,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     }
 
     private RuntimeException logSendMessageFailedException(
-        String errorMessage, Throwable cause, boolean isTransient, WebPubSubMessageAck message) {
+        String errorMessage, Throwable cause, boolean isTransient, WebPubSubMessage message) {
 
-        return logSendMessageFailedException(errorMessage, cause, isTransient, message == null ? null : message.getAckId());
+        return logSendMessageFailedException(errorMessage, cause, isTransient,
+            (message instanceof WebPubSubMessageAck) ? ((WebPubSubMessageAck) message).getAckId() : null);
     }
 
     private RuntimeException logSendMessageFailedException(

@@ -16,8 +16,6 @@ public class Main extends TestBase {
 //        runForSyncClient();
 
         runForAsyncClient();
-
-        Thread.sleep(5 * 1000);
     }
 
     private static void runForSyncClient() throws InterruptedException {
@@ -58,7 +56,7 @@ public class Main extends TestBase {
         connectThread.join();
     }
 
-    private static void runForAsyncClient() {
+    private static void runForAsyncClient() throws InterruptedException {
         // client
         WebPubSubAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
 
@@ -123,6 +121,8 @@ public class Main extends TestBase {
 
         printResult(asyncClient.sendToGroup("group1",
             BinaryData.fromString("dfg"), WebPubSubDataType.TEXT));
+
+        Thread.sleep(5 * 1000);
 
 
         // close
