@@ -51,13 +51,13 @@
 
     <dependency>
       <groupId>jakarta.websocket</groupId>
-      <artifactId>jakarta.websocket-api</artifactId> <!-- {x-version-update;jakarta.websocket:jakarta.websocket-api;dependency} -->
-      <version>2.1.0</version>
+      <artifactId>jakarta.websocket-api</artifactId>
+      <version>2.1.0</version> <!-- {x-version-update;jakarta.websocket:jakarta.websocket-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
       <artifactId>tyrus-client</artifactId>
-      <version>2.1.2</version> <!-- {x-version-update;webpubsub_org.glassfish.tyrus:tyrus-client;dependency} -->
+      <version>2.1.2</version> <!-- {x-version-update;webpubsub_org.glassfish.tyrus:tyrus-client;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -87,8 +87,8 @@
     </dependency>
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-container-grizzly-client</artifactId> <!-- {x-version-update;webpubsub_org.glassfish.tyrus:tyrus-container-grizzly-client;dependency} -->
-      <version>2.1.2</version>
+      <artifactId>tyrus-container-grizzly-client</artifactId>
+      <version>2.1.2</version> <!-- {x-version-update;webpubsub_org.glassfish.tyrus:tyrus-container-grizzly-client;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -115,9 +115,9 @@
           <rules>
             <bannedDependencies>
               <includes combine.children="append">
-                <include>jakarta.websocket:jakarta.websocket-api</include>
-                <include>org.glassfish.tyrus:tyrus-client</include>
-                <include>org.glassfish.tyrus:tyrus-container-grizzly-client</include>
+                <include>jakarta.websocket:jakarta.websocket-api:[2.1.0]</include> <!-- {x-include-update;jakarta.websocket:jakarta.websocket-api;external_dependency} -->
+                <include>org.glassfish.tyrus:tyrus-client:[2.1.2]</include> <!-- {x-include-update;webpubsub_org.glassfish.tyrus:tyrus-client;external_dependency} -->
+                <include>org.glassfish.tyrus:tyrus-container-grizzly-client:[2.1.2]</include> <!-- {x-include-update;webpubsub_org.glassfish.tyrus:tyrus-container-grizzly-client;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
