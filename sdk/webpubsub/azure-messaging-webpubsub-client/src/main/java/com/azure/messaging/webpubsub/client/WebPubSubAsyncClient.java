@@ -48,7 +48,6 @@ import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
 import reactor.util.retry.Retry;
-import reactor.util.retry.RetryBackoffSpec;
 
 import java.io.IOException;
 import java.net.URI;
@@ -57,9 +56,11 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -111,8 +112,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     // groups
     private final ConcurrentMap<String, WebPubSubGroup> groups = new ConcurrentHashMap<>();
 
+    private final Retry sendMessageRetrySpec;
+
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
-    private static final RetryBackoffSpec RECONNECT_RETRY_SPEC =
+    private static final Retry RECONNECT_RETRY_SPEC =
         Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1))
             .filter(thr -> !(thr instanceof StopReconnectException));
 
@@ -124,13 +127,30 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
         this.logger = new ClientLogger(WebPubSubAsyncClient.class);
 
-        this.clientAccessUriProvider = clientAccessUriProvider;
-        this.webPubSubProtocol = webPubSubProtocol;
-        this.retryStrategy = retryStrategy;
+        this.clientAccessUriProvider = Objects.requireNonNull(clientAccessUriProvider);
+        this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
+        this.retryStrategy = Objects.requireNonNull(retryStrategy);
         this.autoReconnect = autoReconnect;
         this.autoRestoreGroup = autoRestoreGroup;
 
         this.clientManager = ClientManager.createClient();
+
+        this.sendMessageRetrySpec = Retry.from(signals -> {
+            AtomicInteger retryCount = new AtomicInteger(0);
+            return signals.concatMap(s -> {
+                Mono<Retry.RetrySignal> ret = Mono.error(s.failure());
+                if (s.failure() instanceof SendMessageFailedException) {
+                    if (((SendMessageFailedException) s.failure()).isTransient()) {
+                        int retryAttempt = retryCount.incrementAndGet();
+                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
+                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt))
+                                .then(Mono.just(s));
+                        }
+                    }
+                }
+                return ret;
+            });
+        });
     }
 
     public String getConnectionId() {
@@ -224,7 +244,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
         return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
-            .then(waitForAckMessage(ackId))
+            .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
             .map(result -> {
                 groups.compute(group, (k, v) -> {
                     if (v == null) {
@@ -243,7 +263,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
         return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
-            .then(waitForAckMessage(ackId))
+            .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
             .map(result -> {
                 groups.compute(group, (k, v) -> {
                     if (v == null) {
@@ -281,7 +301,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         Mono<WebPubSubResult> responseMono = options.getFireAndForget()
             ? sendMessageMono.then(Mono.just(new WebPubSubResult(null)))
             : sendMessageMono.then(waitForAckMessage(ackId));
-        return responseMono;
+        return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
     public Flux<GroupMessageEvent> receiveGroupMessageEvents() {
