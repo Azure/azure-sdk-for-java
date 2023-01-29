@@ -73,6 +73,7 @@ io.projectreactor:reactor-core;3.4.26
 io.vertx:vertx-codegen;4.3.7
 io.vertx:vertx-core;4.3.7
 jakarta.validation:jakarta.validation-api;2.0.2
+jakarta.websocket:jakarta.websocket-api;2.1.0
 jakarta.xml.bind:jakarta.xml.bind-api;2.3.3
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -403,3 +404,6 @@ spring_com.microsoft.azure:azure;1.34.0
 
 # sdk\spring\spring-cloud-azure-service\pom.xml
 spring_redis.clients:jedis;3.8.0
+
+webpubsub_org.glassfish.tyrus:tyrus-client;2.1.2
+webpubsub_org.glassfish.tyrus:tyrus-container-grizzly-client;2.1.2
