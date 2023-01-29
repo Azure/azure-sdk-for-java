@@ -87,8 +87,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     private final ChangeFeedContextClient feedContextClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final ChangeFeedObserverFactory<JsonNode> observerFactory;
-    private volatile String databaseResourceId;
-    private volatile String collectionResourceId;
+    private volatile String databaseId;
+    private volatile String collectionId;
     private final ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
@@ -214,7 +214,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL));
+                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -293,7 +293,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL));
+                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -354,13 +354,13 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                this.databaseResourceId = databaseResourceResponse.getProperties().getId();
-                return this.databaseResourceId;
+                this.databaseId = databaseResourceResponse.getProperties().getId();
+                return this.databaseId;
             })
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getId();
+                    this.collectionId = documentCollectionResourceResponse.getProperties().getId();
                     return this;
                 }));
     }
@@ -411,8 +411,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             "%s%s_%s_%s",
             optionsPrefix,
             uri.getHost(),
-            this.databaseResourceId,
-            this.collectionResourceId);
+            this.databaseId,
+            this.collectionId);
     }
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
@@ -425,7 +425,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             leaseStoreManager,
             DEFAULT_DEGREE_OF_PARALLELISM,
             DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
-            this.collectionResourceId
+            this.collectionId
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
@@ -437,7 +437,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 this.changeFeedProcessorOptions,
                 leaseStoreManager,
                 this.feedContextClient.getContainerClient(),
-                this.collectionResourceId),
+                this.collectionId),
             this.changeFeedProcessorOptions,
             this.scheduler
         );

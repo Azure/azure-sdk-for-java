@@ -9,15 +9,21 @@ import com.azure.communication.callautomation.implementation.accesshelpers.AddPa
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ListParticipantsResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.UnmuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.MuteAllParticipantsRequestInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UnmuteAllParticipantsRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UnmuteParticipantRequestInternal;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.AddParticipantsOptions;
@@ -25,11 +31,17 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteAllParticipantsOptions;
+import com.azure.communication.callautomation.models.MuteParticipantOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.UnmuteAllParticipantsOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -387,6 +399,178 @@ public class CallConnectionAsync {
         }
     }
 
+    /**
+     * Mutes a single participant in the call.
+     * @param targetParticipant - Participant to be muted.
+     * @return A MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationIdentifier targetParticipant) {
+        return muteParticipantWithResponseInternal(new MuteParticipantOptions(targetParticipant), null)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Mute a single participant in the call.
+     * @param muteParticipantOptions - Options for the request.
+     * @return a Response containing the MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResult>> muteParticipantWithResponse(MuteParticipantOptions muteParticipantOptions) {
+        return withContext(context -> muteParticipantWithResponseInternal(muteParticipantOptions, context));
+    }
+
+    Mono<Response<MuteParticipantsResult>> muteParticipantWithResponseInternal(MuteParticipantOptions muteParticipantOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            MuteParticipantRequestInternal request = new MuteParticipantRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(muteParticipantOptions.getTargetParticipant()))
+                .setOperationContext(muteParticipantOptions.getOperationContext());
+            muteParticipantOptions.setRepeatabilityHeaders(handleApiIdempotency(muteParticipantOptions.getRepeatabilityHeaders()));
+
+            return callConnectionInternal.muteWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    muteParticipantOptions.getRepeatabilityHeaders() != null ? muteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    muteParticipantOptions.getRepeatabilityHeaders() != null ? muteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Mute all participants in the call, except for the initiator.
+     * @param requestInitiator Optional - if passed, this participant won't be muted. If not passed,
+     *                         the server won't be muted.
+     * @return a MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResult> muteAllParticipantsAsync(CommunicationIdentifier requestInitiator) {
+        MuteAllParticipantsOptions options = new MuteAllParticipantsOptions()
+            .setRequestInitiator(requestInitiator);
+        return muteAllParticipantsWithResponseInternal(options, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Mute all participants in the call, except for the initiator.
+     * @param muteAllParticipantsOptions - Options for the operation.
+     * @return a Response containing a MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResult>> muteAllParticipantsWithResponse(MuteAllParticipantsOptions muteAllParticipantsOptions) {
+        return withContext(context -> muteAllParticipantsWithResponseInternal(muteAllParticipantsOptions, context));
+    }
+
+    Mono<Response<MuteParticipantsResult>> muteAllParticipantsWithResponseInternal(MuteAllParticipantsOptions muteAllParticipantsOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            MuteAllParticipantsRequestInternal request = new MuteAllParticipantsRequestInternal()
+                .setRequestInitiator(CommunicationIdentifierConverter.convert(muteAllParticipantsOptions.getRequestInitiator()))
+                .setOperationContext(muteAllParticipantsOptions.getOperationContext());
+            muteAllParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(muteAllParticipantsOptions.getRepeatabilityHeaders()));
+
+            return callConnectionInternal.muteAllWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    muteAllParticipantsOptions.getRepeatabilityHeaders() != null ? muteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    muteAllParticipantsOptions.getRepeatabilityHeaders() != null ? muteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Unmutes a single participant in the call.
+     * @param targetParticipant - Participant to be muted.
+     * @return An UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResult> unmuteParticipantAsync(CommunicationIdentifier targetParticipant) {
+        return unmuteParticipantWithResponseInternal(new UnmuteParticipantOptions(targetParticipant), null)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Mute a single participant in the call.
+     * @param unmuteParticipantOptions - Options for the request.
+     * @return a Response containing the UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResult>> unmuteParticipantWithResponse(UnmuteParticipantOptions unmuteParticipantOptions) {
+        return withContext(context -> unmuteParticipantWithResponseInternal(unmuteParticipantOptions, context));
+    }
+
+    Mono<Response<UnmuteParticipantsResult>> unmuteParticipantWithResponseInternal(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            UnmuteParticipantRequestInternal request = new UnmuteParticipantRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(unmuteParticipantOptions.getTargetParticipant()))
+                .setOperationContext(unmuteParticipantOptions.getOperationContext());
+            unmuteParticipantOptions.setRepeatabilityHeaders(handleApiIdempotency(unmuteParticipantOptions.getRepeatabilityHeaders()));
+
+            return callConnectionInternal.unmuteWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    unmuteParticipantOptions.getRepeatabilityHeaders() != null ? unmuteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    unmuteParticipantOptions.getRepeatabilityHeaders() != null ? unmuteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Unmute all participants in the call.
+     * @return an UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResult> unmuteAllParticipantsAsync() {
+        return unmuteAllParticipantsWithResponseInternal(new UnmuteAllParticipantsOptions(), null)
+            .flatMap(FluxUtil::toMono);
+    }
+
+
+    /**
+     * Unmute all participants in the call, except for the initiator.
+     * @param unmuteAllParticipantsOptions - Options for the operation.
+     * @return a Response containing an UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResult>> unmuteAllParticipantsWithResponse(UnmuteAllParticipantsOptions unmuteAllParticipantsOptions) {
+        return withContext(context -> unmuteAllParticipantsWithResponseInternal(unmuteAllParticipantsOptions, context));
+    }
+
+    Mono<Response<UnmuteParticipantsResult>> unmuteAllParticipantsWithResponseInternal(
+        UnmuteAllParticipantsOptions unmuteAllParticipantsOptions,
+        Context context
+    ) {
+        try {
+            context = context == null ? Context.NONE : context;
+            UnmuteAllParticipantsRequestInternal request = new UnmuteAllParticipantsRequestInternal()
+                .setOperationContext(unmuteAllParticipantsOptions.getOperationContext());
+            unmuteAllParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(unmuteAllParticipantsOptions.getRepeatabilityHeaders()));
+
+            return callConnectionInternal.unmuteAllWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    unmuteAllParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    unmuteAllParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     //region Content management Actions
     /***
      * Returns an object of CallContentAsync
@@ -408,5 +592,6 @@ public class CallConnectionAsync {
     private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
         return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
     }
+
     //endregion
 }

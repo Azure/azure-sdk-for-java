@@ -16,6 +16,9 @@ public final class SchemaId {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of SchemaId class. */
+    public SchemaId() {}
+
     /**
      * Get the id property: Schema ID that uniquely identifies a schema in the registry namespace.
      *

@@ -57,7 +57,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseOperationsService {
+    public interface DatabaseOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

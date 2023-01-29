@@ -19,6 +19,8 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Change the default value of `spring.jms.servicebus.idle-timeout` from 30 minutes to 2 minutes [#32799](https://github.com/Azure/azure-sdk-for-java/pull/32799).
 - Change the default value of `spring.cloud.azure.eventhubs.processor.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32897](https://github.com/Azure/azure-sdk-for-java/pull/32897).
 
+#### Bugs Fixed
+- Fixed `GraphClient` exceptions handling when switching `HttpURLConnection` to `RestTemplate`. [#32779](https://github.com/Azure/azure-sdk-for-java/issues/32779)
 
 ### Spring Cloud Azure Core
 This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.

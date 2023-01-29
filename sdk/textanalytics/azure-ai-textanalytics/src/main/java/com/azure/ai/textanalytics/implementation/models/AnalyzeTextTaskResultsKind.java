@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnalyzeTextTaskResultsKind. */
+/** Enumeration of supported Text Analysis task results. */
 public final class AnalyzeTextTaskResultsKind extends ExpandableStringEnum<AnalyzeTextTaskResultsKind> {
     /** Static value SentimentAnalysisResults for AnalyzeTextTaskResultsKind. */
     public static final AnalyzeTextTaskResultsKind SENTIMENT_ANALYSIS_RESULTS = fromString("SentimentAnalysisResults");

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RangeKind. */
+/** The kind of range that the resolution object represents. */
 public final class RangeKind extends ExpandableStringEnum<RangeKind> {
     /** Static value Number for RangeKind. */
     public static final RangeKind NUMBER = fromString("Number");

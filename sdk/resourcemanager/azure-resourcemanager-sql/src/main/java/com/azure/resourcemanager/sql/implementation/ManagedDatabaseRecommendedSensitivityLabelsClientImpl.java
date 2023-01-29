@@ -58,7 +58,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseRecommendedSensitivityLabelsService {
+    public interface ManagedDatabaseRecommendedSensitivityLabelsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
