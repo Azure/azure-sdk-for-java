@@ -6,30 +6,20 @@ package com.azure.messaging.webpubsub.client.models;
 import com.azure.core.annotation.Fluent;
 
 @Fluent
-public final class SendToGroupOptions {
+public final class SendEventOptions {
 
     private Long ackId;
-    private Boolean noEcho = false;
     private Boolean fireAndForget = false;
 
-    public SendToGroupOptions() {
+    public SendEventOptions() {
     }
 
     public Long getAckId() {
         return ackId;
     }
 
-    public SendToGroupOptions setAckId(long ackId) {
+    public SendEventOptions setAckId(long ackId) {
         this.ackId = ackId;
-        return this;
-    }
-
-    public Boolean getNoEcho() {
-        return noEcho;
-    }
-
-    public SendToGroupOptions setNoEcho(boolean noEcho) {
-        this.noEcho = noEcho;
         return this;
     }
 
@@ -37,7 +27,7 @@ public final class SendToGroupOptions {
         return fireAndForget;
     }
 
-    public SendToGroupOptions setFireAndForget(boolean fireAndForget) {
+    public SendEventOptions setFireAndForget(boolean fireAndForget) {
         this.fireAndForget = fireAndForget;
         return this;
     }

@@ -15,7 +15,7 @@ public class TestBase extends com.azure.core.test.TestBase {
     protected static WebPubSubClientBuilder getClientBuilder() {
         WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()
             .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
-            .hub("test_hub")
+            .hub("hub1")
             .buildAsyncClient();
 
         Mono<WebPubSubClientAccessToken> accessToken = client.getClientAccessToken(new GetClientAccessTokenOptions()

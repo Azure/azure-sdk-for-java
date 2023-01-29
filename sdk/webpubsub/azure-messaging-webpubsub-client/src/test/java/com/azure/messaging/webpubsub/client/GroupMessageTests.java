@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class SendMessageTests extends TestBase {
+public class GroupMessageTests extends TestBase {
 
     private static final String GROUP = "group";
     private static final BinaryData HELLO = BinaryData.fromString("hello");

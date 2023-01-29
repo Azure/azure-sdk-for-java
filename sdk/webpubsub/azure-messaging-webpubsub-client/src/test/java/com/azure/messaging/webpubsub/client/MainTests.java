@@ -13,7 +13,7 @@ import java.util.Map;
 public class MainTests extends TestBase {
 
     public static void main(String[] args) throws Exception {
-        runForSyncClient();
+//        runForSyncClient();
 
         runForAsyncClient();
 
@@ -78,6 +78,11 @@ public class MainTests extends TestBase {
         // disconnected events
         asyncClient.receiveDisconnectedEvents().subscribe(event -> {
             System.out.println("disconnected: " + event.getDisconnectedMessage().getReason());
+        });
+
+        // stopped events
+        asyncClient.receiveStoppedEvents().subscribe(event -> {
+            System.out.println("stopped");
         });
 
         // start

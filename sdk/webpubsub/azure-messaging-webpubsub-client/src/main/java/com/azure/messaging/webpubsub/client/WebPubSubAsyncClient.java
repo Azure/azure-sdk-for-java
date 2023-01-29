@@ -16,6 +16,7 @@ import com.azure.messaging.webpubsub.client.exception.SendMessageFailedException
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.LoggingUtils;
+import com.azure.messaging.webpubsub.client.implementation.SendEventMessage;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubMessageAck;
@@ -29,7 +30,11 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
+import com.azure.messaging.webpubsub.client.models.SendEventOptions;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
+import com.azure.messaging.webpubsub.client.models.ServerDataMessage;
+import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
+import com.azure.messaging.webpubsub.client.models.StoppedEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
@@ -92,6 +97,9 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private final Sinks.Many<GroupMessageEvent> groupMessageEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
+    private final Sinks.Many<ServerMessageEvent> serverMessageEventSink =
+        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
     private Sinks.Many<AckMessage> ackMessageSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
@@ -99,6 +107,9 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     private final Sinks.Many<DisconnectedEvent> disconnectedEventSink =
+        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
+    private final Sinks.Many<StoppedEvent> stoppedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     private final ClientState clientState = new ClientState();
@@ -228,9 +239,13 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
                 groupMessageEventSink.emitComplete(
                     emitFailureHandler("Unable to emit Complete to groupMessageEventSink"));
+                serverMessageEventSink.emitComplete(
+                    emitFailureHandler("Unable to emit Complete to groupMessageEventSink"));
                 connectedEventSink.emitComplete(
                     emitFailureHandler("Unable to emit Complete to connectedEventSink"));
                 disconnectedEventSink.emitComplete(
+                    emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
+                stoppedEventSink.emitComplete(
                     emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
 
                 isClosedMono.emitEmpty(emitFailureHandler("Unable to emit Close"));
@@ -282,8 +297,12 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
                                              SendToGroupOptions options) {
+        Objects.requireNonNull(group);
+        Objects.requireNonNull(content);
+        Objects.requireNonNull(dataType);
+        Objects.requireNonNull(options);
 
-        long ackId = options != null && options.getAckId() != null ? options.getAckId() : nextAckId();
+        long ackId = options.getAckId() != null ? options.getAckId() : nextAckId();
 
         BinaryData data = content;
         if (dataType == WebPubSubDataType.BINARY || dataType == WebPubSubDataType.PROTOBUF) {
@@ -304,8 +323,43 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
+        return sendEvent(eventName, content, dataType, new SendEventOptions().setAckId(nextAckId()));
+    }
+
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
+                                           SendEventOptions options) {
+        Objects.requireNonNull(eventName);
+        Objects.requireNonNull(content);
+        Objects.requireNonNull(dataType);
+        Objects.requireNonNull(options);
+
+        long ackId = options.getAckId() != null ? options.getAckId() : nextAckId();
+
+        BinaryData data = content;
+        if (dataType == WebPubSubDataType.BINARY || dataType == WebPubSubDataType.PROTOBUF) {
+            data = BinaryData.fromBytes(Base64.getEncoder().encode(content.toBytes()));
+        }
+
+        SendEventMessage message = new SendEventMessage()
+            .setEvent(eventName)
+            .setData(data)
+            .setDataType(dataType.name().toLowerCase(Locale.ROOT))
+            .setAckId(ackId);
+
+        Mono<Void> sendMessageMono = sendMessage(message);
+        Mono<WebPubSubResult> responseMono = options.getFireAndForget()
+            ? sendMessageMono.then(Mono.just(new WebPubSubResult(null)))
+            : sendMessageMono.then(waitForAckMessage(ackId));
+        return responseMono.retryWhen(sendMessageRetrySpec);
+    }
+
     public Flux<GroupMessageEvent> receiveGroupMessageEvents() {
         return groupMessageEventSink.asFlux();
+    }
+
+    public Flux<ServerMessageEvent> receiveServerMessageEvents() {
+        return serverMessageEventSink.asFlux();
     }
 
     public Flux<ConnectedEvent> receiveConnectedEvents() {
@@ -314,6 +368,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     public Flux<DisconnectedEvent> receiveDisconnectedEvents() {
         return disconnectedEventSink.asFlux();
+    }
+
+    public Flux<StoppedEvent> receiveStoppedEvents() {
+        return stoppedEventSink.asFlux();
     }
 
     private long nextAckId() {
@@ -537,6 +595,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         if (isStoppedByUserMono != null) {
             isStoppedByUserMono.emitEmpty(emitFailureHandler("Unable to emit Stopped"));
         }
+
+        stoppedEventSink.emitNext(new StoppedEvent(), emitFailureHandler("Unable to emit StoppedEvent"));
     }
 
     private class ClientEndpoint extends Endpoint {
@@ -563,6 +623,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         groupMessageEventSink.emitNext(
                             new GroupMessageEvent((GroupDataMessage) webPubSubMessage),
                             emitFailureHandler("Unable to emit GroupMessageEvent"));
+                    } else if (webPubSubMessage instanceof ServerDataMessage) {
+                        serverMessageEventSink.emitNext(
+                            new ServerMessageEvent((ServerDataMessage) webPubSubMessage),
+                            emitFailureHandler("Unable to emit ServerMessageEvent"));
                     } else if (webPubSubMessage instanceof AckMessage) {
                         ackMessageSink.emitNext((AckMessage) webPubSubMessage,
                             emitFailureHandler("Unable to emit GroupMessageEvent"));
@@ -583,8 +647,6 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                             connectionId,
                             (DisconnectedMessage) webPubSubMessage),
                             emitFailureHandler("Unable to emit DisconnectedEvent"));
-                    } else {
-                        // TODO
                     }
                 }
             });

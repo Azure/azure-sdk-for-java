@@ -7,6 +7,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.models.AckMessageError;
 import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.models.ServerDataMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
 import com.fasterxml.jackson.core.JsonParser;
@@ -36,22 +37,7 @@ public final class MessageDecoder extends CoderAdapter implements Decoder.Text<W
                     switch (jsonNode.get("from").asText()) {
                         case "group": {
                             WebPubSubDataType type = WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT));
-                            BinaryData data = null;
-                            switch (type) {
-                                case TEXT:
-                                    data = BinaryData.fromString(jsonNode.get("data").asText());
-                                    break;
-
-                                case BINARY:
-                                case PROTOBUF:
-                                    data = BinaryData.fromBytes(Base64.getDecoder().decode(jsonNode.get("data").binaryValue()));
-                                    break;
-
-                                case JSON:
-                                default:
-                                    data = BinaryData.fromObject(jsonNode.get("data"));
-                                    break;
-                            }
+                            BinaryData data = parseData(jsonNode, type);
                             GroupDataMessage groupDataMessage = new GroupDataMessage(
                                 jsonNode.get("group").asText(),
                                 type,
@@ -60,6 +46,18 @@ public final class MessageDecoder extends CoderAdapter implements Decoder.Text<W
                                 jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
                             );
                             msg = groupDataMessage;
+                            break;
+                        }
+
+                        case "server": {
+                            WebPubSubDataType type = WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT));
+                            BinaryData data = parseData(jsonNode, type);
+                            ServerDataMessage serverDataMessage = new ServerDataMessage(
+                                type,
+                                data,
+                                jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
+                            );
+                            msg = serverDataMessage;
                             break;
                         }
                     }
@@ -105,6 +103,26 @@ public final class MessageDecoder extends CoderAdapter implements Decoder.Text<W
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static BinaryData parseData(JsonNode jsonNode, WebPubSubDataType type) throws IOException {
+        BinaryData data = null;
+        switch (type) {
+            case TEXT:
+                data = BinaryData.fromString(jsonNode.get("data").asText());
+                break;
+
+            case BINARY:
+            case PROTOBUF:
+                data = BinaryData.fromBytes(Base64.getDecoder().decode(jsonNode.get("data").binaryValue()));
+                break;
+
+            case JSON:
+            default:
+                data = BinaryData.fromObject(jsonNode.get("data"));
+                break;
+        }
+        return data;
     }
 
     @Override

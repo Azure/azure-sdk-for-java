@@ -10,7 +10,10 @@ import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
+import com.azure.messaging.webpubsub.client.models.SendEventOptions;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
+import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
+import com.azure.messaging.webpubsub.client.models.StoppedEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 
@@ -65,8 +68,21 @@ public class WebPubSubClient implements AutoCloseable {
         return client.sendToGroup(group, content, dataType, options).block();
     }
 
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
+        return client.sendEvent(eventName, content, dataType).block();
+    }
+
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
+                                           SendEventOptions options) {
+        return client.sendEvent(eventName, content, dataType, options).block();
+    }
+
     public IterableStream<GroupMessageEvent> receiveGroupMessageEvents() {
         return new IterableStream<>(client.receiveGroupMessageEvents());
+    }
+
+    public IterableStream<ServerMessageEvent> receiveServerMessageEvents() {
+        return new IterableStream<>(client.receiveServerMessageEvents());
     }
 
     public IterableStream<ConnectedEvent> receiveConnectedEvents() {
@@ -75,6 +91,10 @@ public class WebPubSubClient implements AutoCloseable {
 
     public IterableStream<DisconnectedEvent> receiveDisconnectedEvents() {
         return new IterableStream<>(client.receiveDisconnectedEvents());
+    }
+
+    public IterableStream<StoppedEvent> receiveStoppedEvents() {
+        return new IterableStream<>(client.receiveStoppedEvents());
     }
 
     WebPubSubClientState getClientState() {
