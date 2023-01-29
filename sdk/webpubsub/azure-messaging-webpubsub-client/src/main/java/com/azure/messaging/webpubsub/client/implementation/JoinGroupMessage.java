@@ -3,11 +3,19 @@
 
 package com.azure.messaging.webpubsub.client.implementation;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 public final class JoinGroupMessage extends WebPubSubMessageAck {
 
-    private final String type = "joinGroup";
+    private static final String TYPE = "joinGroup";
     private String group;
 
+    @JsonGetter
+    public String getType() {
+        return TYPE;
+    }
+
+    @JsonGetter
     public String getGroup() {
         return group;
     }
@@ -18,7 +26,7 @@ public final class JoinGroupMessage extends WebPubSubMessageAck {
     }
 
     @Override
-    public JoinGroupMessage setAckId(Long ackId) {
+    public JoinGroupMessage setAckId(long ackId) {
         super.setAckId(ackId);
         return this;
     }

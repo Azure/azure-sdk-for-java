@@ -3,11 +3,19 @@
 
 package com.azure.messaging.webpubsub.client.implementation;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 public final class LeaveGroupMessage extends WebPubSubMessageAck {
 
-    private final String type = "leaveGroup";
+    private static final String TYPE = "leaveGroup";
     private String group;
 
+    @JsonGetter
+    public String getType() {
+        return TYPE;
+    }
+
+    @JsonGetter
     public String getGroup() {
         return group;
     }
@@ -18,7 +26,7 @@ public final class LeaveGroupMessage extends WebPubSubMessageAck {
     }
 
     @Override
-    public LeaveGroupMessage setAckId(Long ackId) {
+    public LeaveGroupMessage setAckId(long ackId) {
         super.setAckId(ackId);
         return this;
     }

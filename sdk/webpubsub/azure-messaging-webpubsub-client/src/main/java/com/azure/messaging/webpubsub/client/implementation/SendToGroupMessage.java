@@ -4,10 +4,11 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 public final class SendToGroupMessage extends WebPubSubMessageAck {
 
-    private final String type = "sendToGroup";
+    private static final String TYPE = "sendToGroup";
 
     private String group;
 
@@ -17,21 +18,28 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
 
     private BinaryData data;
 
+    @JsonGetter
+    public String getType() {
+        return TYPE;
+    }
+
     public String getGroup() {
         return group;
     }
 
+    @JsonGetter
     public SendToGroupMessage setGroup(String group) {
         this.group = group;
         return this;
     }
 
     @Override
-    public SendToGroupMessage setAckId(Long ackId) {
+    public SendToGroupMessage setAckId(long ackId) {
         super.setAckId(ackId);
         return this;
     }
 
+    @JsonGetter
     public Boolean isNoEcho() {
         return noEcho;
     }
@@ -41,6 +49,7 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
+    @JsonGetter
     public String getDataType() {
         return dataType;
     }
@@ -50,6 +59,7 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
+    @JsonGetter
     public BinaryData getData() {
         return data;
     }

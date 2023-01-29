@@ -19,17 +19,17 @@ public class GroupMessageTests extends TestBase {
     private static final String GROUP = "group";
     private static final BinaryData HELLO = BinaryData.fromString("hello");
 
-    private final WebPubSubClient client = getClient();
-
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testSendMessageBeforeStart() {
+        WebPubSubClient client = getClient();
         Assertions.assertThrows(SendMessageFailedException.class, () -> client.sendToGroup(GROUP, HELLO, WebPubSubDataType.TEXT));
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testSendMessage() {
+        WebPubSubClient client = getClient();
         try {
             client.start();
 

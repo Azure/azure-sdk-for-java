@@ -8,6 +8,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Main extends TestBase {
@@ -41,12 +42,10 @@ public class Main extends TestBase {
         client.joinGroup("group1");
 
         // send message to group1
-        printResult(client.sendToGroup("group1",
-            BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
+        printResult(client.sendToGroup("group1", BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
 
         // send message to group1
-        printResult(client.sendToGroup("group1",
-            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON));
+        printResult(client.sendToGroup("group1", getJsonData("hello", "world"), WebPubSubDataType.JSON));
 
         client.leaveGroup("group1");
 
@@ -90,26 +89,22 @@ public class Main extends TestBase {
         printResult(asyncClient.joinGroup("group1"));
 
         // send message to group1
-        printResult(asyncClient.sendToGroup("group1",
-            BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
+        printResult(asyncClient.sendToGroup("group1", BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
 
         // join group2
         printResult(asyncClient.joinGroup("group2"));
 
         // send message to group1
-        printResult(asyncClient.sendToGroup("group1",
-            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON));
+        printResult(asyncClient.sendToGroup("group1", getJsonData("hello", "world"), WebPubSubDataType.JSON));
 
         // send message to group2
-        printResult(asyncClient.sendToGroup("group2",
-            BinaryData.fromObject(Map.of("hello", "group2")), WebPubSubDataType.JSON));
+        printResult(asyncClient.sendToGroup("group2", getJsonData("hello", "group2"), WebPubSubDataType.JSON));
 
         // leave group1
         printResult(asyncClient.leaveGroup("group1"));
 
         // send message to group2
-        printResult(asyncClient.sendToGroup("group2",
-            BinaryData.fromString("binary"), WebPubSubDataType.BINARY));
+        printResult(asyncClient.sendToGroup("group2", BinaryData.fromString("binary"), WebPubSubDataType.BINARY));
 
         asyncClient.stop().block();
 
@@ -119,14 +114,19 @@ public class Main extends TestBase {
 
         printResult(asyncClient.joinGroup("group1"));
 
-        printResult(asyncClient.sendToGroup("group1",
-            BinaryData.fromString("dfg"), WebPubSubDataType.TEXT));
+        printResult(asyncClient.sendToGroup("group1", BinaryData.fromString("dfg"), WebPubSubDataType.TEXT));
 
         Thread.sleep(5 * 1000);
 
 
         // close
         asyncClient.closeAsync().block();
+    }
+
+    private static BinaryData getJsonData(String key, String value) {
+        Map<String, String> map = new HashMap<>(1);
+        map.put(key, value);
+        return BinaryData.fromObject(map);
     }
 
     private static void printResult(Mono<WebPubSubResult> result) {

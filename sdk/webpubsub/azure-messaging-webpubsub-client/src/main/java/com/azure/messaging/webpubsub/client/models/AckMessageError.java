@@ -5,13 +5,23 @@ package com.azure.messaging.webpubsub.client.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.io.Serializable;
+
 /**
  * The error from AckMessage.
  */
 @Immutable
-public final class AckMessageError {
+public final class AckMessageError implements Serializable {
+    private static final long serialVersionUID = 1L;
 
+    /**
+     * the name of the error.
+     */
     private final String name;
+
+    /**
+     * the error message.
+     */
     private final String message;
 
     /**

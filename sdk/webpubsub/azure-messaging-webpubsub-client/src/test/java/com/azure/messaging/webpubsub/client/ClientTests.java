@@ -14,12 +14,11 @@ import java.time.Duration;
 
 public class ClientTests extends TestBase {
 
-    private final WebPubSubClient client = getClient();
-    private final WebPubSubAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
-
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testClientState() {
+        WebPubSubAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+
         Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState());
 
         Mono<Void> startMono = asyncClient.start().doOnSuccess(ignored -> {
@@ -45,6 +44,8 @@ public class ClientTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     @Order(1000)    // last
     public void testClosed() {
+        WebPubSubClient client = getClient();
+
         Assertions.assertEquals(WebPubSubClientState.STOPPED, client.getClientState());
 
         client.close();

@@ -18,7 +18,6 @@ public class EventTests extends TestBase {
 
     private static final String EVENT_NAME = "event";
     private static final BinaryData HELLO = BinaryData.fromString("text");
-    private final WebPubSubClient client = getClient();
 
     @Disabled
     @Test
@@ -26,6 +25,7 @@ public class EventTests extends TestBase {
     public void testSendEvent() {
         // require event handler configured in Azure
 
+        WebPubSubClient client = getClient();
         try {
             client.start();
 

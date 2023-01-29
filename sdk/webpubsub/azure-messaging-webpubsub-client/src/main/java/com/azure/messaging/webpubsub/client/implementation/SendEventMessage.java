@@ -4,10 +4,11 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 public final class SendEventMessage extends WebPubSubMessageAck {
 
-    private final String type = "event";
+    private static final String TYPE = "event";
 
     private String event;
 
@@ -15,6 +16,12 @@ public final class SendEventMessage extends WebPubSubMessageAck {
 
     private BinaryData data;
 
+    @JsonGetter
+    public String getType() {
+        return TYPE;
+    }
+
+    @JsonGetter
     public String getEvent() {
         return event;
     }
@@ -25,11 +32,12 @@ public final class SendEventMessage extends WebPubSubMessageAck {
     }
 
     @Override
-    public SendEventMessage setAckId(Long ackId) {
+    public SendEventMessage setAckId(long ackId) {
         super.setAckId(ackId);
         return this;
     }
 
+    @JsonGetter
     public String getDataType() {
         return dataType;
     }
@@ -39,6 +47,7 @@ public final class SendEventMessage extends WebPubSubMessageAck {
         return this;
     }
 
+    @JsonGetter
     public BinaryData getData() {
         return data;
     }

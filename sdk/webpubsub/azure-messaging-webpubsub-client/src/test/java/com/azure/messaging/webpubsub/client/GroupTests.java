@@ -10,11 +10,10 @@ public class GroupTests extends TestBase {
 
     private static final String GROUP = "group";
 
-    private final WebPubSubClient client = getClient();
-
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testJoinLeaveGroup() {
+        WebPubSubClient client = getClient();
         try {
             client.start();
 
@@ -29,6 +28,7 @@ public class GroupTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testLeaveGroupBeforeJoin() {
+        WebPubSubClient client = getClient();
         try {
             client.start();
 

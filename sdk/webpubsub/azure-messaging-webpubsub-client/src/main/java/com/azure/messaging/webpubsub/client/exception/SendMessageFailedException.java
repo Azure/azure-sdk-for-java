@@ -11,9 +11,19 @@ import com.azure.messaging.webpubsub.client.models.AckMessageError;
  */
 public class SendMessageFailedException extends AzureException {
 
+    /**
+     * whether the exception is transient.
+     */
     private final boolean isTransient;
 
+    /**
+     * the "ackId" of request message.
+     */
     private final Long ackId;
+
+    /**
+     * the "error" of response message.
+     */
     private final AckMessageError error;
 
     /**
