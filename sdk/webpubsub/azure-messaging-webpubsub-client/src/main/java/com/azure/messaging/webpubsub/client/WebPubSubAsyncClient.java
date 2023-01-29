@@ -9,6 +9,9 @@ import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.webpubsub.client.exception.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
@@ -45,6 +48,7 @@ import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Base64;
@@ -166,7 +170,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
             isStoppedByUserMono = null;
             if (session != null && session.isOpen()) {
                 return Mono.fromCallable(() -> {
-                    session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
+                    session.close(CloseReasons.NO_STATUS_CODE.getCloseReason());
                     return (Void) null;
                 }).subscribeOn(Schedulers.boundedElastic());
             } else {
@@ -213,7 +217,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
         return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId))
-            .then(Mono.fromRunnable(() -> {
+            .map(result -> {
                 groups.compute(group, (k, v) -> {
                     if (v == null) {
                         return new WebPubSubGroup(group).setJoined(true);
@@ -221,7 +225,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         return v.setJoined(true);
                     }
                 });
-            }));
+                return result;
+            });
     }
 
     public Mono<WebPubSubResult> leaveGroup(String group) {
@@ -231,7 +236,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
         return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId))
-            .then(Mono.fromRunnable(() -> {
+            .map(result -> {
                 groups.compute(group, (k, v) -> {
                     if (v == null) {
                         return new WebPubSubGroup(group).setJoined(false);
@@ -239,7 +244,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         return v.setJoined(false);
                     }
                 });
-            }));
+                return result;
+            });
     }
 
     public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
@@ -298,6 +304,16 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     private Mono<Void> sendMessage(WebPubSubMessageAck message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                try {
+                    String json = JacksonAdapter.createDefaultSerializerAdapter()
+                        .serialize(message, SerializerEncoding.JSON);
+                    logger.atVerbose().addKeyValue("message", json).log("Send message");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             session.getAsyncRemote().sendObject(message, sendResult -> {
                 if (sendResult.isOK()) {
                     sink.success();
@@ -336,10 +352,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         clientState.changeState(WebPubSubClientState.CONNECTED);
 
         if (isStoppedByUser.compareAndSet(true, false)) {
-            // user intended to stop, but issued when session is not open, e.g. CONNECTING, RECOVERING
+            // user intended to stop, but issued when session is not OPEN or STOPPED, e.g. CONNECTING, RECOVERING
             Mono.fromCallable(() -> {
                 if (session != null && session.isOpen()) {
-                    session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
+                    session.close(CloseReasons.NO_STATUS_CODE.getCloseReason());
                 }
                 return (Void) null;
             }).subscribeOn(Schedulers.boundedElastic()).subscribe(null, thr -> {
@@ -487,10 +503,22 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
         @Override
         public void onOpen(Session session, EndpointConfig endpointConfig) {
+            logger.atVerbose().log("Session opened");
+
             session.addMessageHandler(new MessageHandler.Whole<WebPubSubMessage>() {
 
                 @Override
                 public void onMessage(WebPubSubMessage webPubSubMessage) {
+                    if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                        try {
+                            String json = JacksonAdapter.createDefaultSerializerAdapter()
+                                .serialize(webPubSubMessage, SerializerEncoding.JSON);
+                            logger.atVerbose().addKeyValue("message", json).log("Message received");
+                        } catch (IOException e) {
+                            //
+                        }
+                    }
+
                     if (webPubSubMessage instanceof GroupDataMessage) {
                         groupMessageEventSink.emitNext(
                             new GroupMessageEvent((GroupDataMessage) webPubSubMessage),
@@ -526,6 +554,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
         @Override
         public void onClose(Session session, CloseReason closeReason) {
+            logger.atVerbose().addKeyValue("code", closeReason.getCloseCode()).log("Session closed");
+
             handleSessionClose(closeReason);
         }
 
