@@ -47,6 +47,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
+import reactor.util.retry.Retry;
+import reactor.util.retry.RetryBackoffSpec;
 
 import java.io.IOException;
 import java.net.URI;
@@ -110,6 +112,9 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private final ConcurrentMap<String, WebPubSubGroup> groups = new ConcurrentHashMap<>();
 
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final RetryBackoffSpec RECONNECT_RETRY_SPEC =
+        Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1))
+            .filter(thr -> !(thr instanceof StopReconnectException));
 
     WebPubSubAsyncClient(Mono<String> clientAccessUriProvider,
                          WebPubSubProtocol webPubSubProtocol,
@@ -166,8 +171,11 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 new IllegalStateException("Failed to stop. Client is CLOSED.")));
         }
         return Mono.defer(() -> {
+            // reset
             isStoppedByUser.set(true);
             isStoppedByUserMono = null;
+            groups.clear();
+
             if (session != null && session.isOpen()) {
                 return Mono.fromCallable(() -> {
                     session.close(CloseReasons.NO_STATUS_CODE.getCloseReason());
@@ -383,7 +391,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         clientState.changeState(WebPubSubClientState.DISCONNECTED);
 
         if (isStoppedByUser.compareAndSet(true, false)) {
-            // closed by user
+            // stopped by user
             handleClientStop();
         } else if (closeReason.getCloseCode() == CloseReason.CloseCodes.VIOLATED_POLICY) {
             // VIOLATED_POLICY
@@ -395,7 +403,11 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         .log("Failed to auto reconnect session: " + thr.getMessage());
                 });
             } else {
-                handleRecovery().timeout(TIMEOUT, handleNoRecovery()).subscribe(null, thr -> {
+                handleRecovery().timeout(TIMEOUT, Mono.defer(() -> {
+                    // client should be RECOVERING, after timeout
+                    clientState.changeState(WebPubSubClientState.DISCONNECTED);
+                    return handleNoRecovery();
+                })).subscribe(null, thr -> {
                     logger.atWarning()
                         .log("Failed to recover session: " + thr.getMessage());
                 });
@@ -406,19 +418,23 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private Mono<Void> handleNoRecovery() {
         return Mono.defer(() -> {
             if (isStoppedByUser.compareAndSet(true, false)) {
-                // closed by user
+                // stopped by user
                 handleClientStop();
-                return Mono.error(logger.logExceptionAsError(
-                    new IllegalStateException("Client is stopped by user.")));
+                return Mono.empty();
             } else if (autoReconnect) {
                 // try reconnect
 
+                boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
+                    WebPubSubClientState.CONNECTING);
+                if (!success) {
+                    return Mono.error(logger.logExceptionAsError(
+                        new StopReconnectException("Failed to start. Client is not DISCONNECTED.")));
+                }
+
                 return Mono.defer(() -> {
-                    boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
-                        WebPubSubClientState.CONNECTING);
-                    if (!success) {
-                        return Mono.error(logger.logExceptionAsError(
-                            new IllegalStateException("Failed to start. Client is not DISCONNECTED.")));
+                    if (isStoppedByUser.compareAndSet(true, false)) {
+                        return Mono.error(logger.logExceptionAsWarning(
+                            new StopReconnectException("Client is stopped by user.")));
                     } else {
                         return Mono.empty();
                     }
@@ -431,7 +447,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         .build();
                     this.session = clientManager.connectToServer(endpoint, config, new URI(uri));
                     return (Void) null;
-                }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
+                }).subscribeOn(Schedulers.boundedElastic()))).retryWhen(RECONNECT_RETRY_SPEC).doOnError(error -> {
+                    // stopped by user
                     handleClientStop();
                 });
             } else {
@@ -444,21 +461,23 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private Mono<Void> handleRecovery() {
         return Mono.defer(() -> {
             if (isStoppedByUser.compareAndSet(true, false)) {
-                // closed by user
+                // stopped by user
                 handleClientStop();
-                return Mono.error(logger.logExceptionAsError(
-                    new IllegalStateException("Client is stopped by user.")));
+                return Mono.empty();
             } else {
                 // try recovery
 
-                clientState.changeState(WebPubSubClientState.DISCONNECTED);
+                boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
+                    WebPubSubClientState.RECOVERING);
+                if (!success) {
+                    return Mono.error(logger.logExceptionAsError(
+                        new StopReconnectException("Failed to recover. Client is not DISCONNECTED.")));
+                }
 
                 return Mono.defer(() -> {
-                    boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
-                        WebPubSubClientState.RECOVERING);
-                    if (!success) {
-                        return Mono.error(logger.logExceptionAsError(
-                            new IllegalStateException("Failed to recover. Client is not DISCONNECTED.")));
+                    if (isStoppedByUser.compareAndSet(true, false)) {
+                        return Mono.error(logger.logExceptionAsWarning(
+                            new StopReconnectException("Client is stopped by user.")));
                     } else {
                         return Mono.empty();
                     }
@@ -476,7 +495,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         .build();
                     this.session = clientManager.connectToServer(endpoint, config, new URI(recoveryUri));
                     return (Void) null;
-                }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
+                }).subscribeOn(Schedulers.boundedElastic()))).retryWhen(RECONNECT_RETRY_SPEC).doOnError(error -> {
+                    // stopped by user
                     handleClientStop();
                 });
             }
@@ -563,6 +583,12 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         public void onError(Session session, Throwable thr) {
             logger.atWarning()
                 .log("Error from session: " + thr.getMessage());
+        }
+    }
+
+    private static class StopReconnectException extends RuntimeException {
+        public StopReconnectException(String message) {
+            super(message);
         }
     }
 
