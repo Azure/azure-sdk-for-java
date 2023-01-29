@@ -15,14 +15,12 @@ import java.io.IOException;
 
 public final class MessageEncoder extends CoderAdapter implements Encoder.Text<WebPubSubMessage> {
 
-    private final static SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Override
     public String encode(WebPubSubMessage object) throws EncodeException {
         try {
-            String msg = SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
-//            System.out.println("encode msg: " + msg);
-            return msg;
+            return SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

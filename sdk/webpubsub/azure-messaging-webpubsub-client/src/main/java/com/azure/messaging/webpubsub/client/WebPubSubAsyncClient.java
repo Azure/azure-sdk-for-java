@@ -21,6 +21,7 @@ import com.azure.messaging.webpubsub.client.implementation.SequenceAckMessage;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubMessageAck;
+import com.azure.messaging.webpubsub.client.models.AckMessageError;
 import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
@@ -409,7 +410,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         .serialize(message, SerializerEncoding.JSON);
                     logger.atVerbose().addKeyValue("message", json).log("Send message");
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    //
                 }
             }
 
@@ -461,7 +462,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                     return Mono.just(new WebPubSubResult(m.getAckId()));
                 } else {
                     return Mono.error(logSendMessageFailedException(
-                        "Received non-success acknowledge from the service.", null, false, ackId));
+                        "Received non-success acknowledge from the service.", null, false, ackId, m.getError()));
                 }
             })
             // timeout or stream closed
@@ -664,6 +665,11 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         stoppedEventSink.emitNext(new StoppedEvent(), emitFailureHandler("Unable to emit StoppedEvent"));
     }
 
+    private void updateLogger(String connectionId) {
+        logger = new ClientLogger(WebPubSubAsyncClient.class,
+            LoggingUtils.createContextWithConnectionId(connectionId));
+    }
+
     private class ClientEndpoint extends Endpoint {
 
         @Override
@@ -706,8 +712,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         connectionId = connectedMessage.getConnectionId();
                         reconnectionToken = connectedMessage.getReconnectionToken();
 
-                        logger = new ClientLogger(WebPubSubAsyncClient.class,
-                            LoggingUtils.createContextWithConnectionId(connectionId));
+                        updateLogger(connectionId);
 
                         connectedEventSink.emitNext(new ConnectedEvent(
                             connectionId,
@@ -739,13 +744,13 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         }
     }
 
-    private static class StopReconnectException extends RuntimeException {
+    private static final class StopReconnectException extends RuntimeException {
         private StopReconnectException(String message) {
             super(message);
         }
     }
 
-    private static class SequenceAckId {
+    private static final class SequenceAckId {
 
         private final AtomicLong sequenceId = new AtomicLong(0);
         private final AtomicBoolean updated = new AtomicBoolean(false);
@@ -772,7 +777,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         }
     }
 
-    class ClientState {
+    final class ClientState {
 
         private final AtomicReference<WebPubSubClientState> clientState =
             new AtomicReference<>(WebPubSubClientState.STOPPED);
@@ -824,7 +829,13 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
     private RuntimeException logSendMessageFailedException(
         String errorMessage, Throwable cause, boolean isTransient, Long ackId) {
 
+        return logSendMessageFailedException(errorMessage, cause, isTransient, ackId, null);
+    }
+
+    private RuntimeException logSendMessageFailedException(
+        String errorMessage, Throwable cause, boolean isTransient, Long ackId, AckMessageError error) {
+
         return logger.logExceptionAsWarning(
-            new SendMessageFailedException(errorMessage, cause, isTransient, ackId, null));
+            new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));
     }
 }

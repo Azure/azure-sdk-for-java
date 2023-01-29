@@ -4,17 +4,17 @@
 package com.azure.messaging.webpubsub.client.exception;
 
 import com.azure.core.exception.AzureException;
-import com.azure.messaging.webpubsub.client.implementation.AckMessage;
+import com.azure.messaging.webpubsub.client.models.AckMessageError;
 
 public class SendMessageFailedException extends AzureException {
 
     private final boolean isTransient;
 
     private final Long ackId;
-    private final AckMessage error;
+    private final AckMessageError error;
 
     public SendMessageFailedException(String message, Throwable cause,
-                                      boolean isTransient, Long ackId, AckMessage error) {
+                                      boolean isTransient, Long ackId, AckMessageError error) {
         super(message, cause);
         this.isTransient = isTransient;
         this.ackId = ackId;
@@ -29,7 +29,7 @@ public class SendMessageFailedException extends AzureException {
         return ackId;
     }
 
-    public AckMessage getError() {
+    public AckMessageError getError() {
         return error;
     }
 }

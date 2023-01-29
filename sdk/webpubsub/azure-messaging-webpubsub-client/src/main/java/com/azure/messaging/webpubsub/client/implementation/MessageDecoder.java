@@ -27,82 +27,95 @@ public final class MessageDecoder extends CoderAdapter implements Decoder.Text<W
 
     @Override
     public WebPubSubMessage decode(String s) throws DecodeException {
-//        System.out.println("decode webPubSubMessage: " + s);
-
         WebPubSubMessage msg = null;
         try (JsonParser parser = OBJECT_MAPPER.createParser(s)) {
             JsonNode jsonNode = OBJECT_MAPPER.readTree(parser);
             switch (jsonNode.get("type").asText()) {
-                case "message": {
-                    switch (jsonNode.get("from").asText()) {
-                        case "group": {
-                            WebPubSubDataType type = WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT));
-                            BinaryData data = parseData(jsonNode, type);
-                            GroupDataMessage groupDataMessage = new GroupDataMessage(
-                                jsonNode.get("group").asText(),
-                                type,
-                                data,
-                                jsonNode.get("fromUserId").asText(),
-                                jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
-                            );
-                            msg = groupDataMessage;
-                            break;
-                        }
-
-                        case "server": {
-                            WebPubSubDataType type = WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT));
-                            BinaryData data = parseData(jsonNode, type);
-                            ServerDataMessage serverDataMessage = new ServerDataMessage(
-                                type,
-                                data,
-                                jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
-                            );
-                            msg = serverDataMessage;
-                            break;
-                        }
-                    }
+                case "message":
+                    msg = parseMessage(jsonNode);
                     break;
-                }
 
-                case "ack": {
-                    AckMessage ackMessage = new AckMessage()
-                        .setAckId(jsonNode.get("ackId").asLong())
-                        .setSuccess(jsonNode.get("success").asBoolean());
-                    if (jsonNode.has("error")) {
-                        JsonNode errorNode = jsonNode.get("error");
-                        ackMessage.setError(new AckMessageError(
-                            errorNode.get("name").asText(),
-                            errorNode.get("message").asText()));
-                    }
-                    msg = ackMessage;
+                case "ack":
+                    msg = parseAck(jsonNode);
                     break;
-                }
 
-                case "system": {
-                    switch (jsonNode.get("event").asText()) {
-                        case "connected": {
-                            ConnectedMessage connectedMessage = new ConnectedMessage()
-                                .setUserId(jsonNode.get("userId").asText())
-                                .setConnectionId(jsonNode.get("connectionId").asText());
+                case "system":
+                    msg = parseSystem(jsonNode);
+                    break;
 
-                            if (jsonNode.has("reconnectionToken")) {
-                                connectedMessage.setReconnectionToken(jsonNode.get("reconnectionToken").asText());
-                            }
-                            msg = connectedMessage;
-                            break;
-                        }
-
-                        case "disconnected": {
-                            msg = new DisconnectedMessage(jsonNode.get("reason").asText());
-                            break;
-                        }
-                    }
-                }
+                default:
+                    break;
             }
             return msg;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static WebPubSubMessage parseMessage(JsonNode jsonNode) throws IOException {
+        WebPubSubMessage msg = null;
+        WebPubSubDataType type = WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT));
+        BinaryData data = parseData(jsonNode, type);
+        switch (jsonNode.get("from").asText()) {
+            case "group":
+                msg = new GroupDataMessage(
+                    jsonNode.get("group").asText(),
+                    type,
+                    data,
+                    jsonNode.get("fromUserId").asText(),
+                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
+                );
+                break;
+
+            case "server":
+                msg = new ServerDataMessage(
+                    type,
+                    data,
+                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
+                );
+                break;
+
+            default:
+                break;
+        }
+        return msg;
+    }
+
+    private static WebPubSubMessage parseSystem(JsonNode jsonNode) throws IOException {
+        WebPubSubMessage msg = null;
+        switch (jsonNode.get("event").asText()) {
+            case "connected":
+                ConnectedMessage connectedMessage = new ConnectedMessage()
+                    .setUserId(jsonNode.get("userId").asText())
+                    .setConnectionId(jsonNode.get("connectionId").asText());
+
+                if (jsonNode.has("reconnectionToken")) {
+                    connectedMessage.setReconnectionToken(jsonNode.get("reconnectionToken").asText());
+                }
+                msg = connectedMessage;
+                break;
+
+            case "disconnected":
+                msg = new DisconnectedMessage(jsonNode.get("reason").asText());
+                break;
+
+            default:
+                break;
+        }
+        return msg;
+    }
+
+    private static WebPubSubMessage parseAck(JsonNode jsonNode) {
+        AckMessage ackMessage = new AckMessage()
+            .setAckId(jsonNode.get("ackId").asLong())
+            .setSuccess(jsonNode.get("success").asBoolean());
+        if (jsonNode.has("error")) {
+            JsonNode errorNode = jsonNode.get("error");
+            ackMessage.setError(new AckMessageError(
+                errorNode.get("name").asText(),
+                errorNode.get("message").asText()));
+        }
+        return ackMessage;
     }
 
     private static BinaryData parseData(JsonNode jsonNode, WebPubSubDataType type) throws IOException {

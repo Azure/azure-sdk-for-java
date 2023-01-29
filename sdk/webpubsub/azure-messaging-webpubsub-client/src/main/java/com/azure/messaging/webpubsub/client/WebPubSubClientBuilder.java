@@ -8,6 +8,7 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.protocol.WebPubSubJsonReliableProtocol;
 import com.azure.messaging.webpubsub.client.protocol.WebPubSubProtocol;
 
@@ -15,6 +16,8 @@ import java.util.Objects;
 
 @ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
 public class WebPubSubClientBuilder {
+
+    private final ClientLogger logger = new ClientLogger(WebPubSubClientBuilder.class);
 
     private WebPubSubClientCredential credential;
 
@@ -66,7 +69,8 @@ public class WebPubSubClientBuilder {
             } else if (retryOptions.getFixedDelayOptions() != null) {
                 retryStrategy = new FixedDelay(retryOptions.getFixedDelayOptions());
             } else {
-                throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("'retryOptions' didn't define any retry strategy options"));
             }
         } else {
             retryStrategy = new ExponentialBackoff();
