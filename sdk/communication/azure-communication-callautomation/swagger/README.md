@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/9b8c2602656c0c8aeeaaecc2c6ffc57773daf076/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/1fcceb1785e063e75b88436d18b56a04c04dc58d/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
