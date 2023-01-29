@@ -10,7 +10,7 @@ import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
 
-public class TestBase {
+public class TestBase extends com.azure.core.test.TestBase {
 
     protected static WebPubSubClientBuilder getClientBuilder() {
         WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()

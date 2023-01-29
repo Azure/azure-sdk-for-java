@@ -142,8 +142,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 if (s.failure() instanceof SendMessageFailedException) {
                     if (((SendMessageFailedException) s.failure()).isTransient()) {
                         int retryAttempt = retryCount.incrementAndGet();
-                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
-                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt))
+                        if (retryAttempt <= this.retryStrategy.getMaxRetries()) {
+                            ret = Mono.delay(this.retryStrategy.calculateRetryDelay(retryAttempt))
                                 .then(Mono.just(s));
                         }
                     }

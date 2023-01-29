@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.exception.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
@@ -21,11 +22,13 @@ public class SendMessageTests extends TestBase {
     private final WebPubSubClient client = getClient();
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testSendMessageBeforeStart() {
         Assertions.assertThrows(SendMessageFailedException.class, () -> client.sendToGroup(GROUP, HELLO, WebPubSubDataType.TEXT));
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testSendMessage() {
         try {
             client.start();

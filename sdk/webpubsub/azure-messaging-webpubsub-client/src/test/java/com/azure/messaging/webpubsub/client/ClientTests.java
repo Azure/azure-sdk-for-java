@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
@@ -17,6 +18,7 @@ public class ClientTests extends TestBase {
     private final WebPubSubAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testClientState() {
         Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState());
 
@@ -40,6 +42,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     @Order(1000)    // last
     public void testClosed() {
         Assertions.assertEquals(WebPubSubClientState.STOPPED, client.getClientState());
