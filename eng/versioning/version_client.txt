@@ -356,7 +356,7 @@ com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-loadtesting;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-loadtesting;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-edgeorder;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-securityinsights;1.0.0-beta.4;1.0.0-beta.5
@@ -392,6 +392,7 @@ com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-servicenetworking;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-loadtestservices;1.0.0;1.0.0
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 
