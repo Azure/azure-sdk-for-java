@@ -125,7 +125,8 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
 
     private final Retry sendMessageRetrySpec;
 
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration ACK_TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration RECOVER_TIMEOUT = Duration.ofSeconds(30);
     private static final Retry RECONNECT_RETRY_SPEC =
         Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1))
             .filter(thr -> !(thr instanceof StopReconnectException));
@@ -411,6 +412,29 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
         }));
     }
 
+    private Mono<Void> checkStateBeforeSend() {
+        return Mono.defer(() -> {
+            if (isDisposed.get()) {
+                return Mono.error(logger.logExceptionAsError(
+                    new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
+            }
+            WebPubSubClientState state = clientState.get();
+            if (state != WebPubSubClientState.CONNECTED) {
+                return Mono.error(logSendMessageFailedException(
+                    "Failed to send message. Client is " + state.name() + ".",
+                    null, state == WebPubSubClientState.RECOVERING || state == WebPubSubClientState.CONNECTING,
+                    (Long) null));
+            }
+            if (session == null || !session.isOpen()) {
+                // something unexpected
+                return Mono.error(logSendMessageFailedException(
+                    "Failed to send message. Websocket session is not opened.", null, false, (Long) null));
+            } else {
+                return Mono.empty();
+            }
+        });
+    }
+
     private Mono<WebPubSubResult> waitForAckMessage(long ackId) {
         return receiveAckMessages()
             .filter(m -> ackId == m.getAckId())
@@ -429,7 +453,7 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 }
             })
             // timeout or stream closed
-            .timeout(TIMEOUT, Mono.empty())
+            .timeout(ACK_TIMEOUT, Mono.empty())
             .switchIfEmpty(Mono.defer(() -> Mono.error(logSendMessageFailedException(
                 "Acknowledge from the service not received.", null, true, ackId))));
     }
@@ -481,9 +505,10 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                         .log("Failed to auto reconnect session: " + thr.getMessage());
                 });
             } else {
-                handleRecovery().timeout(TIMEOUT, Mono.defer(() -> {
+                handleRecovery().timeout(RECOVER_TIMEOUT, Mono.defer(() -> {
                     // client should be RECOVERING, after timeout
                     clientState.changeState(WebPubSubClientState.DISCONNECTED);
+                    // fallback
                     return handleNoRecovery();
                 })).subscribe(null, thr -> {
                     logger.atWarning()
@@ -714,28 +739,6 @@ public class WebPubSubAsyncClient implements AsyncCloseable {
                 .log(message);
             return false;
         };
-    }
-
-    private Mono<Void> checkStateBeforeSend() {
-        return Mono.defer(() -> {
-            if (isDisposed.get()) {
-                return Mono.error(logger.logExceptionAsError(
-                    new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
-            }
-            WebPubSubClientState state = clientState.get();
-            if (state != WebPubSubClientState.CONNECTED) {
-                return Mono.error(logSendMessageFailedException(
-                    "Failed to send message. Client is " + state.name() + ".",
-                    null, state == WebPubSubClientState.RECOVERING || state == WebPubSubClientState.CONNECTING,
-                    (Long) null));
-            }
-            if (session == null || !session.isOpen()) {
-                return Mono.error(logSendMessageFailedException(
-                    "Failed to send message. Websocket session is not opened.", null, false, (Long) null));
-            } else {
-                return Mono.empty();
-            }
-        });
     }
 
     private RuntimeException logSendMessageFailedException(

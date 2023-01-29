@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-public class MainTests extends TestBase {
+public class Main extends TestBase {
 
     public static void main(String[] args) throws Exception {
 //        runForSyncClient();
