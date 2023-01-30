@@ -107,6 +107,7 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
         headerMap.put(EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER, SEQUENCE_NUMBER);
         headerMap.put(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, "test");
         headerMap.put(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, "test");
+        headerMap.put(EventHubsMessageConverter.TARGET_PROTOCOL, "test");
         MessageHeaders headers = new MessageHeaders(headerMap);
 
         EventData eventData = new EventData(EVENT_DATA);
@@ -124,6 +125,7 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER));
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES));
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES));
+        assertFalse(eventData.getProperties().containsKey(EventHubsMessageConverter.TARGET_PROTOCOL));
     }
 
     @Test
