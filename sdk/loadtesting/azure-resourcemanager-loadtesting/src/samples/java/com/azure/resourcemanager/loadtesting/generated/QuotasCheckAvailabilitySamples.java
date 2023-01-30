@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequest;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequestPropertiesDimensions;
 
@@ -32,6 +31,6 @@ public final class QuotasCheckAvailabilitySamples {
                         new QuotaBucketRequestPropertiesDimensions()
                             .withSubscriptionId("testsubscriptionId")
                             .withLocation("westus")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
