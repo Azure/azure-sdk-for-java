@@ -5,26 +5,38 @@ package com.azure.cosmos.models;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.MetricsOptions;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsLogger;
+import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -59,6 +71,14 @@ public final class CosmosClientTelemetryConfig {
     private EnumSet<TagName> metricTagNames = DEFAULT_TAGS;
     private MeterRegistry clientMetricRegistry = null;
     private boolean isClientMetricsEnabled = false;
+    private final HashSet<CosmosDiagnosticsHandler> customDiagnosticHandlers;
+    private final ArrayList<CosmosDiagnosticsHandler> diagnosticHandlers;
+    private boolean useLegacyOpenTelemetryTracing = false;
+    private boolean isDiagnosticsLoggerEnabled = false;
+    private CosmosDiagnosticsLoggerConfig diagnosticsLoggerConfig = new CosmosDiagnosticsLoggerConfig();
+    private Tag clientCorrelationTag;
+    private String accountName;
+    private ClientTelemetry clientTelemetry;
 
     CosmosClientTelemetryConfig(CosmosClientTelemetryConfig toBeCopied, boolean effectiveIsClientTelemetryEnabled) {
         this.httpNetworkRequestTimeout = toBeCopied.httpNetworkRequestTimeout;
@@ -70,6 +90,24 @@ public final class CosmosClientTelemetryConfig {
         this.clientMetricRegistry = toBeCopied.clientMetricRegistry;
         this.isClientMetricsEnabled = toBeCopied.isClientMetricsEnabled;
         this.clientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
+        this.customDiagnosticHandlers = new HashSet<>(toBeCopied.customDiagnosticHandlers);
+        this.diagnosticHandlers = new ArrayList<>(this.customDiagnosticHandlers);
+        if (this.isClientMetricsEnabled) {
+            EnumSet<TagName> metricTagNames = toBeCopied.getMetricTagNames();
+            this.diagnosticHandlers.add(
+                new ClientMetricsDiagnosticsHandler(
+                    this.clientMetricRegistry,
+                    this
+                    ));
+        }
+
+        if (effectiveIsClientTelemetryEnabled) {
+            this.diagnosticHandlers.add(new ClientTelemetryDiagnosticsHandler(this));
+        }
+
+        if (this.isDiagnosticsLoggerEnabled) {
+            this.diagnosticHandlers.add(new CosmosDiagnosticsLogger(this.diagnosticsLoggerConfig));
+        }
     }
 
     /**
@@ -81,6 +119,8 @@ public final class CosmosClientTelemetryConfig {
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.idleHttpConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.proxy = this.getProxyOptions();
+        this.customDiagnosticHandlers = new HashSet<>();
+        this.diagnosticHandlers = null;
     }
 
     /**
@@ -101,6 +141,22 @@ public final class CosmosClientTelemetryConfig {
 
     void resetIsSendClientTelemetryToServiceEnabled() {
         this.clientTelemetryEnabled = null;
+    }
+
+    void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    String getAccountName() {
+        return this.accountName;
+    }
+
+    void setClientCorrelationTag(Tag clientCorrelationTag) {
+        this.clientCorrelationTag = clientCorrelationTag;
+    }
+
+    Tag getClientCorrelationTag() {
+        return this.clientCorrelationTag;
     }
 
     /**
@@ -148,6 +204,10 @@ public final class CosmosClientTelemetryConfig {
 
     String getClientCorrelationId() {
         return this.clientCorrelationId;
+    }
+
+    List<CosmosDiagnosticsHandler> getDiagnosticHandlers() {
+        return this.diagnosticHandlers;
     }
 
     /**
@@ -265,6 +325,34 @@ public final class CosmosClientTelemetryConfig {
         return null;
     }
 
+    public CosmosClientTelemetryConfig diagnosticLogs() {
+        this.isDiagnosticsLoggerEnabled = true;
+        return this;
+    }
+
+    public CosmosClientTelemetryConfig diagnosticLogs(boolean isEnabled) {
+        this.isDiagnosticsLoggerEnabled = isEnabled;
+        return this;
+    }
+
+    public CosmosClientTelemetryConfig diagnosticLogs(CosmosDiagnosticsLoggerConfig loggerConfig) {
+        checkNotNull(loggerConfig, "Argument 'loggerConfig' must not be null.");
+        this.isDiagnosticsLoggerEnabled = true;
+        this.diagnosticsLoggerConfig = loggerConfig;
+        return this;
+    }
+
+    public CosmosClientTelemetryConfig diagnosticsHandler(CosmosDiagnosticsHandler handler) {
+        checkNotNull(handler, "Argument 'handler' must not be null.");
+        this.customDiagnosticHandlers.add(handler);
+        return this;
+    }
+
+    public CosmosClientTelemetryConfig legacyOpenTelemetryTracing(boolean useLegacyOpenTelemetryTracing) {
+        this.useLegacyOpenTelemetryTracing = useLegacyOpenTelemetryTracing;
+        return this;
+    }
+
     private static class JsonProxyOptionsConfig {
         @JsonProperty
         private String host;
@@ -345,6 +433,41 @@ public final class CosmosClientTelemetryConfig {
                     boolean effectiveIsClientTelemetryEnabled) {
 
                     return new CosmosClientTelemetryConfig(config, effectiveIsClientTelemetryEnabled);
+                }
+
+                @Override
+                public Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config) {
+                    return config.getDiagnosticHandlers();
+                }
+
+                @Override
+                public void setAccountName(CosmosClientTelemetryConfig config, String accountName) {
+                    config.setAccountName(accountName);
+                }
+
+                @Override
+                public String getAccountName(CosmosClientTelemetryConfig config) {
+                    return config.getAccountName();
+                }
+
+                @Override
+                public void setClientCorrelationTag(CosmosClientTelemetryConfig config, Tag clientCorrelationTag) {
+                    config.setClientCorrelationTag(clientCorrelationTag);
+                }
+
+                @Override
+                public Tag getClientCorrelationTag(CosmosClientTelemetryConfig config) {
+                    return config.getClientCorrelationTag();
+                }
+
+                @Override
+                public void setClientTelemetry(CosmosClientTelemetryConfig config, ClientTelemetry clientTelemetry) {
+                    config.clientTelemetry = clientTelemetry;
+                }
+
+                @Override
+                public ClientTelemetry getClientTelemetry(CosmosClientTelemetryConfig config) {
+                    return config.clientTelemetry;
                 }
 
                 @Override

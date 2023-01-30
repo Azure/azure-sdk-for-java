@@ -302,13 +302,14 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono = createItemInternal(item, options);
         return database
             .getClient()
-            .getTracerProvider()
+            .getDiagnosticsProvider()
             .traceEnabledCosmosItemResponsePublisher(
                 responseMono,
                 context,
                 this.createItemSpanName,
                 getId(),
                 database.getId(),
+                clientAccessor.getAccountTagValue(database.getClient()),
                 database.getClient(),
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Create,
@@ -1527,13 +1528,14 @@ public class CosmosAsyncContainer {
             .single();
         return database
             .getClient()
-            .getTracerProvider()
+            .getDiagnosticsProvider()
             .traceEnabledCosmosItemResponsePublisher(
                 responseMono,
                 context,
                 this.readItemSpanName,
                 this.getId(),
                 database.getId(),
+                clientAccessor.getAccountTagValue(database.getClient()),
                 database.getClient(),
                 requestOptions.getConsistencyLevel(),
                 OperationType.Read,

@@ -13,10 +13,13 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -51,6 +54,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -660,6 +664,75 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class CosmosDiagnosticsContextHelper {
+        private final static AtomicBoolean cosmosDiagnosticsContextClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosDiagnosticsContextAccessor> accessor = new AtomicReference<>();
+
+        private CosmosDiagnosticsContextHelper() {
+        }
+
+        public static void setCosmosDiagnosticsContextAccessor(final CosmosDiagnosticsContextAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosDiagnosticsContextAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosDiagnosticsContextAccessor...");
+                cosmosDiagnosticsContextClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosDiagnosticsContextAccessor getCosmosDiagnosticsContextAccessor() {
+            if (!cosmosDiagnosticsContextClassLoaded.get()) {
+                logger.debug("Initializing CosmosDiagnosticsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosDiagnosticsContextAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosDiagnosticsAccessor is not initialized yet!");
+                System.exit(9713); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosDiagnosticsContextAccessor {
+            CosmosDiagnosticsContext create(
+                String spanName,
+                String account,
+                String databaseId,
+                String containerId,
+                ResourceType resourceType,
+                OperationType operationType,
+                ConsistencyLevel consistencyLevel,
+                Integer maxItemCount);
+
+            void startOperation(CosmosDiagnosticsContext ctx);
+
+            void endOperation(
+                CosmosDiagnosticsContext ctx,
+                int statusCode,
+                int subStatusCode,
+                Integer actualItemCount,
+                Double requestCharge,
+                CosmosDiagnostics diagnostics,
+                Throwable finalError);
+
+            void addRequestCharge(CosmosDiagnosticsContext ctx, float requestCharge);
+
+            void addRequestSize(CosmosDiagnosticsContext ctx, int bytes);
+
+            void addResponseSize(CosmosDiagnosticsContext ctx, int bytes);
+
+            void addDiagnostics(CosmosDiagnosticsContext ctx, CosmosDiagnostics diagnostics);
+
+            Collection<CosmosDiagnostics> getDiagnostics(CosmosDiagnosticsContext ctx);
+
+            ResourceType getResourceType(CosmosDiagnosticsContext ctx);
+
+            OperationType getOperationType(CosmosDiagnosticsContext ctx);
+        }
+    }
+
     public static final class CosmosAsyncContainerHelper {
         private final static AtomicBoolean cosmosAsyncContainerClassLoaded = new AtomicBoolean(false);
         private final static AtomicReference<CosmosAsyncContainerAccessor> accessor = new AtomicReference<>();
@@ -1122,6 +1195,13 @@ public class ImplementationBridgeHelpers {
             CosmosClientTelemetryConfig createSnapshot(
                 CosmosClientTelemetryConfig config,
                 boolean effectiveIsClientTelemetryEnabled);
+            Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config);
+            void setAccountName(CosmosClientTelemetryConfig config, String accountName);
+            String getAccountName(CosmosClientTelemetryConfig config);
+            void setClientCorrelationTag(CosmosClientTelemetryConfig config, Tag clientCorrelationTag);
+            Tag getClientCorrelationTag(CosmosClientTelemetryConfig config);
+            void setClientTelemetry(CosmosClientTelemetryConfig config, ClientTelemetry clientTelemetry);
+            ClientTelemetry getClientTelemetry(CosmosClientTelemetryConfig config);
         }
     }
 }

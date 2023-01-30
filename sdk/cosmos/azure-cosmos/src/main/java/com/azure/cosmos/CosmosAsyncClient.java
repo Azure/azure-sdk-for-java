@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Permission;
@@ -61,6 +62,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
 
+    private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+
     // Async Cosmos client wrapper
     private final Configs configs;
     private final AsyncDocumentClient asyncDocumentClient;
@@ -76,6 +80,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean enableTransportClientSharing;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final TracerProvider tracerProvider;
+    private final DiagnosticsProvider diagnosticsProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
     private final ApiType apiType;
@@ -191,6 +196,26 @@ public final class CosmosAsyncClient implements Closeable {
         this.accountTagValue = URI.create(this.serviceEndpoint).getHost().replace(
             ".documents.azure.com", ""
         );
+        this.diagnosticsProvider = new DiagnosticsProvider(
+            TRACER,
+            effectiveTelemetryConfig);
+
+        if (this.clientMetricsEnabled) {
+            clientTelemetryConfigAccessor.setClientCorrelationTag(
+                effectiveTelemetryConfig,
+                this.clientCorrelationTag );
+            clientTelemetryConfigAccessor.setAccountName(
+                effectiveTelemetryConfig,
+                this.accountTagValue
+            );
+        }
+
+        if (this.isSendClientTelemetryToServiceEnabled) {
+            clientTelemetryConfigAccessor.setClientTelemetry(
+                effectiveTelemetryConfig,
+                asyncDocumentClient.getClientTelemetry()
+            );
+        }
     }
 
     AsyncDocumentClient getContextClient() {
@@ -569,6 +594,10 @@ public final class CosmosAsyncClient implements Closeable {
 
     TracerProvider getTracerProvider(){
         return this.tracerProvider;
+    }
+
+    DiagnosticsProvider getDiagnosticsProvider() {
+        return this.diagnosticsProvider;
     }
 
     /**
