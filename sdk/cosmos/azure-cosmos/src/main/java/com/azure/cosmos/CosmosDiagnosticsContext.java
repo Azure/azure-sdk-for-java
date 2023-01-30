@@ -3,9 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.util.Context;
-import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -13,13 +10,15 @@ import com.azure.cosmos.implementation.ResourceType;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
+/**
+ * This class provides metadata for an operation in the Cosmos DB SDK that can be used
+ * by diagnostic handlers
+ */
 public final class CosmosDiagnosticsContext {
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
@@ -77,18 +76,34 @@ public final class CosmosDiagnosticsContext {
         this.maxItemCount = maxItemCount;
     }
 
+    /**
+     * The name of the account related to the operation
+     * @return the name of the account related to the operation
+     */
     public String getAccountName() {
         return this.accountName;
     }
 
+    /**
+     * The name of the database related to the operation
+     * @return the name of the database related to the operation
+     */
     public String getDatabaseName() {
         return this.databaseName;
     }
 
+    /**
+     * The name of the collection related to the operation
+     * @return the name of the collection related to the operation
+     */
     public String getCollectionName() {
         return this.collectionName;
     }
 
+    /**
+     * The resource type of the operation
+     * @return the resource type of the operation
+     */
     public String getResourceType() {
         return this.resourceTypeString;
     }
@@ -97,6 +112,10 @@ public final class CosmosDiagnosticsContext {
         return this.resourceType;
     }
 
+    /**
+     * The operation type of the operation
+     * @return the operation type of the operation
+     */
     public String getOperationType() {
         return this.operationTypeString;
     }
@@ -105,56 +124,96 @@ public final class CosmosDiagnosticsContext {
         return this.operationType;
     }
 
+    /**
+     * The effective consistency level of the operation
+     * @return the effective consistency level of the operation
+     */
     public ConsistencyLevel getConsistencyLevel() {
         return this.consistencyLevel;
     }
 
+    /**
+     * The max. number of items requested in a feed operation
+     * @return the max. number of items requested in a feed operation. Will be null for point operations.
+     */
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
+    /**
+     * The actual number of items returned by a feed operation
+     * @return the actual number of items returned by a feed operation. Will be null for point operations.
+     */
     public Integer getActualItemCount() {
         return this.actualItemCount;
     }
 
+    /**
+     * The span name as a logical identifier for an operation
+     * @return the span name as a logical identifier for an operation
+     */
     public String getSpanName() {
         return this.spanName;
     }
 
-    public void addDiagnostics(Collection<CosmosDiagnostics> cosmosDiagnostics) {
+    void addDiagnostics(Collection<CosmosDiagnostics> cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
         for (CosmosDiagnostics d: cosmosDiagnostics) {
             this.addDiagnostics(d);
         }
     }
 
-    public void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+    void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
         this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
         this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
         this.diagnostics.add(cosmosDiagnostics);
     }
 
+    /**
+     * The final status code of the operation (possibly after retries)
+     * @return the final status code of the operation (possibly after retries)
+     */
     public int getStatusCode() {
         return this.statusCode;
     }
 
+    /**
+     * The final sub-status code of the operation (possibly after retries)
+     * @return the final sub-status code of the operation (possibly after retries)
+     */
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
 
+    /**
+     * The final error when the operation failed
+     * @return the final error when the operation failed
+     */
     public Throwable getFinalError() {
         return this.finalError;
     }
 
+    /**
+     * The max. request payload size in bytes
+     * @return the max. request payload size in bytes
+     */
     public int getMaxRequestPayloadSizeInBytes() {
         return this.maxRequestSize;
     }
 
+    /**
+     * The max. response payload size in bytes.
+     * @return the max. response payload size in bytes
+     */
     public int getMaxResponsePayloadSizeInBytes() {
         return this.maxResponseSize;
     }
 
+    /**
+     * The total request charge across all retries.
+     * @return the total request charge across all retries.
+     */
     public float getTotalRequestCharge() {
         return this.totalRequestCharge;
     }
@@ -171,15 +230,27 @@ public final class CosmosDiagnosticsContext {
         this.maxResponseSize = Math.max(this.maxResponseSize, bytes);
     }
 
+    /**
+     * The diagnostic records for service interactions within the scope of this SDK operation
+     * @return the diagnostic records for service interactions within the scope of this SDK operation
+     */
     public Collection<CosmosDiagnostics> getDiagnostics() {
         return this.diagnostics;
     }
 
+    /**
+     * Returns a flag indicating whether the operation has been completed yet.
+     * @return a flag indicating whether the operation has been completed yet.
+     */
     public boolean hasCompleted() {
         return this.duration != null;
     }
 
-    Duration getDuration() {
+    /**
+     * The total end-to-end duration of the operation.
+     * @return the total end-to-end duration of the operation.
+     */
+    public Duration getDuration() {
         return this.duration;
     }
 
@@ -203,7 +274,7 @@ public final class CosmosDiagnosticsContext {
     }
 
     String getRequestDiagnostics() {
-        // @TODO implement
+        // @TODO implement - probably as overridden toString
         return "";
     }
 

@@ -14,6 +14,10 @@ import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * A logger emitting diagnostic information to log4j for operations hitting
+ * certain conditions (errors, exceeded latency threshold)
+ */
 public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
     private final static Logger logger = LoggerFactory.getLogger(CosmosDiagnosticsLogger.class);
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
@@ -29,13 +33,22 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
         add(OperationType.Upsert);
     }};
 
+    /**
+     * Creates an instance of the CosmosDiagnosticLogger class
+     * @param config the configuration determining the conditions when to log an operation
+     */
     public CosmosDiagnosticsLogger(CosmosDiagnosticsLoggerConfig config) {
         checkNotNull(config, "Argument 'config' must not be null.");
         this.config = config;
     }
 
+    /**
+     * Decides whether to log diagnostics for an operation and emits the logs when needed
+     * @param traceContext the Azure trace context
+     * @param diagnosticsContext the Cosmos DB diagnostic context with metadata for the operation
+     */
     @Override
-    public void handleDiagnostics(Context traceContext, CosmosDiagnosticsContext diagnosticsContext) {
+    public final void handleDiagnostics(Context traceContext, CosmosDiagnosticsContext diagnosticsContext) {
         checkNotNull(diagnosticsContext, "Argument 'diagnosticsContext' must not be null.");
 
         if (shouldLog(diagnosticsContext)) {
@@ -43,6 +56,11 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
         }
     }
 
+    /**
+     * Decides whether to log diagnostics for an operation
+     * @param diagnosticsContext
+     * @return a flag inidcating whether to log the operation or not
+     */
     protected boolean shouldLog(CosmosDiagnosticsContext diagnosticsContext) {
 
         if (!diagnosticsContext.hasCompleted()) {
@@ -79,6 +97,10 @@ public class CosmosDiagnosticsLogger implements CosmosDiagnosticsHandler {
         return statusCode >= 500 || statusCode == 408 || statusCode == 410;
     }
 
+    /**
+     * Logs the operation. This method can be overridden for example to emit logs to a different target than log4j
+     * @param ctx
+     */
     protected void log(CosmosDiagnosticsContext ctx) {
         if (this.shouldLogDueToStatusCode(ctx.getStatusCode(), ctx.getSubStatusCode())) {
             logger.warn(

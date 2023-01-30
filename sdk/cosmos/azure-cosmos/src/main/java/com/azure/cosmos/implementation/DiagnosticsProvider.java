@@ -423,6 +423,9 @@ public final class DiagnosticsProvider {
             throwable);
 
         // @TODO - investigate whether we should push the handling of diagnostics out of the hot path
+        // currently diagnostics are handled by the same thread on the hot path - which is intentional
+        // because any async queueing/throttling/sampling can best be done by diagnostic handlers
+        // but there is some risk given that diagnostic handlers are custom code of course
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
                 handler.handleDiagnostics(context, cosmosCtx);
