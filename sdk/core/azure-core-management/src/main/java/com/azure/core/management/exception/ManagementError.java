@@ -60,19 +60,11 @@ public class ManagementError {
     @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<AdditionalInfo> additionalInfo;
 
-    void setCode(String code) {
-        this.code = code;
-    }
-
     /**
      * @return the error code parsed from the body of the http error response.
      */
     public String getCode() {
         return code;
-    }
-
-    void setMessage(String message) {
-        this.message = message;
     }
 
     /**
@@ -82,10 +74,6 @@ public class ManagementError {
         return message;
     }
 
-    void setTarget(String target) {
-        this.target = target;
-    }
-
     /**
      * @return the target of the error.
      */
@@ -93,19 +81,11 @@ public class ManagementError {
         return target;
     }
 
-    void setDetails(List<ManagementError> details) {
-        this.details = details;
-    }
-
     /**
      * @return the details for the error.
      */
     public List<? extends ManagementError> getDetails() {
         return details;
-    }
-
-    void setAdditionalInfo(List<AdditionalInfo> additionalInfo) {
-        this.additionalInfo = additionalInfo;
     }
 
     /**
