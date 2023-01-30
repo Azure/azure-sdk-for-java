@@ -590,7 +590,7 @@ public abstract class IdentityClientBase {
             String standardTime = time.substring(0, time.indexOf("Z"));
             OffsetDateTime expiresOn = LocalDateTime
                     .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                    .atZone(ZoneId.systemDefault())
+                    .atZone(ZoneId.of("Z"))
                     .toOffsetDateTime()
                     .withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
