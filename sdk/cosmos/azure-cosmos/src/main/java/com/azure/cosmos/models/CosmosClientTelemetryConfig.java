@@ -325,16 +325,30 @@ public final class CosmosClientTelemetryConfig {
         return null;
     }
 
+    /**
+     * Enables diagnostic logging with default parameters
+     * @return current CosmosClientTelemetryConfig
+     */
     public CosmosClientTelemetryConfig diagnosticLogs() {
         this.isDiagnosticsLoggerEnabled = true;
         return this;
     }
 
+    /**
+     * Enables or disables diagnostic logging with default parameters
+     * @param isEnabled flag indicating whether diagnostic logging should be enabled
+     * @return current CosmosClientTelemetryConfig
+     */
     public CosmosClientTelemetryConfig diagnosticLogs(boolean isEnabled) {
         this.isDiagnosticsLoggerEnabled = isEnabled;
         return this;
     }
 
+    /**
+     * Enables diagnostic logging with custom logging config
+     * @param loggerConfig the logging configuration determining when to log diagnostics for an operation
+     * @return current CosmosClientTelemetryConfig
+     */
     public CosmosClientTelemetryConfig diagnosticLogs(CosmosDiagnosticsLoggerConfig loggerConfig) {
         checkNotNull(loggerConfig, "Argument 'loggerConfig' must not be null.");
         this.isDiagnosticsLoggerEnabled = true;
@@ -342,12 +356,22 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
 
+    /**
+     * Injects a custom diagnostics handler
+     * @param handler the custom diagnostics handler.
+     * @return current CosmosClientTelemetryConfig
+     */
     public CosmosClientTelemetryConfig diagnosticsHandler(CosmosDiagnosticsHandler handler) {
         checkNotNull(handler, "Argument 'handler' must not be null.");
         this.customDiagnosticHandlers.add(handler);
         return this;
     }
 
+    /**
+     * Decides whether to use old OpenTelemetry traces or the new publicly documented events consistent with .Net SDK
+     * @param useLegacyOpenTelemetryTracing flag indicating whether to use old or new OpenTelemetry traces
+     * @return current CosmosClientTelemetryConfig
+     */
     public CosmosClientTelemetryConfig legacyOpenTelemetryTracing(boolean useLegacyOpenTelemetryTracing) {
         this.useLegacyOpenTelemetryTracing = useLegacyOpenTelemetryTracing;
         return this;
