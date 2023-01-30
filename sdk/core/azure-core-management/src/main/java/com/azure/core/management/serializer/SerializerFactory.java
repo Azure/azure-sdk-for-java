@@ -3,7 +3,7 @@
 
 package com.azure.core.management.serializer;
 
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.management.implementation.serializer.ManagementSerializerAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
@@ -23,7 +23,7 @@ public final class SerializerFactory {
      */
     public static synchronized SerializerAdapter createDefaultManagementSerializerAdapter() {
         if (serializerAdapter == null) {
-            serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+            serializerAdapter = new ManagementSerializerAdapter();
         }
         return serializerAdapter;
     }

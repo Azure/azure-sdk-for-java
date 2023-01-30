@@ -5,7 +5,6 @@ package com.azure.core.management.exception;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
  * An instance of this class provides additional information about an http error response.
  */
 @Immutable
-@JsonDeserialize(using = ManagementErrorDeserializer.class)
 public class ManagementError {
     /**
      * Constructs a new {@link ManagementError} object.
