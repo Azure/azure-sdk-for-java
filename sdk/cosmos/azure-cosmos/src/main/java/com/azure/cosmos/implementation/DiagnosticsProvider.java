@@ -422,6 +422,7 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable);
 
+        // @TODO - investigate whether we should push the handling of diagnostics out of the hot path
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
                 handler.handleDiagnostics(context, cosmosCtx);
