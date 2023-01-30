@@ -28,7 +28,6 @@ import java.security.PrivilegedExceptionAction;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
@@ -126,10 +125,14 @@ public class JacksonAdapter implements SerializerAdapter {
      *
      * @param configureSerialization Applies additional configuration to outer mapper using inner mapper for module
      * chaining.
-     * @throws NullPointerException If {@code configureSerialization} is null.
+     * @throws UnsupportedOperationException Always, as this is no longer supported.
+     * @deprecated Use {@link #createDefaultSerializerAdapter()} instead as modified
+     * {@link JacksonAdapter JacksonAdapters} are no longer supported.
      */
+    @Deprecated
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
-        Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("new "
+            + "JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>) is no longer supported and shouldn't be used."));
     }
 
     /**

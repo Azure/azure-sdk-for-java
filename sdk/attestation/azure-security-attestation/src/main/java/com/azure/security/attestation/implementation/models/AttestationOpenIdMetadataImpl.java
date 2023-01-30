@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 
 public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata {
+    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final ClientLogger LOGGER = new ClientLogger(AttestationOpenIdMetadataImpl.class);
+
     @JsonProperty(value = "jwks_uri")
     private String jwksUri;
 
@@ -46,18 +49,13 @@ public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata 
     }
 
     public static AttestationOpenIdMetadata fromGenerated(Object generated) {
-
-        ClientLogger logger = new ClientLogger(AttestationOpenIdMetadataImpl.class);
-        SerializerAdapter serializerAdapter = new JacksonAdapter();
-        AttestationOpenIdMetadataImpl metadataImpl;
-
         try {
             @SuppressWarnings("unchecked")
             String generatedString = JSONObjectUtils.toJSONString((LinkedHashMap<String, Object>) generated);
-            metadataImpl = serializerAdapter.deserialize(generatedString, AttestationOpenIdMetadataImpl.class, SerializerEncoding.JSON);
+            return ADAPTER.deserialize(generatedString, AttestationOpenIdMetadataImpl.class,
+                SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        return metadataImpl;
     }
 }

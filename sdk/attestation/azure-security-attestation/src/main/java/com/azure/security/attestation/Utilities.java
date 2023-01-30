@@ -14,6 +14,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.implementation.models.CloudErrorBody;
 import com.azure.security.attestation.implementation.models.CloudErrorException;
@@ -29,6 +30,7 @@ import java.util.Base64;
  * Utility class with helper functions.
  */
 class Utilities {
+    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Generates a new public response type from an internal model type.
@@ -107,17 +109,16 @@ class Utilities {
         // To leverage this, we serialize the cloud error body to a string representation, and then deserialize the
         // body back into a ResponseError object.
         CloudErrorBody body = cloudErrorException.getValue().getError();
-        JacksonAdapter serializer = new JacksonAdapter();
         String jsonErrorBody;
         try {
-            jsonErrorBody = serializer.serialize(body, SerializerEncoding.JSON);
+            jsonErrorBody = ADAPTER.serialize(body, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         final ResponseError responseError;
         try {
-            responseError = serializer.deserialize(jsonErrorBody, ResponseError.class, SerializerEncoding.JSON);
+            responseError = ADAPTER.deserialize(jsonErrorBody, ResponseError.class, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
