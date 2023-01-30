@@ -170,7 +170,7 @@ public class DefaultAzureCredentialTest {
 
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
-            StepVerifier.create(credential.getToken(request)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("Cannot get token from Azure Developer CLI credential")).verify();
+            StepVerifier.create(credential.getToken(request)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. ")).verify();
             Assert.assertNotNull(identityClientMock);
             Assert.assertNotNull(sharedTokenCacheCredentialMock);
             Assert.assertNotNull(azureCliCredentialMock);
@@ -199,7 +199,7 @@ public class DefaultAzureCredentialTest {
         })) {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
-            StepVerifier.create(credential.getToken(request)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("Cannot get token from Azure Developer CLI credential")).verify();
+            StepVerifier.create(credential.getToken(request)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. ")).verify();
             Assert.assertNotNull(managedIdentityCredentialMock);
             Assert.assertNotNull(intelliJCredentialMock);
             Assert.assertNotNull(powerShellCredentialMock);
@@ -231,7 +231,7 @@ public class DefaultAzureCredentialTest {
             try {
                 credential.getTokenSync(request);
             } catch (Exception e) {
-                Assert.assertTrue(e instanceof CredentialUnavailableException && e.getMessage().startsWith("Cannot get token from Azure Developer Cli credential"));
+                Assert.assertTrue(e instanceof CredentialUnavailableException && e.getMessage().startsWith("EnvironmentCredential authentication unavailable. "));
             }
             Assert.assertNotNull(managedIdentityCredentialMock);
             Assert.assertNotNull(intelliJCredentialMock);
