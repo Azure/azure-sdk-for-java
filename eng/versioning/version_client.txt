@@ -392,7 +392,6 @@ com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-servicenetworking;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-loadtestservices;1.0.0;1.0.0
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 
