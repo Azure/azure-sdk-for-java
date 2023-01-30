@@ -9,6 +9,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
@@ -45,6 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class AttestationTest extends AttestationClientTestBase {
+    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     private final String runtimeData =
@@ -405,8 +408,7 @@ public class AttestationTest extends AttestationClientTestBase {
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
         String tpmResponse = client.attestTpm(attestInitialPayload);
 
-        JacksonAdapter serializer = new JacksonAdapter();
-        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -453,8 +455,7 @@ public class AttestationTest extends AttestationClientTestBase {
         Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
 
-        JacksonAdapter serializer = new JacksonAdapter();
-        Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse.getValue(), Object.class, SerializerEncoding.JSON));
+        Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(tpmResponse.getValue(), Object.class, SerializerEncoding.JSON));
         assertTrue(deserializedResponse instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
@@ -498,8 +499,7 @@ public class AttestationTest extends AttestationClientTestBase {
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
         StepVerifier.create(client.attestTpm(attestInitialPayload))
             .assertNext(tpmResponse -> {
-                JacksonAdapter serializer = new JacksonAdapter();
-                Object deserializedResponse = assertDoesNotThrow(() -> serializer.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
+                Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(tpmResponse, Object.class, SerializerEncoding.JSON));
                 assertTrue(deserializedResponse instanceof LinkedHashMap);
                 @SuppressWarnings("unchecked")
                 LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;

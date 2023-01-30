@@ -106,8 +106,6 @@ public class JacksonAdapter implements SerializerAdapter {
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
-        this((outerMapper, innerMapper) -> {
-        });
     }
 
     /**

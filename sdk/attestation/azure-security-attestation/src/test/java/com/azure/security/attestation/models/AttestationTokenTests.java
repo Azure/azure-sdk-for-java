@@ -3,6 +3,7 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
@@ -29,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class TestObject {
+    static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
     @JsonProperty(value = "alg")
     private String alg;
 
@@ -191,12 +194,12 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     @Test
     void testCreateUnsecuredAttestationTokenFromObject() {
-        JacksonAdapter adapter = new JacksonAdapter();
         TestObject testObject = new TestObject()
             .setAlg("Test Algorithm")
             .setInteger(31415926)
             .setIntegerArray(new int[]{123, 456, 789});
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
+        String objectString = assertDoesNotThrow(() -> TestObject.ADAPTER.serialize(testObject,
+            SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -286,8 +289,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
             .setWeakKeyAllowed(true);
 
-
-        JacksonAdapter adapter = new JacksonAdapter();
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
@@ -299,7 +300,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setNotBefore(timeNow)
             .setExpiresOn(timeNow.plusSeconds(30))
             .setIssuer("Fred");
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
+        String objectString = assertDoesNotThrow(() -> TestObject.ADAPTER.serialize(testObject,
+            SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(objectString, signingKey);
 
@@ -320,7 +322,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     @Test
     void verifyAttestationTokenIssuer() {
-        JacksonAdapter adapter = new JacksonAdapter();
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
@@ -333,7 +334,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(30))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
+        String objectString = assertDoesNotThrow(() -> TestObject.ADAPTER.serialize(testObject,
+            SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -356,7 +358,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     @Test
     void verifyAttestationTokenExpireTimeout() {
-        JacksonAdapter adapter = new JacksonAdapter();
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
@@ -369,7 +370,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.minusSeconds(30))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
+        String objectString = assertDoesNotThrow(() -> TestObject.ADAPTER.serialize(testObjectExpired30SecondsAgo,
+            SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -389,7 +391,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     @Test
     void verifyAttestationTokenNotBeforeTimeout() {
-        JacksonAdapter adapter = new JacksonAdapter();
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
@@ -402,7 +403,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
+        String objectString = assertDoesNotThrow(() -> TestObject.ADAPTER.serialize(testObjectExpired30SecondsAgo,
+            SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -423,7 +425,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     @Test
     void verifyAttestationTokenVerifyCallback() {
-        JacksonAdapter adapter = new JacksonAdapter();
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
@@ -436,7 +437,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
+        String objectString = assertDoesNotThrow(() -> TestObject.ADAPTER.serialize(testObjectExpired30SecondsAgo,
+            SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 

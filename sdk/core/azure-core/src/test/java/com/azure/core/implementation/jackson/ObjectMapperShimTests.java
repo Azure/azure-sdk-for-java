@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ObjectMapperShimTests {
@@ -30,11 +31,13 @@ public class ObjectMapperShimTests {
         assertTrue(configureIsCalled.get());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testConfigureJacksonAdapter() {
         final AtomicReference<Boolean> configureIsCalled = new AtomicReference<>(false);
 
-        new JacksonAdapter((outer, inner) -> configureIsCalled.set(true));
+        assertThrows(UnsupportedOperationException.class,
+            () -> new JacksonAdapter((outer, inner) -> configureIsCalled.set(true)));
 
         assertFalse(configureIsCalled.get());
     }
