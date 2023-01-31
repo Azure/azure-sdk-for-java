@@ -2711,30 +2711,47 @@ public final class TextAnalyticsClient {
      * the language.
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
+     * <!-- src_embed Client.beginAbstractSummary#Iterable -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
      *     documents.add&#40;
-     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
-     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
-     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+     * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
-     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
-     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
-     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
-     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
-     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String -->
+     * <!-- end Client.beginAbstractSummary#Iterable -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -2767,31 +2784,48 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <!-- src_embed Client.beginAbstractSummary#Iterable-String-AbstractSummaryOptions -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
      *     documents.add&#40;
-     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
-     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
-     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
-     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;;
+     * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents, &quot;en&quot;,
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
-     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
-     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
-     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
-     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
-     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <!-- end Client.beginAbstractSummary#Iterable-String-AbstractSummaryOptions -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -2831,32 +2865,49 @@ public final class TextAnalyticsClient {
      * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     * <!-- src_embed Client.beginAbstractSummary#Iterable-AbstractSummaryOptions-Context -->
      * <pre>
      * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
      *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
-     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
-     *             + &quot; Play music and add it to my playlist&quot;&#41;&#41;;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
      * &#125;
-     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
-     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
-     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;,
-     *         options, Context.NONE&#41;;
+     * SyncPoller&lt;AbstractSummaryOperationDetail, AbstractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents,
+     *         new AbstractSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setMaxSentenceCount&#40;3&#41;,
+     *         Context.NONE&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
-     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
-     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
-     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
-     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
-     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     * <!-- end Client.beginAbstractSummary#Iterable-AbstractSummaryOptions-Context -->
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -2894,30 +2945,46 @@ public final class TextAnalyticsClient {
      * the language.
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
+     * <!-- src_embed Client.beginExtractSummary#Iterable -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
      *     documents.add&#40;
-     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
-     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
-     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+     * SyncPoller&lt;ExtractSummaryOperationDetail, ExtractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
-     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
-     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
-     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
-     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
-     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
+     *                 summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String -->
+     * <!-- end Client.beginExtractSummary#Iterable -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -2950,31 +3017,48 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <!-- src_embed Client.beginExtractSummary#Iterable-String-ExtractSummaryOptions -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
      *     documents.add&#40;
-     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
-     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
-     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
-     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;;
+     * SyncPoller&lt;ExtractSummaryOperationDetail, ExtractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents,
+     *         &quot;en&quot;,
+     *         new ExtractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;SummarySentencesOrder.RANK&#41;&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
-     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
-     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
-     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
-     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
-     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
+     *                 summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <!-- end Client.beginExtractSummary#Iterable-String-ExtractSummaryOptions -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -3014,32 +3098,48 @@ public final class TextAnalyticsClient {
      * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     * <!-- src_embed Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context -->
      * <pre>
      * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
      *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
-     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
-     *             + &quot; Play music and add it to my playlist&quot;&#41;&#41;;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
      * &#125;
-     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
-     * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
-     *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;,
-     *         options, Context.NONE&#41;;
+     * SyncPoller&lt;ExtractSummaryOperationDetail, ExtractSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents,
+     *         new ExtractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;SummarySentencesOrder.RANK&#41;,
+     *         Context.NONE&#41;;
      * syncPoller.waitForCompletion&#40;&#41;;
-     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
-     *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
-     *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
-     *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
-     *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
+     *                 summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
+     * <!-- end Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context -->
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see

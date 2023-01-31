@@ -29,7 +29,7 @@ public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
      *
      * @param displayName Display name of the operation.
      *
-     * @return The {@link AbstractSummaryOptions} object itself.
+     * @return The {@link ExtractSummaryOptions} object itself.
      */
     public ExtractSummaryOptions setDisplayName(String displayName) {
         this.displayName = displayName;
