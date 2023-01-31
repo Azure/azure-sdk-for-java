@@ -41,7 +41,7 @@ case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
         sqlResourcesClient
             .listSqlDatabasesAsync(resourceGroupName, databaseAccountName)
             .asScala
-            .map(resultsInner => resultsInner.id())
+            .map(resultsInner => resultsInner.resource().id())
     }
 
     override def readDatabase(databaseName: String): SMono[Unit] = {
@@ -87,8 +87,7 @@ case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
                 }
             })
             .asScala
-            .map(_.id())
-
+            .map(_.resource().id())
     }
 
     override def createContainer(
@@ -136,14 +135,24 @@ case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
 
     override def readDatabaseThroughput(databaseName: String): SMono[Map[String, String]] = {
         sqlResourcesClient
-            .getSqlDatabaseThroughputAsync(resourceGroupName, databaseAccountName, databaseName)
+            .getSqlDatabaseAsync(resourceGroupName, databaseAccountName, databaseName)
             .asScala
-            .map(resultInner => toMap(resultInner.resource()))
+            .flatMap(_ => {
+                sqlResourcesClient.getSqlDatabaseThroughputAsync(resourceGroupName, databaseAccountName, databaseName)
+                    .asScala
+                    .map(resultInner => toMap(resultInner.resource()))
+                    .onErrorResume((throwable: Throwable) => {
+                        // TODO: Annie : Follow up the contract here, why not 400
+                        if (ManagementExceptions.isNotFoundException(throwable)) {
+                            SMono.just(Map[String, String]()) // not a shared throughput database account
+                        } else {
+                            SMono.error(throwable)
+                        }
+                    })
+            })
             .onErrorResume((throwable: Throwable) => {
                 if (ManagementExceptions.isNotFoundException(throwable)) {
                     SMono.error(new CosmosCatalogNotFoundException(throwable.toString))
-                } else if (ManagementExceptions.isBadRequestException(throwable)) {
-                    SMono.just(Map[String, String]())  // 400 - not a shared throughput database account
                 } else {
                     SMono.error(throwable)
                 }
@@ -393,7 +402,7 @@ case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
             .asScala
             .map(containerThroughputResultInner => (containerThroughputResultInner.resource(), false))
             .onErrorResume((throwable: Throwable) => {
-                if (ManagementExceptions.isBadRequestException(throwable)) {
+                if (ManagementExceptions.isNotFoundException(throwable)) {
                     sqlResourcesClient
                         .getSqlDatabaseThroughputAsync(resourceGroupName, databaseAccountName, databaseName)
                         .asScala
