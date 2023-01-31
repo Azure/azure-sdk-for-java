@@ -2,14 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
+import io.micrometer.core.lang.NonNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.util.Assert;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.StreamSupport;
 
 /**
  * An AAD B2C {@link ClientRegistrationRepository} implementation, it will manage all the client registrations
@@ -19,14 +21,13 @@ public class AadB2cClientRegistrationRepository implements ClientRegistrationRep
 
     private final InMemoryClientRegistrationRepository delegate;
 
-    private final List<ClientRegistration> signUpOrSignInRegistrations;
+    private final Set<String> nonSignInClientRegistrationIds;
 
-    public AadB2cClientRegistrationRepository(List<ClientRegistration> signUpOrSignInRegistrations,
-                                              List<ClientRegistration> allClientRegistrations) {
-        Assert.noNullElements(signUpOrSignInRegistrations, "signUpOrSignInRegistrations can not be empty.");
-        Assert.noNullElements(allClientRegistrations, "allClientRegistrations can not be empty.");
-        this.signUpOrSignInRegistrations = Collections.unmodifiableList(signUpOrSignInRegistrations);
-        this.delegate = new InMemoryClientRegistrationRepository(allClientRegistrations);
+    public AadB2cClientRegistrationRepository(List<ClientRegistration> clientRegistrations,
+                                              @NonNull Set<String> nonSignInClientRegistrationIds) {
+        Assert.noNullElements(clientRegistrations, "clientRegistrations can not be empty.");
+        this.delegate = new InMemoryClientRegistrationRepository(clientRegistrations);
+        this.nonSignInClientRegistrationIds = nonSignInClientRegistrationIds;
     }
 
     @Override
@@ -36,6 +37,10 @@ public class AadB2cClientRegistrationRepository implements ClientRegistrationRep
 
     @Override
     public Iterator<ClientRegistration> iterator() {
-        return this.signUpOrSignInRegistrations.iterator();
+        final Iterable<ClientRegistration> iterable = () -> this.delegate.iterator();
+
+        return StreamSupport.stream(iterable.spliterator(), false)
+            .filter(cr -> !this.nonSignInClientRegistrationIds.contains(cr.getRegistrationId()))
+            .iterator();
     }
 }

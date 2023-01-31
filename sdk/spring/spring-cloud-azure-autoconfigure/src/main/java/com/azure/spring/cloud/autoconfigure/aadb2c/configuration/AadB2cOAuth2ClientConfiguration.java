@@ -3,10 +3,10 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepositoryBuilderConfigurer;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepositoryBuilder;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.ClientRegistrationRepositoryConfigurerAdapter;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config.AadB2cClientRegistrationRepositoryBuilder;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config.AadB2cClientRegistrationRepositoryBuilderConfigurer;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.config.AadB2cClientRegistrationsBuilder;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +29,14 @@ import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedCl
 import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.DefaultPasswordTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
+import static org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesRegistrationAdapter.getClientRegistrations;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -61,34 +63,42 @@ public class AadB2cOAuth2ClientConfiguration {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    @Bean
-    AadB2cClientRegistrationRepositoryBuilder aadB2cClientRegistrationRepositoryBuilder() {
-        return new AadB2cClientRegistrationRepositoryBuilder();
-    }
-
     /**
      * Declare ClientRegistrationRepository bean.
      * @return ClientRegistrationRepository bean
      */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cClientRegistrationRepository clientRegistrationRepository(AadB2cClientRegistrationRepositoryBuilder repositoryBuilder,
-                                                                     ObjectProvider<OAuth2ClientProperties> oAuth2ClientProperties,
-                                                                     ObjectProvider<ClientRegistrationRepositoryConfigurerAdapter<AadB2cClientRegistrationRepository>> configurers) throws Exception {
-        AadB2cClientRegistrationRepositoryBuilderConfigurer defaultB2cConfigurer =
-            repositoryBuilder.b2cClientRegistration()
-                                 .clientId(properties.getCredential().getClientId())
-                                 .clientSecret(properties.getCredential().getClientSecret())
-                                 .tenantId(properties.getProfile().getTenantId())
-                                 .baseUri(properties.getBaseUri())
-                                 .loginFlow(properties.getLoginFlow())
-                                 .replyUrl(properties.getReplyUrl())
-                                 .userNameAttributeName(properties.getUserNameAttributeName())
-                                 .userFlows(properties.getUserFlows())
-                                 .authorizationClients(properties.getAuthorizationClients());
-        oAuth2ClientProperties.ifAvailable(repositoryBuilder::oAuth2ClientRegistrations);
-        repositoryBuilder.apply(defaultB2cConfigurer);
-        configurers.orderedStream().forEach(repositoryBuilder::apply);
+    public AadB2cClientRegistrationRepository clientRegistrationRepository(
+        ObjectProvider<OAuth2ClientProperties> oAuth2ClientPropertiesProvider,
+        ObjectProvider<AadB2cClientRegistrationRepositoryBuilderConfigurer> configurersProvider) {
+        final AadB2cClientRegistrationRepositoryBuilder repositoryBuilder = new AadB2cClientRegistrationRepositoryBuilder();
+
+        final AadB2cClientRegistrationsBuilder clientRegistrationsBuilder = repositoryBuilder
+            .b2cClientRegistration()
+            .clientId(properties.getCredential().getClientId())
+            .clientSecret(properties.getCredential().getClientSecret())
+            .tenantId(properties.getProfile().getTenantId())
+            .baseUri(properties.getBaseUri())
+            .signInUserFlow(properties.getLoginFlow())
+            .replyUrl(properties.getReplyUrl())
+            .userNameAttributeName(properties.getUserNameAttributeName())
+            .userFlows(properties.getUserFlows().values().toArray(new String[0]));
+
+        properties.getAuthorizationClients()
+            .entrySet()
+            .forEach(entry ->
+                clientRegistrationsBuilder.authorizationClient(
+                    entry.getKey(),
+                    entry.getValue().getAuthorizationGrantType(),
+                    entry.getValue().getScopes().toArray(new String[0])
+                )
+            );
+
+        oAuth2ClientPropertiesProvider.ifAvailable(properties -> repositoryBuilder.clientRegistrations(
+            getClientRegistrations(properties).values().toArray(new ClientRegistration[0]))
+        );
+        configurersProvider.orderedStream().forEach(repositoryBuilder::configure);
         return repositoryBuilder.build();
     }
 
