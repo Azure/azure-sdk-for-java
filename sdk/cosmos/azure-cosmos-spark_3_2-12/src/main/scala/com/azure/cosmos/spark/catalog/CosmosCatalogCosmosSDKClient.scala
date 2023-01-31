@@ -20,7 +20,7 @@ import java.util.Collections
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
+private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
     extends CosmosCatalogClient
     with BasicLoggingTrait {
 

@@ -3,4 +3,4 @@
 
 package com.azure.cosmos.spark.catalog
 
-class CosmosCatalogNotFoundException (msg: String) extends CosmosCatalogException(msg)
+private[spark] class CosmosCatalogNotFoundException (msg: String) extends CosmosCatalogException(msg)

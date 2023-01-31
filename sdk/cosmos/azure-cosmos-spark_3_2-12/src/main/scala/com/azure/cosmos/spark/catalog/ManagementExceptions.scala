@@ -6,7 +6,7 @@ package com.azure.cosmos.spark.catalog
 import com.azure.core.management.exception.ManagementException
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 
-object ManagementExceptions {
+private[spark] object ManagementExceptions {
     private val notFoundCode = "NotFound"
     private val badRequestCode = "BadRequest"
 

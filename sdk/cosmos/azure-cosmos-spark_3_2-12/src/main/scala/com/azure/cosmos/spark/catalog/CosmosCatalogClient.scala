@@ -7,7 +7,7 @@ import reactor.core.scala.publisher.{SFlux, SMono}
 
 import java.util
 
-trait CosmosCatalogClient {
+private[spark] trait CosmosCatalogClient {
     def close()
     def readAllDatabases(): SFlux[String]
     def readDatabase(databaseName: String): SMono[Unit]

@@ -3,4 +3,4 @@
 
 package com.azure.cosmos.spark.catalog
 
-class CosmosCatalogException(msg: String) extends RuntimeException(msg)
+private[spark] class CosmosCatalogException(msg: String) extends RuntimeException(msg)

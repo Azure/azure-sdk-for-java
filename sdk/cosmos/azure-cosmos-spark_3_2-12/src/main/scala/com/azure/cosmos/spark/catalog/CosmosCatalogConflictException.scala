@@ -3,4 +3,4 @@
 
 package com.azure.cosmos.spark.catalog
 
-class CosmosCatalogConflictException (msg: String) extends CosmosCatalogException(msg)
+private[spark] class CosmosCatalogConflictException (msg: String) extends CosmosCatalogException(msg)

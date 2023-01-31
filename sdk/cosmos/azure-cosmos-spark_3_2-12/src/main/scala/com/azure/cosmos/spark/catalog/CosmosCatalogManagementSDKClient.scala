@@ -24,7 +24,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
+private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: String,
                                                            databaseAccountName: String,
                                                            cosmosManager: CosmosManager,
                                                            cosmosAsyncClient: CosmosAsyncClient)
