@@ -297,8 +297,8 @@ public class ContainerRegistryBlobClient {
             throw LOGGER.atError()
                 .addKeyValue(DOCKER_DIGEST_HEADER_NAME.getCaseSensitiveName(), digest)
                 .addKeyValue("requestedDigest", options.getDigest())
-                .addKeyValue("actualDigest", "foobar")
-                .log(new ServiceResponseException("The digest in the response does not match the expected digest."));
+                .addKeyValue("actualDigest", digest)
+                .log(new ServiceResponseException("The digest in the response does not match the requested digest."));
         }
     }
 
