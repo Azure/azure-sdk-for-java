@@ -6,15 +6,17 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The request payload for muting participants from the call. */
+/** The request payload for unmuting participant from the call. */
 @Fluent
-public final class MuteParticipantRequestInternal {
+public final class UnmuteParticipantsRequestInternal {
     /*
-     * The targetParticipant property.
+     * Participants to be unmuted from the call.
+     * Only ACS Users are supported.
      */
-    @JsonProperty(value = "targetParticipant", required = true)
-    private CommunicationIdentifierModel targetParticipant;
+    @JsonProperty(value = "targetParticipants", required = true)
+    private List<CommunicationIdentifierModel> targetParticipants;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request
@@ -24,22 +26,23 @@ public final class MuteParticipantRequestInternal {
     private String operationContext;
 
     /**
-     * Get the targetParticipant property: The targetParticipant property.
+     * Get the targetParticipants property: Participants to be unmuted from the call. Only ACS Users are supported.
      *
-     * @return the targetParticipant value.
+     * @return the targetParticipants value.
      */
-    public CommunicationIdentifierModel getTargetParticipant() {
-        return this.targetParticipant;
+    public List<CommunicationIdentifierModel> getTargetParticipants() {
+        return this.targetParticipants;
     }
 
     /**
-     * Set the targetParticipant property: The targetParticipant property.
+     * Set the targetParticipants property: Participants to be unmuted from the call. Only ACS Users are supported.
      *
-     * @param targetParticipant the targetParticipant value to set.
-     * @return the MuteParticipantRequestInternal object itself.
+     * @param targetParticipants the targetParticipants value to set.
+     * @return the UnmuteParticipantsRequestInternal object itself.
      */
-    public MuteParticipantRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
-        this.targetParticipant = targetParticipant;
+    public UnmuteParticipantsRequestInternal setTargetParticipants(
+            List<CommunicationIdentifierModel> targetParticipants) {
+        this.targetParticipants = targetParticipants;
         return this;
     }
 
@@ -58,9 +61,9 @@ public final class MuteParticipantRequestInternal {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the MuteParticipantRequestInternal object itself.
+     * @return the UnmuteParticipantsRequestInternal object itself.
      */
-    public MuteParticipantRequestInternal setOperationContext(String operationContext) {
+    public UnmuteParticipantsRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
