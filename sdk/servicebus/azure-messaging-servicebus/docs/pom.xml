@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-jsr223</artifactId>
-            <version>3.0.13</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
+            <version>3.0.14</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
             <scope>runtime</scope>
         </dependency>
 
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
-            <version>3.1.8</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
+            <version>3.1.9</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
         </dependency>
     </dependencies>
 </project>

@@ -17,6 +17,15 @@ public final class TrackAttribute extends ExpandableStringEnum<TrackAttribute> {
     public static final TrackAttribute LANGUAGE = fromString("Language");
 
     /**
+     * Creates a new instance of TrackAttribute value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrackAttribute() {
+    }
+
+    /**
      * Creates or finds a TrackAttribute from its string representation.
      *
      * @param name a name to look for.

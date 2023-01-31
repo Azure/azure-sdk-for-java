@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("Microsoft.Network/networkInterfaces")
 @Fluent
 public final class NetworkInterfaceResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceResourceSettings.class);
-
     /*
      * Gets or sets the IP configurations of the NIC.
      */
@@ -26,11 +22,14 @@ public final class NetworkInterfaceResourceSettings extends ResourceSettings {
     private List<NicIpConfigurationResourceSettings> ipConfigurations;
 
     /*
-     * Gets or sets a value indicating whether accelerated networking is
-     * enabled.
+     * Gets or sets a value indicating whether accelerated networking is enabled.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
+
+    /** Creates an instance of NetworkInterfaceResourceSettings class. */
+    public NetworkInterfaceResourceSettings() {
+    }
 
     /**
      * Get the ipConfigurations property: Gets or sets the IP configurations of the NIC.

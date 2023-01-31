@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityBasedRestoreDetails;
@@ -15,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRes
 /** Samples for OperationOperation Validate. */
 public final class OperationOperationValidateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperation_RestoreDisk.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ValidateOperation_RestoreDisk.json
      */
     /**
      * Sample code: Validate Operation.
@@ -47,11 +46,11 @@ public final class OperationOperationValidateSamples {
                                     .withIsSystemAssignedIdentity(false)
                                     .withManagedIdentityResourceId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Validate Operation with identityBasedRestoreDetails.
@@ -85,6 +84,6 @@ public final class OperationOperationValidateSamples {
                                 new IdentityBasedRestoreDetails()
                                     .withTargetStorageAccountId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

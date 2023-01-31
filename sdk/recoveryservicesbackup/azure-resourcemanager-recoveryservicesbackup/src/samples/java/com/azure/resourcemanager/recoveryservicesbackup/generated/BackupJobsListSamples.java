@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BackupJobs List. */
 public final class BackupJobsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobs.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ListJobs.json
      */
     /**
      * Sample code: List All Jobs.
@@ -18,11 +16,11 @@ public final class BackupJobsListSamples {
      */
     public static void listAllJobs(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupJobs().list("NetSDKTestRsVault", "SwaggerTestRg", null, null, Context.NONE);
+        manager.backupJobs().list("NetSDKTestRsVault", "SwaggerTestRg", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithAllSupportedFilters.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ListJobsWithAllSupportedFilters.json
      */
     /**
      * Sample code: List Jobs With Filters.
@@ -39,11 +37,11 @@ public final class BackupJobsListSamples {
                 "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM' and operation eq"
                     + " 'Backup' and backupManagementType eq 'AzureIaasVM' and status eq 'InProgress'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
      */
     /**
      * Sample code: List Jobs With Time Filter.
@@ -59,6 +57,6 @@ public final class BackupJobsListSamples {
                 "SwaggerTestRg",
                 "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

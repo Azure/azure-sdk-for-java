@@ -23,6 +23,15 @@ public final class SecretsType extends ExpandableStringEnum<SecretsType> {
     public static final SecretsType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
+     * Creates a new instance of SecretsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecretsType() {
+    }
+
+    /**
      * Creates or finds a SecretsType from its string representation.
      *
      * @param name a name to look for.

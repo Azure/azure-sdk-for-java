@@ -24,6 +24,10 @@ public final class ManagedDatabaseSecurityAlertPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ManagedDatabaseSecurityAlertPolicyListResult class. */
+    public ManagedDatabaseSecurityAlertPolicyListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

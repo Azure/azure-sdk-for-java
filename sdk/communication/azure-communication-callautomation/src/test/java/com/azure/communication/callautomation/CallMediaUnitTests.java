@@ -3,7 +3,9 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.GenderType;
 import com.azure.communication.callautomation.models.PlayOptions;
@@ -16,7 +18,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,7 +47,6 @@ public class CallMediaUnitTests {
         playTextSource.setPlaySourceId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.M);
         playTextSource.setSourceLocale("en-US");
-        playTextSource.setTargetLocale("en-CA");
         playTextSource.setVoiceName("LULU");
 
         playOptions = new PlayOptions()
@@ -84,8 +87,20 @@ public class CallMediaUnitTests {
     }
 
     @Test
-    public void recognizeWithResponseTest() {
+    public void recognizeWithDtmfResponseTest() {
         CallMediaRecognizeDtmfOptions callMediaRecognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
+        Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void recognizeWithChoiceResponseTest() {
+        RecognizeChoice recognizeChoice1 = new RecognizeChoice();
+        RecognizeChoice recognizeChoice2 = new RecognizeChoice();
+        List<RecognizeChoice> recognizeChoices = new ArrayList<RecognizeChoice>(
+            Arrays.asList(recognizeChoice1, recognizeChoice2)
+        );
+        CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
         Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }

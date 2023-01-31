@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateLinkServiceConnectionStateActionsRequire. */
+/** The actions required for private link service connection. */
 public final class PrivateLinkServiceConnectionStateActionsRequire
     extends ExpandableStringEnum<PrivateLinkServiceConnectionStateActionsRequire> {
     /** Static value None for PrivateLinkServiceConnectionStateActionsRequire. */

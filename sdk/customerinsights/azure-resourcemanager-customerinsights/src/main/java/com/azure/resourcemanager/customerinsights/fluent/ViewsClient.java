@@ -22,7 +22,7 @@ public interface ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ViewResourceFormatInner> listByHub(String resourceGroupName, String hubName, String userId);
@@ -37,11 +37,28 @@ public interface ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ViewResourceFormatInner> listByHub(
         String resourceGroupName, String hubName, String userId, Context context);
+
+    /**
+     * Creates a view or updates an existing view in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param viewName The name of the view.
+     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the view resource format along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ViewResourceFormatInner> createOrUpdateWithResponse(
+        String resourceGroupName, String hubName, String viewName, ViewResourceFormatInner parameters, Context context);
 
     /**
      * Creates a view or updates an existing view in the hub.
@@ -60,21 +77,21 @@ public interface ViewsClient {
         String resourceGroupName, String hubName, String viewName, ViewResourceFormatInner parameters);
 
     /**
-     * Creates a view or updates an existing view in the hub.
+     * Gets a view in the hub.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param viewName The name of the view.
-     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
+     * @param userId The user ID. Use * to retrieve hub level view.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view resource format.
+     * @return a view in the hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ViewResourceFormatInner> createOrUpdateWithResponse(
-        String resourceGroupName, String hubName, String viewName, ViewResourceFormatInner parameters, Context context);
+    Response<ViewResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String viewName, String userId, Context context);
 
     /**
      * Gets a view in the hub.
@@ -92,7 +109,7 @@ public interface ViewsClient {
     ViewResourceFormatInner get(String resourceGroupName, String hubName, String viewName, String userId);
 
     /**
-     * Gets a view in the hub.
+     * Deletes a view in the specified hub.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
@@ -102,10 +119,10 @@ public interface ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a view in the hub.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ViewResourceFormatInner> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String hubName, String viewName, String userId, Context context);
 
     /**
@@ -121,21 +138,4 @@ public interface ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String hubName, String viewName, String userId);
-
-    /**
-     * Deletes a view in the specified hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param viewName The name of the view.
-     * @param userId The user ID. Use * to retrieve hub level view.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String viewName, String userId, Context context);
 }

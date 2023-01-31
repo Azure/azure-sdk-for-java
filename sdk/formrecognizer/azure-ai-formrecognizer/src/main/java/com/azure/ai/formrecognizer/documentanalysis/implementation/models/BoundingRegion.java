@@ -23,6 +23,9 @@ public final class BoundingRegion {
     @JsonProperty(value = "polygon", required = true)
     private List<Float> polygon;
 
+    /** Creates an instance of BoundingRegion class. */
+    public BoundingRegion() {}
+
     /**
      * Get the pageNumber property: 1-based page number of page containing the bounding region.
      *

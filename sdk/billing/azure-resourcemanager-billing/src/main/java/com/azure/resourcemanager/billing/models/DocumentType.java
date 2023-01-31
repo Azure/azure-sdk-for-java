@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DocumentType. */
+/** The type of the document. */
 public final class DocumentType extends ExpandableStringEnum<DocumentType> {
     /** Static value Invoice for DocumentType. */
     public static final DocumentType INVOICE = fromString("Invoice");
@@ -23,6 +23,15 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
     public static final DocumentType CREDIT_NOTE = fromString("CreditNote");
 
     /**
+     * Creates a new instance of DocumentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentType() {
+    }
+
+    /**
      * Creates or finds a DocumentType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
         return fromString(name, DocumentType.class);
     }
 
-    /** @return known DocumentType values. */
+    /**
+     * Gets known DocumentType values.
+     *
+     * @return known DocumentType values.
+     */
     public static Collection<DocumentType> values() {
         return values(DocumentType.class);
     }

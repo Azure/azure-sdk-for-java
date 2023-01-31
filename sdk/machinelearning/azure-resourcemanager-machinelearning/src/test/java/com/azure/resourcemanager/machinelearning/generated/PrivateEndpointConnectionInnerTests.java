@@ -17,15 +17,14 @@ import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"pikxwczbyscnpqxu\",\"subnetArmId\":\"vyq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ybrk\",\"actionsRequired\":\"dumjgrtfwvuk\"},\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"679ad13e-4ce7-4ac1-b332-fd610e2ae1ed\",\"tenantId\":\"103e90a9-a65d-4b64-812c-0beee46ccce0\",\"type\":\"None\",\"userAssignedIdentities\":{\"jcny\":{\"principalId\":\"b58ae354-a091-459e-b4e0-c744a0a7df17\",\"clientId\":\"c2f3231c-2784-419e-a9d9-392e455134b0\"},\"kryhtnapczwlokj\":{\"principalId\":\"34133f8a-f3c4-4706-801d-b28b3341713d\",\"clientId\":\"3f18d784-fd03-4795-947d-623097d6e8d3\"},\"kkvnipjox\":{\"principalId\":\"6f96d215-1bc8-451c-93ee-ab2bed8b5be0\",\"clientId\":\"a7cf4ad5-d339-469d-b116-1fda2964a9d5\"}}},\"location\":\"nchgej\",\"tags\":{\"ahuxinpm\":\"dmailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"sku\":{\"name\":\"djpslw\",\"tier\":\"Premium\",\"size\":\"vwryoqpso\",\"family\":\"ctazakljlahbcryf\",\"capacity\":1389039399},\"id\":\"osygex\",\"name\":\"aojakhmsbzjhcrz\",\"type\":\"vdphlxaolthqtr\"}")
+                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"pikxwczbyscnpqxu\",\"subnetArmId\":\"vyq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ybrk\",\"actionsRequired\":\"dumjgrtfwvuk\"},\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"ab4618d0-89cc-42a6-8af9-01fb81852cef\",\"tenantId\":\"33dab1a2-cc10-43fe-bcce-1e2e3342c542\",\"type\":\"None\",\"userAssignedIdentities\":{\"jcny\":{\"principalId\":\"73635982-b45d-422a-a162-47fa604aa819\",\"clientId\":\"cb770753-bd37-4dd1-b217-83ceefddad2d\"},\"kryhtnapczwlokj\":{\"principalId\":\"fb641d5f-adfd-43a0-bbd2-8d16389dbfff\",\"clientId\":\"f16c80f3-21be-4d6c-96a3-e663540b9fad\"},\"kkvnipjox\":{\"principalId\":\"15196c0f-16a1-4607-bd2c-7b17b17dcafa\",\"clientId\":\"3a992dc1-89b1-4e46-adcb-e1f376ec6fd6\"}}},\"location\":\"nchgej\",\"tags\":{\"ahuxinpm\":\"dmailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"sku\":{\"name\":\"djpslw\",\"tier\":\"Premium\",\"size\":\"vwryoqpso\",\"family\":\"ctazakljlahbcryf\",\"capacity\":1389039399},\"id\":\"osygex\",\"name\":\"aojakhmsbzjhcrz\",\"type\":\"vdphlxaolthqtr\"}")
                 .toObject(PrivateEndpointConnectionInner.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals("nchgej", model.location());
@@ -42,8 +41,8 @@ public final class PrivateEndpointConnectionInnerTests {
         Assertions.assertEquals("dumjgrtfwvuk", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionInner model =
             new PrivateEndpointConnectionInner()
                 .withIdentity(

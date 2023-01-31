@@ -63,7 +63,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerKeysService {
+    public interface ServerKeysService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
@@ -171,7 +171,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -182,7 +181,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<ServerKeyInner>>map(
@@ -231,7 +230,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -240,7 +238,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -361,7 +359,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -373,7 +370,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             serverName,
                             keyName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -417,7 +414,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -427,7 +423,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                 serverName,
                 keyName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -457,23 +453,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerKeyInner get(String resourceGroupName, String serverName, String keyName) {
-        return getAsync(resourceGroupName, serverName, keyName).block();
-    }
-
-    /**
-     * Gets a server key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param keyName The name of the server key to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -487,6 +466,23 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     }
 
     /**
+     * Gets a server key.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param keyName The name of the server key to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServerKeyInner get(String resourceGroupName, String serverName, String keyName) {
+        return getWithResponse(resourceGroupName, serverName, keyName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates a server key.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -494,8 +490,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -532,7 +528,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2015-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -544,7 +539,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             serverName,
                             keyName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -559,8 +554,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -598,7 +593,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2015-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -608,7 +602,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                 serverName,
                 keyName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -622,8 +616,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -653,8 +647,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -682,8 +676,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -704,8 +698,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -727,8 +721,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -751,8 +745,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -776,8 +770,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -798,8 +792,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @param serverName The name of the server.
      * @param keyName The name of the server key to be operated on (updated or created). The key name is required to be
      *     in the format of 'vault_key_version'. For example, if the keyId is
-     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
-     *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
+     *     https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion, then the server key name should be
+     *     formatted as: YourVaultName_YourKeyName_YourKeyVersion.
      * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -850,7 +844,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -861,7 +854,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             serverName,
                             keyName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -904,7 +897,6 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -913,7 +905,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                 serverName,
                 keyName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1074,7 +1066,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1109,7 +1102,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

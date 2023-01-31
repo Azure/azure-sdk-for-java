@@ -23,6 +23,9 @@ public class SearchAddressResult {
     @JsonProperty(value = "results", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchAddressResultItem> results;
 
+    /** Creates an instance of SearchAddressResult class. */
+    public SearchAddressResult() {}
+
     /**
      * Get the summary property: Summary object for a Search API response.
      *

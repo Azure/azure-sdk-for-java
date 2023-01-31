@@ -19,6 +19,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -865,6 +866,113 @@ public class LROPollerTests {
                 .getFinalResult()
                 .block();
             Assertions.assertNotNull(result);
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    @Test
+    public void lroBasedOnAsyncOperationInBinaryData() {
+        ServerConfigure serverConfigure = new ServerConfigure();
+
+        final String resourceEndpoint = "/resource/1";
+        final String operationEndpoint = "/operations/1";
+        ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
+            private final int[] getCallCount = new int[1];
+
+            @Override
+            public com.github.tomakehurst.wiremock.http.Response transform(Request request,
+                                                                           com.github.tomakehurst.wiremock.http.Response response,
+                                                                           FileSource fileSource,
+                                                                           Parameters parameters) {
+
+                if (!request.getUrl().endsWith(resourceEndpoint) && !request.getUrl().endsWith(operationEndpoint)) {
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .status(500)
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.PUT)) {
+                    // accept response
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .headers(new HttpHeaders(
+                            new HttpHeader("Azure-AsyncOperation", request.getAbsoluteUrl().replace(resourceEndpoint, operationEndpoint))))
+                        .body(toJson(new FooWithProvisioningState("Creating")))
+                        .status(201)
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.GET)) {
+                    if (request.getUrl().endsWith(operationEndpoint)) {
+                        getCallCount[0]++;
+                        if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
+                            return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                                .body("{\"status\": \"InProgress\"}")
+                                .build();
+                        } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
+                            return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                                .body("{\"status\": \"Succeeded\"}")
+                                .build();
+                        }
+                    } else if (request.getUrl().endsWith(resourceEndpoint) && getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
+                        // final resource
+                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                            .body(toJson(new FooWithProvisioningState("Succeeded", UUID.randomUUID().toString())))
+                            .build();
+                    } else {
+                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                            .status(400)
+                            .body("Invalid state:" + request.getUrl())
+                            .build();
+                    }
+                }
+                return response;
+            }
+
+            @Override
+            public String getName() {
+                return "LroService";
+            }
+        };
+
+        WireMockServer lroServer = createServer(provisioningStateLroService, resourceEndpoint, operationEndpoint);
+        lroServer.start();
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                createHttpPipeline(lroServer.port()),
+                SERIALIZER);
+
+            PollerFlux<PollResult<BinaryData>, BinaryData> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                    new HttpPipelineBuilder().build(),
+                    BinaryData.class,
+                    BinaryData.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
+
+            int[] onNextCallCount = new int[1];
+            AsyncPollResponse<PollResult<BinaryData>, BinaryData> pollResponse = lroFlux.doOnNext(response -> {
+                PollResult<BinaryData> pollResult = response.getValue();
+                Assertions.assertNotNull(pollResult);
+                Assertions.assertNotNull(pollResult.getValue());
+                onNextCallCount[0]++;
+                if (onNextCallCount[0] == 1) {
+                    Assertions.assertEquals(LongRunningOperationStatus.IN_PROGRESS,
+                        response.getStatus());
+                } else if (onNextCallCount[0] == 2) {
+                    Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        response.getStatus());
+                } else {
+                    throw new IllegalStateException("Poller emitted more than expected value.");
+                }
+            }).blockLast();
+
+            BinaryData foo = pollResponse.getFinalResult().block();
+            FooWithProvisioningState fooAsObject = foo.toObject(FooWithProvisioningState.class);
+            Assertions.assertNotNull(fooAsObject.getResourceId());
+            Assertions.assertEquals("Succeeded", fooAsObject.getProvisioningState());
         } finally {
             if (lroServer.isRunning()) {
                 lroServer.shutdown();

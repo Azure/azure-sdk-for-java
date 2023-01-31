@@ -6,15 +6,12 @@ package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contact information associated with the support ticket. */
 @Fluent
 public final class ContactProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContactProfile.class);
-
     /*
      * First name.
      */
@@ -40,8 +37,7 @@ public final class ContactProfile {
     private String primaryEmailAddress;
 
     /*
-     * Additional email addresses listed will be copied on any correspondence
-     * about the support ticket.
+     * Additional email addresses listed will be copied on any correspondence about the support ticket.
      */
     @JsonProperty(value = "additionalEmailAddresses")
     private List<String> additionalEmailAddresses;
@@ -53,8 +49,7 @@ public final class ContactProfile {
     private String phoneNumber;
 
     /*
-     * Time zone of the user. This is the name of the time zone from [Microsoft
-     * Time Zone Index
+     * Time zone of the user. This is the name of the time zone from [Microsoft Time Zone Index
      * Values](https://support.microsoft.com/help/973627/microsoft-time-zone-index-values).
      */
     @JsonProperty(value = "preferredTimeZone", required = true)
@@ -67,18 +62,19 @@ public final class ContactProfile {
     private String country;
 
     /*
-     * Preferred language of support from Azure. Support languages vary based
-     * on the severity you choose for your support ticket. Learn more at [Azure
-     * Severity and
-     * responsiveness](https://azure.microsoft.com/support/plans/response). Use
-     * the standard language-country code. Valid values are 'en-us' for
-     * English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French,
-     * 'ja-jp' for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br'
-     * for Portuguese, 'it-it' for Italian, 'zh-tw' for Chinese and 'de-de' for
-     * German.
+     * Preferred language of support from Azure. Support languages vary based on the severity you choose for your
+     * support ticket. Learn more at [Azure Severity and
+     * responsiveness](https://azure.microsoft.com/support/plans/response). Use the standard language-country code.
+     * Valid values are 'en-us' for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French, 'ja-jp'
+     * for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for
+     * Chinese and 'de-de' for German.
      */
     @JsonProperty(value = "preferredSupportLanguage", required = true)
     private String preferredSupportLanguage;
+
+    /** Creates an instance of ContactProfile class. */
+    public ContactProfile() {
+    }
 
     /**
      * Get the firstName property: First name.
@@ -281,43 +277,45 @@ public final class ContactProfile {
      */
     public void validate() {
         if (firstName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property firstName in model ContactProfile"));
         }
         if (lastName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property lastName in model ContactProfile"));
         }
         if (preferredContactMethod() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredContactMethod in model ContactProfile"));
         }
         if (primaryEmailAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property primaryEmailAddress in model ContactProfile"));
         }
         if (preferredTimeZone() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredTimeZone in model ContactProfile"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model ContactProfile"));
         }
         if (preferredSupportLanguage() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredSupportLanguage in model ContactProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContactProfile.class);
 }

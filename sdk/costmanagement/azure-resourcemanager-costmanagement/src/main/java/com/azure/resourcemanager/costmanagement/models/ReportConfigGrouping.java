@@ -6,14 +6,11 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The group by expression to be used in the report. */
 @Fluent
 public final class ReportConfigGrouping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportConfigGrouping.class);
-
     /*
      * Has type of the column to group.
      */
@@ -21,11 +18,14 @@ public final class ReportConfigGrouping {
     private ReportConfigColumnType type;
 
     /*
-     * The name of the column to group. This version supports subscription
-     * lowest possible grain.
+     * The name of the column to group. This version supports subscription lowest possible grain.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of ReportConfigGrouping class. */
+    public ReportConfigGrouping() {
+    }
 
     /**
      * Get the type property: Has type of the column to group.
@@ -74,14 +74,16 @@ public final class ReportConfigGrouping {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ReportConfigGrouping"));
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ReportConfigGrouping"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReportConfigGrouping.class);
 }

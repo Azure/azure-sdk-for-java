@@ -393,7 +393,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         String galleryName,
         String galleryApplicationName,
         GalleryApplicationInner galleryApplication) {
-        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
             .getSyncPoller();
     }
 
@@ -421,7 +422,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         String galleryApplicationName,
         GalleryApplicationInner galleryApplication,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
             .getSyncPoller();
     }
@@ -769,7 +771,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         String galleryName,
         String galleryApplicationName,
         GalleryApplicationUpdate galleryApplication) {
-        return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
+        return this
+            .beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
             .getSyncPoller();
     }
 
@@ -797,7 +800,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         String galleryApplicationName,
         GalleryApplicationUpdate galleryApplication,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
             .getSyncPoller();
     }
 
@@ -1252,7 +1256,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String galleryName, String galleryApplicationName) {
-        return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName).getSyncPoller();
     }
 
     /**
@@ -1271,7 +1275,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName, context).getSyncPoller();
     }
 
     /**

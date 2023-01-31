@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of a lab's announcement banner. */
 @Fluent
 public final class LabAnnouncementProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabAnnouncementProperties.class);
-
     /*
      * The plain text title for the lab announcement
      */
@@ -22,8 +18,7 @@ public final class LabAnnouncementProperties {
     private String title;
 
     /*
-     * The markdown text (if any) that this lab displays in the UI. If left
-     * empty/null, nothing will be shown.
+     * The markdown text (if any) that this lab displays in the UI. If left empty/null, nothing will be shown.
      */
     @JsonProperty(value = "markdown")
     private String markdown;
@@ -57,6 +52,10 @@ public final class LabAnnouncementProperties {
      */
     @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
+
+    /** Creates an instance of LabAnnouncementProperties class. */
+    public LabAnnouncementProperties() {
+    }
 
     /**
      * Get the title property: The plain text title for the lab announcement.

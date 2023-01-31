@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -51,6 +52,12 @@ public final class FileSystemsCreateHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_NAMESPACE_ENABLED = HttpHeaderName.fromString("x-ms-namespace-enabled");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FileSystemsCreateHeaders class.
@@ -58,15 +65,15 @@ public final class FileSystemsCreateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FileSystemsCreateHeaders(HttpHeaders rawHeaders) {
-        this.xMsNamespaceEnabled = rawHeaders.getValue("x-ms-namespace-enabled");
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.eTag = rawHeaders.getValue("ETag");
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        this.xMsNamespaceEnabled = rawHeaders.getValue(X_MS_NAMESPACE_ENABLED);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

@@ -4,6 +4,8 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -69,6 +71,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
+        // For pk version, merge is not support, exclude it from the capabilities header
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+            .setHeader(
+                this.options,
+                HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
     }
 
     @Override

@@ -28,6 +28,9 @@ public final class SapCloudForCustomerSource extends TabularSource {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
+    /** Creates an instance of SapCloudForCustomerSource class. */
+    public SapCloudForCustomerSource() {}
+
     /**
      * Get the query property: SAP Cloud for Customer OData query. For example, "$top=1". Type: string (or Expression
      * with resultType string).

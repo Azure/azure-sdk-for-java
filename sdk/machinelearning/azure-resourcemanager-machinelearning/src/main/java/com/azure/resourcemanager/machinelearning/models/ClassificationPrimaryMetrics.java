@@ -27,6 +27,15 @@ public final class ClassificationPrimaryMetrics extends ExpandableStringEnum<Cla
     public static final ClassificationPrimaryMetrics PRECISION_SCORE_WEIGHTED = fromString("PrecisionScoreWeighted");
 
     /**
+     * Creates a new instance of ClassificationPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClassificationPrimaryMetrics() {
+    }
+
+    /**
      * Creates or finds a ClassificationPrimaryMetrics from its string representation.
      *
      * @param name a name to look for.

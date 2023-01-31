@@ -30,6 +30,10 @@ public final class CheckSkuAvailabilityParameter {
     @JsonProperty(value = "type", required = true)
     private String type;
 
+    /** Creates an instance of CheckSkuAvailabilityParameter class. */
+    public CheckSkuAvailabilityParameter() {
+    }
+
     /**
      * Get the skus property: The SKU of the resource.
      *

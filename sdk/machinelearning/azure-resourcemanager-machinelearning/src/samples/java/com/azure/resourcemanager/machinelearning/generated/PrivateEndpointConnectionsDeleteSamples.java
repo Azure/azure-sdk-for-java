@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
@@ -20,6 +18,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .privateEndpointConnections()
-            .deleteWithResponse("rg-1234", "testworkspace", "{privateEndpointConnectionName}", Context.NONE);
+            .deleteWithResponse(
+                "rg-1234", "testworkspace", "{privateEndpointConnectionName}", com.azure.core.util.Context.NONE);
     }
 }

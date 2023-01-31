@@ -30,7 +30,7 @@ public class Exceptions {
         return isStatusCode(e, HttpConstants.StatusCodes.NOTFOUND);
     }
 
-    public static boolean isPartitionSplit(CosmosException e) {
+    public static boolean isPartitionSplitOrMerge(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE)
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
     }

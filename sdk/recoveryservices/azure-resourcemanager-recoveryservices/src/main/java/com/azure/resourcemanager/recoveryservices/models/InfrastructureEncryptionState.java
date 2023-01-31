@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InfrastructureEncryptionState. */
+/** Enabling/Disabling the Double Encryption state. */
 public final class InfrastructureEncryptionState extends ExpandableStringEnum<InfrastructureEncryptionState> {
     /** Static value Enabled for InfrastructureEncryptionState. */
     public static final InfrastructureEncryptionState ENABLED = fromString("Enabled");

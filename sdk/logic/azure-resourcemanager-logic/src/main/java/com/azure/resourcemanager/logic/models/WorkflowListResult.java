@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of workflows. */
 @Fluent
 public final class WorkflowListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowListResult.class);
-
     /*
      * The list of workflows.
      */
@@ -27,6 +23,10 @@ public final class WorkflowListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of WorkflowListResult class. */
+    public WorkflowListResult() {
+    }
 
     /**
      * Get the value property: The list of workflows.

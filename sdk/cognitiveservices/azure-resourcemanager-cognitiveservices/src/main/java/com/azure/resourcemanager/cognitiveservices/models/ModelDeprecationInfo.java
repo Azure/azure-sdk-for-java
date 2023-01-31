@@ -22,6 +22,10 @@ public final class ModelDeprecationInfo {
     @JsonProperty(value = "inference")
     private String inference;
 
+    /** Creates an instance of ModelDeprecationInfo class. */
+    public ModelDeprecationInfo() {
+    }
+
     /**
      * Get the fineTune property: The datetime of deprecation of the fineTune Model.
      *

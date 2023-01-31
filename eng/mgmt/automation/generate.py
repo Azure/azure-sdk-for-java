@@ -231,7 +231,7 @@ def main():
     module = ARTIFACT_FORMAT.format(service)
     stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
     args['version'] = current_version
-    output_folder = OUTPUT_FOLDER_FORMAT.format(service),
+    output_folder = OUTPUT_FOLDER_FORMAT.format(service)
     namespace = NAMESPACE_FORMAT.format(service)
     succeeded = generate(
         sdk_root,

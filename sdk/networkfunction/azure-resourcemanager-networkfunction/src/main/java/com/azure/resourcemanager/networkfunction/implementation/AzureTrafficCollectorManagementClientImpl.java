@@ -194,7 +194,7 @@ public final class AzureTrafficCollectorManagementClientImpl implements AzureTra
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-05-01";
+        this.apiVersion = "2022-11-01";
         this.networkFunctions = new NetworkFunctionsClientImpl(this);
         this.azureTrafficCollectorsBySubscriptions = new AzureTrafficCollectorsBySubscriptionsClientImpl(this);
         this.azureTrafficCollectorsByResourceGroups = new AzureTrafficCollectorsByResourceGroupsClientImpl(this);

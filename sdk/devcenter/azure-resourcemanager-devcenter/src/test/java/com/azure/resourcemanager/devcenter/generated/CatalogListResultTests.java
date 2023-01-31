@@ -14,7 +14,7 @@ public final class CatalogListResultTests {
         CatalogListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"i\",\"syncState\":\"Failed\",\"lastSyncTime\":\"2020-12-25T17:33:53Z\"},\"id\":\"sllr\",\"name\":\"vvdfwatkpnpul\",\"type\":\"xxbczwtr\"},{\"properties\":{\"provisioningState\":\"qzbqjvsov\",\"syncState\":\"InProgress\",\"lastSyncTime\":\"2021-11-07T20:31:54Z\"},\"id\":\"kwlhzdo\",\"name\":\"pxjmflbvvnchr\",\"type\":\"cciw\"},{\"properties\":{\"provisioningState\":\"uqkhrsajiwku\",\"syncState\":\"Succeeded\",\"lastSyncTime\":\"2021-11-11T20:30:58Z\"},\"id\":\"auu\",\"name\":\"mjmvxieduugidyjr\",\"type\":\"f\"}],\"nextLink\":\"aos\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"syncState\":\"Failed\",\"lastSyncTime\":\"2021-07-19T22:57:03Z\"},\"id\":\"tynnaamdectehfi\",\"name\":\"scjeypv\",\"type\":\"ezrkgqhcjrefo\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"syncState\":\"Succeeded\",\"lastSyncTime\":\"2021-09-05T10:33:45Z\"},\"id\":\"xyqj\",\"name\":\"k\",\"type\":\"attpngjcrcczsq\"},{\"properties\":{\"provisioningState\":\"Failed\",\"syncState\":\"Succeeded\",\"lastSyncTime\":\"2021-03-30T22:07:42Z\"},\"id\":\"sounqecanoaeu\",\"name\":\"fhyhltrpmopjmcma\",\"type\":\"u\"},{\"properties\":{\"provisioningState\":\"Failed\",\"syncState\":\"Canceled\",\"lastSyncTime\":\"2021-07-12T12:37:48Z\"},\"id\":\"sfcpkvxodpuozm\",\"name\":\"zydagfuaxbezyiuo\",\"type\":\"ktwh\"}],\"nextLink\":\"xw\"}")
                 .toObject(CatalogListResult.class);
     }
 

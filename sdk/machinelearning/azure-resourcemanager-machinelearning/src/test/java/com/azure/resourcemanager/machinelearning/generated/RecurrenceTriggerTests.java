@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.RecurrenceTrigger;
 import com.azure.resourcemanager.machinelearning.models.WeekDay;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RecurrenceTriggerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RecurrenceTrigger model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class RecurrenceTriggerTests {
         Assertions.assertEquals(WeekDay.WEDNESDAY, model.schedule().weekDays().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RecurrenceTrigger model =
             new RecurrenceTrigger()
                 .withEndTime("rlktgjcsggu")

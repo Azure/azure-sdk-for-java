@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetadataColumnDataType. */
+/** The data type of the column. */
 public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataColumnDataType> {
     /** Static value bool for MetadataColumnDataType. */
     public static final MetadataColumnDataType BOOL = fromString("bool");
@@ -41,6 +41,14 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
     public static final MetadataColumnDataType TIMESPAN = fromString("timespan");
 
     /**
+     * Creates a new instance of MetadataColumnDataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetadataColumnDataType() {}
+
+    /**
      * Creates or finds a MetadataColumnDataType from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +59,11 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
         return fromString(name, MetadataColumnDataType.class);
     }
 
-    /** @return known MetadataColumnDataType values. */
+    /**
+     * Gets known MetadataColumnDataType values.
+     *
+     * @return known MetadataColumnDataType values.
+     */
     public static Collection<MetadataColumnDataType> values() {
         return values(MetadataColumnDataType.class);
     }

@@ -6,16 +6,12 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Routing rules to apply to an endpoint. */
 @Fluent
 public class RoutingRuleUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingRuleUpdateParameters.class);
-
     /*
      * Frontend endpoints associated with this rule
      */
@@ -35,8 +31,7 @@ public class RoutingRuleUpdateParameters {
     private List<String> patternsToMatch;
 
     /*
-     * Whether to enable use of this rule. Permitted values are 'Enabled' or
-     * 'Disabled'
+     * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "enabledState")
     private RoutingRuleEnabledState enabledState;
@@ -48,18 +43,20 @@ public class RoutingRuleUpdateParameters {
     private RouteConfiguration routeConfiguration;
 
     /*
-     * A reference to a specific Rules Engine Configuration to apply to this
-     * route.
+     * A reference to a specific Rules Engine Configuration to apply to this route.
      */
     @JsonProperty(value = "rulesEngine")
     private SubResource rulesEngine;
 
     /*
-     * Defines the Web Application Firewall policy for each routing rule (if
-     * applicable)
+     * Defines the Web Application Firewall policy for each routing rule (if applicable)
      */
     @JsonProperty(value = "webApplicationFirewallPolicyLink")
     private RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
+
+    /** Creates an instance of RoutingRuleUpdateParameters class. */
+    public RoutingRuleUpdateParameters() {
+    }
 
     /**
      * Get the frontendEndpoints property: Frontend endpoints associated with this rule.

@@ -29,6 +29,9 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
     @JsonProperty(value = "modelVersion", required = true)
     private String modelVersion;
 
+    /** Creates an instance of AbstractiveSummarizationResult class. */
+    public AbstractiveSummarizationResult() {}
+
     /**
      * Get the errors property: Errors by document id.
      *

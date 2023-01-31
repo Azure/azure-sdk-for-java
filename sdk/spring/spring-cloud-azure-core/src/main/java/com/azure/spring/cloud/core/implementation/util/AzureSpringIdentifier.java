@@ -42,7 +42,9 @@ public final class AzureSpringIdentifier {
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
     public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
     //Kafka supports set client software name and version individually.
-    public static final String AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH = "az-sp-kafka";
+    //We add the separator of . here to split Azure UA with the native Kafka UA.
+    //And given the limitation of Kafka, only . is allowed here.
+    public static final String AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH = ".az-sp-kafka";
     public static final String AZURE_SPRING_KEY_VAULT_SECRETS = "az-sp-kv/" + VERSION;
     public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kv-ct/" + VERSION;
 

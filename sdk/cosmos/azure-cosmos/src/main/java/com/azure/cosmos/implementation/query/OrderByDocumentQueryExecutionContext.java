@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceId;
@@ -19,7 +18,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -48,7 +46,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -536,7 +533,6 @@ public class OrderByDocumentQueryExecutionContext
     @Override
     protected OrderByDocumentProducer createDocumentProducer(
             String collectionRid,
-            PartitionKeyRange targetRange,
             String continuationToken,
             int initialPageSize,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
@@ -551,7 +547,6 @@ public class OrderByDocumentQueryExecutionContext
                 cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeFunc,
-                targetRange,
                 feedRange,
                 collectionRid,
                 createRetryPolicyFunc,

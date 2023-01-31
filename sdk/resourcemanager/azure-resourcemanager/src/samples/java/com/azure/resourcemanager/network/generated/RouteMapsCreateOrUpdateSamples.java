@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for RouteMaps CreateOrUpdate. */
 public final class RouteMapsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteMapPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RouteMapPut.json
      */
     /**
      * Sample code: RouteMapPut.

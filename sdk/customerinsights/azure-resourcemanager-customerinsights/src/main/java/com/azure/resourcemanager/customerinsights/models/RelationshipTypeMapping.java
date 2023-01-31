@@ -6,21 +6,22 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Maps fields in Profile to their corresponding StrongIds in Related Profile. */
 @Fluent
 public final class RelationshipTypeMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipTypeMapping.class);
-
     /*
-     * Maps a profile property with the StrongId of related profile. This is an
-     * array to support StrongIds that are composite key as well.
+     * Maps a profile property with the StrongId of related profile. This is an array to support StrongIds that are
+     * composite key as well.
      */
     @JsonProperty(value = "fieldMappings", required = true)
     private List<RelationshipTypeFieldMapping> fieldMappings;
+
+    /** Creates an instance of RelationshipTypeMapping class. */
+    public RelationshipTypeMapping() {
+    }
 
     /**
      * Get the fieldMappings property: Maps a profile property with the StrongId of related profile. This is an array to
@@ -51,7 +52,7 @@ public final class RelationshipTypeMapping {
      */
     public void validate() {
         if (fieldMappings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fieldMappings in model RelationshipTypeMapping"));
@@ -59,4 +60,6 @@ public final class RelationshipTypeMapping {
             fieldMappings().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RelationshipTypeMapping.class);
 }

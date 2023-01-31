@@ -54,6 +54,10 @@ public final class StepResourceImpl implements StepResource, StepResource.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public StepResourceInner innerModel() {
         return this.innerObject;
     }

@@ -13,11 +13,14 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class AutoStorageProperties extends AutoStorageBaseProperties {
     /*
-     * The UTC time at which storage keys were last synchronized with the Batch
-     * account.
+     * The UTC time at which storage keys were last synchronized with the Batch account.
      */
     @JsonProperty(value = "lastKeySync", required = true)
     private OffsetDateTime lastKeySync;
+
+    /** Creates an instance of AutoStorageProperties class. */
+    public AutoStorageProperties() {
+    }
 
     /**
      * Get the lastKeySync property: The UTC time at which storage keys were last synchronized with the Batch account.

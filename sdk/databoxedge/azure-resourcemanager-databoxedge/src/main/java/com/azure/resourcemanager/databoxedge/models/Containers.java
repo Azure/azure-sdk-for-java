@@ -19,7 +19,8 @@ public interface Containers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the containers on the Data Box Edge/Gateway device.
+     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Container> listByStorageAccount(
         String deviceName, String storageAccountName, String resourceGroupName);
@@ -34,10 +35,27 @@ public interface Containers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the containers on the Data Box Edge/Gateway device.
+     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Container> listByStorageAccount(
         String deviceName, String storageAccountName, String resourceGroupName, Context context);
+
+    /**
+     * Gets a container by name.
+     *
+     * @param deviceName The device name.
+     * @param storageAccountName The Storage Account Name.
+     * @param containerName The container Name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container by name along with {@link Response}.
+     */
+    Response<Container> getWithResponse(
+        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
 
     /**
      * Gets a container by name.
@@ -52,22 +70,6 @@ public interface Containers {
      * @return a container by name.
      */
     Container get(String deviceName, String storageAccountName, String containerName, String resourceGroupName);
-
-    /**
-     * Gets a container by name.
-     *
-     * @param deviceName The device name.
-     * @param storageAccountName The Storage Account Name.
-     * @param containerName The container Name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container by name.
-     */
-    Response<Container> getWithResponse(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
@@ -132,7 +134,7 @@ public interface Containers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container by name.
+     * @return a container by name along with {@link Response}.
      */
     Container getById(String id);
 
@@ -144,7 +146,7 @@ public interface Containers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container by name.
+     * @return a container by name along with {@link Response}.
      */
     Response<Container> getByIdWithResponse(String id, Context context);
 

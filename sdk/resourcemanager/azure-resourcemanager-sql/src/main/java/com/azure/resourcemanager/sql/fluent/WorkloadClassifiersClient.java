@@ -21,6 +21,58 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in WorkloadClassifiersClient. */
 public interface WorkloadClassifiersClient {
     /**
+     * Gets the list of workload classifiers for a workload group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
+
+    /**
+     * Gets the list of workload classifiers for a workload group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
+
+    /**
+     * Gets the list of workload classifiers for a workload group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context);
+
+    /**
      * Gets a workload classifier.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -73,28 +125,6 @@ public interface WorkloadClassifiersClient {
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
      * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload classifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadClassifierInner get(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName);
-
-    /**
-     * Gets a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,6 +139,28 @@ public interface WorkloadClassifiersClient {
         String workloadGroupName,
         String workloadClassifierName,
         Context context);
+
+    /**
+     * Gets a workload classifier.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workload classifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadClassifierInner get(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String workloadGroupName,
+        String workloadClassifierName);
 
     /**
      * Creates or updates a workload classifier.
@@ -438,56 +490,4 @@ public interface WorkloadClassifiersClient {
         String workloadGroupName,
         String workloadClassifierName,
         Context context);
-
-    /**
-     * Gets the list of workload classifiers for a workload group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
-
-    /**
-     * Gets the list of workload classifiers for a workload group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
-
-    /**
-     * Gets the list of workload classifiers for a workload group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context);
 }

@@ -275,11 +275,28 @@ public class HttpConstants {
         // Client Encryption Headers
         public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
         public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
+
+        // SDK supported capacities headers
+        public static final String SDK_SUPPORTED_CAPABILITIES = "x-ms-cosmos-sdk-supportedcapabilities";
     }
 
     public static class A_IMHeaderValues {
         public static final String INCREMENTAL_FEED = "Incremental Feed";
         public static final String FULL_FIDELITY_FEED = "Full-Fidelity Feed";
+    }
+
+    public static class SDKSupportedCapabilities {
+        private static final long NONE = 0; // 0
+        private static final long PARTITION_MERGE = 1; // 1 << 0
+
+        private static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 2; // 1 << 1
+
+        public static final String SUPPORTED_CAPABILITIES;
+        public static final String SUPPORTED_CAPABILITIES_NONE;
+        static {
+            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE | CHANGE_FEED_WITH_START_TIME_POST_MERGE);
+            SUPPORTED_CAPABILITIES_NONE = String.valueOf(NONE);
+        }
     }
 
     public static class Versions {

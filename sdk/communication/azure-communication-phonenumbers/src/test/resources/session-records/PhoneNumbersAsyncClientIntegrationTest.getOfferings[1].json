@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries/US/offerings?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b72ed61c-29c7-4c4b-a69f-4e59aa96e3c0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-03-07, 2022-12-01",
+      "X-Processing-Time" : "1176ms",
+      "MS-CV" : "8yfOhGMzXkuxeZzaQ1gWnQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0kKOkYwAAAABHmE2o85zBRIwRtehaFJoFTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"phoneNumberOfferings\":[{\"phoneNumberType\":\"geographic\",\"assignmentType\":\"person\",\"availableCapabilities\":{\"calling\":\"inbound+outbound\",\"sms\":\"none\"},\"cost\":{\"amount\":1.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"}},{\"phoneNumberType\":\"geographic\",\"assignmentType\":\"application\",\"availableCapabilities\":{\"calling\":\"inbound+outbound\",\"sms\":\"none\"},\"cost\":{\"amount\":1.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"}},{\"phoneNumberType\":\"tollFree\",\"assignmentType\":\"application\",\"availableCapabilities\":{\"calling\":\"inbound+outbound\",\"sms\":\"inbound+outbound\"},\"cost\":{\"amount\":2.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"}}],\"nextLink\":null}",
+      "Date" : "Thu, 22 Dec 2022 18:36:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.AssetTrack;
 import com.azure.resourcemanager.mediaservices.models.TextTrack;
 
 /** Samples for Tracks Update. */
 public final class TracksUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/asset-tracks-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/asset-tracks-update.json
      */
     /**
      * Sample code: Update a Track.
@@ -22,7 +21,8 @@ public final class TracksUpdateSamples {
         AssetTrack resource =
             manager
                 .tracks()
-                .getWithResponse("contoso", "contosomedia", "ClimbingMountRainer", "text1", Context.NONE)
+                .getWithResponse(
+                    "contoso", "contosomedia", "ClimbingMountRainer", "text1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTrack(new TextTrack().withDisplayName("A new name")).apply();
     }

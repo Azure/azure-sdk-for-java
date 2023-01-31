@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpoint;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnectionResource;
@@ -15,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProvisioningState
 /** Samples for PrivateEndpointConnection Put. */
 public final class PrivateEndpointConnectionPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: Update PrivateEndpointConnection.
@@ -31,7 +30,7 @@ public final class PrivateEndpointConnectionPutSamples {
                     "gaallavaultbvtd2msi",
                     "gaallaRG",
                     "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

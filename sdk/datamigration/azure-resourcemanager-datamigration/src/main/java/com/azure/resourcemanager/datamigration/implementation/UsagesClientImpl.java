@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.UsagesClient;
 import com.azure.resourcemanager.datamigration.fluent.models.QuotaInner;
 import com.azure.resourcemanager.datamigration.models.QuotaList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UsagesClient. */
 public final class UsagesClientImpl implements UsagesClient {
-    private final ClientLogger logger = new ClientLogger(UsagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final UsagesService service;
 
@@ -57,7 +54,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataMigrationManagem")
-    private interface UsagesService {
+    public interface UsagesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/locations/{location}/usages")
         @ExpectedResponses({200})
@@ -82,13 +79,15 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> listSinglePageAsync(String location) {
@@ -132,14 +131,16 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> listSinglePageAsync(String location, Context context) {
@@ -180,13 +181,15 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaInner> listAsync(String location) {
@@ -194,14 +197,16 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaInner> listAsync(String location, Context context) {
@@ -210,13 +215,15 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> list(String location) {
@@ -224,14 +231,16 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaInner> list(String location, Context context) {
@@ -241,11 +250,12 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> listNextSinglePageAsync(String nextLink) {
@@ -276,12 +286,13 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> listNextSinglePageAsync(String nextLink, Context context) {

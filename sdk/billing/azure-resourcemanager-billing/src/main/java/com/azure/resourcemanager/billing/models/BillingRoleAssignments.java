@@ -16,6 +16,21 @@ public interface BillingRoleAssignments {
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingRoleAssignmentName The ID that uniquely identifies a role assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment for the caller on a billing account along with {@link Response}.
+     */
+    Response<BillingRoleAssignment> getByBillingAccountWithResponse(
+        String billingAccountName, String billingRoleAssignmentName, Context context);
+
+    /**
+     * Gets a role assignment for the caller on a billing account. The operation is supported for billing accounts with
+     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingRoleAssignmentName The ID that uniquely identifies a role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,8 +39,8 @@ public interface BillingRoleAssignments {
     BillingRoleAssignment getByBillingAccount(String billingAccountName, String billingRoleAssignmentName);
 
     /**
-     * Gets a role assignment for the caller on a billing account. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     * Deletes a role assignment for the caller on a billing account. The operation is supported for billing accounts
+     * with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingRoleAssignmentName The ID that uniquely identifies a role assignment.
@@ -33,9 +48,9 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing account.
+     * @return the role assignment along with {@link Response}.
      */
-    Response<BillingRoleAssignment> getByBillingAccountWithResponse(
+    Response<BillingRoleAssignment> deleteByBillingAccountWithResponse(
         String billingAccountName, String billingRoleAssignmentName, Context context);
 
     /**
@@ -52,19 +67,25 @@ public interface BillingRoleAssignments {
     BillingRoleAssignment deleteByBillingAccount(String billingAccountName, String billingRoleAssignmentName);
 
     /**
-     * Deletes a role assignment for the caller on a billing account. The operation is supported for billing accounts
-     * with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     * Gets a role assignment for the caller on an invoice section. The operation is supported for billing accounts with
+     * agreement type Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param billingRoleAssignmentName The ID that uniquely identifies a role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return a role assignment for the caller on an invoice section along with {@link Response}.
      */
-    Response<BillingRoleAssignment> deleteByBillingAccountWithResponse(
-        String billingAccountName, String billingRoleAssignmentName, Context context);
+    Response<BillingRoleAssignment> getByInvoiceSectionWithResponse(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        String billingRoleAssignmentName,
+        Context context);
 
     /**
      * Gets a role assignment for the caller on an invoice section. The operation is supported for billing accounts with
@@ -86,8 +107,8 @@ public interface BillingRoleAssignments {
         String billingRoleAssignmentName);
 
     /**
-     * Gets a role assignment for the caller on an invoice section. The operation is supported for billing accounts with
-     * agreement type Microsoft Customer Agreement.
+     * Deletes a role assignment for the caller on an invoice section. The operation is supported for billing accounts
+     * with agreement type Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
@@ -97,9 +118,9 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on an invoice section.
+     * @return the role assignment along with {@link Response}.
      */
-    Response<BillingRoleAssignment> getByInvoiceSectionWithResponse(
+    Response<BillingRoleAssignment> deleteByInvoiceSectionWithResponse(
         String billingAccountName,
         String billingProfileName,
         String invoiceSectionName,
@@ -126,25 +147,20 @@ public interface BillingRoleAssignments {
         String billingRoleAssignmentName);
 
     /**
-     * Deletes a role assignment for the caller on an invoice section. The operation is supported for billing accounts
-     * with agreement type Microsoft Customer Agreement.
+     * Gets a role assignment for the caller on a billing profile. The operation is supported for billing accounts with
+     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param billingRoleAssignmentName The ID that uniquely identifies a role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return a role assignment for the caller on a billing profile along with {@link Response}.
      */
-    Response<BillingRoleAssignment> deleteByInvoiceSectionWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String billingRoleAssignmentName,
-        Context context);
+    Response<BillingRoleAssignment> getByBillingProfileWithResponse(
+        String billingAccountName, String billingProfileName, String billingRoleAssignmentName, Context context);
 
     /**
      * Gets a role assignment for the caller on a billing profile. The operation is supported for billing accounts with
@@ -162,8 +178,8 @@ public interface BillingRoleAssignments {
         String billingAccountName, String billingProfileName, String billingRoleAssignmentName);
 
     /**
-     * Gets a role assignment for the caller on a billing profile. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     * Deletes a role assignment for the caller on a billing profile. The operation is supported for billing accounts
+     * with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
@@ -172,9 +188,9 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing profile.
+     * @return the role assignment along with {@link Response}.
      */
-    Response<BillingRoleAssignment> getByBillingProfileWithResponse(
+    Response<BillingRoleAssignment> deleteByBillingProfileWithResponse(
         String billingAccountName, String billingProfileName, String billingRoleAssignmentName, Context context);
 
     /**
@@ -193,22 +209,6 @@ public interface BillingRoleAssignments {
         String billingAccountName, String billingProfileName, String billingRoleAssignmentName);
 
     /**
-     * Deletes a role assignment for the caller on a billing profile. The operation is supported for billing accounts
-     * with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param billingRoleAssignmentName The ID that uniquely identifies a role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
-     */
-    Response<BillingRoleAssignment> deleteByBillingProfileWithResponse(
-        String billingAccountName, String billingProfileName, String billingRoleAssignmentName, Context context);
-
-    /**
      * Lists the role assignments for the caller on a billing account. The operation is supported for billing accounts
      * with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
      *
@@ -216,7 +216,7 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleAssignment> listByBillingAccount(String billingAccountName);
 
@@ -229,7 +229,7 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleAssignment> listByBillingAccount(String billingAccountName, Context context);
 
@@ -243,7 +243,7 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleAssignment> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName);
@@ -259,7 +259,7 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleAssignment> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
@@ -273,7 +273,7 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleAssignment> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -287,7 +287,7 @@ public interface BillingRoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleAssignment> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);

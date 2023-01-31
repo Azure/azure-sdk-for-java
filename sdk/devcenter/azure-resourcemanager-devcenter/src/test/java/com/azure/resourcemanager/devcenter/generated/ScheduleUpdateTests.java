@@ -20,36 +20,36 @@ public final class ScheduleUpdateTests {
         ScheduleUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"uzkopbminrfd\",\"timeZone\":\"yuhhziu\",\"state\":\"Disabled\"},\"tags\":{\"rmaequ\":\"bhdmsmlmzqhof\"},\"location\":\"hxicslfaoqz\"}")
+                    "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"njijpxacqqudf\",\"timeZone\":\"yxbaaabjyvayf\",\"state\":\"Enabled\"},\"tags\":{\"xnevfdnwn\":\"rtuzqogs\",\"uzsoi\":\"mewzsyyc\"},\"location\":\"ud\"}")
                 .toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("bhdmsmlmzqhof", model.tags().get("rmaequ"));
-        Assertions.assertEquals("hxicslfaoqz", model.location());
+        Assertions.assertEquals("rtuzqogs", model.tags().get("xnevfdnwn"));
+        Assertions.assertEquals("ud", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("uzkopbminrfd", model.time());
-        Assertions.assertEquals("yuhhziu", model.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("njijpxacqqudf", model.time());
+        Assertions.assertEquals("yxbaaabjyvayf", model.timeZone());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 
     @Test
     public void testSerialize() {
         ScheduleUpdate model =
             new ScheduleUpdate()
-                .withTags(mapOf("rmaequ", "bhdmsmlmzqhof"))
-                .withLocation("hxicslfaoqz")
+                .withTags(mapOf("xnevfdnwn", "rtuzqogs", "uzsoi", "mewzsyyc"))
+                .withLocation("ud")
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("uzkopbminrfd")
-                .withTimeZone("yuhhziu")
-                .withState(EnableStatus.DISABLED);
+                .withTime("njijpxacqqudf")
+                .withTimeZone("yxbaaabjyvayf")
+                .withState(EnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("bhdmsmlmzqhof", model.tags().get("rmaequ"));
-        Assertions.assertEquals("hxicslfaoqz", model.location());
+        Assertions.assertEquals("rtuzqogs", model.tags().get("xnevfdnwn"));
+        Assertions.assertEquals("ud", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("uzkopbminrfd", model.time());
-        Assertions.assertEquals("yuhhziu", model.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("njijpxacqqudf", model.time());
+        Assertions.assertEquals("yxbaaabjyvayf", model.timeZone());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
     }
 
     @SuppressWarnings("unchecked")

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.PrivateCloudInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.PrivateCloudList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateCloudsClient. */
 public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateCloudsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateCloudsService service;
 
@@ -58,7 +55,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimplePri")
-    private interface PrivateCloudsService {
+    public interface PrivateCloudsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds")
         @ExpectedResponses({200})
@@ -98,13 +95,15 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listSinglePageAsync(String regionId) {
@@ -148,14 +147,16 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listSinglePageAsync(String regionId, Context context) {
@@ -196,13 +197,15 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listAsync(String regionId) {
@@ -210,14 +213,16 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listAsync(String regionId, Context context) {
@@ -226,13 +231,15 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> list(String regionId) {
@@ -240,14 +247,16 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns list of private clouds in particular region.
+     * Implements private cloud list GET method
+     *
+     * <p>Returns list of private clouds in particular region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateCloudInner> list(String regionId, Context context) {
@@ -255,14 +264,16 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns private cloud by its name.
+     * Implements private cloud GET method
+     *
+     * <p>Returns private cloud by its name.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private cloud model.
+     * @return private cloud model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateCloudInner>> getWithResponseAsync(String pcName, String regionId) {
@@ -301,7 +312,9 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns private cloud by its name.
+     * Implements private cloud GET method
+     *
+     * <p>Returns private cloud by its name.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -309,7 +322,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private cloud model.
+     * @return private cloud model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateCloudInner>> getWithResponseAsync(String pcName, String regionId, Context context) {
@@ -345,30 +358,44 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     }
 
     /**
-     * Returns private cloud by its name.
+     * Implements private cloud GET method
+     *
+     * <p>Returns private cloud by its name.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private cloud model.
+     * @return private cloud model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateCloudInner> getAsync(String pcName, String regionId) {
-        return getWithResponseAsync(pcName, regionId)
-            .flatMap(
-                (Response<PrivateCloudInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(pcName, regionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns private cloud by its name.
+     * Implements private cloud GET method
+     *
+     * <p>Returns private cloud by its name.
+     *
+     * @param pcName The private cloud name.
+     * @param regionId The region Id (westus, eastus).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private cloud model along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PrivateCloudInner> getWithResponse(String pcName, String regionId, Context context) {
+        return getWithResponseAsync(pcName, regionId, context).block();
+    }
+
+    /**
+     * Implements private cloud GET method
+     *
+     * <p>Returns private cloud by its name.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -379,33 +406,18 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner get(String pcName, String regionId) {
-        return getAsync(pcName, regionId).block();
-    }
-
-    /**
-     * Returns private cloud by its name.
-     *
-     * @param pcName The private cloud name.
-     * @param regionId The region Id (westus, eastus).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private cloud model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateCloudInner> getWithResponse(String pcName, String regionId, Context context) {
-        return getWithResponseAsync(pcName, regionId, context).block();
+        return getWithResponse(pcName, regionId, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listNextSinglePageAsync(String nextLink) {
@@ -436,12 +448,13 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private clouds.
+     * @return list of private clouds along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateCloudInner>> listNextSinglePageAsync(String nextLink, Context context) {

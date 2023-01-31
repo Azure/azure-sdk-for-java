@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Redis ListByResourceGroup. */
 public final class RedisListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheListByResourceGroup.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheListByResourceGroup.json
      */
     /**
      * Sample code: RedisCacheListByResourceGroup.

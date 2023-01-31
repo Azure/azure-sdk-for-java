@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -93,8 +94,17 @@ public final class DevCenterInner extends Resource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the devCenterUri property: The URI of the resource.
+     *
+     * @return the devCenterUri value.
+     */
+    public String devCenterUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().devCenterUri();
     }
 
     /**

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncMembers Get. */
 public final class SyncMembersGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncMemberGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberGet.json
      */
     /**
      * Sample code: Get a sync member.
@@ -27,7 +27,7 @@ public final class SyncMembersGetSamples {
                 "syncgroupcrud-8475",
                 "syncgroupcrud-4328",
                 "syncgroupcrud-3187",
-                "syncgroupcrud-4879",
+                "syncmembercrud-4879",
                 Context.NONE);
     }
 }

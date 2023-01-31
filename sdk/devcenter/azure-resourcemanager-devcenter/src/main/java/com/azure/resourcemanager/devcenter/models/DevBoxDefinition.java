@@ -59,7 +59,7 @@ public interface DevBoxDefinition {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the imageValidationStatus property: Validation status of the configured image.
@@ -105,6 +105,15 @@ public interface DevBoxDefinition {
      * @return the osStorageType value.
      */
     String osStorageType();
+
+    /**
+     * Gets the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
+     * hibernation. Not all images are capable of supporting hibernation. To find out more see
+     * https://aka.ms/devbox/hibernate.
+     *
+     * @return the hibernateSupport value.
+     */
+    HibernateSupport hibernateSupport();
 
     /**
      * Gets the region of the resource.
@@ -183,7 +192,8 @@ public interface DevBoxDefinition {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithImageReference,
                 DefinitionStages.WithSku,
-                DefinitionStages.WithOsStorageType {
+                DefinitionStages.WithOsStorageType,
+                DefinitionStages.WithHibernateSupport {
             /**
              * Executes the create request.
              *
@@ -241,6 +251,20 @@ public interface DevBoxDefinition {
              */
             WithCreate withOsStorageType(String osStorageType);
         }
+        /** The stage of the DevBoxDefinition definition allowing to specify hibernateSupport. */
+        interface WithHibernateSupport {
+            /**
+             * Specifies the hibernateSupport property: Indicates whether Dev Boxes created with this definition are
+             * capable of hibernation. Not all images are capable of supporting hibernation. To find out more see
+             * https://aka.ms/devbox/hibernate.
+             *
+             * @param hibernateSupport Indicates whether Dev Boxes created with this definition are capable of
+             *     hibernation. Not all images are capable of supporting hibernation. To find out more see
+             *     https://aka.ms/devbox/hibernate.
+             * @return the next definition stage.
+             */
+            WithCreate withHibernateSupport(HibernateSupport hibernateSupport);
+        }
     }
     /**
      * Begins update for the DevBoxDefinition resource.
@@ -254,7 +278,8 @@ public interface DevBoxDefinition {
         extends UpdateStages.WithTags,
             UpdateStages.WithImageReference,
             UpdateStages.WithSku,
-            UpdateStages.WithOsStorageType {
+            UpdateStages.WithOsStorageType,
+            UpdateStages.WithHibernateSupport {
         /**
          * Executes the update request.
          *
@@ -313,6 +338,20 @@ public interface DevBoxDefinition {
              * @return the next definition stage.
              */
             Update withOsStorageType(String osStorageType);
+        }
+        /** The stage of the DevBoxDefinition update allowing to specify hibernateSupport. */
+        interface WithHibernateSupport {
+            /**
+             * Specifies the hibernateSupport property: Indicates whether Dev Boxes created with this definition are
+             * capable of hibernation. Not all images are capable of supporting hibernation. To find out more see
+             * https://aka.ms/devbox/hibernate.
+             *
+             * @param hibernateSupport Indicates whether Dev Boxes created with this definition are capable of
+             *     hibernation. Not all images are capable of supporting hibernation. To find out more see
+             *     https://aka.ms/devbox/hibernate.
+             * @return the next definition stage.
+             */
+            Update withHibernateSupport(HibernateSupport hibernateSupport);
         }
     }
     /**

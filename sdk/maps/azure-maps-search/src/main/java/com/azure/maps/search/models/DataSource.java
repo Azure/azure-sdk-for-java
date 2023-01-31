@@ -14,20 +14,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DataSource {
     /*
-     * Information about the geometric shape of the result. Only present if
-     * type == Geography.
+     * Information about the geometric shape of the result. Only present if type == Geography.
      */
     @JsonProperty(value = "geometry")
     private GeometryIdentifier geometry;
 
+    /** Creates an instance of DataSource class. */
+    public DataSource() {}
+
     /** @param geometry this is geometry id */
     public DataSource(String geometry) {
         this.geometry = new GeometryIdentifier().setId(geometry);
-    }
-
-    /** Constructor */
-    public DataSource() {
-        // Empty Constructor
     }
 
     /**

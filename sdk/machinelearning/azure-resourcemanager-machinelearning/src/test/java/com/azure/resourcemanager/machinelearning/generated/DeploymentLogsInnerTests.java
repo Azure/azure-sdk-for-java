@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.DeploymentLogsInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentLogsInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentLogsInner model =
             BinaryData.fromString("{\"content\":\"jcxcjxgrytfmpcyc\"}").toObject(DeploymentLogsInner.class);
         Assertions.assertEquals("jcxcjxgrytfmpcyc", model.content());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentLogsInner model = new DeploymentLogsInner().withContent("jcxcjxgrytfmpcyc");
         model = BinaryData.fromObject(model).toObject(DeploymentLogsInner.class);
         Assertions.assertEquals("jcxcjxgrytfmpcyc", model.content());

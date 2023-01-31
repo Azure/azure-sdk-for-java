@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.devcenter.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -13,6 +12,7 @@ import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
 import com.azure.resourcemanager.devcenter.models.NetworkConnection;
 import com.azure.resourcemanager.devcenter.models.NetworkConnectionUpdate;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -51,7 +51,7 @@ public final class NetworkConnectionImpl
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -193,14 +193,12 @@ public final class NetworkConnectionImpl
         return this;
     }
 
-    public Response<Void> runHealthChecksWithResponse(Context context) {
-        return serviceManager
-            .networkConnections()
-            .runHealthChecksWithResponse(resourceGroupName, networkConnectionName, context);
-    }
-
     public void runHealthChecks() {
         serviceManager.networkConnections().runHealthChecks(resourceGroupName, networkConnectionName);
+    }
+
+    public void runHealthChecks(Context context) {
+        serviceManager.networkConnections().runHealthChecks(resourceGroupName, networkConnectionName, context);
     }
 
     public NetworkConnectionImpl withRegion(Region location) {

@@ -14,6 +14,20 @@ public interface ResourceProviders {
      *
      * @param location The location in which uniqueness will be verified.
      * @param checkNameAvailability Check Name Availability Request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return check Name Availability Response along with {@link Response}.
+     */
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityLocalWithResponse(
+        String location, CheckNameAvailabilityRequest checkNameAvailability, Context context);
+
+    /**
+     * Check Name Availability for local uniqueness.
+     *
+     * @param location The location in which uniqueness will be verified.
+     * @param checkNameAvailability Check Name Availability Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -21,18 +35,4 @@ public interface ResourceProviders {
      */
     CheckNameAvailabilityResponse checkNameAvailabilityLocal(
         String location, CheckNameAvailabilityRequest checkNameAvailability);
-
-    /**
-     * Check Name Availability for local uniqueness.
-     *
-     * @param location The location in which uniqueness will be verified.
-     * @param checkNameAvailability Check Name Availability Request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check Name Availability Response.
-     */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityLocalWithResponse(
-        String location, CheckNameAvailabilityRequest checkNameAvailability, Context context);
 }

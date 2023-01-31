@@ -12,6 +12,17 @@ public interface CloudManifestFiles {
     /**
      * Returns a cloud specific manifest JSON file with latest version.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cloud specific manifest GET response along with {@link Response}.
+     */
+    Response<CloudManifestFileResponse> listWithResponse(Context context);
+
+    /**
+     * Returns a cloud specific manifest JSON file with latest version.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloud specific manifest GET response.
@@ -19,15 +30,18 @@ public interface CloudManifestFiles {
     CloudManifestFileResponse list();
 
     /**
-     * Returns a cloud specific manifest JSON file with latest version.
+     * Returns a cloud specific manifest JSON file.
      *
+     * @param verificationVersion Signing verification key version.
+     * @param versionCreationDate Signing verification key version creation date.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud specific manifest GET response.
+     * @return cloud specific manifest GET response along with {@link Response}.
      */
-    Response<CloudManifestFileResponse> listWithResponse(Context context);
+    Response<CloudManifestFileResponse> getWithResponse(
+        String verificationVersion, String versionCreationDate, Context context);
 
     /**
      * Returns a cloud specific manifest JSON file.
@@ -39,18 +53,4 @@ public interface CloudManifestFiles {
      * @return cloud specific manifest GET response.
      */
     CloudManifestFileResponse get(String verificationVersion);
-
-    /**
-     * Returns a cloud specific manifest JSON file.
-     *
-     * @param verificationVersion Signing verification key version.
-     * @param versionCreationDate Signing verification key version creation date.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud specific manifest GET response.
-     */
-    Response<CloudManifestFileResponse> getWithResponse(
-        String verificationVersion, String versionCreationDate, Context context);
 }

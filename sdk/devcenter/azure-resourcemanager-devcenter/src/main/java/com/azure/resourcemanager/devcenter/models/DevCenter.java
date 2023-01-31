@@ -66,7 +66,14 @@ public interface DevCenter {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the devCenterUri property: The URI of the resource.
+     *
+     * @return the devCenterUri value.
+     */
+    String devCenterUri();
 
     /**
      * Gets the region of the resource.

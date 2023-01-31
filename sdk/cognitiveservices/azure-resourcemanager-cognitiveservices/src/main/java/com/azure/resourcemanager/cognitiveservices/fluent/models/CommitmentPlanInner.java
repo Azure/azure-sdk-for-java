@@ -31,6 +31,10 @@ public final class CommitmentPlanInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CommitmentPlanProperties properties;
 
+    /** Creates an instance of CommitmentPlanInner class. */
+    public CommitmentPlanInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *

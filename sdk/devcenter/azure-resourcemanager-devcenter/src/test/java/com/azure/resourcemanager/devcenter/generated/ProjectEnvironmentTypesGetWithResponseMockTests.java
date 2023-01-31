@@ -34,7 +34,7 @@ public final class ProjectEnvironmentTypesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"tttwgdslqxih\",\"deploymentTargetId\":\"moo\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"petogebjox\":\"utcxapzhy\"},\"identity\":{\"principalId\":\"de4a2549-e588-4a68-bdde-47bf8c341eb6\",\"tenantId\":\"8d6d52fa-1efe-46c3-9be5-9a128a543aa2\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"brqnkkzjcjb\",\"id\":\"gaehvvibrxjjst\",\"name\":\"qbeitpkxztmoob\",\"type\":\"lftidgfcwqmpim\"}";
+            "{\"properties\":{\"provisioningState\":\"TransientFailure\",\"deploymentTargetId\":\"ivsiy\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"pgogtqxepny\":\"onbzoggculapzwy\",\"uajlyj\":\"b\",\"uxrkjp\":\"lvofqzhvfcibyfmo\",\"wiivwzjbhyzsx\":\"dwxf\"},\"identity\":{\"principalId\":\"8cec7fc8-c140-4e15-9062-d24414a21a1d\",\"tenantId\":\"51c2ecdb-dea7-4b44-9e3e-dbd54ff928a3\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"negvmnvuqe\",\"id\":\"lds\",\"name\":\"astjbkkdmflvestm\",\"type\":\"lx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +63,12 @@ public final class ProjectEnvironmentTypesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ProjectEnvironmentType response =
-            manager
-                .projectEnvironmentTypes()
-                .getWithResponse("kvyklxubyjaffmm", "bl", "qcuubgqibrta", Context.NONE)
-                .getValue();
+            manager.projectEnvironmentTypes().getWithResponse("ewda", "mdjvlpj", "xkzb", Context.NONE).getValue();
 
-        Assertions.assertEquals("utcxapzhy", response.tags().get("petogebjox"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("brqnkkzjcjb", response.location());
-        Assertions.assertEquals("moo", response.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, response.status());
+        Assertions.assertEquals("onbzoggculapzwy", response.tags().get("pgogtqxepny"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("negvmnvuqe", response.location());
+        Assertions.assertEquals("ivsiy", response.deploymentTargetId());
+        Assertions.assertEquals(EnableStatus.ENABLED, response.status());
     }
 }

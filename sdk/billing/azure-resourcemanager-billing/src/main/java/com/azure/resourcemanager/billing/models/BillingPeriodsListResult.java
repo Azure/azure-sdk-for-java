@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.BillingPeriodInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
  */
 @Immutable
 public final class BillingPeriodsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPeriodsListResult.class);
-
     /*
      * The list of billing periods.
      */
@@ -29,6 +25,10 @@ public final class BillingPeriodsListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of BillingPeriodsListResult class. */
+    public BillingPeriodsListResult() {
+    }
 
     /**
      * Get the value property: The list of billing periods.

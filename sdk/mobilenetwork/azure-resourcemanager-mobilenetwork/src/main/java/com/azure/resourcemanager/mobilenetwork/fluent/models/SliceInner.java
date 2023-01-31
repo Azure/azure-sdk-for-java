@@ -13,7 +13,7 @@ import com.azure.resourcemanager.mobilenetwork.models.Snssai;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Network slice resource. */
+/** Network slice resource. Must be created in the same location as its parent mobile network. */
 @Fluent
 public final class SliceInner extends Resource {
     /*
@@ -23,11 +23,14 @@ public final class SliceInner extends Resource {
     private SlicePropertiesFormat innerProperties = new SlicePropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of SliceInner class. */
+    public SliceInner() {
+    }
 
     /**
      * Get the innerProperties property: Slice properties.

@@ -66,6 +66,12 @@ public final class VaultProperties {
     private BackupStorageVersion backupStorageVersion;
 
     /*
+     * property to enable or disable resource provider inbound network traffic from public clients
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
      * Monitoring Settings of the vault
      */
     @JsonProperty(value = "monitoringSettings")
@@ -76,6 +82,16 @@ public final class VaultProperties {
      */
     @JsonProperty(value = "redundancySettings")
     private VaultPropertiesRedundancySettings redundancySettings;
+
+    /*
+     * Security Settings of the vault
+     */
+    @JsonProperty(value = "securitySettings")
+    private SecuritySettings securitySettings;
+
+    /** Creates an instance of VaultProperties class. */
+    public VaultProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning State.
@@ -192,6 +208,28 @@ public final class VaultProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: property to enable or disable resource provider inbound network traffic
+     * from public clients.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: property to enable or disable resource provider inbound network traffic
+     * from public clients.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Get the monitoringSettings property: Monitoring Settings of the vault.
      *
      * @return the monitoringSettings value.
@@ -232,6 +270,26 @@ public final class VaultProperties {
     }
 
     /**
+     * Get the securitySettings property: Security Settings of the vault.
+     *
+     * @return the securitySettings value.
+     */
+    public SecuritySettings securitySettings() {
+        return this.securitySettings;
+    }
+
+    /**
+     * Set the securitySettings property: Security Settings of the vault.
+     *
+     * @param securitySettings the securitySettings value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withSecuritySettings(SecuritySettings securitySettings) {
+        this.securitySettings = securitySettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -254,6 +312,9 @@ public final class VaultProperties {
         }
         if (redundancySettings() != null) {
             redundancySettings().validate();
+        }
+        if (securitySettings() != null) {
+            securitySettings().validate();
         }
     }
 }

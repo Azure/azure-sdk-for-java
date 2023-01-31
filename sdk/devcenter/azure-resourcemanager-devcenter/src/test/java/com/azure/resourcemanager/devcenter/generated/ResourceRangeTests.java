@@ -12,7 +12,7 @@ public final class ResourceRangeTests {
     @Test
     public void testDeserialize() {
         ResourceRange model =
-            BinaryData.fromString("{\"min\":1520793095,\"max\":1963784255}").toObject(ResourceRange.class);
+            BinaryData.fromString("{\"min\":703719662,\"max\":15253955}").toObject(ResourceRange.class);
     }
 
     @Test

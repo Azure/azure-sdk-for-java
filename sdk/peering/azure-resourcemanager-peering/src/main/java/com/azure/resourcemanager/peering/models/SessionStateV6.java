@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SessionStateV6. */
+/** The state of the IPv6 session. */
 public final class SessionStateV6 extends ExpandableStringEnum<SessionStateV6> {
     /** Static value None for SessionStateV6. */
     public static final SessionStateV6 NONE = fromString("None");
@@ -44,6 +44,15 @@ public final class SessionStateV6 extends ExpandableStringEnum<SessionStateV6> {
     public static final SessionStateV6 PENDING_REMOVE = fromString("PendingRemove");
 
     /**
+     * Creates a new instance of SessionStateV6 value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SessionStateV6() {
+    }
+
+    /**
      * Creates or finds a SessionStateV6 from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +63,11 @@ public final class SessionStateV6 extends ExpandableStringEnum<SessionStateV6> {
         return fromString(name, SessionStateV6.class);
     }
 
-    /** @return known SessionStateV6 values. */
+    /**
+     * Gets known SessionStateV6 values.
+     *
+     * @return known SessionStateV6 values.
+     */
     public static Collection<SessionStateV6> values() {
         return values(SessionStateV6.class);
     }

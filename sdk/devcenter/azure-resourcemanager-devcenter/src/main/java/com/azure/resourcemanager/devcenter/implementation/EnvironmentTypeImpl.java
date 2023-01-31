@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentTypeInner;
 import com.azure.resourcemanager.devcenter.models.EnvironmentType;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeUpdate;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public final class EnvironmentTypeImpl implements EnvironmentType, EnvironmentTy
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

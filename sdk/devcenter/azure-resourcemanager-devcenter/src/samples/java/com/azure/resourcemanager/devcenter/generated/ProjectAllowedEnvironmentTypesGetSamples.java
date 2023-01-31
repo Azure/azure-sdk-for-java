@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProjectAllowedEnvironmentTypes Get. */
 public final class ProjectAllowedEnvironmentTypesGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/ProjectAllowedEnvironmentTypes_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectAllowedEnvironmentTypes_Get.json
      */
     /**
      * Sample code: ProjectAllowedEnvironmentTypes_Get.
@@ -17,8 +17,6 @@ public final class ProjectAllowedEnvironmentTypesGetSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void projectAllowedEnvironmentTypesGet(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .projectAllowedEnvironmentTypes()
-            .getWithResponse("rg1", "Contoso", "{environmentTypeName}", Context.NONE);
+        manager.projectAllowedEnvironmentTypes().getWithResponse("rg1", "Contoso", "DevTest", Context.NONE);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KeyName. */
+/** key name to generate (Key1|Key2). */
 public enum KeyName {
     /** Enum value Key1. */
     KEY1("Key1"),
@@ -30,6 +30,9 @@ public enum KeyName {
      */
     @JsonCreator
     public static KeyName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeyName[] items = KeyName.values();
         for (KeyName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum KeyName {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

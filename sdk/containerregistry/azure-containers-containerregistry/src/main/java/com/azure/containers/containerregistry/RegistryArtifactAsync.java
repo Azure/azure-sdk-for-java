@@ -4,13 +4,8 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
-import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
-import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagOrder;
@@ -29,12 +24,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -61,16 +50,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * @see ContainerRegistryClientBuilder
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
-public final class RegistryArtifactAsync {
-    private final ContainerRegistriesImpl serviceClient;
-    private final String repositoryName;
-    private final String fullyQualifiedReference;
-    private final String endpoint;
-    private final String apiVersion;
-    private final String tagOrDigest;
-    private String digest;
-
-    private final ClientLogger logger = new ClientLogger(RegistryArtifactAsync.class);
+public final class RegistryArtifactAsync extends RegistryArtifactBase {
+    private static final ClientLogger LOGGER = new ClientLogger(RegistryArtifactAsync.class);
 
     /**
      * Creates a RegistryArtifactAsync type that sends requests to the given repository in the container registry service at {@code endpoint}.
@@ -82,75 +63,7 @@ public final class RegistryArtifactAsync {
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
     RegistryArtifactAsync(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
-        if (repositoryName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null"));
-        }
-
-        if (repositoryName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty"));
-        }
-
-        if (tagOrDigest == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null"));
-        }
-
-        if (tagOrDigest.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
-        }
-
-        AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
-            .pipeline(httpPipeline)
-            .url(endpoint)
-            .apiVersion(version)
-            .buildClient();
-
-        this.endpoint = endpoint;
-        this.repositoryName = repositoryName;
-        this.tagOrDigest = tagOrDigest;
-
-        try {
-            URL endpointUrl = new URL(endpoint);
-            this.fullyQualifiedReference = endpointUrl.getHost() + "/" + this.repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
-        } catch (MalformedURLException ex) {
-            // This will not happen.
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
-        }
-
-        this.serviceClient = registryImpl.getContainerRegistries();
-        this.apiVersion = version;
-    }
-
-    /**
-     * Gets the Azure Container Registry service endpoint for the current instance.
-     * @return The service endpoint for the current instance.
-     */
-    public String getRegistryEndpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Gets the fully qualified reference for the current instance.
-     * The fully qualifiedName is of the form 'registryName/repositoryName@digest'
-     * or 'registryName/repositoryName:tag' based on the docker naming convention and whether
-     * tag or digest was supplied to the constructor.
-     * @return Fully qualified reference of the current instance.
-     * */
-    public String getFullyQualifiedReference() {
-
-        return this.fullyQualifiedReference;
-    }
-
-    /**
-     * Gets the repository name for the current instance.
-     * Gets the repository name for the current instance.
-     * @return Name of the repository for the current instance.
-     * */
-    public String getRepositoryName() {
-        return this.repositoryName;
-    }
-
-    private boolean isDigest(String tagOrDigest) {
-        return tagOrDigest.contains(":");
+        super(repositoryName, tagOrDigest, httpPipeline, endpoint, version);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -159,14 +72,12 @@ public final class RegistryArtifactAsync {
             return Mono.just(digest);
         }
 
-        Mono<String> getTagMono = isDigest(tagOrDigest)
-            ? Mono.just(tagOrDigest)
-            : this.getTagProperties(tagOrDigest).map(a -> a.getDigest());
+        if (isDigest(tagOrDigest)) {
+            return Mono.just(tagOrDigest);
+        }
 
-        return getTagMono.flatMap(res -> {
-            this.digest = res;
-            return Mono.just(res);
-        });
+        return this.getTagProperties(tagOrDigest)
+            .map(a -> a.getDigest());
     }
 
     /**
@@ -191,14 +102,14 @@ public final class RegistryArtifactAsync {
         return withContext(context -> this.deleteWithResponse(context));
     }
 
-    Mono<Response<Void>> deleteWithResponse(Context context) {
+    private Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(repositoryName, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
-                .flatMap(UtilsImpl::deleteResponseToSuccess)
+                .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -250,19 +161,20 @@ public final class RegistryArtifactAsync {
         return withContext(context -> this.deleteTagWithResponse(tag, context));
     }
 
-    Mono<Response<Void>> deleteTagWithResponse(String tag, Context context) {
+    private Mono<Response<Void>> deleteTagWithResponse(String tag, Context context) {
+        if (tag == null) {
+            return monoError(LOGGER, new NullPointerException("'tag' cannot be null"));
+        }
+        if (tag.isEmpty()) {
+            return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
+        }
+
         try {
-            if (tag == null) {
-                return monoError(logger, new NullPointerException("'tag' cannot be null"));
-            }
-            if (tag.isEmpty()) {
-                return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
-            }
-            return this.serviceClient.deleteTagWithResponseAsync(repositoryName, tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
-                .flatMap(UtilsImpl::deleteResponseToSuccess)
+            return this.serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -322,13 +234,13 @@ public final class RegistryArtifactAsync {
         return withContext(context -> this.getManifestPropertiesWithResponse(context));
     }
 
-    Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
+    private  Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
         try {
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(repositoryName, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -391,19 +303,19 @@ public final class RegistryArtifactAsync {
         return withContext(context -> getTagPropertiesWithResponse(tag, context));
     }
 
-    Mono<Response<ArtifactTagProperties>> getTagPropertiesWithResponse(String tag, Context context) {
+    private Mono<Response<ArtifactTagProperties>> getTagPropertiesWithResponse(String tag, Context context) {
         try {
             if (tag == null) {
-                return monoError(logger, new NullPointerException("'tag' cannot be null."));
+                return monoError(LOGGER, new NullPointerException("'tag' cannot be null."));
             }
             if (tag.isEmpty()) {
-                return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
+                return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
             }
 
-            return this.serviceClient.getTagPropertiesWithResponseAsync(repositoryName, tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -503,54 +415,31 @@ public final class RegistryArtifactAsync {
             (token, pageSize) -> withContext(context -> listTagPropertiesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrder order, Context context) {
-        return new PagedFlux<>(
-            (pageSize) -> listTagPropertiesSinglePageAsync(pageSize, order, context),
-            (token, pageSize) -> listTagPropertiesNextSinglePageAsync(token, context));
-    }
-
-    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrder order, Context context) {
+    private  Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrder order, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
-                return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
+                return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
             final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
 
             return this.getDigestMono()
-                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(repositoryName, null, pageSize, orderString, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res, this::getTagProperties))
+                .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+                    baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
-    private List<ArtifactTagProperties> getTagProperties(List<TagAttributesBase> baseValues) {
-        Objects.requireNonNull(baseValues);
-
-        return baseValues.stream().map(value -> {
-            ArtifactTagProperties tagProperties = new ArtifactTagProperties()
-                .setDeleteEnabled(value.isDeleteEnabled())
-                .setReadEnabled(value.isReadEnabled())
-                .setListEnabled(value.isListEnabled())
-                .setWriteEnabled(value.isWriteEnabled());
-
-            ArtifactTagPropertiesHelper.setCreatedOn(tagProperties, value.getCreatedOn());
-            ArtifactTagPropertiesHelper.setlastUpdatedOn(tagProperties, value.getLastUpdatedOn());
-            ArtifactTagPropertiesHelper.setRepositoryName(tagProperties, repositoryName);
-            ArtifactTagPropertiesHelper.setName(tagProperties, value.getName());
-            ArtifactTagPropertiesHelper.setDigest(tagProperties, value.getDigest());
-            return tagProperties;
-        }).collect(Collectors.toList());
-    }
-
-    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
             return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res, this::getTagProperties));
+                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+                    baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -586,19 +475,19 @@ public final class RegistryArtifactAsync {
         return withContext(context -> this.updateTagPropertiesWithResponse(tag, tagProperties, context));
     }
 
-    Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
+    private Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
         String tag, ArtifactTagProperties tagProperties, Context context) {
         try {
             if (tag == null) {
-                return monoError(logger, new NullPointerException("'tag' cannot be null."));
+                return monoError(LOGGER, new NullPointerException("'tag' cannot be null."));
             }
 
             if (tag.isEmpty()) {
-                return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
+                return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
             }
 
             if (tagProperties == null) {
-                return monoError(logger, new NullPointerException("'tagProperties' cannot be null."));
+                return monoError(LOGGER, new NullPointerException("'tagProperties' cannot be null."));
             }
 
             TagWriteableProperties writeableProperties = new TagWriteableProperties()
@@ -607,10 +496,10 @@ public final class RegistryArtifactAsync {
                 .setReadEnabled(tagProperties.isReadEnabled())
                 .setWriteEnabled(tagProperties.isWriteEnabled());
 
-            return this.serviceClient.updateTagAttributesWithResponseAsync(repositoryName, tag, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -672,10 +561,10 @@ public final class RegistryArtifactAsync {
         return withContext(context -> this.updateManifestPropertiesWithResponse(manifestProperties, context));
     }
 
-    Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
+    private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
         try {
             if (manifestProperties == null) {
-                return monoError(logger, new NullPointerException("'value' cannot be null."));
+                return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
             }
 
             ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
@@ -685,10 +574,10 @@ public final class RegistryArtifactAsync {
                 .setReadEnabled(manifestProperties.isReadEnabled());
 
             return getDigestMono()
-                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(repositoryName, res, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
+                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), res, writeableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 

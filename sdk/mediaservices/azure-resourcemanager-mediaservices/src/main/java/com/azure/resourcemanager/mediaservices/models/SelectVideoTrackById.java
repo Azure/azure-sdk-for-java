@@ -20,6 +20,10 @@ public final class SelectVideoTrackById extends VideoTrackDescriptor {
     @JsonProperty(value = "trackId", required = true)
     private long trackId;
 
+    /** Creates an instance of SelectVideoTrackById class. */
+    public SelectVideoTrackById() {
+    }
+
     /**
      * Get the trackId property: Track identifier to select.
      *

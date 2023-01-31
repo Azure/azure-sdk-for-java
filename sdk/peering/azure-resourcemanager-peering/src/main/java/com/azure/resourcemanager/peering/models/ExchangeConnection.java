@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define an exchange connection. */
 @Fluent
 public final class ExchangeConnection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExchangeConnection.class);
-
     /*
-     * The PeeringDB.com ID of the facility at which the connection has to be
-     * set up.
+     * The PeeringDB.com ID of the facility at which the connection has to be set up.
      */
     @JsonProperty(value = "peeringDBFacilityId")
     private Integer peeringDBFacilityId;
@@ -44,6 +39,10 @@ public final class ExchangeConnection {
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
+
+    /** Creates an instance of ExchangeConnection class. */
+    public ExchangeConnection() {
+    }
 
     /**
      * Get the peeringDBFacilityId property: The PeeringDB.com ID of the facility at which the connection has to be set

@@ -26,6 +26,10 @@ public final class MetricAvailability {
     @JsonProperty(value = "retention")
     private Duration retention;
 
+    /** Creates an instance of MetricAvailability class. */
+    public MetricAvailability() {
+    }
+
     /**
      * Get the timeGrain property: the time grain specifies the aggregation interval for the metric. Expressed as a
      * duration 'PT1M', 'P1D', etc.

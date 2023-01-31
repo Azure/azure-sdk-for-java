@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Method `beginAnalyzeDocument` requires the document length to be specified and not null when 
+analyzing a document.
+
+## 4.0.3 (2023-01-09)
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 
 ## 4.0.2 (2022-11-10)
 

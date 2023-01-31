@@ -29,6 +29,9 @@ public final class AuthorizeCopyRequest {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
+    /** Creates an instance of AuthorizeCopyRequest class. */
+    public AuthorizeCopyRequest() {}
+
     /**
      * Get the modelId property: Unique document model name.
      *

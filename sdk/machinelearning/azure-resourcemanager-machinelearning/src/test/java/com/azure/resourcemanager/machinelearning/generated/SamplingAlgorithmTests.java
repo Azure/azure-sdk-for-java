@@ -6,19 +6,18 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.SamplingAlgorithm;
-import org.junit.jupiter.api.Test;
 
 public final class SamplingAlgorithmTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SamplingAlgorithm model =
             BinaryData
                 .fromString("{\"samplingAlgorithmType\":\"SamplingAlgorithm\"}")
                 .toObject(SamplingAlgorithm.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SamplingAlgorithm model = new SamplingAlgorithm();
         model = BinaryData.fromObject(model).toObject(SamplingAlgorithm.class);
     }

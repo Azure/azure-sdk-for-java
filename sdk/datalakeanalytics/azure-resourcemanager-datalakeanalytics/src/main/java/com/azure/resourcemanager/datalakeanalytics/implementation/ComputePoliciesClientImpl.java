@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.fluent.ComputePoliciesClient;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.ComputePolicyInner;
 import com.azure.resourcemanager.datalakeanalytics.models.ComputePolicyListResult;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ComputePoliciesClient. */
 public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
-    private final ClientLogger logger = new ClientLogger(ComputePoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ComputePoliciesService service;
 
@@ -64,7 +61,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataLakeAnalyticsAcc")
-    private interface ComputePoliciesService {
+    public interface ComputePoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
@@ -166,7 +163,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ComputePolicyInner>> listByAccountSinglePageAsync(
@@ -225,7 +223,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ComputePolicyInner>> listByAccountSinglePageAsync(
@@ -280,7 +279,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ComputePolicyInner> listByAccountAsync(String resourceGroupName, String accountName) {
@@ -299,7 +298,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ComputePolicyInner> listByAccountAsync(
@@ -318,7 +317,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputePolicyInner> listByAccount(String resourceGroupName, String accountName) {
@@ -335,7 +334,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputePolicyInner> listByAccount(
@@ -355,7 +354,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return data Lake Analytics compute policy information along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ComputePolicyInner>> createOrUpdateWithResponseAsync(
@@ -422,7 +422,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return data Lake Analytics compute policy information along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ComputePolicyInner>> createOrUpdateWithResponseAsync(
@@ -486,7 +487,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return data Lake Analytics compute policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ComputePolicyInner> createOrUpdateAsync(
@@ -495,14 +496,33 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
         String computePolicyName,
         CreateOrUpdateComputePolicyParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, computePolicyName, parameters)
-            .flatMap(
-                (Response<ComputePolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates the specified compute policy. During update, the compute policy with the specified name will
+     * be replaced with this new compute policy. An account supports, at most, 50 policies.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param computePolicyName The name of the compute policy to create or update.
+     * @param parameters Parameters supplied to create or update the compute policy. The max degree of parallelism per
+     *     job property, min priority per job property, or both must be present.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Analytics compute policy information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ComputePolicyInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String computePolicyName,
+        CreateOrUpdateComputePolicyParameters parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, computePolicyName, parameters, context)
+            .block();
     }
 
     /**
@@ -525,33 +545,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
         String accountName,
         String computePolicyName,
         CreateOrUpdateComputePolicyParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, accountName, computePolicyName, parameters).block();
-    }
-
-    /**
-     * Creates or updates the specified compute policy. During update, the compute policy with the specified name will
-     * be replaced with this new compute policy. An account supports, at most, 50 policies.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to create or update.
-     * @param parameters Parameters supplied to create or update the compute policy. The max degree of parallelism per
-     *     job property, min priority per job property, or both must be present.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComputePolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String computePolicyName,
-        CreateOrUpdateComputePolicyParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, computePolicyName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, accountName, computePolicyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -563,7 +558,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
+     * @return the specified Data Lake Analytics compute policy along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ComputePolicyInner>> getWithResponseAsync(
@@ -618,7 +614,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
+     * @return the specified Data Lake Analytics compute policy along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ComputePolicyInner>> getWithResponseAsync(
@@ -669,19 +666,30 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
+     * @return the specified Data Lake Analytics compute policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ComputePolicyInner> getAsync(String resourceGroupName, String accountName, String computePolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, computePolicyName)
-            .flatMap(
-                (Response<ComputePolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified Data Lake Analytics compute policy.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param computePolicyName The name of the compute policy to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Data Lake Analytics compute policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ComputePolicyInner> getWithResponse(
+        String resourceGroupName, String accountName, String computePolicyName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, computePolicyName, context).block();
     }
 
     /**
@@ -697,25 +705,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputePolicyInner get(String resourceGroupName, String accountName, String computePolicyName) {
-        return getAsync(resourceGroupName, accountName, computePolicyName).block();
-    }
-
-    /**
-     * Gets the specified Data Lake Analytics compute policy.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComputePolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String computePolicyName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, computePolicyName, context).block();
+        return getWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -728,7 +718,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return data Lake Analytics compute policy information along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ComputePolicyInner>> updateWithResponseAsync(
@@ -791,7 +782,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return data Lake Analytics compute policy information along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ComputePolicyInner>> updateWithResponseAsync(
@@ -847,27 +839,17 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param computePolicyName The name of the compute policy to update.
-     * @param parameters Parameters supplied to update the compute policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return data Lake Analytics compute policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ComputePolicyInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String computePolicyName,
-        UpdateComputePolicyParameters parameters) {
+        String resourceGroupName, String accountName, String computePolicyName) {
+        final UpdateComputePolicyParameters parameters = null;
         return updateWithResponseAsync(resourceGroupName, accountName, computePolicyName, parameters)
-            .flatMap(
-                (Response<ComputePolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -876,24 +858,21 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param computePolicyName The name of the compute policy to update.
+     * @param parameters Parameters supplied to update the compute policy.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
+     * @return data Lake Analytics compute policy information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComputePolicyInner> updateAsync(
-        String resourceGroupName, String accountName, String computePolicyName) {
-        final UpdateComputePolicyParameters parameters = null;
-        return updateWithResponseAsync(resourceGroupName, accountName, computePolicyName, parameters)
-            .flatMap(
-                (Response<ComputePolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<ComputePolicyInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String computePolicyName,
+        UpdateComputePolicyParameters parameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, computePolicyName, parameters, context).block();
     }
 
     /**
@@ -910,30 +889,8 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputePolicyInner update(String resourceGroupName, String accountName, String computePolicyName) {
         final UpdateComputePolicyParameters parameters = null;
-        return updateAsync(resourceGroupName, accountName, computePolicyName, parameters).block();
-    }
-
-    /**
-     * Updates the specified compute policy.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to update.
-     * @param parameters Parameters supplied to update the compute policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics compute policy information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComputePolicyInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String computePolicyName,
-        UpdateComputePolicyParameters parameters,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, computePolicyName, parameters, context).block();
+        return updateWithResponse(resourceGroupName, accountName, computePolicyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -945,7 +902,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1000,7 +957,7 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1051,12 +1008,30 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String computePolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, computePolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the specified compute policy from the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param computePolicyName The name of the compute policy to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String computePolicyName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, computePolicyName, context).block();
     }
 
     /**
@@ -1071,35 +1046,19 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String computePolicyName) {
-        deleteAsync(resourceGroupName, accountName, computePolicyName).block();
-    }
-
-    /**
-     * Deletes the specified compute policy from the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param computePolicyName The name of the compute policy to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String computePolicyName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, computePolicyName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ComputePolicyInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -1130,12 +1089,14 @@ public final class ComputePoliciesClientImpl implements ComputePoliciesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ComputePolicyInner>> listByAccountNextSinglePageAsync(String nextLink, Context context) {

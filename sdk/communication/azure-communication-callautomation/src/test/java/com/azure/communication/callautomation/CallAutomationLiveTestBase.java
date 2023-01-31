@@ -56,13 +56,13 @@ public class CallAutomationLiveTestBase extends TestBase {
     protected static final String PHONE_USER_1 = Configuration.getGlobalConfiguration()
         .get("TARGET_PHONE_NUMBER", "+16471234567");
     protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
-        .get("ACS_MEDIA_SOURCE", "https://mwlstoragetest.blob.core.windows.net/blobs1/languagesPrompt.wav");
+        .get("ACS_MEDIA_SOURCE", "https://acstestapp1.azurewebsites.net/audio/bot-hold-music-2.wav");
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
         .add("rawId")
         .add("id");
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
@@ -150,7 +150,7 @@ public class CallAutomationLiveTestBase extends TestBase {
         }
     }
 
-    private String redact(String content, Matcher matcher) {
+    protected String redact(String content, Matcher matcher) {
         while (matcher.find()) {
             String captureGroup = matcher.group(1);
             if (!CoreUtils.isNullOrEmpty(captureGroup)) {

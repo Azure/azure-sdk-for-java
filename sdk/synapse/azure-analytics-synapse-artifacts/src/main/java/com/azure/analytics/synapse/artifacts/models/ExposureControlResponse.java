@@ -22,6 +22,9 @@ public final class ExposureControlResponse {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of ExposureControlResponse class. */
+    public ExposureControlResponse() {}
+
     /**
      * Get the featureName property: The feature name.
      *

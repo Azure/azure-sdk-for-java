@@ -28,6 +28,10 @@ public final class BatchAccountKeysInner {
     @JsonProperty(value = "secondary", access = JsonProperty.Access.WRITE_ONLY)
     private String secondary;
 
+    /** Creates an instance of BatchAccountKeysInner class. */
+    public BatchAccountKeysInner() {
+    }
+
     /**
      * Get the accountName property: The Batch account name.
      *

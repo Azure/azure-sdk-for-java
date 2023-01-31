@@ -19,12 +19,12 @@ public final class PoolInnerTests {
         PoolInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"ooaojkniodkooebw\",\"devBoxDefinitionName\":\"jhemms\",\"networkConnectionName\":\"dkcrodt\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"lfltka\",\"tags\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"},\"id\":\"ukzclewyhmlwpaz\",\"name\":\"zpof\",\"type\":\"cckwyfzqwhxxbu\"}")
+                    "{\"properties\":{\"provisioningState\":\"Creating\",\"devBoxDefinitionName\":\"sorgj\",\"networkConnectionName\":\"bldtlww\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"ncvokotllxdyhg\",\"tags\":{\"hadoocrk\":\"cogjltdtbn\",\"amqgxqquezikyw\":\"cikhnv\"},\"id\":\"gxk\",\"name\":\"lla\",\"type\":\"melwuipiccjz\"}")
                 .toObject(PoolInner.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
-        Assertions.assertEquals("jhemms", model.devBoxDefinitionName());
-        Assertions.assertEquals("dkcrodt", model.networkConnectionName());
+        Assertions.assertEquals("ncvokotllxdyhg", model.location());
+        Assertions.assertEquals("cogjltdtbn", model.tags().get("hadoocrk"));
+        Assertions.assertEquals("sorgj", model.devBoxDefinitionName());
+        Assertions.assertEquals("bldtlww", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
     }
@@ -33,26 +33,17 @@ public final class PoolInnerTests {
     public void testSerialize() {
         PoolInner model =
             new PoolInner()
-                .withLocation("lfltka")
-                .withTags(
-                    mapOf(
-                        "akggkfpag",
-                        "efkdlf",
-                        "lyls",
-                        "owpulpq",
-                        "agxsdszuemps",
-                        "xkqjnsjervt",
-                        "nqicvinvkjjxdxrb",
-                        "zkfzbeyv"))
-                .withDevBoxDefinitionName("jhemms")
-                .withNetworkConnectionName("dkcrodt")
+                .withLocation("ncvokotllxdyhg")
+                .withTags(mapOf("hadoocrk", "cogjltdtbn", "amqgxqquezikyw", "cikhnv"))
+                .withDevBoxDefinitionName("sorgj")
+                .withNetworkConnectionName("bldtlww")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
                 .withLocalAdministrator(LocalAdminStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(PoolInner.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
-        Assertions.assertEquals("jhemms", model.devBoxDefinitionName());
-        Assertions.assertEquals("dkcrodt", model.networkConnectionName());
+        Assertions.assertEquals("ncvokotllxdyhg", model.location());
+        Assertions.assertEquals("cogjltdtbn", model.tags().get("hadoocrk"));
+        Assertions.assertEquals("sorgj", model.devBoxDefinitionName());
+        Assertions.assertEquals("bldtlww", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
     }

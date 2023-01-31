@@ -7,15 +7,12 @@ package com.azure.resourcemanager.delegatednetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedControllerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of Delegated controller resources. */
 @Fluent
 public final class DelegatedControllers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedControllers.class);
-
     /*
      * An array of Delegated controller resources.
      */
@@ -27,6 +24,10 @@ public final class DelegatedControllers {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DelegatedControllers class. */
+    public DelegatedControllers() {
+    }
 
     /**
      * Get the value property: An array of Delegated controller resources.
@@ -64,11 +65,13 @@ public final class DelegatedControllers {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model DelegatedControllers"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DelegatedControllers.class);
 }

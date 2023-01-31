@@ -17,6 +17,10 @@ public final class ServiceResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of ServiceResourceId class. */
+    public ServiceResourceId() {
+    }
+
     /**
      * Get the id property: Service resource ID.
      *

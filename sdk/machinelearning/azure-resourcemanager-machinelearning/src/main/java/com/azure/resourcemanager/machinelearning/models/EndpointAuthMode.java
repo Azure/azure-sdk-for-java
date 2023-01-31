@@ -20,6 +20,15 @@ public final class EndpointAuthMode extends ExpandableStringEnum<EndpointAuthMod
     public static final EndpointAuthMode AADTOKEN = fromString("AADToken");
 
     /**
+     * Creates a new instance of EndpointAuthMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointAuthMode() {
+    }
+
+    /**
      * Creates or finds a EndpointAuthMode from its string representation.
      *
      * @param name a name to look for.

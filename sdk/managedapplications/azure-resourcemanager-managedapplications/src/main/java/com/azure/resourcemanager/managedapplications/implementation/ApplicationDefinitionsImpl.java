@@ -13,10 +13,9 @@ import com.azure.resourcemanager.managedapplications.fluent.ApplicationDefinitio
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationDefinitionInner;
 import com.azure.resourcemanager.managedapplications.models.ApplicationDefinition;
 import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplicationDefinitionsImpl implements ApplicationDefinitions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationDefinitionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationDefinitionsImpl.class);
 
     private final ApplicationDefinitionsClient innerClient;
 
@@ -29,16 +28,6 @@ public final class ApplicationDefinitionsImpl implements ApplicationDefinitions 
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationDefinition getByResourceGroup(String resourceGroupName, String applicationDefinitionName) {
-        ApplicationDefinitionInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, applicationDefinitionName);
-        if (inner != null) {
-            return new ApplicationDefinitionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationDefinition> getByResourceGroupWithResponse(
         String resourceGroupName, String applicationDefinitionName, Context context) {
         Response<ApplicationDefinitionInner> inner =
@@ -49,6 +38,16 @@ public final class ApplicationDefinitionsImpl implements ApplicationDefinitions 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationDefinition getByResourceGroup(String resourceGroupName, String applicationDefinitionName) {
+        ApplicationDefinitionInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, applicationDefinitionName);
+        if (inner != null) {
+            return new ApplicationDefinitionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -73,15 +72,6 @@ public final class ApplicationDefinitionsImpl implements ApplicationDefinitions 
         return Utils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
     }
 
-    public ApplicationDefinition getById(String resourceGroupName, String applicationDefinitionName) {
-        ApplicationDefinitionInner inner = this.serviceClient().getById(resourceGroupName, applicationDefinitionName);
-        if (inner != null) {
-            return new ApplicationDefinitionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationDefinition> getByIdWithResponse(
         String resourceGroupName, String applicationDefinitionName, Context context) {
         Response<ApplicationDefinitionInner> inner =
@@ -92,6 +82,15 @@ public final class ApplicationDefinitionsImpl implements ApplicationDefinitions 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationDefinition getById(String resourceGroupName, String applicationDefinitionName) {
+        ApplicationDefinitionInner inner = this.serviceClient().getById(resourceGroupName, applicationDefinitionName);
+        if (inner != null) {
+            return new ApplicationDefinitionImpl(inner, this.manager());
         } else {
             return null;
         }

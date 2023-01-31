@@ -58,7 +58,7 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface GlobalParametersService {
+    public interface GlobalParametersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

@@ -61,6 +61,9 @@ public class SybaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SybaseLinkedService class. */
+    public SybaseLinkedService() {}
+
     /**
      * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
      *

@@ -43,6 +43,10 @@ public final class TimeSeriesBaseline {
     @JsonProperty(value = "metadataValues")
     private List<BaselineMetadata> metadataValues;
 
+    /** Creates an instance of TimeSeriesBaseline class. */
+    public TimeSeriesBaseline() {
+    }
+
     /**
      * Get the aggregation property: The aggregation type of the metric.
      *

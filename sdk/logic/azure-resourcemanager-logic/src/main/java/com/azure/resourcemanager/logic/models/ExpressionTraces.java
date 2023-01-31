@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The expression traces. */
 @Fluent
 public final class ExpressionTraces {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressionTraces.class);
-
     /*
      * The inputs property.
      */
     @JsonProperty(value = "inputs")
     private List<ExpressionRoot> inputs;
+
+    /** Creates an instance of ExpressionTraces class. */
+    public ExpressionTraces() {
+    }
 
     /**
      * Get the inputs property: The inputs property.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates MySQL database connection. */
 @Fluent
 public final class ConnectToSourceMySqlTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceMySqlTaskInput.class);
-
     /*
      * Information for connecting to MySQL source
      */
@@ -31,6 +28,10 @@ public final class ConnectToSourceMySqlTaskInput {
      */
     @JsonProperty(value = "checkPermissionsGroup")
     private ServerLevelPermissionsGroup checkPermissionsGroup;
+
+    /** Creates an instance of ConnectToSourceMySqlTaskInput class. */
+    public ConnectToSourceMySqlTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Information for connecting to MySQL source.
@@ -99,7 +100,7 @@ public final class ConnectToSourceMySqlTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model ConnectToSourceMySqlTaskInput"));
@@ -107,4 +108,6 @@ public final class ConnectToSourceMySqlTaskInput {
             sourceConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToSourceMySqlTaskInput.class);
 }

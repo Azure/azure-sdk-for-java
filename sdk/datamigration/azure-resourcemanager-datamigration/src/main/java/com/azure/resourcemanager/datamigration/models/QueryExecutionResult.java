@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes query analysis results for execution in source and target. */
 @Immutable
 public final class QueryExecutionResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryExecutionResult.class);
-
     /*
      * Query text retrieved from the source server
      */
@@ -37,6 +33,10 @@ public final class QueryExecutionResult {
      */
     @JsonProperty(value = "targetResult", access = JsonProperty.Access.WRITE_ONLY)
     private ExecutionStatistics targetResult;
+
+    /** Creates an instance of QueryExecutionResult class. */
+    public QueryExecutionResult() {
+    }
 
     /**
      * Get the queryText property: Query text retrieved from the source server.

@@ -17,6 +17,10 @@ public final class ActionList {
     @JsonProperty(value = "actionGroups")
     private List<ActivityLogAlertActionGroup> actionGroups;
 
+    /** Creates an instance of ActionList class. */
+    public ActionList() {
+    }
+
     /**
      * Get the actionGroups property: The list of the Action Groups.
      *

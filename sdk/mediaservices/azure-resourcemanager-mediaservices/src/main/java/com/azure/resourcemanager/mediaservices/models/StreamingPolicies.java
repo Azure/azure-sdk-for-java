@@ -52,21 +52,6 @@ public interface StreamingPolicies {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
-     */
-    StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName);
-
-    /**
-     * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param streamingPolicyName The Streaming Policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,9 +62,9 @@ public interface StreamingPolicies {
         String resourceGroupName, String accountName, String streamingPolicyName, Context context);
 
     /**
-     * Delete a Streaming Policy
+     * Get a Streaming Policy
      *
-     * <p>Deletes a Streaming Policy in the Media Services account.
+     * <p>Get the details of a Streaming Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -87,8 +72,9 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a Streaming Policy in the Media Services account.
      */
-    void delete(String resourceGroupName, String accountName, String streamingPolicyName);
+    StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName);
 
     /**
      * Delete a Streaming Policy
@@ -106,6 +92,20 @@ public interface StreamingPolicies {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context);
+
+    /**
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String streamingPolicyName);
 
     /**
      * Get a Streaming Policy

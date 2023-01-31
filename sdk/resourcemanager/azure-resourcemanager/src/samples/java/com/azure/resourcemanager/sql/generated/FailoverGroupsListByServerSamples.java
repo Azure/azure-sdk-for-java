@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FailoverGroups ListByServer. */
 public final class FailoverGroupsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/FailoverGroupList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupList.json
      */
     /**
      * Sample code: List failover group.

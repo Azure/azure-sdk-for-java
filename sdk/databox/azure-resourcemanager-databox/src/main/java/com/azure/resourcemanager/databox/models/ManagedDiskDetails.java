@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ManagedDisk")
 @Fluent
 public final class ManagedDiskDetails extends DataAccountDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDiskDetails.class);
-
     /*
      * Resource Group Id of the compute disks.
      */
@@ -25,11 +22,14 @@ public final class ManagedDiskDetails extends DataAccountDetails {
     private String resourceGroupId;
 
     /*
-     * Resource Id of the storage account that can be used to copy the vhd for
-     * staging.
+     * Resource Id of the storage account that can be used to copy the vhd for staging.
      */
     @JsonProperty(value = "stagingStorageAccountId", required = true)
     private String stagingStorageAccountId;
+
+    /** Creates an instance of ManagedDiskDetails class. */
+    public ManagedDiskDetails() {
+    }
 
     /**
      * Get the resourceGroupId property: Resource Group Id of the compute disks.
@@ -89,16 +89,18 @@ public final class ManagedDiskDetails extends DataAccountDetails {
     public void validate() {
         super.validate();
         if (resourceGroupId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceGroupId in model ManagedDiskDetails"));
         }
         if (stagingStorageAccountId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property stagingStorageAccountId in model ManagedDiskDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedDiskDetails.class);
 }

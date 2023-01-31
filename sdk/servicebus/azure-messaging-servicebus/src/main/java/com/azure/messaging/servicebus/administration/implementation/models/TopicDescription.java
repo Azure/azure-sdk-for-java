@@ -710,7 +710,7 @@ public final class TopicDescription {
      * Set the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
      *
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
-     * @return the QueueDescription object itself.
+     * @return the TopicDescription object itself.
      */
     public TopicDescription setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
         this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;

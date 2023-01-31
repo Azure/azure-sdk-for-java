@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devcenter.models;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.devcenter.fluent.models.OperationStatusInner;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -64,7 +65,7 @@ public interface OperationStatus {
      *
      * @return the error value.
      */
-    ErrorDetail error();
+    ManagementError error();
 
     /**
      * Gets the resourceId property: The id of the resource.

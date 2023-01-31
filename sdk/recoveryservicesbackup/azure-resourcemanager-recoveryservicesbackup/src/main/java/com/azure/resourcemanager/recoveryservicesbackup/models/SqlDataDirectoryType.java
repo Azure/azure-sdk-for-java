@@ -20,6 +20,15 @@ public final class SqlDataDirectoryType extends ExpandableStringEnum<SqlDataDire
     public static final SqlDataDirectoryType LOG = fromString("Log");
 
     /**
+     * Creates a new instance of SqlDataDirectoryType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlDataDirectoryType() {
+    }
+
+    /**
      * Creates or finds a SqlDataDirectoryType from its string representation.
      *
      * @param name a name to look for.

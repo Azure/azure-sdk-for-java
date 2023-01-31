@@ -29,6 +29,15 @@ public final class ResourceHealthStatus extends ExpandableStringEnum<ResourceHea
     public static final ResourceHealthStatus INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of ResourceHealthStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceHealthStatus() {
+    }
+
+    /**
      * Creates or finds a ResourceHealthStatus from its string representation.
      *
      * @param name a name to look for.

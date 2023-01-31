@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement protocol settings. */
 @Fluent
 public final class AS2ProtocolSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2ProtocolSettings.class);
-
     /*
      * The message connection settings.
      */
@@ -55,6 +52,10 @@ public final class AS2ProtocolSettings {
      */
     @JsonProperty(value = "errorSettings", required = true)
     private AS2ErrorSettings errorSettings;
+
+    /** Creates an instance of AS2ProtocolSettings class. */
+    public AS2ProtocolSettings() {
+    }
 
     /**
      * Get the messageConnectionSettings property: The message connection settings.
@@ -204,7 +205,7 @@ public final class AS2ProtocolSettings {
      */
     public void validate() {
         if (messageConnectionSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageConnectionSettings in model AS2ProtocolSettings"));
@@ -212,7 +213,7 @@ public final class AS2ProtocolSettings {
             messageConnectionSettings().validate();
         }
         if (acknowledgementConnectionSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property acknowledgementConnectionSettings in model AS2ProtocolSettings"));
@@ -220,14 +221,14 @@ public final class AS2ProtocolSettings {
             acknowledgementConnectionSettings().validate();
         }
         if (mdnSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property mdnSettings in model AS2ProtocolSettings"));
         } else {
             mdnSettings().validate();
         }
         if (securitySettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property securitySettings in model AS2ProtocolSettings"));
@@ -235,7 +236,7 @@ public final class AS2ProtocolSettings {
             securitySettings().validate();
         }
         if (validationSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property validationSettings in model AS2ProtocolSettings"));
@@ -243,7 +244,7 @@ public final class AS2ProtocolSettings {
             validationSettings().validate();
         }
         if (envelopeSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property envelopeSettings in model AS2ProtocolSettings"));
@@ -251,7 +252,7 @@ public final class AS2ProtocolSettings {
             envelopeSettings().validate();
         }
         if (errorSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property errorSettings in model AS2ProtocolSettings"));
@@ -259,4 +260,6 @@ public final class AS2ProtocolSettings {
             errorSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2ProtocolSettings.class);
 }
