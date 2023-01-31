@@ -318,7 +318,7 @@ public final class UtilsImpl {
         if (!CoreUtils.isNullOrEmpty(continuationLinkHeader) && continuationLinkHeader.charAt(0) == '<') {
             int endIndex = continuationLinkHeader.indexOf(">;");
             if (endIndex < 2) {
-                LOGGER.warning("expected 'Link' header value - '{}'", continuationLinkHeader);
+                LOGGER.warning("unexpected 'Link' header value - '{}'", continuationLinkHeader);
             }
             return continuationLinkHeader.substring(1, endIndex);
         }
