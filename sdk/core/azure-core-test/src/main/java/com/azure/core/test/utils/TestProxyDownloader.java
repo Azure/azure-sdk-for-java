@@ -33,7 +33,7 @@ import java.util.zip.GZIPInputStream;
  */
 public final class TestProxyDownloader {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyDownloader.class);
-    private static final String TEST_PROXY_TAG = "test-proxy_1.0.0-dev.20221212.2";
+    private static final String TEST_PROXY_TAG = "test-proxy_1.0.0-dev.20230125.14";
     private static final Path PROXYPATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
     private static final String TEST_PROXY_VERSION_FILE = "test-proxy-version.txt";
 
