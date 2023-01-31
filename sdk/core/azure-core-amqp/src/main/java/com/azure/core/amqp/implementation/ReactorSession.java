@@ -94,6 +94,7 @@ public class ReactorSession implements AmqpSession {
     private final AmqpRetryOptions retryOptions;
 
     private final ReactorHandlerProvider handlerProvider;
+    private final AmqpLinkProvider linkProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     private final Disposable.Composite connectionSubscriptions;
 
@@ -114,7 +115,7 @@ public class ReactorSession implements AmqpSession {
      * @param retryOptions for the session operations.
      */
     public ReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
-        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
         this.amqpConnection = amqpConnection;
@@ -123,6 +124,7 @@ public class ReactorSession implements AmqpSession {
         this.handlerProvider = handlerProvider;
         this.sessionName = sessionName;
         this.provider = provider;
+        this.linkProvider = linkProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
         this.tokenManagerProvider = tokenManagerProvider;
         this.messageSerializer = messageSerializer;
@@ -414,10 +416,10 @@ public class ReactorSession implements AmqpSession {
     /**
      * Given the entity path, associated receiver and link handler, creates the receive link instance.
      */
-    protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
+    protected AmqpReceiveLink createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
         AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
-        return new ReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
+        return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
             reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
     }
 
@@ -548,7 +550,7 @@ public class ReactorSession implements AmqpSession {
 
         sender.open();
 
-        final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
+        final AmqpSendLink reactorSender = linkProvider.createSendLink(amqpConnection, entityPath, sender, sendLinkHandler,
             provider, tokenManager, messageSerializer, options, timeoutScheduler, handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath));
 
         //@formatter:off
@@ -615,7 +617,7 @@ public class ReactorSession implements AmqpSession {
 
         receiver.open();
 
-        final ReactorReceiver reactorReceiver = createConsumer(entityPath, receiver, receiveLinkHandler,
+        final AmqpReceiveLink reactorReceiver = createConsumer(entityPath, receiver, receiveLinkHandler,
             tokenManager, provider);
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {

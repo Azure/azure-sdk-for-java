@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
@@ -12,8 +13,10 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -36,8 +39,7 @@ import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpLinkProvider;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
@@ -47,20 +49,20 @@ import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOp
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.apache.qpid.proton.engine.SslDomain;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
@@ -210,11 +212,11 @@ public final class ServiceBusClientBuilder implements
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
 
-    private final Object connectionLock = new Object();
+    private final Object cacheInitDisposeLock = new Object();
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private ClientOptions clientOptions;
     private Configuration configuration;
-    private ServiceBusConnectionProcessor sharedConnection;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
     private String connectionStringEntityName;
     private TokenCredential credentials;
     private String fullyQualifiedNamespace;
@@ -659,7 +661,7 @@ public final class ServiceBusClientBuilder implements
      * Called when a child client is closed. Disposes of the shared connection if there are no more clients.
      */
     void onClientClose() {
-        synchronized (connectionLock) {
+        synchronized (cacheInitDisposeLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
             LOGGER.atInfo()
                 .addKeyValue("numberOfOpenClients", numberOfOpenClients)
@@ -677,16 +679,16 @@ public final class ServiceBusClientBuilder implements
 
             LOGGER.info("No more open clients, closing shared connection.");
 
-            if (sharedConnection != null) {
-                sharedConnection.dispose();
-                sharedConnection = null;
+            if (sharedConnectionCache != null) {
+                sharedConnectionCache.dispose();
+                sharedConnectionCache = null;
             } else {
-                LOGGER.warning("Shared ServiceBusConnectionProcessor was already disposed.");
+                LOGGER.warning("Shared ReactorConnectionCache was already disposed.");
             }
         }
     }
 
-    private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer) {
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer) {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
@@ -695,32 +697,36 @@ public final class ServiceBusClientBuilder implements
             scheduler = Schedulers.boundedElastic();
         }
 
-        synchronized (connectionLock) {
-            if (sharedConnection == null) {
+        synchronized (cacheInitDisposeLock) {
+            if (sharedConnectionCache == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
 
-                final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
+                final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = () -> {
                     final String connectionId = StringUtil.getRandomString("MF");
                     final ReactorProvider provider = new ReactorProvider();
                     final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
                     final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                         connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                         connectionOptions.getAuthorizationScope());
+                    final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
 
-                    return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
-                        crossEntityTransactions);
-                }).repeat();
+                    return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
+                        linkProvider, tokenManagerProvider, serializer, crossEntityTransactions);
+                };
 
-                sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
-                    connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
+                final String fqdn = connectionOptions.getFullyQualifiedNamespace();
+                final String entityPath = "N/A";
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+                final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
+
+                sharedConnectionCache = new ReactorConnectionCache<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
             }
         }
 
         final int numberOfOpenClients = openClients.incrementAndGet();
         LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
-        return sharedConnection;
+        return sharedConnectionCache;
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -904,7 +910,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
 
@@ -933,9 +939,9 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(ServiceBusTracer.getDefaultTracer(),
-                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityName);
+                createMeter(), recoverableConnection.getFullyQualifiedNamespace(), entityName);
 
-            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
+            return new ServiceBusSenderAsyncClient(entityName, entityType, recoverableConnection, retryOptions,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
         }
 
@@ -1401,7 +1407,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
@@ -1415,13 +1421,13 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier);
+                recoverableConnection, messageSerializer, receiverOptions, clientIdentifier);
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                ServiceBusTracer.getDefaultTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(),
+                ServiceBusTracer.getDefaultTracer(), createMeter(), recoverableConnection.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, false);
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+            return new ServiceBusReceiverAsyncClient(recoverableConnection.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, recoverableConnection, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
         }
 
@@ -1482,7 +1488,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
@@ -1495,9 +1501,9 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(ServiceBusTracer.getDefaultTracer(),
-                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
-            return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-                entityPath, entityType, receiverOptions, connectionProcessor, instrumentation, messageSerializer,
+                createMeter(), recoverableConnection.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
+            return new ServiceBusSessionReceiverAsyncClient(recoverableConnection.getFullyQualifiedNamespace(),
+                entityPath, entityType, receiverOptions, recoverableConnection, instrumentation, messageSerializer,
                 ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
@@ -1965,7 +1971,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
@@ -1978,9 +1984,9 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(ServiceBusTracer.getDefaultTracer(),
-                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                createMeter(), recoverableConnection.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
+            return new ServiceBusReceiverAsyncClient(recoverableConnection.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, recoverableConnection, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
@@ -2037,9 +2043,9 @@ public final class ServiceBusClientBuilder implements
                 null);
             final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName,
                 null);
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateConnectionCache(messageSerializer);
 
-            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionProcessor,
+            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, recoverableConnection,
                 ServiceBusClientBuilder.this::onClientClose);
         }
 

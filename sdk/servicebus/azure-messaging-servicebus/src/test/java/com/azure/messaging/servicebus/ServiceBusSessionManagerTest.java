@@ -5,20 +5,21 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -49,12 +50,14 @@ import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -71,7 +74,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 // This class is executed synchronously as it runs into a NullPointerException when attempting to dispose
-// connectionProcessor in parallel runs.
+// recoverableConnection in parallel runs.
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 class ServiceBusSessionManagerTest {
@@ -79,8 +82,8 @@ class ServiceBusSessionManagerTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
 
-    private static final String NAMESPACE = "my-namespace-foo.net";
-    private static final String ENTITY_PATH = "queue-name";
+    private static final String NAMESPACE = "contoso-shopping.servicebus.windows.net";
+    private static final String ENTITY_PATH = "orders-queue";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
 
@@ -91,14 +94,14 @@ class ServiceBusSessionManagerTest {
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Tracer tracer = null;
 
-    private ServiceBusConnectionProcessor connectionProcessor;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
     private ServiceBusSessionManager sessionManager;
     private AutoCloseable mocksCloseable;
 
     @Mock
     private ServiceBusReceiveLink amqpReceiveLink;
     @Mock
-    private ServiceBusAmqpConnection connection;
+    private ServiceBusReactorAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -141,24 +144,22 @@ class ServiceBusSessionManagerTest {
             "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
+        when(connection.isDisposed()).thenReturn(false);
+        when(connection.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
 
-        connectionProcessor =
-            Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-                .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getRetry()));
+        connectionCache = new ReactorConnectionCache<>(() -> connection,
+            connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
+            new HashMap<>());
     }
 
     @AfterEach
     void afterEach(TestInfo testInfo) throws Exception {
         LOGGER.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
-
-        // If this test class is made to run in parallel this will need to change to
-        // Mockito.framework().clearInlineMock(this), as that is scoped to the specific test object.
-        Mockito.framework().clearInlineMocks();
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
@@ -168,16 +169,20 @@ class ServiceBusSessionManagerTest {
             sessionManager.close();
         }
 
-        if (connectionProcessor != null) {
-            connectionProcessor.dispose();
+        if (connectionCache != null) {
+            connectionCache.dispose();
         }
+
+        // If this test class is made to run in parallel this will need to change to
+        // Mockito.framework().clearInlineMock(this), as that is scoped to the specific test object.
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test
     void properties() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         // Act & Assert
@@ -188,7 +193,7 @@ class ServiceBusSessionManagerTest {
     void receiveNull() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         // Act & Assert
@@ -205,7 +210,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";
@@ -260,7 +265,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             1);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";
@@ -318,7 +323,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
             null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final int numberOfMessages = 5;
@@ -447,7 +452,7 @@ class ServiceBusSessionManagerTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
             null, 1);
 
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";
@@ -519,7 +524,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             2);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCache,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";

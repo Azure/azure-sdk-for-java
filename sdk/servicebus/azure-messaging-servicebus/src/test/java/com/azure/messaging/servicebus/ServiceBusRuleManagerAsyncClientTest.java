@@ -4,9 +4,11 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
@@ -15,10 +17,9 @@ import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -35,20 +36,23 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.HashMap;
 
+import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class ServiceBusRuleManagerAsyncClientTest {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusRuleManagerAsyncClientTest.class);
 
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
-    private static final String NAMESPACE = "my-namespace-foo.net";
-    private static final String ENTITY_PATH = "topic-name/subscriptions/subscription-name";
+    private static final String NAMESPACE = "contoso-shopping.servicebus.windows.net";
+    private static final String ENTITY_PATH = "topic-orders/subscriptions/subscription-ingesting";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.SUBSCRIPTION;
     private static final String RULE_NAME = "foo-bar";
 
     private ServiceBusRuleManagerAsyncClient ruleManager;
-    private ServiceBusConnectionProcessor connectionProcessor;
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache;
 
     private AutoCloseable mocksCloseable;
     private CreateRuleOptions ruleOptions;
@@ -60,7 +64,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private TokenCredential tokenCredential;
 
     @Mock
-    private ServiceBusAmqpConnection connection;
+    private ServiceBusReactorAmqpConnection connection;
 
     @Mock
     private ServiceBusManagementNode managementNode;
@@ -96,15 +100,18 @@ public class ServiceBusRuleManagerAsyncClientTest {
 
         ruleOptions = new CreateRuleOptions(ruleFilter);
 
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
+
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
+        when(connection.isDisposed()).thenReturn(false);
+        when(connection.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
 
-        connectionProcessor =
-            Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-                .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getRetry()));
+        connectionCache = new ReactorConnectionCache<>(() -> connection,
+            connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
+            new HashMap<>());
 
-        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, connectionProcessor, onClientClose);
+        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, connectionCache, onClientClose);
 
     }
 
