@@ -1544,11 +1544,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         //
         final Flux<ServiceBusReceiveLink> receiveLinkFlux = retryableReceiveLinkMono
             .repeat()
-            // The repeat() operator will prefetch and cache the existing link as it subscribes to the flatmap().
-            // When the link is doing recover, the repeat() operator may emit the closed link to its downstream
-            // 'ServiceBusReceiveLinkProcessor', resulting in unnecessary work and logging. Thus, we filter out
-            // the closed links before passing them to downstream.
-            .filter(link -> link != null && !link.isDisposed());
+            // The re-subscribe nature of 'MonoRepeat' following the emission of a link will cause the 'MonoFlatmap' (the
+            // upstream of repeat operator) to cache the same link. When ServiceBusReceiveLinkProcessor later requests a new link,
+            // the corresponding request from the 'MonoRepeat' will be answered with the cached (and closed) link by the
+            // 'MonoFlatmap'. We'll filter out these cached (closed) links to avoid ServiceBusReceiveLinkProcessor from doing
+            // unusable work (creating subscriptions and attempting to place the credit) on those links and associated logging.
+            // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
+            .filter(link -> !link.isDisposed());
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
