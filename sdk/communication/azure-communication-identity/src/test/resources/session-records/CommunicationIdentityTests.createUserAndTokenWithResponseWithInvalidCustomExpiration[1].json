@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/identities?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c901a3cb-e1de-40ef-bb92-3dff32cb6c7d",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "25eae7e9-8f92-4ec4-b314-26035b740209",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,15 +13,15 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Thu, 12 Jan 2023 09:57:06 GMT",
+      "Date" : "Mon, 05 Sep 2022 18:47:47 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
       "X-Processing-Time" : "36ms",
-      "MS-CV" : "Oggqck7jIEa9jnhUe6tGig.2.0",
-      "X-Azure-Ref" : "0c9m/YwAAAAAPWT8nyU7kT7DkZqDvPhgnSEVMMDFFREdFMjAxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 59 is invalid. Value must be within the [60, 1440] interval.\",\"target\":\"ExpiresInMinutes\"}}",
-      "x-ms-client-request-id" : "c901a3cb-e1de-40ef-bb92-3dff32cb6c7d",
-      "Request-Context" : "appId=",
-      "Content-Type" : "application/json"
+      "MS-CV" : "MT5XEHbUC0a/2EDZS21tSQ.0",
+      "X-Azure-Ref" : "0VEQWYwAAAABP/TCR0oa/TJDxYBrcXkdPUFJHMDFFREdFMDkxOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 59 is invalid.\",\"target\":\"ExpiresInMinutes\"}}",
+      "x-ms-client-request-id" : "25eae7e9-8f92-4ec4-b314-26035b740209",
+      "Content-Type" : "application/json",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   } ],

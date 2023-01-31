@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c5acb2bb-9997-4be9-8fad-f2d8b3e24235",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e13ae344-b7b6-4ca9-91ff-104f2eb6b8a2",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,15 +13,15 @@
       "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Thu, 12 Jan 2023 09:57:03 GMT",
+      "Date" : "Mon, 05 Sep 2022 18:47:05 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "104ms",
-      "MS-CV" : "AwZrzMsc6Eismueu0G44IQ.0",
-      "X-Azure-Ref" : "0b9m/YwAAAAAT6M60f87cT5Yy7QiE+rUXSEVMMDFFREdFMjAxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "31ms",
+      "MS-CV" : "H+Y+CdkMIEOs6A1GJnsX5w.0",
+      "X-Azure-Ref" : "0KUQWYwAAAAC336+SIkWOQJwKv9stq99fUFJHMDFFREdFMDkxOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"Provided AppId has invalid format.\",\"target\":\"appId\"}}",
-      "x-ms-client-request-id" : "c5acb2bb-9997-4be9-8fad-f2d8b3e24235",
-      "Request-Context" : "appId=",
-      "Content-Type" : "application/json"
+      "x-ms-client-request-id" : "e13ae344-b7b6-4ca9-91ff-104f2eb6b8a2",
+      "Content-Type" : "application/json",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   } ],

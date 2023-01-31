@@ -44,24 +44,17 @@
     },
     "variables": {
       "uniqueSubDomainName": "[format('{0}-{1}', parameters('baseName'), parameters('endpointPrefix'))]",
-      "emailServiceName": "[format('{0}-{1}', variables('uniqueSubDomainName'), 'email-service')]",
       "contributorRoleId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
     },
     "resources": [
       {
         "type": "Microsoft.Communication/CommunicationServices",
-        "apiVersion": "2021-10-01-preview",
+        "apiVersion": "2020-08-20-preview",
         "name": "[variables('uniqueSubDomainName')]",
         "location": "global",
         "properties": {
-          "dataLocation": "UnitedStates",
-          "linkedDomains": [
-            "[resourceId('Microsoft.Communication/EmailServices/Domains', variables('emailServiceName'), 'AzureManagedDomain')]"
-          ]
-        },
-        "dependsOn": [
-          "AzureManagedDomain"
-        ]
+          "dataLocation": "United States"
+        }
       },
       {
         "type": "Microsoft.Authorization/roleAssignments",
@@ -72,29 +65,6 @@
           "principalId": "[parameters('testApplicationOid')]",
           "scope": "[resourceGroup().id]"
         }
-      },
-      {
-        "type": "Microsoft.Communication/EmailServices",
-        "apiVersion": "2021-10-01-preview",
-        "name": "[variables('emailServiceName')]",
-        "location": "global",
-        "properties": {
-          "dataLocation": "UnitedStates"
-        },
-        "resources": [
-          {
-            "type": "Domains",
-            "apiVersion": "2021-10-01-preview",
-            "name": "AzureManagedDomain",
-            "location": "global",
-            "dependsOn": [
-              "[variables('emailServiceName')]"
-            ],
-            "properties": {
-              "domainManagement": "AzureManaged"
-            }
-          }
-        ]
       }
     ],
     "outputs": {
@@ -112,7 +82,7 @@
       },
       "COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING": {
         "type": "string",
-        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2021-10-01-preview').primaryConnectionString]"
+        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryConnectionString]"
       },
       "COMMUNICATION_SERVICE_ENDPOINT": {
         "type": "string",
@@ -120,27 +90,11 @@
       },
       "COMMUNICATION_SERVICE_ACCESS_KEY": {
         "type": "string",
-        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2021-10-01-preview').primaryKey]"
+        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryKey]"
       },
       "RESOURCE_GROUP_NAME": {
         "type": "string",
         "value": "[resourceGroup().Name]"
-      },
-      "COMMUNICATION_CONNECTION_STRING_EMAIL": {
-        "type": "string",
-        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2021-10-01-preview').primaryConnectionString]"
-      },
-      "SENDER_ADDRESS": {
-        "type": "string",
-        "value": "[format('{0}@{1}', 'DoNotReply', reference(resourceId('Microsoft.Communication/EmailServices/Domains', variables('emailServiceName'), 'AzureManagedDomain')).mailFromSenderDomain)]"
-      },
-      "RECIPIENT_ADDRESS": {
-        "type": "string",
-        "value": "acseaastesting@gmail.com"
-      },
-      "SECOND_RECIPIENT_ADDRESS": {
-        "type": "string",
-        "value": "acseaastesting@gmail.com"
       }
     }
   }

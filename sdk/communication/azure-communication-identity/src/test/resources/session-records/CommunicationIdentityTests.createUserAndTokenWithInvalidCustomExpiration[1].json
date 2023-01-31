@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/identities?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "1e725968-7e76-4a76-be3a-abaac88f1e4b",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d738e91a-af71-46b4-b5f2-aa7095483b12",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,15 +13,15 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Thu, 12 Jan 2023 09:57:00 GMT",
+      "Date" : "Mon, 05 Sep 2022 18:47:34 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "96ms",
-      "MS-CV" : "YUKdfAiRu0yfFdrsd9+73w.2.0",
-      "X-Azure-Ref" : "0bdm/YwAAAAATbAYJGYwfTIWVLfXSAl3+SEVMMDFFREdFMjAxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 59 is invalid. Value must be within the [60, 1440] interval.\",\"target\":\"ExpiresInMinutes\"}}",
-      "x-ms-client-request-id" : "1e725968-7e76-4a76-be3a-abaac88f1e4b",
-      "Request-Context" : "appId=",
-      "Content-Type" : "application/json"
+      "X-Processing-Time" : "29ms",
+      "MS-CV" : "a26j0ZZygk6pRoI94agXpw.0",
+      "X-Azure-Ref" : "0R0QWYwAAAAABZoOnVienQLovgDSIqU1cUFJHMDFFREdFMDkxOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"ExpiresInMinutes value 59 is invalid.\",\"target\":\"ExpiresInMinutes\"}}",
+      "x-ms-client-request-id" : "d738e91a-af71-46b4-b5f2-aa7095483b12",
+      "Content-Type" : "application/json",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   } ],

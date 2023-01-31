@@ -3,7 +3,6 @@
 
 package com.azure.communication.identity;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
@@ -194,17 +193,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     }
 
     protected void verifyTokenNotEmpty(AccessToken issuedToken) {
-        assertNotNull(issuedToken);
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
         assertNotNull(issuedToken.getExpiresAt());
         assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
-    }
-
-    protected void verifyUserNotEmpty(CommunicationUserIdentifier userIdentifier) {
-        assertNotNull(userIdentifier);
-        assertNotNull(userIdentifier.getId());
-        assertFalse(userIdentifier.getId().isEmpty());
     }
 
 }
