@@ -230,7 +230,7 @@ public final class Utility {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            getHttpResponseException((ErrorResponseException) throwable);
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
     }
