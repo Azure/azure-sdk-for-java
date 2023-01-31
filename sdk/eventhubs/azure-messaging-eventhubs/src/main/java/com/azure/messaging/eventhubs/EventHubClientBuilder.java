@@ -940,7 +940,7 @@ public class EventHubClientBuilder implements
         };
 
         final String fqdn = connectionOptions.getFullyQualifiedNamespace();
-        final String entityPath = getEventHubName();
+        final String entityPath = getEventHubName.get();
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
 
