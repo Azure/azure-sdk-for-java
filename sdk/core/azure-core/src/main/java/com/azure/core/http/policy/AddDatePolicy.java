@@ -21,9 +21,9 @@ import java.util.Locale;
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter
-            .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-            .withZone(ZoneOffset.UTC)
-            .withLocale(Locale.US);
+        .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+        .withZone(ZoneOffset.UTC)
+        .withLocale(Locale.US);
 
     /**
      * Creates a new instance of {@link AddDatePolicy}.
@@ -34,9 +34,9 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return Mono.fromCallable(() -> {
-                addDateHeader(context);
-                return next;
-            }).flatMap(HttpPipelineNextPolicy::process);
+            addDateHeader(context);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override
