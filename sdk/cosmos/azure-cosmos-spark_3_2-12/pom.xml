@@ -424,10 +424,6 @@
                       <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
                     </relocation>
                     <relocation>
-                      <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
-                    </relocation>
-                    <relocation>
                       <pattern>com.ctc.wstx</pattern>
                       <shadedPattern>${shadingPrefix}.com.ctc.wstx</shadedPattern>
                     </relocation>
