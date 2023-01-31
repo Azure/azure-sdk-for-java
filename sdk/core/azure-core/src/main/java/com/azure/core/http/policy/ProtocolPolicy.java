@@ -22,23 +22,6 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
     private final String protocol;
     private final boolean overwrite;
 
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            if (overwrite || urlBuilder.getScheme() == null) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
-
-                try {
-                    context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
-                } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set the HTTP request protocol to " + protocol + ".",
-                        e));
-                }
-            }
-        }
-    };
-
     /**
      * Creates a new ProtocolPolicy.
      *
@@ -52,11 +35,29 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        setProtocol(context, protocol, overwrite);
+
+        return next.process();
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        setProtocol(context, protocol, overwrite);
+
+        return next.processSync();
+    }
+
+    private static void setProtocol(HttpPipelineCallContext context, String protocol, boolean overwrite) {
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        if (overwrite || urlBuilder.getScheme() == null) {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
+
+            try {
+                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
+            } catch (MalformedURLException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set the HTTP request protocol to "
+                    + protocol + ".", e));
+            }
+        }
     }
 }

@@ -22,21 +22,6 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     private final String host;
 
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
-
-            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            try {
-                context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host),
-                    e));
-            }
-        }
-    };
-
     /**
      * Create HostPolicy.
      *
@@ -48,11 +33,27 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        setHost(context, host);
+
+        return next.process();
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        setHost(context, host);
+
+        return next.processSync();
+    }
+
+    private static void setHost(HttpPipelineCallContext context, String host) {
+        LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
+
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        try {
+            context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host),
+                e));
+        }
     }
 }

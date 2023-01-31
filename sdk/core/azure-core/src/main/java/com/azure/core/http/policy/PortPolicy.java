@@ -24,23 +24,6 @@ public class PortPolicy implements HttpPipelinePolicy {
     private final int port;
     private final boolean overwrite;
 
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            if (overwrite || urlBuilder.getPort() == null) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
-
-                try {
-                    context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
-                } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new
-                        RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
-                }
-            }
-        }
-    };
-
     /**
      * Creates a new PortPolicy object.
      *
@@ -54,11 +37,29 @@ public class PortPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        setPort(context, port, overwrite);
+
+        return next.process();
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        setPort(context, port, overwrite);
+
+        return next.processSync();
+    }
+
+    private static void setPort(HttpPipelineCallContext context, int port, boolean overwrite) {
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        if (overwrite || urlBuilder.getPort() == null) {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+
+            try {
+                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
+            } catch (MalformedURLException e) {
+                throw LOGGER.logExceptionAsError(new
+                    RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
+            }
+        }
     }
 }

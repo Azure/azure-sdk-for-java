@@ -26,18 +26,6 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     private final HttpHeaderName name;
     private final AzureKeyCredential credential;
 
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
-            }
-
-            context.getHttpRequest().setHeader(name, credential.getKey());
-        }
-    };
-
     /**
      * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header name.
      *
@@ -59,11 +47,25 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        setCredential(context, name, credential);
+
+        return next.process();
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        setCredential(context, name, credential);
+
+        return next.processSync();
+    }
+
+    private static void setCredential(HttpPipelineCallContext context, HttpHeaderName name,
+        AzureKeyCredential credential) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+        }
+
+        context.getHttpRequest().setHeader(name, credential.getKey());
     }
 }
