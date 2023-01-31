@@ -53,8 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -70,7 +68,6 @@ public final class UtilsImpl {
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
     private static final HttpHeaderName CONTINUATION_LINK_HEADER_NAME = HttpHeaderName.fromString("Link");
-    private static final Pattern CONTINUATION_LINK_PATTERN = Pattern.compile("<(.+)>;.*");
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
@@ -303,21 +300,7 @@ public final class UtilsImpl {
     public static <T, R> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<R> listResponse, Function<List<R>, List<T>> mapperFunction) {
         Objects.requireNonNull(mapperFunction);
 
-        String continuationLink = null;
-        HttpHeaders headers = listResponse.getHeaders();
-
-        if (headers != null) {
-            String continuationLinkHeader = headers.getValue(CONTINUATION_LINK_HEADER_NAME);
-            if (!CoreUtils.isNullOrEmpty(continuationLinkHeader)) {
-                Matcher matcher = CONTINUATION_LINK_PATTERN.matcher(continuationLinkHeader);
-                if (matcher.matches()) {
-                    if (matcher.groupCount() == 1) {
-                        continuationLink = matcher.group(1);
-                    }
-                }
-            }
-        }
-
+        String continuationLink = getContinuationLink(listResponse.getHeaders());
         List<T> values = mapperFunction.apply(listResponse.getValue());
 
         return new PagedResponseBase<String, T>(
@@ -328,6 +311,19 @@ public final class UtilsImpl {
             continuationLink,
             null
         );
+    }
+
+    private static String getContinuationLink(HttpHeaders headers) {
+        String continuationLinkHeader = headers.getValue(CONTINUATION_LINK_HEADER_NAME);
+        if (!CoreUtils.isNullOrEmpty(continuationLinkHeader) && continuationLinkHeader.charAt(0) == '<') {
+            int endIndex = continuationLinkHeader.indexOf(">;");
+            if (endIndex < 2) {
+                LOGGER.warning("unexpected 'Link' header value - '{}'", continuationLinkHeader);
+            }
+            return continuationLinkHeader.substring(1, endIndex);
+        }
+
+        return null;
     }
 
     public static List<ArtifactManifestProperties> mapManifestsProperties(List<ManifestAttributesBase> baseArtifacts,
