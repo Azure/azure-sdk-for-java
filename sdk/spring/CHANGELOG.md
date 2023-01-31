@@ -25,8 +25,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Dependency Updates
 - Upgrade Azure SDK BOM to 1.2.9.
-- Upgrade Azure Identity to 1.7.3.
-- Upgrade Azure Identity Extensions to 1.1.0.
 - Upgrade Azure Spring Data Cosmos to 3.31.0.
 - Upgrade Azure Resource Manager to 2.23.0.
 
