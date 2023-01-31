@@ -51,9 +51,10 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setCredential(context, credential, requireHttps);
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            setCredential(context, credential, requireHttps);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override

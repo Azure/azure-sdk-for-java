@@ -107,9 +107,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        addUserAgentHeader(context, userAgent);
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            addUserAgentHeader(context, userAgent);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     /**

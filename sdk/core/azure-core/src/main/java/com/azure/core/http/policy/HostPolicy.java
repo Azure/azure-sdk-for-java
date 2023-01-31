@@ -33,9 +33,10 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setHost(context, host);
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            setHost(context, host);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override

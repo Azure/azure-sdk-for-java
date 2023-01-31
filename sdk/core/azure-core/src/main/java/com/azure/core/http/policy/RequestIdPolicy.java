@@ -51,9 +51,10 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setRequestIdHeader(requestIdHeaderName, context.getHttpRequest().getHeaders());
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            setRequestIdHeader(requestIdHeaderName, context.getHttpRequest().getHeaders());
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {

@@ -37,9 +37,10 @@ public class PortPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setPort(context, port, overwrite);
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            setPort(context, port, overwrite);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override

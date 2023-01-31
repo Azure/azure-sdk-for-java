@@ -35,9 +35,10 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setProtocol(context, protocol, overwrite);
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            setProtocol(context, protocol, overwrite);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override

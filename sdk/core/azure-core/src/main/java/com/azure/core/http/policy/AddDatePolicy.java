@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -34,24 +33,25 @@ public class AddDatePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        addDateHeader(context.getHttpRequest().getHeaders());
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+                addDateHeader(context);
+                return next;
+            }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        addDateHeader(context.getHttpRequest().getHeaders());
+        addDateHeader(context);
 
         return next.processSync();
     }
 
-    private static void addDateHeader(HttpHeaders headers) {
+    private static void addDateHeader(HttpPipelineCallContext context) {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
         try {
-            headers.set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
+            context.getHttpRequest().setHeader(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
         } catch (IllegalArgumentException ignored) {
-            headers.set(HttpHeaderName.DATE, FORMATTER.format(now));
+            context.getHttpRequest().setHeader(HttpHeaderName.DATE, FORMATTER.format(now));
         }
     }
 }

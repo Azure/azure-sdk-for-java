@@ -28,9 +28,10 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        addHeaders(context, headers);
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            addHeaders(context, headers);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override

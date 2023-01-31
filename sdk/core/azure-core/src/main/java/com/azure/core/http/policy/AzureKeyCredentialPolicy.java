@@ -47,9 +47,10 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setCredential(context, name, credential);
-
-        return next.process();
+        return Mono.fromCallable(() -> {
+            setCredential(context, name, credential);
+            return next;
+        }).flatMap(HttpPipelineNextPolicy::process);
     }
 
     @Override

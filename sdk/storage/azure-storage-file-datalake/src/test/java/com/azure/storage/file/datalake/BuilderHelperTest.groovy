@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake
 import com.azure.core.credential.AzureSasCredential
 import com.azure.core.credential.TokenCredential
 import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaderName
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
@@ -529,11 +530,11 @@ class BuilderHelperTest extends Specification {
         @Override
         Mono<HttpResponse> send(HttpRequest request) {
             if (firstDate == null) {
-                firstDate = convertToDateObject(request.getHeaders().getValue("Date"))
+                firstDate = convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE))
                 return Mono.error(new IOException("IOException!"))
             }
 
-            assert firstDate != convertToDateObject(request.getHeaders().getValue("Date"))
+            assert firstDate != convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE))
             return Mono.just(new MockHttpResponse(request, 200))
         }
 
@@ -556,10 +557,10 @@ class BuilderHelperTest extends Specification {
 
         @Override
         Mono<HttpResponse> send(HttpRequest request) {
-            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue(HttpHeaderName.USER_AGENT))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.")
             }
-            assert request.getHeaders().getValue("User-Agent").startsWith(expectedUA)
+            assert request.getHeaders().getValue(HttpHeaderName.USER_AGENT).startsWith(expectedUA)
             return Mono.just(new MockHttpResponse(request, 200))
         }
     }
@@ -605,10 +606,10 @@ class BuilderHelperTest extends Specification {
 
         @Override
         Mono<HttpResponse> send(HttpRequest request) {
-            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue(HttpHeaderName.USER_AGENT))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.")
             }
-            Matcher matcher = pattern.matcher(request.getHeaders().getValue("User-Agent"));
+            Matcher matcher = pattern.matcher(request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
             assert matcher.matches()
             return Mono.just(new MockHttpResponse(request, 200))
         }
