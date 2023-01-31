@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("deprecation")
-public class TestProxyTests extends TestBase {
+public class TestProxyTests extends TestProxyTestBase {
     static TestProxyTestServer server;
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -55,7 +55,6 @@ public class TestProxyTests extends TestBase {
 
     @BeforeAll
     public static void setupClass() {
-        enableTestProxy();
         server = new TestProxyTestServer();
         TestBase.setupClass();
     }

@@ -59,7 +59,7 @@ public abstract class TestBase implements BeforeEachCallback {
         .get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
-    private static boolean enableTestProxy;
+    protected static boolean enableTestProxy;
 
     static {
         CONFIGURED_HTTP_CLIENTS = new ArrayList<>();
@@ -293,13 +293,6 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     static boolean useTestProxy() {
         return enableTestProxy;
-    }
-
-    /**
-     * Enables the out of process test recording proxy.
-     */
-    public static void enableTestProxy() {
-        enableTestProxy = true;
     }
 
     /**
