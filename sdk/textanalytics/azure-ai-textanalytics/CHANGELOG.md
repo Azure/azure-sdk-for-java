@@ -3,10 +3,10 @@
 ## 5.3.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added bespoke methods for the abstractive summarization and extractive summarization,
+- Added the following methods for performing abstractive summarization and extractive summarization actions:
     - `beginAbstractSummary(...)`
     - `beginExtractSummary(...)`
-- Added new models for the new bespoke methods
+- Added the following types for the newly added methods
     - `AbstractSummaryOperationDetail`, `AbstractSummaryOptions`, `AbstractSummaryPagedFlux`, `AbstractSummaryPagedIterable`
     - `ExtractSummaryOperationDetail`, `ExtractSummaryOptions`, `ExtractSummaryPagedFlux`, `ExtractSummaryPagedIterable`
 
