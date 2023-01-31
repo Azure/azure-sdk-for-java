@@ -15,9 +15,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
 import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
@@ -26,7 +26,7 @@ import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshi
 import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
-import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
+import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsSerializerAdapter;
 import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
@@ -45,11 +45,9 @@ import com.azure.digitaltwins.core.models.QueryOptions;
 import com.azure.digitaltwins.core.models.UpdateComponentOptions;
 import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -91,22 +89,11 @@ public final class DigitalTwinsAsyncClient {
     private static final Boolean INCLUDE_MODEL_DEFINITION_ON_GET = true;
     private static final String DIGITAL_TWINS_TRACING_NAMESPACE_VALUE = "Microsoft.DigitalTwins";
 
-    private static final SerializerAdapter SERIALIZER_ADAPTER;
-    private static final ObjectMapper MAPPER;
+    private static final SerializerAdapter SERIALIZER_ADAPTER = new DigitalTwinsSerializerAdapter();
 
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
     private final JsonSerializer serializer;
-
-    static {
-        final SimpleModule stringModule = new SimpleModule("String Serializer");
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        MAPPER = jacksonAdapter.serializer(); // Use the same mapper in this layer that the generated layer will use
-        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, MAPPER));
-        jacksonAdapter.serializer().registerModule(stringModule);
-
-        SERIALIZER_ADAPTER = jacksonAdapter;
-    }
 
     DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
         this.serviceVersion = serviceVersion;
@@ -256,13 +243,14 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz, this.serializer);
-                } catch (JsonProcessingException e) {
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(), clazz, this.serializer);
+                } catch (IOException e) {
                     LOGGER.error("JsonProcessingException occurred while deserializing the response: ", e);
                     return Mono.error(e);
                 }
 
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
 
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
@@ -366,12 +354,13 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz, this.serializer);
-                } catch (JsonProcessingException e) {
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(), clazz, this.serializer);
+                } catch (IOException e) {
                     LOGGER.error("JsonProcessingException occurred while deserializing the digital twin get response: ", e);
                     return Mono.error(e);
                 }
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
@@ -452,7 +441,8 @@ public final class DigitalTwinsAsyncClient {
                 OptionsConverter.toProtocolLayerOptions(options),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
             });
     }
@@ -662,12 +652,13 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz, this.serializer);
-                } catch (JsonProcessingException e) {
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(), clazz, this.serializer);
+                } catch (IOException e) {
                     LOGGER.error("JsonProcessingException occurred while deserializing the create relationship response: ", e);
                     return Mono.error(e);
                 }
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
@@ -784,12 +775,13 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz, this.serializer);
-                } catch (JsonProcessingException e) {
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(), clazz, this.serializer);
+                } catch (IOException e) {
                     LOGGER.error("JsonProcessingException occurred while deserializing the get relationship response: ", e);
                     return Mono.error(e);
                 }
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
@@ -873,7 +865,8 @@ public final class DigitalTwinsAsyncClient {
                 OptionsConverter.toProtocolLayerOptions(options),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
             });
     }
@@ -1035,9 +1028,8 @@ public final class DigitalTwinsAsyncClient {
                     List<T> list = objectPagedResponse.getValue().stream()
                         .map(object -> {
                             try {
-                                return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
-                            } catch (JsonProcessingException e) {
-                                LOGGER.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                                return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, this.serializer);
+                            } catch (IOException e) {
                                 throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e));
                             }
                         })
@@ -1049,7 +1041,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getHeaders(),
                         list,
                         objectPagedResponse.getContinuationToken(),
-                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                        ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
                 }
             );
     }
@@ -1069,9 +1061,8 @@ public final class DigitalTwinsAsyncClient {
                 List<T> stringList = objectPagedResponse.getValue().stream()
                     .map(object -> {
                         try {
-                            return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
-                        } catch (JsonProcessingException e) {
-                            LOGGER.error("JsonProcessingException occurred while deserializing the list relationship response: ", e);
+                            return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, this.serializer);
+                        } catch (IOException e) {
                             throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the list relationship response", e));
                         }
                     })
@@ -1083,7 +1074,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getHeaders(),
                     stringList,
                     objectPagedResponse.getContinuationToken(),
-                    ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                    ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
             });
     }
 
@@ -1157,7 +1148,7 @@ public final class DigitalTwinsAsyncClient {
             pagedIncomingRelationshipResponse.getHeaders(),
             convertedList,
             pagedIncomingRelationshipResponse.getContinuationToken(),
-            ((PagedResponseBase) pagedIncomingRelationshipResponse).getDeserializedHeaders());
+            ((PagedResponseBase<?, ?>) pagedIncomingRelationshipResponse).getDeserializedHeaders());
     };
 
     //endregion Relationship APIs
@@ -1221,8 +1212,8 @@ public final class DigitalTwinsAsyncClient {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model : dtdlModels) {
             try {
-                modelsPayload.add(MAPPER.readValue(model, Object.class));
-            } catch (JsonProcessingException e) {
+                modelsPayload.add(SERIALIZER_ADAPTER.deserialize(model, Object.class, SerializerEncoding.JSON));
+            } catch (IOException e) {
                 LOGGER.error("Could not parse the model payload [{}]: {}", model, e);
                 return Mono.error(e);
             }
@@ -1392,7 +1383,7 @@ public final class DigitalTwinsAsyncClient {
                         objectPagedResponse.getHeaders(),
                         convertedList,
                         objectPagedResponse.getContinuationToken(),
-                        ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                        ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
                 }
             );
     }
@@ -1423,7 +1414,7 @@ public final class DigitalTwinsAsyncClient {
                     objectPagedResponse.getHeaders(),
                     convertedList,
                     objectPagedResponse.getContinuationToken(),
-                    ((PagedResponseBase) objectPagedResponse).getDeserializedHeaders());
+                    ((PagedResponseBase<?, ?>) objectPagedResponse).getDeserializedHeaders());
             });
     }
 
@@ -1618,12 +1609,13 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz, this.serializer);
-                } catch (JsonProcessingException e) {
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(), clazz, this.serializer);
+                } catch (IOException e) {
                     LOGGER.error("JsonProcessingException occurred while deserializing the get component response: ", e);
                     return Mono.error(e);
                 }
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
                 return Mono.just(new DigitalTwinsResponse<T>(response.getRequest(), response.getStatusCode(), response.getHeaders(), genericResponse, twinHeaders));
             });
     }
@@ -1706,7 +1698,8 @@ public final class DigitalTwinsAsyncClient {
                 OptionsConverter.toProtocolLayerOptions(options),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
-                DigitalTwinsResponseHeaders twinHeaders = MAPPER.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
+                DigitalTwinsResponseHeaders twinHeaders = new DigitalTwinsResponseHeaders()
+                    .setETag(response.getDeserializedHeaders().getETag());
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
             });
     }
@@ -1836,9 +1829,8 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getValue().getValue().stream()
                     .map(object -> {
                         try {
-                            return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
-                        } catch (JsonProcessingException e) {
-                            LOGGER.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, this.serializer);
+                        } catch (IOException e) {
                             throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e));
                         }
                     })
@@ -1868,9 +1860,8 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getValue().getValue().stream()
                     .map(object -> {
                         try {
-                            return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
-                        } catch (JsonProcessingException e) {
-                            LOGGER.error("JsonProcessingException occurred while deserializing the query response: ", e);
+                            return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, this.serializer);
+                        } catch (IOException e) {
                             throw LOGGER.logExceptionAsError(new RuntimeException("JsonProcessingException occurred while deserializing the query response: ", e));
                         }
                     })

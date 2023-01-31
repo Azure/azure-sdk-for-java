@@ -3,20 +3,17 @@
 
 package com.azure.digitaltwins.core;
 
-import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsSerializerAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 public class StringSerializerUnitTests {
-
-    private static DigitalTwinsStringSerializer serializer = new DigitalTwinsStringSerializer(String.class, new ObjectMapper());
+    private static final SerializerAdapter ADAPTER = new DigitalTwinsSerializerAdapter();
 
     @ParameterizedTest
     @CsvSource(value = {
@@ -31,18 +28,6 @@ public class StringSerializerUnitTests {
         "[ 3, 2 ]                   | [ 3, 2 ]"
     }, delimiter = '|')
     public void serializeStringTokens(String input, String expected) throws IOException {
-        String result  = serializeTheToken(input);
-        Assertions.assertEquals(expected, result);
-    }
-
-    private String serializeTheToken(String token) throws IOException {
-        StringWriter writer = new StringWriter();
-        JsonGenerator generator = new JsonFactory().createGenerator(writer);
-
-        serializer.serialize(token, generator, null);
-        generator.flush();
-        generator.close();
-
-        return writer.toString();
+        Assertions.assertEquals(expected, ADAPTER.serialize(input, SerializerEncoding.JSON));
     }
 }
