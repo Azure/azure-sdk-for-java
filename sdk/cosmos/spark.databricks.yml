@@ -77,4 +77,4 @@ stages:
         displayName: Importing and executing notebooks
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-notebooks-install.sh
-          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }}
+          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }}
