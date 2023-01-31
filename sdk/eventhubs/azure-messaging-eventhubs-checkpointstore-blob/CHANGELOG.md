@@ -2,12 +2,6 @@
 
 ## 1.17.0-beta.1 (2023-01-31)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
