@@ -2,27 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
+import org.springframework.web.servlet.HandlerInterceptor;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Optional;
 
 /**
  * Interceptor for Requests to check if they should be run.
  */
 @Component
-public class FeatureHandler extends HandlerInterceptorAdapter {
+public class FeatureHandler implements HandlerInterceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureHandler.class);
 

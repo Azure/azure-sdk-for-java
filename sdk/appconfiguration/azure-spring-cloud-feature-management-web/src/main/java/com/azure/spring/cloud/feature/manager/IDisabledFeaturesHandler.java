@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+
 
 /**
  * Interface for Disabled Features Handler. The Feature Handler checks to see if this Component is implemented before

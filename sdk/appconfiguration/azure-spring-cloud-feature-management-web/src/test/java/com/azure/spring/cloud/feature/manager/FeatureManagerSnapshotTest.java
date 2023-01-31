@@ -2,29 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.concurrent.ExecutionException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.junit.Test;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FeatureManagerSnapshotTest {
+import java.util.concurrent.ExecutionException;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class FeatureManagerSnapshotTest {
 
     @Mock
     FeatureManager featureManager;
@@ -36,12 +34,12 @@ public class FeatureManagerSnapshotTest {
     FeatureManagerSnapshot featureManagerSnapshot;
 
     @BeforeEach
-    public void setup(TestInfo testInfo) {
+    void setup(TestInfo testInfo) {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void setAttribute() throws InterruptedException, ExecutionException {
+    void setAttribute() throws InterruptedException, ExecutionException {
         when(featureManager.isEnabledAsync(Mockito.matches("setAttribute"))).thenReturn(Mono.just(true));
 
         assertTrue(featureManagerSnapshot.isEnabledAsync("setAttribute").block());
@@ -49,7 +47,7 @@ public class FeatureManagerSnapshotTest {
     }
 
     @Test
-    public void setSavedValue() throws InterruptedException, ExecutionException {
+    void setSavedValue() throws InterruptedException, ExecutionException {
         when(featureManager.isEnabledAsync(Mockito.matches("setAttribute"))).thenReturn(Mono.just(true));
 
         assertTrue(featureManagerSnapshot.isEnabledAsync("setAttribute").block());

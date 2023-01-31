@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,7 +25,7 @@ public class FeatureManagementWebConfiguration {
      */
     @Bean
     @RequestScope
-    public FeatureManagerSnapshot featureManagerSnapshot(FeatureManager featureManager) {
+    FeatureManagerSnapshot featureManagerSnapshot(FeatureManager featureManager) {
         return new FeatureManagerSnapshot(featureManager);
     }
 
@@ -32,13 +33,13 @@ public class FeatureManagementWebConfiguration {
      * Creates FeatureHandler
      * @param featureManager App Configuration Feature Manager
      * @param snapshot App Configuration Feature Manager snapshot version
-     * @param disabledFeaturesHandler optional handler for redirection of disabled endpoints
+     * @param disabledFeaturesHandlerProvider optional handler for redirection of disabled endpoints
      * @return FeatureHandler
      */
     @Bean
-    public FeatureHandler featureHandler(FeatureManager featureManager, FeatureManagerSnapshot snapshot,
-        @Autowired(required = false) IDisabledFeaturesHandler disabledFeaturesHandler) {
-        return new FeatureHandler(featureManager, snapshot, disabledFeaturesHandler);
+    FeatureHandler featureHandler(FeatureManager featureManager, FeatureManagerSnapshot snapshot,
+                                  ObjectProvider<IDisabledFeaturesHandler> disabledFeaturesHandlerProvider) {
+        return new FeatureHandler(featureManager, snapshot, disabledFeaturesHandlerProvider.getIfAvailable());
     }
 
     /**
@@ -47,7 +48,7 @@ public class FeatureManagementWebConfiguration {
      * @return FeatureConfig
      */
     @Bean
-    public FeatureConfig featureConfig(FeatureHandler featureHandler) {
+    FeatureConfig featureConfig(FeatureHandler featureHandler) {
         return new FeatureConfig(featureHandler);
     }
 

@@ -69,7 +69,7 @@ public class TargetingFilterTest {
     }
 
     @Test
-    public void nottargetedUser() {
+    public void notTargetedUser() {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
 
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();

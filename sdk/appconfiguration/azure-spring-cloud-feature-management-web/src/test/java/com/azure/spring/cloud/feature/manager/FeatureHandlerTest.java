@@ -2,29 +2,37 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.method.HandlerMethod;
 import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test for simple App.
  */
-@RunWith(MockitoJUnitRunner.class)
-public class FeatureHandlerTest {
+@ExtendWith(MockitoExtension.class)
+class FeatureHandlerTest {
 
     @InjectMocks
     FeatureHandler featureHandler;
@@ -51,12 +59,12 @@ public class FeatureHandlerTest {
     FeatureHandler featureHandler2;
 
     @Test
-    public void preHandleNotHandler() {
+    void preHandleNotHandler() {
         assertTrue(featureHandler.preHandle(request, response, new Object()));
     }
 
     @Test
-    public void preHandleNoFeatureOn() throws NoSuchMethodException, SecurityException {
+    void preHandleNoFeatureOn() throws NoSuchMethodException, SecurityException {
         Method method = TestClass.class.getMethod("noAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
 
@@ -64,7 +72,7 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleFeatureOn() throws NoSuchMethodException, SecurityException {
+    void preHandleFeatureOn() throws NoSuchMethodException, SecurityException {
         Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(true));
@@ -73,7 +81,7 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleFeatureOnSnapshot() throws NoSuchMethodException, SecurityException {
+    void preHandleFeatureOnSnapshot() throws NoSuchMethodException, SecurityException {
         Method method = TestClass.class.getMethod("featureOnAnnotationSnapshot");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManagerSnapshot.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(true));
@@ -82,7 +90,7 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleFeatureOnNotEnabled() throws NoSuchMethodException, SecurityException {
+    void preHandleFeatureOnNotEnabled() throws NoSuchMethodException, SecurityException {
         Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
@@ -91,7 +99,7 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleFeatureOnRedirect() throws NoSuchMethodException, SecurityException, IOException {
+    void preHandleFeatureOnRedirect() throws NoSuchMethodException, SecurityException, IOException {
         Method method = TestClass.class.getMethod("featureOnAnnotationRedirected");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
@@ -104,7 +112,7 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleFeatureOnRedirectError() throws NoSuchMethodException, IOException {
+    void preHandleFeatureOnRedirectError() throws NoSuchMethodException, IOException {
         Method method = TestClass.class.getMethod("featureOnAnnotationRedirected");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
@@ -118,7 +126,7 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleNoDisabledFeatures() throws NoSuchMethodException, SecurityException, IOException {
+    void preHandleNoDisabledFeatures() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
         Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
@@ -129,7 +137,7 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleNoDisabledFeaturesError() throws NoSuchMethodException, SecurityException, IOException {
+    void preHandleNoDisabledFeaturesError() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
         Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
