@@ -31,7 +31,7 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageConverter.class);
 
-    public static final String TARGET_PROTOCOL = "target-protocol";
+    static final String TARGET_PROTOCOL = "target-protocol";
 
     private static final Set<String> IGNORED_SPRING_MESSAGE_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         AzureHeaders.PARTITION_KEY,
