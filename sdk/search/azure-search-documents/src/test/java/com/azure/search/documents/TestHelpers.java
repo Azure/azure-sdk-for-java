@@ -16,7 +16,6 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.reactivestreams.Publisher;
@@ -24,6 +23,7 @@ import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.file.Files;
@@ -57,8 +57,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public final class TestHelpers {
     private static final TestMode TEST_MODE = setupTestMode();
-
-    public static final ObjectMapper MAPPER = getDefaultSerializerAdapter().serializer();
 
     public static final String HOTEL_INDEX_NAME = "hotels";
 
@@ -107,8 +105,8 @@ public final class TestHelpers {
         } else if (expected instanceof Map) {
             assertMapEquals((Map) expected, (Map) actual, ignoredDefaults, ignoredFields);
         } else {
-            ObjectNode expectedNode = MAPPER.valueToTree(expected);
-            ObjectNode actualNode = MAPPER.valueToTree(actual);
+            ObjectNode expectedNode = convertObjectToTree(expected);
+            ObjectNode actualNode = convertObjectToTree(actual);
             assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
         }
     }
@@ -135,8 +133,24 @@ public final class TestHelpers {
     }
 
     private static String extractKeyFromDocument(NonNullableModel document) {
-        ObjectNode node = MAPPER.valueToTree(document);
+        ObjectNode node = convertObjectToTree(document);
         return node.get("Key").asText();
+    }
+
+    public static ObjectNode convertObjectToTree(Object object) {
+        try {
+            return convertBytesToTree(getDefaultSerializerAdapter().serializeToBytes(object, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    public static ObjectNode convertBytesToTree(byte[] bytes) {
+        try {
+            return getDefaultSerializerAdapter().deserialize(bytes, ObjectNode.class, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     /**
@@ -358,11 +372,11 @@ public final class TestHelpers {
 
     public static SearchIndexClient setupSharedIndex(String indexName, String indexDefinition, String indexData) {
         try {
-            byte[] hotelsTestIndexDataJsonData = loadResource(indexDefinition);
-            JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
-            ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
+            ObjectNode node = convertBytesToTree(loadResource(indexDefinition))
+                .set("name", new TextNode(indexName));
 
-            SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
+            SearchIndex index = getDefaultSerializerAdapter().deserialize(node.toString(), SearchIndex.class,
+                SerializerEncoding.JSON);
 
             SearchIndexClient searchIndexClient = createSharedSearchIndexClient();
 

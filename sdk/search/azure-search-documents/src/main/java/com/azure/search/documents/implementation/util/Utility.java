@@ -31,17 +31,15 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.azure.search.documents.models.SearchAudience;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -70,7 +68,7 @@ public final class Utility {
 
     private static final DecimalFormat COORDINATE_FORMATTER = new DecimalFormat();
 
-    private static final JacksonAdapter DEFAULT_SERIALIZER_ADAPTER;
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /*
      * Representation of the Multi-Status HTTP response code.
@@ -84,28 +82,16 @@ public final class Utility {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-
-        JacksonAdapter adapter = new JacksonAdapter();
-
-        UntypedObjectDeserializer defaultDeserializer = new UntypedObjectDeserializer(null, null);
-        Iso8601DateDeserializer iso8601DateDeserializer = new Iso8601DateDeserializer(defaultDeserializer);
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(Object.class, iso8601DateDeserializer);
-
-        adapter.serializer()
-            .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
-            .registerModule(Iso8601DateSerializer.getModule())
-            .registerModule(module);
-
-        DEFAULT_SERIALIZER_ADAPTER = adapter;
     }
 
-    public static JacksonAdapter getDefaultSerializerAdapter() {
+    public static SerializerAdapter getDefaultSerializerAdapter() {
         return DEFAULT_SERIALIZER_ADAPTER;
     }
 
     public static <T> T convertValue(Object initialValue, Class<T> newValueType) throws IOException {
-        return DEFAULT_SERIALIZER_ADAPTER.serializer().convertValue(initialValue, newValueType);
+        return DEFAULT_SERIALIZER_ADAPTER.deserialize(
+            DEFAULT_SERIALIZER_ADAPTER.serializeToBytes(initialValue, SerializerEncoding.JSON), newValueType,
+            SerializerEncoding.JSON);
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
