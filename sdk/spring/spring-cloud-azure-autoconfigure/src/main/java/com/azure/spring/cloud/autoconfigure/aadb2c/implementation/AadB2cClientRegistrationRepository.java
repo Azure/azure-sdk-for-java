@@ -5,32 +5,33 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.util.Assert;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * <p>
- * ClientRegistrationRepository for aad b2c
- * </p>
+ * An AAD B2C {@link ClientRegistrationRepository} implementation, it will manage all the client registrations
+ * from user flow instances and native OAuth2 clients.
  */
 public class AadB2cClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
-    private final InMemoryClientRegistrationRepository clientRegistrations;
+    private final InMemoryClientRegistrationRepository delegate;
+
     private final List<ClientRegistration> signUpOrSignInRegistrations;
 
-
-    public AadB2cClientRegistrationRepository(String loginFlow, List<ClientRegistration> clientRegistrations) {
-        this.signUpOrSignInRegistrations = clientRegistrations.stream()
-                                                              .filter(client -> loginFlow.equals(client.getClientName()))
-                                                              .collect(Collectors.toList());
-        this.clientRegistrations = new InMemoryClientRegistrationRepository(clientRegistrations);
+    public AadB2cClientRegistrationRepository(List<ClientRegistration> signUpOrSignInRegistrations,
+                                              List<ClientRegistration> allClientRegistrations) {
+        Assert.noNullElements(signUpOrSignInRegistrations, "signUpOrSignInRegistrations can not be empty.");
+        Assert.noNullElements(allClientRegistrations, "allClientRegistrations can not be empty.");
+        this.signUpOrSignInRegistrations = Collections.unmodifiableList(signUpOrSignInRegistrations);
+        this.delegate = new InMemoryClientRegistrationRepository(allClientRegistrations);
     }
 
     @Override
     public ClientRegistration findByRegistrationId(String registrationId) {
-        return this.clientRegistrations.findByRegistrationId(registrationId);
+        return this.delegate.findByRegistrationId(registrationId);
     }
 
     @Override

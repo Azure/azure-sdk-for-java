@@ -17,10 +17,12 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.client.RestTemplate;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
@@ -48,10 +50,10 @@ public class AadB2cAutoConfiguration {
     }
 
     /**
-     * Declare AADB2CAuthorizationRequestResolver bean.
+     * Declare AadB2cAuthorizationRequestResolver bean.
      * @param repository The clientRegistrationRepository,
      * @param properties The AADB2CProperties,
-     * @return AADB2CAuthorizationRequestResolver bean
+     * @return AadB2cAuthorizationRequestResolver bean
      */
     @Bean
     @ConditionalOnMissingBean
@@ -61,26 +63,29 @@ public class AadB2cAutoConfiguration {
     }
 
     /**
-     * Declare AADB2CLogoutSuccessHandler bean.
-     * @param properties The AADB2CProperties
-     * @return AADB2CLogoutSuccessHandler bean
+     * Declare LogoutSuccessHandler bean.
+     * @return OidcClientInitiatedLogoutSuccessHandler bean
      */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cLogoutSuccessHandler b2cLogoutSuccessHandler(AadB2cProperties properties) {
-        return new AadB2cLogoutSuccessHandler(properties);
+    public LogoutSuccessHandler b2cLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository,
+                                                        AadB2cProperties properties) {
+        OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler =
+            new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+        logoutSuccessHandler.setPostLogoutRedirectUri(properties.getLogoutSuccessUrl());
+        return logoutSuccessHandler;
     }
 
     /**
-     * Declare AADB2COidcLoginConfigurer bean.
+     * Declare AadB2cOidcLoginConfigurer bean.
      *
-     * @param handler the AAD B2C logout success handler
+     * @param handler the logout success handler
      * @param resolver the AAD B2C authorization request resolver
-     * @return AADB2COidcLoginConfigurer bean
+     * @return AadB2cOidcLoginConfigurer bean
      */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cOidcLoginConfigurer b2cLoginConfigurer(AadB2cLogoutSuccessHandler handler,
+    public AadB2cOidcLoginConfigurer b2cLoginConfigurer(LogoutSuccessHandler handler,
                                                         AadB2cAuthorizationRequestResolver resolver) {
         return new AadB2cOidcLoginConfigurer(handler, resolver, null, restTemplateBuilder);
     }

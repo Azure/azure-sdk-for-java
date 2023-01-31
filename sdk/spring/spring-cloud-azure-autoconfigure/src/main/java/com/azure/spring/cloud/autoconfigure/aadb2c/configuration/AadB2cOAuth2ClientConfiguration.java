@@ -3,15 +3,18 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepositoryBuilderConfigurer;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepositoryBuilder;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.ClientRegistrationRepositoryConfigurerAdapter;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -26,18 +29,10 @@ import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedCl
 import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.DefaultPasswordTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
@@ -66,70 +61,35 @@ public class AadB2cOAuth2ClientConfiguration {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
+    @Bean
+    AadB2cClientRegistrationRepositoryBuilder aadB2cClientRegistrationRepositoryBuilder() {
+        return new AadB2cClientRegistrationRepositoryBuilder();
+    }
+
     /**
      * Declare ClientRegistrationRepository bean.
      * @return ClientRegistrationRepository bean
      */
     @Bean
     @ConditionalOnMissingBean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        Stream<ClientRegistration> clientRegistrationStream = properties.getUserFlows()
-                                                                        .entrySet()
-                                                                        .stream()
-                                                                        .map(this::buildUserFlowClientRegistration);
-
-        Stream<ClientRegistration> authorizationClientRegistrations = properties.getAuthorizationClients()
-                                                                                .entrySet()
-                                                                                .stream()
-                                                                                .map(this::buildClientRegistration);
-        final List<ClientRegistration> clientRegistrations = Stream.concat(clientRegistrationStream,
-                                                                       authorizationClientRegistrations)
-                                                                   .collect(Collectors.toList());
-        return new AadB2cClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
-    }
-
-    /**
-     * Build user flow client registration.
-     * @param client user flow properties
-     * @return ClientRegistration
-     */
-    private ClientRegistration buildUserFlowClientRegistration(Map.Entry<String, String> client) {
-        return ClientRegistration.withRegistrationId(client.getValue()) // Use flow as registration ID.
-                                 .clientName(client.getKey())
+    public AadB2cClientRegistrationRepository clientRegistrationRepository(AadB2cClientRegistrationRepositoryBuilder repositoryBuilder,
+                                                                     ObjectProvider<OAuth2ClientProperties> oAuth2ClientProperties,
+                                                                     ObjectProvider<ClientRegistrationRepositoryConfigurerAdapter<AadB2cClientRegistrationRepository>> configurers) throws Exception {
+        AadB2cClientRegistrationRepositoryBuilderConfigurer defaultB2cConfigurer =
+            repositoryBuilder.b2cClientRegistration()
                                  .clientId(properties.getCredential().getClientId())
                                  .clientSecret(properties.getCredential().getClientSecret())
-                                 .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                 .redirectUri(properties.getReplyUrl())
-                                 .scope(properties.getCredential().getClientId(), "openid", "offline_access")
-                                 .authorizationUri(AadB2cUrl.getAuthorizationUrl(properties.getBaseUri()))
-                                 .tokenUri(AadB2cUrl.getTokenUrl(properties.getBaseUri(), client.getValue()))
-                                 .jwkSetUri(AadB2cUrl.getJwkSetUrl(properties.getBaseUri(), client.getValue()))
+                                 .tenantId(properties.getProfile().getTenantId())
+                                 .baseUri(properties.getBaseUri())
+                                 .loginFlow(properties.getLoginFlow())
+                                 .replyUrl(properties.getReplyUrl())
                                  .userNameAttributeName(properties.getUserNameAttributeName())
-                                 .build();
-    }
-
-    /**
-     * Create client registration, only support OAuth2 client credentials.
-     *
-     * @param client each client properties
-     * @return ClientRegistration
-     */
-    private ClientRegistration buildClientRegistration(Map.Entry<String, AuthorizationClientProperties> client) {
-        AuthorizationGrantType authGrantType = client.getValue().getAuthorizationGrantType();
-        if (!AuthorizationGrantType.CLIENT_CREDENTIALS.equals(authGrantType)) {
-            LOGGER.warn("The authorization type of the {} client registration is not supported.", client.getKey());
-        }
-        return ClientRegistration.withRegistrationId(client.getKey())
-                                 .clientName(client.getKey())
-                                 .clientId(properties.getCredential().getClientId())
-                                 .clientSecret(properties.getCredential().getClientSecret())
-                                 .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                                 .authorizationGrantType(authGrantType)
-                                 .scope(client.getValue().getScopes())
-                                 .tokenUri(AadB2cUrl.getAADTokenUrl(properties.getProfile().getTenantId()))
-                                 .jwkSetUri(AadB2cUrl.getAADJwkSetUrl(properties.getProfile().getTenantId()))
-                                 .build();
+                                 .userFlows(properties.getUserFlows())
+                                 .authorizationClients(properties.getAuthorizationClients());
+        oAuth2ClientProperties.ifAvailable(repositoryBuilder::oAuth2ClientRegistrations);
+        repositoryBuilder.apply(defaultB2cConfigurer);
+        configurers.orderedStream().forEach(repositoryBuilder::apply);
+        return repositoryBuilder.build();
     }
 
     /**

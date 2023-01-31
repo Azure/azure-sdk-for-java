@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,9 @@ import java.io.IOException;
 
 /**
  * Get the url of successful logout and handle the navigation on logout.
+ * @deprecated use the default handler {@link OidcClientInitiatedLogoutSuccessHandler} instead.
  */
+@Deprecated
 public class AadB2cLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     private final AadB2cProperties properties;
@@ -41,7 +44,7 @@ public class AadB2cLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
      * A strategy that is called after a successful logout,
      * to handle redirection or forwarding to the appropriate destination.
      *
-     * @param request the http servlet reqoest
+     * @param request the http servlet request
      * @param response the http servlet response
      * @param authentication the authentication
      */

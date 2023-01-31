@@ -108,23 +108,12 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private OAuth2AuthorizationRequest getB2cAuthorizationRequest(OAuth2AuthorizationRequest request,
                                                                   String userFlow) {
-        Assert.hasText(userFlow, "User flow should contain text.");
-
-        if (request == null) {
-            return null;
-        }
-
         final Map<String, Object> additionalParameters = new HashMap<>();
         Optional.ofNullable(this.properties)
                 .map(AadB2cProperties::getAuthenticateAdditionalParameters)
                 .ifPresent(additionalParameters::putAll);
         additionalParameters.put("p", userFlow);
         additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
-
-        // OAuth2AuthorizationRequest.Builder.additionalParameters() in spring-security-oauth2-core 5.2.7.RELEASE
-        // and 5.3.5.RELEASE implementation way is different, so we to compatible with them.
-        additionalParameters.putAll(request.getAdditionalParameters());
-
         return OAuth2AuthorizationRequest.from(request).additionalParameters(additionalParameters).build();
     }
 
@@ -136,8 +125,15 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    // Handle the forgot password of sign-up-or-in page cannot redirect user to password-reset page.
-    // The B2C service will enhance that, and then related code will be removed.
+    /**
+     * Handle the forgot password of sign-up-or-in page cannot redirect user to password-reset page.
+     * The B2C service will enhance that, and then related code will be removed.
+     *
+     *  This process can be done through the configuration in the Azure Portal, see more form https://learn.microsoft.com/azure/active-directory-b2c/troubleshoot?pivots=b2c-user-flow#password-reset-error
+     *
+     * @param request the HTTP request.
+     * @return return true if the HTTP request is a concrete request with the error message of password-reset.
+     */
     private boolean isForgotPasswordAuthorizationRequest(HttpServletRequest request) {
         final String error = request.getParameter("error");
         final String description = request.getParameter("error_description");
