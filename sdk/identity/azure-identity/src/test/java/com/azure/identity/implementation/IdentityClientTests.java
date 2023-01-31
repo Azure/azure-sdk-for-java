@@ -476,6 +476,7 @@ public class IdentityClientTests {
         try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
 
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
@@ -504,6 +505,7 @@ public class IdentityClientTests {
 
         try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
             when(builder.authority(any())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
@@ -571,6 +573,7 @@ public class IdentityClientTests {
                 });
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
+                when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
             })
         )  {

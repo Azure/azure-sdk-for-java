@@ -68,6 +68,7 @@ public final class IdentityClientOptions implements Cloneable {
     private RetryPolicy retryPolicy;
     private List<HttpPipelinePolicy> perCallPolicies;
     private List<HttpPipelinePolicy> perRetryPolicies;
+    private boolean instanceDiscovery;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -83,6 +84,7 @@ public final class IdentityClientOptions implements Cloneable {
         additionallyAllowedTenants = new HashSet<>();
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        instanceDiscovery = true;
     }
 
     /**
@@ -652,6 +654,23 @@ public final class IdentityClientOptions implements Cloneable {
     IdentityClientOptions setPerRetryPolicies(List<HttpPipelinePolicy> perRetryPolicies) {
         this.perRetryPolicies = perRetryPolicies;
         return this;
+    }
+
+    /**
+     * Disable instance discovery.
+     * @return the updated client options
+     */
+    public IdentityClientOptions disableInstanceDisovery() {
+        this.instanceDiscovery = false;
+        return this;
+    }
+
+    /**
+     * Gets the instance discovery policy.
+     * @return boolean indicating if instance discovery is enabled.
+     */
+    public boolean getInstanceDiscovery() {
+        return this.instanceDiscovery;
     }
 
     /**
