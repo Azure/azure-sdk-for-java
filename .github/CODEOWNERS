@@ -175,10 +175,10 @@
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query/                    @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-query*/                  @srnagar @lmolkova @ki1729
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion/                @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-ingestion*/              @srnagar @lmolkova @ki1729
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @craigktreasure
