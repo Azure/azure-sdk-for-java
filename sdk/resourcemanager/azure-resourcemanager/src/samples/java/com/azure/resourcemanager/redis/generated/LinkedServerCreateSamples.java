@@ -11,7 +11,7 @@ import com.azure.resourcemanager.redis.models.ReplicationRole;
 /** Samples for LinkedServer Create. */
 public final class LinkedServerCreateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheLinkedServer_Create.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheLinkedServer_Create.json
      */
     /**
      * Sample code: LinkedServer_Create.

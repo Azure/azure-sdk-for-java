@@ -42,12 +42,10 @@ public class ContainerRegistryCredentialPolicyTests {
     public static final Integer SUCCESS = 200;
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer";
-    public static final String TOKENVALUE = "tokenValue";
     public static final String SERVICENAME = "mytest.azurecr.io";
     public static final String SCOPENAME = "registry:catalog:*";
 
     private ContainerRegistryTokenService service;
-    private HttpRequest request;
     private HttpResponse unauthorizedHttpResponse;
     private HttpResponse unauthorizedHttpResponseWithoutHeader;
     private HttpPipelineCallContext callContext;
@@ -55,8 +53,6 @@ public class ContainerRegistryCredentialPolicyTests {
     private HttpPipelineNextPolicy nextPolicy;
 
     private HttpPipelineNextSyncPolicy nextSyncPolicy;
-    private HttpPipelineNextPolicy nextClonePolicy;
-
     @BeforeEach
     public void setup() {
         AccessToken accessToken = new AccessToken("tokenValue", OffsetDateTime.now().plusMinutes(30));
@@ -101,9 +97,7 @@ public class ContainerRegistryCredentialPolicyTests {
         this.unauthorizedHttpResponse = unauthorizedResponseWithHeader;
         this.unauthorizedHttpResponseWithoutHeader = unauthorizedResponseWithoutHeader;
         this.callContext = context;
-        this.request = request;
         this.successResponse = successResponse;
-        this.nextClonePolicy = mockNextClone;
         this.nextPolicy = mockNext;
         this.nextSyncPolicy = mockNextSync;
 

@@ -41,6 +41,14 @@ public final class LogsColumnType extends ExpandableStringEnum<LogsColumnType> {
     public static final LogsColumnType TIMESPAN = fromString("timespan");
 
     /**
+     * Creates a new instance of LogsColumnType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogsColumnType() {}
+
+    /**
      * Creates or finds a LogsColumnType from its string representation.
      *
      * @param name a name to look for.

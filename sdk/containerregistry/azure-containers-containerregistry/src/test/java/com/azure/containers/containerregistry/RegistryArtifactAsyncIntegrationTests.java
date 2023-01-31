@@ -13,7 +13,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -93,7 +92,6 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @Disabled
     public void getMultiArchitectureImagePropertiesWithResponse(HttpClient httpClient) {
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);

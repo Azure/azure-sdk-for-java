@@ -94,7 +94,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>2.7.6</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>2.7.7</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
     </dependency>
 
     <dependency>

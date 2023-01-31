@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- `ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GERMANY` is deprecated following [Azure Germany cloud deprecation](https://learn.microsoft.com/azure/cloud-adoption-framework/migrate/azure-best-practices/multiple-regions)
 
 ## 1.1.0-beta.2 (2023-01-11)
 
