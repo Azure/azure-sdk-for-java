@@ -657,7 +657,9 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Disable instance discovery.
+     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
+     * to validate that authority. Some scenarios may require disabling this.
+     *
      * @return the updated client options
      */
     public IdentityClientOptions disableInstanceDisovery() {
@@ -688,7 +690,7 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     public IdentityClientOptions clone() {
-        return new IdentityClientOptions()
+        IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
             .setAllowUnencryptedCache(this.allowUnencryptedCache)
             .setHttpClient(this.httpClient)
@@ -716,5 +718,9 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies);
+        if (!getInstanceDiscovery()) {
+            clone.disableInstanceDisovery();
+        }
+        return clone;
     }
 }
