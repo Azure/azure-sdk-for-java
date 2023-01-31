@@ -40,6 +40,8 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.OCI_MANIFEST_MEDIA_TYPE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
@@ -269,7 +271,7 @@ public class ContainerRegistryBlobClient {
         try {
             response =
                 this.registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
-                    UtilsImpl.OCI_MANIFEST_MEDIA_TYPE, enableSync(getTracingContext(context)));
+                    OCI_MANIFEST_MEDIA_TYPE, enableSync(getTracingContext(context)));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -278,7 +280,8 @@ public class ContainerRegistryBlobClient {
 
         // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
         // the contents returned by the service.
-        if (Objects.equals(digest, tagOrDigest) || Objects.equals(response.getValue().getTag(), tagOrDigest)) {
+        // TODO (limolkova) calculate digest from the contents - oops we don't have it anymore
+        if (options.getDigest() == null || Objects.equals(digest, options.getDigest())) {
             OciManifest ociManifest = new OciManifest()
                 .setAnnotations(wrapper.getAnnotations())
                 .setConfig(wrapper.getConfig())
@@ -289,10 +292,13 @@ public class ContainerRegistryBlobClient {
                 response.getRequest(),
                 response.getStatusCode(),
                 response.getHeaders(),
-                new DownloadManifestResult(digest, ociManifest, BinaryData.fromObject(ociManifest)));
+                new DownloadManifestResult(digest, ociManifest, BinaryData.fromObject(wrapper)));
         } else {
-            throw LOGGER.logExceptionAsError(
-                new ServiceResponseException("The digest in the response does not match the expected digest."));
+            throw LOGGER.atError()
+                .addKeyValue(DOCKER_DIGEST_HEADER_NAME.getCaseSensitiveName(), digest)
+                .addKeyValue("requestedDigest", options.getDigest())
+                .addKeyValue("actualDigest", digest)
+                .log(new ServiceResponseException("The digest in the response does not match the requested digest."));
         }
     }
 

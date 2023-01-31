@@ -18,5 +18,14 @@ public class MetricsDefinitionsCustomization extends Customization {
         ClassCustomization metricsDefinitionsClientBuilder = libraryCustomization
                 .getClass("com.azure.monitor.query.implementation.metricsdefinitions", "MonitorManagementClientBuilder");
         metricsDefinitionsClientBuilder.rename("MetricsDefinitionsClientImplBuilder");
+
+        String replace = libraryCustomization.getRawEditor().getFileContent("src/main/java/com/azure/monitor/query/implementation" +
+                        "/metricsdefinitions/MetricsDefinitionsClientImplBuilder.java")
+                .replace("policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format(\"%s/" +
+                                ".default\", host)));",
+                        "String localHost = (host != null) ? host : \"https://management.azure.com\";\n" +
+                                "policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format(\"%s/.default\", localHost)));");
+        libraryCustomization.getRawEditor().replaceFile("src/main/java/com/azure/monitor/query/implementation" +
+                "/metricsdefinitions/MetricsDefinitionsClientImplBuilder.java", replace);
     }
 }
