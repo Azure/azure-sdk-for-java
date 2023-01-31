@@ -5,15 +5,19 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -35,18 +39,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import org.apache.qpid.proton.engine.SslDomain;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -57,6 +59,7 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.ENTITY_PATH_KEY;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient}, {@link
@@ -195,7 +198,7 @@ public class EventHubClientBuilder implements
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private EventHubConnectionProcessor eventHubConnectionProcessor;
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> sharedConnectionCache;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
@@ -817,20 +820,20 @@ public class EventHubClientBuilder implements
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final EventHubConnectionProcessor processor;
+        final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
-                if (eventHubConnectionProcessor == null) {
-                    eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer, meter);
+                if (sharedConnectionCache == null) {
+                    sharedConnectionCache = buildConnectionCache(messageSerializer, meter);
                 }
             }
 
-            processor = eventHubConnectionProcessor;
+            connectionCache = sharedConnectionCache;
 
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            processor = buildConnectionProcessor(messageSerializer, meter);
+            connectionCache = buildConnectionCache(messageSerializer, meter);
         }
 
         String identifier;
@@ -841,7 +844,7 @@ public class EventHubClientBuilder implements
             identifier = UUID.randomUUID().toString();
         }
 
-        return new EventHubAsyncClient(processor, messageSerializer, scheduler,
+        return new EventHubAsyncClient(connectionCache, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose, identifier, meter, EventHubsTracer.getDefaultTracer());
     }
 
@@ -893,11 +896,11 @@ public class EventHubClientBuilder implements
             }
 
             LOGGER.info("No more open clients, closing shared connection.");
-            if (eventHubConnectionProcessor != null) {
-                eventHubConnectionProcessor.dispose();
-                eventHubConnectionProcessor = null;
+            if (sharedConnectionCache != null) {
+                sharedConnectionCache.dispose();
+                sharedConnectionCache = null;
             } else {
-                LOGGER.warning("Shared EventHubConnectionProcessor was already disposed.");
+                LOGGER.warning("Shared EventHub ConnectionCache was already disposed.");
             }
         }
     }
@@ -907,7 +910,7 @@ public class EventHubClientBuilder implements
             clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
-    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> buildConnectionCache(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
@@ -916,38 +919,32 @@ public class EventHubClientBuilder implements
             return eventHubName;
         };
 
-        final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
-            sink.onRequest(request -> {
+        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+            final String connectionId = StringUtil.getRandomString("MF");
+            LOGGER.atInfo()
+                .addKeyValue(CONNECTION_ID_KEY, connectionId)
+                .log("Emitting a single connection.");
 
-                if (request == 0) {
-                    return;
-                } else if (request > 1) {
-                    sink.error(LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                        "Requested more than one connection. Only emitting one. Request: " + request)));
-                    return;
-                }
+            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getAuthorizationScope());
+            final ReactorProvider provider = new ReactorProvider();
+            final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+            final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
-                final String connectionId = StringUtil.getRandomString("MF");
-                LOGGER.atInfo()
-                    .addKeyValue(CONNECTION_ID_KEY, connectionId)
-                    .log("Emitting a single connection.");
+            final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
+                connectionOptions, getEventHubName.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
+                messageSerializer);
 
-                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getAuthorizationScope());
-                final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+            return connection;
+        };
 
-                final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, getEventHubName.get(), provider, handlerProvider, tokenManagerProvider,
-                    messageSerializer);
+        final String fqdn = connectionOptions.getFullyQualifiedNamespace();
+        final String entityPath = getEventHubName();
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+        final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
 
-                sink.next(connection);
-            });
-        });
-
-        return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
+        return new ReactorConnectionCache<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
     }
 
     private ConnectionOptions getConnectionOptions() {

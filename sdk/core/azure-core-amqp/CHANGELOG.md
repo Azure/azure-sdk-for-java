@@ -1,5 +1,17 @@
 # Release History
 
+## 2.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added ReactorConnectionCache to simplify the Amqp Connection recovery ([#33224](https://github.com/Azure/azure-sdk-for-java/issues/33224))
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.8.1 (2023-01-05)
 
 ### Bugs Fixed

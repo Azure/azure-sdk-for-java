@@ -9,10 +9,10 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -55,6 +55,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSession.class);
     private final AmqpRetryPolicy retryPolicy;
+    private final ServiceBusAmqpLinkProvider linkProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     private final AmqpConnection amqpConnection;
@@ -69,6 +70,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param sessionName Name of the session.
      * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param linkProvider Provides amqp links for send and receive.
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
@@ -77,13 +79,14 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      */
     ServiceBusReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
         String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+        ServiceBusAmqpLinkProvider linkProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
         ServiceBusCreateSessionOptions createOptions) {
-        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier,
+        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, linkProvider, cbsNodeSupplier,
             tokenManagerProvider, messageSerializer, retryOptions);
         this.amqpConnection = amqpConnection;
         this.retryOptions = retryOptions;
+        this.linkProvider = linkProvider;
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManagerProvider = tokenManagerProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
@@ -164,9 +167,9 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
+    protected AmqpReceiveLink createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
+        return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
             reactorProvider, retryOptions.getTryTimeout(), retryPolicy);
     }
 
