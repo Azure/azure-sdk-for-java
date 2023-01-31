@@ -8,8 +8,6 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.Configs;
@@ -24,9 +22,8 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
-// TODO: Use slf4j Logger and LoggerFactory instead of the core ClientLogger?
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -105,9 +102,7 @@ public class CosmosClientBuilder implements
     AzureKeyCredentialTrait<CosmosClientBuilder>,
     EndpointTrait<CosmosClientBuilder> {
 
-    private static final ClientLogger LOGGER = new ClientLogger(CosmosClientBuilder.class);
-    // TODO: use LoggerFactory instead of core SDK ClientLogger?
-    // private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
+    private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
 
     private Configs configs = new Configs();
     private String serviceEndpoint;
@@ -875,11 +870,11 @@ public class CosmosClientBuilder implements
         // TODO: do we need special flag/config option to log or not the startup config and time?
 
         // No need to check client for NPE - it would have thrown exception already when building it.
-        // Client ID could be the telemetry correlation ID if set
-        if (LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+        // Client ID could be the telemetry correlation ID if set.
+        if (logger.isInfoEnabled()) {
             long time = stopwatch.getTime();
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
-            LOGGER.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
+            logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                     "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}].",
