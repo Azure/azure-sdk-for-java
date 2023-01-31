@@ -60,8 +60,7 @@ public final class ServerSecurityAlertPoliciesCreateOrUpdateSamples {
                     .withEmailAddresses(Arrays.asList("testSecurityAlert@microsoft.com"))
                     .withEmailAccountAdmins(true)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
-                    .withStorageAccountAccessKey(
-                        "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
+                    .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withRetentionDays(5),
                 Context.NONE);
     }

@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Method `beginAnalyzeDocument` requires the document length to be specified and not null when 
+analyzing a document.
 
 ## 4.0.3 (2023-01-09)
 ### Other Changes

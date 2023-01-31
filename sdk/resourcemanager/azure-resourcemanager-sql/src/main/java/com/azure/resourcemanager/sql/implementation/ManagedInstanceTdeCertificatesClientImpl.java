@@ -59,7 +59,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceTdeCertificatesService {
+    public interface ManagedInstanceTdeCertificatesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"

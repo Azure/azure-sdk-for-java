@@ -10,16 +10,17 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
-import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManagerSettings;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -32,6 +33,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -40,7 +45,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Provides flexible way to buildAsyncClient lease manager constructor parameters.
  * For the actual creation of lease manager instance, delegates to lease manager factory.
  */
-class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
+public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
     private final String LEASE_STORE_MANAGER_LEASE_SUFFIX = "..";
 
     private final Logger logger = LoggerFactory.getLogger(LeaseStoreManagerImpl.class);
@@ -49,7 +54,6 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     private RequestOptionsFactory requestOptionsFactory;
     private ServiceItemLeaseUpdater leaseUpdater;
     private LeaseStore leaseStore;
-
 
     public static LeaseStoreManagerBuilderDefinition builder() {
         return new LeaseStoreManagerImpl();
@@ -200,6 +204,47 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
             })
             // return some add-hoc value since we don't actually care about the result.
             .map( documentResourceResponse -> true)
+            .then();
+    }
+
+    @Override
+    public Mono<Void> deleteAll(List<Lease> leases) {
+        checkNotNull(leases, "Argument 'leases' can not be null");
+
+        logger.info("Deleting all leases");
+        Map<String, CosmosItemIdentity> cosmosIdentityMap = new HashMap<>();
+        for (Lease lease : leases) {
+            cosmosIdentityMap.put(lease.getId(), new CosmosItemIdentity(new PartitionKey(lease.getId()), lease.getId()));
+        }
+
+        return Mono.defer(() -> Mono.just(cosmosIdentityMap))
+            .flatMapMany(itemIdentities ->
+                this.leaseDocumentClient.deleteAllItems(cosmosIdentityMap.values().stream().collect(Collectors.toList())))
+            .flatMap(itemResponse -> {
+                if (itemResponse.getResponse() != null && itemResponse.getResponse().isSuccessStatusCode()) {
+                    cosmosIdentityMap.remove(itemResponse.getOperation().getId());
+                } else {
+                    // should ignore 404/0 for delete, will retry on other cases
+                    int effectiveStatusCode = 0;
+                    int effectiveSubStatusCode = 0;
+                    if (itemResponse.getResponse() != null) {
+                        effectiveStatusCode = itemResponse.getResponse().getStatusCode();
+                        effectiveSubStatusCode = itemResponse.getResponse().getStatusCode();
+                    } else if (itemResponse.getException() != null && itemResponse.getException() instanceof CosmosException) {
+                        CosmosException cosmosException = (CosmosException) itemResponse.getException();
+                        effectiveStatusCode = cosmosException.getStatusCode();
+                        effectiveSubStatusCode = cosmosException.getSubStatusCode();
+                    }
+
+                    if (effectiveStatusCode == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND &&
+                        effectiveSubStatusCode == 0) {
+                        cosmosIdentityMap.remove(itemResponse.getOperation().getId());
+                    }
+                }
+
+                return Mono.empty();
+            })
+            .repeat(() -> cosmosIdentityMap.size() != 0)
             .then();
     }
 

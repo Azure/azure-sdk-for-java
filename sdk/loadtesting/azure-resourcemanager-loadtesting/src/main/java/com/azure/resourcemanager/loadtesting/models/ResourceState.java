@@ -23,6 +23,15 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     public static final ResourceState DELETED = fromString("Deleted");
 
     /**
+     * Creates a new instance of ResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceState() {
+    }
+
+    /**
      * Creates or finds a ResourceState from its string representation.
      *
      * @param name a name to look for.

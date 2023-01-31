@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClassificationType. */
+/**
+ * Specifies either one or multiple categories per document. Defaults to multi classification which may return more than
+ * one class for each document.
+ */
 public final class ClassificationType extends ExpandableStringEnum<ClassificationType> {
     /** Static value Single for ClassificationType. */
     public static final ClassificationType SINGLE = fromString("Single");

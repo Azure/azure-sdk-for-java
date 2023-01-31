@@ -28,9 +28,6 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
-  - name: SkipAggregateReports
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -154,7 +151,7 @@ jobs:
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
       - script: |
-          pip install markdown2 BeautifulSoup4
+          pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
@@ -424,7 +421,6 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}
         TestOptions: ${{ parameters.TestOptions }}

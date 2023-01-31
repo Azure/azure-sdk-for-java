@@ -12,26 +12,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Sku {
     /*
-     * The type of Redis cache to deploy. Valid values: (Basic, Standard,
-     * Premium)
+     * The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
-     * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P =
-     * Premium).
+     * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
      */
     @JsonProperty(value = "family", required = true)
     private SkuFamily family;
 
     /*
-     * The size of the Redis cache to deploy. Valid values: for C
-     * (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family
-     * (1, 2, 3, 4).
+     * The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P
+     * (Premium) family (1, 2, 3, 4).
      */
     @JsonProperty(value = "capacity", required = true)
     private int capacity;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium).

@@ -29,6 +29,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -260,6 +261,9 @@ public final class DocumentAnalysisClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} length is null or unspecified.
+     * Use {@link BinaryData#fromStream(InputStream, Long)} to create an instance of the {@code document}
+     * from given {@link InputStream} with length.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, AnalyzeResult>
@@ -269,6 +273,11 @@ public final class DocumentAnalysisClient {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
+        }
+
+        if (document.getLength() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                + " be null"));
         }
 
         final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);

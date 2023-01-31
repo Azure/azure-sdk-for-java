@@ -54,7 +54,7 @@ public final class MaintenanceWindowsOperationsClientImpl implements Maintenance
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface MaintenanceWindowsOperationsService {
+    public interface MaintenanceWindowsOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"

@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for PatchSchedules CreateOrUpdate. */
 public final class PatchSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesCreateOrUpdate.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCachePatchSchedulesCreateOrUpdate.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesCreateOrUpdate.

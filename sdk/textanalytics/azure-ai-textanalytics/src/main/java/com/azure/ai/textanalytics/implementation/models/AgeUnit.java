@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AgeUnit. */
+/** The Age Unit of measurement. */
 public final class AgeUnit extends ExpandableStringEnum<AgeUnit> {
     /** Static value Unspecified for AgeUnit. */
     public static final AgeUnit UNSPECIFIED = fromString("Unspecified");

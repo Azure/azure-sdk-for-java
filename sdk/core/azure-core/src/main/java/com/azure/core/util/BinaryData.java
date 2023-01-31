@@ -10,6 +10,7 @@ import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.ListByteBufferContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,6 +30,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -548,6 +550,35 @@ public final class BinaryData {
      */
     public static BinaryData fromByteBuffer(ByteBuffer data) {
         return new BinaryData(new ByteBufferContent(data));
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link List} of {@link ByteBuffer}.
+     *
+     * <p>
+     * The input {@link ByteBuffer} instances are used as a reference by this instance of {@link BinaryData} and any
+     * changes to a {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance
+     * being updated as well. To safely update the byte array without impacting the BinaryData instance, perform an
+     * array copy first.
+     * </p>
+     *
+     * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromListByteBuffer#List -->
+     * <pre>
+     * final List&lt;ByteBuffer&gt; data = Stream.of("Some ", "data")
+     *     .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+     *     .collect(Collectors.toList());
+     * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromListByteBuffer#List -->
+     *
+     * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
+     */
+    public static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
+        return new BinaryData(new ListByteBufferContent(data));
     }
 
     /**
