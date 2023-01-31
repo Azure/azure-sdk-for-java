@@ -116,7 +116,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         }
 
         try {
-            updateUrlToSecondaryHost(context, tryingPrimary);
+            updateUrlToSecondaryHost(tryingPrimary, this.requestRetryOptions.getSecondaryHost(), context);
         } catch (IllegalArgumentException e) {
             return Mono.error(e);
         }
@@ -239,7 +239,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
             context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
         }
-        updateUrlToSecondaryHost(context, tryingPrimary);
+        updateUrlToSecondaryHost(tryingPrimary, this.requestRetryOptions.getSecondaryHost(), context);
         updateRetryCountContext(context, attempt);
         resetProgress(context);
 
@@ -344,10 +344,10 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     /*
      * Update secondary host on request URL if not trying primary URL.
      */
-    private void updateUrlToSecondaryHost(HttpPipelineCallContext context, boolean tryingPrimary) {
+    private static void updateUrlToSecondaryHost(boolean tryingPrimary, String secondaryHost, HttpPipelineCallContext context) {
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            builder.setHost(this.requestRetryOptions.getSecondaryHost());
+            builder.setHost(secondaryHost);
             try {
                 context.getHttpRequest().setUrl(builder.toUrl());
             } catch (MalformedURLException e) {
@@ -422,7 +422,6 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          * secondary at all (considerSecondary==false)). This will ensure primaryTry is correct when passed to
          * calculate the delay.
          */
-        int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-        return newPrimaryTry;
+        return (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
     }
 }
