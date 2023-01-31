@@ -3,13 +3,13 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -491,141 +491,6 @@ class RequestRetryTestFactory {
                         default:
                             throw new IllegalArgumentException("Continued trying after success.");
                     }
-
-                case RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES:
-                    return retryTestTemporaryErrorResponse;
-
-                case RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES_WITH_EXCEPTION:
-                    throw new RuntimeException(new IOException("Exception number " + this.factory.tryNumber));
-
-                case RETRY_TEST_SCENARIO_NON_RETRYABLE:
-                    if (this.factory.tryNumber == 1) {
-                        return retryTestNonRetryableError;
-                    } else {
-                        throw new IllegalArgumentException("Continued trying after non retryable error.");
-                    }
-
-                case RETRY_TEST_SCENARIO_NON_RETRYABLE_SECONDARY:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                            return retryTestTemporaryErrorResponse;
-                        case 2:
-                            return retryTestNonRetryableError;
-                        default:
-                            throw new IllegalArgumentException("Continued trying after non retryable error.");
-                    }
-
-                case RETRY_TEST_SCENARIO_NETWORK_ERROR:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                            // fall through
-                        case 2:
-                            throw Exceptions.propagate(new IOException());
-                        case 3:
-                            return retryTestOkResponse;
-                        default:
-                            throw new IllegalArgumentException("Continued retrying after success.");
-                    }
-
-                case RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                            // fall through
-                        case 2:
-                            throw Exceptions.propagate(new IOException());
-                        case 3:
-                            return retryTestOkResponse;
-                        default:
-                            throw new IllegalArgumentException("Continued retrying after success.");
-                    }
-
-                case RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                            // fall through
-                        case 2:
-                            throw Exceptions.propagate(new TimeoutException());
-                        case 3:
-                            return retryTestOkResponse;
-                        default:
-                            throw new IllegalArgumentException("Continued retrying after success.");
-                    }
-
-                case RETRY_TEST_SCENARIO_TRY_TIMEOUT:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                        case 2:
-                            try {
-                               Thread.sleep(options.getTryTimeoutDuration().plusSeconds(1).toMillis());
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            return retryTestOkResponse;
-                        case 3:
-                            try {
-                                Thread.sleep(options.getTryTimeoutDuration().minusSeconds(1).toMillis());
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            return retryTestOkResponse;
-                        default:
-                            throw new IllegalArgumentException("Continued retrying after success");
-                    }
-
-                case RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                            this.factory.time = OffsetDateTime.now();
-                            return retryTestTemporaryErrorResponse;
-                        case 2:
-                            /*
-                            Calculation for secondary is always the same, so we don't need to keep testing it. Not
-                            trying the secondary any more will also speed up the test.
-                             */
-                            return testDelayBoundsSync(1, false, retryTestNotFoundResponse);
-                        case 3:
-                            return testDelayBoundsSync(2, true, retryTestTemporaryErrorResponse);
-                        case 4:
-                            return testDelayBoundsSync(3, true, retryTestTemporaryErrorResponse);
-                        case 5:
-                            /*
-                            With the current configuration in RetryTest, the maxRetryDelay should be reached upon the
-                            fourth try to the primary.
-                             */
-                            return testMaxDelayBoundsSync(retryTestTemporaryErrorResponse);
-                        case 6:
-                            return testMaxDelayBoundsSync(retryTestOkResponse);
-                        default:
-                            throw new IllegalArgumentException("Max retries exceeded/continued retrying after success");
-                    }
-
-                case RETRY_TEST_SCENARIO_FIXED_TIMING:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                            this.factory.time = OffsetDateTime.now();
-                            return retryTestTemporaryErrorResponse;
-                        case 2:
-                            return testDelayBoundsSync(1, false, retryTestTemporaryErrorResponse);
-                        case 3:
-                            return testDelayBoundsSync(2, true, retryTestTemporaryErrorResponse);
-                        case 4:
-                            /*
-                            Fixed backoff means it's always the same and we never hit the max, no need to keep testing.
-                             */
-                            return retryTestOkResponse;
-                        default:
-                            throw new IllegalArgumentException("Retries continued after success.");
-                    }
-
-                case RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE:
-                    switch (this.factory.tryNumber) {
-                        case 1:
-                            return retryTestTemporaryErrorResponse;
-                        case 2:
-                            throw new UnexpectedLengthException("Unexpected length", 5, 6);
-                        default:
-                            throw new IllegalArgumentException("Retries continued on non retryable error.");
-                    }
                 default:
                     throw new IllegalArgumentException("Invalid retry test scenario.");
             }
@@ -682,24 +547,6 @@ class RequestRetryTestFactory {
             }));
         }
 
-        private HttpResponse testDelayBoundsSync(int primaryTryNumber, boolean tryingPrimary, HttpResponse response) {
-            /*
-            We have to return a new Mono so that the calculation for time is performed at the correct time, i.e. when
-            the Mono is actually subscribed to. This mocks an HttpClient because the requests are made only when
-            the Mono is subscribed to, not when all the infrastructure around it is put in place, and we care about
-            the delay before the request itself.
-             */
-
-            OffsetDateTime now = OffsetDateTime.now();
-            if (now.isAfter(calcUpperBound(factory.time, primaryTryNumber, tryingPrimary))
-                || now.isBefore(calcLowerBound(factory.time, primaryTryNumber, tryingPrimary))) {
-                throw new IllegalArgumentException("Delay was not within jitter bounds");
-            }
-
-            factory.time = now;
-            return response;
-        }
-
         private Mono<HttpResponse> testMaxDelayBounds(Mono<HttpResponse> response) {
             return Mono.defer(() -> Mono.fromCallable(() -> {
                 OffsetDateTime now = OffsetDateTime.now();
@@ -712,18 +559,6 @@ class RequestRetryTestFactory {
                 factory.time = now;
                 return response.block();
             }));
-        }
-
-        private HttpResponse testMaxDelayBoundsSync(HttpResponse response) {
-            OffsetDateTime now = OffsetDateTime.now();
-            if (now.isAfter(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelay().toMillis() / 1000) + 1)))) {
-                throw new IllegalArgumentException("Max retry delay exceeded");
-            } else if (now.isBefore(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelay().toMillis() / 1000) - 1)))) {
-                throw new IllegalArgumentException("Retry did not delay long enough");
-            }
-
-            factory.time = now;
-            return response;
         }
     }
 }

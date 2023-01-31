@@ -159,6 +159,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 int newPrimaryTry = getNewPrimaryTry(considerSecondary, primaryTry, tryingPrimary);
 
                 Flux<ByteBuffer> responseBody = response.getBody();
+                response.close();
+
                 if (responseBody == null) {
                     return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
                         attempt + 1, suppressed);
@@ -281,6 +283,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 if (response.getBody() != null) {
                     response.getBodyAsBinaryData().toByteBuffer();
                 }
+                response.close();
                 return attemptSync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
                         attempt + 1, suppressed);
 
