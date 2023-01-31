@@ -15,6 +15,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.VirtualHubInner;
 import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
+import com.azure.resourcemanager.network.models.GetInboundRoutesParameters;
+import com.azure.resourcemanager.network.models.GetOutboundRoutesParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -58,19 +60,6 @@ public interface VirtualHubsClient
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualHubInner getByResourceGroup(String resourceGroupName, String virtualHubName);
-
-    /**
-     * Retrieves the details of a VirtualHub.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,6 +69,19 @@ public interface VirtualHubsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualHubInner> getByResourceGroupWithResponse(
         String resourceGroupName, String virtualHubName, Context context);
+
+    /**
+     * Retrieves the details of a VirtualHub.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualHub Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualHubInner getByResourceGroup(String resourceGroupName, String virtualHubName);
 
     /**
      * Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
@@ -224,20 +226,6 @@ public interface VirtualHubsClient
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHub Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualHubInner updateTags(String resourceGroupName, String virtualHubName, TagsObject virtualHubParameters);
-
-    /**
-     * Updates VirtualHub tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -247,6 +235,20 @@ public interface VirtualHubsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualHubInner> updateTagsWithResponse(
         String resourceGroupName, String virtualHubName, TagsObject virtualHubParameters, Context context);
+
+    /**
+     * Updates VirtualHub tags.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param virtualHubParameters Parameters supplied to update VirtualHub tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualHub Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualHubInner updateTags(String resourceGroupName, String virtualHubName, TagsObject virtualHubParameters);
 
     /**
      * Deletes a VirtualHub.
@@ -445,7 +447,21 @@ public interface VirtualHubsClient
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
-     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the effective routes configured for the Virtual Hub resource or the
+     *     specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutesAsync(
+        String resourceGroupName, String virtualHubName);
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -454,7 +470,7 @@ public interface VirtualHubsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutes(
-        String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters);
+        String resourceGroupName, String virtualHubName);
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
@@ -511,20 +527,6 @@ public interface VirtualHubsClient
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
-     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEffectiveVirtualHubRoutes(
-        String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters);
-
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -548,5 +550,237 @@ public interface VirtualHubsClient
         String resourceGroupName,
         String virtualHubName,
         EffectiveRoutesParameters effectiveRoutesParameters,
+        Context context);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection along with {@link Response}
+     *     on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getInboundRoutesWithResponseAsync(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the inbound routes configured for the Virtual Hub on a particular
+     *     connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginGetInboundRoutesAsync(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the inbound routes configured for the Virtual Hub on a particular
+     *     connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGetInboundRoutes(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the inbound routes configured for the Virtual Hub on a particular
+     *     connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGetInboundRoutes(
+        String resourceGroupName,
+        String virtualHubName,
+        GetInboundRoutesParameters getInboundRoutesParameters,
+        Context context);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> getInboundRoutesAsync(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void getInboundRoutes(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void getInboundRoutes(
+        String resourceGroupName,
+        String virtualHubName,
+        GetInboundRoutesParameters getInboundRoutesParameters,
+        Context context);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection along with {@link Response}
+     *     on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getOutboundRoutesWithResponseAsync(
+        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the outbound routes configured for the Virtual Hub on a particular
+     *     connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginGetOutboundRoutesAsync(
+        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the outbound routes configured for the Virtual Hub on a particular
+     *     connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGetOutboundRoutes(
+        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the outbound routes configured for the Virtual Hub on a particular
+     *     connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGetOutboundRoutes(
+        String resourceGroupName,
+        String virtualHubName,
+        GetOutboundRoutesParameters getOutboundRoutesParameters,
+        Context context);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> getOutboundRoutesAsync(
+        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void getOutboundRoutes(
+        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void getOutboundRoutes(
+        String resourceGroupName,
+        String virtualHubName,
+        GetOutboundRoutesParameters getOutboundRoutesParameters,
         Context context);
 }

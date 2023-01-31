@@ -17,6 +17,10 @@ public final class ExclusionManagedRule {
     @JsonProperty(value = "ruleId", required = true)
     private String ruleId;
 
+    /** Creates an instance of ExclusionManagedRule class. */
+    public ExclusionManagedRule() {
+    }
+
     /**
      * Get the ruleId property: Identifier for the managed rule.
      *

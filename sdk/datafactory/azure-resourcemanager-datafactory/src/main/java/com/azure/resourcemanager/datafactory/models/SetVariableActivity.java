@@ -23,6 +23,10 @@ public final class SetVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SetVariableActivityTypeProperties innerTypeProperties = new SetVariableActivityTypeProperties();
 
+    /** Creates an instance of SetVariableActivity class. */
+    public SetVariableActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Set Variable activity properties.
      *

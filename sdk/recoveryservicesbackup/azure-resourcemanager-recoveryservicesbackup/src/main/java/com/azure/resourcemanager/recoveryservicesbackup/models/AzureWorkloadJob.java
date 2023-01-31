@@ -47,6 +47,10 @@ public final class AzureWorkloadJob extends Job {
     @JsonProperty(value = "extendedInfo")
     private AzureWorkloadJobExtendedInfo extendedInfo;
 
+    /** Creates an instance of AzureWorkloadJob class. */
+    public AzureWorkloadJob() {
+    }
+
     /**
      * Get the workloadType property: Workload type of the job.
      *

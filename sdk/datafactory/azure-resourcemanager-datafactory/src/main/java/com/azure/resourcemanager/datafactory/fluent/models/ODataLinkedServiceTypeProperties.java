@@ -108,6 +108,10 @@ public final class ODataLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ODataLinkedServiceTypeProperties class. */
+    public ODataLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the url property: The URL of the OData service endpoint. Type: string (or Expression with resultType string).
      *

@@ -97,7 +97,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Create a {@link MetricsAdvisorAdministrationAsyncClient} that sends requests to the Metrics Advisor
      * service's endpoint. Each service call goes through the
-     * {@link MetricsAdvisorAdministrationClientBuilder#pipeline(HttpPipeline)} http pipeline}.
+     * {@link MetricsAdvisorAdministrationClientBuilder#pipeline(HttpPipeline)} http pipeline.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
@@ -764,7 +764,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Refresh data ingestion for a period.
      * <p>
-     * The data in the data source for the given period will be reingested
+     * The data in the data source for the given period will be re-ingested
      * and any ingested data for the same period will be overwritten.
      * </p>
      *
@@ -801,7 +801,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Refresh data ingestion for a period.
      * <p>
-     * The data in the data source for the given period will be reingested
+     * The data in the data source for the given period will be re-ingested
      * and any ingested data for the same period will be overwritten.
      * </p>
      *
@@ -2579,13 +2579,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *     &#125;&#41;.subscribe&#40;alertConfigurationResponse -&gt; &#123;
      *         System.out.printf&#40;&quot;Update anomaly alert operation status: %s%n&quot;,
      *             alertConfigurationResponse.getStatusCode&#40;&#41;&#41;;
-     *         final AnomalyAlertConfiguration updatAnomalyAlertConfiguration = alertConfigurationResponse.getValue&#40;&#41;;
+     *         final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration
+     *             = alertConfigurationResponse.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Updated anomaly alert configuration Id: %s%n&quot;,
-     *             updatAnomalyAlertConfiguration.getId&#40;&#41;&#41;;
+     *             updatedAnomalyAlertConfiguration.getId&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Updated anomaly alert configuration description: %s%n&quot;,
-     *             updatAnomalyAlertConfiguration.getDescription&#40;&#41;&#41;;
+     *             updatedAnomalyAlertConfiguration.getDescription&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Updated anomaly alert configuration hook ids: %s%n&quot;,
-     *             updatAnomalyAlertConfiguration.getHookIdsToAlert&#40;&#41;&#41;;
+     *             updatedAnomalyAlertConfiguration.getHookIdsToAlert&#40;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration -->
@@ -2798,11 +2799,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * final String name = &quot;sample_name&quot; + UUID.randomUUID&#40;&#41;;
      * final String cId = &quot;f45668b2-bffa-11eb-8529-0246ac130003&quot;;
      * final String tId = &quot;67890ded-5e07-4e52-b225-4ae8f905afb5&quot;;
-     * final String mockSecr = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
+     * final String mockSecret = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
      *
      * datasourceCredential = new DataSourceServicePrincipalInKeyVault&#40;&#41;
      *     .setName&#40;name&#41;
-     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecr&#41;
+     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecret&#41;
      *     .setTenantId&#40;tId&#41;
      *     .setSecretNameForDataSourceClientId&#40;&quot;DSClientID_1&quot;&#41;
      *     .setSecretNameForDataSourceClientSecret&#40;&quot;DSClientSer_1&quot;&#41;;
@@ -2847,11 +2848,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * final String name = &quot;sample_name&quot; + UUID.randomUUID&#40;&#41;;
      * final String cId = &quot;f45668b2-bffa-11eb-8529-0246ac130003&quot;;
      * final String tId = &quot;67890ded-5e07-4e52-b225-4ae8f905afb5&quot;;
-     * final String mockSecr = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
+     * final String mockSecret = &quot;890hy69-5e07-4e52-b225-4ae8f905afb5&quot;;
      *
      * datasourceCredential = new DataSourceServicePrincipalInKeyVault&#40;&#41;
      *     .setName&#40;name&#41;
-     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecr&#41;
+     *     .setKeyVaultForDataSourceSecrets&#40;&quot;kv&quot;, cId, mockSecret&#41;
      *     .setTenantId&#40;tId&#41;
      *     .setSecretNameForDataSourceClientId&#40;&quot;DSClientID_1&quot;&#41;
      *     .setSecretNameForDataSourceClientSecret&#40;&quot;DSClientSer_1&quot;&#41;;

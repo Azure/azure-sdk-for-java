@@ -24,6 +24,9 @@ public final class BlobTag {
     @JsonProperty(value = "Value", required = true)
     private String value;
 
+    /** Creates an instance of BlobTag class. */
+    public BlobTag() {}
+
     /**
      * Get the key property: The Key property.
      *

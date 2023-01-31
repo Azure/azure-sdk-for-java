@@ -22,6 +22,10 @@ public final class ScriptsToExecute {
     @JsonProperty(value = "creationScript")
     private ScriptReference creationScript;
 
+    /** Creates an instance of ScriptsToExecute class. */
+    public ScriptsToExecute() {
+    }
+
     /**
      * Get the startupScript property: Script that's run every time the machine starts.
      *

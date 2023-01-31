@@ -20,6 +20,10 @@ public final class LogSchedulePolicy extends SchedulePolicy {
     @JsonProperty(value = "scheduleFrequencyInMins")
     private Integer scheduleFrequencyInMins;
 
+    /** Creates an instance of LogSchedulePolicy class. */
+    public LogSchedulePolicy() {
+    }
+
     /**
      * Get the scheduleFrequencyInMins property: Frequency of the log schedule operation of this policy in minutes.
      *

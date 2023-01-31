@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IpAllocations GetByResourceGroup. */
 public final class IpAllocationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/IpAllocationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/IpAllocationGet.json
      */
     /**
      * Sample code: Get IpAllocation.

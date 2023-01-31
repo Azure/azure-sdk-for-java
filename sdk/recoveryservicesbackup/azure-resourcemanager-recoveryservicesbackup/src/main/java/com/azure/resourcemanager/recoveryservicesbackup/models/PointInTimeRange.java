@@ -23,6 +23,10 @@ public final class PointInTimeRange {
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
+    /** Creates an instance of PointInTimeRange class. */
+    public PointInTimeRange() {
+    }
+
     /**
      * Get the startTime property: Start time of the time range for log recovery.
      *

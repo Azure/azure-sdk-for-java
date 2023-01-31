@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a managed identity. */
 @Fluent
 public final class IdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProperties.class);
-
     /*
      * Managed identity.
      */
@@ -37,6 +33,10 @@ public final class IdentityProperties {
      */
     @JsonProperty(value = "clientSecretUrl")
     private String clientSecretUrl;
+
+    /** Creates an instance of IdentityProperties class. */
+    public IdentityProperties() {
+    }
 
     /**
      * Get the type property: Managed identity.

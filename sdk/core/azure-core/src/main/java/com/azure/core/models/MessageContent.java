@@ -15,6 +15,12 @@ public class MessageContent {
     private String contentType;
 
     /**
+     * Creates a new instance of {@link MessageContent}.
+     */
+    public MessageContent() {
+    }
+
+    /**
      * Gets the message body.
      *
      * @return The message body.
@@ -27,7 +33,6 @@ public class MessageContent {
      * Sets the message body.
      *
      * @param binaryData The message body.
-     *
      * @return The updated {@link MessageContent} object.
      */
     public MessageContent setBodyAsBinaryData(BinaryData binaryData) {
@@ -48,7 +53,6 @@ public class MessageContent {
      * Sets the content type.
      *
      * @param contentType The content type.
-     *
      * @return The updated {@link MessageContent} object.
      */
     public MessageContent setContentType(String contentType) {

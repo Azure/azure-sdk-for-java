@@ -17,8 +17,7 @@ public final class PrivateEndpointConnection {
     private ProvisioningState provisioningState;
 
     /*
-     * Gets or sets private endpoint associated with the private endpoint
-     * connection
+     * Gets or sets private endpoint associated with the private endpoint connection
      */
     @JsonProperty(value = "privateEndpoint")
     private PrivateEndpoint privateEndpoint;
@@ -28,6 +27,10 @@ public final class PrivateEndpointConnection {
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /** Creates an instance of PrivateEndpointConnection class. */
+    public PrivateEndpointConnection() {
+    }
 
     /**
      * Get the provisioningState property: Gets or sets provisioning state of the private endpoint connection.

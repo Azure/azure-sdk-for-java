@@ -24,6 +24,10 @@ public final class TerminateNotificationProfile {
     @JsonProperty(value = "enable")
     private Boolean enable;
 
+    /** Creates an instance of TerminateNotificationProfile class. */
+    public TerminateNotificationProfile() {
+    }
+
     /**
      * Get the notBeforeTimeout property: Configurable length of time a Virtual Machine being deleted will have to
      * potentially approve the Terminate Scheduled Event before the event is auto approved (timed out). The

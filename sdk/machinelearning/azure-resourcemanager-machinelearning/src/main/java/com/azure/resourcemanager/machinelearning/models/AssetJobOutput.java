@@ -22,6 +22,10 @@ public class AssetJobOutput {
     @JsonProperty(value = "uri")
     private String uri;
 
+    /** Creates an instance of AssetJobOutput class. */
+    public AssetJobOutput() {
+    }
+
     /**
      * Get the mode property: Output Asset Delivery Mode.
      *

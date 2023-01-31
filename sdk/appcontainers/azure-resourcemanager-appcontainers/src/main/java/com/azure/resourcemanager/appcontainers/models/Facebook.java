@@ -11,15 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Facebook {
     /*
-     * <code>false</code> if the Facebook provider should not be enabled
-     * despite the set registration; otherwise, <code>true</code>.
+     * <code>false</code> if the Facebook provider should not be enabled despite the set registration; otherwise,
+     * <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The configuration settings of the app registration for the Facebook
-     * provider.
+     * The configuration settings of the app registration for the Facebook provider.
      */
     @JsonProperty(value = "registration")
     private AppRegistration registration;
@@ -35,6 +34,10 @@ public final class Facebook {
      */
     @JsonProperty(value = "login")
     private LoginScopes login;
+
+    /** Creates an instance of Facebook class. */
+    public Facebook() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Facebook provider should not be enabled despite

@@ -16,6 +16,10 @@ public final class OdbcTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
+    /** Creates an instance of OdbcTableDatasetTypeProperties class. */
+    public OdbcTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
      *

@@ -67,6 +67,10 @@ public final class HDInsightSparkActivityTypeProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> sparkConfig;
 
+    /** Creates an instance of HDInsightSparkActivityTypeProperties class. */
+    public HDInsightSparkActivityTypeProperties() {
+    }
+
     /**
      * Get the rootPath property: The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or
      * Expression with resultType string).

@@ -40,6 +40,10 @@ public final class ExpressRouteCircuitRoutesTable {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of ExpressRouteCircuitRoutesTable class. */
+    public ExpressRouteCircuitRoutesTable() {
+    }
+
     /**
      * Get the network property: IP address of a network entity.
      *

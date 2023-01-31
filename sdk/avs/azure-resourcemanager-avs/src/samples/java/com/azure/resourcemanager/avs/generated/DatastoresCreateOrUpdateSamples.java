@@ -9,7 +9,7 @@ import com.azure.resourcemanager.avs.models.NetAppVolume;
 /** Samples for Datastores CreateOrUpdate. */
 public final class DatastoresCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Datastores_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Datastores_CreateOrUpdate.json
      */
     /**
      * Sample code: Datastores_CreateOrUpdate.

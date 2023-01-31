@@ -28,6 +28,10 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
+    /** Creates an instance of AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem class. */
+    public AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem() {
+    }
+
     /**
      * Get the defaultProperty property: Whether this version is the default agent pool version.
      *

@@ -42,15 +42,6 @@ public final class BatchAccountsImpl implements BatchAccounts {
         this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
-    public BatchAccount getByResourceGroup(String resourceGroupName, String accountName) {
-        BatchAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
-        if (inner != null) {
-            return new BatchAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BatchAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<BatchAccountInner> inner =
@@ -61,6 +52,15 @@ public final class BatchAccountsImpl implements BatchAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BatchAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BatchAccount getByResourceGroup(String resourceGroupName, String accountName) {
+        BatchAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
+        if (inner != null) {
+            return new BatchAccountImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -86,23 +86,13 @@ public final class BatchAccountsImpl implements BatchAccounts {
         return Utils.mapPage(inner, inner1 -> new BatchAccountImpl(inner1, this.manager()));
     }
 
-    public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) {
-        this.serviceClient().synchronizeAutoStorageKeys(resourceGroupName, accountName);
-    }
-
     public Response<Void> synchronizeAutoStorageKeysWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return this.serviceClient().synchronizeAutoStorageKeysWithResponse(resourceGroupName, accountName, context);
     }
 
-    public BatchAccountKeys regenerateKey(
-        String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters) {
-        BatchAccountKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
-        if (inner != null) {
-            return new BatchAccountKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) {
+        this.serviceClient().synchronizeAutoStorageKeys(resourceGroupName, accountName);
     }
 
     public Response<BatchAccountKeys> regenerateKeyWithResponse(
@@ -120,8 +110,9 @@ public final class BatchAccountsImpl implements BatchAccounts {
         }
     }
 
-    public BatchAccountKeys getKeys(String resourceGroupName, String accountName) {
-        BatchAccountKeysInner inner = this.serviceClient().getKeys(resourceGroupName, accountName);
+    public BatchAccountKeys regenerateKey(
+        String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters) {
+        BatchAccountKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
         if (inner != null) {
             return new BatchAccountKeysImpl(inner, this.manager());
         } else {
@@ -144,6 +135,15 @@ public final class BatchAccountsImpl implements BatchAccounts {
         }
     }
 
+    public BatchAccountKeys getKeys(String resourceGroupName, String accountName) {
+        BatchAccountKeysInner inner = this.serviceClient().getKeys(resourceGroupName, accountName);
+        if (inner != null) {
+            return new BatchAccountKeysImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<DetectorResponse> listDetectors(String resourceGroupName, String accountName) {
         PagedIterable<DetectorResponseInner> inner = this.serviceClient().listDetectors(resourceGroupName, accountName);
         return Utils.mapPage(inner, inner1 -> new DetectorResponseImpl(inner1, this.manager()));
@@ -156,15 +156,6 @@ public final class BatchAccountsImpl implements BatchAccounts {
         return Utils.mapPage(inner, inner1 -> new DetectorResponseImpl(inner1, this.manager()));
     }
 
-    public DetectorResponse getDetector(String resourceGroupName, String accountName, String detectorId) {
-        DetectorResponseInner inner = this.serviceClient().getDetector(resourceGroupName, accountName, detectorId);
-        if (inner != null) {
-            return new DetectorResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DetectorResponse> getDetectorWithResponse(
         String resourceGroupName, String accountName, String detectorId, Context context) {
         Response<DetectorResponseInner> inner =
@@ -175,6 +166,15 @@ public final class BatchAccountsImpl implements BatchAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DetectorResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DetectorResponse getDetector(String resourceGroupName, String accountName, String detectorId) {
+        DetectorResponseInner inner = this.serviceClient().getDetector(resourceGroupName, accountName, detectorId);
+        if (inner != null) {
+            return new DetectorResponseImpl(inner, this.manager());
         } else {
             return null;
         }

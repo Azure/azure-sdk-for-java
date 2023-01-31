@@ -30,6 +30,9 @@ public enum PermissionCopyModeType {
      */
     @JsonCreator
     public static PermissionCopyModeType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PermissionCopyModeType[] items = PermissionCopyModeType.values();
         for (PermissionCopyModeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum PermissionCopyModeType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

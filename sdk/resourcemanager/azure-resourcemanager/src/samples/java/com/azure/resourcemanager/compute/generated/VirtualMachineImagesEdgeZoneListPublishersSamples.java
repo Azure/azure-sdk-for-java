@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineImagesEdgeZone ListPublishers. */
 public final class VirtualMachineImagesEdgeZoneListPublishersSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListPublishers_MinimumSet_Gen.
@@ -23,11 +21,11 @@ public final class VirtualMachineImagesEdgeZoneListPublishersSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineImagesEdgeZones()
-            .listPublishersWithResponse("aaaa", "aaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .listPublishersWithResponse("aaaa", "aaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.
@@ -41,6 +39,6 @@ public final class VirtualMachineImagesEdgeZoneListPublishersSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineImagesEdgeZones()
-            .listPublishersWithResponse("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .listPublishersWithResponse("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

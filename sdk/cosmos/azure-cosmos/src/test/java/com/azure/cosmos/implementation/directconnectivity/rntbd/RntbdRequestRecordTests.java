@@ -8,12 +8,16 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -56,5 +60,25 @@ public class RntbdRequestRecordTests {
         } catch (Exception e) {
             fail("Wrong exception");
         }
+    }
+
+    @Test(groups = { "unit" })
+    public void cancelRecord() throws URISyntaxException, InterruptedException {
+
+        RntbdRequestArgs requestArgs = new RntbdRequestArgs(
+            RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document),
+            new Uri(new URI("http://localhost/replica-path").toString())
+        );
+
+        RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
+        RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
+        Mono<StoreResponse> result = Mono.fromFuture(record)
+            .doOnNext(storeResponse -> fail("Record got cancelled should not reach here"))
+            .doOnError(throwable -> fail("Record got cancelled should not reach here"));
+
+        result.cancelOn(Schedulers.boundedElastic()).subscribe().dispose();
+
+        Thread.sleep(100);
+        assertThat(record.isCancelled()).isTrue();
     }
 }

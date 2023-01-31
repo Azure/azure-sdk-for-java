@@ -4,19 +4,31 @@
 
 package com.azure.resourcemanager.devcenter.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an image. */
-@Fluent
+@Immutable
 public final class ImageInner extends ProxyResource {
     /*
      * Image properties.
      */
     @JsonProperty(value = "properties")
     private ImageProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of ImageInner class. */
+    public ImageInner() {
+    }
 
     /**
      * Get the innerProperties property: Image properties.
@@ -25,6 +37,15 @@ public final class ImageInner extends ProxyResource {
      */
     private ImageProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -77,7 +98,7 @@ public final class ImageInner extends ProxyResource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

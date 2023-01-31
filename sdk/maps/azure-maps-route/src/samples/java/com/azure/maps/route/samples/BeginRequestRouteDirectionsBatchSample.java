@@ -12,8 +12,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.route.MapsRouteAsyncClient;
 import com.azure.maps.route.MapsRouteClient;
 import com.azure.maps.route.MapsRouteClientBuilder;
@@ -78,14 +76,14 @@ public class BeginRequestRouteDirectionsBatchSample {
         MapsRouteClientBuilder asyncClientbuilder = new MapsRouteClientBuilder();
 
         // Authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
-        // builder.credential(keyCredential);
+        AzureKeyCredential asyncClientKeyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        asyncClientbuilder.credential(asyncClientKeyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // asyncClientbuilder.credential(asyncClientTokenCredential);
 
-        asyncClientbuilder.credential(asyncClientTokenCredential);
         asyncClientbuilder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
         asyncClientbuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsRouteAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
@@ -119,6 +117,6 @@ public class BeginRequestRouteDirectionsBatchSample {
         SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> poller2 =
             asyncClient.beginRequestRouteDirectionsBatch(optionsList2).getSyncPoller();
         poller2.getFinalResult();
-        // END: com.azure.maps.search.async.begin_request_route_directions_batch        
+        // END: com.azure.maps.search.async.begin_request_route_directions_batch
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CodeContainers Get. */
 public final class CodeContainersGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/CodeContainer/get.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/CodeContainer/get.json
      */
     /**
      * Sample code: Get Code Container.
@@ -17,6 +15,8 @@ public final class CodeContainersGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getCodeContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.codeContainers().getWithResponse("testrg123", "testworkspace", "testContainer", Context.NONE);
+        manager
+            .codeContainers()
+            .getWithResponse("testrg123", "testworkspace", "testContainer", com.azure.core.util.Context.NONE);
     }
 }

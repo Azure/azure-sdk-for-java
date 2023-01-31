@@ -23,6 +23,10 @@ public final class AzureWorkloadSqlPointInTimeRecoveryPoint extends AzureWorkloa
     @JsonProperty(value = "timeRanges")
     private List<PointInTimeRange> timeRanges;
 
+    /** Creates an instance of AzureWorkloadSqlPointInTimeRecoveryPoint class. */
+    public AzureWorkloadSqlPointInTimeRecoveryPoint() {
+    }
+
     /**
      * Get the timeRanges property: List of log ranges.
      *
@@ -78,6 +82,14 @@ public final class AzureWorkloadSqlPointInTimeRecoveryPoint extends AzureWorkloa
     public AzureWorkloadSqlPointInTimeRecoveryPoint withRecoveryPointMoveReadinessInfo(
         Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         super.withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlPointInTimeRecoveryPoint withRecoveryPointProperties(
+        RecoveryPointProperties recoveryPointProperties) {
+        super.withRecoveryPointProperties(recoveryPointProperties);
         return this;
     }
 

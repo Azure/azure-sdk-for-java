@@ -37,7 +37,7 @@ public final class WebhooksCreateSamples {
                     .withLocation("westus")
                     .withServiceUri("http://myservice.com")
                     .withCustomHeaders(
-                        mapOf("Authorization", "Basic 000000000000000000000000000000000000000000000000000"))
+                        mapOf("Authorization", "Basic FakeCredentialPlaceholder"))
                     .withStatus(WebhookStatus.ENABLED)
                     .withScope("myRepository")
                     .withActions(Arrays.asList(WebhookAction.PUSH)),

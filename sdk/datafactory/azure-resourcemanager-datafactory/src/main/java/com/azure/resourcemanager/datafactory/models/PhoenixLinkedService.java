@@ -24,6 +24,10 @@ public final class PhoenixLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private PhoenixLinkedServiceTypeProperties innerTypeProperties = new PhoenixLinkedServiceTypeProperties();
 
+    /** Creates an instance of PhoenixLinkedService class. */
+    public PhoenixLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Phoenix server linked service properties.
      *

@@ -23,6 +23,15 @@ public final class AttributeFilter extends ExpandableStringEnum<AttributeFilter>
     public static final AttributeFilter VALUE_EQUALS = fromString("ValueEquals");
 
     /**
+     * Creates a new instance of AttributeFilter value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AttributeFilter() {
+    }
+
+    /**
      * Creates or finds a AttributeFilter from its string representation.
      *
      * @param name a name to look for.

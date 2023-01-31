@@ -24,6 +24,10 @@ public final class ImpalaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ImpalaLinkedServiceTypeProperties innerTypeProperties = new ImpalaLinkedServiceTypeProperties();
 
+    /** Creates an instance of ImpalaLinkedService class. */
+    public ImpalaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Impala server linked service properties.
      *

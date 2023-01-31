@@ -32,6 +32,10 @@ public final class WindowsGmsaProfile {
     @JsonProperty(value = "rootDomainName")
     private String rootDomainName;
 
+    /** Creates an instance of WindowsGmsaProfile class. */
+    public WindowsGmsaProfile() {
+    }
+
     /**
      * Get the enabled property: Whether to enable Windows gMSA.
      *

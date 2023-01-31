@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The vm size property. */
 @Fluent
 public final class VmSizeProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VmSizeProperty.class);
-
     /*
      * The vm size name.
      */
@@ -73,6 +69,10 @@ public final class VmSizeProperty {
      */
     @JsonProperty(value = "webWorkerResourceDiskSizeInMb")
     private Long webWorkerResourceDiskSizeInMb;
+
+    /** Creates an instance of VmSizeProperty class. */
+    public VmSizeProperty() {
+    }
 
     /**
      * Get the name property: The vm size name.

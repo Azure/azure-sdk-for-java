@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationType. */
+/** Re-Do Operation. */
 public final class OperationType extends ExpandableStringEnum<OperationType> {
     /** Static value Invalid for OperationType. */
     public static final OperationType INVALID = fromString("Invalid");
@@ -18,6 +18,15 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
 
     /** Static value Reregister for OperationType. */
     public static final OperationType REREGISTER = fromString("Reregister");
+
+    /**
+     * Creates a new instance of OperationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationType() {
+    }
 
     /**
      * Creates or finds a OperationType from its string representation.

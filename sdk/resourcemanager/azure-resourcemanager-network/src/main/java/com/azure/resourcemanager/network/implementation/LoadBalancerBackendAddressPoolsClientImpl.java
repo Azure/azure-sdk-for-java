@@ -67,7 +67,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface LoadBalancerBackendAddressPoolsService {
+    public interface LoadBalancerBackendAddressPoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -177,7 +177,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -238,7 +238,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -368,7 +368,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -426,7 +426,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -465,23 +465,6 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer backend address pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackendAddressPoolInner get(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
-        return getAsync(resourceGroupName, loadBalancerName, backendAddressPoolName).block();
-    }
-
-    /**
-     * Gets load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -492,6 +475,23 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
     public Response<BackendAddressPoolInner> getWithResponse(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, context).block();
+    }
+
+    /**
+     * Gets load balancer backend address pool.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendAddressPoolName The name of the backend address pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load balancer backend address pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackendAddressPoolInner get(
+        String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
+        return getWithResponse(resourceGroupName, loadBalancerName, backendAddressPoolName, Context.NONE).getValue();
     }
 
     /**
@@ -542,7 +542,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -611,7 +611,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -871,7 +871,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -929,7 +929,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

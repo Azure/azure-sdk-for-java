@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for ServiceEndpointPolicies UpdateTags. */
 public final class ServiceEndpointPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ServiceEndpointPolicyUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceEndpointPolicyUpdateTags.json
      */
     /**
      * Sample code: Update service endpoint policy tags.

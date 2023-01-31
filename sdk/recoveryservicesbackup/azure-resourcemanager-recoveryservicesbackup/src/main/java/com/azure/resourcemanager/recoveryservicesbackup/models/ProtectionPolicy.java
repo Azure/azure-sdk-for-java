@@ -40,6 +40,10 @@ public class ProtectionPolicy {
     @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
+    /** Creates an instance of ProtectionPolicy class. */
+    public ProtectionPolicy() {
+    }
+
     /**
      * Get the protectedItemsCount property: Number of items associated with this policy.
      *

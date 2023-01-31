@@ -67,7 +67,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRouteCircuitConnectionsService {
+    public interface ExpressRouteCircuitConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -187,7 +187,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -247,7 +247,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -463,7 +463,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -524,7 +524,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -567,24 +567,6 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Express Route Circuit Connection from the specified express route circuit.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCircuitConnectionInner get(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName) {
-        return getAsync(resourceGroupName, circuitName, peeringName, connectionName).block();
-    }
-
-    /**
-     * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @param connectionName The name of the express route circuit connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -596,6 +578,24 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
     public Response<ExpressRouteCircuitConnectionInner> getWithResponse(
         String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, circuitName, peeringName, connectionName, context).block();
+    }
+
+    /**
+     * Gets the specified Express Route Circuit Connection from the specified express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param peeringName The name of the peering.
+     * @param connectionName The name of the express route circuit connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Express Route Circuit Connection from the specified express route circuit.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteCircuitConnectionInner get(
+        String resourceGroupName, String circuitName, String peeringName, String connectionName) {
+        return getWithResponse(resourceGroupName, circuitName, peeringName, connectionName, Context.NONE).getValue();
     }
 
     /**
@@ -653,7 +653,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -730,7 +730,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
         } else {
             expressRouteCircuitConnectionParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1049,7 +1049,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1114,7 +1114,7 @@ public final class ExpressRouteCircuitConnectionsClientImpl implements ExpressRo
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

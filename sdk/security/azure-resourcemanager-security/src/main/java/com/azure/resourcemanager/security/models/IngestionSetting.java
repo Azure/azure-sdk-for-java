@@ -102,6 +102,18 @@ public interface IngestionSetting {
     /**
      * Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
+     */
+    Response<IngestionSettingToken> listTokensWithResponse(Context context);
+
+    /**
+     * Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures how to correlate scan data and logs with resources associated with the subscription.
@@ -109,15 +121,15 @@ public interface IngestionSetting {
     IngestionSettingToken listTokens();
 
     /**
-     * Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
+     * Connection strings for ingesting security scan logs and data.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return connection string for ingesting security data and logs along with {@link Response}.
      */
-    Response<IngestionSettingToken> listTokensWithResponse(Context context);
+    Response<ConnectionStrings> listConnectionStringsWithResponse(Context context);
 
     /**
      * Connection strings for ingesting security scan logs and data.
@@ -127,15 +139,4 @@ public interface IngestionSetting {
      * @return connection string for ingesting security data and logs.
      */
     ConnectionStrings listConnectionStrings();
-
-    /**
-     * Connection strings for ingesting security scan logs and data.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection string for ingesting security data and logs.
-     */
-    Response<ConnectionStrings> listConnectionStringsWithResponse(Context context);
 }

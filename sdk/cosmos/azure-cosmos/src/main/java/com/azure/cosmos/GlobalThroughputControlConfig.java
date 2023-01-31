@@ -3,15 +3,12 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.util.Beta;
-
 import java.time.Duration;
 
 /**
  * This configuration is used for throughput global control mode.
  * It contains configuration about the extra container which will track all the clients throughput usage for a certain control group.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class GlobalThroughputControlConfig {
     private final CosmosAsyncContainer controlContainer;
     private final Duration controlItemRenewInterval;
@@ -49,7 +46,6 @@ public class GlobalThroughputControlConfig {
      *
      * @return The control item renew interval.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getControlItemRenewInterval() {
         return this.controlItemRenewInterval;
     }
@@ -64,7 +60,6 @@ public class GlobalThroughputControlConfig {
      *
      * @return The control item renew interval.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getControlItemExpireInterval() {
         return this.controlItemExpireInterval;
     }

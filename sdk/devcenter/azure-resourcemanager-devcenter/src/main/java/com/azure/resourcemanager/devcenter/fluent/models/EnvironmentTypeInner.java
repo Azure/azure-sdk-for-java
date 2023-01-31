@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -32,6 +33,10 @@ public final class EnvironmentTypeInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of EnvironmentTypeInner class. */
+    public EnvironmentTypeInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of an environment type.
@@ -76,7 +81,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

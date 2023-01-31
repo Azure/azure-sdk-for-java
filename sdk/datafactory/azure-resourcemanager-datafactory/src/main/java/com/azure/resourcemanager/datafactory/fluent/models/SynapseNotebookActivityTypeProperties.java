@@ -64,6 +64,10 @@ public final class SynapseNotebookActivityTypeProperties {
     @JsonProperty(value = "numExecutors")
     private Integer numExecutors;
 
+    /** Creates an instance of SynapseNotebookActivityTypeProperties class. */
+    public SynapseNotebookActivityTypeProperties() {
+    }
+
     /**
      * Get the notebook property: Synapse notebook reference.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityQueryKind. */
+/** The kind of the entity query. */
 public final class EntityQueryKind extends ExpandableStringEnum<EntityQueryKind> {
     /** Static value Expansion for EntityQueryKind. */
     public static final EntityQueryKind EXPANSION = fromString("Expansion");

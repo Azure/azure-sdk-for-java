@@ -25,6 +25,10 @@ public final class CosmosDbMongoDbApiCollectionDataset extends Dataset {
     private CosmosDbMongoDbApiCollectionDatasetTypeProperties innerTypeProperties =
         new CosmosDbMongoDbApiCollectionDatasetTypeProperties();
 
+    /** Creates an instance of CosmosDbMongoDbApiCollectionDataset class. */
+    public CosmosDbMongoDbApiCollectionDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: CosmosDB (MongoDB API) database dataset properties.
      *

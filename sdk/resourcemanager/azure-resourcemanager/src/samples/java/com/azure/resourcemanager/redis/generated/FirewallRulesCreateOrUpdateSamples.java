@@ -10,7 +10,7 @@ import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
 /** Samples for FirewallRules CreateOrUpdate. */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheFirewallRuleCreate.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheFirewallRuleCreate.json
      */
     /**
      * Sample code: RedisCacheFirewallRuleCreate.

@@ -75,6 +75,10 @@ public final class Db2LinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of Db2LinkedServiceTypeProperties class. */
+    public Db2LinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with server, database,
      * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or

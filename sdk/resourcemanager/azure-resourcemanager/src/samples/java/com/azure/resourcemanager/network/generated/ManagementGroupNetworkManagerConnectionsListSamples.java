@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagementGroupNetworkManagerConnections List. */
 public final class ManagementGroupNetworkManagerConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerConnectionManagementGroupList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerConnectionManagementGroupList.json
      */
     /**
      * Sample code: List Management Group Network Manager Connection.

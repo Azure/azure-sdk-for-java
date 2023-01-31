@@ -22,6 +22,10 @@ public final class Ipv6CircuitConnectionConfig {
     @JsonProperty(value = "circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CircuitConnectionStatus circuitConnectionStatus;
 
+    /** Creates an instance of Ipv6CircuitConnectionConfig class. */
+    public Ipv6CircuitConnectionConfig() {
+    }
+
     /**
      * Get the addressPrefix property: /125 IP address space to carve out customer addresses for global reach.
      *

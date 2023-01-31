@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -36,14 +34,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput.class);
-
     /*
      * Result identifier
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
+
+    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput class. */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput() {
+    }
 
     /**
      * Get the id property: Result identifier.

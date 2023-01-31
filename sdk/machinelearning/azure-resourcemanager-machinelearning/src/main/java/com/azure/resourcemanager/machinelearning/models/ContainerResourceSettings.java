@@ -31,6 +31,10 @@ public final class ContainerResourceSettings {
     @JsonProperty(value = "memory")
     private String memory;
 
+    /** Creates an instance of ContainerResourceSettings class. */
+    public ContainerResourceSettings() {
+    }
+
     /**
      * Get the cpu property: Number of vCPUs request/limit for container. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/.

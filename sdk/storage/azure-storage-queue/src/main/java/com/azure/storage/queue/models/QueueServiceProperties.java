@@ -23,15 +23,13 @@ public final class QueueServiceProperties {
     private QueueAnalyticsLogging analyticsLogging;
 
     /*
-     * A summary of request statistics grouped by API in hourly aggregates for
-     * queues
+     * A summary of request statistics grouped by API in hourly aggregates for queues
      */
     @JsonProperty(value = "HourMetrics")
     private QueueMetrics hourMetrics;
 
     /*
-     * a summary of request statistics grouped by API in minute aggregates for
-     * queues
+     * a summary of request statistics grouped by API in minute aggregates for queues
      */
     @JsonProperty(value = "MinuteMetrics")
     private QueueMetrics minuteMetrics;
@@ -51,6 +49,9 @@ public final class QueueServiceProperties {
      */
     @JsonProperty(value = "Cors")
     private CorsWrapper cors;
+
+    /** Creates an instance of QueueServiceProperties class. */
+    public QueueServiceProperties() {}
 
     /**
      * Get the analyticsLogging property: Azure Analytics Logging settings.

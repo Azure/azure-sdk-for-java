@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateEndpointServiceConnectionStatus. */
+/** The private endpoint connection status. */
 public final class PrivateEndpointServiceConnectionStatus
     extends ExpandableStringEnum<PrivateEndpointServiceConnectionStatus> {
     /** Static value Pending for PrivateEndpointServiceConnectionStatus. */
@@ -21,6 +21,15 @@ public final class PrivateEndpointServiceConnectionStatus
     public static final PrivateEndpointServiceConnectionStatus REJECTED = fromString("Rejected");
 
     /**
+     * Creates a new instance of PrivateEndpointServiceConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointServiceConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointServiceConnectionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class PrivateEndpointServiceConnectionStatus
         return fromString(name, PrivateEndpointServiceConnectionStatus.class);
     }
 
-    /** @return known PrivateEndpointServiceConnectionStatus values. */
+    /**
+     * Gets known PrivateEndpointServiceConnectionStatus values.
+     *
+     * @return known PrivateEndpointServiceConnectionStatus values.
+     */
     public static Collection<PrivateEndpointServiceConnectionStatus> values() {
         return values(PrivateEndpointServiceConnectionStatus.class);
     }

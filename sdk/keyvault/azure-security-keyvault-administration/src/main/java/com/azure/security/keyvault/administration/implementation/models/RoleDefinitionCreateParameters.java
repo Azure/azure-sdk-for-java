@@ -16,6 +16,9 @@ public final class RoleDefinitionCreateParameters {
     @JsonProperty(value = "properties", required = true)
     private RoleDefinitionProperties properties;
 
+    /** Creates an instance of RoleDefinitionCreateParameters class. */
+    public RoleDefinitionCreateParameters() {}
+
     /**
      * Get the properties property: Role definition properties.
      *

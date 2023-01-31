@@ -72,6 +72,10 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
     @JsonProperty(value = "exclusions")
     private List<ApplicationGatewayFirewallExclusion> exclusions;
 
+    /** Creates an instance of ApplicationGatewayWebApplicationFirewallConfiguration class. */
+    public ApplicationGatewayWebApplicationFirewallConfiguration() {
+    }
+
     /**
      * Get the enabled property: Whether the web application firewall is enabled or not.
      *

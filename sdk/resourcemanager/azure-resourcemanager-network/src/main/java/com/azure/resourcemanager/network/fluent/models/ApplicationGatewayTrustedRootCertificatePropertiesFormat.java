@@ -29,6 +29,10 @@ public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayTrustedRootCertificatePropertiesFormat class. */
+    public ApplicationGatewayTrustedRootCertificatePropertiesFormat() {
+    }
+
     /**
      * Get the data property: Certificate public data.
      *

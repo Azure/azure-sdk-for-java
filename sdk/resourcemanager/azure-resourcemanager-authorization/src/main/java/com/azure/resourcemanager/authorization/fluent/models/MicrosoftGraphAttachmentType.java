@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphAttachmentType. */
+/** attachmentType. */
 public final class MicrosoftGraphAttachmentType extends ExpandableStringEnum<MicrosoftGraphAttachmentType> {
     /** Static value file for MicrosoftGraphAttachmentType. */
     public static final MicrosoftGraphAttachmentType FILE = fromString("file");
@@ -30,7 +30,11 @@ public final class MicrosoftGraphAttachmentType extends ExpandableStringEnum<Mic
         return fromString(name, MicrosoftGraphAttachmentType.class);
     }
 
-    /** @return known MicrosoftGraphAttachmentType values. */
+    /**
+     * Gets known MicrosoftGraphAttachmentType values.
+     *
+     * @return known MicrosoftGraphAttachmentType values.
+     */
     public static Collection<MicrosoftGraphAttachmentType> values() {
         return values(MicrosoftGraphAttachmentType.class);
     }

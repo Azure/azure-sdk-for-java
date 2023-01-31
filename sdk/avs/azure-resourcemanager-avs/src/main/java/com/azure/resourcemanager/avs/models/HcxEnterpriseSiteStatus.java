@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HcxEnterpriseSiteStatus. */
+/** The status of the HCX Enterprise Site. */
 public final class HcxEnterpriseSiteStatus extends ExpandableStringEnum<HcxEnterpriseSiteStatus> {
     /** Static value Available for HcxEnterpriseSiteStatus. */
     public static final HcxEnterpriseSiteStatus AVAILABLE = fromString("Available");
@@ -33,7 +33,11 @@ public final class HcxEnterpriseSiteStatus extends ExpandableStringEnum<HcxEnter
         return fromString(name, HcxEnterpriseSiteStatus.class);
     }
 
-    /** @return known HcxEnterpriseSiteStatus values. */
+    /**
+     * Gets known HcxEnterpriseSiteStatus values.
+     *
+     * @return known HcxEnterpriseSiteStatus values.
+     */
     public static Collection<HcxEnterpriseSiteStatus> values() {
         return values(HcxEnterpriseSiteStatus.class);
     }

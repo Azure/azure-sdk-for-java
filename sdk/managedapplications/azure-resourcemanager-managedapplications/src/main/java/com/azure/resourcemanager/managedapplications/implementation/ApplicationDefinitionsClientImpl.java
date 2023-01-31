@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managedapplications.fluent.ApplicationDefinitionsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplicationDefinitionsClient. */
 public final class ApplicationDefinitionsClientImpl implements ApplicationDefinitionsClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationDefinitionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApplicationDefinitionsService service;
 
@@ -67,7 +64,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationClientApp")
-    private interface ApplicationDefinitionsService {
+    public interface ApplicationDefinitionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions"
@@ -193,7 +190,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the managed application definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> getByResourceGroupWithResponseAsync(
@@ -245,7 +242,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the managed application definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> getByResourceGroupWithResponseAsync(
@@ -293,20 +290,30 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the managed application definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationDefinitionInner> getByResourceGroupAsync(
         String resourceGroupName, String applicationDefinitionName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, applicationDefinitionName)
-            .flatMap(
-                (Response<ApplicationDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed application definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApplicationDefinitionInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String applicationDefinitionName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, applicationDefinitionName, context).block();
     }
 
     /**
@@ -321,24 +328,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationDefinitionInner getByResourceGroup(String resourceGroupName, String applicationDefinitionName) {
-        return getByResourceGroupAsync(resourceGroupName, applicationDefinitionName).block();
-    }
-
-    /**
-     * Gets the managed application definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationDefinitionName The name of the managed application definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationDefinitionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, applicationDefinitionName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, Context.NONE).getValue();
     }
 
     /**
@@ -349,7 +339,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -401,7 +391,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -449,15 +439,16 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationDefinitionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationDefinitionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -469,9 +460,9 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationDefinitionName, Context context) {
         context = this.client.mergeContext(context);
@@ -490,11 +481,11 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationDefinitionName) {
-        return beginDeleteAsync(resourceGroupName, applicationDefinitionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, applicationDefinitionName).getSyncPoller();
     }
 
     /**
@@ -506,12 +497,12 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationDefinitionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, applicationDefinitionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, applicationDefinitionName, context).getSyncPoller();
     }
 
     /**
@@ -522,7 +513,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String applicationDefinitionName) {
@@ -540,7 +531,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String applicationDefinitionName, Context context) {
@@ -587,7 +578,8 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -646,7 +638,8 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -704,9 +697,9 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link PollerFlux} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -718,7 +711,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
                 this.client.getHttpPipeline(),
                 ApplicationDefinitionInner.class,
                 ApplicationDefinitionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -731,9 +724,9 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link PollerFlux} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String applicationDefinitionName,
@@ -761,12 +754,12 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, applicationDefinitionName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, applicationDefinitionName, parameters).getSyncPoller();
     }
 
     /**
@@ -779,15 +772,16 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String applicationDefinitionName,
         ApplicationDefinitionInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, applicationDefinitionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, applicationDefinitionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -800,7 +794,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationDefinitionInner> createOrUpdateAsync(
@@ -820,7 +814,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationDefinitionInner> createOrUpdateAsync(
@@ -878,7 +872,8 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listByResourceGroupSinglePageAsync(
@@ -931,7 +926,8 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listByResourceGroupSinglePageAsync(
@@ -980,7 +976,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationDefinitionInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -997,7 +993,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationDefinitionInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1013,7 +1009,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationDefinitionInner> listByResourceGroup(String resourceGroupName) {
@@ -1028,7 +1024,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationDefinitionInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1043,7 +1039,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the managed application definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> getByIdWithResponseAsync(
@@ -1095,7 +1091,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the managed application definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> getByIdWithResponseAsync(
@@ -1143,19 +1139,29 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the managed application definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationDefinitionInner> getByIdAsync(String resourceGroupName, String applicationDefinitionName) {
         return getByIdWithResponseAsync(resourceGroupName, applicationDefinitionName)
-            .flatMap(
-                (Response<ApplicationDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed application definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApplicationDefinitionInner> getByIdWithResponse(
+        String resourceGroupName, String applicationDefinitionName, Context context) {
+        return getByIdWithResponseAsync(resourceGroupName, applicationDefinitionName, context).block();
     }
 
     /**
@@ -1170,24 +1176,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationDefinitionInner getById(String resourceGroupName, String applicationDefinitionName) {
-        return getByIdAsync(resourceGroupName, applicationDefinitionName).block();
-    }
-
-    /**
-     * Gets the managed application definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationDefinitionName The name of the managed application definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationDefinitionInner> getByIdWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context) {
-        return getByIdWithResponseAsync(resourceGroupName, applicationDefinitionName, context).block();
+        return getByIdWithResponse(resourceGroupName, applicationDefinitionName, Context.NONE).getValue();
     }
 
     /**
@@ -1198,7 +1187,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(
@@ -1250,7 +1239,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(
@@ -1298,16 +1287,17 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(
         String resourceGroupName, String applicationDefinitionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteByIdWithResponseAsync(resourceGroupName, applicationDefinitionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1319,9 +1309,9 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(
         String resourceGroupName, String applicationDefinitionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1340,12 +1330,12 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(
         String resourceGroupName, String applicationDefinitionName) {
-        return beginDeleteByIdAsync(resourceGroupName, applicationDefinitionName).getSyncPoller();
+        return this.beginDeleteByIdAsync(resourceGroupName, applicationDefinitionName).getSyncPoller();
     }
 
     /**
@@ -1357,12 +1347,12 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(
         String resourceGroupName, String applicationDefinitionName, Context context) {
-        return beginDeleteByIdAsync(resourceGroupName, applicationDefinitionName, context).getSyncPoller();
+        return this.beginDeleteByIdAsync(resourceGroupName, applicationDefinitionName, context).getSyncPoller();
     }
 
     /**
@@ -1373,7 +1363,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteByIdAsync(String resourceGroupName, String applicationDefinitionName) {
@@ -1391,7 +1381,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteByIdAsync(String resourceGroupName, String applicationDefinitionName, Context context) {
@@ -1438,7 +1428,8 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
@@ -1497,7 +1488,8 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
@@ -1555,9 +1547,9 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link PollerFlux} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateByIdAsync(
         String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1569,7 +1561,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
                 this.client.getHttpPipeline(),
                 ApplicationDefinitionInner.class,
                 ApplicationDefinitionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1582,9 +1574,9 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link PollerFlux} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateByIdAsync(
         String resourceGroupName,
         String applicationDefinitionName,
@@ -1612,12 +1604,14 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateById(
         String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters) {
-        return beginCreateOrUpdateByIdAsync(resourceGroupName, applicationDefinitionName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateByIdAsync(resourceGroupName, applicationDefinitionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1630,15 +1624,16 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return the {@link SyncPoller} for polling of information about managed application definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationDefinitionInner>, ApplicationDefinitionInner> beginCreateOrUpdateById(
         String resourceGroupName,
         String applicationDefinitionName,
         ApplicationDefinitionInner parameters,
         Context context) {
-        return beginCreateOrUpdateByIdAsync(resourceGroupName, applicationDefinitionName, parameters, context)
+        return this
+            .beginCreateOrUpdateByIdAsync(resourceGroupName, applicationDefinitionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1651,7 +1646,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationDefinitionInner> createOrUpdateByIdAsync(
@@ -1671,7 +1666,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application definition.
+     * @return information about managed application definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationDefinitionInner> createOrUpdateByIdAsync(
@@ -1725,11 +1720,13 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1761,12 +1758,14 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listByResourceGroupNextSinglePageAsync(

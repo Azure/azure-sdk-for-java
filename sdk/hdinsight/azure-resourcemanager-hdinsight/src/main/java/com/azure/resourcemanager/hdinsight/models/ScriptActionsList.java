@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The persisted script action for the cluster. */
 @Fluent
 public final class ScriptActionsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptActionsList.class);
-
     /*
      * The list of persisted script action details for the cluster.
      */
@@ -27,6 +23,10 @@ public final class ScriptActionsList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ScriptActionsList class. */
+    public ScriptActionsList() {
+    }
 
     /**
      * Get the value property: The list of persisted script action details for the cluster.

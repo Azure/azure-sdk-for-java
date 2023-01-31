@@ -23,6 +23,10 @@ public final class AzureBlobDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzureBlobDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AzureBlobDataset class. */
+    public AzureBlobDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Blob dataset properties.
      *

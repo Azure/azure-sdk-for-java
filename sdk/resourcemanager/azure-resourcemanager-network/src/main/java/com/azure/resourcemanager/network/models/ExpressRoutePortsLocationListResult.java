@@ -28,6 +28,10 @@ public final class ExpressRoutePortsLocationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressRoutePortsLocationListResult class. */
+    public ExpressRoutePortsLocationListResult() {
+    }
+
     /**
      * Get the value property: The list of all ExpressRoutePort peering locations.
      *

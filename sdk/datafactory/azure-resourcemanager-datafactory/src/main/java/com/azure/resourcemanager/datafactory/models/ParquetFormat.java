@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ParquetFormat")
 @Fluent
 public final class ParquetFormat extends DatasetStorageFormat {
+    /** Creates an instance of ParquetFormat class. */
+    public ParquetFormat() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ParquetFormat withSerializer(Object serializer) {

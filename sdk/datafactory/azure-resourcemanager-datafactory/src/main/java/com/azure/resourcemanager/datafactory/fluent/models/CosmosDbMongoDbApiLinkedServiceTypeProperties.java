@@ -32,6 +32,10 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     @JsonProperty(value = "database", required = true)
     private Object database;
 
+    /** Creates an instance of CosmosDbMongoDbApiLinkedServiceTypeProperties class. */
+    public CosmosDbMongoDbApiLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the isServerVersionAbove32 property: Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
      * The default value is false. Type: boolean (or Expression with resultType boolean).

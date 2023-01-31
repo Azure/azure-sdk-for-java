@@ -44,6 +44,10 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     @JsonProperty(value = "alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
+    /** Creates an instance of AmazonRdsForSqlServerLinkedServiceTypeProperties class. */
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

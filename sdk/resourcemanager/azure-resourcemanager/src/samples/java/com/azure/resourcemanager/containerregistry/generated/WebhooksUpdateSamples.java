@@ -36,7 +36,7 @@ public final class WebhooksUpdateSamples {
                     .withTags(mapOf("key", "value"))
                     .withServiceUri("http://myservice.com")
                     .withCustomHeaders(
-                        mapOf("Authorization", "Basic 000000000000000000000000000000000000000000000000000"))
+                        mapOf("Authorization", "Basic FakeCredentialPlaceHolder"))
                     .withStatus(WebhookStatus.ENABLED)
                     .withScope("myRepository")
                     .withActions(Arrays.asList(WebhookAction.PUSH)),

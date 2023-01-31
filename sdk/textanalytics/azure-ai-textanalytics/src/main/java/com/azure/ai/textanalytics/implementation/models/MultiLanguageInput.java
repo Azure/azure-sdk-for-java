@@ -24,10 +24,13 @@ public final class MultiLanguageInput {
 
     /*
      * (Optional) This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
+     * for Spanish etc. For Auto Language Detection, use "auto". If not set, use "en" for English as default.
      */
     @JsonProperty(value = "language")
     private String language;
+
+    /** Creates an instance of MultiLanguageInput class. */
+    public MultiLanguageInput() {}
 
     /**
      * Get the id property: A unique, non-empty document identifier.
@@ -71,7 +74,8 @@ public final class MultiLanguageInput {
 
     /**
      * Get the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
-     * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
+     * use "en" for English; "es" for Spanish etc. For Auto Language Detection, use "auto". If not set, use "en" for
+     * English as default.
      *
      * @return the language value.
      */
@@ -81,7 +85,8 @@ public final class MultiLanguageInput {
 
     /**
      * Set the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
-     * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
+     * use "en" for English; "es" for Spanish etc. For Auto Language Detection, use "auto". If not set, use "en" for
+     * English as default.
      *
      * @param language the language value to set.
      * @return the MultiLanguageInput object itself.

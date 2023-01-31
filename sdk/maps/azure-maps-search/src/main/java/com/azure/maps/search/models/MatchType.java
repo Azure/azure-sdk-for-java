@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MatchType. */
+/** Types of match for a reverse address search operation. */
 public final class MatchType extends ExpandableStringEnum<MatchType> {
     /** Static value AddressPoint for MatchType. */
     public static final MatchType ADDRESS_POINT = fromString("AddressPoint");

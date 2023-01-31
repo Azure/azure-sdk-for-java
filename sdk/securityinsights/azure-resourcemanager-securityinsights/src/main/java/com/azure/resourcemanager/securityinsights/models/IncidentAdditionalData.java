@@ -36,8 +36,7 @@ public final class IncidentAdditionalData {
     private List<String> alertProductNames;
 
     /*
-     * The provider incident url to the incident in Microsoft 365 Defender
-     * portal
+     * The provider incident url to the incident in Microsoft 365 Defender portal
      */
     @JsonProperty(value = "providerIncidentUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String providerIncidentUrl;

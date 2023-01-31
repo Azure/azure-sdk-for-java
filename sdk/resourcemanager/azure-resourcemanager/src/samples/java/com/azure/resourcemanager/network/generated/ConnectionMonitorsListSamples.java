@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConnectionMonitors List. */
 public final class ConnectionMonitorsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkWatcherConnectionMonitorList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkWatcherConnectionMonitorList.json
      */
     /**
      * Sample code: List connection monitors.

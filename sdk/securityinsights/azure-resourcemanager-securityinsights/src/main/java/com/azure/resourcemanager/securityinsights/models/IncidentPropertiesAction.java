@@ -36,7 +36,7 @@ public final class IncidentPropertiesAction {
     private IncidentClassificationReason classificationReason;
 
     /*
-     * Describes the reason the incident was closed
+     * Describes the reason the incident was closed.
      */
     @JsonProperty(value = "classificationComment")
     private String classificationComment;
@@ -48,7 +48,7 @@ public final class IncidentPropertiesAction {
     private IncidentOwnerInfo owner;
 
     /*
-     * List of labels to add to the incident
+     * List of labels to add to the incident.
      */
     @JsonProperty(value = "labels")
     private List<IncidentLabel> labels;

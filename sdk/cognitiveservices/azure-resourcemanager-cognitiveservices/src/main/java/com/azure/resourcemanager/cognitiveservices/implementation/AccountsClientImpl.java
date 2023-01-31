@@ -70,7 +70,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
-    private interface AccountsService {
+    public interface AccountsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices"
@@ -1159,22 +1159,6 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        return getByResourceGroupAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Returns a Cognitive Services account specified by the parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1186,6 +1170,22 @@ public final class AccountsClientImpl implements AccountsClient {
     public Response<AccountInner> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Returns a Cognitive Services account specified by the parameters.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccountInner getByResourceGroup(String resourceGroupName, String accountName) {
+        return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -1615,21 +1615,6 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the cognitive services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiKeysInner listKeys(String resourceGroupName, String accountName) {
-        return listKeysAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Lists the account keys for the specified Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1639,6 +1624,21 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApiKeysInner> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Lists the account keys for the specified Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys for the cognitive services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiKeysInner listKeys(String resourceGroupName, String accountName) {
+        return listKeysWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -1775,23 +1775,6 @@ public final class AccountsClientImpl implements AccountsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param parameters regenerate key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the cognitive services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiKeysInner regenerateKey(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
-        return regenerateKeyAsync(resourceGroupName, accountName, parameters).block();
-    }
-
-    /**
-     * Regenerates the specified account key for the specified Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param parameters regenerate key parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1802,6 +1785,23 @@ public final class AccountsClientImpl implements AccountsClient {
     public Response<ApiKeysInner> regenerateKeyWithResponse(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
+    }
+
+    /**
+     * Regenerates the specified account key for the specified Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param parameters regenerate key parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys for the cognitive services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiKeysInner regenerateKey(
+        String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
+        return regenerateKeyWithResponse(resourceGroupName, accountName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1921,21 +1921,6 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccountSkuListResultInner listSkus(String resourceGroupName, String accountName) {
-        return listSkusAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * List available SKUs for the requested Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1946,6 +1931,21 @@ public final class AccountsClientImpl implements AccountsClient {
     public Response<AccountSkuListResultInner> listSkusWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return listSkusWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * List available SKUs for the requested Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccountSkuListResultInner listSkus(String resourceGroupName, String accountName) {
+        return listSkusWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -2055,24 +2055,6 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages for the requested Cognitive Services account on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsageListResultInner> listUsagesAsync(String resourceGroupName, String accountName, String filter) {
-        return listUsagesWithResponseAsync(resourceGroupName, accountName, filter)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get usages for the requested Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2083,22 +2065,6 @@ public final class AccountsClientImpl implements AccountsClient {
         final String filter = null;
         return listUsagesWithResponseAsync(resourceGroupName, accountName, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get usages for the requested Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages for the requested Cognitive Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsageListResultInner listUsages(String resourceGroupName, String accountName) {
-        final String filter = null;
-        return listUsagesAsync(resourceGroupName, accountName, filter).block();
     }
 
     /**
@@ -2118,6 +2084,22 @@ public final class AccountsClientImpl implements AccountsClient {
     public Response<UsageListResultInner> listUsagesWithResponse(
         String resourceGroupName, String accountName, String filter, Context context) {
         return listUsagesWithResponseAsync(resourceGroupName, accountName, filter, context).block();
+    }
+
+    /**
+     * Get usages for the requested Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return usages for the requested Cognitive Services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UsageListResultInner listUsages(String resourceGroupName, String accountName) {
+        final String filter = null;
+        return listUsagesWithResponse(resourceGroupName, accountName, filter, Context.NONE).getValue();
     }
 
     /**
@@ -2306,7 +2288,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2343,7 +2326,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2380,7 +2364,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2416,7 +2401,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2453,7 +2439,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2489,7 +2476,8 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

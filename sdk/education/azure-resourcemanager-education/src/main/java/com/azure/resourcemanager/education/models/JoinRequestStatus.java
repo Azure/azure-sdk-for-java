@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JoinRequestStatus. */
+/** Join request status. */
 public final class JoinRequestStatus extends ExpandableStringEnum<JoinRequestStatus> {
     /** Static value Pending for JoinRequestStatus. */
     public static final JoinRequestStatus PENDING = fromString("Pending");

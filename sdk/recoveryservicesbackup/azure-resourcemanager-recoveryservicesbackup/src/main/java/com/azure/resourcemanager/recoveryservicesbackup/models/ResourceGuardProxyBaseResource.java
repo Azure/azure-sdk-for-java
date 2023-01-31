@@ -259,17 +259,6 @@ public interface ResourceGuardProxyBaseResource {
      * Secures delete ResourceGuardProxy operations.
      *
      * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
-     */
-    UnlockDeleteResponse unlockDelete(UnlockDeleteRequest parameters);
-
-    /**
-     * Secures delete ResourceGuardProxy operations.
-     *
-     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -277,4 +266,15 @@ public interface ResourceGuardProxyBaseResource {
      * @return response of Unlock Delete API along with {@link Response}.
      */
     Response<UnlockDeleteResponse> unlockDeleteWithResponse(UnlockDeleteRequest parameters, Context context);
+
+    /**
+     * Secures delete ResourceGuardProxy operations.
+     *
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of Unlock Delete API.
+     */
+    UnlockDeleteResponse unlockDelete(UnlockDeleteRequest parameters);
 }

@@ -24,8 +24,8 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
     private Boolean isDefault;
 
     /*
-     * Indicates whether the notebook is shared. If true, the contents of the
-     * notebook can be seen by people other than the owner. Read-only.
+     * Indicates whether the notebook is shared. If true, the contents of the notebook can be seen by people other than
+     * the owner. Read-only.
      */
     @JsonProperty(value = "isShared")
     private Boolean isShared;
@@ -37,15 +37,14 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
     private MicrosoftGraphNotebookLinks links;
 
     /*
-     * The URL for the sectionGroups navigation property, which returns all the
-     * section groups in the notebook. Read-only.
+     * The URL for the sectionGroups navigation property, which returns all the section groups in the notebook.
+     * Read-only.
      */
     @JsonProperty(value = "sectionGroupsUrl")
     private String sectionGroupsUrl;
 
     /*
-     * The URL for the sections navigation property, which returns all the
-     * sections in the notebook. Read-only.
+     * The URL for the sections navigation property, which returns all the sections in the notebook. Read-only.
      */
     @JsonProperty(value = "sectionsUrl")
     private String sectionsUrl;
@@ -72,6 +71,10 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
      * notebook
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphNotebook class. */
+    public MicrosoftGraphNotebook() {
+    }
 
     /**
      * Get the isDefault property: Indicates whether this is the user's default notebook. Read-only.

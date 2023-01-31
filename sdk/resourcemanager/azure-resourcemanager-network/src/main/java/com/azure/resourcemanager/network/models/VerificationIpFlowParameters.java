@@ -62,6 +62,10 @@ public final class VerificationIpFlowParameters {
     @JsonProperty(value = "targetNicResourceId")
     private String targetNicResourceId;
 
+    /** Creates an instance of VerificationIpFlowParameters class. */
+    public VerificationIpFlowParameters() {
+    }
+
     /**
      * Get the targetResourceId property: The ID of the target resource to perform next-hop on.
      *

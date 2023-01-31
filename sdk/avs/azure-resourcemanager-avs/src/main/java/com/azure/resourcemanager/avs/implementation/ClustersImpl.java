@@ -11,12 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.ClustersClient;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
+import com.azure.resourcemanager.avs.fluent.models.ClusterZoneListInner;
 import com.azure.resourcemanager.avs.models.Cluster;
+import com.azure.resourcemanager.avs.models.ClusterZoneList;
 import com.azure.resourcemanager.avs.models.Clusters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClustersImpl implements Clusters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClustersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClustersImpl.class);
 
     private final ClustersClient innerClient;
 
@@ -37,15 +38,6 @@ public final class ClustersImpl implements Clusters {
         return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
-    public Cluster get(String resourceGroupName, String privateCloudName, String clusterName) {
-        ClusterInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, clusterName);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Cluster> getWithResponse(
         String resourceGroupName, String privateCloudName, String clusterName, Context context) {
         Response<ClusterInner> inner =
@@ -61,6 +53,15 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
+    public Cluster get(String resourceGroupName, String privateCloudName, String clusterName) {
+        ClusterInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, clusterName);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String privateCloudName, String clusterName) {
         this.serviceClient().delete(resourceGroupName, privateCloudName, clusterName);
     }
@@ -69,10 +70,34 @@ public final class ClustersImpl implements Clusters {
         this.serviceClient().delete(resourceGroupName, privateCloudName, clusterName, context);
     }
 
+    public Response<ClusterZoneList> listZonesWithResponse(
+        String resourceGroupName, String privateCloudName, String clusterName, Context context) {
+        Response<ClusterZoneListInner> inner =
+            this.serviceClient().listZonesWithResponse(resourceGroupName, privateCloudName, clusterName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ClusterZoneListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterZoneList listZones(String resourceGroupName, String privateCloudName, String clusterName) {
+        ClusterZoneListInner inner = this.serviceClient().listZones(resourceGroupName, privateCloudName, clusterName);
+        if (inner != null) {
+            return new ClusterZoneListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Cluster getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -80,14 +105,14 @@ public final class ClustersImpl implements Clusters {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -98,7 +123,7 @@ public final class ClustersImpl implements Clusters {
     public Response<Cluster> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,14 +131,14 @@ public final class ClustersImpl implements Clusters {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -124,7 +149,7 @@ public final class ClustersImpl implements Clusters {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,14 +157,14 @@ public final class ClustersImpl implements Clusters {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -150,7 +175,7 @@ public final class ClustersImpl implements Clusters {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,14 +183,14 @@ public final class ClustersImpl implements Clusters {
         }
         String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));

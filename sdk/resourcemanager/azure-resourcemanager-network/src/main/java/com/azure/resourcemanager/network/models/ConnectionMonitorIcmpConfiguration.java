@@ -16,6 +16,10 @@ public final class ConnectionMonitorIcmpConfiguration {
     @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;
 
+    /** Creates an instance of ConnectionMonitorIcmpConfiguration class. */
+    public ConnectionMonitorIcmpConfiguration() {
+    }
+
     /**
      * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
      *

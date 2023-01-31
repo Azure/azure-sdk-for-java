@@ -17,6 +17,10 @@ public final class OpenShiftManagedClusterAuthProfile {
     @JsonProperty(value = "identityProviders")
     private List<OpenShiftManagedClusterIdentityProvider> identityProviders;
 
+    /** Creates an instance of OpenShiftManagedClusterAuthProfile class. */
+    public OpenShiftManagedClusterAuthProfile() {
+    }
+
     /**
      * Get the identityProviders property: Type of authentication profile to use.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FileType. */
+/** The type of the file (for Linux files - Executable is used). */
 public final class FileType extends ExpandableStringEnum<FileType> {
     /** Static value Exe for FileType. */
     public static final FileType EXE = fromString("Exe");
@@ -39,7 +39,11 @@ public final class FileType extends ExpandableStringEnum<FileType> {
         return fromString(name, FileType.class);
     }
 
-    /** @return known FileType values. */
+    /**
+     * Gets known FileType values.
+     *
+     * @return known FileType values.
+     */
     public static Collection<FileType> values() {
         return values(FileType.class);
     }

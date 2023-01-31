@@ -16,8 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     /*
-     * If false, this record must be configured by the customer at the DNS host
-     * for Microsoft Online Services to operate correctly with the domain.
+     * If false, this record must be configured by the customer at the DNS host for Microsoft Online Services to
+     * operate correctly with the domain.
      */
     @JsonProperty(value = "isOptional")
     private Boolean isOptional;
@@ -29,25 +29,22 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     private String label;
 
     /*
-     * Indicates what type of DNS record this entity represents.The value can
-     * be one of the following: CName, Mx, Srv, TxtKey
+     * Indicates what type of DNS record this entity represents.The value can be one of the following: CName, Mx, Srv,
+     * TxtKey
      */
     @JsonProperty(value = "recordType")
     private String recordType;
 
     /*
-     * Microsoft Online Service or feature that has a dependency on this DNS
-     * record.Can be one of the following values: null, Email, Sharepoint,
-     * EmailInternalRelayOnly, OfficeCommunicationsOnline,
-     * SharePointDefaultDomain, FullRedelegation, SharePointPublic,
-     * OrgIdAuthentication, Yammer, Intune
+     * Microsoft Online Service or feature that has a dependency on this DNS record.Can be one of the following values:
+     * null, Email, Sharepoint, EmailInternalRelayOnly, OfficeCommunicationsOnline, SharePointDefaultDomain,
+     * FullRedelegation, SharePointPublic, OrgIdAuthentication, Yammer, Intune
      */
     @JsonProperty(value = "supportedService")
     private String supportedService;
 
     /*
-     * Value to use when configuring the time-to-live (ttl) property of the DNS
-     * record at the DNS host. Not nullable
+     * Value to use when configuring the time-to-live (ttl) property of the DNS record at the DNS host. Not nullable
      */
     @JsonProperty(value = "ttl")
     private Integer ttl;
@@ -56,6 +53,10 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
      * domainDnsRecord
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDomainDnsRecord class. */
+    public MicrosoftGraphDomainDnsRecord() {
+    }
 
     /**
      * Get the isOptional property: If false, this record must be configured by the customer at the DNS host for

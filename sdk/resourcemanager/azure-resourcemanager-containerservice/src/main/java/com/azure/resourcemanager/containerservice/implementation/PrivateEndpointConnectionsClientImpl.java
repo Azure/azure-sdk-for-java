@@ -61,7 +61,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface PrivateEndpointConnectionsService {
+    public interface PrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
@@ -162,7 +162,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -215,7 +215,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -253,23 +253,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String resourceName) {
-        return listAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Gets a list of private endpoint connections in the specified managed cluster.
-     *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,6 +263,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionListResultInner> listWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets a list of private endpoint connections in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String resourceName) {
+        return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -323,7 +323,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -383,7 +383,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -426,25 +426,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, resourceName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Gets the specified private endpoint connection.
-     *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,6 +436,25 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
+     * Gets the specified private endpoint connection.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+        return getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
     /**
@@ -505,7 +505,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -574,7 +574,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -619,27 +619,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param parameters The updated private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters) {
-        return updateAsync(resourceGroupName, resourceName, privateEndpointConnectionName, parameters).block();
-    }
-
-    /**
-     * Updates a private endpoint connection.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The updated private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -656,6 +635,29 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         return updateWithResponseAsync(
                 resourceGroupName, resourceName, privateEndpointConnectionName, parameters, context)
             .block();
+    }
+
+    /**
+     * Updates a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters The updated private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner update(
+        String resourceGroupName,
+        String resourceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters) {
+        return updateWithResponse(
+                resourceGroupName, resourceName, privateEndpointConnectionName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -697,7 +699,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -755,7 +757,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -829,7 +831,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName).getSyncPoller();
     }
 
     /**
@@ -847,7 +849,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
 

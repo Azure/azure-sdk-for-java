@@ -24,6 +24,10 @@ public final class MaintenanceConfigurationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of MaintenanceConfigurationListResult class. */
+    public MaintenanceConfigurationListResult() {
+    }
+
     /**
      * Get the value property: The list of maintenance configurations.
      *

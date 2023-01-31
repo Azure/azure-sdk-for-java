@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MaintenanceConfigurations Delete. */
 public final class MaintenanceConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/MaintenanceConfigurationsDelete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/MaintenanceConfigurationsDelete.json
      */
     /**
      * Sample code: Delete Maintenance Configuration.
@@ -22,6 +20,6 @@ public final class MaintenanceConfigurationsDeleteSamples {
             .manager()
             .serviceClient()
             .getMaintenanceConfigurations()
-            .deleteWithResponse("rg1", "clustername1", "default", Context.NONE);
+            .deleteWithResponse("rg1", "clustername1", "default", com.azure.core.util.Context.NONE);
     }
 }

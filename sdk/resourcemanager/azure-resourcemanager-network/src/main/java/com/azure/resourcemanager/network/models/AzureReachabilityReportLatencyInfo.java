@@ -23,6 +23,10 @@ public final class AzureReachabilityReportLatencyInfo {
     @JsonProperty(value = "score")
     private Integer score;
 
+    /** Creates an instance of AzureReachabilityReportLatencyInfo class. */
+    public AzureReachabilityReportLatencyInfo() {
+    }
+
     /**
      * Get the timestamp property: The time stamp.
      *

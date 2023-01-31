@@ -28,6 +28,10 @@ public final class ExpressRouteLinkListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressRouteLinkListResult class. */
+    public ExpressRouteLinkListResult() {
+    }
+
     /**
      * Get the value property: The list of ExpressRouteLink sub-resources.
      *

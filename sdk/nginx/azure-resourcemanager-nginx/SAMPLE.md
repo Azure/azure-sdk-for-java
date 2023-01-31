@@ -3,7 +3,7 @@
 
 ## Certificates
 
-- [Create](#certificates_create)
+- [CreateOrUpdate](#certificates_createorupdate)
 - [Delete](#certificates_delete)
 - [Get](#certificates_get)
 - [List](#certificates_list)
@@ -17,7 +17,7 @@
 
 ## Deployments
 
-- [Create](#deployments_create)
+- [CreateOrUpdate](#deployments_createorupdate)
 - [Delete](#deployments_delete)
 - [GetByResourceGroup](#deployments_getbyresourcegroup)
 - [List](#deployments_list)
@@ -27,11 +27,11 @@
 ## Operations
 
 - [List](#operations_list)
-### Certificates_Create
+### Certificates_CreateOrUpdate
 
 ```java
-/** Samples for Certificates Create. */
-public final class CertificatesCreateSamples {
+/** Samples for Certificates CreateOrUpdate. */
+public final class CertificatesCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Certificates_CreateOrUpdate.json
      */
@@ -201,11 +201,11 @@ public final class ConfigurationsListSamples {
 }
 ```
 
-### Deployments_Create
+### Deployments_CreateOrUpdate
 
 ```java
-/** Samples for Deployments Create. */
-public final class DeploymentsCreateSamples {
+/** Samples for Deployments CreateOrUpdate. */
+public final class DeploymentsCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_Create.json
      */

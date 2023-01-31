@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.BillingResources;
 import com.azure.resourcemanager.hdinsight.models.VmSizeCompatibilityFilterV2;
 import com.azure.resourcemanager.hdinsight.models.VmSizeProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response for the operation to get regional billingSpecs for a subscription. */
 @Fluent
 public final class BillingResponseListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingResponseListResultInner.class);
-
     /*
      * The virtual machine sizes to include or exclude.
      */
@@ -31,8 +27,8 @@ public final class BillingResponseListResultInner {
     private List<String> vmSizesWithEncryptionAtHost;
 
     /*
-     * The virtual machine filtering mode. Effectively this can enabling or
-     * disabling the virtual machine sizes in a particular set.
+     * The virtual machine filtering mode. Effectively this can enabling or disabling the virtual machine sizes in a
+     * particular set.
      */
     @JsonProperty(value = "vmSizeFilters")
     private List<VmSizeCompatibilityFilterV2> vmSizeFilters;
@@ -48,6 +44,10 @@ public final class BillingResponseListResultInner {
      */
     @JsonProperty(value = "billingResources")
     private List<BillingResources> billingResources;
+
+    /** Creates an instance of BillingResponseListResultInner class. */
+    public BillingResponseListResultInner() {
+    }
 
     /**
      * Get the vmSizes property: The virtual machine sizes to include or exclude.

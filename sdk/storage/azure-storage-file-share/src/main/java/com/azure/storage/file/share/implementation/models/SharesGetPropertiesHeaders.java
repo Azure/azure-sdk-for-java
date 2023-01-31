@@ -7,6 +7,7 @@ package com.azure.storage.file.share.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.LeaseDurationType;
@@ -75,7 +76,7 @@ public final class SharesGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-share-provisioned-ingress-mbps property.
@@ -143,6 +144,45 @@ public final class SharesGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-share-next-allowed-quota-downgrade-time")
     private DateTimeRfc1123 xMsShareNextAllowedQuotaDowngradeTime;
 
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-iops");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
+
+    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
+
+    private static final HttpHeaderName X_MS_ROOT_SQUASH = HttpHeaderName.fromString("x-ms-root-squash");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER_CHANGE_TIME =
+            HttpHeaderName.fromString("x-ms-access-tier-change-time");
+
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_INGRESS_MBPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-ingress-mbps");
+
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
+
+    private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
+
+    private static final HttpHeaderName X_MS_ENABLED_PROTOCOLS = HttpHeaderName.fromString("x-ms-enabled-protocols");
+
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_ACCESS_TIER_TRANSITION_STATE =
+            HttpHeaderName.fromString("x-ms-access-tier-transition-state");
+
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_EGRESS_MBPS =
+            HttpHeaderName.fromString("x-ms-share-provisioned-egress-mbps");
+
+    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME =
+            HttpHeaderName.fromString("x-ms-share-next-allowed-quota-downgrade-time");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SharesGetPropertiesHeaders class.
@@ -150,64 +190,75 @@ public final class SharesGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SharesGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        if (rawHeaders.getValue("x-ms-share-provisioned-iops") != null) {
-            this.xMsShareProvisionedIops = Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-iops"));
+        String xMsShareProvisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
+        if (xMsShareProvisionedIops != null) {
+            this.xMsShareProvisionedIops = Integer.parseInt(xMsShareProvisionedIops);
         }
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        if (rawHeaders.getValue("x-ms-lease-status") != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
         }
-        if (rawHeaders.getValue("x-ms-lease-state") != null) {
-            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+        String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        if (xMsLeaseState != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
         }
-        if (rawHeaders.getValue("x-ms-root-squash") != null) {
-            this.xMsRootSquash = ShareRootSquash.fromString(rawHeaders.getValue("x-ms-root-squash"));
+        String xMsRootSquash = rawHeaders.getValue(X_MS_ROOT_SQUASH);
+        if (xMsRootSquash != null) {
+            this.xMsRootSquash = ShareRootSquash.fromString(xMsRootSquash);
         }
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        if (rawHeaders.getValue("x-ms-access-tier-change-time") != null) {
-            this.xMsAccessTierChangeTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-access-tier-change-time"));
+        String xMsAccessTierChangeTime = rawHeaders.getValue(X_MS_ACCESS_TIER_CHANGE_TIME);
+        if (xMsAccessTierChangeTime != null) {
+            this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
+        }
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String xMsShareProvisionedIngressMbps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_INGRESS_MBPS);
+        if (xMsShareProvisionedIngressMbps != null) {
+            this.xMsShareProvisionedIngressMbps = Integer.parseInt(xMsShareProvisionedIngressMbps);
+        }
+        String xMsShareProvisionedBandwidthMibps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS);
+        if (xMsShareProvisionedBandwidthMibps != null) {
+            this.xMsShareProvisionedBandwidthMibps = Integer.parseInt(xMsShareProvisionedBandwidthMibps);
+        }
+        String xMsShareQuota = rawHeaders.getValue(X_MS_SHARE_QUOTA);
+        if (xMsShareQuota != null) {
+            this.xMsShareQuota = Integer.parseInt(xMsShareQuota);
+        }
+        this.xMsAccessTier = rawHeaders.getValue(X_MS_ACCESS_TIER);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.xMsEnabledProtocols = rawHeaders.getValue(X_MS_ENABLED_PROTOCOLS);
+        String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        }
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsAccessTierTransitionState = rawHeaders.getValue(X_MS_ACCESS_TIER_TRANSITION_STATE);
+        String xMsShareProvisionedEgressMbps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_EGRESS_MBPS);
+        if (xMsShareProvisionedEgressMbps != null) {
+            this.xMsShareProvisionedEgressMbps = Integer.parseInt(xMsShareProvisionedEgressMbps);
+        }
+        String xMsShareNextAllowedQuotaDowngradeTime =
+                rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME);
+        if (xMsShareNextAllowedQuotaDowngradeTime != null) {
+            this.xMsShareNextAllowedQuotaDowngradeTime = new DateTimeRfc1123(xMsShareNextAllowedQuotaDowngradeTime);
         }
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
-            if (!header.getName().startsWith("x-ms-meta-")) {
-                continue;
+            String headerName = header.getName();
+            if (headerName.startsWith("x-ms-meta-")) {
+                xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
             }
-            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
         }
+
         this.xMsMeta = xMsMetaHeaderCollection;
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
-        }
-        if (rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps") != null) {
-            this.xMsShareProvisionedIngressMbps =
-                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps"));
-        }
-        if (rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps") != null) {
-            this.xMsShareProvisionedBandwidthMibps =
-                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps"));
-        }
-        if (rawHeaders.getValue("x-ms-share-quota") != null) {
-            this.xMsShareQuota = Integer.parseInt(rawHeaders.getValue("x-ms-share-quota"));
-        }
-        this.xMsAccessTier = rawHeaders.getValue("x-ms-access-tier");
-        this.eTag = rawHeaders.getValue("ETag");
-        this.xMsEnabledProtocols = rawHeaders.getValue("x-ms-enabled-protocols");
-        if (rawHeaders.getValue("x-ms-lease-duration") != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
-        }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsAccessTierTransitionState = rawHeaders.getValue("x-ms-access-tier-transition-state");
-        if (rawHeaders.getValue("x-ms-share-provisioned-egress-mbps") != null) {
-            this.xMsShareProvisionedEgressMbps =
-                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-egress-mbps"));
-        }
-        if (rawHeaders.getValue("x-ms-share-next-allowed-quota-downgrade-time") != null) {
-            this.xMsShareNextAllowedQuotaDowngradeTime =
-                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-share-next-allowed-quota-downgrade-time"));
-        }
     }
 
     /**
@@ -385,28 +436,28 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
-    public SharesGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public SharesGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

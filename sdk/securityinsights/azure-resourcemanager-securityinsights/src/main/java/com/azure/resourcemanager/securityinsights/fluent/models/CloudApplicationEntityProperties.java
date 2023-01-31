@@ -24,9 +24,8 @@ public final class CloudApplicationEntityProperties extends EntityCommonProperti
     private String appName;
 
     /*
-     * The user defined instance name of the cloud application. It is often
-     * used to distinguish between several applications of the same type that a
-     * customer has.
+     * The user defined instance name of the cloud application. It is often used to distinguish between several
+     * applications of the same type that a customer has.
      */
     @JsonProperty(value = "instanceName", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceName;

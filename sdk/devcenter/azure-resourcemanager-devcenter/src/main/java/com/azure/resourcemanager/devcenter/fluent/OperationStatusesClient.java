@@ -19,21 +19,6 @@ public interface OperationStatusesClient {
      *
      * @param location The Azure region.
      * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner get(String location, String operationId);
-
-    /**
-     * Get Operation Status
-     *
-     * <p>Gets the current status of an async operation.
-     *
-     * @param location The Azure region.
-     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,4 +27,19 @@ public interface OperationStatusesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context);
+
+    /**
+     * Get Operation Status
+     *
+     * <p>Gets the current status of an async operation.
+     *
+     * @param location The Azure region.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusInner get(String location, String operationId);
 }

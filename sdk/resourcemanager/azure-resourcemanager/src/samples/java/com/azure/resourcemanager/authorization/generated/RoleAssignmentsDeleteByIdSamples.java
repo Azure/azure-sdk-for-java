@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RoleAssignments DeleteById. */
 public final class RoleAssignmentsDeleteByIdSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/DeleteRoleAssignmentById.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/RoleAssignments_DeleteById.json
      */
     /**
      * Sample code: Delete role assignment by ID.
@@ -23,6 +23,9 @@ public final class RoleAssignmentsDeleteByIdSamples {
             .manager()
             .roleServiceClient()
             .getRoleAssignments()
-            .deleteByIdWithResponse("roleAssignmentId", Context.NONE);
+            .deleteByIdWithResponse(
+                "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleAssignments/b0f43c54-e787-4862-89b1-a653fa9cf747",
+                null,
+                Context.NONE);
     }
 }

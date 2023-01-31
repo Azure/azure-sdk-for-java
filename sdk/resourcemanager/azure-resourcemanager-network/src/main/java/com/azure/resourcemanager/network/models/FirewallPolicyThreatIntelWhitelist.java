@@ -23,6 +23,10 @@ public final class FirewallPolicyThreatIntelWhitelist {
     @JsonProperty(value = "fqdns")
     private List<String> fqdns;
 
+    /** Creates an instance of FirewallPolicyThreatIntelWhitelist class. */
+    public FirewallPolicyThreatIntelWhitelist() {
+    }
+
     /**
      * Get the ipAddresses property: List of IP addresses for the ThreatIntel Whitelist.
      *

@@ -36,6 +36,10 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayLoadDistributionTarget class. */
+    public ApplicationGatewayLoadDistributionTarget() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway load distribution target.
      *

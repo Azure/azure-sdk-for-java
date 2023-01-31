@@ -62,6 +62,10 @@ public final class RestSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of RestSource class. */
+    public RestSource() {
+    }
+
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).

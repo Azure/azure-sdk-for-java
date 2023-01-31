@@ -24,6 +24,10 @@ public final class OracleLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private OracleLinkedServiceTypeProperties innerTypeProperties = new OracleLinkedServiceTypeProperties();
 
+    /** Creates an instance of OracleLinkedService class. */
+    public OracleLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Oracle database linked service properties.
      *

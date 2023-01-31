@@ -13,10 +13,9 @@ import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
 import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
 import com.azure.resourcemanager.avs.models.ScriptCmdlet;
 import com.azure.resourcemanager.avs.models.ScriptCmdlets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ScriptCmdletsImpl implements ScriptCmdlets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptCmdletsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptCmdletsImpl.class);
 
     private final ScriptCmdletsClient innerClient;
 
@@ -41,17 +40,6 @@ public final class ScriptCmdletsImpl implements ScriptCmdlets {
         return Utils.mapPage(inner, inner1 -> new ScriptCmdletImpl(inner1, this.manager()));
     }
 
-    public ScriptCmdlet get(
-        String resourceGroupName, String privateCloudName, String scriptPackageName, String scriptCmdletName) {
-        ScriptCmdletInner inner =
-            this.serviceClient().get(resourceGroupName, privateCloudName, scriptPackageName, scriptCmdletName);
-        if (inner != null) {
-            return new ScriptCmdletImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ScriptCmdlet> getWithResponse(
         String resourceGroupName,
         String privateCloudName,
@@ -68,6 +56,17 @@ public final class ScriptCmdletsImpl implements ScriptCmdlets {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ScriptCmdletImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ScriptCmdlet get(
+        String resourceGroupName, String privateCloudName, String scriptPackageName, String scriptCmdletName) {
+        ScriptCmdletInner inner =
+            this.serviceClient().get(resourceGroupName, privateCloudName, scriptPackageName, scriptCmdletName);
+        if (inner != null) {
+            return new ScriptCmdletImpl(inner, this.manager());
         } else {
             return null;
         }

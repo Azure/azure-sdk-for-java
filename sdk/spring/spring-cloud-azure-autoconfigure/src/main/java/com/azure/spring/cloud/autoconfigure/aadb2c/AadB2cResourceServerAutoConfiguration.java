@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
@@ -17,11 +16,11 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -34,12 +33,9 @@ import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestOperations;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
 
 /**
  * Configure necessary beans for Azure AD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for Azure AD
@@ -49,23 +45,21 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2R
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, AadOauth2ResourceServerRestOperationConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
-    private final RestOperations restOperations;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     /**
      * Creates a new instance of {@link AadB2cResourceServerAutoConfiguration}.
      *
      * @param properties the Azure AD B2C properties
-     * @param restOperations the restOperations
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public AadB2cResourceServerAutoConfiguration(
-            AadB2cProperties properties,
-            @Qualifier(AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+    public AadB2cResourceServerAutoConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
-        this.restOperations = restOperations;
+        this.restTemplateBuilder = restTemplateBuilder;
     }
 
     /**
@@ -87,7 +81,7 @@ public class AadB2cResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever jwtResourceRetriever() {
-        return new RestOperationsResourceRetriever(restOperations);
+        return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
     /**
@@ -103,7 +97,7 @@ public class AadB2cResourceServerAutoConfiguration {
         AadTrustedIssuerRepository aadTrustedIssuerRepository,
         ResourceRetriever resourceRetriever) {
         return new AadIssuerJwsKeySelector(
-            restOperations,
+            restTemplateBuilder,
             aadTrustedIssuerRepository,
             resourceRetriever);
     }

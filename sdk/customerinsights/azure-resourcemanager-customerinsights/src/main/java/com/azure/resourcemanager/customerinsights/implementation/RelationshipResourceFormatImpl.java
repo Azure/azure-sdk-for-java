@@ -102,6 +102,10 @@ public final class RelationshipResourceFormatImpl
         return this.innerModel().tenantId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RelationshipResourceFormatInner innerModel() {
         return this.innerObject;
     }

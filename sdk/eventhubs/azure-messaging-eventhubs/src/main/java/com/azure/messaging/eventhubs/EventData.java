@@ -188,6 +188,19 @@ public class EventData extends MessageContent {
      * </pre>
      * <!-- end com.azure.messaging.eventhubs.eventdata.getProperties -->
      *
+     * <p>
+     * The following types are supported:
+     * <ul>
+     *     <li>{@link Character}</li>
+     *     <li>{@link java.util.Date}</li>
+     *     <li>{@link Double}</li>
+     *     <li>{@link Float}</li>
+     *     <li>{@link Integer}</li>
+     *     <li>{@link Long}</li>
+     *     <li>{@link Short}</li>
+     *     <li>{@link String}</li>
+     * </ul>
+     *
      * @return Application properties associated with this {@link EventData}. For received {@link EventData}, the map is
      *     a read-only view.
      */

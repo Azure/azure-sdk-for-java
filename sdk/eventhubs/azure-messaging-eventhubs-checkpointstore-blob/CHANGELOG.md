@@ -1,6 +1,6 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,46 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.16.2 (2023-01-18)
+
+### Breaking Changes
+
+- Remove `messaging.eventhubs.checkpoints` counter and replace it with `messaging.eventhubs.checkpoint.duration`
+  histogram that can be used to count checkpoint calls.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.1`.
+- Update `azure-storage-blob` dependency to `12.20.2`.
+
+## 1.16.1 (2022-11-16)
+
+### Bugs Fixed
+
+- Reverted behavior changes of `claimOwnership` back to return empty when error occurred, to avoid throw out 412 status code error. ([#31672](https://github.com/Azure/azure-sdk-for-java/issues/31672))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.0`.
+- Update `azure-storage-blob` dependency to `12.20.1`.
+
+## 1.16.0 (2022-10-13)
+
+### Breaking Changes
+
+- Remove `com.azure.messaging.eventhubs.checkpointstore.blob.Messages` from public API.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.14.0`.
+- Update `azure-storage-blob` dependency to `12.20.0`.
 
 ## 1.15.1 (2022-09-11)
 
@@ -27,6 +67,14 @@
 
 - Update `azure-messaging-eventhubs` dependency to `5.13.0`.
 - Update `azure-storage-blob` dependency to `12.19.0`.
+
+## 1.15.0-beta.1 (2022-08-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.13.0-beta.1`.
 
 ## 1.14.0 (2022-07-07)
 

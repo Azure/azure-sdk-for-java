@@ -22,6 +22,10 @@ public final class AzureDatabricksDeltaLakeDatasetTypeProperties {
     @JsonProperty(value = "database")
     private Object database;
 
+    /** Creates an instance of AzureDatabricksDeltaLakeDatasetTypeProperties class. */
+    public AzureDatabricksDeltaLakeDatasetTypeProperties() {
+    }
+
     /**
      * Get the table property: The name of delta table. Type: string (or Expression with resultType string).
      *

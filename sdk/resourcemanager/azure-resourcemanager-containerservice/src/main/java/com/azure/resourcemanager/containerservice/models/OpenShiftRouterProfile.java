@@ -28,6 +28,10 @@ public final class OpenShiftRouterProfile {
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
+    /** Creates an instance of OpenShiftRouterProfile class. */
+    public OpenShiftRouterProfile() {
+    }
+
     /**
      * Get the name property: Name of the router profile.
      *

@@ -30,6 +30,10 @@ public final class AvroDatasetTypeProperties {
     @JsonProperty(value = "avroCompressionLevel")
     private Integer avroCompressionLevel;
 
+    /** Creates an instance of AvroDatasetTypeProperties class. */
+    public AvroDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the avro storage.
      *

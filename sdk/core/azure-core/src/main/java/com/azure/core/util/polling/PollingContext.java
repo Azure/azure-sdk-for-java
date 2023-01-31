@@ -46,14 +46,18 @@ public final class PollingContext<T> {
     }
 
     /**
-     * @return the activation {@link PollResponse} holding result of activation operation call.
+     * Gets the activation {@link PollResponse} holding the result of an activation operation call.
+     *
+     * @return The activation {@link PollResponse} holding the result of an activation operation call.
      */
     public PollResponse<T> getActivationResponse() {
         return this.activationResponse;
     }
 
     /**
-     * @return the latest {@link PollResponse} from pollOperation.
+     * Gets the latest {@link PollResponse} in the polling operation.
+     *
+     * @return The latest {@link PollResponse} in the polling operation.
      */
     public PollResponse<T> getLatestResponse() {
         return this.latestResponse;
@@ -62,19 +66,14 @@ public final class PollingContext<T> {
     /**
      * Sets latest {@link PollResponse} from pollOperation.
      *
-     * PACKAGE INTERNAL METHOD
-     *
      * @param latestResponse the poll response
      */
     void setLatestResponse(PollResponse<T> latestResponse) {
-        this.latestResponse = Objects.requireNonNull(latestResponse,
-                "'latestResponse' is required.");
+        this.latestResponse = Objects.requireNonNull(latestResponse, "'latestResponse' is required.");
     }
 
     /**
      * Sets activation {@link PollResponse} holding result of activation operation call.
-     *
-     * PACKAGE INTERNAL METHOD
      *
      * @param activationResponse the activation response
      */
@@ -89,15 +88,11 @@ public final class PollingContext<T> {
     }
 
     PollingContext<T> copy() {
-        return new PollingContext<>(this.activationResponse,
-                this.latestResponse,
-                new HashMap<>(this.map));
+        return new PollingContext<>(this.activationResponse, this.latestResponse, new HashMap<>(this.map));
     }
 
     /**
      * Creates PollingContext.
-     *
-     * Package internal default constructor.
      */
     PollingContext() {
         this.map = new HashMap<>();
@@ -110,14 +105,10 @@ public final class PollingContext<T> {
      * @param latestResponse latest poll response from pollOperation.
      * @param map the map to store context
      */
-    private PollingContext(PollResponse<T> activationResponse,
-                           PollResponse<T> latestResponse,
-                           Map<String, String> map) {
-        this.activationResponse = Objects.requireNonNull(activationResponse,
-                "'activationResponse' cannot be null.");
-        this.latestResponse = Objects.requireNonNull(latestResponse,
-                "'latestResponse' cannot be null.");
-        this.map = Objects.requireNonNull(map,
-                "'map' cannot be null.");
+    private PollingContext(PollResponse<T> activationResponse, PollResponse<T> latestResponse,
+        Map<String, String> map) {
+        this.activationResponse = Objects.requireNonNull(activationResponse, "'activationResponse' cannot be null.");
+        this.latestResponse = Objects.requireNonNull(latestResponse, "'latestResponse' cannot be null.");
+        this.map = Objects.requireNonNull(map, "'map' cannot be null.");
     }
 }

@@ -16,18 +16,6 @@ public interface Applications {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String accountName, String applicationName);
-
-    /**
-     * Deletes an application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface Applications {
         String resourceGroupName, String accountName, String applicationName, Context context);
 
     /**
-     * Gets information about the specified application.
+     * Deletes an application.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -46,9 +34,8 @@ public interface Applications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application.
      */
-    Application get(String resourceGroupName, String accountName, String applicationName);
+    void delete(String resourceGroupName, String accountName, String applicationName);
 
     /**
      * Gets information about the specified application.
@@ -64,6 +51,19 @@ public interface Applications {
      */
     Response<Application> getWithResponse(
         String resourceGroupName, String accountName, String applicationName, Context context);
+
+    /**
+     * Gets information about the specified application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified application.
+     */
+    Application get(String resourceGroupName, String accountName, String applicationName);
 
     /**
      * Lists all of the applications in the specified account.

@@ -14,6 +14,15 @@ public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<Dynami
     public static final DynamicsSinkWriteBehavior UPSERT = fromString("Upsert");
 
     /**
+     * Creates a new instance of DynamicsSinkWriteBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DynamicsSinkWriteBehavior() {
+    }
+
+    /**
      * Creates or finds a DynamicsSinkWriteBehavior from its string representation.
      *
      * @param name a name to look for.

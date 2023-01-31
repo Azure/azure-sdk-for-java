@@ -58,6 +58,10 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphListItem class. */
+    public MicrosoftGraphListItem() {
+    }
+
     /**
      * Get the contentType property: contentTypeInfo.
      *

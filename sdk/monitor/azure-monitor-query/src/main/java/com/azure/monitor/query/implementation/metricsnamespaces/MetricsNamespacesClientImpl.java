@@ -12,7 +12,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the MetricsNamespacesClient type. */
+/** Initializes a new instance of the MonitorManagementClient type. */
 public final class MetricsNamespacesClientImpl {
     /** server parameter. */
     private final String host;
@@ -62,20 +62,20 @@ public final class MetricsNamespacesClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The MetricNamespacesImpl object to access its operations. */
+    /** The MetricNamespaces object to access its operations. */
     private final MetricNamespacesImpl metricNamespaces;
 
     /**
-     * Gets the MetricNamespacesImpl object to access its operations.
+     * Gets the MetricNamespaces object to access its operations.
      *
-     * @return the MetricNamespacesImpl object.
+     * @return the MetricNamespaces object.
      */
     public MetricNamespacesImpl getMetricNamespaces() {
         return this.metricNamespaces;
     }
 
     /**
-     * Initializes an instance of MetricsNamespacesClient client.
+     * Initializes an instance of MonitorManagementClient client.
      *
      * @param host server parameter.
      * @param apiVersion Api Version.
@@ -91,7 +91,7 @@ public final class MetricsNamespacesClientImpl {
     }
 
     /**
-     * Initializes an instance of MetricsNamespacesClient client.
+     * Initializes an instance of MonitorManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param host server parameter.
@@ -102,7 +102,7 @@ public final class MetricsNamespacesClientImpl {
     }
 
     /**
-     * Initializes an instance of MetricsNamespacesClient client.
+     * Initializes an instance of MonitorManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.

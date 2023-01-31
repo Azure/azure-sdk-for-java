@@ -22,6 +22,10 @@ public final class Encryption {
     @JsonProperty(value = "type")
     private EncryptionType type;
 
+    /** Creates an instance of Encryption class. */
+    public Encryption() {
+    }
+
     /**
      * Get the diskEncryptionSetId property: ResourceId of the disk encryption set to use for enabling encryption at
      * rest.

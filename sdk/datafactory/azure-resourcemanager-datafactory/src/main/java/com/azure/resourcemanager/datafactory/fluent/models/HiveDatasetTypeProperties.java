@@ -28,6 +28,10 @@ public final class HiveDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of HiveDatasetTypeProperties class. */
+    public HiveDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

@@ -14,8 +14,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public class ArtifactTagProperties {
     /*
-     * Registry login server name. This is likely to be similar to
-     * {registry-name}.azurecr.io.
+     * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;
@@ -73,6 +72,9 @@ public class ArtifactTagProperties {
      */
     @JsonProperty(value = "tag.changeableAttributes.readEnabled")
     private Boolean readEnabled;
+
+    /** Creates an instance of ArtifactTagProperties class. */
+    public ArtifactTagProperties() {}
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to

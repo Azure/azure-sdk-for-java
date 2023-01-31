@@ -37,6 +37,10 @@ public final class ManagedClusterUpgradeProfileInner {
     @JsonProperty(value = "properties", required = true)
     private ManagedClusterUpgradeProfileProperties innerProperties = new ManagedClusterUpgradeProfileProperties();
 
+    /** Creates an instance of ManagedClusterUpgradeProfileInner class. */
+    public ManagedClusterUpgradeProfileInner() {
+    }
+
     /**
      * Get the id property: The ID of the upgrade profile.
      *

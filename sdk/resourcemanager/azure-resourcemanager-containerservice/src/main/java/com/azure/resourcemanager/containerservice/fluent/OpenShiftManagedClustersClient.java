@@ -160,21 +160,6 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the managed OpenShift cluster with a specified resource group and name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenShiftManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Gets a OpenShift managed cluster.
-     *
-     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,6 +170,21 @@ public interface OpenShiftManagedClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OpenShiftManagedClusterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets a OpenShift managed cluster.
+     *
+     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the OpenShift managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the managed OpenShift cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OpenShiftManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Creates or updates an OpenShift managed cluster.

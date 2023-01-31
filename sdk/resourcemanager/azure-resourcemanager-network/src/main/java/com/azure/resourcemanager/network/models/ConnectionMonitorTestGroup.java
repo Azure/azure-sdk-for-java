@@ -42,6 +42,10 @@ public final class ConnectionMonitorTestGroup {
     @JsonProperty(value = "destinations", required = true)
     private List<String> destinations;
 
+    /** Creates an instance of ConnectionMonitorTestGroup class. */
+    public ConnectionMonitorTestGroup() {
+    }
+
     /**
      * Get the name property: The name of the connection monitor test group.
      *

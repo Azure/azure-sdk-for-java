@@ -57,6 +57,10 @@ public final class ExcelDatasetTypeProperties {
     @JsonProperty(value = "nullValue")
     private Object nullValue;
 
+    /** Creates an instance of ExcelDatasetTypeProperties class. */
+    public ExcelDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the excel storage.
      *

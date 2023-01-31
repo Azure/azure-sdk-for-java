@@ -43,6 +43,10 @@ public class VirtualMachineScaleSetIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
+    /** Creates an instance of VirtualMachineScaleSetIdentity class. */
+    public VirtualMachineScaleSetIdentity() {
+    }
+
     /**
      * Get the principalId property: The principal id of virtual machine scale set identity. This property will only be
      * provided for a system assigned identity.

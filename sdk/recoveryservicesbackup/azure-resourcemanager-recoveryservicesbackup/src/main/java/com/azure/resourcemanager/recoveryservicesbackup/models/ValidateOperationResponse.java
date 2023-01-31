@@ -17,6 +17,10 @@ public final class ValidateOperationResponse {
     @JsonProperty(value = "validationResults")
     private List<ErrorDetail> validationResults;
 
+    /** Creates an instance of ValidateOperationResponse class. */
+    public ValidateOperationResponse() {
+    }
+
     /**
      * Get the validationResults property: Gets the validation result.
      *

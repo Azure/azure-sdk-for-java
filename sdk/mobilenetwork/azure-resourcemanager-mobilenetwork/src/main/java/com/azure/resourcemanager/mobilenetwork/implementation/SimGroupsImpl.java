@@ -35,15 +35,6 @@ public final class SimGroupsImpl implements SimGroups {
         this.serviceClient().delete(resourceGroupName, simGroupName, context);
     }
 
-    public SimGroup getByResourceGroup(String resourceGroupName, String simGroupName) {
-        SimGroupInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, simGroupName);
-        if (inner != null) {
-            return new SimGroupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SimGroup> getByResourceGroupWithResponse(
         String resourceGroupName, String simGroupName, Context context) {
         Response<SimGroupInner> inner =
@@ -54,6 +45,15 @@ public final class SimGroupsImpl implements SimGroups {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SimGroupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SimGroup getByResourceGroup(String resourceGroupName, String simGroupName) {
+        SimGroupInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, simGroupName);
+        if (inner != null) {
+            return new SimGroupImpl(inner, this.manager());
         } else {
             return null;
         }

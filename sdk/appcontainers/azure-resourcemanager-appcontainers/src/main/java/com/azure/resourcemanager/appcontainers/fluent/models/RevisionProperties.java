@@ -22,6 +22,12 @@ public final class RevisionProperties {
     private OffsetDateTime createdTime;
 
     /*
+     * Timestamp describing when the revision was last active. Only meaningful when revision is inactive
+     */
+    @JsonProperty(value = "lastActiveTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastActiveTime;
+
+    /*
      * Fully qualified domain name of the revision
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
@@ -71,6 +77,10 @@ public final class RevisionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RevisionProvisioningState provisioningState;
 
+    /** Creates an instance of RevisionProperties class. */
+    public RevisionProperties() {
+    }
+
     /**
      * Get the createdTime property: Timestamp describing when the revision was created by controller.
      *
@@ -78,6 +88,16 @@ public final class RevisionProperties {
      */
     public OffsetDateTime createdTime() {
         return this.createdTime;
+    }
+
+    /**
+     * Get the lastActiveTime property: Timestamp describing when the revision was last active. Only meaningful when
+     * revision is inactive.
+     *
+     * @return the lastActiveTime value.
+     */
+    public OffsetDateTime lastActiveTime() {
+        return this.lastActiveTime;
     }
 
     /**

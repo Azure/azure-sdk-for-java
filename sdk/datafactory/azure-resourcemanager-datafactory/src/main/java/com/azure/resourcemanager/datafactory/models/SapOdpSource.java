@@ -41,6 +41,10 @@ public final class SapOdpSource extends TabularSource {
     @JsonProperty(value = "projection")
     private Object projection;
 
+    /** Creates an instance of SapOdpSource class. */
+    public SapOdpSource() {
+    }
+
     /**
      * Get the extractionMode property: The extraction mode. Allowed value include: Full, Delta and Recovery. The
      * default value is Full. Type: string (or Expression with resultType string).

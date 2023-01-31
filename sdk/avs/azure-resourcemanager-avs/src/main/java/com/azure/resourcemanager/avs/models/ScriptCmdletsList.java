@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Pageable list of scripts/cmdlets. */
 @Immutable
 public final class ScriptCmdletsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptCmdletsList.class);
-
     /*
      * List of scripts
      */
@@ -27,6 +23,10 @@ public final class ScriptCmdletsList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ScriptCmdletsList class. */
+    public ScriptCmdletsList() {
+    }
 
     /**
      * Get the value property: List of scripts.

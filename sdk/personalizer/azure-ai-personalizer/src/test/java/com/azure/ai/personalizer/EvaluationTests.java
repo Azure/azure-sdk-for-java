@@ -33,6 +33,8 @@ public class EvaluationTests extends PersonalizerTestBase {
     public final void listEvaluationsTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
         PersonalizerAdministrationClient client = getAdministrationClient(httpClient, serviceVersion, true);
         PagedIterable<PersonalizerEvaluation> evaluations = client.listEvaluations();
+        assertNotNull(evaluations);
+        assertTrue(evaluations.stream().findAny().isPresent());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -42,15 +44,15 @@ public class EvaluationTests extends PersonalizerTestBase {
             .setName("JavaSDKTestEvaluation")
             .setOfflineExperimentationEnabled(true)
             // We have cooked log data for this date for the static test resource and know that they will not be purged.
-            .setStartTime(OffsetDateTime.parse("2022-08-25T19:00:00+00:00"))
-            .setEndTime(OffsetDateTime.parse("2022-08-25T20:00:00+00:00"))
+            .setStartTime(OffsetDateTime.parse("2022-09-20T00:00:00+00:00"))
+            .setEndTime(OffsetDateTime.parse("2022-09-30T00:00:00+00:00"))
             .setPolicies(new ArrayList<>());
         PersonalizerAdministrationAsyncClient client = getAdministrationAsyncClient(httpClient, serviceVersion, true);
         SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller = client
             .beginCreateEvaluation(evaluationOptions)
             .setPollInterval(durationTestMode)
             .getSyncPoller();
-        System.out.println("Created evaluation with Id: " + syncPoller.getFinalResult().getId());
+
         syncPoller.waitForCompletion();
 
         PersonalizerEvaluation evaluationResult = syncPoller.getFinalResult();
@@ -60,6 +62,5 @@ public class EvaluationTests extends PersonalizerTestBase {
         assertFalse(CoreUtils.isNullOrEmpty(evaluationResult.getOptimalPolicy()));
 
         client.deleteEvaluation(evaluationResult.getId()).block();
-        System.out.println("Deleted the evaluation with Id: " + evaluationResult.getId());
     }
 }

@@ -24,6 +24,10 @@ public final class BackupResourceEncryptionConfigResource extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of BackupResourceEncryptionConfigResource class. */
+    public BackupResourceEncryptionConfigResource() {
+    }
+
     /**
      * Get the properties property: BackupResourceEncryptionConfigResource properties.
      *

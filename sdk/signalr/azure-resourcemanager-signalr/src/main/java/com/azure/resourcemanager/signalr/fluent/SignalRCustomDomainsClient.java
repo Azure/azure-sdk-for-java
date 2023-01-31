@@ -51,21 +51,6 @@ public interface SignalRCustomDomainsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner get(String resourceGroupName, String resourceName, String name);
-
-    /**
-     * Get a custom domain.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,6 +60,21 @@ public interface SignalRCustomDomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CustomDomainInner> getWithResponse(
         String resourceGroupName, String resourceName, String name, Context context);
+
+    /**
+     * Get a custom domain.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param name Custom domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainInner get(String resourceGroupName, String resourceName, String name);
 
     /**
      * Create or update a custom domain.

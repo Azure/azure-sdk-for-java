@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/airQuality/forecasts/daily/json?api-version=1.1&language=en&query=47.632346%2C-122.138874&duration=2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "669",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 66C9673611864336BB4D86538AB758F3 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:45Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:45 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=890",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:34:35 GMT",
+      "Body" : "{\"results\":[{\"dateTime\":\"2022-11-11T08:00:00Z\",\"index\":41.6,\"globalIndex\":20.0,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"},{\"dateTime\":\"2022-11-12T08:00:00Z\",\"index\":53.5,\"globalIndex\":25.7,\"dominantPollutant\":\"Particulate Matter 2.5\",\"category\":\"Fair\",\"categoryColor\":\"#FFC300\",\"description\":\"The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure.\"}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

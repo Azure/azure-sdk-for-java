@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResource Get. */
 public final class PrivateLinkResourceGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateLinkResourceGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateLinkResourceGet.json
      */
     /**
      * Sample code: GetPrivateLinkResource.
@@ -19,6 +19,6 @@ public final class PrivateLinkResourceGetSamples {
     public static void getPrivateLinkResource(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .privateLinkResources()
-            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "sampleacct", Context.NONE);
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "batchAccount", Context.NONE);
     }
 }

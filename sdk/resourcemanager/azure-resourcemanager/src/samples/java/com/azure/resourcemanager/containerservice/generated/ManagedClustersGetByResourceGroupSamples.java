@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters GetByResourceGroup. */
 public final class ManagedClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersGet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/ManagedClustersGet.json
      */
     /**
      * Sample code: Get Managed Cluster.
@@ -22,6 +20,6 @@ public final class ManagedClustersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .getByResourceGroupWithResponse("rg1", "clustername1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

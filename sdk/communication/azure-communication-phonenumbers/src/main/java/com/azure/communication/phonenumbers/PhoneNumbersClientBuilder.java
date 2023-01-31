@@ -41,18 +41,48 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Builder for creating clients of Communication Service phone number configuration
+ * Builder for creating clients of Communication Service phone number
+ * configuration.
+ *
+ * <p>
+ * <strong>Instantiating a Phone Numbers Client Builder</strong>
+ * </p>
+ *
+ * <!-- src_embed com.azure.communication.phonenumbers.builder.instantiation -->
+ * 
+ * <pre>
+ * PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder&#40;&#41;;
+ * </pre>
+ * 
+ * <!-- end com.azure.communication.phonenumbers.builder.instantiation -->
+ *
+ * <p>
+ * <strong>Using a Phone Numbers Client Builder to build a Phone Numbers
+ * Client</strong>
+ * </p>
+ *
+ * <!-- src_embed com.azure.communication.phonenumbers.client.instantiation -->
+ * 
+ * <pre>
+ * PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder&#40;&#41;
+ *         .endpoint&#40;endpoint&#41;
+ *         .credential&#40;keyCredential&#41;
+ *         .httpClient&#40;httpClient&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * 
+ * <!-- end com.azure.communication.phonenumbers.client.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { PhoneNumbersClient.class, PhoneNumbersAsyncClient.class })
 public final class PhoneNumbersClientBuilder implements
-    AzureKeyCredentialTrait<PhoneNumbersClientBuilder>,
-    ConfigurationTrait<PhoneNumbersClientBuilder>,
-    ConnectionStringTrait<PhoneNumbersClientBuilder>,
-    EndpointTrait<PhoneNumbersClientBuilder>,
-    HttpTrait<PhoneNumbersClientBuilder>,
-    TokenCredentialTrait<PhoneNumbersClientBuilder> {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-communication-phonenumbers.properties");
+        AzureKeyCredentialTrait<PhoneNumbersClientBuilder>,
+        ConfigurationTrait<PhoneNumbersClientBuilder>,
+        ConnectionStringTrait<PhoneNumbersClientBuilder>,
+        EndpointTrait<PhoneNumbersClientBuilder>,
+        HttpTrait<PhoneNumbersClientBuilder>,
+        TokenCredentialTrait<PhoneNumbersClientBuilder> {
+    private static final Map<String, String> PROPERTIES = CoreUtils
+            .getProperties("azure-communication-phonenumbers.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -70,6 +100,7 @@ public final class PhoneNumbersClientBuilder implements
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private String acceptLanguage;
 
     /**
      * Set endpoint of the service
@@ -87,17 +118,26 @@ public final class PhoneNumbersClientBuilder implements
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * <strong>Note:</strong> It is important to understand the precedence order of
+     * the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence
+     * over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP
+     * pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be
+     * other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so
+     * please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set
+     * of implications.
+     * </p>
      * <p>
      * If {@code pipeline} is set, all other settings aside from
      * {@link PhoneNumbersClientBuilder#endpoint(String) endpoint} are ignored.
      *
-     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and
+     *                 receiving responses.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
     @Override
@@ -107,14 +147,23 @@ public final class PhoneNumbersClientBuilder implements
     }
 
     /**
-     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and
+     * from the service.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * <strong>Note:</strong> It is important to understand the precedence order of
+     * the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence
+     * over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP
+     * pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be
+     * other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so
+     * please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set
+     * of implications.
+     * </p>
      *
      * @param httpClient The {@link HttpClient} to use for requests.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
@@ -126,18 +175,29 @@ public final class PhoneNumbersClientBuilder implements
     }
 
     /**
-     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
-     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and
+     * receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of
+     * {@link HttpLogDetailLevel#NONE} is set.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * <strong>Note:</strong> It is important to understand the precedence order of
+     * the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence
+     * over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP
+     * pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be
+     * other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so
+     * please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set
+     * of implications.
+     * </p>
      *
-     * @param httpLogOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests
-     * to  and from the service.
+     * @param httpLogOptions The {@link HttpLogOptions logging configuration} to use
+     *                       when sending and receiving requests
+     *                       to and from the service.
      * @return the updated {@link PhoneNumbersClientBuilder} object.
      */
     @Override
@@ -149,22 +209,27 @@ public final class PhoneNumbersClientBuilder implements
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP
+     *                      requests.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public PhoneNumbersClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public PhoneNumbersClientBuilder credential(AzureKeyCredential keyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the
+     * service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and
+     * authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential}
+     * type.
      *
-     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @param tokenCredential {@link TokenCredential} used to authorize requests
+     *                        sent to the service.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
@@ -174,11 +239,11 @@ public final class PhoneNumbersClientBuilder implements
         return this;
     }
 
-
     /**
      * Set the endpoint and AzureKeyCredential for authorization
      *
-     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
+     * @param connectionString connection string for setting endpoint and
+     *                         initalizing AzureKeyCredential
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
@@ -189,15 +254,17 @@ public final class PhoneNumbersClientBuilder implements
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(accessKey));
+                .endpoint(endpoint)
+                .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values during building of the client.
+     * Sets the configuration object used to retrieve environment configuration
+     * values during building of the client.
      *
-     * @param configuration Configuration store used to retrieve environment configurations.
+     * @param configuration Configuration store used to retrieve environment
+     *                      configurations.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
     @Override
@@ -207,14 +274,23 @@ public final class PhoneNumbersClientBuilder implements
     }
 
     /**
-     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request
+     * sent.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * <strong>Note:</strong> It is important to understand the precedence order of
+     * the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence
+     * over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP
+     * pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be
+     * other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so
+     * please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set
+     * of implications.
+     * </p>
      *
      * @param policy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
@@ -227,18 +303,30 @@ public final class PhoneNumbersClientBuilder implements
     }
 
     /**
-     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
-     * recommended that this method be called with an instance of the {@link HttpClientOptions}
-     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
-     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * Allows for setting common properties such as application ID, headers, proxy
+     * configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the
+     * {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The
+     * HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any
+     * class that implements this HttpTrait
      * interface.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * <strong>Note:</strong> It is important to understand the precedence order of
+     * the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence
+     * over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP
+     * pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be
+     * other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so
+     * please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set
+     * of implications.
+     * </p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
@@ -252,13 +340,18 @@ public final class PhoneNumbersClientBuilder implements
     }
 
     /**
-     * Sets the {@link PhoneNumbersServiceVersion} that is used when making API requests.
+     * Sets the {@link PhoneNumbersServiceVersion} that is used when making API
+     * requests.
      * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * If a service version is not provided, the service version that will be used
+     * will be the latest known service
+     * version based on the version of the client library being used. If no service
+     * version is specified, updating to a
+     * newer version the client library will have the result of potentially moving
+     * to a newer service version.
      *
-     * @param version {@link PhoneNumbersServiceVersion} of the service to be used when making requests.
+     * @param version {@link PhoneNumbersServiceVersion} of the service to be used
+     *                when making requests.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
     public PhoneNumbersClientBuilder serviceVersion(PhoneNumbersServiceVersion version) {
@@ -269,7 +362,8 @@ public final class PhoneNumbersClientBuilder implements
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     * Setting this is mutually exclusive with using
+     * {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy User's retry policy applied to each request.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
@@ -282,16 +376,26 @@ public final class PhoneNumbersClientBuilder implements
     /**
      * Sets the {@link RetryOptions} for all the requests made through the client.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
-     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
+     * <strong>Note:</strong> It is important to understand the precedence order of
+     * the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence
+     * over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP
+     * pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be
+     * other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so
+     * please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set
+     * of implications.
+     * </p>
+     * <p>
+     * Setting this is mutually exclusive with using
+     * {@link #retryPolicy(RetryPolicy)}.
      *
-     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made
+     *                     through the client.
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
     @Override
@@ -301,13 +405,26 @@ public final class PhoneNumbersClientBuilder implements
     }
 
     /**
+     * Sets the accepted language to be used in the client.
+     *
+     * @param acceptLanguage The locale to be used in the client. E.g. "en-US"
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
+     */
+    public PhoneNumbersClientBuilder acceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+    /**
      * Create synchronous client applying CommunicationClientCredentialPolicy,
      * UserAgentPolicy, RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * Additional HttpPolicies specified by additionalPolicies will be applied after
+     * them
      *
      * @return {@link PhoneNumbersClient} instance
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     * and {@link #retryPolicy(RetryPolicy)} have been set.
+     *                               and {@link #retryPolicy(RetryPolicy)} have been
+     *                               set.
      */
     public PhoneNumbersClient buildClient() {
         this.validateRequiredFields();
@@ -316,17 +433,19 @@ public final class PhoneNumbersClientBuilder implements
             logger.info("Build client for service version" + this.version.getVersion());
         }
         PhoneNumberAdminClientImpl adminClient = this.createPhoneNumberAdminClient();
-        return new PhoneNumbersClient(adminClient, this.createPhoneNumberAsyncClient(adminClient));
+        return new PhoneNumbersClient(adminClient, this.createPhoneNumberAsyncClient(adminClient, this.acceptLanguage));
     }
 
     /**
      * Create asynchronous client applying CommunicationClientCredentialPolicy,
      * UserAgentPolicy, RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * Additional HttpPolicies specified by additionalPolicies will be applied after
+     * them
      *
      * @return {@link PhoneNumbersAsyncClient} instance
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     * and {@link #retryPolicy(RetryPolicy)} have been set.
+     *                               and {@link #retryPolicy(RetryPolicy)} have been
+     *                               set.
      */
     public PhoneNumbersAsyncClient buildAsyncClient() {
         this.validateRequiredFields();
@@ -335,31 +454,37 @@ public final class PhoneNumbersClientBuilder implements
             logger.info("Build client for service version" + this.version.getVersion());
         }
 
-        return this.createPhoneNumberAsyncClient(this.createPhoneNumberAdminClient());
+        return this.createPhoneNumberAsyncClient(this.createPhoneNumberAdminClient(), this.acceptLanguage);
     }
 
     PhoneNumbersAsyncClient createPhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
-        return new PhoneNumbersAsyncClient(phoneNumberAdminClient);
+        return this.createPhoneNumberAsyncClient(phoneNumberAdminClient, null);
+    }
+
+    PhoneNumbersAsyncClient createPhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient,
+            String acceptLanguage) {
+        return new PhoneNumbersAsyncClient(phoneNumberAdminClient, acceptLanguage);
     }
 
     HttpPipelinePolicy createAuthenticationPolicy() {
         if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
+                    new IllegalArgumentException(
+                            "Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");
+                    this.tokenCredential, "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
-                new NullPointerException("Missing credential information while building a client."));
+                    new NullPointerException("Missing credential information while building a client."));
         }
     }
 
     UserAgentPolicy createUserAgentPolicy(
-        String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
+            String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
         return new UserAgentPolicy(applicationId, sdkName, sdkVersion, configuration);
     }
 
@@ -381,15 +506,14 @@ public final class PhoneNumbersClientBuilder implements
 
     private void validateRequiredFields() {
         Objects.requireNonNull(this.endpoint);
-
     }
 
     private PhoneNumberAdminClientImpl createPhoneNumberAdminClient() {
         PhoneNumberAdminClientImplBuilder clientBuilder = new PhoneNumberAdminClientImplBuilder();
         return clientBuilder
-            .endpoint(this.endpoint)
-            .pipeline(this.createHttpPipeline())
-            .buildClient();
+                .endpoint(this.endpoint)
+                .pipeline(this.createHttpPipeline())
+                .buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -411,11 +535,10 @@ public final class PhoneNumbersClientBuilder implements
 
         // Add required policies
         policyList.add(this.createUserAgentPolicy(
-            applicationId,
-            PROPERTIES.get(SDK_NAME),
-            PROPERTIES.get(SDK_VERSION),
-            this.configuration
-        ));
+                applicationId,
+                PROPERTIES.get(SDK_NAME),
+                PROPERTIES.get(SDK_VERSION),
+                this.configuration));
         policyList.add(this.createRequestIdPolicy());
         policyList.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         // auth policy is per request, should be after retry
@@ -431,10 +554,10 @@ public final class PhoneNumbersClientBuilder implements
         policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
         return new HttpPipelineBuilder()
-            .policies(policyList.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(this.httpClient)
-            .clientOptions(clientOptions)
-            .build();
+                .policies(policyList.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(this.httpClient)
+                .clientOptions(clientOptions)
+                .build();
     }
 
     private HttpLogOptions getHttpLogOptions() {

@@ -68,6 +68,10 @@ public final class TumblingWindowTriggerTypeProperties {
     @JsonProperty(value = "dependsOn")
     private List<DependencyReference> dependsOn;
 
+    /** Creates an instance of TumblingWindowTriggerTypeProperties class. */
+    public TumblingWindowTriggerTypeProperties() {
+    }
+
     /**
      * Get the frequency property: The frequency of the time windows.
      *

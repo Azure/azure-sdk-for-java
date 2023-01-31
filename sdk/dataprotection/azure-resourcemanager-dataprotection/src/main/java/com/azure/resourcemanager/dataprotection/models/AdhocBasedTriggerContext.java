@@ -6,28 +6,35 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AdhocBasedTriggerContext Adhoc trigger context. */
+/**
+ * AdhocBasedTriggerContext
+ *
+ * <p>Adhoc trigger context.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AdhocBasedTriggerContext")
 @Fluent
 public final class AdhocBasedTriggerContext extends TriggerContext {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdhocBasedTriggerContext.class);
-
     /*
-     * AdhocBasedTaggingCriteria Tagging Criteria containing retention tag for
-     * adhoc backup.
+     * AdhocBasedTaggingCriteria
+     *
+     * Tagging Criteria containing retention tag for adhoc backup.
      */
     @JsonProperty(value = "taggingCriteria", required = true)
     private AdhocBasedTaggingCriteria taggingCriteria;
 
+    /** Creates an instance of AdhocBasedTriggerContext class. */
+    public AdhocBasedTriggerContext() {
+    }
+
     /**
-     * Get the taggingCriteria property: AdhocBasedTaggingCriteria Tagging Criteria containing retention tag for adhoc
-     * backup.
+     * Get the taggingCriteria property: AdhocBasedTaggingCriteria
+     *
+     * <p>Tagging Criteria containing retention tag for adhoc backup.
      *
      * @return the taggingCriteria value.
      */
@@ -36,8 +43,9 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
     }
 
     /**
-     * Set the taggingCriteria property: AdhocBasedTaggingCriteria Tagging Criteria containing retention tag for adhoc
-     * backup.
+     * Set the taggingCriteria property: AdhocBasedTaggingCriteria
+     *
+     * <p>Tagging Criteria containing retention tag for adhoc backup.
      *
      * @param taggingCriteria the taggingCriteria value to set.
      * @return the AdhocBasedTriggerContext object itself.
@@ -56,7 +64,7 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
     public void validate() {
         super.validate();
         if (taggingCriteria() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property taggingCriteria in model AdhocBasedTriggerContext"));
@@ -64,4 +72,6 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
             taggingCriteria().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdhocBasedTriggerContext.class);
 }

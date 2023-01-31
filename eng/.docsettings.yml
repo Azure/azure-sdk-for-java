@@ -118,6 +118,7 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-2_2-12/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-3_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/dev/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md', '#3113']

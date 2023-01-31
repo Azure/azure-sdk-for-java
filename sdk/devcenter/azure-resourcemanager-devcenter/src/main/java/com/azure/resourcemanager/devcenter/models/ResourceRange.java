@@ -22,6 +22,10 @@ public final class ResourceRange {
     @JsonProperty(value = "max", access = JsonProperty.Access.WRITE_ONLY)
     private Integer max;
 
+    /** Creates an instance of ResourceRange class. */
+    public ResourceRange() {
+    }
+
     /**
      * Get the min property: Minimum value.
      *

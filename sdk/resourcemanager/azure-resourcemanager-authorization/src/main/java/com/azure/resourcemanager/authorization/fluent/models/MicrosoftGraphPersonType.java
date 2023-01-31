@@ -32,6 +32,10 @@ public final class MicrosoftGraphPersonType {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPersonType class. */
+    public MicrosoftGraphPersonType() {
+    }
+
     /**
      * Get the classProperty property: The type of data source, such as Person.
      *

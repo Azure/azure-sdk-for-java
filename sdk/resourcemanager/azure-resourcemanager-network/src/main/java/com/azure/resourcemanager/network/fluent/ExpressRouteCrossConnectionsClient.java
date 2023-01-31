@@ -136,19 +136,6 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionInner getByResourceGroup(String resourceGroupName, String crossConnectionName);
-
-    /**
-     * Gets details about the specified ExpressRouteCrossConnection.
-     *
-     * @param resourceGroupName The name of the resource group (peering location of the circuit).
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,6 +145,19 @@ public interface ExpressRouteCrossConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteCrossConnectionInner> getByResourceGroupWithResponse(
         String resourceGroupName, String crossConnectionName, Context context);
+
+    /**
+     * Gets details about the specified ExpressRouteCrossConnection.
+     *
+     * @param resourceGroupName The name of the resource group (peering location of the circuit).
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified ExpressRouteCrossConnection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteCrossConnectionInner getByResourceGroup(String resourceGroupName, String crossConnectionName);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
@@ -310,21 +310,6 @@ public interface ExpressRouteCrossConnectionsClient
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionInner updateTags(
-        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
-
-    /**
-     * Updates an express route cross connection tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the cross connection.
-     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -334,6 +319,21 @@ public interface ExpressRouteCrossConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteCrossConnectionInner> updateTagsWithResponse(
         String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context);
+
+    /**
+     * Updates an express route cross connection tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the cross connection.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCrossConnection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteCrossConnectionInner updateTags(
+        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.

@@ -3,6 +3,9 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
@@ -17,6 +20,12 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComponentDocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
@@ -229,6 +238,20 @@ public class Transforms {
         return analyzeResult;
     }
 
+    public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,
+        DocumentModelBuildMode buildMode, String modelId, String prefix, BuildDocumentModelOptions buildDocumentModelOptions) {
+        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest()
+            .setModelId(modelId)
+            .setBuildMode(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
+                .fromString(buildMode.toString()))
+            .setAzureBlobSource(new AzureBlobContentSource()
+                .setContainerUrl(blobContainerUrl)
+                .setPrefix(prefix))
+            .setDescription(buildDocumentModelOptions.getDescription())
+            .setTags(buildDocumentModelOptions.getTags());
+        return buildDocumentModelRequest;
+    }
+
     /**
      * Mapping a {@link ErrorResponseException} to {@link HttpResponseException}.
      *
@@ -237,18 +260,22 @@ public class Transforms {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
-            com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
-            if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-                error = (errorResponseException.getValue().getError());
-            }
-            return new HttpResponseException(
-                errorResponseException.getMessage(),
-                errorResponseException.getResponse(),
-                toResponseError(error)
-            );
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
+    }
+
+    public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
+        ErrorResponseException errorResponseException = throwable;
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
+        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
+            error = (errorResponseException.getValue().getError());
+        }
+        return new HttpResponseException(
+            errorResponseException.getMessage(),
+            errorResponseException.getResponse(),
+            toResponseError(error)
+        );
     }
 
     public static HttpResponseException mapResponseErrorToHttpResponseException(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
@@ -419,7 +446,8 @@ public class Transforms {
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.NUMBER.equals(
             innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField,
-                Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
+                innerDocumentField.getValueNumber() == null
+                    ? null : Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER.equals(
             innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueInteger());
@@ -499,7 +527,7 @@ public class Transforms {
             return innerDocumentSpans
                 .stream()
                 .map(Transforms::getDocumentSpan)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
         } else {
             return null;
         }
@@ -621,6 +649,38 @@ public class Transforms {
             Utility.parseResultId(operationLocation));
 
         return operationResult;
+    }
+
+    public static AuthorizeCopyRequest getAuthorizeCopyRequest(CopyAuthorizationOptions copyAuthorizationOptions,
+        String modelId) {
+        return new AuthorizeCopyRequest()
+            .setModelId(modelId)
+            .setDescription(copyAuthorizationOptions.getDescription())
+            .setTags(copyAuthorizationOptions.getTags());
+    }
+
+    public static ComposeDocumentModelRequest getComposeDocumentModelRequest(List<String> componentModelIds,
+                                                                              ComposeDocumentModelOptions composeDocumentModelOptions,
+                                                                              String modelId) {
+        return new ComposeDocumentModelRequest()
+            .setComponentModels(componentModelIds.stream()
+                .map(modelIdString -> new ComponentDocumentModelDetails().setModelId(modelIdString))
+                .collect(Collectors.toList()))
+            .setModelId(modelId)
+            .setDescription(composeDocumentModelOptions.getDescription())
+            .setTags(composeDocumentModelOptions.getTags());
+    }
+
+    public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
+        CopyAuthorization copyRequest
+            = new CopyAuthorization()
+            .setTargetModelLocation(target.getTargetModelLocation())
+            .setTargetResourceId(target.getTargetResourceId())
+            .setTargetResourceRegion(target.getTargetResourceRegion())
+            .setTargetModelId(target.getTargetModelId())
+            .setAccessToken(target.getAccessToken())
+            .setExpirationDateTime(target.getExpiresOn());
+        return copyRequest;
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {

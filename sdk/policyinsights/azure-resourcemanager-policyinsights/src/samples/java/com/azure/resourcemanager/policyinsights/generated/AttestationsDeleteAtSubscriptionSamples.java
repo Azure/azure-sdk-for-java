@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Attestations DeleteAtSubscription. */
 public final class AttestationsDeleteAtSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteSubscriptionScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_DeleteSubscriptionScope.json
      */
     /**
      * Sample code: Delete attestation at subscription scope.

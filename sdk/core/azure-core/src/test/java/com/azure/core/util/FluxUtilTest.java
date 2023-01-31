@@ -9,6 +9,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
+import com.azure.core.util.mocking.MockFileChannel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,6 +24,7 @@ import reactor.test.StepVerifier;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,6 +36,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
 import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
 import java.nio.channels.FileLockInterruptionException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.WritableByteChannel;
@@ -43,8 +47,6 @@ import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -55,15 +57,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class FluxUtilTest {
     @Test
@@ -219,7 +212,7 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void testWriteWritableChannel() throws Exception {
+    public void testWriteWritableChannel() {
         String content = "test";
 
         byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
@@ -249,12 +242,15 @@ public class FluxUtilTest {
             .verify(Duration.ofSeconds(30));
     }
 
-    private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() throws IOException {
+    private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() {
         // AsynchronousFileChannel that throws NonWritableChannelException.
-        Path nonWritableFile = Files.createTempFile("nonWritableFile" + UUID.randomUUID(), ".txt");
-        nonWritableFile.toFile().deleteOnExit();
-        AsynchronousFileChannel nonWritableChannel = AsynchronousFileChannel.open(nonWritableFile,
-            StandardOpenOption.READ);
+        AsynchronousFileChannel nonWritableChannel = new MockAsynchronousFileChannel() {
+            @Override
+            public <A> void write(ByteBuffer src, long position, A attachment,
+                CompletionHandler<Integer, ? super A> handler) {
+                handler.failed(new NonWritableChannelException(), attachment);
+            }
+        };
 
         // Flux<ByteBuffer> that throws an error during processing.
         Flux<ByteBuffer> exceptionThrowingFlux = Flux.generate(() -> 0, (count, sink) -> {
@@ -266,10 +262,15 @@ public class FluxUtilTest {
             sink.next(ByteBuffer.allocate(16));
             return count + 1;
         });
-        Path exceptionThrowingFile = Files.createTempFile("exceptionThrowingFile" + UUID.randomUUID(), ".txt");
-        exceptionThrowingFile.toFile().deleteOnExit();
-        AsynchronousFileChannel exceptionThrowingChannel = AsynchronousFileChannel.open(exceptionThrowingFile,
-            StandardOpenOption.WRITE);
+        AsynchronousFileChannel exceptionThrowingChannel = new MockAsynchronousFileChannel() {
+            @Override
+            public <A> void write(ByteBuffer src, long position, A attachment,
+                CompletionHandler<Integer, ? super A> handler) {
+                int remaining = src.remaining();
+                src.position(src.position() + remaining);
+                handler.completed(remaining, attachment);
+            }
+        };
 
         // Improper Flux<ByteBuffer> implementation that ignores downstream requests.
         final byte[] data = new byte[4096];
@@ -291,32 +292,17 @@ public class FluxUtilTest {
                 });
             }
         };
-        AsynchronousFileChannel ignoresRequestChannel = mock(AsynchronousFileChannel.class);
-        Timer timer = new Timer(true);
-        doAnswer(invocation -> {
-            ByteBuffer stream = invocation.getArgument(0);
-            CompletionHandler<Integer, ByteBuffer> completionHandler = invocation.getArgument(3);
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    int remaining = stream.remaining();
-                    stream.position(stream.limit());
-                    completionHandler.completed(remaining, stream);
-                }
-            }, 100);
 
-            return null;
-        }).when(ignoresRequestChannel).write(any(), anyLong(), any(), any());
+        AsynchronousFileChannel ignoresRequestChannel = new MockAsynchronousFileChannel();
 
         // CompletionHandler that emits a writing error.
-        AsynchronousFileChannel completionHandlerPropagatesError = mock(AsynchronousFileChannel.class);
-        doAnswer(invocation -> {
-            CompletionHandler<Integer, ByteBuffer> completionHandler = invocation.getArgument(3);
-
-            // Returning an esoteric error.
-            completionHandler.failed(new FileLockInterruptionException(), invocation.getArgument(0));
-            return null;
-        }).when(completionHandlerPropagatesError).write(any(), anyLong(), any(), any());
+        AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel() {
+            @Override
+            public <A> void write(ByteBuffer src, long position, A attachment,
+                CompletionHandler<Integer, ? super A> handler) {
+                handler.failed(new FileLockInterruptionException(), attachment);
+            }
+        };
 
         return Stream.of(
             // AsynchronousFileChannel doesn't have write capabilities.
@@ -336,7 +322,7 @@ public class FluxUtilTest {
 
     @Test
     public void writingRetriableStreamThatFails() throws IOException {
-        byte[] data = new byte[4 * 1024 * 1024];
+        byte[] data = new byte[1024 * 1024];
         new SecureRandom().nextBytes(data);
 
         AtomicInteger errorCount = new AtomicInteger();
@@ -486,30 +472,59 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void toFluxByteBufferSinkException() throws IOException {
-        InputStream inputStream = mock(InputStream.class);
-        when(inputStream.read(any(), anyInt(), anyInt())).thenThrow(new IOException("error"));
+    public void toFluxByteBufferSinkException() {
+        InputStream inputStream = new ByteArrayInputStream(new byte[0]) {
+            @Override
+            public synchronized int read(byte[] b, int off, int len) {
+                throw new IllegalStateException("error");
+            }
+        };
 
         StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
-            .verifyError(IOException.class);
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
     public void toFluxByteBufferFileInputStreamChannelCloses() throws IOException {
-        MyFileChannel channel = spy(MyFileChannel.class);
-        when(channel.position()).thenReturn(0L);
-        when(channel.size()).thenReturn(0L);
+        AtomicInteger positionCalls = new AtomicInteger();
+        AtomicInteger sizeCalls = new AtomicInteger();
+        AtomicInteger implCloseChannelCalls = new AtomicInteger();
 
-        FileInputStream inputStream = mock(FileInputStream.class);
-        when(inputStream.getChannel()).thenReturn(channel);
+        MockFileChannel channel = new MockFileChannel() {
+            @Override
+            public void implCloseChannel() {
+                implCloseChannelCalls.incrementAndGet();
+            }
+
+            @Override
+            public long position() {
+                positionCalls.incrementAndGet();
+                return 0L;
+            }
+
+            @Override
+            public long size() {
+                sizeCalls.incrementAndGet();
+                return 0L;
+            }
+        };
+
+        AtomicInteger getChannelCalls = new AtomicInteger();
+        FileInputStream inputStream = new FileInputStream(new FileDescriptor()) {
+            @Override
+            public FileChannel getChannel() {
+                getChannelCalls.incrementAndGet();
+                return channel;
+            }
+        };
 
         StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
             .verifyComplete();
 
-        verify(inputStream, times(1)).getChannel();
-        verify(channel, times(1)).position();
-        verify(channel, times(1)).size();
-        verify(channel, times(1)).implCloseChannel();
+        assertEquals(1, getChannelCalls.get());
+        assertEquals(1, positionCalls.get());
+        assertEquals(1, sizeCalls.get());
+        assertEquals(1, implCloseChannelCalls.get());
     }
 
     public Flux<ByteBuffer> mockReturnType() {

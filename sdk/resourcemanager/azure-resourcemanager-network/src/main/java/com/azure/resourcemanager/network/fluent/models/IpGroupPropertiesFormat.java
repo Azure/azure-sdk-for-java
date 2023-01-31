@@ -37,6 +37,10 @@ public final class IpGroupPropertiesFormat {
     @JsonProperty(value = "firewallPolicies", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewallPolicies;
 
+    /** Creates an instance of IpGroupPropertiesFormat class. */
+    public IpGroupPropertiesFormat() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the IpGroups resource.
      *

@@ -59,7 +59,7 @@ public interface Pool {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
@@ -154,7 +154,7 @@ public interface Pool {
             /**
              * Specifies resourceGroupName, projectName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param projectName The name of the project.
              * @return the next definition stage.
              */

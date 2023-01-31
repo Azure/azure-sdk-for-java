@@ -22,6 +22,10 @@ public final class EnvironmentRole {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of EnvironmentRole class. */
+    public EnvironmentRole() {
+    }
+
     /**
      * Get the roleName property: The common name of the Role Assignment. This is a descriptive name such as 'AcrPush'.
      *

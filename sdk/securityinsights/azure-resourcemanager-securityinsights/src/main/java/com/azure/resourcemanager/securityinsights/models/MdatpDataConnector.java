@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class MdatpDataConnector extends DataConnectorInner {
     /*
-     * MDATP (Microsoft Defender Advanced Threat Protection) data connector
-     * properties.
+     * MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
      */
     @JsonProperty(value = "properties")
     private MdatpDataConnectorProperties innerProperties;

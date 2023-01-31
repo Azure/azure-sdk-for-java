@@ -28,6 +28,10 @@ public final class PrestoDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of PrestoDatasetTypeProperties class. */
+    public PrestoDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The connectivity properties. */
 @Fluent
 public final class ConnectivityEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityEndpoint.class);
-
     /*
      * The name of the endpoint.
      */
@@ -43,6 +39,10 @@ public final class ConnectivityEndpoint {
      */
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
+
+    /** Creates an instance of ConnectivityEndpoint class. */
+    public ConnectivityEndpoint() {
+    }
 
     /**
      * Get the name property: The name of the endpoint.

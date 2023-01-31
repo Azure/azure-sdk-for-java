@@ -25,6 +25,10 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of ResourceGuardProxyBaseResourceInner class. */
+    public ResourceGuardProxyBaseResourceInner() {
+    }
+
     /**
      * Get the properties property: ResourceGuardProxyBaseResource properties.
      *

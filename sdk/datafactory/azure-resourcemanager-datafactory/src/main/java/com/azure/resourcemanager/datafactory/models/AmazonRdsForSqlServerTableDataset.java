@@ -23,6 +23,10 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AmazonRdsForSqlServerTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AmazonRdsForSqlServerTableDataset class. */
+    public AmazonRdsForSqlServerTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: The Amazon RDS for SQL Server dataset properties.
      *

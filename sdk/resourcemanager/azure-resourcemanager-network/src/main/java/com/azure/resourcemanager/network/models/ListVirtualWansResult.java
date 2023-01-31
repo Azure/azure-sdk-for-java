@@ -27,6 +27,10 @@ public final class ListVirtualWansResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListVirtualWansResult class. */
+    public ListVirtualWansResult() {
+    }
+
     /**
      * Get the value property: List of VirtualWANs.
      *

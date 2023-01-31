@@ -61,6 +61,10 @@ public final class CustomActivityTypeProperties {
     @JsonProperty(value = "autoUserSpecification")
     private Object autoUserSpecification;
 
+    /** Creates an instance of CustomActivityTypeProperties class. */
+    public CustomActivityTypeProperties() {
+    }
+
     /**
      * Get the command property: Command for custom activity Type: string (or Expression with resultType string).
      *

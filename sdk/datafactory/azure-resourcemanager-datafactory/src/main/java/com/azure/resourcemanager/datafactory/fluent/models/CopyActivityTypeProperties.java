@@ -112,6 +112,10 @@ public final class CopyActivityTypeProperties {
     @JsonProperty(value = "skipErrorFile")
     private SkipErrorFile skipErrorFile;
 
+    /** Creates an instance of CopyActivityTypeProperties class. */
+    public CopyActivityTypeProperties() {
+    }
+
     /**
      * Get the source property: Copy activity source.
      *

@@ -27,7 +27,6 @@ import com.azure.maps.render.models.MapTileset;
 import org.junit.jupiter.params.provider.Arguments;
 
 public class TestUtils {
-    static final String FAKE_API_KEY = "1234567890";
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     static MapTileset getExpectedMapTileset() throws IOException {
@@ -46,7 +45,7 @@ public class TestUtils {
         JsonSerializer jsonProvider = JsonSerializerProviders.createInstance(true);
         is.close();
         return jsonProvider.deserializeFromBytes(data, TypeReference.createInstance(MapAttribution.class));
-       
+
     }
 
     static CopyrightCaption getExpectedCopyrightCaption() throws IOException {

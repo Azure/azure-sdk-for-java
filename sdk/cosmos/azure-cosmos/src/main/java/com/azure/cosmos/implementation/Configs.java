@@ -108,7 +108,7 @@ public class Configs {
 
     // whether to enable replica addresses validation
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
-    private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = false;
+    private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
 
     public Configs() {
         this.sslContext = sslContextInit();

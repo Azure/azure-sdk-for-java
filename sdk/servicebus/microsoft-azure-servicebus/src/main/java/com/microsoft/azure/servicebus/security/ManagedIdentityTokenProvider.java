@@ -22,14 +22,14 @@ import com.microsoft.azure.servicebus.primitives.MessagingFactory;
  */
 public class ManagedIdentityTokenProvider extends TokenProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ManagedIdentityTokenProvider.class);
+    private static final MSICredentials CREDENTIALS = new MSICredentials();
 
     @Override
     public CompletableFuture<SecurityToken> getSecurityTokenAsync(String audience) {
         CompletableFuture<SecurityToken> tokenGeneratingFuture = new CompletableFuture<>();
         MessagingFactory.INTERNAL_THREAD_POOL.execute(() -> {
             try {
-                MSICredentials credentials = new MSICredentials();
-                String rawToken = credentials.getToken(SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL);
+                String rawToken = CREDENTIALS.getToken(SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL);
                 Date expiry = SecurityToken.getExpirationDateTimeUtcFromToken(rawToken);
                 tokenGeneratingFuture.complete(new SecurityToken(SecurityTokenType.JWT, audience, rawToken, Instant.now(), expiry.toInstant()));
             } catch (IOException e) {

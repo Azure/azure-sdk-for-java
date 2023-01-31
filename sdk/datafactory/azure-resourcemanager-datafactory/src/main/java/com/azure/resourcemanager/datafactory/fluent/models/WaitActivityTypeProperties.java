@@ -17,6 +17,10 @@ public final class WaitActivityTypeProperties {
     @JsonProperty(value = "waitTimeInSeconds", required = true)
     private Object waitTimeInSeconds;
 
+    /** Creates an instance of WaitActivityTypeProperties class. */
+    public WaitActivityTypeProperties() {
+    }
+
     /**
      * Get the waitTimeInSeconds property: Duration in seconds.
      *

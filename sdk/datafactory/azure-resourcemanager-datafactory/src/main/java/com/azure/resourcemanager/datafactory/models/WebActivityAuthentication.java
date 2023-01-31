@@ -55,6 +55,10 @@ public final class WebActivityAuthentication {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of WebActivityAuthentication class. */
+    public WebActivityAuthentication() {
+    }
+
     /**
      * Get the type property: Web activity authentication (Basic/ClientCertificate/MSI/ServicePrincipal).
      *

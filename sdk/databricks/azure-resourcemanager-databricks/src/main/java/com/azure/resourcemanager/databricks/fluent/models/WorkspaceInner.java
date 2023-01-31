@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databricks.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,17 +17,19 @@ import com.azure.resourcemanager.databricks.models.Sku;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomParameters;
 import com.azure.resourcemanager.databricks.models.WorkspacePropertiesEncryption;
 import com.azure.resourcemanager.databricks.models.WorkspaceProviderAuthorization;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** Information about workspace. */
-@JsonFlatten
 @Fluent
-public class WorkspaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInner.class);
+public final class WorkspaceInner extends Resource {
+    /*
+     * The workspace properties.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private WorkspaceProperties innerProperties = new WorkspaceProperties();
 
     /*
      * The SKU of the resource.
@@ -42,103 +43,18 @@ public class WorkspaceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The managed resource group Id.
-     */
-    @JsonProperty(value = "properties.managedResourceGroupId", required = true)
-    private String managedResourceGroupId;
+    /** Creates an instance of WorkspaceInner class. */
+    public WorkspaceInner() {
+    }
 
-    /*
-     * The workspace's custom parameters.
+    /**
+     * Get the innerProperties property: The workspace properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.parameters")
-    private WorkspaceCustomParameters parameters;
-
-    /*
-     * The workspace provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The blob URI where the UI definition file is located.
-     */
-    @JsonProperty(value = "properties.uiDefinitionUri")
-    private String uiDefinitionUri;
-
-    /*
-     * The workspace provider authorizations.
-     */
-    @JsonProperty(value = "properties.authorizations")
-    private List<WorkspaceProviderAuthorization> authorizations;
-
-    /*
-     * Indicates the Object ID, PUID and Application ID of entity that created
-     * the workspace.
-     */
-    @JsonProperty(value = "properties.createdBy")
-    private CreatedBy createdBy;
-
-    /*
-     * Indicates the Object ID, PUID and Application ID of entity that last
-     * updated the workspace.
-     */
-    @JsonProperty(value = "properties.updatedBy")
-    private CreatedBy updatedBy;
-
-    /*
-     * Specifies the date and time when the workspace is created.
-     */
-    @JsonProperty(value = "properties.createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDateTime;
-
-    /*
-     * The unique identifier of the databricks workspace in databricks control
-     * plane.
-     */
-    @JsonProperty(value = "properties.workspaceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String workspaceId;
-
-    /*
-     * The workspace URL which is of the format
-     * 'adb-{workspaceId}.{random}.azuredatabricks.net'
-     */
-    @JsonProperty(value = "properties.workspaceUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String workspaceUrl;
-
-    /*
-     * The details of Managed Identity of Storage Account
-     */
-    @JsonProperty(value = "properties.storageAccountIdentity")
-    private ManagedIdentityConfiguration storageAccountIdentity;
-
-    /*
-     * Encryption properties for databricks workspace
-     */
-    @JsonProperty(value = "properties.encryption")
-    private WorkspacePropertiesEncryption encryption;
-
-    /*
-     * Private endpoint connections created on the workspace
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
-     * The network access type for accessing workspace. Set value to disabled
-     * to access workspace only via private link.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * Gets or sets a value indicating whether data plane (clusters) to control
-     * plane communication happen over private endpoint. Supported values are
-     * 'AllRules' and 'NoAzureDatabricksRules'. 'NoAzureServiceRules' value is
-     * for internal use only.
-     */
-    @JsonProperty(value = "properties.requiredNsgRules")
-    private RequiredNsgRules requiredNsgRules;
+    private WorkspaceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: The SKU of the resource.
@@ -169,262 +85,6 @@ public class WorkspaceInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * Get the managedResourceGroupId property: The managed resource group Id.
-     *
-     * @return the managedResourceGroupId value.
-     */
-    public String managedResourceGroupId() {
-        return this.managedResourceGroupId;
-    }
-
-    /**
-     * Set the managedResourceGroupId property: The managed resource group Id.
-     *
-     * @param managedResourceGroupId the managedResourceGroupId value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withManagedResourceGroupId(String managedResourceGroupId) {
-        this.managedResourceGroupId = managedResourceGroupId;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: The workspace's custom parameters.
-     *
-     * @return the parameters value.
-     */
-    public WorkspaceCustomParameters parameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: The workspace's custom parameters.
-     *
-     * @param parameters the parameters value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withParameters(WorkspaceCustomParameters parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The workspace provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uiDefinitionUri property: The blob URI where the UI definition file is located.
-     *
-     * @return the uiDefinitionUri value.
-     */
-    public String uiDefinitionUri() {
-        return this.uiDefinitionUri;
-    }
-
-    /**
-     * Set the uiDefinitionUri property: The blob URI where the UI definition file is located.
-     *
-     * @param uiDefinitionUri the uiDefinitionUri value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withUiDefinitionUri(String uiDefinitionUri) {
-        this.uiDefinitionUri = uiDefinitionUri;
-        return this;
-    }
-
-    /**
-     * Get the authorizations property: The workspace provider authorizations.
-     *
-     * @return the authorizations value.
-     */
-    public List<WorkspaceProviderAuthorization> authorizations() {
-        return this.authorizations;
-    }
-
-    /**
-     * Set the authorizations property: The workspace provider authorizations.
-     *
-     * @param authorizations the authorizations value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withAuthorizations(List<WorkspaceProviderAuthorization> authorizations) {
-        this.authorizations = authorizations;
-        return this;
-    }
-
-    /**
-     * Get the createdBy property: Indicates the Object ID, PUID and Application ID of entity that created the
-     * workspace.
-     *
-     * @return the createdBy value.
-     */
-    public CreatedBy createdBy() {
-        return this.createdBy;
-    }
-
-    /**
-     * Set the createdBy property: Indicates the Object ID, PUID and Application ID of entity that created the
-     * workspace.
-     *
-     * @param createdBy the createdBy value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withCreatedBy(CreatedBy createdBy) {
-        this.createdBy = createdBy;
-        return this;
-    }
-
-    /**
-     * Get the updatedBy property: Indicates the Object ID, PUID and Application ID of entity that last updated the
-     * workspace.
-     *
-     * @return the updatedBy value.
-     */
-    public CreatedBy updatedBy() {
-        return this.updatedBy;
-    }
-
-    /**
-     * Set the updatedBy property: Indicates the Object ID, PUID and Application ID of entity that last updated the
-     * workspace.
-     *
-     * @param updatedBy the updatedBy value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withUpdatedBy(CreatedBy updatedBy) {
-        this.updatedBy = updatedBy;
-        return this;
-    }
-
-    /**
-     * Get the createdDateTime property: Specifies the date and time when the workspace is created.
-     *
-     * @return the createdDateTime value.
-     */
-    public OffsetDateTime createdDateTime() {
-        return this.createdDateTime;
-    }
-
-    /**
-     * Get the workspaceId property: The unique identifier of the databricks workspace in databricks control plane.
-     *
-     * @return the workspaceId value.
-     */
-    public String workspaceId() {
-        return this.workspaceId;
-    }
-
-    /**
-     * Get the workspaceUrl property: The workspace URL which is of the format
-     * 'adb-{workspaceId}.{random}.azuredatabricks.net'.
-     *
-     * @return the workspaceUrl value.
-     */
-    public String workspaceUrl() {
-        return this.workspaceUrl;
-    }
-
-    /**
-     * Get the storageAccountIdentity property: The details of Managed Identity of Storage Account.
-     *
-     * @return the storageAccountIdentity value.
-     */
-    public ManagedIdentityConfiguration storageAccountIdentity() {
-        return this.storageAccountIdentity;
-    }
-
-    /**
-     * Set the storageAccountIdentity property: The details of Managed Identity of Storage Account.
-     *
-     * @param storageAccountIdentity the storageAccountIdentity value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity) {
-        this.storageAccountIdentity = storageAccountIdentity;
-        return this;
-    }
-
-    /**
-     * Get the encryption property: Encryption properties for databricks workspace.
-     *
-     * @return the encryption value.
-     */
-    public WorkspacePropertiesEncryption encryption() {
-        return this.encryption;
-    }
-
-    /**
-     * Set the encryption property: Encryption properties for databricks workspace.
-     *
-     * @param encryption the encryption value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withEncryption(WorkspacePropertiesEncryption encryption) {
-        this.encryption = encryption;
-        return this;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: Private endpoint connections created on the workspace.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
-     * access workspace only via private link.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
-     * access workspace only via private link.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
-     * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
-     * 'NoAzureServiceRules' value is for internal use only.
-     *
-     * @return the requiredNsgRules value.
-     */
-    public RequiredNsgRules requiredNsgRules() {
-        return this.requiredNsgRules;
-    }
-
-    /**
-     * Set the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
-     * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
-     * 'NoAzureServiceRules' value is for internal use only.
-     *
-     * @param requiredNsgRules the requiredNsgRules value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withRequiredNsgRules(RequiredNsgRules requiredNsgRules) {
-        this.requiredNsgRules = requiredNsgRules;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public WorkspaceInner withLocation(String location) {
@@ -440,40 +100,308 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
+     * Get the managedResourceGroupId property: The managed resource group Id.
+     *
+     * @return the managedResourceGroupId value.
+     */
+    public String managedResourceGroupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedResourceGroupId();
+    }
+
+    /**
+     * Set the managedResourceGroupId property: The managed resource group Id.
+     *
+     * @param managedResourceGroupId the managedResourceGroupId value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedResourceGroupId(String managedResourceGroupId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withManagedResourceGroupId(managedResourceGroupId);
+        return this;
+    }
+
+    /**
+     * Get the parameters property: The workspace's custom parameters.
+     *
+     * @return the parameters value.
+     */
+    public WorkspaceCustomParameters parameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: The workspace's custom parameters.
+     *
+     * @param parameters the parameters value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withParameters(WorkspaceCustomParameters parameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The workspace provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uiDefinitionUri property: The blob URI where the UI definition file is located.
+     *
+     * @return the uiDefinitionUri value.
+     */
+    public String uiDefinitionUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().uiDefinitionUri();
+    }
+
+    /**
+     * Set the uiDefinitionUri property: The blob URI where the UI definition file is located.
+     *
+     * @param uiDefinitionUri the uiDefinitionUri value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withUiDefinitionUri(String uiDefinitionUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withUiDefinitionUri(uiDefinitionUri);
+        return this;
+    }
+
+    /**
+     * Get the authorizations property: The workspace provider authorizations.
+     *
+     * @return the authorizations value.
+     */
+    public List<WorkspaceProviderAuthorization> authorizations() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizations();
+    }
+
+    /**
+     * Set the authorizations property: The workspace provider authorizations.
+     *
+     * @param authorizations the authorizations value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withAuthorizations(List<WorkspaceProviderAuthorization> authorizations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withAuthorizations(authorizations);
+        return this;
+    }
+
+    /**
+     * Get the createdBy property: Indicates the Object ID, PUID and Application ID of entity that created the
+     * workspace.
+     *
+     * @return the createdBy value.
+     */
+    public CreatedBy createdBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
+    }
+
+    /**
+     * Set the createdBy property: Indicates the Object ID, PUID and Application ID of entity that created the
+     * workspace.
+     *
+     * @param createdBy the createdBy value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withCreatedBy(CreatedBy createdBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withCreatedBy(createdBy);
+        return this;
+    }
+
+    /**
+     * Get the updatedBy property: Indicates the Object ID, PUID and Application ID of entity that last updated the
+     * workspace.
+     *
+     * @return the updatedBy value.
+     */
+    public CreatedBy updatedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedBy();
+    }
+
+    /**
+     * Set the updatedBy property: Indicates the Object ID, PUID and Application ID of entity that last updated the
+     * workspace.
+     *
+     * @param updatedBy the updatedBy value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withUpdatedBy(CreatedBy updatedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withUpdatedBy(updatedBy);
+        return this;
+    }
+
+    /**
+     * Get the createdDateTime property: Specifies the date and time when the workspace is created.
+     *
+     * @return the createdDateTime value.
+     */
+    public OffsetDateTime createdDateTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDateTime();
+    }
+
+    /**
+     * Get the workspaceId property: The unique identifier of the databricks workspace in databricks control plane.
+     *
+     * @return the workspaceId value.
+     */
+    public String workspaceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceId();
+    }
+
+    /**
+     * Get the workspaceUrl property: The workspace URL which is of the format
+     * 'adb-{workspaceId}.{random}.azuredatabricks.net'.
+     *
+     * @return the workspaceUrl value.
+     */
+    public String workspaceUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceUrl();
+    }
+
+    /**
+     * Get the storageAccountIdentity property: The details of Managed Identity of Storage Account.
+     *
+     * @return the storageAccountIdentity value.
+     */
+    public ManagedIdentityConfiguration storageAccountIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountIdentity();
+    }
+
+    /**
+     * Set the storageAccountIdentity property: The details of Managed Identity of Storage Account.
+     *
+     * @param storageAccountIdentity the storageAccountIdentity value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withStorageAccountIdentity(storageAccountIdentity);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Encryption properties for databricks workspace.
+     *
+     * @return the encryption value.
+     */
+    public WorkspacePropertiesEncryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Encryption properties for databricks workspace.
+     *
+     * @param encryption the encryption value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withEncryption(WorkspacePropertiesEncryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections created on the workspace.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
+     * access workspace only via private link.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
+     * access workspace only via private link.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
+     * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
+     * 'NoAzureServiceRules' value is for internal use only.
+     *
+     * @return the requiredNsgRules value.
+     */
+    public RequiredNsgRules requiredNsgRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredNsgRules();
+    }
+
+    /**
+     * Set the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
+     * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
+     * 'NoAzureServiceRules' value is for internal use only.
+     *
+     * @param requiredNsgRules the requiredNsgRules value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withRequiredNsgRules(RequiredNsgRules requiredNsgRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withRequiredNsgRules(requiredNsgRules);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model WorkspaceInner"));
+        } else {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
-        if (managedResourceGroupId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managedResourceGroupId in model WorkspaceInner"));
-        }
-        if (parameters() != null) {
-            parameters().validate();
-        }
-        if (authorizations() != null) {
-            authorizations().forEach(e -> e.validate());
-        }
-        if (createdBy() != null) {
-            createdBy().validate();
-        }
-        if (updatedBy() != null) {
-            updatedBy().validate();
-        }
-        if (storageAccountIdentity() != null) {
-            storageAccountIdentity().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceInner.class);
 }

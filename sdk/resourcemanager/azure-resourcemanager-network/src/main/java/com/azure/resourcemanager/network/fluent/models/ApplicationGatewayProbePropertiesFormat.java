@@ -90,6 +90,10 @@ public final class ApplicationGatewayProbePropertiesFormat {
     @JsonProperty(value = "port")
     private Integer port;
 
+    /** Creates an instance of ApplicationGatewayProbePropertiesFormat class. */
+    public ApplicationGatewayProbePropertiesFormat() {
+    }
+
     /**
      * Get the protocol property: The protocol used for the probe.
      *

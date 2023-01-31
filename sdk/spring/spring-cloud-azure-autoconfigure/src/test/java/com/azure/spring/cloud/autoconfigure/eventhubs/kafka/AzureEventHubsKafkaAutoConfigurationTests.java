@@ -3,16 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
-import java.util.Collections;
-import java.util.Map;
-
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ArmConnectionStringProvider;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -21,6 +17,9 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
+
+import java.util.Collections;
+import java.util.Map;
 
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;

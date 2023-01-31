@@ -63,6 +63,10 @@ public final class HDInsightLinkedServiceTypeProperties {
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;
 
+    /** Creates an instance of HDInsightLinkedServiceTypeProperties class. */
+    public HDInsightLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
      *

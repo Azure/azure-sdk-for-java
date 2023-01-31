@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for CapacityReservationGroups Update. */
 public final class CapacityReservationGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroups_Update_MaximumSet_Gen.
@@ -30,11 +29,11 @@ public final class CapacityReservationGroupsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaaaa",
                 new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "aaa")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroups_Update_MinimumSet_Gen.
@@ -49,7 +48,10 @@ public final class CapacityReservationGroupsUpdateSamples {
             .serviceClient()
             .getCapacityReservationGroups()
             .updateWithResponse(
-                "rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", new CapacityReservationGroupUpdate(), Context.NONE);
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaaaaaa",
+                new CapacityReservationGroupUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

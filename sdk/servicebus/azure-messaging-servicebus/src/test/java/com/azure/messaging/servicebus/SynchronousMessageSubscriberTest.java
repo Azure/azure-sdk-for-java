@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,18 @@ public class SynchronousMessageSubscriberTest {
     @Captor
     private ArgumentCaptor<Long> subscriptionArgumentCaptor;
 
+    @Mock
+    private ReceiverOptions options;
+
+    @Mock
+    private ReceiverOptions deleteModeOptions;
+
+    @Mock
+    private ServiceBusReceiverAsyncClient deleteModeAsyncClient;
+
     private SynchronousMessageSubscriber syncSubscriber;
+    private SynchronousMessageSubscriber deleteModeSyncSubscriber;
+
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -71,7 +83,15 @@ public class SynchronousMessageSubscriberTest {
         when(work2.getId()).thenReturn(WORK_ID_2);
         when(work2.getNumberOfEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
 
+        when(asyncClient.getReceiverOptions()).thenReturn(options);
+        when(options.getReceiveMode()).thenReturn(ServiceBusReceiveMode.PEEK_LOCK);
+
         syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
+
+        when(deleteModeAsyncClient.getReceiverOptions()).thenReturn(deleteModeOptions);
+        when(deleteModeOptions.getReceiveMode()).thenReturn(ServiceBusReceiveMode.RECEIVE_AND_DELETE);
+
+        deleteModeSyncSubscriber = new SynchronousMessageSubscriber(deleteModeAsyncClient, work1, false, operationTimeout);
     }
 
     @AfterEach
@@ -311,7 +331,7 @@ public class SynchronousMessageSubscriberTest {
     }
 
     @Test
-    public void releaseIfNoActiveReceive() {
+    public void releaseIfNoActiveReceiveInPeekMode() {
         // Arrange
 
         // The work1 happily accept any message.
@@ -367,5 +387,52 @@ public class SynchronousMessageSubscriberTest {
         // rather those late two messages should be released.
         assertEquals(2, expectedReleaseCalls.get());
         assertFalse(hadUnexpectedReleaseCall.get());
+    }
+
+    @Test
+    public void noReleaseIfNoActiveReceiveInDelMode() {
+        // Arrange
+
+        // The work1 and work2 happily accept any message.
+        when(work1.emitNext(any(ServiceBusReceivedMessage.class))).thenReturn(true);
+        when(work2.emitNext(any(ServiceBusReceivedMessage.class))).thenReturn(true);
+
+        // The four messages produced by the link (two before work1 timeout and two after).
+        final ServiceBusReceivedMessage message1beforeTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2beforeTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message1afterTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2afterTimeout = mock(ServiceBusReceivedMessage.class);
+
+        // work1 enters terminal-state when isTerminal is set (e.g. when something like timeout happens).
+        final AtomicBoolean isTerminal = new AtomicBoolean(false);
+        doAnswer(invocation -> isTerminal.get()).when(work1).isTerminal();
+
+        // Act
+        deleteModeSyncSubscriber.hookOnSubscribe(subscription);
+
+        // The work1 places a credit of 4; let's say link produced two messages
+        deleteModeSyncSubscriber.hookOnNext(message1beforeTimeout);
+        deleteModeSyncSubscriber.hookOnNext(message2beforeTimeout);
+        // then the work1 timeout (terminated)
+        isTerminal.set(true);
+        // then the remaining two messages produced by the link
+        deleteModeSyncSubscriber.hookOnNext(message1afterTimeout);
+        deleteModeSyncSubscriber.hookOnNext(message2afterTimeout);
+        // add a new queue work to consume remained messages. In RECEIVE_AND_DELETE mode, messages won't be released
+        // and could be consumed even though prefetch is disabled and no current downstream.
+        deleteModeSyncSubscriber.queueWork(work2);
+
+        // Assert
+
+        // the work1 received first two messages before the timeout
+        verify(work1).emitNext(message1beforeTimeout);
+        verify(work1).emitNext(message2beforeTimeout);
+        // the work1 should never receive two messages arrived later
+        verify(work1, never()).emitNext(message1afterTimeout);
+        verify(work1, never()).emitNext(message2afterTimeout);
+
+        // the work2 received two messages after the timeout
+        verify(work2).emitNext(message1afterTimeout);
+        verify(work2).emitNext(message2afterTimeout);
     }
 }

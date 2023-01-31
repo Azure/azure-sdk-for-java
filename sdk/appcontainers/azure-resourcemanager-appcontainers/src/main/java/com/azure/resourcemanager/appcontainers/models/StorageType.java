@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageType. */
+/** Storage type for the volume. If not provided, use EmptyDir. */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
     /** Static value AzureFile for StorageType. */
     public static final StorageType AZURE_FILE = fromString("AzureFile");

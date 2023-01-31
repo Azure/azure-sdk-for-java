@@ -26,6 +26,10 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
     @JsonProperty(value = "importSettings")
     private AzureDatabricksDeltaLakeImportCommand importSettings;
 
+    /** Creates an instance of AzureDatabricksDeltaLakeSink class. */
+    public AzureDatabricksDeltaLakeSink() {
+    }
+
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
      *

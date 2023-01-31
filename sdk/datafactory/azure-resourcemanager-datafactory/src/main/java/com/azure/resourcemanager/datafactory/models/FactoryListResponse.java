@@ -25,6 +25,10 @@ public final class FactoryListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of FactoryListResponse class. */
+    public FactoryListResponse() {
+    }
+
     /**
      * Get the value property: List of factories.
      *

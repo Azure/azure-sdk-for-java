@@ -21,6 +21,10 @@ public final class DatabricksComputeSecrets extends ComputeSecretsInner {
     @JsonProperty(value = "databricksAccessToken")
     private String databricksAccessToken;
 
+    /** Creates an instance of DatabricksComputeSecrets class. */
+    public DatabricksComputeSecrets() {
+    }
+
     /**
      * Get the databricksAccessToken property: access token for databricks account.
      *

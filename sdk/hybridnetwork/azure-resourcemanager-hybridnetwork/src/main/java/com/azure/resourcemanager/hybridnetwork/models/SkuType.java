@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuType. */
+/** Sku type. */
 public final class SkuType extends ExpandableStringEnum<SkuType> {
     /** Static value Unknown for SkuType. */
     public static final SkuType UNKNOWN = fromString("Unknown");
@@ -33,7 +33,11 @@ public final class SkuType extends ExpandableStringEnum<SkuType> {
         return fromString(name, SkuType.class);
     }
 
-    /** @return known SkuType values. */
+    /**
+     * Gets known SkuType values.
+     *
+     * @return known SkuType values.
+     */
     public static Collection<SkuType> values() {
         return values(SkuType.class);
     }

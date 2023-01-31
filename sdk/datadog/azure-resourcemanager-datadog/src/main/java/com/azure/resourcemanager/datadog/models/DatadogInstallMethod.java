@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatadogInstallMethod model. */
 @Fluent
 public final class DatadogInstallMethod {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogInstallMethod.class);
-
     /*
      * The tool.
      */
@@ -31,6 +27,10 @@ public final class DatadogInstallMethod {
      */
     @JsonProperty(value = "installerVersion")
     private String installerVersion;
+
+    /** Creates an instance of DatadogInstallMethod class. */
+    public DatadogInstallMethod() {
+    }
 
     /**
      * Get the tool property: The tool.

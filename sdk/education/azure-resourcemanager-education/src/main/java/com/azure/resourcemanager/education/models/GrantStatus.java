@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GrantStatus. */
+/** Grant status. */
 public final class GrantStatus extends ExpandableStringEnum<GrantStatus> {
     /** Static value Active for GrantStatus. */
     public static final GrantStatus ACTIVE = fromString("Active");

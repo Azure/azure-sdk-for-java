@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SQLInstance")
 @Fluent
 public final class AzureVmWorkloadSqlInstanceProtectableItem extends AzureVmWorkloadProtectableItem {
+    /** Creates an instance of AzureVmWorkloadSqlInstanceProtectableItem class. */
+    public AzureVmWorkloadSqlInstanceProtectableItem() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSqlInstanceProtectableItem withParentName(String parentName) {

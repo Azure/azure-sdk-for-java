@@ -27,6 +27,10 @@ public final class MongoDbSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of MongoDbSource class. */
+    public MongoDbSource() {
+    }
+
     /**
      * Get the query property: Database query. Should be a SQL-92 query expression. Type: string (or Expression with
      * resultType string).

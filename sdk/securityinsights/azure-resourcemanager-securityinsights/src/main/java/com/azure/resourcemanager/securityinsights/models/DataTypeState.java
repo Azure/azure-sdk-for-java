@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataTypeState. */
+/** Describe whether this data type connection is enabled or not. */
 public final class DataTypeState extends ExpandableStringEnum<DataTypeState> {
     /** Static value Enabled for DataTypeState. */
     public static final DataTypeState ENABLED = fromString("Enabled");

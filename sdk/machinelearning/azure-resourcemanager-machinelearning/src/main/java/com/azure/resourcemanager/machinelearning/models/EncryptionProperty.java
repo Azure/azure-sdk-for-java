@@ -18,8 +18,7 @@ public final class EncryptionProperty {
     private EncryptionStatus status;
 
     /*
-     * The identity that will be used to access the key vault for encryption at
-     * rest.
+     * The identity that will be used to access the key vault for encryption at rest.
      */
     @JsonProperty(value = "identity")
     private IdentityForCmk identity;
@@ -29,6 +28,10 @@ public final class EncryptionProperty {
      */
     @JsonProperty(value = "keyVaultProperties", required = true)
     private EncryptionKeyVaultProperties keyVaultProperties;
+
+    /** Creates an instance of EncryptionProperty class. */
+    public EncryptionProperty() {
+    }
 
     /**
      * Get the status property: Indicates whether or not the encryption is enabled for the workspace.

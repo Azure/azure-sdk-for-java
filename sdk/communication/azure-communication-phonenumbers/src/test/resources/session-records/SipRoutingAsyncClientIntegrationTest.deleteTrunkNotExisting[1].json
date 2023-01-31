@@ -1,0 +1,114 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3b44a9c4-68be-456d-86ba-6b81c4cd4ef2"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "227ms",
+      "MS-CV" : "ZiG4iyEEZUGU2GHCmHzsTw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0sqOkYwAAAABLfaciDjeiR58QHjzWdkOnTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Thu, 22 Dec 2022 18:36:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "fd00756b-c085-4bd0-9af2-e0aa76b1e6ae"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "66ms",
+      "MS-CV" : "6fTGzzrxnkKvMxbQoKycFA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0sqOkYwAAAAAIkY5jTDlsRrHUVgehbpM8TUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Thu, 22 Dec 2022 18:36:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a9407bd6-d24e-42e3-bc5e-cc179e0e058a"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "116ms",
+      "MS-CV" : "Z+13ztPsMEadFfHtTFQHlA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0sqOkYwAAAAAl6oG406OoQZt7L/F9viiDTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Thu, 22 Dec 2022 18:36:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "cdac9b60-7969-46e3-8247-adb4ac07c473"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "52ms",
+      "MS-CV" : "TOJNartpIUC+zLAEIhQX5A.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0s6OkYwAAAAAsBsYxYYikRIAW1oqxRKb0TUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Thu, 22 Dec 2022 18:36:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4d314e19-5c0d-401f-a05b-789ceee5ad26"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "111ms",
+      "MS-CV" : "Q2OKkxLuPkSHr1ou9ATQ2Q.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0s6OkYwAAAAAgzBpiWY9pQJTlHHgPcAaLTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Thu, 22 Dec 2022 18:36:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

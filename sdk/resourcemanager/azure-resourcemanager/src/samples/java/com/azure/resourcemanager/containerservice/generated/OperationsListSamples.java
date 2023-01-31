@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/Operation_List.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/Operation_List.json
      */
     /**
      * Sample code: List available operations for the container service resource provider.
@@ -18,6 +16,6 @@ public final class OperationsListSamples {
      */
     public static void listAvailableOperationsForTheContainerServiceResourceProvider(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getOperations().list(Context.NONE);
+        azure.kubernetesClusters().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

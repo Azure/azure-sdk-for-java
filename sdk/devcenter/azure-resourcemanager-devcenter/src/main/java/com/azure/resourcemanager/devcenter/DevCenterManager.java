@@ -23,11 +23,12 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.devcenter.fluent.DevCenterClient;
+import com.azure.resourcemanager.devcenter.fluent.DevCenterManagementClient;
 import com.azure.resourcemanager.devcenter.implementation.AttachedNetworksImpl;
 import com.azure.resourcemanager.devcenter.implementation.CatalogsImpl;
+import com.azure.resourcemanager.devcenter.implementation.CheckNameAvailabilitiesImpl;
 import com.azure.resourcemanager.devcenter.implementation.DevBoxDefinitionsImpl;
-import com.azure.resourcemanager.devcenter.implementation.DevCenterClientBuilder;
+import com.azure.resourcemanager.devcenter.implementation.DevCenterManagementClientBuilder;
 import com.azure.resourcemanager.devcenter.implementation.DevCentersImpl;
 import com.azure.resourcemanager.devcenter.implementation.EnvironmentTypesImpl;
 import com.azure.resourcemanager.devcenter.implementation.GalleriesImpl;
@@ -37,6 +38,7 @@ import com.azure.resourcemanager.devcenter.implementation.NetworkConnectionsImpl
 import com.azure.resourcemanager.devcenter.implementation.OperationStatusesImpl;
 import com.azure.resourcemanager.devcenter.implementation.OperationsImpl;
 import com.azure.resourcemanager.devcenter.implementation.PoolsImpl;
+import com.azure.resourcemanager.devcenter.implementation.ProjectAllowedEnvironmentTypesImpl;
 import com.azure.resourcemanager.devcenter.implementation.ProjectEnvironmentTypesImpl;
 import com.azure.resourcemanager.devcenter.implementation.ProjectsImpl;
 import com.azure.resourcemanager.devcenter.implementation.SchedulesImpl;
@@ -44,6 +46,7 @@ import com.azure.resourcemanager.devcenter.implementation.SkusImpl;
 import com.azure.resourcemanager.devcenter.implementation.UsagesImpl;
 import com.azure.resourcemanager.devcenter.models.AttachedNetworks;
 import com.azure.resourcemanager.devcenter.models.Catalogs;
+import com.azure.resourcemanager.devcenter.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinitions;
 import com.azure.resourcemanager.devcenter.models.DevCenters;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypes;
@@ -54,6 +57,7 @@ import com.azure.resourcemanager.devcenter.models.NetworkConnections;
 import com.azure.resourcemanager.devcenter.models.OperationStatuses;
 import com.azure.resourcemanager.devcenter.models.Operations;
 import com.azure.resourcemanager.devcenter.models.Pools;
+import com.azure.resourcemanager.devcenter.models.ProjectAllowedEnvironmentTypes;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypes;
 import com.azure.resourcemanager.devcenter.models.Projects;
 import com.azure.resourcemanager.devcenter.models.Schedules;
@@ -84,6 +88,8 @@ public final class DevCenterManager {
 
     private EnvironmentTypes environmentTypes;
 
+    private ProjectAllowedEnvironmentTypes projectAllowedEnvironmentTypes;
+
     private ProjectEnvironmentTypes projectEnvironmentTypes;
 
     private DevBoxDefinitions devBoxDefinitions;
@@ -94,6 +100,8 @@ public final class DevCenterManager {
 
     private Usages usages;
 
+    private CheckNameAvailabilities checkNameAvailabilities;
+
     private Skus skus;
 
     private Pools pools;
@@ -102,13 +110,13 @@ public final class DevCenterManager {
 
     private NetworkConnections networkConnections;
 
-    private final DevCenterClient clientObject;
+    private final DevCenterManagementClient clientObject;
 
     private DevCenterManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new DevCenterClientBuilder()
+            new DevCenterManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -267,7 +275,7 @@ public final class DevCenterManager {
                 .append("-")
                 .append("com.azure.resourcemanager.devcenter")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -421,6 +429,19 @@ public final class DevCenterManager {
     }
 
     /**
+     * Gets the resource collection API of ProjectAllowedEnvironmentTypes.
+     *
+     * @return Resource collection API of ProjectAllowedEnvironmentTypes.
+     */
+    public ProjectAllowedEnvironmentTypes projectAllowedEnvironmentTypes() {
+        if (this.projectAllowedEnvironmentTypes == null) {
+            this.projectAllowedEnvironmentTypes =
+                new ProjectAllowedEnvironmentTypesImpl(clientObject.getProjectAllowedEnvironmentTypes(), this);
+        }
+        return projectAllowedEnvironmentTypes;
+    }
+
+    /**
      * Gets the resource collection API of ProjectEnvironmentTypes. It manages ProjectEnvironmentType.
      *
      * @return Resource collection API of ProjectEnvironmentTypes.
@@ -482,6 +503,19 @@ public final class DevCenterManager {
     }
 
     /**
+     * Gets the resource collection API of CheckNameAvailabilities.
+     *
+     * @return Resource collection API of CheckNameAvailabilities.
+     */
+    public CheckNameAvailabilities checkNameAvailabilities() {
+        if (this.checkNameAvailabilities == null) {
+            this.checkNameAvailabilities =
+                new CheckNameAvailabilitiesImpl(clientObject.getCheckNameAvailabilities(), this);
+        }
+        return checkNameAvailabilities;
+    }
+
+    /**
      * Gets the resource collection API of Skus.
      *
      * @return Resource collection API of Skus.
@@ -530,10 +564,10 @@ public final class DevCenterManager {
     }
 
     /**
-     * @return Wrapped service client DevCenterClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * @return Wrapped service client DevCenterManagementClient providing direct access to the underlying auto-generated
+     *     API implementation, based on Azure REST API.
      */
-    public DevCenterClient serviceClient() {
+    public DevCenterManagementClient serviceClient() {
         return this.clientObject;
     }
 }

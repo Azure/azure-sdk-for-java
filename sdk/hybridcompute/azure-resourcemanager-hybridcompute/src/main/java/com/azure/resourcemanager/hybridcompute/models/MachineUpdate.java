@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a hybrid machine Update. */
 @Fluent
 public final class MachineUpdate extends ResourceUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineUpdate.class);
-
     /*
      * Identity for the resource.
      */
@@ -26,6 +22,10 @@ public final class MachineUpdate extends ResourceUpdate {
      */
     @JsonProperty(value = "properties")
     private MachineUpdateProperties properties;
+
+    /** Creates an instance of MachineUpdate class. */
+    public MachineUpdate() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.

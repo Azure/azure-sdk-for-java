@@ -22,6 +22,10 @@ public final class Amount {
     @JsonProperty(value = "value")
     private Float value;
 
+    /** Creates an instance of Amount class. */
+    public Amount() {
+    }
+
     /**
      * Get the currency property: The type of currency being used for the value.
      *

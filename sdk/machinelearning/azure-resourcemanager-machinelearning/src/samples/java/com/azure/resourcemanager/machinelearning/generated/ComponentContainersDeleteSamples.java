@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ComponentContainers Delete. */
 public final class ComponentContainersDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ComponentContainer/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ComponentContainer/delete.json
      */
     /**
      * Sample code: Delete Component Container.
@@ -18,6 +16,8 @@ public final class ComponentContainersDeleteSamples {
      */
     public static void deleteComponentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.componentContainers().deleteWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager
+            .componentContainers()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }

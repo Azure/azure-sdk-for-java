@@ -24,6 +24,10 @@ public final class OrcDatasetTypeProperties {
     @JsonProperty(value = "orcCompressionCodec")
     private Object orcCompressionCodec;
 
+    /** Creates an instance of OrcDatasetTypeProperties class. */
+    public OrcDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the ORC data storage.
      *

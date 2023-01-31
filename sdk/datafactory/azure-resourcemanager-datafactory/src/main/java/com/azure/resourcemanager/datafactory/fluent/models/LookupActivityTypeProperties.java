@@ -32,6 +32,10 @@ public final class LookupActivityTypeProperties {
     @JsonProperty(value = "firstRowOnly")
     private Object firstRowOnly;
 
+    /** Creates an instance of LookupActivityTypeProperties class. */
+    public LookupActivityTypeProperties() {
+    }
+
     /**
      * Get the source property: Dataset-specific source properties, same as copy activity source.
      *

@@ -21,6 +21,10 @@ public final class AzureFileShareBackupRequest extends BackupRequest {
     @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
 
+    /** Creates an instance of AzureFileShareBackupRequest class. */
+    public AzureFileShareBackupRequest() {
+    }
+
     /**
      * Get the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
      *

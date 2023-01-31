@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d9cc26a2-105f-4c3c-a813-c541dfd8d78d",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "46ms",
+      "MS-CV" : "rYUxidO31k2BRhHDXrbkLA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0kqOkYwAAAADCGhuywCzSQ7s3VYed7NGOTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "422",
+      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteNumberPattern\",\"message\":\"Route with an invalid number pattern.\"}}}",
+      "Date" : "Thu, 22 Dec 2022 18:36:02 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

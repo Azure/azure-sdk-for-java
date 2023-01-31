@@ -63,6 +63,10 @@ public final class SnapshotProperties {
     @JsonProperty(value = "enableFIPS", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enableFips;
 
+    /** Creates an instance of SnapshotProperties class. */
+    public SnapshotProperties() {
+    }
+
     /**
      * Get the creationData property: CreationData to be used to specify the source agent pool resource ID to create
      * this snapshot.

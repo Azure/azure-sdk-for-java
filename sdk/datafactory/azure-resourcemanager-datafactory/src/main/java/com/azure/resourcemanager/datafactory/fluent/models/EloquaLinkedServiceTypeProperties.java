@@ -56,6 +56,10 @@ public final class EloquaLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of EloquaLinkedServiceTypeProperties class. */
+    public EloquaLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
      *

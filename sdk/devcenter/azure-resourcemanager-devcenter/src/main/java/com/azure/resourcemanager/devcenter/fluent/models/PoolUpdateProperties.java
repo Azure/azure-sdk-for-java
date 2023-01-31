@@ -37,6 +37,10 @@ public class PoolUpdateProperties {
     @JsonProperty(value = "localAdministrator")
     private LocalAdminStatus localAdministrator;
 
+    /** Creates an instance of PoolUpdateProperties class. */
+    public PoolUpdateProperties() {
+    }
+
     /**
      * Get the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
      *

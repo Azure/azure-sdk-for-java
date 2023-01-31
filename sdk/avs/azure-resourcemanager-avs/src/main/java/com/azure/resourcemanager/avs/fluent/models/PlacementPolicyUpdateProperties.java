@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.avs.models.AffinityStrength;
+import com.azure.resourcemanager.avs.models.AzureHybridBenefitType;
 import com.azure.resourcemanager.avs.models.PlacementPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a placement policy resource that may be updated. */
 @Fluent
 public final class PlacementPolicyUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlacementPolicyUpdateProperties.class);
-
     /*
      * Whether the placement policy is enabled or disabled
      */
@@ -33,6 +31,22 @@ public final class PlacementPolicyUpdateProperties {
      */
     @JsonProperty(value = "hostMembers")
     private List<String> hostMembers;
+
+    /*
+     * vm-host placement policy affinity strength (should/must)
+     */
+    @JsonProperty(value = "affinityStrength")
+    private AffinityStrength affinityStrength;
+
+    /*
+     * placement policy azure hybrid benefit opt-in type
+     */
+    @JsonProperty(value = "azureHybridBenefitType")
+    private AzureHybridBenefitType azureHybridBenefitType;
+
+    /** Creates an instance of PlacementPolicyUpdateProperties class. */
+    public PlacementPolicyUpdateProperties() {
+    }
 
     /**
      * Get the state property: Whether the placement policy is enabled or disabled.
@@ -91,6 +105,46 @@ public final class PlacementPolicyUpdateProperties {
      */
     public PlacementPolicyUpdateProperties withHostMembers(List<String> hostMembers) {
         this.hostMembers = hostMembers;
+        return this;
+    }
+
+    /**
+     * Get the affinityStrength property: vm-host placement policy affinity strength (should/must).
+     *
+     * @return the affinityStrength value.
+     */
+    public AffinityStrength affinityStrength() {
+        return this.affinityStrength;
+    }
+
+    /**
+     * Set the affinityStrength property: vm-host placement policy affinity strength (should/must).
+     *
+     * @param affinityStrength the affinityStrength value to set.
+     * @return the PlacementPolicyUpdateProperties object itself.
+     */
+    public PlacementPolicyUpdateProperties withAffinityStrength(AffinityStrength affinityStrength) {
+        this.affinityStrength = affinityStrength;
+        return this;
+    }
+
+    /**
+     * Get the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+     *
+     * @return the azureHybridBenefitType value.
+     */
+    public AzureHybridBenefitType azureHybridBenefitType() {
+        return this.azureHybridBenefitType;
+    }
+
+    /**
+     * Set the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+     *
+     * @param azureHybridBenefitType the azureHybridBenefitType value to set.
+     * @return the PlacementPolicyUpdateProperties object itself.
+     */
+    public PlacementPolicyUpdateProperties withAzureHybridBenefitType(AzureHybridBenefitType azureHybridBenefitType) {
+        this.azureHybridBenefitType = azureHybridBenefitType;
         return this;
     }
 

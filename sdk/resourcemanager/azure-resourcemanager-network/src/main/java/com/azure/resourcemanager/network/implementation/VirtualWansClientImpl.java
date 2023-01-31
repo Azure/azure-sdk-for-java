@@ -72,7 +72,7 @@ public final class VirtualWansClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VirtualWansService {
+    public interface VirtualWansService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
@@ -213,7 +213,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -263,7 +263,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -298,21 +298,6 @@ public final class VirtualWansClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWanInner getByResourceGroup(String resourceGroupName, String virtualWanName) {
-        return getByResourceGroupAsync(resourceGroupName, virtualWanName).block();
-    }
-
-    /**
-     * Retrieves the details of a VirtualWAN.
-     *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWAN being retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,6 +308,21 @@ public final class VirtualWansClientImpl
     public Response<VirtualWanInner> getByResourceGroupWithResponse(
         String resourceGroupName, String virtualWanName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualWanName, context).block();
+    }
+
+    /**
+     * Retrieves the details of a VirtualWAN.
+     *
+     * @param resourceGroupName The resource group name of the VirtualWan.
+     * @param virtualWanName The name of the VirtualWAN being retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualWAN Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualWanInner getByResourceGroup(String resourceGroupName, String virtualWanName) {
+        return getByResourceGroupWithResponse(resourceGroupName, virtualWanName, Context.NONE).getValue();
     }
 
     /**
@@ -363,7 +363,7 @@ public final class VirtualWansClientImpl
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -420,7 +420,7 @@ public final class VirtualWansClientImpl
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -632,7 +632,7 @@ public final class VirtualWansClientImpl
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -689,7 +689,7 @@ public final class VirtualWansClientImpl
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -728,22 +728,6 @@ public final class VirtualWansClientImpl
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
      * @param wanParameters Parameters supplied to Update VirtualWAN tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWanInner updateTags(String resourceGroupName, String virtualWanName, TagsObject wanParameters) {
-        return updateTagsAsync(resourceGroupName, virtualWanName, wanParameters).block();
-    }
-
-    /**
-     * Updates a VirtualWAN tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWAN being updated.
-     * @param wanParameters Parameters supplied to Update VirtualWAN tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -754,6 +738,22 @@ public final class VirtualWansClientImpl
     public Response<VirtualWanInner> updateTagsWithResponse(
         String resourceGroupName, String virtualWanName, TagsObject wanParameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, virtualWanName, wanParameters, context).block();
+    }
+
+    /**
+     * Updates a VirtualWAN tags.
+     *
+     * @param resourceGroupName The resource group name of the VirtualWan.
+     * @param virtualWanName The name of the VirtualWAN being updated.
+     * @param wanParameters Parameters supplied to Update VirtualWAN tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtualWAN Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualWanInner updateTags(String resourceGroupName, String virtualWanName, TagsObject wanParameters) {
+        return updateTagsWithResponse(resourceGroupName, virtualWanName, wanParameters, Context.NONE).getValue();
     }
 
     /**
@@ -787,7 +787,7 @@ public final class VirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -837,7 +837,7 @@ public final class VirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1015,7 +1015,7 @@ public final class VirtualWansClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1070,7 +1070,7 @@ public final class VirtualWansClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1176,7 +1176,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1219,7 +1219,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

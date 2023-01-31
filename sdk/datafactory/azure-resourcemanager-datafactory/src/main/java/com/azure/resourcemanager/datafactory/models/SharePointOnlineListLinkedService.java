@@ -25,6 +25,10 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     private SharePointOnlineListLinkedServiceTypeProperties innerTypeProperties =
         new SharePointOnlineListLinkedServiceTypeProperties();
 
+    /** Creates an instance of SharePointOnlineListLinkedService class. */
+    public SharePointOnlineListLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: SharePoint Online List linked service properties.
      *

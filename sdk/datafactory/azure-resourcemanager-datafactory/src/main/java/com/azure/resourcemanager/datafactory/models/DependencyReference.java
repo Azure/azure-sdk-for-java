@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class DependencyReference {
+    /** Creates an instance of DependencyReference class. */
+    public DependencyReference() {
+    }
+
     /**
      * Validates the instance.
      *

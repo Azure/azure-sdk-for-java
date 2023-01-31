@@ -58,6 +58,10 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of OracleServiceCloudLinkedServiceTypeProperties class. */
+    public OracleServiceCloudLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: The URL of the Oracle Service Cloud instance.
      *

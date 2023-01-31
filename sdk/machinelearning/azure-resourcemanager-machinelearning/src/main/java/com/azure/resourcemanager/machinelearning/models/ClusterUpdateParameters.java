@@ -17,6 +17,10 @@ public final class ClusterUpdateParameters {
     @JsonProperty(value = "properties")
     private ClusterUpdateProperties innerProperties;
 
+    /** Creates an instance of ClusterUpdateParameters class. */
+    public ClusterUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the amlCompute.
      *

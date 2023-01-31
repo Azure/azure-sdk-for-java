@@ -27,6 +27,10 @@ public final class OrcSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of OrcSource class. */
+    public OrcSource() {
+    }
+
     /**
      * Get the storeSettings property: ORC store settings.
      *

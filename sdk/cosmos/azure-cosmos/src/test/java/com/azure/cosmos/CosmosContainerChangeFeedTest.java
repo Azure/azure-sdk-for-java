@@ -112,7 +112,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT * 5)
     public void asyncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(200, 7);
         updateDocuments(3, 5);
@@ -150,7 +150,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT )
     public void asyncChangeFeed_fromBeginning_incremental_forFullRange_withSmallPageSize() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(200, 7);
         updateDocuments(3, 5);
@@ -196,7 +196,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void asyncChangeFeed_fromBeginning_incremental_forLogicalPartition() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(20, 7);
         updateDocuments(3, 5);
@@ -249,7 +249,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromBeginning_incremental_forEPK() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(20, 7);
         updateDocuments(3, 5);
@@ -320,7 +320,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromBeginning_incremental_forFeedRange() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(200, 7);
         updateDocuments(3, 5);
@@ -371,14 +371,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             IllegalStateException.class,
             () -> CosmosChangeFeedRequestOptions
                 .createForProcessingFromBeginning(FeedRange.forFullRange())
-                .fullFidelity());
+                .allVersionsAndDeletes());
     }
 
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromNow_incremental_forFullRange() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(20, 7);
         updateDocuments(3, 5);
@@ -418,7 +418,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
     public void asyncChangeFeed_fromNow_fullFidelity_forFullRange() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
         );
         insertDocuments(8, 15);
         updateDocuments(3, 5);
@@ -480,7 +480,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromPointInTime_incremental_forFullRange() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(20, 7);
         updateDocuments(3, 5);
@@ -525,13 +525,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromPointInTime(
                     Instant.now().minus(10, ChronoUnit.SECONDS),
                     FeedRange.forFullRange())
-                .fullFidelity());
+                .allVersionsAndDeletes());
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void syncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
         );
         insertDocuments(200, 7);
         updateDocuments(3, 5);

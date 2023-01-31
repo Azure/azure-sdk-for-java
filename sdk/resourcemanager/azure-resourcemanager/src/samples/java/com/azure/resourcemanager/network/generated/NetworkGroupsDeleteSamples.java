@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkGroups Delete. */
 public final class NetworkGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerGroupDelete.json
      */
     /**
      * Sample code: NetworkGroupsDelete.

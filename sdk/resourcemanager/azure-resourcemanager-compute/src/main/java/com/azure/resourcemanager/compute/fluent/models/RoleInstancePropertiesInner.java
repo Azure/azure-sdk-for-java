@@ -23,6 +23,10 @@ public final class RoleInstancePropertiesInner {
     @JsonProperty(value = "instanceView")
     private RoleInstanceViewInner instanceView;
 
+    /** Creates an instance of RoleInstancePropertiesInner class. */
+    public RoleInstancePropertiesInner() {
+    }
+
     /**
      * Get the networkProfile property: Describes the network profile for the role instance.
      *

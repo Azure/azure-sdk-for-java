@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AclAction. */
+/** Azure Networking ACL Action. */
 public final class AclAction extends ExpandableStringEnum<AclAction> {
     /** Static value Allow for AclAction. */
     public static final AclAction ALLOW = fromString("Allow");
@@ -27,7 +27,11 @@ public final class AclAction extends ExpandableStringEnum<AclAction> {
         return fromString(name, AclAction.class);
     }
 
-    /** @return known AclAction values. */
+    /**
+     * Gets known AclAction values.
+     *
+     * @return known AclAction values.
+     */
     public static Collection<AclAction> values() {
         return values(AclAction.class);
     }

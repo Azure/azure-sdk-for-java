@@ -26,6 +26,10 @@ public final class MicrosoftGraphSingleValueLegacyExtendedProperty extends Micro
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphSingleValueLegacyExtendedProperty class. */
+    public MicrosoftGraphSingleValueLegacyExtendedProperty() {
+    }
+
     /**
      * Get the value property: A property value.
      *

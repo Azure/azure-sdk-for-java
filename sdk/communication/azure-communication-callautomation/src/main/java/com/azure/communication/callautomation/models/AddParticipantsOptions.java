@@ -9,7 +9,9 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The options for adding participants.
@@ -33,10 +35,26 @@ public final class AddParticipantsOptions {
     private PhoneNumberIdentifier sourceCallerId;
 
     /**
+     * (Optional) The display name of the source that is associated with this invite operation when
+     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     */
+    private String sourceDisplayName;
+
+    /** (Optional) The identifier of the source of the call for this invite operation. If SourceDisplayName
+     * is not set, the display name of the source will be used by default when adding a PSTN participant or teams user.
+     */
+    private CommunicationIdentifier sourceIdentifier;
+
+    /**
      * The timeout to wait for the invited participant to pickup.
      * The maximum value of this is 180 seconds.
      */
     private Duration invitationTimeout;
+
+    /**
+     * Repeatability Headers Configuration
+     */
+    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Constructor
@@ -45,6 +63,7 @@ public final class AddParticipantsOptions {
      */
     public AddParticipantsOptions(List<CommunicationIdentifier> participants) {
         this.participants = participants;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -61,7 +80,7 @@ public final class AddParticipantsOptions {
      *
      * @return the operationContext
      */
-    public String  getOperationContext() {
+    public String getOperationContext() {
         return operationContext;
     }
 
@@ -75,12 +94,50 @@ public final class AddParticipantsOptions {
     }
 
     /**
+     * Get the sourceDisplayName.
+     *
+     * @return the source display name.
+     */
+    public String getSourceDisplayName() {
+        return sourceDisplayName;
+    }
+
+    /**
+     * Get the sourceIdentifier.
+     *
+     * @return the source identifier.
+     */
+    public CommunicationIdentifier getSourceIdentifier() {
+        return sourceIdentifier;
+    }
+
+    /**
      * Get the invitationTimeoutInSeconds.
      *
      * @return the Invitation Timeout In Seconds
      */
     public Duration getInvitationTimeout() {
         return invitationTimeout;
+    }
+
+    /**
+     * Get the Repeatability headers configuration.
+     *
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
+        return this;
     }
 
     /**
@@ -103,6 +160,31 @@ public final class AddParticipantsOptions {
      */
     public AddParticipantsOptions setSourceCallerId(PhoneNumberIdentifier sourceCallerId) {
         this.sourceCallerId = sourceCallerId;
+        return this;
+    }
+
+    /**
+     * Set the sourceDisplayName.
+     *
+     * @param sourceDisplayName Set the display name of the source that is associated with this invite operation when
+     *      adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setSourceDisplayName(String sourceDisplayName) {
+        this.sourceDisplayName = sourceDisplayName;
+        return this;
+    }
+
+    /**
+     * Set the sourceIdentifier.
+     *
+     * @param sourceIdentifier Set the identifier of the source of the call for this invite operation. If
+     *                         SourceDisplayName is not set, the display name of the source will be used by default when
+     *                         adding a PSTN participant or teams user.
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setSourceIdentifier(CommunicationIdentifier sourceIdentifier) {
+        this.sourceIdentifier = sourceIdentifier;
         return this;
     }
 

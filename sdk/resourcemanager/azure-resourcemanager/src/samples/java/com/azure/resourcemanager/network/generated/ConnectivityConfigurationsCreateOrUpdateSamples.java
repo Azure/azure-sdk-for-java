@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for ConnectivityConfigurations CreateOrUpdate. */
 public final class ConnectivityConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerConnectivityConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerConnectivityConfigurationPut.json
      */
     /**
      * Sample code: ConnectivityConfigurationsPut.
@@ -43,7 +43,7 @@ public final class ConnectivityConfigurationsCreateOrUpdateSamples {
                             .asList(
                                 new Hub()
                                     .withResourceId(
-                                        "subscriptions/subscriptionA/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myTestConnectivityConfig")
+                                        "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myTestConnectivityConfig")
                                     .withResourceType("Microsoft.Network/virtualNetworks")))
                     .withIsGlobal(IsGlobal.TRUE)
                     .withAppliesToGroups(
@@ -51,7 +51,7 @@ public final class ConnectivityConfigurationsCreateOrUpdateSamples {
                             .asList(
                                 new ConnectivityGroupItem()
                                     .withNetworkGroupId(
-                                        "subscriptions/subscriptionA/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1")
+                                        "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1")
                                     .withUseHubGateway(UseHubGateway.TRUE)
                                     .withIsGlobal(IsGlobal.FALSE)
                                     .withGroupConnectivity(GroupConnectivity.NONE)))

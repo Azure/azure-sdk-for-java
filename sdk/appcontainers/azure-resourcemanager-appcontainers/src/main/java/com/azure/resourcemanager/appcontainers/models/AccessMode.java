@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccessMode. */
+/** Access mode for storage. */
 public final class AccessMode extends ExpandableStringEnum<AccessMode> {
     /** Static value ReadOnly for AccessMode. */
     public static final AccessMode READ_ONLY = fromString("ReadOnly");

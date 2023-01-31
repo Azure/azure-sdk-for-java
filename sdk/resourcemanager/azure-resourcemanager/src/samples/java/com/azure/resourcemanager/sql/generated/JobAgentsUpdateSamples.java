@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for JobAgents Update. */
 public final class JobAgentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/UpdateJobAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateJobAgent.json
      */
     /**
      * Sample code: Update a job agent's tags.

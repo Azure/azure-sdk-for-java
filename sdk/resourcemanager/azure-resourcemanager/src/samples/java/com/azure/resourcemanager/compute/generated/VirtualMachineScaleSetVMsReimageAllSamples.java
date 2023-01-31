@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMs ReimageAll. */
 public final class VirtualMachineScaleSetVMsReimageAllSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_ReimageAll_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_ReimageAll_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_ReimageAll_MinimumSet_Gen.
@@ -23,11 +21,15 @@ public final class VirtualMachineScaleSetVMsReimageAllSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .reimageAll("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .reimageAll(
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_ReimageAll_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_ReimageAll_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_ReimageAll_MaximumSet_Gen.
@@ -41,6 +43,7 @@ public final class VirtualMachineScaleSetVMsReimageAllSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .reimageAll("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .reimageAll(
+                "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

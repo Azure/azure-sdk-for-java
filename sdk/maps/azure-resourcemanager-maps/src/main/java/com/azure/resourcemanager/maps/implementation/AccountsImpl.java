@@ -16,10 +16,9 @@ import com.azure.resourcemanager.maps.models.Accounts;
 import com.azure.resourcemanager.maps.models.MapsAccount;
 import com.azure.resourcemanager.maps.models.MapsAccountKeys;
 import com.azure.resourcemanager.maps.models.MapsKeySpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsImpl.class);
 
     private final AccountsClient innerClient;
 
@@ -30,21 +29,13 @@ public final class AccountsImpl implements Accounts {
         this.serviceManager = serviceManager;
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String accountName) {
-        this.serviceClient().delete(resourceGroupName, accountName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
     }
 
-    public MapsAccount getByResourceGroup(String resourceGroupName, String accountName) {
-        MapsAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
-        if (inner != null) {
-            return new MapsAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void deleteByResourceGroup(String resourceGroupName, String accountName) {
+        this.serviceClient().delete(resourceGroupName, accountName);
     }
 
     public Response<MapsAccount> getByResourceGroupWithResponse(
@@ -57,6 +48,15 @@ public final class AccountsImpl implements Accounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MapsAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MapsAccount getByResourceGroup(String resourceGroupName, String accountName) {
+        MapsAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
+        if (inner != null) {
+            return new MapsAccountImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -82,15 +82,6 @@ public final class AccountsImpl implements Accounts {
         return Utils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
     }
 
-    public MapsAccountKeys listKeys(String resourceGroupName, String accountName) {
-        MapsAccountKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
-        if (inner != null) {
-            return new MapsAccountKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MapsAccountKeys> listKeysWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<MapsAccountKeysInner> inner =
@@ -106,10 +97,8 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public MapsAccountKeys regenerateKeys(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification) {
-        MapsAccountKeysInner inner =
-            this.serviceClient().regenerateKeys(resourceGroupName, accountName, keySpecification);
+    public MapsAccountKeys listKeys(String resourceGroupName, String accountName) {
+        MapsAccountKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
         if (inner != null) {
             return new MapsAccountKeysImpl(inner, this.manager());
         } else {
@@ -132,10 +121,21 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
+    public MapsAccountKeys regenerateKeys(
+        String resourceGroupName, String accountName, MapsKeySpecification keySpecification) {
+        MapsAccountKeysInner inner =
+            this.serviceClient().regenerateKeys(resourceGroupName, accountName, keySpecification);
+        if (inner != null) {
+            return new MapsAccountKeysImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public MapsAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +143,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -154,7 +154,7 @@ public final class AccountsImpl implements Accounts {
     public Response<MapsAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,7 +162,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -173,7 +173,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,18 +181,18 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,12 +200,12 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, accountName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     private AccountsClient serviceClient() {

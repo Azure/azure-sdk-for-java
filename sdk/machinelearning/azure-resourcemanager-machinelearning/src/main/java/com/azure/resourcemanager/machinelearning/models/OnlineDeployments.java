@@ -21,7 +21,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineDeploymentData> list(String resourceGroupName, String workspaceName, String endpointName);
+    PagedIterable<OnlineDeployment> list(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * List Inference Endpoint Deployments.
@@ -38,7 +38,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineDeploymentData> list(
+    PagedIterable<OnlineDeployment> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -82,13 +82,14 @@ public interface OnlineDeployments {
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
      * @param deploymentName Inference Endpoint Deployment name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inference Deployment Deployment.
+     * @return inference Deployment Deployment along with {@link Response}.
      */
-    OnlineDeploymentData get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
+    Response<OnlineDeployment> getWithResponse(
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
 
     /**
      * Get Inference Deployment Deployment.
@@ -97,34 +98,12 @@ public interface OnlineDeployments {
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
      * @param deploymentName Inference Endpoint Deployment name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inference Deployment Deployment along with {@link Response}.
+     * @return inference Deployment Deployment.
      */
-    Response<OnlineDeploymentData> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
-
-    /**
-     * Polls an Endpoint operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param endpointName Inference endpoint name.
-     * @param deploymentName The name and identifier for the endpoint.
-     * @param body The request containing parameters for retrieving logs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    DeploymentLogs getLogs(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body);
+    OnlineDeployment get(String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
 
     /**
      * Polls an Endpoint operation.
@@ -147,6 +126,26 @@ public interface OnlineDeployments {
         String deploymentName,
         DeploymentLogsRequest body,
         Context context);
+
+    /**
+     * Polls an Endpoint operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param endpointName Inference endpoint name.
+     * @param deploymentName The name and identifier for the endpoint.
+     * @param body The request containing parameters for retrieving logs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    DeploymentLogs getLogs(
+        String resourceGroupName,
+        String workspaceName,
+        String endpointName,
+        String deploymentName,
+        DeploymentLogsRequest body);
 
     /**
      * List Inference Endpoint Deployment Skus.
@@ -196,7 +195,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inference Deployment Deployment along with {@link Response}.
      */
-    OnlineDeploymentData getById(String id);
+    OnlineDeployment getById(String id);
 
     /**
      * Get Inference Deployment Deployment.
@@ -208,7 +207,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inference Deployment Deployment along with {@link Response}.
      */
-    Response<OnlineDeploymentData> getByIdWithResponse(String id, Context context);
+    Response<OnlineDeployment> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
@@ -232,10 +231,10 @@ public interface OnlineDeployments {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new OnlineDeploymentData resource.
+     * Begins definition for a new OnlineDeployment resource.
      *
      * @param name resource name.
-     * @return the first stage of the new OnlineDeploymentData definition.
+     * @return the first stage of the new OnlineDeployment definition.
      */
-    OnlineDeploymentData.DefinitionStages.Blank define(String name);
+    OnlineDeployment.DefinitionStages.Blank define(String name);
 }

@@ -28,6 +28,10 @@ public final class EligibleChildResourceInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of EligibleChildResourceInner class. */
+    public EligibleChildResourceInner() {
+    }
+
     /**
      * Get the id property: The resource scope Id.
      *

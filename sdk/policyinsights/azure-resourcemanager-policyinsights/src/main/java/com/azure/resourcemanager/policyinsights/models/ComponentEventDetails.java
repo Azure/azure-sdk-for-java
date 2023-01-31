@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Component event details. */
 @Fluent
 public final class ComponentEventDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentEventDetails.class);
-
     /*
      * Component Id.
      */
@@ -50,8 +47,7 @@ public final class ComponentEventDetails {
     private String tenantId;
 
     /*
-     * Principal object ID for the user who initiated the resource component
-     * operation that triggered the policy event.
+     * Principal object ID for the user who initiated the resource component operation that triggered the policy event.
      */
     @JsonProperty(value = "principalOid")
     private String principalOid;
@@ -66,6 +62,10 @@ public final class ComponentEventDetails {
      * Component event details.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ComponentEventDetails class. */
+    public ComponentEventDetails() {
+    }
 
     /**
      * Get the id property: Component Id.

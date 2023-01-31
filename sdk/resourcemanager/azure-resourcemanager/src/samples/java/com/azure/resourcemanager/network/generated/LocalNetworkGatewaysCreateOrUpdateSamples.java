@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for LocalNetworkGateways CreateOrUpdate. */
 public final class LocalNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LocalNetworkGatewayCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LocalNetworkGatewayCreate.json
      */
     /**
      * Sample code: CreateLocalNetworkGateway.

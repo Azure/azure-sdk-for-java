@@ -13,29 +13,37 @@ import java.util.List;
 @Fluent
 public final class EstimatedVMPrices {
     /*
-     * Billing currency Three lettered code specifying the currency of the VM
-     * price. Example: USD
+     * Billing currency
+     *
+     * Three lettered code specifying the currency of the VM price. Example: USD
      */
     @JsonProperty(value = "billingCurrency", required = true)
     private BillingCurrency billingCurrency;
 
     /*
-     * Unit of time measure The unit of time measurement for the specified VM
-     * price. Example: OneHour
+     * Unit of time measure
+     *
+     * The unit of time measurement for the specified VM price. Example: OneHour
      */
     @JsonProperty(value = "unitOfMeasure", required = true)
     private UnitOfMeasure unitOfMeasure;
 
     /*
-     * List of estimated VM prices. The list of estimated prices for using a VM
-     * of a particular OS type, tier, etc.
+     * List of estimated VM prices.
+     *
+     * The list of estimated prices for using a VM of a particular OS type, tier, etc.
      */
     @JsonProperty(value = "values", required = true)
     private List<EstimatedVMPrice> values;
 
+    /** Creates an instance of EstimatedVMPrices class. */
+    public EstimatedVMPrices() {
+    }
+
     /**
-     * Get the billingCurrency property: Billing currency Three lettered code specifying the currency of the VM price.
-     * Example: USD.
+     * Get the billingCurrency property: Billing currency
+     *
+     * <p>Three lettered code specifying the currency of the VM price. Example: USD.
      *
      * @return the billingCurrency value.
      */
@@ -44,8 +52,9 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Set the billingCurrency property: Billing currency Three lettered code specifying the currency of the VM price.
-     * Example: USD.
+     * Set the billingCurrency property: Billing currency
+     *
+     * <p>Three lettered code specifying the currency of the VM price. Example: USD.
      *
      * @param billingCurrency the billingCurrency value to set.
      * @return the EstimatedVMPrices object itself.
@@ -56,8 +65,9 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Get the unitOfMeasure property: Unit of time measure The unit of time measurement for the specified VM price.
-     * Example: OneHour.
+     * Get the unitOfMeasure property: Unit of time measure
+     *
+     * <p>The unit of time measurement for the specified VM price. Example: OneHour.
      *
      * @return the unitOfMeasure value.
      */
@@ -66,8 +76,9 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Set the unitOfMeasure property: Unit of time measure The unit of time measurement for the specified VM price.
-     * Example: OneHour.
+     * Set the unitOfMeasure property: Unit of time measure
+     *
+     * <p>The unit of time measurement for the specified VM price. Example: OneHour.
      *
      * @param unitOfMeasure the unitOfMeasure value to set.
      * @return the EstimatedVMPrices object itself.
@@ -78,8 +89,9 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Get the values property: List of estimated VM prices. The list of estimated prices for using a VM of a particular
-     * OS type, tier, etc.
+     * Get the values property: List of estimated VM prices.
+     *
+     * <p>The list of estimated prices for using a VM of a particular OS type, tier, etc.
      *
      * @return the values value.
      */
@@ -88,8 +100,9 @@ public final class EstimatedVMPrices {
     }
 
     /**
-     * Set the values property: List of estimated VM prices. The list of estimated prices for using a VM of a particular
-     * OS type, tier, etc.
+     * Set the values property: List of estimated VM prices.
+     *
+     * <p>The list of estimated prices for using a VM of a particular OS type, tier, etc.
      *
      * @param values the values value to set.
      * @return the EstimatedVMPrices object itself.

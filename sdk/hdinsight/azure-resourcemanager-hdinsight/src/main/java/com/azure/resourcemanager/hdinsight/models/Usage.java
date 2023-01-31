@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details about the usage of a particular limited resource. */
 @Fluent
 public final class Usage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Usage.class);
-
     /*
      * The type of measurement for usage.
      */
@@ -37,6 +33,10 @@ public final class Usage {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizedName name;
+
+    /** Creates an instance of Usage class. */
+    public Usage() {
+    }
 
     /**
      * Get the unit property: The type of measurement for usage.

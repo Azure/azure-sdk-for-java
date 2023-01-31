@@ -1,6 +1,6 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.10.0 (2023-01-18)
+Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5
+
+## 2.9.0 (2022-11-24)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.13, 2.7.0-2.7.5. (Note: 2.5.x (x>14), 2.6.y (y>13) and 2.7.z (z>5) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
+
+## 2.8.0 (2022-09-22)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.11, 2.7.0-2.7.3. (Note: 2.5.x (x>14), 2.6.y (y>11) and 2.7.z (z>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>6) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Dependency Upgrades
+- Upgrade azure-sdk's version to latest released version.
 
 ## 2.7.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)

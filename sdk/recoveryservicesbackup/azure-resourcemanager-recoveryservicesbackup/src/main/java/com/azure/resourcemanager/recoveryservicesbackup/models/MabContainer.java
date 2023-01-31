@@ -57,6 +57,10 @@ public final class MabContainer extends ProtectionContainer {
     @JsonProperty(value = "containerHealthState")
     private String containerHealthState;
 
+    /** Creates an instance of MabContainer class. */
+    public MabContainer() {
+    }
+
     /**
      * Get the canReRegister property: Can the container be registered one more time.
      *

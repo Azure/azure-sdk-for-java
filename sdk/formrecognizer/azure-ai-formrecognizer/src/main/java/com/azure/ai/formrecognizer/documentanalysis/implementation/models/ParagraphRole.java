@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ParagraphRole. */
+/** Semantic role of the paragraph. */
 public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
     /** Static value pageHeader for ParagraphRole. */
     public static final ParagraphRole PAGE_HEADER = fromString("pageHeader");

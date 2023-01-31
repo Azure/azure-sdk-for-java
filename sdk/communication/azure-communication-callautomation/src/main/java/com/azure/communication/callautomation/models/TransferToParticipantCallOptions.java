@@ -7,6 +7,9 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for adding participants.
  */
@@ -28,9 +31,9 @@ public class TransferToParticipantCallOptions {
     private PhoneNumberIdentifier transfereeCallerId;
 
     /**
-     * The user to user information.
+     * Repeatability Headers Configuration
      */
-    private String userToUserInformation;
+    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Constructor
@@ -39,6 +42,7 @@ public class TransferToParticipantCallOptions {
      */
     public TransferToParticipantCallOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -69,12 +73,12 @@ public class TransferToParticipantCallOptions {
     }
 
     /**
-     * Get the userToUserInformation.
+     * Get the Repeatability headers configuration.
      *
-     * @return the userToUserInformation
+     * @return the repeatabilityHeaders
      */
-    public String  getUserToUserInformation() {
-        return userToUserInformation;
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
     }
 
     /**
@@ -101,13 +105,13 @@ public class TransferToParticipantCallOptions {
     }
 
     /**
-     * Set the invitationTimeoutInSeconds.
+     * Set the repeatability headers
      *
-     * @param userToUserInformation The user to user information.
+     * @param repeatabilityHeaders The repeatability headers configuration.
      * @return the TransferToParticipantCallOptions object itself.
      */
-    public TransferToParticipantCallOptions setUserToUserInformation(String userToUserInformation) {
-        this.userToUserInformation = userToUserInformation;
+    public TransferToParticipantCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }

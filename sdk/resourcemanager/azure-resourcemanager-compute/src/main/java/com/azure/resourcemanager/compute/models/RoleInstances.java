@@ -18,6 +18,10 @@ public final class RoleInstances {
     @JsonProperty(value = "roleInstances", required = true)
     private List<String> roleInstances;
 
+    /** Creates an instance of RoleInstances class. */
+    public RoleInstances() {
+    }
+
     /**
      * Get the roleInstances property: List of cloud service role instance names. Value of '*' will signify all role
      * instances of the cloud service.

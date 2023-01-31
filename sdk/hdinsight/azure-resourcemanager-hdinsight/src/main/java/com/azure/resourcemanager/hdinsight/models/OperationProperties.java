@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details of operation. */
 @Fluent
 public final class OperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationProperties.class);
-
     /*
      * The specification of the service.
      */
     @JsonProperty(value = "serviceSpecification")
     private ServiceSpecification serviceSpecification;
+
+    /** Creates an instance of OperationProperties class. */
+    public OperationProperties() {
+    }
 
     /**
      * Get the serviceSpecification property: The specification of the service.

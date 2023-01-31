@@ -103,7 +103,7 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
         insert_position = pom_file_content.find('<dependencies>')
         if(insert_position == -1):
             # no dependencies section in pom, not adding <dependencyManagement> section
-            print("No dependencies section found in " + file_path + ". Not adding dependencyManagement.")
+            log.warn("No dependencies section found in " + file_path + ". Not adding dependencyManagement.")
             return
         insert_content = get_dependency_management_content()
         dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]

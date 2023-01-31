@@ -39,6 +39,10 @@ public final class RouteFilterRuleInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of RouteFilterRuleInner class. */
+    public RouteFilterRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the route filter rule.
      *

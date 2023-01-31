@@ -13,16 +13,14 @@ import com.azure.resourcemanager.avs.models.Endpoints;
 import com.azure.resourcemanager.avs.models.IdentitySource;
 import com.azure.resourcemanager.avs.models.InternetEnum;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
+import com.azure.resourcemanager.avs.models.NsxPublicIpQuotaRaisedEnum;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a private cloud resource. */
 @Fluent
 public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudProperties.class);
-
     /*
      * The provisioning state
      */
@@ -42,10 +40,8 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
     private Endpoints endpoints;
 
     /*
-     * The block of addresses should be unique across VNet in your subscription
-     * as well as on-premise. Make sure the CIDR format is conformed to
-     * (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is between 0 and
-     * 22
+     * The block of addresses should be unique across VNet in your subscription as well as on-premise. Make sure the
+     * CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is between 0 and 22
      */
     @JsonProperty(value = "networkBlock", required = true)
     private String networkBlock;
@@ -69,15 +65,13 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
     private String vmotionNetwork;
 
     /*
-     * Optionally, set the vCenter admin password when the private cloud is
-     * created
+     * Optionally, set the vCenter admin password when the private cloud is created
      */
     @JsonProperty(value = "vcenterPassword")
     private String vcenterPassword;
 
     /*
-     * Optionally, set the NSX-T Manager password when the private cloud is
-     * created
+     * Optionally, set the NSX-T Manager password when the private cloud is created
      */
     @JsonProperty(value = "nsxtPassword")
     private String nsxtPassword;
@@ -101,11 +95,21 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
     private List<String> externalCloudLinks;
 
     /*
-     * A secondary expressRoute circuit from a separate AZ. Only present in a
-     * stretched private cloud
+     * A secondary expressRoute circuit from a separate AZ. Only present in a stretched private cloud
      */
     @JsonProperty(value = "secondaryCircuit")
     private Circuit secondaryCircuit;
+
+    /*
+     * Flag to indicate whether the private cloud has the quota for provisioned NSX Public IP count raised from 64 to
+     * 1024
+     */
+    @JsonProperty(value = "nsxPublicIpQuotaRaised", access = JsonProperty.Access.WRITE_ONLY)
+    private NsxPublicIpQuotaRaisedEnum nsxPublicIpQuotaRaised;
+
+    /** Creates an instance of PrivateCloudProperties class. */
+    public PrivateCloudProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state.
@@ -285,6 +289,16 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
         return this;
     }
 
+    /**
+     * Get the nsxPublicIpQuotaRaised property: Flag to indicate whether the private cloud has the quota for provisioned
+     * NSX Public IP count raised from 64 to 1024.
+     *
+     * @return the nsxPublicIpQuotaRaised value.
+     */
+    public NsxPublicIpQuotaRaisedEnum nsxPublicIpQuotaRaised() {
+        return this.nsxPublicIpQuotaRaised;
+    }
+
     /** {@inheritDoc} */
     @Override
     public PrivateCloudProperties withManagementCluster(ManagementCluster managementCluster) {
@@ -335,7 +349,7 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
             endpoints().validate();
         }
         if (networkBlock() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property networkBlock in model PrivateCloudProperties"));
@@ -344,4 +358,6 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
             secondaryCircuit().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudProperties.class);
 }

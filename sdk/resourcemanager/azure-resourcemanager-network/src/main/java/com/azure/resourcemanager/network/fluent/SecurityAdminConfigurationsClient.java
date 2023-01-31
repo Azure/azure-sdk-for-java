@@ -122,20 +122,6 @@ public interface SecurityAdminConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAdminConfigurationInner get(String resourceGroupName, String networkManagerName, String configurationName);
-
-    /**
-     * Retrieves a network manager security admin configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,6 +131,20 @@ public interface SecurityAdminConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityAdminConfigurationInner> getWithResponse(
         String resourceGroupName, String networkManagerName, String configurationName, Context context);
+
+    /**
+     * Retrieves a network manager security admin configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager Security Configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the security admin configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityAdminConfigurationInner get(String resourceGroupName, String networkManagerName, String configurationName);
 
     /**
      * Creates or updates a network manager security admin configuration.
@@ -192,25 +192,6 @@ public interface SecurityAdminConfigurationsClient {
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param securityAdminConfiguration The security admin configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAdminConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        SecurityAdminConfigurationInner securityAdminConfiguration);
-
-    /**
-     * Creates or updates a network manager security admin configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param securityAdminConfiguration The security admin configuration to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -224,6 +205,25 @@ public interface SecurityAdminConfigurationsClient {
         String configurationName,
         SecurityAdminConfigurationInner securityAdminConfiguration,
         Context context);
+
+    /**
+     * Creates or updates a network manager security admin configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager Security Configuration.
+     * @param securityAdminConfiguration The security admin configuration to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the security admin configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityAdminConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String networkManagerName,
+        String configurationName,
+        SecurityAdminConfigurationInner securityAdminConfiguration);
 
     /**
      * Deletes a network manager security admin configuration.
@@ -265,8 +265,21 @@ public interface SecurityAdminConfigurationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkManagerName, String configurationName);
+
+    /**
+     * Deletes a network manager security admin configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager Security Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -274,7 +287,7 @@ public interface SecurityAdminConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force);
+        String resourceGroupName, String networkManagerName, String configurationName);
 
     /**
      * Deletes a network manager security admin configuration.
@@ -324,21 +337,6 @@ public interface SecurityAdminConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName);
-
-    /**
-     * Deletes a network manager security admin configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String networkManagerName, String configurationName, Boolean force);
 
     /**
      * Deletes a network manager security admin configuration.

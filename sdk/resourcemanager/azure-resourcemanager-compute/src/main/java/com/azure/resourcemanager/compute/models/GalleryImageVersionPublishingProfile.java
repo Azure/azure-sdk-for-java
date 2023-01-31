@@ -11,6 +11,10 @@ import java.util.List;
 /** The publishing profile of a gallery image Version. */
 @Fluent
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
+    /** Creates an instance of GalleryImageVersionPublishingProfile class. */
+    public GalleryImageVersionPublishingProfile() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public GalleryImageVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {

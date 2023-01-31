@@ -24,6 +24,10 @@ public final class NginxDeploymentListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NginxDeploymentListResponse class. */
+    public NginxDeploymentListResponse() {
+    }
+
     /**
      * Get the value property: The value property.
      *

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkManagerConnectionI
 /** Samples for ManagementGroupNetworkManagerConnections CreateOrUpdate. */
 public final class ManagementGroupNetworkManagerConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerConnectionManagementGroupPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerConnectionManagementGroupPut.json
      */
     /**
      * Sample code: Create or Update Management Group Network Manager Connection.

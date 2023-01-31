@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DocumentTableCellKind. */
+/** Table cell kind. */
 public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTableCellKind> {
     /** Static value content for DocumentTableCellKind. */
     public static final DocumentTableCellKind CONTENT = fromString("content");

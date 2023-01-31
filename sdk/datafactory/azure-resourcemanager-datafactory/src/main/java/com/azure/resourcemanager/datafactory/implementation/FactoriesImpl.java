@@ -44,15 +44,6 @@ public final class FactoriesImpl implements Factories {
         return Utils.mapPage(inner, inner1 -> new FactoryImpl(inner1, this.manager()));
     }
 
-    public Factory configureFactoryRepo(String locationId, FactoryRepoUpdate factoryRepoUpdate) {
-        FactoryInner inner = this.serviceClient().configureFactoryRepo(locationId, factoryRepoUpdate);
-        if (inner != null) {
-            return new FactoryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Factory> configureFactoryRepoWithResponse(
         String locationId, FactoryRepoUpdate factoryRepoUpdate, Context context) {
         Response<FactoryInner> inner =
@@ -68,6 +59,15 @@ public final class FactoriesImpl implements Factories {
         }
     }
 
+    public Factory configureFactoryRepo(String locationId, FactoryRepoUpdate factoryRepoUpdate) {
+        FactoryInner inner = this.serviceClient().configureFactoryRepo(locationId, factoryRepoUpdate);
+        if (inner != null) {
+            return new FactoryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Factory> listByResourceGroup(String resourceGroupName) {
         PagedIterable<FactoryInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
         return Utils.mapPage(inner, inner1 -> new FactoryImpl(inner1, this.manager()));
@@ -76,15 +76,6 @@ public final class FactoriesImpl implements Factories {
     public PagedIterable<Factory> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<FactoryInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new FactoryImpl(inner1, this.manager()));
-    }
-
-    public Factory getByResourceGroup(String resourceGroupName, String factoryName) {
-        FactoryInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, factoryName);
-        if (inner != null) {
-            return new FactoryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Factory> getByResourceGroupWithResponse(
@@ -102,23 +93,22 @@ public final class FactoriesImpl implements Factories {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String factoryName) {
-        this.serviceClient().delete(resourceGroupName, factoryName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, context);
-    }
-
-    public GitHubAccessTokenResponse getGitHubAccessToken(
-        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
-        GitHubAccessTokenResponseInner inner =
-            this.serviceClient().getGitHubAccessToken(resourceGroupName, factoryName, gitHubAccessTokenRequest);
+    public Factory getByResourceGroup(String resourceGroupName, String factoryName) {
+        FactoryInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, factoryName);
         if (inner != null) {
-            return new GitHubAccessTokenResponseImpl(inner, this.manager());
+            return new FactoryImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String factoryName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String factoryName) {
+        this.serviceClient().delete(resourceGroupName, factoryName);
     }
 
     public Response<GitHubAccessTokenResponse> getGitHubAccessTokenWithResponse(
@@ -141,12 +131,12 @@ public final class FactoriesImpl implements Factories {
         }
     }
 
-    public AccessPolicyResponse getDataPlaneAccess(
-        String resourceGroupName, String factoryName, UserAccessPolicy policy) {
-        AccessPolicyResponseInner inner =
-            this.serviceClient().getDataPlaneAccess(resourceGroupName, factoryName, policy);
+    public GitHubAccessTokenResponse getGitHubAccessToken(
+        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        GitHubAccessTokenResponseInner inner =
+            this.serviceClient().getGitHubAccessToken(resourceGroupName, factoryName, gitHubAccessTokenRequest);
         if (inner != null) {
-            return new AccessPolicyResponseImpl(inner, this.manager());
+            return new GitHubAccessTokenResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -162,6 +152,17 @@ public final class FactoriesImpl implements Factories {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AccessPolicyResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AccessPolicyResponse getDataPlaneAccess(
+        String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+        AccessPolicyResponseInner inner =
+            this.serviceClient().getDataPlaneAccess(resourceGroupName, factoryName, policy);
+        if (inner != null) {
+            return new AccessPolicyResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -224,7 +225,7 @@ public final class FactoriesImpl implements Factories {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, factoryName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, factoryName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -243,7 +244,7 @@ public final class FactoriesImpl implements Factories {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, factoryName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, factoryName, context);
     }
 
     private FactoriesClient serviceClient() {

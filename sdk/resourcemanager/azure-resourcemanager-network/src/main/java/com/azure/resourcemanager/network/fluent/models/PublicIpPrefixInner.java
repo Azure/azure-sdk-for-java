@@ -56,6 +56,10 @@ public final class PublicIpPrefixInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of PublicIpPrefixInner class. */
+    public PublicIpPrefixInner() {
+    }
+
     /**
      * Get the extendedLocation property: The extended location of the public ip address.
      *

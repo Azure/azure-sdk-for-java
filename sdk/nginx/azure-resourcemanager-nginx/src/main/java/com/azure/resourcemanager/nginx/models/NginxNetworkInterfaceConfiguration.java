@@ -16,6 +16,10 @@ public final class NginxNetworkInterfaceConfiguration {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
+    /** Creates an instance of NginxNetworkInterfaceConfiguration class. */
+    public NginxNetworkInterfaceConfiguration() {
+    }
+
     /**
      * Get the subnetId property: The subnetId property.
      *

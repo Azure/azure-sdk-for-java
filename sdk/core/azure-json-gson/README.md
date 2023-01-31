@@ -29,7 +29,11 @@ add the direct dependency to your project as follows.
 
 ## Key concepts
 
+See `azure-json` for key concepts.
+
 ## Examples
+
+See `azure-json` for examples.
 
 ## Next steps
 

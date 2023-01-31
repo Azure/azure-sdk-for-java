@@ -22,6 +22,10 @@ public final class CassandraTableDatasetTypeProperties {
     @JsonProperty(value = "keyspace")
     private Object keyspace;
 
+    /** Creates an instance of CassandraTableDatasetTypeProperties class. */
+    public CassandraTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType
      * string).

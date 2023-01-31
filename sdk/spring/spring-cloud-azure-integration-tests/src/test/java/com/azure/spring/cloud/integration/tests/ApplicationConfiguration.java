@@ -4,7 +4,6 @@ package com.azure.spring.cloud.integration.tests;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Import;
 
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Import;
  */
 @EnableAutoConfiguration
 @SpringBootConfiguration
-@Import(AzureCloudTypeConfiguration.class)
 public class ApplicationConfiguration {
 
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsZoneInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of NSX DNS Zones. */
 @Immutable
 public final class WorkloadNetworkDnsZonesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDnsZonesList.class);
-
     /*
      * The items on the page
      */
@@ -27,6 +23,10 @@ public final class WorkloadNetworkDnsZonesList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of WorkloadNetworkDnsZonesList class. */
+    public WorkloadNetworkDnsZonesList() {
+    }
 
     /**
      * Get the value property: The items on the page.

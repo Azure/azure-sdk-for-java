@@ -18,11 +18,14 @@ public final class DiskExclusionProperties {
     private List<Integer> diskLunList;
 
     /*
-     * Flag to indicate whether DiskLunList is to be included/ excluded from
-     * backup.
+     * Flag to indicate whether DiskLunList is to be included/ excluded from backup.
      */
     @JsonProperty(value = "isInclusionList")
     private Boolean isInclusionList;
+
+    /** Creates an instance of DiskExclusionProperties class. */
+    public DiskExclusionProperties() {
+    }
 
     /**
      * Get the diskLunList property: List of Disks' Logical Unit Numbers (LUN) to be used for VM Protection.

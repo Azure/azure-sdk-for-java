@@ -27,15 +27,6 @@ public final class VirtualMachineSizesImpl implements VirtualMachineSizes {
         this.serviceManager = serviceManager;
     }
 
-    public VirtualMachineSizeListResult list(String location) {
-        VirtualMachineSizeListResultInner inner = this.serviceClient().list(location);
-        if (inner != null) {
-            return new VirtualMachineSizeListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualMachineSizeListResult> listWithResponse(String location, Context context) {
         Response<VirtualMachineSizeListResultInner> inner = this.serviceClient().listWithResponse(location, context);
         if (inner != null) {
@@ -44,6 +35,15 @@ public final class VirtualMachineSizesImpl implements VirtualMachineSizes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VirtualMachineSizeListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualMachineSizeListResult list(String location) {
+        VirtualMachineSizeListResultInner inner = this.serviceClient().list(location);
+        if (inner != null) {
+            return new VirtualMachineSizeListResultImpl(inner, this.manager());
         } else {
             return null;
         }

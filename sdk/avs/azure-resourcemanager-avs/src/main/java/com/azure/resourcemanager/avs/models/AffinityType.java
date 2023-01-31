@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AffinityType. */
+/** Placement policy affinity type. */
 public final class AffinityType extends ExpandableStringEnum<AffinityType> {
     /** Static value Affinity for AffinityType. */
     public static final AffinityType AFFINITY = fromString("Affinity");
@@ -27,7 +27,11 @@ public final class AffinityType extends ExpandableStringEnum<AffinityType> {
         return fromString(name, AffinityType.class);
     }
 
-    /** @return known AffinityType values. */
+    /**
+     * Gets known AffinityType values.
+     *
+     * @return known AffinityType values.
+     */
     public static Collection<AffinityType> values() {
         return values(AffinityType.class);
     }

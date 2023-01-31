@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Datadog organization properties. */
 @Fluent
 public final class DatadogOrganizationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogOrganizationProperties.class);
-
     /*
      * Name of the Datadog organization.
      */
@@ -33,8 +29,7 @@ public final class DatadogOrganizationProperties {
     private String linkingAuthCode;
 
     /*
-     * The client_id from an existing in exchange for an auth token to link
-     * organization.
+     * The client_id from an existing in exchange for an auth token to link organization.
      */
     @JsonProperty(value = "linkingClientId")
     private String linkingClientId;
@@ -62,6 +57,10 @@ public final class DatadogOrganizationProperties {
      */
     @JsonProperty(value = "enterpriseAppId")
     private String enterpriseAppId;
+
+    /** Creates an instance of DatadogOrganizationProperties class. */
+    public DatadogOrganizationProperties() {
+    }
 
     /**
      * Get the name property: Name of the Datadog organization.

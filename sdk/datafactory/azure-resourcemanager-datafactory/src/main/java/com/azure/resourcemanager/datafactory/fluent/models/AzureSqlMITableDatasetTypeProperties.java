@@ -28,6 +28,10 @@ public final class AzureSqlMITableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of AzureSqlMITableDatasetTypeProperties class. */
+    public AzureSqlMITableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

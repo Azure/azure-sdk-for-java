@@ -61,7 +61,7 @@ public final class BlobContainerProperties {
      * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
      * @param hasLegalHold Flag indicating if the container has a legal hold.
      * @param defaultEncryptionScope The container's default encryption scope to encrypt blobs with.
-     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overriden
+     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overridden
      */
     public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
@@ -86,7 +86,7 @@ public final class BlobContainerProperties {
      * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
      * @param hasLegalHold Flag indicating if the container has a legal hold.
      * @param defaultEncryptionScope The container's default encryption scope to encrypt blobs with.
-     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overriden
+     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overridden
      * @param isImmutableStorageWithVersioningEnabled Whether or not immutable storage with versioning is enabled on
      *                                                this container.
      */

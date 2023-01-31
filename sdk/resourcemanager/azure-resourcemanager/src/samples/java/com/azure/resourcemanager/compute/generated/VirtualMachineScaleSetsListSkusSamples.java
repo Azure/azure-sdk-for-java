@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSets ListSkus. */
 public final class VirtualMachineScaleSetsListSkusSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ListSkus_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ListSkus_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_ListSkus_MinimumSet_Gen.
@@ -23,11 +21,11 @@ public final class VirtualMachineScaleSetsListSkusSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .listSkus("rgcompute", "aaaaaaaaaaaaaaaa", Context.NONE);
+            .listSkus("rgcompute", "aaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ListSkus_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ListSkus_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_ListSkus_MaximumSet_Gen.
@@ -41,6 +39,6 @@ public final class VirtualMachineScaleSetsListSkusSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .listSkus("rgcompute", "aaaaaa", Context.NONE);
+            .listSkus("rgcompute", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 }

@@ -37,15 +37,6 @@ public final class SignalRCustomDomainsImpl implements SignalRCustomDomains {
         return Utils.mapPage(inner, inner1 -> new CustomDomainImpl(inner1, this.manager()));
     }
 
-    public CustomDomain get(String resourceGroupName, String resourceName, String name) {
-        CustomDomainInner inner = this.serviceClient().get(resourceGroupName, resourceName, name);
-        if (inner != null) {
-            return new CustomDomainImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CustomDomain> getWithResponse(
         String resourceGroupName, String resourceName, String name, Context context) {
         Response<CustomDomainInner> inner =
@@ -56,6 +47,15 @@ public final class SignalRCustomDomainsImpl implements SignalRCustomDomains {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CustomDomainImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CustomDomain get(String resourceGroupName, String resourceName, String name) {
+        CustomDomainInner inner = this.serviceClient().get(resourceGroupName, resourceName, name);
+        if (inner != null) {
+            return new CustomDomainImpl(inner, this.manager());
         } else {
             return null;
         }

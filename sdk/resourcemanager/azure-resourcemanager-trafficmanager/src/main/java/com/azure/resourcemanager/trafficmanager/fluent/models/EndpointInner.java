@@ -5,104 +5,22 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing a Traffic Manager endpoint. */
-@JsonFlatten
 @Fluent
-public class EndpointInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointInner.class);
-
+public final class EndpointInner extends ProxyResource {
     /*
-     * The Azure Resource URI of the of the endpoint. Not applicable to
-     * endpoints of type 'ExternalEndpoints'.
+     * The properties of the Traffic Manager endpoint.
      */
-    @JsonProperty(value = "properties.targetResourceId")
-    private String targetResourceId;
-
-    /*
-     * The fully-qualified DNS name or IP address of the endpoint. Traffic
-     * Manager returns this value in DNS responses to direct traffic to this
-     * endpoint.
-     */
-    @JsonProperty(value = "properties.target")
-    private String target;
-
-    /*
-     * The status of the endpoint. If the endpoint is Enabled, it is probed for
-     * endpoint health and is included in the traffic routing method.
-     */
-    @JsonProperty(value = "properties.endpointStatus")
-    private EndpointStatus endpointStatus;
-
-    /*
-     * The weight of this endpoint when using the 'Weighted' traffic routing
-     * method. Possible values are from 1 to 1000.
-     */
-    @JsonProperty(value = "properties.weight")
-    private Long weight;
-
-    /*
-     * The priority of this endpoint when using the 'Priority' traffic routing
-     * method. Possible values are from 1 to 1000, lower values represent
-     * higher priority. This is an optional parameter.  If specified, it must
-     * be specified on all endpoints, and no two endpoints can share the same
-     * priority value.
-     */
-    @JsonProperty(value = "properties.priority")
-    private Long priority;
-
-    /*
-     * Specifies the location of the external or nested endpoints when using
-     * the 'Performance' traffic routing method.
-     */
-    @JsonProperty(value = "properties.endpointLocation")
-    private String endpointLocation;
-
-    /*
-     * The monitoring status of the endpoint.
-     */
-    @JsonProperty(value = "properties.endpointMonitorStatus")
-    private EndpointMonitorStatus endpointMonitorStatus;
-
-    /*
-     * The minimum number of endpoints that must be available in the child
-     * profile in order for the parent profile to be considered available. Only
-     * applicable to endpoint of type 'NestedEndpoints'.
-     */
-    @JsonProperty(value = "properties.minChildEndpoints")
-    private Long minChildEndpoints;
-
-    /*
-     * The list of countries/regions mapped to this endpoint when using the
-     * 'Geographic' traffic routing method. Please consult Traffic Manager
-     * Geographic documentation for a full list of accepted values.
-     */
-    @JsonProperty(value = "properties.geoMapping")
-    private List<String> geoMapping;
-
-    /*
-     * The list of subnets, IP addresses, and/or address ranges mapped to this
-     * endpoint when using the 'Subnet' traffic routing method. An empty list
-     * will match all ranges not covered by other endpoints.
-     */
-    @JsonProperty(value = "properties.subnets")
-    private List<EndpointPropertiesSubnetsItem> subnets;
-
-    /*
-     * List of custom headers.
-     */
-    @JsonProperty(value = "properties.customHeaders")
-    private List<EndpointPropertiesCustomHeadersItem> customHeaders;
+    @JsonProperty(value = "properties")
+    private EndpointProperties innerProperties;
 
     /*
      * Fully qualified resource Id for the resource. Ex -
@@ -123,248 +41,17 @@ public class EndpointInner extends ProxyResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /**
-     * Get the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
-     * type 'ExternalEndpoints'.
-     *
-     * @return the targetResourceId value.
-     */
-    public String targetResourceId() {
-        return this.targetResourceId;
+    /** Creates an instance of EndpointInner class. */
+    public EndpointInner() {
     }
 
     /**
-     * Set the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
-     * type 'ExternalEndpoints'.
+     * Get the innerProperties property: The properties of the Traffic Manager endpoint.
      *
-     * @param targetResourceId the targetResourceId value to set.
-     * @return the EndpointInner object itself.
+     * @return the innerProperties value.
      */
-    public EndpointInner withTargetResourceId(String targetResourceId) {
-        this.targetResourceId = targetResourceId;
-        return this;
-    }
-
-    /**
-     * Get the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
-     * value in DNS responses to direct traffic to this endpoint.
-     *
-     * @return the target value.
-     */
-    public String target() {
-        return this.target;
-    }
-
-    /**
-     * Set the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
-     * value in DNS responses to direct traffic to this endpoint.
-     *
-     * @param target the target value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
-     * Get the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
-     * endpoint health and is included in the traffic routing method.
-     *
-     * @return the endpointStatus value.
-     */
-    public EndpointStatus endpointStatus() {
-        return this.endpointStatus;
-    }
-
-    /**
-     * Set the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
-     * endpoint health and is included in the traffic routing method.
-     *
-     * @param endpointStatus the endpointStatus value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withEndpointStatus(EndpointStatus endpointStatus) {
-        this.endpointStatus = endpointStatus;
-        return this;
-    }
-
-    /**
-     * Get the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
-     * values are from 1 to 1000.
-     *
-     * @return the weight value.
-     */
-    public Long weight() {
-        return this.weight;
-    }
-
-    /**
-     * Set the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
-     * values are from 1 to 1000.
-     *
-     * @param weight the weight value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withWeight(Long weight) {
-        this.weight = weight;
-        return this;
-    }
-
-    /**
-     * Get the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
-     * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
-     * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
-     *
-     * @return the priority value.
-     */
-    public Long priority() {
-        return this.priority;
-    }
-
-    /**
-     * Set the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
-     * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
-     * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
-     *
-     * @param priority the priority value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withPriority(Long priority) {
-        this.priority = priority;
-        return this;
-    }
-
-    /**
-     * Get the endpointLocation property: Specifies the location of the external or nested endpoints when using the
-     * 'Performance' traffic routing method.
-     *
-     * @return the endpointLocation value.
-     */
-    public String endpointLocation() {
-        return this.endpointLocation;
-    }
-
-    /**
-     * Set the endpointLocation property: Specifies the location of the external or nested endpoints when using the
-     * 'Performance' traffic routing method.
-     *
-     * @param endpointLocation the endpointLocation value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withEndpointLocation(String endpointLocation) {
-        this.endpointLocation = endpointLocation;
-        return this;
-    }
-
-    /**
-     * Get the endpointMonitorStatus property: The monitoring status of the endpoint.
-     *
-     * @return the endpointMonitorStatus value.
-     */
-    public EndpointMonitorStatus endpointMonitorStatus() {
-        return this.endpointMonitorStatus;
-    }
-
-    /**
-     * Set the endpointMonitorStatus property: The monitoring status of the endpoint.
-     *
-     * @param endpointMonitorStatus the endpointMonitorStatus value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withEndpointMonitorStatus(EndpointMonitorStatus endpointMonitorStatus) {
-        this.endpointMonitorStatus = endpointMonitorStatus;
-        return this;
-    }
-
-    /**
-     * Get the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
-     * in order for the parent profile to be considered available. Only applicable to endpoint of type
-     * 'NestedEndpoints'.
-     *
-     * @return the minChildEndpoints value.
-     */
-    public Long minChildEndpoints() {
-        return this.minChildEndpoints;
-    }
-
-    /**
-     * Set the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
-     * in order for the parent profile to be considered available. Only applicable to endpoint of type
-     * 'NestedEndpoints'.
-     *
-     * @param minChildEndpoints the minChildEndpoints value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withMinChildEndpoints(Long minChildEndpoints) {
-        this.minChildEndpoints = minChildEndpoints;
-        return this;
-    }
-
-    /**
-     * Get the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
-     * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
-     * values.
-     *
-     * @return the geoMapping value.
-     */
-    public List<String> geoMapping() {
-        return this.geoMapping;
-    }
-
-    /**
-     * Set the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
-     * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
-     * values.
-     *
-     * @param geoMapping the geoMapping value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withGeoMapping(List<String> geoMapping) {
-        this.geoMapping = geoMapping;
-        return this;
-    }
-
-    /**
-     * Get the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
-     * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
-     *
-     * @return the subnets value.
-     */
-    public List<EndpointPropertiesSubnetsItem> subnets() {
-        return this.subnets;
-    }
-
-    /**
-     * Set the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
-     * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
-     *
-     * @param subnets the subnets value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withSubnets(List<EndpointPropertiesSubnetsItem> subnets) {
-        this.subnets = subnets;
-        return this;
-    }
-
-    /**
-     * Get the customHeaders property: List of custom headers.
-     *
-     * @return the customHeaders value.
-     */
-    public List<EndpointPropertiesCustomHeadersItem> customHeaders() {
-        return this.customHeaders;
-    }
-
-    /**
-     * Set the customHeaders property: List of custom headers.
-     *
-     * @param customHeaders the customHeaders value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withCustomHeaders(List<EndpointPropertiesCustomHeadersItem> customHeaders) {
-        this.customHeaders = customHeaders;
-        return this;
+    private EndpointProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -430,16 +117,290 @@ public class EndpointInner extends ProxyResource {
     }
 
     /**
+     * Get the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
+     * type 'ExternalEndpoints'.
+     *
+     * @return the targetResourceId value.
+     */
+    public String targetResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetResourceId();
+    }
+
+    /**
+     * Set the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
+     * type 'ExternalEndpoints'.
+     *
+     * @param targetResourceId the targetResourceId value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withTargetResourceId(String targetResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withTargetResourceId(targetResourceId);
+        return this;
+    }
+
+    /**
+     * Get the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
+     * value in DNS responses to direct traffic to this endpoint.
+     *
+     * @return the target value.
+     */
+    public String target() {
+        return this.innerProperties() == null ? null : this.innerProperties().target();
+    }
+
+    /**
+     * Set the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
+     * value in DNS responses to direct traffic to this endpoint.
+     *
+     * @param target the target value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withTarget(String target) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withTarget(target);
+        return this;
+    }
+
+    /**
+     * Get the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
+     * endpoint health and is included in the traffic routing method.
+     *
+     * @return the endpointStatus value.
+     */
+    public EndpointStatus endpointStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpointStatus();
+    }
+
+    /**
+     * Set the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
+     * endpoint health and is included in the traffic routing method.
+     *
+     * @param endpointStatus the endpointStatus value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withEndpointStatus(EndpointStatus endpointStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withEndpointStatus(endpointStatus);
+        return this;
+    }
+
+    /**
+     * Get the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
+     * values are from 1 to 1000.
+     *
+     * @return the weight value.
+     */
+    public Long weight() {
+        return this.innerProperties() == null ? null : this.innerProperties().weight();
+    }
+
+    /**
+     * Set the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
+     * values are from 1 to 1000.
+     *
+     * @param weight the weight value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withWeight(Long weight) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withWeight(weight);
+        return this;
+    }
+
+    /**
+     * Get the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
+     * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
+     * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
+     *
+     * @return the priority value.
+     */
+    public Long priority() {
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
+    }
+
+    /**
+     * Set the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
+     * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
+     * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
+     *
+     * @param priority the priority value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withPriority(Long priority) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withPriority(priority);
+        return this;
+    }
+
+    /**
+     * Get the endpointLocation property: Specifies the location of the external or nested endpoints when using the
+     * 'Performance' traffic routing method.
+     *
+     * @return the endpointLocation value.
+     */
+    public String endpointLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpointLocation();
+    }
+
+    /**
+     * Set the endpointLocation property: Specifies the location of the external or nested endpoints when using the
+     * 'Performance' traffic routing method.
+     *
+     * @param endpointLocation the endpointLocation value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withEndpointLocation(String endpointLocation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withEndpointLocation(endpointLocation);
+        return this;
+    }
+
+    /**
+     * Get the endpointMonitorStatus property: The monitoring status of the endpoint.
+     *
+     * @return the endpointMonitorStatus value.
+     */
+    public EndpointMonitorStatus endpointMonitorStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpointMonitorStatus();
+    }
+
+    /**
+     * Set the endpointMonitorStatus property: The monitoring status of the endpoint.
+     *
+     * @param endpointMonitorStatus the endpointMonitorStatus value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withEndpointMonitorStatus(EndpointMonitorStatus endpointMonitorStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withEndpointMonitorStatus(endpointMonitorStatus);
+        return this;
+    }
+
+    /**
+     * Get the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
+     * in order for the parent profile to be considered available. Only applicable to endpoint of type
+     * 'NestedEndpoints'.
+     *
+     * @return the minChildEndpoints value.
+     */
+    public Long minChildEndpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().minChildEndpoints();
+    }
+
+    /**
+     * Set the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
+     * in order for the parent profile to be considered available. Only applicable to endpoint of type
+     * 'NestedEndpoints'.
+     *
+     * @param minChildEndpoints the minChildEndpoints value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withMinChildEndpoints(Long minChildEndpoints) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withMinChildEndpoints(minChildEndpoints);
+        return this;
+    }
+
+    /**
+     * Get the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
+     * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
+     * values.
+     *
+     * @return the geoMapping value.
+     */
+    public List<String> geoMapping() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoMapping();
+    }
+
+    /**
+     * Set the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
+     * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
+     * values.
+     *
+     * @param geoMapping the geoMapping value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withGeoMapping(List<String> geoMapping) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withGeoMapping(geoMapping);
+        return this;
+    }
+
+    /**
+     * Get the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
+     * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
+     *
+     * @return the subnets value.
+     */
+    public List<EndpointPropertiesSubnetsItem> subnets() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnets();
+    }
+
+    /**
+     * Set the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
+     * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
+     *
+     * @param subnets the subnets value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withSubnets(List<EndpointPropertiesSubnetsItem> subnets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withSubnets(subnets);
+        return this;
+    }
+
+    /**
+     * Get the customHeaders property: List of custom headers.
+     *
+     * @return the customHeaders value.
+     */
+    public List<EndpointPropertiesCustomHeadersItem> customHeaders() {
+        return this.innerProperties() == null ? null : this.innerProperties().customHeaders();
+    }
+
+    /**
+     * Set the customHeaders property: List of custom headers.
+     *
+     * @param customHeaders the customHeaders value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withCustomHeaders(List<EndpointPropertiesCustomHeadersItem> customHeaders) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointProperties();
+        }
+        this.innerProperties().withCustomHeaders(customHeaders);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subnets() != null) {
-            subnets().forEach(e -> e.validate());
-        }
-        if (customHeaders() != null) {
-            customHeaders().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

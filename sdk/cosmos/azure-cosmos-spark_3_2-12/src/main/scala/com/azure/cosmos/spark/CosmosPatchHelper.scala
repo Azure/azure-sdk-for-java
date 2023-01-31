@@ -3,17 +3,20 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers
+import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
-import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.fasterxml.jackson.databind.node._
+
+import java.io.IOException
 
 class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                         cosmosPatchConfigs: CosmosPatchConfigs) {
  private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  private val objectMapper = new ObjectMapper()
 
  private val TimestampAttributeName = "_ts"
  private val IdAttributeName = "id"
@@ -44,20 +47,44 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   }
  }
 
+  def parseRawJson(jsonNode: JsonNode): JsonNode = {
+    if (jsonNode.isValueNode || jsonNode.isArray) {
+      try objectMapper.readTree(s"""{"${Constants.Properties.VALUE}": $jsonNode}""")
+        .asInstanceOf[ObjectNode]
+        .get(Constants.Properties.VALUE)
+      catch {
+        case e: IOException =>
+          throw new IllegalStateException(s"Unable to parse JSON $jsonNode", e)
+      }
+    } else {
+      jsonNode.asInstanceOf[ObjectNode]
+    }
+  }
+
  def addOperationConditionally(cosmosPatchOperations: CosmosPatchOperations,
                                columnConfig: CosmosPatchColumnConfig,
                                objectNode: ObjectNode,
                                condition: Boolean,
                                message: String): Unit = {
   if (condition) {
-   columnConfig.operationType match {
-    case CosmosPatchOperationTypes.Add => cosmosPatchOperations.add(columnConfig.mappingPath, objectNode.get(columnConfig.columnName))
-    case CosmosPatchOperationTypes.Set => cosmosPatchOperations.set(columnConfig.mappingPath, objectNode.get(columnConfig.columnName))
-    case CosmosPatchOperationTypes.Replace => cosmosPatchOperations.replace(columnConfig.mappingPath, objectNode.get(columnConfig.columnName))
-    case CosmosPatchOperationTypes.Remove => cosmosPatchOperations.remove(columnConfig.mappingPath)
-    case CosmosPatchOperationTypes.Increment => addIncrementPatchOperation(cosmosPatchOperations, columnConfig, objectNode.get(columnConfig.columnName))
-    case _ => throw new IllegalArgumentException(s"Patch operation type ${columnConfig.operationType} is not supported")
-   }
+    if (columnConfig.operationType == CosmosPatchOperationTypes.Remove) {
+      cosmosPatchOperations.remove(columnConfig.mappingPath)
+    } else {
+      val node = objectNode.get(columnConfig.columnName)
+      val effectiveNode = if (columnConfig.isRawJson) {
+        objectMapper.readTree(node.asText())
+      } else {
+        node
+      }
+
+      columnConfig.operationType match {
+        case CosmosPatchOperationTypes.Add => cosmosPatchOperations.add(columnConfig.mappingPath, effectiveNode)
+        case CosmosPatchOperationTypes.Set => cosmosPatchOperations.set(columnConfig.mappingPath, effectiveNode)
+        case CosmosPatchOperationTypes.Replace => cosmosPatchOperations.replace(columnConfig.mappingPath, effectiveNode)
+        case CosmosPatchOperationTypes.Increment => addIncrementPatchOperation(cosmosPatchOperations, columnConfig, effectiveNode)
+        case _ => throw new IllegalArgumentException(s"Patch operation type ${columnConfig.operationType} is not supported")
+      }
+    }
   } else {
    log.logDebug(
     s" The operation will not be added due to condition checking failed," +

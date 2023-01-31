@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
@@ -20,7 +19,7 @@ import java.util.Map;
 /** Samples for VirtualMachineExtensions CreateOrUpdate. */
 public final class VirtualMachineExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.
@@ -39,11 +38,11 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                 "aaaa",
                 "aaaaaaaaaaaaaaaaaaaaaaaa",
                 new VirtualMachineExtensionInner().withLocation("westus"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.
@@ -87,7 +86,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new InstanceViewStatus()
-                                            .withCode("aaaaaaaaaaaaaaaaaaaaaaa")
+                                            .withCode("fakeTokenPlaceholder")
                                             .withLevel(StatusLevelTypes.INFO)
                                             .withDisplayStatus("aaaaaa")
                                             .withMessage("a")
@@ -96,13 +95,13 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new InstanceViewStatus()
-                                            .withCode("aaaaaaaaaaaaaaaaaaaaaaa")
+                                            .withCode("fakeTokenPlaceholder")
                                             .withLevel(StatusLevelTypes.INFO)
                                             .withDisplayStatus("aaaaaa")
                                             .withMessage("a")
                                             .withTime(OffsetDateTime.parse("2021-11-30T12:58:26.522Z")))))
                     .withSuppressFailures(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

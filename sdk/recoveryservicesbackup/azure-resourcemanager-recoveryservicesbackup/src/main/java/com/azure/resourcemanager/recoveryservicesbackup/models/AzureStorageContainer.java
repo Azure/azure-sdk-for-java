@@ -39,11 +39,14 @@ public final class AzureStorageContainer extends ProtectionContainer {
     private Long protectedItemCount;
 
     /*
-     * Whether storage account lock is to be acquired for this container or
-     * not.
+     * Whether storage account lock is to be acquired for this container or not.
      */
     @JsonProperty(value = "acquireStorageAccountLock")
     private AcquireStorageAccountLock acquireStorageAccountLock;
+
+    /** Creates an instance of AzureStorageContainer class. */
+    public AzureStorageContainer() {
+    }
 
     /**
      * Get the sourceResourceId property: Fully qualified ARM url.

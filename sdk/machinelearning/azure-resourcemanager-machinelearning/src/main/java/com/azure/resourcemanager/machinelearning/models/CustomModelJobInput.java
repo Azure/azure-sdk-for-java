@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The CustomModelJobInput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobInputType")
-@JsonTypeName("CustomModel")
+@JsonTypeName("custom_model")
 @Fluent
 public final class CustomModelJobInput extends JobInput {
     /*
@@ -26,6 +26,10 @@ public final class CustomModelJobInput extends JobInput {
      */
     @JsonProperty(value = "uri", required = true)
     private String uri;
+
+    /** Creates an instance of CustomModelJobInput class. */
+    public CustomModelJobInput() {
+    }
 
     /**
      * Get the mode property: Input Asset Delivery Mode.

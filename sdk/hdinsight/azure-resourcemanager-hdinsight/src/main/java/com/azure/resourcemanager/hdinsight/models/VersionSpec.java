@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The version properties. */
 @Fluent
 public final class VersionSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VersionSpec.class);
-
     /*
      * The friendly name
      */
@@ -40,6 +36,10 @@ public final class VersionSpec {
     @JsonProperty(value = "componentVersions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> componentVersions;
+
+    /** Creates an instance of VersionSpec class. */
+    public VersionSpec() {
+    }
 
     /**
      * Get the friendlyName property: The friendly name.

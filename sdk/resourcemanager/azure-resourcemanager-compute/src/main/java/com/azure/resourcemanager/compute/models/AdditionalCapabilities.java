@@ -24,6 +24,10 @@ public final class AdditionalCapabilities {
     @JsonProperty(value = "hibernationEnabled")
     private Boolean hibernationEnabled;
 
+    /** Creates an instance of AdditionalCapabilities class. */
+    public AdditionalCapabilities() {
+    }
+
     /**
      * Get the ultraSsdEnabled property: The flag that enables or disables a capability to have one or more managed data
      * disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type

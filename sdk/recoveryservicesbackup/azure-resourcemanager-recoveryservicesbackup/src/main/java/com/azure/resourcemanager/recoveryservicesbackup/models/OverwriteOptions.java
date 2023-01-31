@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OverwriteOptions. */
+/** Can Overwrite if Target DataBase already exists. */
 public final class OverwriteOptions extends ExpandableStringEnum<OverwriteOptions> {
     /** Static value Invalid for OverwriteOptions. */
     public static final OverwriteOptions INVALID = fromString("Invalid");
@@ -18,6 +18,15 @@ public final class OverwriteOptions extends ExpandableStringEnum<OverwriteOption
 
     /** Static value Overwrite for OverwriteOptions. */
     public static final OverwriteOptions OVERWRITE = fromString("Overwrite");
+
+    /**
+     * Creates a new instance of OverwriteOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OverwriteOptions() {
+    }
 
     /**
      * Creates or finds a OverwriteOptions from its string representation.

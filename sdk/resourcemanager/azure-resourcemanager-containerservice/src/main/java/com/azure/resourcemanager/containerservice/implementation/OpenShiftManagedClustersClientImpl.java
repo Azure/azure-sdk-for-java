@@ -73,7 +73,7 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface OpenShiftManagedClustersService {
+    public interface OpenShiftManagedClustersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/openShiftManagedClusters")
         @ExpectedResponses({200})
@@ -657,23 +657,6 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the managed OpenShift cluster with a specified resource group and name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenShiftManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Gets a OpenShift managed cluster.
-     *
-     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -685,6 +668,23 @@ public final class OpenShiftManagedClustersClientImpl
     public Response<OpenShiftManagedClusterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets a OpenShift managed cluster.
+     *
+     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the OpenShift managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the managed OpenShift cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenShiftManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -880,7 +880,7 @@ public final class OpenShiftManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -901,7 +901,7 @@ public final class OpenShiftManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1178,7 +1178,7 @@ public final class OpenShiftManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1198,7 +1198,7 @@ public final class OpenShiftManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1440,7 +1440,7 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -1459,7 +1459,7 @@ public final class OpenShiftManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilitySets ListAvailableSizes. */
 public final class AvailabilitySetsListAvailableSizesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/availabilitySetExamples/AvailabilitySets_ListAvailableSizes_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/availabilitySetExamples/AvailabilitySets_ListAvailableSizes_MinimumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySets_ListAvailableSizes_MinimumSet_Gen.
@@ -23,11 +21,11 @@ public final class AvailabilitySetsListAvailableSizesSamples {
             .manager()
             .serviceClient()
             .getAvailabilitySets()
-            .listAvailableSizes("rgcompute", "aa", Context.NONE);
+            .listAvailableSizes("rgcompute", "aa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/availabilitySetExamples/AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/availabilitySetExamples/AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.
@@ -41,6 +39,6 @@ public final class AvailabilitySetsListAvailableSizesSamples {
             .manager()
             .serviceClient()
             .getAvailabilitySets()
-            .listAvailableSizes("rgcompute", "aaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .listAvailableSizes("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

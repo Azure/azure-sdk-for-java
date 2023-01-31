@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AutoProvisioningSettingsClient;
 import com.azure.resourcemanager.security.fluent.models.AutoProvisioningSettingInner;
 import com.azure.resourcemanager.security.models.AutoProvisioningSettingList;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AutoProvisioningSettingsClient. */
 public final class AutoProvisioningSettingsClientImpl implements AutoProvisioningSettingsClient {
-    private final ClientLogger logger = new ClientLogger(AutoProvisioningSettingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AutoProvisioningSettingsService service;
 
@@ -61,7 +58,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAutoPr")
-    private interface AutoProvisioningSettingsService {
+    public interface AutoProvisioningSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings")
         @ExpectedResponses({200})
@@ -114,7 +111,8 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoProvisioningSettingInner>> listSinglePageAsync() {
@@ -156,7 +154,8 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoProvisioningSettingInner>> listSinglePageAsync(Context context) {
@@ -193,7 +192,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoProvisioningSettingInner> listAsync() {
@@ -207,7 +206,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoProvisioningSettingInner> listAsync(Context context) {
@@ -220,7 +219,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoProvisioningSettingInner> list() {
@@ -234,7 +233,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoProvisioningSettingInner> list(Context context) {
@@ -248,7 +247,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoProvisioningSettingInner>> getWithResponseAsync(String settingName) {
@@ -291,7 +290,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoProvisioningSettingInner>> getWithResponseAsync(String settingName, Context context) {
@@ -324,19 +323,26 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutoProvisioningSettingInner> getAsync(String settingName) {
-        return getWithResponseAsync(settingName)
-            .flatMap(
-                (Response<AutoProvisioningSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(settingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Details of a specific setting.
+     *
+     * @param settingName Auto provisioning setting key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return auto provisioning setting along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutoProvisioningSettingInner> getWithResponse(String settingName, Context context) {
+        return getWithResponseAsync(settingName, context).block();
     }
 
     /**
@@ -350,22 +356,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoProvisioningSettingInner get(String settingName) {
-        return getAsync(settingName).block();
-    }
-
-    /**
-     * Details of a specific setting.
-     *
-     * @param settingName Auto provisioning setting key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoProvisioningSettingInner> getWithResponse(String settingName, Context context) {
-        return getWithResponseAsync(settingName, context).block();
+        return getWithResponse(settingName, Context.NONE).getValue();
     }
 
     /**
@@ -376,7 +367,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoProvisioningSettingInner>> createWithResponseAsync(
@@ -427,7 +418,7 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoProvisioningSettingInner>> createWithResponseAsync(
@@ -474,19 +465,28 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutoProvisioningSettingInner> createAsync(String settingName, AutoProvisioningSettingInner setting) {
-        return createWithResponseAsync(settingName, setting)
-            .flatMap(
-                (Response<AutoProvisioningSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createWithResponseAsync(settingName, setting).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Details of a specific setting.
+     *
+     * @param settingName Auto provisioning setting key.
+     * @param setting Auto provisioning setting key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return auto provisioning setting along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutoProvisioningSettingInner> createWithResponse(
+        String settingName, AutoProvisioningSettingInner setting, Context context) {
+        return createWithResponseAsync(settingName, setting, context).block();
     }
 
     /**
@@ -501,34 +501,19 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoProvisioningSettingInner create(String settingName, AutoProvisioningSettingInner setting) {
-        return createAsync(settingName, setting).block();
-    }
-
-    /**
-     * Details of a specific setting.
-     *
-     * @param settingName Auto provisioning setting key.
-     * @param setting Auto provisioning setting key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoProvisioningSettingInner> createWithResponse(
-        String settingName, AutoProvisioningSettingInner setting, Context context) {
-        return createWithResponseAsync(settingName, setting, context).block();
+        return createWithResponse(settingName, setting, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoProvisioningSettingInner>> listNextSinglePageAsync(String nextLink) {
@@ -559,12 +544,14 @@ public final class AutoProvisioningSettingsClientImpl implements AutoProvisionin
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoProvisioningSettingInner>> listNextSinglePageAsync(

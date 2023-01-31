@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Policies GetByCustomer. */
 public final class PoliciesGetByCustomerSamples {
     /*
@@ -17,6 +15,8 @@ public final class PoliciesGetByCustomerSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void policyByCustomer(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.policies().getByCustomerWithResponse("{billingAccountName}", "{customerName}", Context.NONE);
+        manager
+            .policies()
+            .getByCustomerWithResponse("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
     }
 }

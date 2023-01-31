@@ -23,8 +23,7 @@ public final class MicrosoftGraphShared {
     private MicrosoftGraphIdentitySet owner;
 
     /*
-     * Indicates the scope of how the item is shared: anonymous, organization,
-     * or users. Read-only.
+     * Indicates the scope of how the item is shared: anonymous, organization, or users. Read-only.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -45,6 +44,10 @@ public final class MicrosoftGraphShared {
      * shared
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphShared class. */
+    public MicrosoftGraphShared() {
+    }
 
     /**
      * Get the owner property: identitySet.

@@ -28,6 +28,10 @@ public final class PrivateEndpointIpConfigurationProperties {
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
+    /** Creates an instance of PrivateEndpointIpConfigurationProperties class. */
+    public PrivateEndpointIpConfigurationProperties() {
+    }
+
     /**
      * Get the groupId property: The ID of a group obtained from the remote resource that this private endpoint should
      * connect to.

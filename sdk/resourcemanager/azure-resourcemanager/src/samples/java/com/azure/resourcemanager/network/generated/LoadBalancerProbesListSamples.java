@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LoadBalancerProbes List. */
 public final class LoadBalancerProbesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerProbeList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerProbeList.json
      */
     /**
      * Sample code: LoadBalancerProbeList.

@@ -22,6 +22,10 @@ public final class EndpointAuthKeysInner {
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
+    /** Creates an instance of EndpointAuthKeysInner class. */
+    public EndpointAuthKeysInner() {
+    }
+
     /**
      * Get the primaryKey property: The primary key.
      *

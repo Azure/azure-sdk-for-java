@@ -33,7 +33,7 @@ try {
 With async clients, you can catch and handle exceptions in the error callbacks:
 
 ```java readme-sample-async-handlingException
-administrationAsyncClient.deleteModel("{modelId}")
+administrationAsyncClient.deleteDocumentModel("{modelId}")
     .doOnSuccess(
         ignored -> System.out.println("Success!"))
     .doOnError(
@@ -91,10 +91,10 @@ com.azure.core.exception.HttpResponseException: Status code 200, Invalid model c
 ```
 
 ### Unexpected time to build a custom model
-It is common to notice a longer time than what is expected to build a custom model when using `DocumentBuildMode: "neural"`.
-Depending on the service load you can usually expect it to ~10min.
+It is common to notice a longer time than what is expected to build a custom model when using `DocumentBuildMode: "neural"`
+with `DocumentModelAdministrationClient#beginBuildDocumentModel()`.
 
-For simpler use-cases, you can use [Custom Template models](https://aka.ms/custom-template-models) which are easy-to-train models and take lesser time (in seconds) to build over the 
+For simpler use-cases, you can use [Custom Template models](https://aka.ms/custom-template-models) which are easy-to-train models and take lesser time to build over the 
 [Custom Neural models](https://aka.ms/custom-neural-models) that are deep learned models.
 
 ### Enable HTTP request/response logging

@@ -4,13 +4,13 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of requests. */
-@Fluent
+@Immutable
 public final class BatchRequest {
     /*
      * An single request in a batch.

@@ -41,6 +41,10 @@ public class ManagedClusterIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities;
 
+    /** Creates an instance of ManagedClusterIdentity class. */
+    public ManagedClusterIdentity() {
+    }
+
     /**
      * Get the principalId property: The principal id of the system assigned identity which is used by master
      * components.

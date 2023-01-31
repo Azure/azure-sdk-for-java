@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationKind. */
+/** Type of operation. */
 public final class OperationKind extends ExpandableStringEnum<OperationKind> {
     /** Static value documentModelBuild for OperationKind. */
     public static final OperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");

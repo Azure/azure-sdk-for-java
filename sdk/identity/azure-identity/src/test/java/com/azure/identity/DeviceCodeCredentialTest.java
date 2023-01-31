@@ -3,9 +3,11 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -66,6 +68,34 @@ public class DeviceCodeCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithDeviceCode(eq(request1), eq(consumer))).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                        return TestUtils.getMockMsalTokenSync(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            DeviceCodeCredential credential =
+                new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+
+            accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             Assert.assertNotNull(identityClientMock);
         }
     }

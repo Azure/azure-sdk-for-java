@@ -30,6 +30,9 @@ public final class Block {
     @JsonProperty(value = "SizeInt", required = true)
     private int sizeInt;
 
+    /** Creates an instance of Block class. */
+    public Block() {}
+
     /**
      * Get the name property: The base64 encoded block ID.
      *

@@ -28,6 +28,10 @@ public final class MetricCriteria extends MultiMetricCriteria {
     @JsonProperty(value = "threshold", required = true)
     private double threshold;
 
+    /** Creates an instance of MetricCriteria class. */
+    public MetricCriteria() {
+    }
+
     /**
      * Get the operator property: the criteria operator.
      *

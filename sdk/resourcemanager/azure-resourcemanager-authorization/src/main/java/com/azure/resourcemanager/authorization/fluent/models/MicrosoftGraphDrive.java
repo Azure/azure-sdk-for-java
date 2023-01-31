@@ -19,9 +19,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
     /*
-     * Describes the type of drive represented by this resource. OneDrive
-     * personal drives will return personal. OneDrive for Business will return
-     * business. SharePoint document libraries will return documentLibrary.
+     * Describes the type of drive represented by this resource. OneDrive personal drives will return personal.
+     * OneDrive for Business will return business. SharePoint document libraries will return documentLibrary.
      * Read-only.
      */
     @JsonProperty(value = "driveType")
@@ -86,6 +85,10 @@ public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
      * drive
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDrive class. */
+    public MicrosoftGraphDrive() {
+    }
 
     /**
      * Get the driveType property: Describes the type of drive represented by this resource. OneDrive personal drives

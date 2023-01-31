@@ -22,8 +22,7 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
     private List<SubProtectionPolicy> subProtectionPolicy;
 
     /*
-     * TimeZone optional input as string. For example: TimeZone = "Pacific
-     * Standard Time".
+     * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
@@ -33,6 +32,10 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
      */
     @JsonProperty(value = "fabricName")
     private String fabricName;
+
+    /** Creates an instance of GenericProtectionPolicy class. */
+    public GenericProtectionPolicy() {
+    }
 
     /**
      * Get the subProtectionPolicy property: List of sub-protection policies which includes schedule and retention.

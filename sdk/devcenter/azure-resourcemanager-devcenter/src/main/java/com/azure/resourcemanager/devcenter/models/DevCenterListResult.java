@@ -24,6 +24,10 @@ public final class DevCenterListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DevCenterListResult class. */
+    public DevCenterListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

@@ -38,6 +38,10 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NetworkVirtualApplianceSkuInner class. */
+    public NetworkVirtualApplianceSkuInner() {
+    }
+
     /**
      * Get the innerProperties property: Network Virtual Appliance Sku Properties
      *

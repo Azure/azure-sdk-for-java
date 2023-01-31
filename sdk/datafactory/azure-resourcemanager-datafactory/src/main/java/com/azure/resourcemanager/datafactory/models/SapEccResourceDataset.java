@@ -24,6 +24,10 @@ public final class SapEccResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private SapEccResourceDatasetTypeProperties innerTypeProperties = new SapEccResourceDatasetTypeProperties();
 
+    /** Creates an instance of SapEccResourceDataset class. */
+    public SapEccResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP ECC OData resource dataset properties.
      *

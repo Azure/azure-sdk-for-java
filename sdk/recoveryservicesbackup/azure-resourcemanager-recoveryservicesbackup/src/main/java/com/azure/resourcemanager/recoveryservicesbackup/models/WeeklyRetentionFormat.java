@@ -23,6 +23,10 @@ public final class WeeklyRetentionFormat {
     @JsonProperty(value = "weeksOfTheMonth")
     private List<WeekOfMonth> weeksOfTheMonth;
 
+    /** Creates an instance of WeeklyRetentionFormat class. */
+    public WeeklyRetentionFormat() {
+    }
+
     /**
      * Get the daysOfTheWeek property: List of days of the week.
      *

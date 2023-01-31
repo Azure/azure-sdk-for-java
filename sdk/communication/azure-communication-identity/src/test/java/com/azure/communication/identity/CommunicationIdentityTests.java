@@ -13,10 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
+import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
@@ -32,8 +35,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+        verifyUserNotEmpty(communicationUser);
     }
 
 
@@ -45,8 +47,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+        verifyUserNotEmpty(communicationUser);
     }
 
     @Test
@@ -63,17 +64,38 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     }
 
     @Test
-    public void createUserAndToken() {
+    public void createUserWithResponseNullContext() {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        client = setupClient(builder, "createUserWithResponseSync");
+
+        // Action & Assert
+        Response<CommunicationUserIdentifier> response = client.createUserWithResponse(null);
+        verifyUserNotEmpty(response.getValue());
+        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWith" + testName + TEST_SUFFIX);
 
         // Action & Assert
         CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
+    }
+
+    @Test
+    public void createUserAndTokenWithoutScopes() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenSync");
+
+        // Action & Assert
+        assertThrows(NullPointerException.class, () -> client.createUserAndToken(null));
     }
 
     @Test
@@ -81,15 +103,117 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response =
-            client.createUserAndTokenWithResponse(scopes, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(scopes, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void createUserAndTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+
+        // Action & Assert
+        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes, tokenExpiresIn);
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+
+        // Action & Assert
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
+        CommunicationUserIdentifierAndToken result = response.getValue();
+        assertEquals(201, response.getStatusCode());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void createUserAndTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        // Action & Assert
+        try {
+            client.createUserAndToken(scopes, tokenExpiresIn);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        // Action & Assert
+        try {
+            client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void createUserAndTokenWithOverFlownExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithOverFlownExpiration " + TEST_SUFFIX);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        try {
+            client.createUserAndToken(scopes, tokenExpiresIn);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void createUserAndTokenWithResponseWithOverFlownExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithOverFlownExpiration " + TEST_SUFFIX);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        try {
+            client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+            return;
+        }
+        fail("An exception should have been thrown.");
     }
 
     @Test
@@ -97,15 +221,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
         // Action & Assert
         Response<CommunicationUserIdentifierAndToken> response =
             client.createUserAndTokenWithResponse(scopes, null);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
     }
 
     @Test
@@ -151,7 +274,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
         client.getToken(communicationUser, scopes);
 
         // Action & Assert
@@ -164,7 +287,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
         client.getToken(communicationUser, scopes);
 
         // Action & Assert
@@ -178,7 +301,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
         client.getToken(communicationUser, scopes);
 
         // Action & Assert
@@ -186,17 +309,38 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
 
-    @Test
-    public void getToken() {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void getToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenSync");
+        client = setupClient(builder, "getTokenWith" + testName + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
         AccessToken issuedToken = client.getToken(communicationUser, scopes);
         verifyTokenNotEmpty(issuedToken);
+    }
+
+    @Test
+    public void getTokenWithoutUser() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenSync");
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        // Action & Assert
+        assertThrows(NullPointerException.class, () -> client.getToken(null, scopes));
+    }
+
+    @Test
+    public void getTokenWithoutScopes() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenSync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+
+        // Action & Assert
+        assertThrows(NullPointerException.class, () -> client.getToken(communicationUser, null));
     }
 
     @Test
@@ -205,12 +349,121 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
 
         // Action & Assert
         Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void getTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+
+        // Action & Assert
+        AccessToken issuedToken = client.getToken(communicationUser, scopes, tokenExpiresIn);
+        verifyTokenNotEmpty(issuedToken);
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void getTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+
+        // Action & Assert
+        try {
+            client.getToken(communicationUser, scopes, tokenExpiresIn);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void getTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+
+        // Action & Assert
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn, Context.NONE);
+        assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
+        verifyTokenNotEmpty(issuedTokenResponse.getValue());
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void getTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+
+        // Action & Assert
+        try {
+            client.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn, Context.NONE);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void getTokenWithOverflownExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWithOverflownExpiration " + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        try {
+            client.getToken(communicationUser, scopes, tokenExpiresIn);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void getTokenWithResponseWithOverflownExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWithResponseWithOverflownExpiration " + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        try {
+            client.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn, Context.NONE);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+            return;
+        }
+        fail("An exception should have been thrown.");
     }
 
     @Test
@@ -219,7 +472,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
 
         // Action & Assert
         Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, null);
@@ -256,8 +509,23 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyTokenNotEmpty(response.getValue());
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
+    public void getTokenForTeamsUserWithValidParamsWithResponseNullContext(GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenForTeamsUserWithValidParamsWithResponseSync");
+        // Action & Assert
+        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, null);
+        assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+        verifyTokenNotEmpty(response.getValue());
+    }
 
-    @ParameterizedTest(name = "when {3} is null")
+
+    @ParameterizedTest(name = "when {1} is null")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getNullParams")
     public void getTokenForTeamsUserWithNullParams(GetTokenForTeamsUserOptions options, String exceptionMessage) {
         if (skipExchangeAadTeamsTokenTest()) {

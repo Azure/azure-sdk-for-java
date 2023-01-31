@@ -29,6 +29,10 @@ public final class SsisExecutionCredential {
     @JsonProperty(value = "password", required = true)
     private SecureString password;
 
+    /** Creates an instance of SsisExecutionCredential class. */
+    public SsisExecutionCredential() {
+    }
+
     /**
      * Get the domain property: Domain for windows authentication.
      *

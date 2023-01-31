@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.models.CheckNameAvailabilityRequest;
 
 /** Samples for BackupVaults CheckNameAvailability. */
 public final class BackupVaultsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/CheckBackupVaultsNameAvailability.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/VaultCRUD/CheckBackupVaultsNameAvailability.json
      */
     /**
      * Sample code: Check BackupVaults name availability.
@@ -27,6 +26,6 @@ public final class BackupVaultsCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityRequest()
                     .withName("swaggerExample")
                     .withType("Microsoft.DataProtection/BackupVaults"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

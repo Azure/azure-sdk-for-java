@@ -24,6 +24,10 @@ public final class EloquaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private EloquaLinkedServiceTypeProperties innerTypeProperties = new EloquaLinkedServiceTypeProperties();
 
+    /** Creates an instance of EloquaLinkedService class. */
+    public EloquaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Eloqua server linked service properties.
      *

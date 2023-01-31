@@ -11,12 +11,11 @@ import com.azure.resourcemanager.mariadb.fluent.LocationBasedRecommendedActionSe
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner;
 import com.azure.resourcemanager.mariadb.models.LocationBasedRecommendedActionSessionsResults;
 import com.azure.resourcemanager.mariadb.models.RecommendationAction;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedRecommendedActionSessionsResultsImpl
     implements LocationBasedRecommendedActionSessionsResults {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LocationBasedRecommendedActionSessionsResultsImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(LocationBasedRecommendedActionSessionsResultsImpl.class);
 
     private final LocationBasedRecommendedActionSessionsResultsClient innerClient;
 

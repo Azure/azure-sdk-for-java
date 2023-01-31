@@ -24,6 +24,10 @@ public final class VirtualNetworkGatewayListConnectionsResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of VirtualNetworkGatewayListConnectionsResult class. */
+    public VirtualNetworkGatewayListConnectionsResult() {
+    }
+
     /**
      * Get the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
      *

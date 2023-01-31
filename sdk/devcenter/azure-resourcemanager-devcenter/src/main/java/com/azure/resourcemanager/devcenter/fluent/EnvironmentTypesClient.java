@@ -17,7 +17,7 @@ public interface EnvironmentTypesClient {
     /**
      * Lists environment types for the devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +30,7 @@ public interface EnvironmentTypesClient {
     /**
      * Lists environment types for the devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -46,21 +46,7 @@ public interface EnvironmentTypesClient {
     /**
      * Gets an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentTypeInner get(String resourceGroupName, String devCenterName, String environmentTypeName);
-
-    /**
-     * Gets an environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -74,25 +60,23 @@ public interface EnvironmentTypesClient {
         String resourceGroupName, String devCenterName, String environmentTypeName, Context context);
 
     /**
-     * Creates or updates an environment type.
+     * Gets an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
-     * @param body Represents an Environment Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an environment type.
+     * @return an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentTypeInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body);
+    EnvironmentTypeInner get(String resourceGroupName, String devCenterName, String environmentTypeName);
 
     /**
      * Creates or updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents an Environment Type.
@@ -111,25 +95,25 @@ public interface EnvironmentTypesClient {
         Context context);
 
     /**
-     * Partially updates an environment type.
+     * Creates or updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
-     * @param body Updatable environment type properties.
+     * @param body Represents an Environment Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentTypeInner update(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body);
+    EnvironmentTypeInner createOrUpdate(
+        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body);
 
     /**
      * Partially updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable environment type properties.
@@ -148,22 +132,25 @@ public interface EnvironmentTypesClient {
         Context context);
 
     /**
-     * Deletes an environment type.
+     * Partially updates an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
+     * @param body Updatable environment type properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String devCenterName, String environmentTypeName);
+    EnvironmentTypeInner update(
+        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body);
 
     /**
      * Deletes an environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -175,4 +162,17 @@ public interface EnvironmentTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String devCenterName, String environmentTypeName, Context context);
+
+    /**
+     * Deletes an environment type.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String devCenterName, String environmentTypeName);
 }

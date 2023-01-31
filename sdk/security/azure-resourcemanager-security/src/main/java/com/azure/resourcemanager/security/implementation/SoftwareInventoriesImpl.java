@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SoftwareInventoriesClient;
 import com.azure.resourcemanager.security.fluent.models.SoftwareInner;
 import com.azure.resourcemanager.security.models.Software;
 import com.azure.resourcemanager.security.models.SoftwareInventories;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SoftwareInventoriesImpl implements SoftwareInventories {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareInventoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SoftwareInventoriesImpl.class);
 
     private final SoftwareInventoriesClient innerClient;
 
@@ -56,21 +55,6 @@ public final class SoftwareInventoriesImpl implements SoftwareInventories {
         return Utils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
     }
 
-    public Software get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName) {
-        SoftwareInner inner =
-            this.serviceClient().get(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName);
-        if (inner != null) {
-            return new SoftwareImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Software> getWithResponse(
         String resourceGroupName,
         String resourceNamespace,
@@ -89,6 +73,21 @@ public final class SoftwareInventoriesImpl implements SoftwareInventories {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SoftwareImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Software get(
+        String resourceGroupName,
+        String resourceNamespace,
+        String resourceType,
+        String resourceName,
+        String softwareName) {
+        SoftwareInner inner =
+            this.serviceClient().get(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName);
+        if (inner != null) {
+            return new SoftwareImpl(inner, this.manager());
         } else {
             return null;
         }

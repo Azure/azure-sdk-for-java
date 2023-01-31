@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureWorkloadContainerAutoProtectionIntent")
 @Fluent
 public final class AzureWorkloadContainerAutoProtectionIntent extends ProtectionIntent {
+    /** Creates an instance of AzureWorkloadContainerAutoProtectionIntent class. */
+    public AzureWorkloadContainerAutoProtectionIntent() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadContainerAutoProtectionIntent withBackupManagementType(

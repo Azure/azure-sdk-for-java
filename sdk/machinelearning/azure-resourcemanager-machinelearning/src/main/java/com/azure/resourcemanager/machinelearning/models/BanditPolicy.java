@@ -26,6 +26,10 @@ public final class BanditPolicy extends EarlyTerminationPolicy {
     @JsonProperty(value = "slackFactor")
     private Float slackFactor;
 
+    /** Creates an instance of BanditPolicy class. */
+    public BanditPolicy() {
+    }
+
     /**
      * Get the slackAmount property: Absolute distance allowed from the best performing run.
      *

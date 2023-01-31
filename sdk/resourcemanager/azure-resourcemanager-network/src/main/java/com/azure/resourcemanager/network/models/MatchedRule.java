@@ -22,6 +22,10 @@ public final class MatchedRule {
     @JsonProperty(value = "action")
     private String action;
 
+    /** Creates an instance of MatchedRule class. */
+    public MatchedRule() {
+    }
+
     /**
      * Get the ruleName property: Name of the matched network security rule.
      *

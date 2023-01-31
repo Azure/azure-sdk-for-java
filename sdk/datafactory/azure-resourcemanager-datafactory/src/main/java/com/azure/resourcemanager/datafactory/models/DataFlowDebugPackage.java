@@ -63,6 +63,10 @@ public final class DataFlowDebugPackage {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DataFlowDebugPackage class. */
+    public DataFlowDebugPackage() {
+    }
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

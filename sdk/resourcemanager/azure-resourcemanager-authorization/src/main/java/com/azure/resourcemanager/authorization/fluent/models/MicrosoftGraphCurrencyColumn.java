@@ -26,6 +26,10 @@ public final class MicrosoftGraphCurrencyColumn {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphCurrencyColumn class. */
+    public MicrosoftGraphCurrencyColumn() {
+    }
+
     /**
      * Get the locale property: Specifies the locale from which to infer the currency symbol.
      *

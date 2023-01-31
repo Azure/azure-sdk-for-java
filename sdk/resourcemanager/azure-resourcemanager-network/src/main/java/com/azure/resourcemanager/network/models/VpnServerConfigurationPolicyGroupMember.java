@@ -28,6 +28,10 @@ public final class VpnServerConfigurationPolicyGroupMember {
     @JsonProperty(value = "attributeValue")
     private String attributeValue;
 
+    /** Creates an instance of VpnServerConfigurationPolicyGroupMember class. */
+    public VpnServerConfigurationPolicyGroupMember() {
+    }
+
     /**
      * Get the name property: Name of the VpnServerConfigurationPolicyGroupMember.
      *

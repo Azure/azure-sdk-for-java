@@ -25,6 +25,10 @@ public final class AzureSynapseArtifactsLinkedService extends LinkedService {
     private AzureSynapseArtifactsLinkedServiceTypeProperties innerTypeProperties =
         new AzureSynapseArtifactsLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureSynapseArtifactsLinkedService class. */
+    public AzureSynapseArtifactsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Synapse Analytics (Artifacts) linked service properties.
      *
@@ -109,6 +113,33 @@ public final class AzureSynapseArtifactsLinkedService extends LinkedService {
             this.innerTypeProperties = new AzureSynapseArtifactsLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withAuthentication(authentication);
+        return this;
+    }
+
+    /**
+     * Get the workspaceResourceId property: The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the workspaceResourceId value.
+     */
+    public Object workspaceResourceId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().workspaceResourceId();
+    }
+
+    /**
+     * Set the workspaceResourceId property: The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the AzureSynapseArtifactsLinkedService object itself.
+     */
+    public AzureSynapseArtifactsLinkedService withWorkspaceResourceId(Object workspaceResourceId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureSynapseArtifactsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withWorkspaceResourceId(workspaceResourceId);
         return this;
     }
 

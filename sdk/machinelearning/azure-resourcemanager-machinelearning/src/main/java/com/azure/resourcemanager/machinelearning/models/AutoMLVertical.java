@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -37,6 +38,23 @@ public class AutoMLVertical {
     @JsonProperty(value = "logVerbosity")
     private LogVerbosity logVerbosity;
 
+    /*
+     * Target column name: This is prediction values column.
+     * Also known as label column name in context of classification tasks.
+     */
+    @JsonProperty(value = "targetColumnName")
+    private String targetColumnName;
+
+    /*
+     * [Required] Training data input.
+     */
+    @JsonProperty(value = "trainingData", required = true)
+    private MLTableJobInput trainingData;
+
+    /** Creates an instance of AutoMLVertical class. */
+    public AutoMLVertical() {
+    }
+
     /**
      * Get the logVerbosity property: Log verbosity for the job.
      *
@@ -58,10 +76,61 @@ public class AutoMLVertical {
     }
 
     /**
+     * Get the targetColumnName property: Target column name: This is prediction values column. Also known as label
+     * column name in context of classification tasks.
+     *
+     * @return the targetColumnName value.
+     */
+    public String targetColumnName() {
+        return this.targetColumnName;
+    }
+
+    /**
+     * Set the targetColumnName property: Target column name: This is prediction values column. Also known as label
+     * column name in context of classification tasks.
+     *
+     * @param targetColumnName the targetColumnName value to set.
+     * @return the AutoMLVertical object itself.
+     */
+    public AutoMLVertical withTargetColumnName(String targetColumnName) {
+        this.targetColumnName = targetColumnName;
+        return this;
+    }
+
+    /**
+     * Get the trainingData property: [Required] Training data input.
+     *
+     * @return the trainingData value.
+     */
+    public MLTableJobInput trainingData() {
+        return this.trainingData;
+    }
+
+    /**
+     * Set the trainingData property: [Required] Training data input.
+     *
+     * @param trainingData the trainingData value to set.
+     * @return the AutoMLVertical object itself.
+     */
+    public AutoMLVertical withTrainingData(MLTableJobInput trainingData) {
+        this.trainingData = trainingData;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (trainingData() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property trainingData in model AutoMLVertical"));
+        } else {
+            trainingData().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoMLVertical.class);
 }

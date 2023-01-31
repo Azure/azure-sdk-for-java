@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_PASSWORD AZURE_PASSWORD}</li>
+ *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  */
 @Immutable
@@ -142,6 +143,20 @@ public class EnvironmentCredential implements TokenCredential {
                         + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot")));
         } else {
             return tokenCredential.getToken(request);
+        }
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        if (tokenCredential == null) {
+            throw LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
+                new CredentialUnavailableException(
+                    "EnvironmentCredential authentication unavailable."
+                        + " Environment variables are not fully configured."
+                        + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
+                        + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot"));
+        } else {
+            return tokenCredential.getTokenSync(request);
         }
     }
 

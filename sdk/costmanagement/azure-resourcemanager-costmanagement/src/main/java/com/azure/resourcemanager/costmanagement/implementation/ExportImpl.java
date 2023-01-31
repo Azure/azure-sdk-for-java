@@ -6,12 +6,15 @@ package com.azure.resourcemanager.costmanagement.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportInner;
 import com.azure.resourcemanager.costmanagement.models.Export;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
+import com.azure.resourcemanager.costmanagement.models.ExportExecutionListResult;
 import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
+import java.time.OffsetDateTime;
 
 public final class ExportImpl implements Export, Export.Definition, Export.Update {
     private ExportInner innerObject;
@@ -48,6 +51,19 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
 
     public ExportDefinition definition() {
         return this.innerModel().definition();
+    }
+
+    public ExportExecutionListResult runHistory() {
+        ExportExecutionListResultInner inner = this.innerModel().runHistory();
+        if (inner != null) {
+            return new ExportExecutionListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OffsetDateTime nextRunTimeEstimate() {
+        return this.innerModel().nextRunTimeEstimate();
     }
 
     public ExportInner innerModel() {
@@ -131,23 +147,33 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
     }
 
     public Export refresh() {
+        String localExpand = null;
         this.innerObject =
-            serviceManager.serviceClient().getExports().getWithResponse(scope, exportName, Context.NONE).getValue();
+            serviceManager
+                .serviceClient()
+                .getExports()
+                .getWithResponse(scope, exportName, localExpand, Context.NONE)
+                .getValue();
         return this;
     }
 
     public Export refresh(Context context) {
+        String localExpand = null;
         this.innerObject =
-            serviceManager.serviceClient().getExports().getWithResponse(scope, exportName, context).getValue();
+            serviceManager
+                .serviceClient()
+                .getExports()
+                .getWithResponse(scope, exportName, localExpand, context)
+                .getValue();
         return this;
-    }
-
-    public void execute() {
-        serviceManager.exports().execute(scope, exportName);
     }
 
     public Response<Void> executeWithResponse(Context context) {
         return serviceManager.exports().executeWithResponse(scope, exportName, context);
+    }
+
+    public void execute() {
+        serviceManager.exports().execute(scope, exportName);
     }
 
     public ExportImpl withEtag(String etag) {
@@ -172,6 +198,11 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
 
     public ExportImpl withDefinition(ExportDefinition definition) {
         this.innerModel().withDefinition(definition);
+        return this;
+    }
+
+    public ExportImpl withRunHistory(ExportExecutionListResultInner runHistory) {
+        this.innerModel().withRunHistory(runHistory);
         return this;
     }
 }

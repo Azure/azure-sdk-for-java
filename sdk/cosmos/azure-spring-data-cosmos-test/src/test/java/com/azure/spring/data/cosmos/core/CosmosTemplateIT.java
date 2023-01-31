@@ -7,7 +7,10 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -35,6 +38,9 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -71,11 +77,17 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
 import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_3;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_INCREMENT;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -98,6 +110,24 @@ public class CosmosTemplateIT {
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonNode NEW_PASSPORT_IDS_BY_COUNTRY_JSON = OBJECT_MAPPER.convertValue(NEW_PASSPORT_IDS_BY_COUNTRY, JsonNode.class);
+
+    private static final CosmosPatchOperations operations = CosmosPatchOperations
+        .create()
+        .replace("/age", PATCH_AGE_1);
+
+    CosmosPatchOperations multiPatchOperations = CosmosPatchOperations
+        .create()
+        .set("/firstName", PATCH_FIRST_NAME)
+        .replace("/passportIdsByCountry", NEW_PASSPORT_IDS_BY_COUNTRY_JSON)
+        .add("/hobbies/2", PATCH_HOBBY1)
+        .remove("/shippingAddresses/1")
+        .increment("/age", PATCH_AGE_INCREMENT);
+
+    private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+
+
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
@@ -116,8 +146,9 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
-    @Autowired
-    private AuditableRepository auditableRepository;
+
+    public CosmosTemplateIT() throws JsonProcessingException {
+    }
 
     @Before
     public void setUp() throws ClassNotFoundException {
@@ -267,6 +298,42 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
         assertEquals(person, updated);
+    }
+
+    @Test
+    public void testPatch() {
+        Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations);
+        assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
+    }
+
+    @Test
+    public void testPatchMultiOperations() {
+        Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, multiPatchOperations);
+        assertEquals(patchedPerson.getAge().intValue(), (AGE + PATCH_AGE_INCREMENT));
+        assertEquals(patchedPerson.getHobbies(), PATCH_HOBBIES);
+        assertEquals(patchedPerson.getFirstName(), PATCH_FIRST_NAME);
+        assertEquals(patchedPerson.getShippingAddresses().size(), 1);
+        assertEquals(patchedPerson.getPassportIdsByCountry(), NEW_PASSPORT_IDS_BY_COUNTRY);
+    }
+
+    @Test
+    public void testPatchPreConditionSuccess() {
+        options.setFilterPredicate("FROM person p WHERE p.lastName = '"+LAST_NAME+"'");
+        Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
+        assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
+    }
+
+    @Test
+    public void testPatchPreConditionFail() {
+        try {
+            options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
+            Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class,  operations, options);
+            assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);
+            assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        }
     }
 
     @Test
@@ -814,23 +881,6 @@ public class CosmosTemplateIT {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(ageBetween));
         List<Person> people = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, Person.class, Person.class));
         assertThat(people).containsExactly(TEST_PERSON);
-    }
-
-    @Test
-    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
-        final AuditableEntity entity = new AuditableEntity();
-        entity.setId(UUID.randomUUID().toString());
-
-        auditableRepository.save(entity);
-
-        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
-        assertEquals(results.size(), 1);
-        AuditableEntity foundEntity = results.get(0);
-        assertEquals(entity.getId(), foundEntity.getId());
-        assertNotNull(foundEntity.getCreatedDate());
-        assertNotNull(foundEntity.getLastModifiedByDate());
     }
 
     @Test

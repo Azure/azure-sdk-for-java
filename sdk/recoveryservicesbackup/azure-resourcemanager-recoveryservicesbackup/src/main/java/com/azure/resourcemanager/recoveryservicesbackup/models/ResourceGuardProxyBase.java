@@ -35,6 +35,10 @@ public final class ResourceGuardProxyBase {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ResourceGuardProxyBase class. */
+    public ResourceGuardProxyBase() {
+    }
+
     /**
      * Get the resourceGuardResourceId property: The resourceGuardResourceId property.
      *

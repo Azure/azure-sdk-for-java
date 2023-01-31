@@ -56,7 +56,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface DefaultSecurityRulesService {
+    public interface DefaultSecurityRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -134,7 +134,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -196,7 +196,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -328,7 +328,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -388,7 +388,7 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -427,23 +427,6 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param defaultSecurityRuleName The name of the default security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityRuleInner get(
-        String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName) {
-        return getAsync(resourceGroupName, networkSecurityGroupName, defaultSecurityRuleName).block();
-    }
-
-    /**
-     * Get the specified default network security rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param defaultSecurityRuleName The name of the default security rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,6 +438,24 @@ public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRule
         String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkSecurityGroupName, defaultSecurityRuleName, context)
             .block();
+    }
+
+    /**
+     * Get the specified default network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param defaultSecurityRuleName The name of the default security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified default network security rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityRuleInner get(
+        String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName) {
+        return getWithResponse(resourceGroupName, networkSecurityGroupName, defaultSecurityRuleName, Context.NONE)
+            .getValue();
     }
 
     /**

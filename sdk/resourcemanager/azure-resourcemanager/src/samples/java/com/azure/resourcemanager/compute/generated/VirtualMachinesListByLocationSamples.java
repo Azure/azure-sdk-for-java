@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines ListByLocation. */
 public final class VirtualMachinesListByLocationSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachines_ListBySubscription_ByLocation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListBySubscription_ByLocation.json
      */
     /**
      * Sample code: Lists all the virtual machines under the specified subscription for the specified location.
@@ -18,6 +16,11 @@ public final class VirtualMachinesListByLocationSamples {
      */
     public static void listsAllTheVirtualMachinesUnderTheSpecifiedSubscriptionForTheSpecifiedLocation(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().listByLocation("eastus", Context.NONE);
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .listByLocation("eastus", com.azure.core.util.Context.NONE);
     }
 }

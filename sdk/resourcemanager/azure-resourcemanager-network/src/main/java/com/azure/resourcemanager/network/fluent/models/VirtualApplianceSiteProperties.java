@@ -30,6 +30,10 @@ public final class VirtualApplianceSiteProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of VirtualApplianceSiteProperties class. */
+    public VirtualApplianceSiteProperties() {
+    }
+
     /**
      * Get the addressPrefix property: Address Prefix.
      *

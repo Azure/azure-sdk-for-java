@@ -23,6 +23,10 @@ public final class XmlDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private XmlDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of XmlDataset class. */
+    public XmlDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Xml dataset properties.
      *

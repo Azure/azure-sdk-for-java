@@ -24,6 +24,10 @@ public final class SliceListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SliceListResult class. */
+    public SliceListResult() {
+    }
+
     /**
      * Get the value property: A list of network slices in a mobile network.
      *

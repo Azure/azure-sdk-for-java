@@ -123,6 +123,10 @@ public final class HiveLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of HiveLinkedServiceTypeProperties class. */
+    public HiveLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: IP address or host name of the Hive server, separated by ';' for multiple hosts (only when
      * serviceDiscoveryMode is enable).

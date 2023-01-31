@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrincipalType. */
+/** The principal type of the assigned principal ID. */
 public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
     /** Static value User for PrincipalType. */
     public static final PrincipalType USER = fromString("User");
@@ -36,7 +36,11 @@ public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
         return fromString(name, PrincipalType.class);
     }
 
-    /** @return known PrincipalType values. */
+    /**
+     * Gets known PrincipalType values.
+     *
+     * @return known PrincipalType values.
+     */
     public static Collection<PrincipalType> values() {
         return values(PrincipalType.class);
     }

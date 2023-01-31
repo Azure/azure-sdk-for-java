@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnforcementMode. */
+/** The application control policy enforcement/protection mode of the machine group. */
 public final class EnforcementMode extends ExpandableStringEnum<EnforcementMode> {
     /** Static value Audit for EnforcementMode. */
     public static final EnforcementMode AUDIT = fromString("Audit");
@@ -30,7 +30,11 @@ public final class EnforcementMode extends ExpandableStringEnum<EnforcementMode>
         return fromString(name, EnforcementMode.class);
     }
 
-    /** @return known EnforcementMode values. */
+    /**
+     * Gets known EnforcementMode values.
+     *
+     * @return known EnforcementMode values.
+     */
     public static Collection<EnforcementMode> values() {
         return values(EnforcementMode.class);
     }

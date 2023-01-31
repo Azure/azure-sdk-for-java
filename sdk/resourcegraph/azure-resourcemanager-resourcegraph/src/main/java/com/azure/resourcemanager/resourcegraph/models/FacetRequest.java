@@ -23,6 +23,10 @@ public final class FacetRequest {
     @JsonProperty(value = "options")
     private FacetRequestOptions options;
 
+    /** Creates an instance of FacetRequest class. */
+    public FacetRequest() {
+    }
+
     /**
      * Get the expression property: The column or list of columns to summarize by.
      *

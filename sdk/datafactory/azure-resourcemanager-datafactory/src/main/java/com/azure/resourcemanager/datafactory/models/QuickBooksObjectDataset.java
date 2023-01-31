@@ -23,6 +23,10 @@ public final class QuickBooksObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of QuickBooksObjectDataset class. */
+    public QuickBooksObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

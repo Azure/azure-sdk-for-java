@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilitySets List. */
 public final class AvailabilitySetsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
      */
     /**
      * Sample code: List availability sets in a subscription.
@@ -22,6 +20,6 @@ public final class AvailabilitySetsListSamples {
             .manager()
             .serviceClient()
             .getAvailabilitySets()
-            .list("virtualMachines\\$ref", Context.NONE);
+            .list("virtualMachines\\$ref", com.azure.core.util.Context.NONE);
     }
 }

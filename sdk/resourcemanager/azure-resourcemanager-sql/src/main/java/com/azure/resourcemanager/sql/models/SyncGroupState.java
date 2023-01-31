@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncGroupState. */
+/** Sync state of the sync group. */
 public final class SyncGroupState extends ExpandableStringEnum<SyncGroupState> {
     /** Static value NotReady for SyncGroupState. */
     public static final SyncGroupState NOT_READY = fromString("NotReady");

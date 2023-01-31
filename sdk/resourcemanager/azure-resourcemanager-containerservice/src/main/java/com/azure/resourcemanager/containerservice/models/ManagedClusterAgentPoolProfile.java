@@ -22,6 +22,10 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of ManagedClusterAgentPoolProfile class. */
+    public ManagedClusterAgentPoolProfile() {
+    }
+
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
      * group.

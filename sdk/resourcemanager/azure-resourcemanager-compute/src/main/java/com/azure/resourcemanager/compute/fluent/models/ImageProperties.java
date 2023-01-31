@@ -40,6 +40,10 @@ public final class ImageProperties {
     @JsonProperty(value = "hyperVGeneration")
     private HyperVGenerationTypes hyperVGeneration;
 
+    /** Creates an instance of ImageProperties class. */
+    public ImageProperties() {
+    }
+
     /**
      * Get the sourceVirtualMachine property: The source virtual machine from which Image is created.
      *

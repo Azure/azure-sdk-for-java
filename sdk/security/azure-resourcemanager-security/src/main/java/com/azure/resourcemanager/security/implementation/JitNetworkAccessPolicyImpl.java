@@ -33,6 +33,14 @@ public final class JitNetworkAccessPolicyImpl
         return this.innerModel().type();
     }
 
+    public String kind() {
+        return this.innerModel().kind();
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public List<JitNetworkAccessPolicyVirtualMachine> virtualMachines() {
         List<JitNetworkAccessPolicyVirtualMachine> inner = this.innerModel().virtualMachines();
         if (inner != null) {
@@ -60,20 +68,16 @@ public final class JitNetworkAccessPolicyImpl
         return this.innerModel().provisioningState();
     }
 
-    public String kind() {
-        return this.innerModel().kind();
-    }
-
-    public String location() {
-        return this.innerModel().location();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public JitNetworkAccessPolicyInner innerModel() {
@@ -184,13 +188,13 @@ public final class JitNetworkAccessPolicyImpl
         return this;
     }
 
-    public JitNetworkAccessPolicyImpl withRequests(List<JitNetworkAccessRequestInner> requests) {
-        this.innerModel().withRequests(requests);
+    public JitNetworkAccessPolicyImpl withKind(String kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 
-    public JitNetworkAccessPolicyImpl withKind(String kind) {
-        this.innerModel().withKind(kind);
+    public JitNetworkAccessPolicyImpl withRequests(List<JitNetworkAccessRequestInner> requests) {
+        this.innerModel().withRequests(requests);
         return this;
     }
 }

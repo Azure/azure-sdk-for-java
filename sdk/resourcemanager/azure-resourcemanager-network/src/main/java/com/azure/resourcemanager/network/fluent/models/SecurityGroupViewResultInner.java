@@ -18,6 +18,10 @@ public final class SecurityGroupViewResultInner {
     @JsonProperty(value = "networkInterfaces")
     private List<SecurityGroupNetworkInterface> networkInterfaces;
 
+    /** Creates an instance of SecurityGroupViewResultInner class. */
+    public SecurityGroupViewResultInner() {
+    }
+
     /**
      * Get the networkInterfaces property: List of network interfaces on the specified VM.
      *

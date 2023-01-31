@@ -29,6 +29,7 @@ import com.azure.monitor.query.implementation.logs.models.Table;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
+import com.azure.monitor.query.models.LogsColumnType;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
@@ -391,8 +392,12 @@ public final class LogsQueryAsyncClient {
                     LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
                     tableRows.add(tableRow);
                     for (int j = 0; j < row.size(); j++) {
+                        LogsColumnType columnType = table.getColumns().get(j).getType() == null
+                                ? null
+                                : LogsColumnType.fromString(table.getColumns().get(j).getType().toString());
                         LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
-                                table.getColumns().get(j).getType(), j, i, row.get(j));
+                                columnType, j, i,
+                                row.get(j));
                         tableCells.add(cell);
                         tableRow.getRow().add(cell);
                     }

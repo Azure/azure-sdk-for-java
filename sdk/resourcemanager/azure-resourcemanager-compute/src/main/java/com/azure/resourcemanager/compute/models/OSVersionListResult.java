@@ -26,6 +26,10 @@ public final class OSVersionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OSVersionListResult class. */
+    public OSVersionListResult() {
+    }
+
     /**
      * Get the value property: The list of resources.
      *

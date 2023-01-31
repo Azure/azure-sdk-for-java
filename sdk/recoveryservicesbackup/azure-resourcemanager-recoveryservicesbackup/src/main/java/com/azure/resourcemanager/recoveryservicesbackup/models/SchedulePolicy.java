@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class SchedulePolicy {
+    /** Creates an instance of SchedulePolicy class. */
+    public SchedulePolicy() {
+    }
+
     /**
      * Validates the instance.
      *

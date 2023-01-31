@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FeaturizationMode. */
+/** Featurization mode - determines data featurization mode. */
 public final class FeaturizationMode extends ExpandableStringEnum<FeaturizationMode> {
     /** Static value Auto for FeaturizationMode. */
     public static final FeaturizationMode AUTO = fromString("Auto");
@@ -18,6 +18,15 @@ public final class FeaturizationMode extends ExpandableStringEnum<FeaturizationM
 
     /** Static value Off for FeaturizationMode. */
     public static final FeaturizationMode OFF = fromString("Off");
+
+    /**
+     * Creates a new instance of FeaturizationMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FeaturizationMode() {
+    }
 
     /**
      * Creates or finds a FeaturizationMode from its string representation.

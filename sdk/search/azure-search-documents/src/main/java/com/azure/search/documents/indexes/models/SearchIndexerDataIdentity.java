@@ -19,11 +19,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         visible = true)
 @JsonTypeName("SearchIndexerDataIdentity")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.DataNoneIdentity", value = SearchIndexerDataNoneIdentity.class),
     @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity",
-            value = SearchIndexerDataNoneIdentity.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity",
+            name = "#Microsoft.Azure.Search.DataUserAssignedIdentity",
             value = SearchIndexerDataUserAssignedIdentity.class)
 })
 @Immutable

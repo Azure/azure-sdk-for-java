@@ -39,6 +39,10 @@ public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
     @JsonProperty(value = "makePolicyConsistent")
     private Boolean makePolicyConsistent;
 
+    /** Creates an instance of AzureVmWorkloadProtectionPolicy class. */
+    public AzureVmWorkloadProtectionPolicy() {
+    }
+
     /**
      * Get the workLoadType property: Type of workload for the backup management.
      *

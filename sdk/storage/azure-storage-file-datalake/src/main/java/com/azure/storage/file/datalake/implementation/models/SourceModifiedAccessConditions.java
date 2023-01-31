@@ -27,18 +27,19 @@ public final class SourceModifiedAccessConditions {
     private String sourceIfNoneMatch;
 
     /*
-     * Specify this header value to operate only on a blob if it has been
-     * modified since the specified date/time.
+     * Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      */
     @JsonProperty(value = "sourceIfModifiedSince")
     private DateTimeRfc1123 sourceIfModifiedSince;
 
     /*
-     * Specify this header value to operate only on a blob if it has not been
-     * modified since the specified date/time.
+     * Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      */
     @JsonProperty(value = "sourceIfUnmodifiedSince")
     private DateTimeRfc1123 sourceIfUnmodifiedSince;
+
+    /** Creates an instance of SourceModifiedAccessConditions class. */
+    public SourceModifiedAccessConditions() {}
 
     /**
      * Get the sourceIfMatch property: Specify an ETag value to operate only on blobs with a matching value.

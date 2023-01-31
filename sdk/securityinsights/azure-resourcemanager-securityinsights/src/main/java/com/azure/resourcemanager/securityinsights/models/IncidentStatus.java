@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IncidentStatus. */
+/** The status of the incident. */
 public final class IncidentStatus extends ExpandableStringEnum<IncidentStatus> {
     /** Static value New for IncidentStatus. */
     public static final IncidentStatus NEW = fromString("New");

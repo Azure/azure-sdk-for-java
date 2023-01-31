@@ -45,6 +45,7 @@ import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterListResult;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClustersGetCommandResultResponse;
 import com.azure.resourcemanager.containerservice.models.OutboundEnvironmentEndpointCollection;
 import com.azure.resourcemanager.containerservice.models.RunCommandRequest;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
@@ -84,7 +85,7 @@ public final class ManagedClustersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface ManagedClustersService {
+    public interface ManagedClustersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/osOptions"
@@ -317,6 +318,21 @@ public final class ManagedClustersClientImpl
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/rotateServiceAccountSigningKeys")
+        @ExpectedResponses({202, 204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> rotateServiceAccountSigningKeys(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
                 + "/managedClusters/{resourceName}/stop")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -366,7 +382,7 @@ public final class ManagedClustersClientImpl
                 + "/managedClusters/{resourceName}/commandResults/{commandId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunCommandResultInner>> getCommandResult(
+        Mono<ManagedClustersGetCommandResultResponse> getCommandResult(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -450,7 +466,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -497,7 +513,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -509,21 +525,6 @@ public final class ManagedClustersClientImpl
                 resourceType,
                 accept,
                 context);
-    }
-
-    /**
-     * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
-     * @param resourceType The resource type for which the OS options needs to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OSOptionProfileInner> getOSOptionsAsync(String location, String resourceType) {
-        return getOSOptionsWithResponseAsync(location, resourceType).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -545,21 +546,6 @@ public final class ManagedClustersClientImpl
      * Gets supported OS options in the specified subscription.
      *
      * @param location The name of Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OSOptionProfileInner getOSOptions(String location) {
-        final String resourceType = null;
-        return getOSOptionsAsync(location, resourceType).block();
-    }
-
-    /**
-     * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,6 +557,21 @@ public final class ManagedClustersClientImpl
     public Response<OSOptionProfileInner> getOSOptionsWithResponse(
         String location, String resourceType, Context context) {
         return getOSOptionsWithResponseAsync(location, resourceType, context).block();
+    }
+
+    /**
+     * Gets supported OS options in the specified subscription.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported OS options in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OSOptionProfileInner getOSOptions(String location) {
+        final String resourceType = null;
+        return getOSOptionsWithResponse(location, resourceType, Context.NONE).getValue();
     }
 
     /**
@@ -595,7 +596,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -638,7 +639,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -737,7 +738,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -792,7 +793,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -909,7 +910,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -960,7 +961,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -996,21 +997,6 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile of a managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName) {
-        return getUpgradeProfileAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Gets the upgrade profile of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1021,6 +1007,21 @@ public final class ManagedClustersClientImpl
     public Response<ManagedClusterUpgradeProfileInner> getUpgradeProfileWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets the upgrade profile of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedClusterUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName) {
+        return getUpgradeProfileWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -1065,7 +1066,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1126,7 +1127,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1177,15 +1178,16 @@ public final class ManagedClustersClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed cluster Access Profile.
+     * @return managed cluster Access Profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterAccessProfileInner getAccessProfile(
-        String resourceGroupName, String resourceName, String roleName) {
-        return getAccessProfileAsync(resourceGroupName, resourceName, roleName).block();
+    public Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(
+        String resourceGroupName, String resourceName, String roleName, Context context) {
+        return getAccessProfileWithResponseAsync(resourceGroupName, resourceName, roleName, context).block();
     }
 
     /**
@@ -1200,16 +1202,15 @@ public final class ManagedClustersClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed cluster Access Profile along with {@link Response}.
+     * @return managed cluster Access Profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(
-        String resourceGroupName, String resourceName, String roleName, Context context) {
-        return getAccessProfileWithResponseAsync(resourceGroupName, resourceName, roleName, context).block();
+    public ManagedClusterAccessProfileInner getAccessProfile(
+        String resourceGroupName, String resourceName, String roleName) {
+        return getAccessProfileWithResponse(resourceGroupName, resourceName, roleName, Context.NONE).getValue();
     }
 
     /**
@@ -1245,7 +1246,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1297,7 +1298,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1310,24 +1311,6 @@ public final class ManagedClustersClientImpl
                 serverFqdn,
                 accept,
                 context);
-    }
-
-    /**
-     * Lists the admin credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param serverFqdn server fqdn type for credentials to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialResultsInner> listClusterAdminCredentialsAsync(
-        String resourceGroupName, String resourceName, String serverFqdn) {
-        return listClusterAdminCredentialsWithResponseAsync(resourceGroupName, resourceName, serverFqdn)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1353,22 +1336,6 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialResultsInner listClusterAdminCredentials(String resourceGroupName, String resourceName) {
-        final String serverFqdn = null;
-        return listClusterAdminCredentialsAsync(resourceGroupName, resourceName, serverFqdn).block();
-    }
-
-    /**
-     * Lists the admin credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1381,6 +1348,23 @@ public final class ManagedClustersClientImpl
         String resourceGroupName, String resourceName, String serverFqdn, Context context) {
         return listClusterAdminCredentialsWithResponseAsync(resourceGroupName, resourceName, serverFqdn, context)
             .block();
+    }
+
+    /**
+     * Lists the admin credentials of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list credential result response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CredentialResultsInner listClusterAdminCredentials(String resourceGroupName, String resourceName) {
+        final String serverFqdn = null;
+        return listClusterAdminCredentialsWithResponse(resourceGroupName, resourceName, serverFqdn, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1419,7 +1403,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1475,7 +1459,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1489,27 +1473,6 @@ public final class ManagedClustersClientImpl
                 format,
                 accept,
                 context);
-    }
-
-    /**
-     * Lists the user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param serverFqdn server fqdn type for credentials to be returned.
-     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
-     *     azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin
-     *     binary in the path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialResultsInner> listClusterUserCredentialsAsync(
-        String resourceGroupName, String resourceName, String serverFqdn, Format format) {
-        return listClusterUserCredentialsWithResponseAsync(resourceGroupName, resourceName, serverFqdn, format)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1535,23 +1498,6 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialResultsInner listClusterUserCredentials(String resourceGroupName, String resourceName) {
-        final String serverFqdn = null;
-        final Format format = null;
-        return listClusterUserCredentialsAsync(resourceGroupName, resourceName, serverFqdn, format).block();
-    }
-
-    /**
-     * Lists the user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
      *     azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin
@@ -1567,6 +1513,24 @@ public final class ManagedClustersClientImpl
         String resourceGroupName, String resourceName, String serverFqdn, Format format, Context context) {
         return listClusterUserCredentialsWithResponseAsync(resourceGroupName, resourceName, serverFqdn, format, context)
             .block();
+    }
+
+    /**
+     * Lists the user credentials of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list credential result response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CredentialResultsInner listClusterUserCredentials(String resourceGroupName, String resourceName) {
+        final String serverFqdn = null;
+        final Format format = null;
+        return listClusterUserCredentialsWithResponse(resourceGroupName, resourceName, serverFqdn, format, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1602,7 +1566,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1654,7 +1618,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1667,24 +1631,6 @@ public final class ManagedClustersClientImpl
                 serverFqdn,
                 accept,
                 context);
-    }
-
-    /**
-     * Lists the cluster monitoring user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param serverFqdn server fqdn type for credentials to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialResultsInner> listClusterMonitoringUserCredentialsAsync(
-        String resourceGroupName, String resourceName, String serverFqdn) {
-        return listClusterMonitoringUserCredentialsWithResponseAsync(resourceGroupName, resourceName, serverFqdn)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1710,22 +1656,6 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CredentialResultsInner listClusterMonitoringUserCredentials(String resourceGroupName, String resourceName) {
-        final String serverFqdn = null;
-        return listClusterMonitoringUserCredentialsAsync(resourceGroupName, resourceName, serverFqdn).block();
-    }
-
-    /**
-     * Lists the cluster monitoring user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1739,6 +1669,24 @@ public final class ManagedClustersClientImpl
         return listClusterMonitoringUserCredentialsWithResponseAsync(
                 resourceGroupName, resourceName, serverFqdn, context)
             .block();
+    }
+
+    /**
+     * Lists the cluster monitoring user credentials of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list credential result response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CredentialResultsInner listClusterMonitoringUserCredentials(String resourceGroupName, String resourceName) {
+        final String serverFqdn = null;
+        return listClusterMonitoringUserCredentialsWithResponse(
+                resourceGroupName, resourceName, serverFqdn, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1773,7 +1721,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1823,7 +1771,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1858,21 +1806,6 @@ public final class ManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Gets a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1883,6 +1816,21 @@ public final class ManagedClustersClientImpl
     public Response<ManagedClusterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -1923,7 +1871,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1980,7 +1928,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2059,7 +2007,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -2077,7 +2025,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2192,7 +2140,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2249,7 +2197,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2328,7 +2276,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -2346,7 +2294,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2453,7 +2401,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2503,7 +2451,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2569,7 +2517,7 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -2586,7 +2534,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
@@ -2691,7 +2639,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2753,7 +2701,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2836,7 +2784,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
-        return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -2859,7 +2807,8 @@ public final class ManagedClustersClientImpl
         String resourceName,
         ManagedClusterServicePrincipalProfile parameters,
         Context context) {
-        return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters, context)
+        return this
+            .beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2987,7 +2936,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3044,7 +2993,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3118,7 +3067,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
-        return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginResetAadProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -3136,7 +3085,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
-        return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginResetAadProfileAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -3245,7 +3194,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3298,7 +3247,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3377,7 +3326,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
         String resourceGroupName, String resourceName) {
-        return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginRotateClusterCertificatesAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -3397,7 +3346,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
         String resourceGroupName, String resourceName, Context context) {
-        return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginRotateClusterCertificatesAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
@@ -3477,6 +3426,243 @@ public final class ManagedClustersClientImpl
     }
 
     /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> rotateServiceAccountSigningKeysWithResponseAsync(
+        String resourceGroupName, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .rotateServiceAccountSigningKeys(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> rotateServiceAccountSigningKeysWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .rotateServiceAccountSigningKeys(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginRotateServiceAccountSigningKeysAsync(
+        String resourceGroupName, String resourceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateServiceAccountSigningKeysWithResponseAsync(resourceGroupName, resourceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRotateServiceAccountSigningKeysAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateServiceAccountSigningKeysWithResponseAsync(resourceGroupName, resourceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(
+        String resourceGroupName, String resourceName) {
+        return this.beginRotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(
+        String resourceGroupName, String resourceName, Context context) {
+        return this.beginRotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> rotateServiceAccountSigningKeysAsync(String resourceGroupName, String resourceName) {
+        return beginRotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> rotateServiceAccountSigningKeysAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        return beginRotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rotateServiceAccountSigningKeys(String resourceGroupName, String resourceName) {
+        rotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName).block();
+    }
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rotateServiceAccountSigningKeys(String resourceGroupName, String resourceName, Context context) {
+        rotateServiceAccountSigningKeysAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
      * Stops a Managed Cluster
      *
      * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
@@ -3512,7 +3698,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3567,7 +3753,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3648,7 +3834,7 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName) {
-        return beginStopAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -3670,7 +3856,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String resourceName, Context context) {
-        return beginStopAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
@@ -3789,7 +3975,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3842,7 +4028,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3917,7 +4103,7 @@ public final class ManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName) {
-        return beginStartAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -3937,7 +4123,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String resourceName, Context context) {
-        return beginStartAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
@@ -4055,7 +4241,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4115,7 +4301,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4203,7 +4389,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload) {
-        return beginRunCommandAsync(resourceGroupName, resourceName, requestPayload).getSyncPoller();
+        return this.beginRunCommandAsync(resourceGroupName, resourceName, requestPayload).getSyncPoller();
     }
 
     /**
@@ -4224,7 +4410,7 @@ public final class ManagedClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload, Context context) {
-        return beginRunCommandAsync(resourceGroupName, resourceName, requestPayload, context).getSyncPoller();
+        return this.beginRunCommandAsync(resourceGroupName, resourceName, requestPayload, context).getSyncPoller();
     }
 
     /**
@@ -4322,11 +4508,11 @@ public final class ManagedClustersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the results of a command which has been run on the Managed Cluster on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RunCommandResultInner>> getCommandResultWithResponseAsync(
+    public Mono<ManagedClustersGetCommandResultResponse> getCommandResultWithResponseAsync(
         String resourceGroupName, String resourceName, String commandId) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4350,7 +4536,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4378,11 +4564,11 @@ public final class ManagedClustersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the results of a command which has been run on the Managed Cluster on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunCommandResultInner>> getCommandResultWithResponseAsync(
+    private Mono<ManagedClustersGetCommandResultResponse> getCommandResultWithResponseAsync(
         String resourceGroupName, String resourceName, String commandId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4406,7 +4592,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4446,14 +4632,16 @@ public final class ManagedClustersClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the results of a command which has been run on the Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunCommandResultInner getCommandResult(String resourceGroupName, String resourceName, String commandId) {
-        return getCommandResultAsync(resourceGroupName, resourceName, commandId).block();
+    public ManagedClustersGetCommandResultResponse getCommandResultWithResponse(
+        String resourceGroupName, String resourceName, String commandId, Context context) {
+        return getCommandResultWithResponseAsync(resourceGroupName, resourceName, commandId, context).block();
     }
 
     /**
@@ -4462,16 +4650,14 @@ public final class ManagedClustersClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response}.
+     * @return the results of a command which has been run on the Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RunCommandResultInner> getCommandResultWithResponse(
-        String resourceGroupName, String resourceName, String commandId, Context context) {
-        return getCommandResultWithResponseAsync(resourceGroupName, resourceName, commandId, context).block();
+    public RunCommandResultInner getCommandResult(String resourceGroupName, String resourceName, String commandId) {
+        return getCommandResultWithResponse(resourceGroupName, resourceName, commandId, Context.NONE).getValue();
     }
 
     /**
@@ -4511,7 +4697,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4576,7 +4762,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

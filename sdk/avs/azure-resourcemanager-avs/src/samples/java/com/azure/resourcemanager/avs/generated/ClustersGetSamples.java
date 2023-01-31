@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters Get. */
 public final class ClustersGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Clusters_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_Get.json
      */
     /**
      * Sample code: Clusters_Get.

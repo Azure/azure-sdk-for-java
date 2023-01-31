@@ -14,6 +14,7 @@ import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -61,7 +62,8 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String PARTITION_ID = "a-partition-id";
     private static final Instant TEST_DATE = Instant.ofEpochSecond(1578643343);
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
-
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
+        new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
     @Mock
     private AmqpReceiveLink link1;
     @Mock
@@ -127,7 +129,7 @@ class EventHubPartitionAsyncConsumerTest {
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
-            PREFETCH, parentConnection));
+            PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
@@ -176,7 +178,7 @@ class EventHubPartitionAsyncConsumerTest {
     void receiveMultipleTimes() {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
-            PREFETCH, parentConnection));
+            PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
@@ -242,7 +244,7 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void listensToShutdownSignals() throws InterruptedException {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 

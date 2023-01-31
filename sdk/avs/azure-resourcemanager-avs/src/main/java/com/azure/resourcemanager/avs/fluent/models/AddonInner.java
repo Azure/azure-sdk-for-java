@@ -6,21 +6,21 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.AddonProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An addon resource. */
 @Fluent
 public final class AddonInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddonInner.class);
-
     /*
      * The properties of an addon resource
      */
     @JsonProperty(value = "properties")
     private AddonProperties properties;
+
+    /** Creates an instance of AddonInner class. */
+    public AddonInner() {
+    }
 
     /**
      * Get the properties property: The properties of an addon resource.

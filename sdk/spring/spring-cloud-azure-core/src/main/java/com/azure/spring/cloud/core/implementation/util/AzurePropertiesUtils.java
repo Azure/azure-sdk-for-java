@@ -105,6 +105,16 @@ public final class AzurePropertiesUtils {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
     }
 
+    /**
+     * Copy common properties from source object to target object. Ignore the target value if it is nonnull.
+     *
+     * @param source The source object.
+     * @param target The target object.
+     */
+    public static void copyPropertiesIgnoreTargetNonNull(Object source, Object target) {
+        BeanUtils.copyProperties(source, target, findNonNullPropertyNames(target));
+    }
+
     private static <T extends AzureProperties> void copyHttpClientProperties(AzureProperties source,
                                                                              T target,
                                                                              boolean ignoreNull) {
@@ -143,4 +153,7 @@ public final class AzurePropertiesUtils {
         return findPropertyNames(source, Objects::isNull);
     }
 
+    private static String[] findNonNullPropertyNames(Object source) {
+        return findPropertyNames(source, Objects::nonNull);
+    }
 }

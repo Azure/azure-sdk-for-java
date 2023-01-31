@@ -7,9 +7,7 @@ package com.azure.resourcemanager.hdinsight.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.ApplicationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** The HDInsight cluster application. */
 @Fluent
 public final class ApplicationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInner.class);
-
     /*
      * The ETag for the application
      */
@@ -43,6 +39,10 @@ public final class ApplicationInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ApplicationInner class. */
+    public ApplicationInner() {
+    }
 
     /**
      * Get the etag property: The ETag for the application.

@@ -910,6 +910,15 @@
               ""
             ]
           },
+           {
+            "label": "DevCenter",
+            "pathFilter": [
+              "sdk/devcenter/"
+            ],
+            "exclude": [
+              ""
+            ]
+          },
           {
             "label": "Digital Twins",
             "pathFilter": [
@@ -1653,7 +1662,7 @@
             ],
             "mentionees": [
               "ctstone",
-              "anrothMSFT"
+              "vkurpad"
             ]
           },
           {
@@ -2079,6 +2088,16 @@
               "narula0781",
               "ashishonce",
               "romil07"
+            ]
+          },
+           {
+            "labels": [
+              "Service Attention",
+              "DevCenter"
+            ],
+            "mentionees": [
+              "sebrenna",
+              "mharlan"
             ]
           },
           {
@@ -2619,7 +2638,8 @@
             ],
             "mentionees": [
               "pvrk",
-              "adityabalaji-msft"
+              "adityabalaji-msft",
+              "Daya-Patil"
             ]
           },
           {
@@ -2701,7 +2721,6 @@
               "Search"
             ],
             "mentionees": [
-              "brjohnstmsft",
               "bleroy",
               "tjacobhi",
               "markheff",
@@ -3019,7 +3038,8 @@
             "mentionees": [
               "@trask",
               "@ramthi",
-              "@heyams"
+              "@heyams",
+              "@jeanbisutti"
             ]
           },
           {

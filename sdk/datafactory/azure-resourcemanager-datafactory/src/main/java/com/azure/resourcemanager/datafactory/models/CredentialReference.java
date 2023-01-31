@@ -33,6 +33,10 @@ public final class CredentialReference {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CredentialReference class. */
+    public CredentialReference() {
+    }
+
     /**
      * Get the type property: Credential reference type.
      *

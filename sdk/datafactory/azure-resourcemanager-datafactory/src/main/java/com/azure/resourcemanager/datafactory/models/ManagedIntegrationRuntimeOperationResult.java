@@ -58,6 +58,10 @@ public final class ManagedIntegrationRuntimeOperationResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ManagedIntegrationRuntimeOperationResult class. */
+    public ManagedIntegrationRuntimeOperationResult() {
+    }
+
     /**
      * Get the type property: The operation type. Could be start or stop.
      *

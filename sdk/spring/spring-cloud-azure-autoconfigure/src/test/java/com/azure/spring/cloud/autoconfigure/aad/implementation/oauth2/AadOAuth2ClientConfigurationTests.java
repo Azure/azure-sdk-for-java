@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerTestConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.TestJwks;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadJwtBearerGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
@@ -33,6 +34,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.Arrays;
 import java.util.Set;
 
+import static com.azure.spring.cloud.autoconfigure.aad.RestTemplateTestUtil.assertRestTemplateWellConfigured;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientAndResourceServerRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
@@ -223,6 +225,34 @@ class AadOAuth2ClientConfigurationTests {
             });
     }
 
+    @Test
+    void restTemplateWellConfiguredWhenNotUsingPrivateKeyJwtMethod() {
+        webApplicationContextRunner()
+                .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerTestConfiguration.class)
+                .run(context -> {
+                    assertThat(context).doesNotHaveBean(OAuth2ClientAuthenticationJwkResolver.class);
+                    assertRestTemplateWellConfigured(context);
+                });
+    }
+
+    @Test
+    void restTemplateWellConfiguredWhenUsingPrivateKeyJwtMethod() {
+        webApplicationContextRunner()
+                .withPropertyValues(
+                        "spring.cloud.azure.active-directory.enabled=true",
+                        "spring.cloud.azure.active-directory.credential.client-certificate-path=/test/test.pfx",
+                        "spring.cloud.azure.active-directory.credential.client-certificate-password=test",
+                        "spring.cloud.azure.active-directory.authorization-clients.graph.client-authentication-method=private_key_jwt",
+                        "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read",
+                        "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=api://52261059-e515-488e-84fd-a09a3f372814/File.Read"
+                )
+                .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerTestConfiguration.class)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(OAuth2ClientAuthenticationJwkResolver.class);
+                    assertRestTemplateWellConfigured(context);
+                });
+    }
+
     @SuppressWarnings("unchecked")
     private MultiValueMap<String, String> convertParameters(JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
                                                             ClientRegistrationRepository clientRepository) {
@@ -240,7 +270,7 @@ class AadOAuth2ClientConfigurationTests {
         return parametersConverter.convert(request);
     }
 
-    class TestOAuth2ClientAuthenticationJwkResolver implements OAuth2ClientAuthenticationJwkResolver {
+    static class TestOAuth2ClientAuthenticationJwkResolver implements OAuth2ClientAuthenticationJwkResolver {
 
         private final JWK jwk;
 

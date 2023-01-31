@@ -37,6 +37,10 @@ public final class TopologyInner {
     @JsonProperty(value = "resources")
     private List<TopologyResource> resources;
 
+    /** Creates an instance of TopologyInner class. */
+    public TopologyInner() {
+    }
+
     /**
      * Get the id property: GUID representing the operation id.
      *

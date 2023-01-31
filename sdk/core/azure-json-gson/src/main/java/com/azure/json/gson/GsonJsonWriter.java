@@ -75,6 +75,7 @@ public final class GsonJsonWriter extends JsonWriter {
                 + "closed. Current writing state is '" + context.getWriteState() + "'.");
         }
 
+        writer.flush();
         writer.close();
     }
 

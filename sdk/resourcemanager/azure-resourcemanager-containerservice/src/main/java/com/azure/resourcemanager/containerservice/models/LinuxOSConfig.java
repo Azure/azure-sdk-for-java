@@ -47,6 +47,10 @@ public final class LinuxOSConfig {
     @JsonProperty(value = "swapFileSizeMB")
     private Integer swapFileSizeMB;
 
+    /** Creates an instance of LinuxOSConfig class. */
+    public LinuxOSConfig() {
+    }
+
     /**
      * Get the sysctls property: Sysctl settings for Linux agent nodes.
      *

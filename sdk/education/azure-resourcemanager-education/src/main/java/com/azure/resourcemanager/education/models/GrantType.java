@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GrantType. */
+/** Grant Offer Type. */
 public final class GrantType extends ExpandableStringEnum<GrantType> {
     /** Static value Student for GrantType. */
     public static final GrantType STUDENT = fromString("Student");

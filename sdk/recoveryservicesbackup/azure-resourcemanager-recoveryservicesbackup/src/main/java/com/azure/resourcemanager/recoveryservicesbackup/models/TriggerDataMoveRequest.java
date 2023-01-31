@@ -48,6 +48,10 @@ public final class TriggerDataMoveRequest {
     @JsonProperty(value = "pauseGC")
     private Boolean pauseGC;
 
+    /** Creates an instance of TriggerDataMoveRequest class. */
+    public TriggerDataMoveRequest() {
+    }
+
     /**
      * Get the sourceResourceId property: ARM Id of source vault.
      *

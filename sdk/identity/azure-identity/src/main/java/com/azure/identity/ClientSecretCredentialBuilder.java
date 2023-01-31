@@ -4,10 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.RegionalAuthority;
 import com.azure.identity.implementation.util.ValidationUtil;
-
-import java.util.HashMap;
 
 /**
  * Fluent credential builder for instantiating a {@link ClientSecretCredential}.
@@ -16,6 +13,7 @@ import java.util.HashMap;
  */
 public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<ClientSecretCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ClientSecretCredentialBuilder.class);
+    private static final String CLASS_NAME = ClientSecretCredentialBuilder.class.getSimpleName();
 
     private String clientSecret;
 
@@ -67,29 +65,14 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     }
 
     /**
-     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to
-     * attempt to auto-detect the region. If unset, a non-regional authority will be used. This argument should be used
-     * only by applications deployed to Azure VMs.
-     *
-     * @param regionalAuthority the regional authority
-     * @return An updated instance of this builder with the regional authority configured.
-     */
-    ClientSecretCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
-        this.identityClientOptions.setRegionalAuthority(regionalAuthority);
-        return this;
-    }
-
-    /**
      * Creates a new {@link ClientCertificateCredential} with the current configurations.
      *
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("tenantId", tenantId);
-                put("clientSecret", clientSecret);
-            }}, LOGGER);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
+            "clientSecret", clientSecret);
+
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
     }
 }

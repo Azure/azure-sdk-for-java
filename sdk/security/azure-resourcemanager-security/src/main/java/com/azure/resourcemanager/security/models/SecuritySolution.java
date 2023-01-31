@@ -30,6 +30,13 @@ public interface SecuritySolution {
     String type();
 
     /**
+     * Gets the location property: Location where the resource is stored.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the securityFamily property: The security family of the security solution.
      *
      * @return the securityFamily value.
@@ -56,13 +63,6 @@ public interface SecuritySolution {
      * @return the protectionStatus value.
      */
     String protectionStatus();
-
-    /**
-     * Gets the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    String location();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SecuritySolutionInner object.

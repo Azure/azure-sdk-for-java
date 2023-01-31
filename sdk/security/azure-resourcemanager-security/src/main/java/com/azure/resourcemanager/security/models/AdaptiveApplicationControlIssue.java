@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AdaptiveApplicationControlIssue. */
+/** An alert that machines within a group can have. */
 public final class AdaptiveApplicationControlIssue extends ExpandableStringEnum<AdaptiveApplicationControlIssue> {
     /** Static value ViolationsAudited for AdaptiveApplicationControlIssue. */
     public static final AdaptiveApplicationControlIssue VIOLATIONS_AUDITED = fromString("ViolationsAudited");
@@ -42,7 +42,11 @@ public final class AdaptiveApplicationControlIssue extends ExpandableStringEnum<
         return fromString(name, AdaptiveApplicationControlIssue.class);
     }
 
-    /** @return known AdaptiveApplicationControlIssue values. */
+    /**
+     * Gets known AdaptiveApplicationControlIssue values.
+     *
+     * @return known AdaptiveApplicationControlIssue values.
+     */
     public static Collection<AdaptiveApplicationControlIssue> values() {
         return values(AdaptiveApplicationControlIssue.class);
     }

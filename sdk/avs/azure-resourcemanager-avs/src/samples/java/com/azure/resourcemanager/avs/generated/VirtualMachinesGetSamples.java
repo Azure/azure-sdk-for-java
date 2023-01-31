@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachines Get. */
 public final class VirtualMachinesGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/VirtualMachines_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/VirtualMachines_Get.json
      */
     /**
      * Sample code: GetVirtualMachine.

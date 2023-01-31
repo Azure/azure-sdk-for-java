@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.ExpressRoutePortsBillingType;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -85,6 +86,16 @@ public final class ExpressRoutePortPropertiesFormat {
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
+
+    /*
+     * The billing type of the ExpressRoutePort resource.
+     */
+    @JsonProperty(value = "billingType")
+    private ExpressRoutePortsBillingType billingType;
+
+    /** Creates an instance of ExpressRoutePortPropertiesFormat class. */
+    public ExpressRoutePortPropertiesFormat() {
+    }
 
     /**
      * Get the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
@@ -234,6 +245,26 @@ public final class ExpressRoutePortPropertiesFormat {
      */
     public String resourceGuid() {
         return this.resourceGuid;
+    }
+
+    /**
+     * Get the billingType property: The billing type of the ExpressRoutePort resource.
+     *
+     * @return the billingType value.
+     */
+    public ExpressRoutePortsBillingType billingType() {
+        return this.billingType;
+    }
+
+    /**
+     * Set the billingType property: The billing type of the ExpressRoutePort resource.
+     *
+     * @param billingType the billingType value to set.
+     * @return the ExpressRoutePortPropertiesFormat object itself.
+     */
+    public ExpressRoutePortPropertiesFormat withBillingType(ExpressRoutePortsBillingType billingType) {
+        this.billingType = billingType;
+        return this;
     }
 
     /**

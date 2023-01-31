@@ -57,6 +57,12 @@ public final class HttpClientOptions extends ClientOptions {
     private Duration connectionIdleTimeout;
     private Class<? extends HttpClientProvider> httpClientProvider;
 
+    /**
+     * Creates a new instance of {@link HttpClientOptions}.
+     */
+    public HttpClientOptions() {
+    }
+
     @Override
     public HttpClientOptions setApplicationId(String applicationId) {
         super.setApplicationId(applicationId);

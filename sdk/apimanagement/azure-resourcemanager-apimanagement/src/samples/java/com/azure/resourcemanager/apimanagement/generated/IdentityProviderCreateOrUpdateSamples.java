@@ -23,7 +23,7 @@ public final class IdentityProviderCreateOrUpdateSamples {
             .define(IdentityProviderType.FACEBOOK)
             .withExistingService("rg1", "apimService1")
             .withClientId("facebookid")
-            .withClientSecret("facebookapplicationsecret")
+            .withClientSecret("fakeSecretPlaceholder")
             .create();
     }
 }

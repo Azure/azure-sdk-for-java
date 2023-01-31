@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,191 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2022-09-26)
+
+- Azure Resource Manager SecurityInsights client library for Java. This package contains Microsoft Azure SDK for SecurityInsights Management SDK. API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider. Package tag package-preview-2022-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.Constant74` was removed
+
+* `models.ProvisioningState` was removed
+
+#### `models.Watchlist` was modified
+
+* `sasUri()` was removed
+* `provisioningState()` was removed
+
+#### `models.EntityAnalytics` was modified
+
+* `isEnabled()` was removed
+
+#### `models.Watchlist$Update` was modified
+
+* `withSasUri(java.lang.String)` was removed
+
+#### `models.Watchlist$Definition` was modified
+
+* `withSasUri(java.lang.String)` was removed
+
+#### `models.GetInsightsError` was modified
+
+* `withErrorMessage(java.lang.String)` was removed
+* `withQueryId(java.lang.String)` was removed
+* `errorMessage()` was removed
+* `queryId()` was removed
+* `validate()` was removed
+* `withKind(java.lang.String)` was removed
+* `kind()` was removed
+
+#### `models.EntityQueryTemplates` was modified
+
+* `list(java.lang.String,java.lang.String,models.Constant74,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.AutomationRulePropertyArrayConditionSupportedArrayType` was added
+
+* `models.SecurityMLAnalyticsSettingsList` was added
+
+* `models.PropertyArrayChangedConditionProperties` was added
+
+* `models.NicEntity` was added
+
+* `models.IngestionMode` was added
+
+* `models.PropertyArrayConditionProperties` was added
+
+* `models.AutomationRulePropertyArrayConditionSupportedArrayConditionType` was added
+
+* `models.FileImport$DefinitionStages` was added
+
+* `models.DeviceImportance` was added
+
+* `models.AutomationRulePropertyArrayChangedConditionSupportedArrayType` was added
+
+* `models.AnomalyTimelineItem` was added
+
+* `models.SecurityMLAnalyticsSettingsKind` was added
+
+* `models.SecurityMLAnalyticsSettingsDataSource` was added
+
+* `models.SecurityMLAnalyticsSetting` was added
+
+* `models.Constant88` was added
+
+* `models.EntityProviders` was added
+
+* `models.FileImportState` was added
+
+* `models.AutomationRulePropertyArrayValuesCondition` was added
+
+* `models.GetInsightsErrorKind` was added
+
+* `models.FileMetadata` was added
+
+* `models.FileFormat` was added
+
+* `models.SecurityMLAnalyticsSettings` was added
+
+* `models.AutomationRulePropertyValuesChangedCondition` was added
+
+* `models.FileImport` was added
+
+* `models.FileImportContentType` was added
+
+* `models.FileImports` was added
+
+* `models.AnomalySecurityMLAnalyticsSettings` was added
+
+* `models.PropertyChangedConditionProperties` was added
+
+* `models.AutomationRulePropertyArrayChangedValuesCondition` was added
+
+* `models.AutomationRulePropertyChangedConditionSupportedChangedType` was added
+
+* `models.BooleanConditionProperties` was added
+
+* `models.ValidationError` was added
+
+* `models.FileImport$Definition` was added
+
+* `models.AutomationRulePropertyArrayChangedConditionSupportedChangeType` was added
+
+* `models.AutomationRuleBooleanConditionSupportedOperator` was added
+
+* `models.SettingsStatus` was added
+
+* `models.FileImportList` was added
+
+* `models.DeleteStatus` was added
+
+* `models.AutomationRuleBooleanCondition` was added
+
+* `models.AutomationRulePropertyChangedConditionSupportedPropertyType` was added
+
+#### `models.EntityAnalytics` was modified
+
+* `entityProviders()` was added
+* `withEntityProviders(java.util.List)` was added
+
+#### `models.NrtAlertRuleTemplate` was modified
+
+* `withEventGroupingSettings(models.EventGroupingSettings)` was added
+* `eventGroupingSettings()` was added
+
+#### `models.IoTDeviceEntity` was modified
+
+* `isScanner()` was added
+* `purdueLayer()` was added
+* `zone()` was added
+* `withImportance(models.DeviceImportance)` was added
+* `site()` was added
+* `owners()` was added
+* `isAuthorized()` was added
+* `deviceSubType()` was added
+* `isProgramming()` was added
+* `nicEntityIds()` was added
+* `importance()` was added
+* `sensor()` was added
+
+#### `models.GetInsightsError` was modified
+
+* `fromString(java.lang.String)` was added
+* `values()` was added
+
+#### `models.DataConnectorConnectBody` was modified
+
+* `withOutputStream(java.lang.String)` was added
+* `withDataCollectionEndpoint(java.lang.String)` was added
+* `outputStream()` was added
+* `withDataCollectionRuleImmutableId(java.lang.String)` was added
+* `dataCollectionRuleImmutableId()` was added
+* `dataCollectionEndpoint()` was added
+
+#### `models.IncidentOwnerInfo` was modified
+
+* `withOwnerType(models.OwnerType)` was added
+
+#### `SecurityInsightsManager` was modified
+
+* `fileImports()` was added
+* `securityMLAnalyticsSettings()` was added
+
+#### `models.NrtAlertRule` was modified
+
+* `withEventGroupingSettings(models.EventGroupingSettings)` was added
+* `eventGroupingSettings()` was added
+
+#### `models.QueryBasedAlertRuleTemplateProperties` was modified
+
+* `eventGroupingSettings()` was added
+* `withEventGroupingSettings(models.EventGroupingSettings)` was added
+
+#### `models.EntityQueryTemplates` was modified
+
+* `list(java.lang.String,java.lang.String,models.Constant88,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.3 (2022-05-16)
 

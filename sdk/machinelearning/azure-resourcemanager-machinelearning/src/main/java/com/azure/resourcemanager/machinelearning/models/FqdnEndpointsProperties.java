@@ -23,6 +23,10 @@ public final class FqdnEndpointsProperties {
     @JsonProperty(value = "endpoints")
     private List<FqdnEndpoint> endpoints;
 
+    /** Creates an instance of FqdnEndpointsProperties class. */
+    public FqdnEndpointsProperties() {
+    }
+
     /**
      * Get the category property: The category property.
      *

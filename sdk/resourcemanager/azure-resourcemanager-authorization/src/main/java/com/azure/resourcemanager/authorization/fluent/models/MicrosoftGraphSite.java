@@ -56,8 +56,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
     private MicrosoftGraphItemAnalytics analytics;
 
     /*
-     * The collection of column definitions reusable across lists under this
-     * site.
+     * The collection of column definitions reusable across lists under this site.
      */
     @JsonProperty(value = "columns")
     private List<MicrosoftGraphColumnDefinition> columns;
@@ -81,8 +80,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
     private List<MicrosoftGraphDrive> drives;
 
     /*
-     * Used to address any item contained in this site. This collection cannot
-     * be enumerated.
+     * Used to address any item contained in this site. This collection cannot be enumerated.
      */
     @JsonProperty(value = "items")
     private List<MicrosoftGraphBaseItemInner> items;
@@ -109,6 +107,10 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
      * site
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSite class. */
+    public MicrosoftGraphSite() {
+    }
 
     /**
      * Get the displayName property: The full title for the site. Read-only.

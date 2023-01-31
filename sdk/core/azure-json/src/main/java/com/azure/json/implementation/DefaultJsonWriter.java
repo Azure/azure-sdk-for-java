@@ -219,6 +219,7 @@ public final class DefaultJsonWriter extends JsonWriter {
                 + "closed. Current writing state is '" + context.getWriteState() + "'.");
         }
 
+        generator.flush();
         generator.close();
     }
 }

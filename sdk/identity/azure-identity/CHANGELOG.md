@@ -1,14 +1,79 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.8.0-beta.2 (Unreleased)
 
 ### Features Added
+
+- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.8.0-beta.1 (2023-01-20)
+
+### Features Added
+- Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
+
+## 1.7.3 (2023-01-06)
+
+### Bugs Fixed
+- No longer statically accessing environment variables. [#32781](https://github.com/Azure/azure-sdk-for-java/issues/32781)
+- Use `ThreadLocalRandom` instead of `Random` to better enable static compilation. [#32744](https://github.com/Azure/azure-sdk-for-java/issues/32744)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+
+## 1.7.2 (2022-12-09)
+
+### Bugs Fixed
+- Fixed MSI token `expires_in` parsing issue.
+
+## 1.7.1 (2022-11-17)
+
+### Features Added
+
+- Added user-agent header to Identity requests
+
+## 1.7.0 (2022-11-04)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `msal4j` from `1.13.2` to `1.13.3`
+
+## 1.7.0-beta.2 (2022-10-13)
+
+### Features Added
+- `GetTokenSync` method implementation/support in Token Credentials.
+- Read `AZURE_REGIONAL_AUTHORITY_NAME` from the environment to specify region for client credential types.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` from `1.13.1` to `1.13.2`
+
+## 1.6.1 (2022-10-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
+## 1.7.0-beta.1 (2022-09-20)
+
+### Features Added
+
+- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`.
+-  Added support for in-memory token caching in `ManagedIdentityCredential`.
+
+### Breaking Changes
+- Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
 
 ## 1.6.0 (2022-09-19)
 

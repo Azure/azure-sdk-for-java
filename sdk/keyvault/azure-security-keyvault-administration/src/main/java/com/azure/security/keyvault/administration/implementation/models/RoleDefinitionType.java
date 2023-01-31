@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoleDefinitionType. */
+/** The role definition type. */
 public final class RoleDefinitionType extends ExpandableStringEnum<RoleDefinitionType> {
     /** Static value Microsoft.Authorization/roleDefinitions for RoleDefinitionType. */
     public static final RoleDefinitionType MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS =
@@ -25,7 +25,11 @@ public final class RoleDefinitionType extends ExpandableStringEnum<RoleDefinitio
         return fromString(name, RoleDefinitionType.class);
     }
 
-    /** @return known RoleDefinitionType values. */
+    /**
+     * Gets known RoleDefinitionType values.
+     *
+     * @return known RoleDefinitionType values.
+     */
     public static Collection<RoleDefinitionType> values() {
         return values(RoleDefinitionType.class);
     }

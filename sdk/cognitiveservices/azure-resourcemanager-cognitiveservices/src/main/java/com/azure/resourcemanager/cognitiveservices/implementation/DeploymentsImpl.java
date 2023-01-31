@@ -38,15 +38,6 @@ public final class DeploymentsImpl implements Deployments {
         return Utils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
     }
 
-    public Deployment get(String resourceGroupName, String accountName, String deploymentName) {
-        DeploymentInner inner = this.serviceClient().get(resourceGroupName, accountName, deploymentName);
-        if (inner != null) {
-            return new DeploymentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Deployment> getWithResponse(
         String resourceGroupName, String accountName, String deploymentName, Context context) {
         Response<DeploymentInner> inner =
@@ -57,6 +48,15 @@ public final class DeploymentsImpl implements Deployments {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DeploymentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Deployment get(String resourceGroupName, String accountName, String deploymentName) {
+        DeploymentInner inner = this.serviceClient().get(resourceGroupName, accountName, deploymentName);
+        if (inner != null) {
+            return new DeploymentImpl(inner, this.manager());
         } else {
             return null;
         }

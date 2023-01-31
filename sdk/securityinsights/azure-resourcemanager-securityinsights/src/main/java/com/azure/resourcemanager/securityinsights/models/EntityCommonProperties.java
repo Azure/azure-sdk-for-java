@@ -13,17 +13,15 @@ import java.util.Map;
 @Immutable
 public class EntityCommonProperties {
     /*
-     * A bag of custom fields that should be part of the entity and will be
-     * presented to the user.
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
      */
     @JsonProperty(value = "additionalData", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalData;
 
     /*
-     * The graph item display name which is a short humanly readable
-     * description of the graph item instance. This property is optional and
-     * might be system generated.
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
      */
     @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;

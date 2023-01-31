@@ -61,6 +61,10 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     @JsonProperty(value = "pathRules")
     private List<SubResource> pathRules;
 
+    /** Creates an instance of ApplicationGatewayRedirectConfigurationPropertiesFormat class. */
+    public ApplicationGatewayRedirectConfigurationPropertiesFormat() {
+    }
+
     /**
      * Get the redirectType property: HTTP redirection type.
      *

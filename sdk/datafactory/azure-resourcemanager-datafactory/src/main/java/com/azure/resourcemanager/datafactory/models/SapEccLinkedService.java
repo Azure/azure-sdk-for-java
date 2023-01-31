@@ -24,6 +24,10 @@ public final class SapEccLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SapEccLinkedServiceTypeProperties innerTypeProperties = new SapEccLinkedServiceTypeProperties();
 
+    /** Creates an instance of SapEccLinkedService class. */
+    public SapEccLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP ECC linked service properties.
      *

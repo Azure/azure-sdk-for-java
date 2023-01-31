@@ -35,6 +35,10 @@ public final class ComputeInstanceLastOperation {
     @JsonProperty(value = "operationTrigger")
     private OperationTrigger operationTrigger;
 
+    /** Creates an instance of ComputeInstanceLastOperation class. */
+    public ComputeInstanceLastOperation() {
+    }
+
     /**
      * Get the operationName property: Name of the last operation.
      *

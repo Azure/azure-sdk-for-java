@@ -22,6 +22,10 @@ public final class IdentityBasedRestoreDetails {
     @JsonProperty(value = "targetStorageAccountId")
     private String targetStorageAccountId;
 
+    /** Creates an instance of IdentityBasedRestoreDetails class. */
+    public IdentityBasedRestoreDetails() {
+    }
+
     /**
      * Get the objectType property: Gets the class type.
      *

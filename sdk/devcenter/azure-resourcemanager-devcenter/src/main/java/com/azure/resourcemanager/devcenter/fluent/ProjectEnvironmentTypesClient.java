@@ -17,7 +17,7 @@ public interface ProjectEnvironmentTypesClient {
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +30,7 @@ public interface ProjectEnvironmentTypesClient {
     /**
      * Lists environment types for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -46,21 +46,7 @@ public interface ProjectEnvironmentTypesClient {
     /**
      * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProjectEnvironmentTypeInner get(String resourceGroupName, String projectName, String environmentTypeName);
-
-    /**
-     * Gets a project environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -74,25 +60,23 @@ public interface ProjectEnvironmentTypesClient {
         String resourceGroupName, String projectName, String environmentTypeName, Context context);
 
     /**
-     * Creates or updates a project environment type.
+     * Gets a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
-     * @param body Represents a Project Environment Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an environment type.
+     * @return a project environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProjectEnvironmentTypeInner createOrUpdate(
-        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeInner body);
+    ProjectEnvironmentTypeInner get(String resourceGroupName, String projectName, String environmentTypeName);
 
     /**
      * Creates or updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents a Project Environment Type.
@@ -111,25 +95,25 @@ public interface ProjectEnvironmentTypesClient {
         Context context);
 
     /**
-     * Partially updates a project environment type.
+     * Creates or updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
-     * @param body Updatable project environment type properties.
+     * @param body Represents a Project Environment Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProjectEnvironmentTypeInner update(
-        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeUpdate body);
+    ProjectEnvironmentTypeInner createOrUpdate(
+        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeInner body);
 
     /**
      * Partially updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable project environment type properties.
@@ -148,22 +132,25 @@ public interface ProjectEnvironmentTypesClient {
         Context context);
 
     /**
-     * Deletes a project environment type.
+     * Partially updates a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
+     * @param body Updatable project environment type properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String projectName, String environmentTypeName);
+    ProjectEnvironmentTypeInner update(
+        String resourceGroupName, String projectName, String environmentTypeName, ProjectEnvironmentTypeUpdate body);
 
     /**
      * Deletes a project environment type.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
@@ -175,4 +162,17 @@ public interface ProjectEnvironmentTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String projectName, String environmentTypeName, Context context);
+
+    /**
+     * Deletes a project environment type.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String projectName, String environmentTypeName);
 }

@@ -31,7 +31,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * slot as well as multi-slot scenarios.
  *
  * <p><strong>Instantiating an asynchronous Personalizer Client</strong></p>
- * <p>
  * <!-- src_embed com.azure.ai.personalizer.PersonalizerAsyncClient.instantiation -->
  * <pre>
  * PersonalizerAsyncClient personalizerClient = new PersonalizerClientBuilder&#40;&#41;

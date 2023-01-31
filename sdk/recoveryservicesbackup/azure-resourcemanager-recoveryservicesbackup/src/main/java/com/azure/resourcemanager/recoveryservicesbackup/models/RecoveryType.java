@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecoveryType. */
+/** Type of this recovery. */
 public final class RecoveryType extends ExpandableStringEnum<RecoveryType> {
     /** Static value Invalid for RecoveryType. */
     public static final RecoveryType INVALID = fromString("Invalid");
@@ -24,6 +24,15 @@ public final class RecoveryType extends ExpandableStringEnum<RecoveryType> {
 
     /** Static value Offline for RecoveryType. */
     public static final RecoveryType OFFLINE = fromString("Offline");
+
+    /**
+     * Creates a new instance of RecoveryType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryType() {
+    }
 
     /**
      * Creates or finds a RecoveryType from its string representation.

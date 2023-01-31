@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A piece of evidence supporting the compliance state set in the attestation. */
 @Fluent
 public final class AttestationEvidence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttestationEvidence.class);
-
     /*
      * The description for this piece of evidence.
      */
@@ -25,6 +21,10 @@ public final class AttestationEvidence {
      */
     @JsonProperty(value = "sourceUri")
     private String sourceUri;
+
+    /** Creates an instance of AttestationEvidence class. */
+    public AttestationEvidence() {
+    }
 
     /**
      * Get the description property: The description for this piece of evidence.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationTrigger. */
+/** Trigger of operation. */
 public final class OperationTrigger extends ExpandableStringEnum<OperationTrigger> {
     /** Static value User for OperationTrigger. */
     public static final OperationTrigger USER = fromString("User");
@@ -18,6 +18,15 @@ public final class OperationTrigger extends ExpandableStringEnum<OperationTrigge
 
     /** Static value IdleShutdown for OperationTrigger. */
     public static final OperationTrigger IDLE_SHUTDOWN = fromString("IdleShutdown");
+
+    /**
+     * Creates a new instance of OperationTrigger value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationTrigger() {
+    }
 
     /**
      * Creates or finds a OperationTrigger from its string representation.

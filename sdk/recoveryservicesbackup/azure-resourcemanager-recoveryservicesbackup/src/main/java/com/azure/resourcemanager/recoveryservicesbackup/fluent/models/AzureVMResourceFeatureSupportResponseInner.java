@@ -17,6 +17,10 @@ public final class AzureVMResourceFeatureSupportResponseInner {
     @JsonProperty(value = "supportStatus")
     private SupportStatus supportStatus;
 
+    /** Creates an instance of AzureVMResourceFeatureSupportResponseInner class. */
+    public AzureVMResourceFeatureSupportResponseInner() {
+    }
+
     /**
      * Get the supportStatus property: Support status of feature.
      *

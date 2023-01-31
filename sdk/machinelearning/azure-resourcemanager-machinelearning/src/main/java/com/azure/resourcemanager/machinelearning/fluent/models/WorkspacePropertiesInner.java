@@ -35,8 +35,8 @@ public final class WorkspacePropertiesInner {
     private String friendlyName;
 
     /*
-     * ARM id of the key vault associated with this workspace. This cannot be
-     * changed once the workspace has been created
+     * ARM id of the key vault associated with this workspace. This cannot be changed once the workspace has been
+     * created
      */
     @JsonProperty(value = "keyVault")
     private String keyVault;
@@ -54,22 +54,21 @@ public final class WorkspacePropertiesInner {
     private String containerRegistry;
 
     /*
-     * ARM id of the storage account associated with this workspace. This
-     * cannot be changed once the workspace has been created
+     * ARM id of the storage account associated with this workspace. This cannot be changed once the workspace has been
+     * created
      */
     @JsonProperty(value = "storageAccount")
     private String storageAccount;
 
     /*
-     * Url for the discovery service to identify regional endpoints for machine
-     * learning experimentation services
+     * Url for the discovery service to identify regional endpoints for machine learning experimentation services
      */
     @JsonProperty(value = "discoveryUrl")
     private String discoveryUrl;
 
     /*
-     * The current deployment state of workspace resource. The
-     * provisioningState is to indicate states for resource provisioning.
+     * The current deployment state of workspace resource. The provisioningState is to indicate states for resource
+     * provisioning.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -81,15 +80,14 @@ public final class WorkspacePropertiesInner {
     private EncryptionProperty encryption;
 
     /*
-     * The flag to signal HBI data in the workspace and reduce diagnostic data
-     * collected by the service
+     * The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service
      */
     @JsonProperty(value = "hbiWorkspace")
     private Boolean hbiWorkspace;
 
     /*
-     * The name of the managed resource group created by workspace RP in
-     * customer subscription if the workspace is CMK workspace
+     * The name of the managed resource group created by workspace RP in customer subscription if the workspace is CMK
+     * workspace
      */
     @JsonProperty(value = "serviceProvisionedResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceProvisionedResourceGroup;
@@ -143,8 +141,7 @@ public final class WorkspacePropertiesInner {
     private ServiceManagedResourcesSettings serviceManagedResourcesSettings;
 
     /*
-     * The user assigned identity resource id that represents the workspace
-     * identity.
+     * The user assigned identity resource id that represents the workspace identity.
      */
     @JsonProperty(value = "primaryUserAssignedIdentity")
     private String primaryUserAssignedIdentity;
@@ -156,18 +153,26 @@ public final class WorkspacePropertiesInner {
     private String tenantId;
 
     /*
-     * If the storage associated with the workspace has hierarchical
-     * namespace(HNS) enabled.
+     * If the storage associated with the workspace has hierarchical namespace(HNS) enabled.
      */
     @JsonProperty(value = "storageHnsEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean storageHnsEnabled;
 
     /*
-     * The URI associated with this workspace that machine learning flow must
-     * point at to set up tracking.
+     * The URI associated with this workspace that machine learning flow must point at to set up tracking.
      */
     @JsonProperty(value = "mlFlowTrackingUri", access = JsonProperty.Access.WRITE_ONLY)
     private String mlFlowTrackingUri;
+
+    /*
+     * Enabling v1_legacy_mode may prevent you from using features provided by the v2 API.
+     */
+    @JsonProperty(value = "v1LegacyMode")
+    private Boolean v1LegacyMode;
+
+    /** Creates an instance of WorkspacePropertiesInner class. */
+    public WorkspacePropertiesInner() {
+    }
 
     /**
      * Get the workspaceId property: The immutable id associated with this workspace.
@@ -566,6 +571,28 @@ public final class WorkspacePropertiesInner {
      */
     public String mlFlowTrackingUri() {
         return this.mlFlowTrackingUri;
+    }
+
+    /**
+     * Get the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @return the v1LegacyMode value.
+     */
+    public Boolean v1LegacyMode() {
+        return this.v1LegacyMode;
+    }
+
+    /**
+     * Set the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @param v1LegacyMode the v1LegacyMode value to set.
+     * @return the WorkspacePropertiesInner object itself.
+     */
+    public WorkspacePropertiesInner withV1LegacyMode(Boolean v1LegacyMode) {
+        this.v1LegacyMode = v1LegacyMode;
+        return this;
     }
 
     /**

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/active/json?api-version=1.1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "109",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 23B99099833D4A47A3209ABF404F9F23 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:28Z",
+      "Date" : "Fri, 11 Nov 2022 13:19:28 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "public, max-age=429",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "Fri, 11 Nov 2022 13:26:37 GMT",
+      "Body" : "{\"results\":[{\"year\":\"2022\",\"basinId\":\"AL\",\"govId\":17,\"name\":\"Nicole\",\"isActive\":true,\"isSubtropical\":false}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/weather/tropical/storms/forecasts/json?api-version=1.1&year=-1&basinId=AL&govId=17&windowGeometry=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaWeatherSDK/1.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "77",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "X-MSEdge-Ref" : "Ref A: DB4AEB0AC21D404CBC560D5FA0D672F0 Ref B: PAOEDGE0617 Ref C: 2022-11-11T13:19:28Z",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"year should be in YYYY format\"}}",
+      "Date" : "Fri, 11 Nov 2022 13:19:28 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

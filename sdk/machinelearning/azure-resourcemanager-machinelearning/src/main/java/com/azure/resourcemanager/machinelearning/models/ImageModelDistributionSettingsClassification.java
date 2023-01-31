@@ -18,33 +18,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageModelDistributionSettingsClassification extends ImageModelDistributionSettings {
     /*
-     * Image crop size that is input to the neural network for the training
-     * dataset. Must be a positive integer.
+     * Image crop size that is input to the neural network for the training dataset. Must be a positive integer.
      */
     @JsonProperty(value = "trainingCropSize")
     private String trainingCropSize;
 
     /*
-     * Image crop size that is input to the neural network for the validation
-     * dataset. Must be a positive integer.
+     * Image crop size that is input to the neural network for the validation dataset. Must be a positive integer.
      */
     @JsonProperty(value = "validationCropSize")
     private String validationCropSize;
 
     /*
-     * Image size to which to resize before cropping for validation dataset.
-     * Must be a positive integer.
+     * Image size to which to resize before cropping for validation dataset. Must be a positive integer.
      */
     @JsonProperty(value = "validationResizeSize")
     private String validationResizeSize;
 
     /*
      * Weighted loss. The accepted values are 0 for no weighted loss.
-     * 1 for weighted loss with sqrt.(class_weights). 2 for weighted loss with
-     * class_weights. Must be 0 or 1 or 2.
+     * 1 for weighted loss with sqrt.(class_weights). 2 for weighted loss with class_weights. Must be 0 or 1 or 2.
      */
     @JsonProperty(value = "weightedLoss")
     private String weightedLoss;
+
+    /** Creates an instance of ImageModelDistributionSettingsClassification class. */
+    public ImageModelDistributionSettingsClassification() {
+    }
 
     /**
      * Get the trainingCropSize property: Image crop size that is input to the neural network for the training dataset.
@@ -278,13 +278,6 @@ public final class ImageModelDistributionSettingsClassification extends ImageMod
     @Override
     public ImageModelDistributionSettingsClassification withRandomSeed(String randomSeed) {
         super.withRandomSeed(randomSeed);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImageModelDistributionSettingsClassification withSplitRatio(String splitRatio) {
-        super.withSplitRatio(splitRatio);
         return this;
     }
 

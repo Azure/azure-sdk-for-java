@@ -22,6 +22,10 @@ public final class DatabricksProperties {
     @JsonProperty(value = "workspaceUrl")
     private String workspaceUrl;
 
+    /** Creates an instance of DatabricksProperties class. */
+    public DatabricksProperties() {
+    }
+
     /**
      * Get the databricksAccessToken property: Databricks access token.
      *

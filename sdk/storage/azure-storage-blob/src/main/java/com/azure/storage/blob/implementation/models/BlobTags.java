@@ -32,6 +32,9 @@ public final class BlobTags {
     @JsonProperty(value = "TagSet", required = true)
     private TagSetWrapper blobTagSet;
 
+    /** Creates an instance of BlobTags class. */
+    public BlobTags() {}
+
     /**
      * Get the blobTagSet property: The BlobTagSet property.
      *

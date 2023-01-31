@@ -47,6 +47,10 @@ public final class ConnectionMonitorHttpConfiguration {
     @JsonProperty(value = "preferHTTPS")
     private Boolean preferHttps;
 
+    /** Creates an instance of ConnectionMonitorHttpConfiguration class. */
+    public ConnectionMonitorHttpConfiguration() {
+    }
+
     /**
      * Get the port property: The port to connect to.
      *

@@ -2,18 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cPropertiesConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cOidcIdTokenDecoderFactory;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
+import org.springframework.web.client.RestTemplate;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
  * Configure the necessary beans for AAD B2C authentication and authorization,
@@ -26,6 +36,17 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 @Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
 public class AadB2cAutoConfiguration {
 
+    private final RestTemplateBuilder restTemplateBuilder;
+
+    /**
+     * Creates a new instance of {@link AadOAuth2ClientConfiguration}.
+     *
+     * @param restTemplateBuilder the RestTemplateBuilder
+     */
+    public AadB2cAutoConfiguration(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplateBuilder = restTemplateBuilder;
+    }
+
     /**
      * Declare AADB2CAuthorizationRequestResolver bean.
      * @param repository The clientRegistrationRepository,
@@ -35,7 +56,7 @@ public class AadB2cAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AadB2cAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver(
-        ClientRegistrationRepository repository, AadB2cProperties properties) {
+            ClientRegistrationRepository repository, AadB2cProperties properties) {
         return new AadB2cAuthorizationRequestResolver(repository, properties);
     }
 
@@ -61,6 +82,18 @@ public class AadB2cAutoConfiguration {
     @ConditionalOnMissingBean
     public AadB2cOidcLoginConfigurer b2cLoginConfigurer(AadB2cLogoutSuccessHandler handler,
                                                         AadB2cAuthorizationRequestResolver resolver) {
-        return new AadB2cOidcLoginConfigurer(handler, resolver);
+        return new AadB2cOidcLoginConfigurer(handler, resolver, null, restTemplateBuilder);
+    }
+
+    /**
+     * Provide {@link JwtDecoderFactory} used in {@link OAuth2LoginConfigurer#init}. The {@link JwtDecoder} created by
+     * current {@link JwtDecoderFactory} will use {@link RestTemplate} created by {@link RestTemplateBuilder} bean.
+     *
+     * @return JwtDecoderFactory
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory() {
+        return new AadB2cOidcIdTokenDecoderFactory(createRestTemplate(restTemplateBuilder));
     }
 }

@@ -59,6 +59,10 @@ public final class MabJob extends Job {
     @JsonProperty(value = "extendedInfo")
     private MabJobExtendedInfo extendedInfo;
 
+    /** Creates an instance of MabJob class. */
+    public MabJob() {
+    }
+
     /**
      * Get the duration property: Time taken by job to run.
      *

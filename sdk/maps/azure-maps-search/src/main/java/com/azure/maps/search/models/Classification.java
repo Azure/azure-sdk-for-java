@@ -23,6 +23,9 @@ public final class Classification {
     @JsonProperty(value = "names", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClassificationName> names;
 
+    /** Creates an instance of Classification class. */
+    public Classification() {}
+
     /**
      * Get the code property: Code property.
      *

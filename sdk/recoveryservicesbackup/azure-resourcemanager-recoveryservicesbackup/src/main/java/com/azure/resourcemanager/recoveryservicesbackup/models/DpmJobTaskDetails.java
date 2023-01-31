@@ -42,6 +42,10 @@ public final class DpmJobTaskDetails {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of DpmJobTaskDetails class. */
+    public DpmJobTaskDetails() {
+    }
+
     /**
      * Get the taskId property: The task display name.
      *

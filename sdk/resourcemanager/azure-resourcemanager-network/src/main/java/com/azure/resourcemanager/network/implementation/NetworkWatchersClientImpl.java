@@ -94,7 +94,7 @@ public final class NetworkWatchersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkWatchersService {
+    public interface NetworkWatchersService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -414,7 +414,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -472,7 +472,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -511,23 +511,6 @@ public final class NetworkWatchersClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkWatcherInner createOrUpdate(
-        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, networkWatcherName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a network watcher in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the network watcher resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -538,6 +521,23 @@ public final class NetworkWatchersClientImpl
     public Response<NetworkWatcherInner> createOrUpdateWithResponse(
         String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context).block();
+    }
+
+    /**
+     * Creates or updates a network watcher in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the network watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network watcher in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkWatcherInner createOrUpdate(
+        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, networkWatcherName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -574,7 +574,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -626,7 +626,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -661,21 +661,6 @@ public final class NetworkWatchersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network watcher by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkWatcherInner getByResourceGroup(String resourceGroupName, String networkWatcherName) {
-        return getByResourceGroupAsync(resourceGroupName, networkWatcherName).block();
-    }
-
-    /**
-     * Gets the specified network watcher by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -686,6 +671,21 @@ public final class NetworkWatchersClientImpl
     public Response<NetworkWatcherInner> getByResourceGroupWithResponse(
         String resourceGroupName, String networkWatcherName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkWatcherName, context).block();
+    }
+
+    /**
+     * Gets the specified network watcher by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network watcher by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkWatcherInner getByResourceGroup(String resourceGroupName, String networkWatcherName) {
+        return getByResourceGroupWithResponse(resourceGroupName, networkWatcherName, Context.NONE).getValue();
     }
 
     /**
@@ -721,7 +721,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -772,7 +772,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -961,7 +961,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1019,7 +1019,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1058,22 +1058,6 @@ public final class NetworkWatchersClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkWatcherInner updateTags(String resourceGroupName, String networkWatcherName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, networkWatcherName, parameters).block();
-    }
-
-    /**
-     * Updates a network watcher tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters supplied to update network watcher tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1084,6 +1068,22 @@ public final class NetworkWatchersClientImpl
     public Response<NetworkWatcherInner> updateTagsWithResponse(
         String resourceGroupName, String networkWatcherName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context).block();
+    }
+
+    /**
+     * Updates a network watcher tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters supplied to update network watcher tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network watcher in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkWatcherInner updateTags(String resourceGroupName, String networkWatcherName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, networkWatcherName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1114,7 +1114,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1164,7 +1164,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1261,7 +1261,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1299,7 +1299,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1402,7 +1402,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1461,7 +1461,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1500,23 +1500,6 @@ public final class NetworkWatchersClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current network topology by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopologyInner getTopology(
-        String resourceGroupName, String networkWatcherName, TopologyParameters parameters) {
-        return getTopologyAsync(resourceGroupName, networkWatcherName, parameters).block();
-    }
-
-    /**
-     * Gets the current network topology by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the representation of topology.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1527,6 +1510,23 @@ public final class NetworkWatchersClientImpl
     public Response<TopologyInner> getTopologyWithResponse(
         String resourceGroupName, String networkWatcherName, TopologyParameters parameters, Context context) {
         return getTopologyWithResponseAsync(resourceGroupName, networkWatcherName, parameters, context).block();
+    }
+
+    /**
+     * Gets the current network topology by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the representation of topology.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current network topology by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopologyInner getTopology(
+        String resourceGroupName, String networkWatcherName, TopologyParameters parameters) {
+        return getTopologyWithResponse(resourceGroupName, networkWatcherName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1569,7 +1569,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1628,7 +1628,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1845,7 +1845,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1903,7 +1903,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2117,7 +2117,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2176,7 +2176,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2405,7 +2405,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2464,7 +2464,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2682,7 +2682,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2744,7 +2744,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2979,7 +2979,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3038,7 +3038,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3263,7 +3263,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3322,7 +3322,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3547,7 +3547,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3607,7 +3607,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3835,7 +3835,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3897,7 +3897,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4141,7 +4141,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4204,7 +4204,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4448,7 +4448,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4513,7 +4513,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

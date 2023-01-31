@@ -20,6 +20,10 @@ public final class AzureMariaDBSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of AzureMariaDBSource class. */
+    public AzureMariaDBSource() {
+    }
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

@@ -25,6 +25,10 @@ public final class JobResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of JobResourceInner class. */
+    public JobResourceInner() {
+    }
+
     /**
      * Get the properties property: JobResource properties.
      *

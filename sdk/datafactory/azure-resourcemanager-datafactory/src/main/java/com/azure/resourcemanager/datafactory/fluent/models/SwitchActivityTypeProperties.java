@@ -36,6 +36,10 @@ public final class SwitchActivityTypeProperties {
     @JsonProperty(value = "defaultActivities")
     private List<Activity> defaultActivities;
 
+    /** Creates an instance of SwitchActivityTypeProperties class. */
+    public SwitchActivityTypeProperties() {
+    }
+
     /**
      * Get the on property: An expression that would evaluate to a string or integer. This is used to determine the
      * block of activities in cases that will be executed.

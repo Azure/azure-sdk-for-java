@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualHubs ListByResourceGroup. */
 public final class VirtualHubsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualHubListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualHubListByResourceGroup.json
      */
     /**
      * Sample code: VirtualHubListByResourceGroup.

@@ -24,6 +24,10 @@ public final class LogLocationSettings {
     @JsonProperty(value = "path")
     private Object path;
 
+    /** Creates an instance of LogLocationSettings class. */
+    public LogLocationSettings() {
+    }
+
     /**
      * Get the linkedServiceName property: Log storage linked service reference.
      *

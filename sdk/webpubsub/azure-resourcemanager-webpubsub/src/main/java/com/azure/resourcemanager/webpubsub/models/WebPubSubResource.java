@@ -50,14 +50,14 @@ public interface WebPubSubResource {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The billing information of the resource.(e.g. Free, Standard).
+     * Gets the sku property: The billing information of the resource.
      *
      * @return the sku value.
      */
     ResourceSku sku();
 
     /**
-     * Gets the identity property: The managed identity response.
+     * Gets the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
      */
@@ -129,7 +129,7 @@ public interface WebPubSubResource {
     List<SharedPrivateLinkResource> sharedPrivateLinkResources();
 
     /**
-     * Gets the tls property: TLS settings.
+     * Gets the tls property: TLS settings for the resource.
      *
      * @return the tls value.
      */
@@ -150,17 +150,14 @@ public interface WebPubSubResource {
     LiveTraceConfiguration liveTraceConfiguration();
 
     /**
-     * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @return the resourceLogConfiguration value.
      */
     ResourceLogConfiguration resourceLogConfiguration();
 
     /**
-     * Gets the networkACLs property: Network ACLs.
+     * Gets the networkACLs property: Network ACLs for the resource.
      *
      * @return the networkACLs value.
      */
@@ -204,6 +201,13 @@ public interface WebPubSubResource {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubResourceInner object.
@@ -296,9 +300,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource definition allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: The billing information of the resource.(e.g. Free, Standard).
+             * Specifies the sku property: The billing information of the resource..
              *
-             * @param sku The billing information of the resource.(e.g. Free, Standard).
+             * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             WithCreate withSku(ResourceSku sku);
@@ -306,9 +310,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The managed identity response.
+             * Specifies the identity property: A class represent managed identities used for request and response.
              *
-             * @param identity The managed identity response.
+             * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedIdentity identity);
@@ -316,9 +320,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource definition allowing to specify tls. */
         interface WithTls {
             /**
-             * Specifies the tls property: TLS settings..
+             * Specifies the tls property: TLS settings for the resource.
              *
-             * @param tls TLS settings.
+             * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             WithCreate withTls(WebPubSubTlsSettings tls);
@@ -338,14 +342,9 @@ public interface WebPubSubResource {
         interface WithResourceLogConfiguration {
             /**
              * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
-             * resource. If resourceLogConfiguration isn't null or empty, it will override options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
+             * resource..
              *
-             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
-             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features.
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
@@ -353,9 +352,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource definition allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
-             * Specifies the networkACLs property: Network ACLs.
+             * Specifies the networkACLs property: Network ACLs for the resource.
              *
-             * @param networkACLs Network ACLs.
+             * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             WithCreate withNetworkACLs(WebPubSubNetworkACLs networkACLs);
@@ -448,9 +447,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource update allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: The billing information of the resource.(e.g. Free, Standard).
+             * Specifies the sku property: The billing information of the resource..
              *
-             * @param sku The billing information of the resource.(e.g. Free, Standard).
+             * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             Update withSku(ResourceSku sku);
@@ -458,9 +457,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource update allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The managed identity response.
+             * Specifies the identity property: A class represent managed identities used for request and response.
              *
-             * @param identity The managed identity response.
+             * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             Update withIdentity(ManagedIdentity identity);
@@ -468,9 +467,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource update allowing to specify tls. */
         interface WithTls {
             /**
-             * Specifies the tls property: TLS settings..
+             * Specifies the tls property: TLS settings for the resource.
              *
-             * @param tls TLS settings.
+             * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             Update withTls(WebPubSubTlsSettings tls);
@@ -490,14 +489,9 @@ public interface WebPubSubResource {
         interface WithResourceLogConfiguration {
             /**
              * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
-             * resource. If resourceLogConfiguration isn't null or empty, it will override options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
+             * resource..
              *
-             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
-             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features.
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
@@ -505,9 +499,9 @@ public interface WebPubSubResource {
         /** The stage of the WebPubSubResource update allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
-             * Specifies the networkACLs property: Network ACLs.
+             * Specifies the networkACLs property: Network ACLs for the resource.
              *
-             * @param networkACLs Network ACLs.
+             * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             Update withNetworkACLs(WebPubSubNetworkACLs networkACLs);
@@ -569,22 +563,22 @@ public interface WebPubSubResource {
     /**
      * Get the access keys of the resource.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys of the resource along with {@link Response}.
+     */
+    Response<WebPubSubKeys> listKeysWithResponse(Context context);
+
+    /**
+     * Get the access keys of the resource.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys of the resource.
      */
     WebPubSubKeys listKeys();
-
-    /**
-     * Get the access keys of the resource.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
-     */
-    Response<WebPubSubKeys> listKeysWithResponse(Context context);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.

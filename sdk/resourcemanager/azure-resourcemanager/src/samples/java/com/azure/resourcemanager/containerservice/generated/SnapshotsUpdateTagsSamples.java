@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Snapshots UpdateTags. */
 public final class SnapshotsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/SnapshotsUpdateTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/SnapshotsUpdateTags.json
      */
     /**
      * Sample code: Update Snapshot Tags.
@@ -26,7 +25,10 @@ public final class SnapshotsUpdateTagsSamples {
             .serviceClient()
             .getSnapshots()
             .updateTagsWithResponse(
-                "rg1", "snapshot1", new TagsObject().withTags(mapOf("key2", "new-val2", "key3", "val3")), Context.NONE);
+                "rg1",
+                "snapshot1",
+                new TagsObject().withTags(mapOf("key2", "new-val2", "key3", "val3")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

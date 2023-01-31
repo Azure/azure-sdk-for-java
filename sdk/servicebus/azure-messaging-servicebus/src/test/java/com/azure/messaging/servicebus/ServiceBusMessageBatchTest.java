@@ -6,15 +6,13 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.BinaryData;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,7 +23,7 @@ public class ServiceBusMessageBatchTest {
     private ErrorContextProvider errorContextProvider;
 
     private MessageSerializer serializer = new ServiceBusMessageSerializer();
-    private TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+    private ServiceBusTracer tracer = new ServiceBusTracer(null, "namespace", "entity");
 
     @BeforeEach
     public void setup() {
@@ -34,7 +32,7 @@ public class ServiceBusMessageBatchTest {
 
     @Test
     public void nullMessage() {
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer, null, null);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracer, serializer);
         assertThrows(NullPointerException.class, () -> batch.tryAddMessage(null));
     }
 
@@ -46,7 +44,7 @@ public class ServiceBusMessageBatchTest {
         // Arrange
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer, null, null);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracer, serializer);
         final ServiceBusMessage tooBig = new ServiceBusMessage(BinaryData.fromBytes(new byte[1024 * 1024 * 2]));
 
         // Act
@@ -64,8 +62,8 @@ public class ServiceBusMessageBatchTest {
     @Test
     public void withinPayloadSize() {
         final int maxSize = MAX_MESSAGE_LENGTH_BYTES;
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(maxSize, errorContextProvider, tracerProvider,
-            serializer, null, null);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(maxSize, errorContextProvider, tracer,
+            serializer);
         final ServiceBusMessage within = new ServiceBusMessage(BinaryData.fromBytes(new byte[1024]));
 
         Assertions.assertEquals(maxSize, batch.getMaxSizeInBytes());
@@ -81,7 +79,7 @@ public class ServiceBusMessageBatchTest {
     public void setsPartitionId() {
         // Act
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, errorContextProvider,
-            tracerProvider, serializer, null, null);
+            tracer, serializer);
 
         // Assert
         Assertions.assertTrue(batch.getMessages().isEmpty());

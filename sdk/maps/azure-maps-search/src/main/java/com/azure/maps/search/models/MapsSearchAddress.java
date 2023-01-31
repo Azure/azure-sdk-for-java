@@ -116,26 +116,23 @@ public final class MapsSearchAddress {
     private String countryCodeISO3;
 
     /*
-     * An address line formatted according to the formatting rules of a
-     * Result's country of origin, or in the case of a country, its full
-     * country name.
+     * An address line formatted according to the formatting rules of a Result's country of origin, or in the case of a
+     * country, its full country name.
      */
     @JsonProperty(value = "freeformAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String freeformAddress;
 
     /*
-     * The full name of a first level of country administrative hierarchy. This
-     * field appears only in case countrySubdivision is presented in an
-     * abbreviated form. Only supported for USA, Canada, and United Kingdom.
+     * The full name of a first level of country administrative hierarchy. This field appears only in case
+     * countrySubdivision is presented in an abbreviated form. Only supported for USA, Canada, and United Kingdom.
      */
     @JsonProperty(value = "countrySubdivisionName", access = JsonProperty.Access.WRITE_ONLY)
     private String countrySubdivisionName;
 
     /*
-     * An address component which represents the name of a geographic area or
-     * locality that groups a number of addressable objects for addressing
-     * purposes, without being an administrative unit. This field is used to
-     * build the `freeformAddress` property.
+     * An address component which represents the name of a geographic area or locality that groups a number of
+     * addressable objects for addressing purposes, without being an administrative unit. This field is used to build
+     * the `freeformAddress` property.
      */
     @JsonProperty(value = "localName", access = JsonProperty.Access.WRITE_ONLY)
     private String localName;
@@ -145,6 +142,9 @@ public final class MapsSearchAddress {
      */
     @JsonProperty(value = "boundingBox", access = JsonProperty.Access.WRITE_ONLY)
     private BoundingBoxCompassNotation boundingBox;
+
+    /** Creates an instance of Address class. */
+    public MapsSearchAddress() {}
 
     /**
      * Get the buildingNumber property: The building number on the street. DEPRECATED, use streetNumber instead.

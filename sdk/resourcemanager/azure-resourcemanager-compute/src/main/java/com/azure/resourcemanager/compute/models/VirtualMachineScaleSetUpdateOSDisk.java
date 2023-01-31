@@ -27,8 +27,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     private Boolean writeAcceleratorEnabled;
 
     /*
-     * Specifies the size of the operating system disk in gigabytes. This element can be used to overwrite the size of
-     * the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
+     * disk in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value
+     * cannot be larger than 1023
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -61,6 +62,10 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
      */
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateOSDisk class. */
+    public VirtualMachineScaleSetUpdateOSDisk() {
+    }
 
     /**
      * Get the caching property: The caching type.
@@ -105,9 +110,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the diskSizeGB property: Specifies the size of the operating system disk in gigabytes. This element can be
-     * used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
+     * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
+     * x 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @return the diskSizeGB value.
      */
@@ -116,9 +121,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the diskSizeGB property: Specifies the size of the operating system disk in gigabytes. This element can be
-     * used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
+     * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
+     * x 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.

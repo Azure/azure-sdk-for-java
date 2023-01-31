@@ -24,6 +24,9 @@ public class AzureDataExplorerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of AzureDataExplorerTableDataset class. */
+    public AzureDataExplorerTableDataset() {}
+
     /**
      * Get the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with
      * resultType string).

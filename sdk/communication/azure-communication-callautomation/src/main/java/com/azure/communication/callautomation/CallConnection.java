@@ -8,10 +8,16 @@ import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteParticipantsOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
+import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -71,15 +77,15 @@ public class CallConnection {
     /**
      * Hangup a call.
      *
-     * @param isForEveryone determine if the call is handed up for all participants.
+     * @param hangUpOptions options to hang up
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> hangUpWithResponse(boolean isForEveryone, Context context) {
-        return callConnectionAsync.hangUpWithResponseInternal(isForEveryone, context).block();
+    public Response<Void> hangUpWithResponse(HangUpOptions hangUpOptions, Context context) {
+        return callConnectionAsync.hangUpWithResponseInternal(hangUpOptions, context).block();
     }
 
     /**
@@ -137,14 +143,14 @@ public class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param transferToParticipantCallOptions Options bag for transferToParticipantCall
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferToParticipantCall(TransferToParticipantCallOptions transferToParticipantCallOptions) {
-        return callConnectionAsync.transferToParticipantCall(transferToParticipantCallOptions).block();
+    public TransferCallResult transferToParticipantCall(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.transferToParticipantCall(targetParticipant).block();
     }
 
     /**
@@ -165,14 +171,14 @@ public class CallConnection {
     /**
      * Add a participant to the call.
      *
-     * @param addParticipantsOptions Options bag for addParticipants
+     * @param participants The list of participants to invite.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddParticipantsResult addParticipants(AddParticipantsOptions addParticipantsOptions) {
-        return callConnectionAsync.addParticipants(addParticipantsOptions).block();
+    public AddParticipantsResult addParticipants(List<CommunicationIdentifier> participants) {
+        return callConnectionAsync.addParticipants(participants).block();
     }
 
     /**
@@ -194,31 +200,70 @@ public class CallConnection {
      * Remove a list of participants from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param operationContext The operation context. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                       String operationContext) {
-        return callConnectionAsync.removeParticipants(participantsToRemove, operationContext).block();
+    public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove) {
+        return callConnectionAsync.removeParticipants(participantsToRemove).block();
     }
 
     /**
      * Remove a list of participant from the call.
      *
-     * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param operationContext The operation context. Optional
+     * @param removeParticipantsOptions The options for removing participants.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
-                                                                             String operationContext, Context context) {
-        return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context).block();
+    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(RemoveParticipantsOptions removeParticipantsOptions, Context context) {
+        return callConnectionAsync.removeParticipantsWithResponseInternal(removeParticipantsOptions, context).block();
+    }
+
+    /**
+     * Mutes participants in the call.
+     *
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
+     * @return A MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MuteParticipantsResult muteParticipants(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.muteParticipantsAsync(targetParticipant).block();
+    }
+
+    /**
+     * Mute participants in the call.
+     * @param muteParticipantsOptions - Options for the request.
+     * @param context A {@link Context} representing the request context.
+     * @return a Response containing the MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MuteParticipantsResult> muteParticipantsWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantsOptions, context).block();
+    }
+
+    /**
+     * Unmutes participants in the call.
+     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
+     * @return An UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UnmuteParticipantsResult unmuteParticipants(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.unmuteParticipantsAsync(targetParticipant).block();
+    }
+
+    /**
+     * Unmutes participants in the call.
+     * @param unmuteParticipantsOptions - Options for the request.
+     * @param context A {@link Context} representing the request context.
+     * @return a Response containing the UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UnmuteParticipantsResult> unmuteParticipantsWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions, Context context) {
+        return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context).block();
     }
 
     //region Content management Actions

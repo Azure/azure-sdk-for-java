@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AddressType. */
+/** Type of address. */
 public enum AddressType {
     /** Enum value None. */
     NONE("None"),
@@ -33,6 +33,9 @@ public enum AddressType {
      */
     @JsonCreator
     public static AddressType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AddressType[] items = AddressType.values();
         for (AddressType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AddressType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

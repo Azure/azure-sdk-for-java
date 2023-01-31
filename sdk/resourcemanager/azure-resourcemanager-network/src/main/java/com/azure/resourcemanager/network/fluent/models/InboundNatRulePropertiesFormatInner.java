@@ -95,6 +95,10 @@ public final class InboundNatRulePropertiesFormatInner {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of InboundNatRulePropertiesFormatInner class. */
+    public InboundNatRulePropertiesFormatInner() {
+    }
+
     /**
      * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
      *

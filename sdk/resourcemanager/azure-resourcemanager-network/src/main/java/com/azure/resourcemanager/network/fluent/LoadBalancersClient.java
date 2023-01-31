@@ -139,20 +139,6 @@ public interface LoadBalancersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LoadBalancerInner> getByResourceGroupAsync(String resourceGroupName, String loadBalancerName, String expand);
-
-    /**
-     * Gets the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,19 +146,6 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LoadBalancerInner> getByResourceGroupAsync(String resourceGroupName, String loadBalancerName);
-
-    /**
-     * Gets the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadBalancerInner getByResourceGroup(String resourceGroupName, String loadBalancerName);
 
     /**
      * Gets the specified load balancer.
@@ -189,6 +162,19 @@ public interface LoadBalancersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LoadBalancerInner> getByResourceGroupWithResponse(
         String resourceGroupName, String loadBalancerName, String expand, Context context);
+
+    /**
+     * Gets the specified load balancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified load balancer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LoadBalancerInner getByResourceGroup(String resourceGroupName, String loadBalancerName);
 
     /**
      * Creates or updates a load balancer.
@@ -331,20 +317,6 @@ public interface LoadBalancersClient
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName, TagsObject parameters);
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters Parameters supplied to update load balancer tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -354,6 +326,20 @@ public interface LoadBalancersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LoadBalancerInner> updateTagsWithResponse(
         String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
+
+    /**
+     * Updates a load balancer tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to update load balancer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadBalancer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName, TagsObject parameters);
 
     /**
      * Gets all the load balancers in a subscription.

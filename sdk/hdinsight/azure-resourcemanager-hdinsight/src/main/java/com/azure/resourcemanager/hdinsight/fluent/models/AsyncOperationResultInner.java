@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.AsyncOperationState;
 import com.azure.resourcemanager.hdinsight.models.Errors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The azure async operation response. */
 @Fluent
 public final class AsyncOperationResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AsyncOperationResultInner.class);
-
     /*
      * The async operation state.
      */
@@ -27,6 +23,10 @@ public final class AsyncOperationResultInner {
      */
     @JsonProperty(value = "error")
     private Errors error;
+
+    /** Creates an instance of AsyncOperationResultInner class. */
+    public AsyncOperationResultInner() {
+    }
 
     /**
      * Get the status property: The async operation state.

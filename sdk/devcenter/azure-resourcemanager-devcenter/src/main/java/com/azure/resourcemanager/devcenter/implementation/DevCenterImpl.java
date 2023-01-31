@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.devcenter.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.DevCenterInner;
 import com.azure.resourcemanager.devcenter.models.DevCenter;
 import com.azure.resourcemanager.devcenter.models.DevCenterUpdate;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -47,8 +49,16 @@ public final class DevCenterImpl implements DevCenter, DevCenter.Definition, Dev
         return this.innerModel().identity();
     }
 
-    public String provisioningState() {
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public String devCenterUri() {
+        return this.innerModel().devCenterUri();
     }
 
     public Region region() {

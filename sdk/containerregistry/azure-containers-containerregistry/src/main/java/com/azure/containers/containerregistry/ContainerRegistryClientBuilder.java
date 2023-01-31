@@ -118,7 +118,8 @@ public final class ContainerRegistryClientBuilder implements
     EndpointTrait<ContainerRegistryClientBuilder>,
     HttpTrait<ContainerRegistryClientBuilder>,
     TokenCredentialTrait<ContainerRegistryClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryClientBuilder.class);
+
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private ClientOptions clientOptions;
@@ -145,7 +146,7 @@ public final class ContainerRegistryClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = endpoint;
@@ -202,7 +203,7 @@ public final class ContainerRegistryClientBuilder implements
     @Override
     public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.httpPipeline = httpPipeline;
         return this;
@@ -238,7 +239,7 @@ public final class ContainerRegistryClientBuilder implements
     @Override
     public ContainerRegistryClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
         this.httpClient = httpClient;
         return this;
@@ -399,6 +400,31 @@ public final class ContainerRegistryClientBuilder implements
         return client;
     }
 
+    /**
+     * Creates a {@link ContainerRegistryClient} based on options set in the Builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link ContainerRegistryClient} is created.
+     * <p>
+     * If {@link #pipeline(HttpPipeline)}  pipeline} is set, then the {@code pipeline}
+     * and {@link #endpoint(String) endpoint} are used to create the {@link ContainerRegistryClient client}.
+     * All other builder settings are ignored.
+     *
+     * @return A {@link ContainerRegistryClient} with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
+     * @throws NullPointerException If {@code audience} has not been set. You can set it by calling {@link #audience(ContainerRegistryAudience)}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
+     */
+    public ContainerRegistryClient buildClient() {
+        Objects.requireNonNull(endpoint, "'endpoint' can't be null");
+
+        // Service version
+        ContainerRegistryServiceVersion serviceVersion = (version != null)
+            ? version
+            : ContainerRegistryServiceVersion.getLatest();
+
+        return new ContainerRegistryClient(getHttpPipeline(), endpoint, serviceVersion.getVersion());
+    }
+
     private HttpPipeline getHttpPipeline() {
         if (httpPipeline != null) {
             return httpPipeline;
@@ -416,25 +442,6 @@ public final class ContainerRegistryClientBuilder implements
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
-            this.version,
-            this.logger);
-    }
-
-    /**
-     * Creates a {@link ContainerRegistryClient} based on options set in the Builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link ContainerRegistryClient} is created.
-     * <p>
-     * If {@link #pipeline(HttpPipeline)}  pipeline} is set, then the {@code pipeline}
-     * and {@link #endpoint(String) endpoint} are used to create the {@link ContainerRegistryClient client}.
-     * All other builder settings are ignored.
-     *
-     * @return A {@link ContainerRegistryClient} with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
-     * @throws NullPointerException If {@code audience} has not been set. You can set it by calling {@link #audience(ContainerRegistryAudience)}.
-     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     * and {@link #retryPolicy(RetryPolicy)} have been set.
-     */
-    public ContainerRegistryClient buildClient() {
-        return new ContainerRegistryClient(buildAsyncClient());
+            this.version);
     }
 }

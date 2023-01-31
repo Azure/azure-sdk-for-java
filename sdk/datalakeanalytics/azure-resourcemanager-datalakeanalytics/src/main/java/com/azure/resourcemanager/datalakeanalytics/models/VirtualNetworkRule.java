@@ -4,30 +4,19 @@
 
 package com.azure.resourcemanager.datalakeanalytics.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.VirtualNetworkRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data Lake Analytics VirtualNetwork Rule information. */
-@JsonFlatten
-@Immutable
-public class VirtualNetworkRule extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRule.class);
-
+@Fluent
+public final class VirtualNetworkRule extends SubResource {
     /*
-     * The resource identifier for the subnet
+     * The  VirtualNetwork rule properties.
      */
-    @JsonProperty(value = "properties.subnetId", access = JsonProperty.Access.WRITE_ONLY)
-    private String subnetId;
-
-    /*
-     * The current state of the VirtualNetwork Rule
-     */
-    @JsonProperty(value = "properties.virtualNetworkRuleState", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualNetworkRuleState virtualNetworkRuleState;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private VirtualNetworkRuleProperties innerProperties;
 
     /*
      * The resource name.
@@ -41,22 +30,17 @@ public class VirtualNetworkRule extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /**
-     * Get the subnetId property: The resource identifier for the subnet.
-     *
-     * @return the subnetId value.
-     */
-    public String subnetId() {
-        return this.subnetId;
+    /** Creates an instance of VirtualNetworkRule class. */
+    public VirtualNetworkRule() {
     }
 
     /**
-     * Get the virtualNetworkRuleState property: The current state of the VirtualNetwork Rule.
+     * Get the innerProperties property: The VirtualNetwork rule properties.
      *
-     * @return the virtualNetworkRuleState value.
+     * @return the innerProperties value.
      */
-    public VirtualNetworkRuleState virtualNetworkRuleState() {
-        return this.virtualNetworkRuleState;
+    private VirtualNetworkRuleProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -85,10 +69,31 @@ public class VirtualNetworkRule extends SubResource {
     }
 
     /**
+     * Get the subnetId property: The resource identifier for the subnet.
+     *
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
+    }
+
+    /**
+     * Get the virtualNetworkRuleState property: The current state of the VirtualNetwork Rule.
+     *
+     * @return the virtualNetworkRuleState value.
+     */
+    public VirtualNetworkRuleState virtualNetworkRuleState() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkRuleState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

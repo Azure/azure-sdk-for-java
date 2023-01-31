@@ -60,7 +60,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface FirewallPolicyIdpsSignaturesFilterValuesService {
+    public interface FirewallPolicyIdpsSignaturesFilterValuesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -118,7 +118,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -180,7 +180,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -220,23 +220,6 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Describes the filter values possibles for a given column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of all possible values for a specific filter value.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignatureOverridesFilterValuesResponseInner list(
-        String resourceGroupName, String firewallPolicyName, SignatureOverridesFilterValuesQuery parameters) {
-        return listAsync(resourceGroupName, firewallPolicyName, parameters).block();
-    }
-
-    /**
-     * Retrieves the current filter values for the signatures overrides.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Describes the filter values possibles for a given column.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -250,5 +233,22 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         SignatureOverridesFilterValuesQuery parameters,
         Context context) {
         return listWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context).block();
+    }
+
+    /**
+     * Retrieves the current filter values for the signatures overrides.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Describes the filter values possibles for a given column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the list of all possible values for a specific filter value.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignatureOverridesFilterValuesResponseInner list(
+        String resourceGroupName, String firewallPolicyName, SignatureOverridesFilterValuesQuery parameters) {
+        return listWithResponse(resourceGroupName, firewallPolicyName, parameters, Context.NONE).getValue();
     }
 }

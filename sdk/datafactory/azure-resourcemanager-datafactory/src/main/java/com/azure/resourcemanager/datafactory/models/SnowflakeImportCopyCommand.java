@@ -34,6 +34,10 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalFormatOptions;
 
+    /** Creates an instance of SnowflakeImportCopyCommand class. */
+    public SnowflakeImportCopyCommand() {
+    }
+
     /**
      * Get the additionalCopyOptions property: Additional copy options directly passed to snowflake Copy Command. Type:
      * key value pairs (value should be string type) (or Expression with resultType object). Example:

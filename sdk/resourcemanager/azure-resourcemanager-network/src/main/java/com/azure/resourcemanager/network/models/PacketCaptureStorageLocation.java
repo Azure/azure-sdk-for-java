@@ -30,6 +30,10 @@ public final class PacketCaptureStorageLocation {
     @JsonProperty(value = "filePath")
     private String filePath;
 
+    /** Creates an instance of PacketCaptureStorageLocation class. */
+    public PacketCaptureStorageLocation() {
+    }
+
     /**
      * Get the storageId property: The ID of the storage account to save the packet capture session. Required if no
      * local file path is provided.

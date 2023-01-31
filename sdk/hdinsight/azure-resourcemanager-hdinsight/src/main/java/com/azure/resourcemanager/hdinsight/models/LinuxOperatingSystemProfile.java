@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ssh username, password, and ssh public key. */
 @Fluent
 public final class LinuxOperatingSystemProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxOperatingSystemProfile.class);
-
     /*
      * The username.
      */
@@ -31,6 +27,10 @@ public final class LinuxOperatingSystemProfile {
      */
     @JsonProperty(value = "sshProfile")
     private SshProfile sshProfile;
+
+    /** Creates an instance of LinuxOperatingSystemProfile class. */
+    public LinuxOperatingSystemProfile() {
+    }
 
     /**
      * Get the username property: The username.

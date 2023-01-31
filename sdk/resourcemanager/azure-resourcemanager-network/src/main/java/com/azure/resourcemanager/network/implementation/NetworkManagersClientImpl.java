@@ -72,7 +72,7 @@ public final class NetworkManagersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkManagersService {
+    public interface NetworkManagersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -219,7 +219,7 @@ public final class NetworkManagersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -270,7 +270,7 @@ public final class NetworkManagersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -305,21 +305,6 @@ public final class NetworkManagersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Manager.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkManagerInner getByResourceGroup(String resourceGroupName, String networkManagerName) {
-        return getByResourceGroupAsync(resourceGroupName, networkManagerName).block();
-    }
-
-    /**
-     * Gets the specified Network Manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -330,6 +315,21 @@ public final class NetworkManagersClientImpl
     public Response<NetworkManagerInner> getByResourceGroupWithResponse(
         String resourceGroupName, String networkManagerName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkManagerName, context).block();
+    }
+
+    /**
+     * Gets the specified Network Manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Network Manager.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerInner getByResourceGroup(String resourceGroupName, String networkManagerName) {
+        return getByResourceGroupWithResponse(resourceGroupName, networkManagerName, Context.NONE).getValue();
     }
 
     /**
@@ -371,7 +371,7 @@ public final class NetworkManagersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -429,7 +429,7 @@ public final class NetworkManagersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -468,23 +468,6 @@ public final class NetworkManagersClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkManagerInner createOrUpdate(
-        String resourceGroupName, String networkManagerName, NetworkManagerInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, networkManagerName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a Network Manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -495,6 +478,23 @@ public final class NetworkManagersClientImpl
     public Response<NetworkManagerInner> createOrUpdateWithResponse(
         String resourceGroupName, String networkManagerName, NetworkManagerInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, parameters, context).block();
+    }
+
+    /**
+     * Creates or updates a Network Manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Parameters supplied to specify which network manager is.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Managed Network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerInner createOrUpdate(
+        String resourceGroupName, String networkManagerName, NetworkManagerInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, networkManagerName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -532,7 +532,7 @@ public final class NetworkManagersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -586,7 +586,7 @@ public final class NetworkManagersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -628,6 +628,26 @@ public final class NetworkManagersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkManagerName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
      *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
@@ -652,16 +672,14 @@ public final class NetworkManagersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, Boolean force) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName) {
+        final Boolean force = null;
         return beginDeleteAsync(resourceGroupName, networkManagerName, force).getSyncPoller();
     }
 
@@ -747,22 +765,6 @@ public final class NetworkManagersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String networkManagerName, Boolean force) {
-        deleteAsync(resourceGroupName, networkManagerName, force).block();
-    }
-
-    /**
-     * Deletes a network manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -829,7 +831,7 @@ public final class NetworkManagersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -887,7 +889,7 @@ public final class NetworkManagersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -926,22 +928,6 @@ public final class NetworkManagersClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkManagerInner patch(String resourceGroupName, String networkManagerName, PatchObject parameters) {
-        return patchAsync(resourceGroupName, networkManagerName, parameters).block();
-    }
-
-    /**
-     * Patch NetworkManager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -952,6 +938,22 @@ public final class NetworkManagersClientImpl
     public Response<NetworkManagerInner> patchWithResponse(
         String resourceGroupName, String networkManagerName, PatchObject parameters, Context context) {
         return patchWithResponseAsync(resourceGroupName, networkManagerName, parameters, context).block();
+    }
+
+    /**
+     * Patch NetworkManager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Parameters supplied to specify which network manager is.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Managed Network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerInner patch(String resourceGroupName, String networkManagerName, PatchObject parameters) {
+        return patchWithResponse(resourceGroupName, networkManagerName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -982,7 +984,7 @@ public final class NetworkManagersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1038,7 +1040,7 @@ public final class NetworkManagersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1177,7 +1179,7 @@ public final class NetworkManagersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1239,7 +1241,7 @@ public final class NetworkManagersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

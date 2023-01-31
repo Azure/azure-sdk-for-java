@@ -95,6 +95,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <projectTestSourceDirectory>${project.build.testSourceDirectory}</projectTestSourceDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
@@ -214,6 +215,17 @@
 
     <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
     <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
+
+    <!-- Used by Java 18 and later to allow the security manager to be set while testing and linting. -->
+    <java.security.manager.configuration></java.security.manager.configuration>
+
+    <!-- JavaDoc properties -->
+
+    <!-- Azure core source path is included here and it's packages are excluded as almost all client libraries
+    need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
+    by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
+    <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
   </properties>
 
   <build>
@@ -598,7 +610,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -633,6 +645,12 @@
               <artifactId>spotbugs</artifactId>
               <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
             </dependency>
+            <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
+            <dependency>
+              <groupId>org.ow2.asm</groupId>
+              <artifactId>asm</artifactId>
+              <version>9.3</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
           </dependencies>
           <configuration>
             <skip>${spotbugs.skip}</skip>
@@ -645,6 +663,9 @@
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
+            <jvmArgs>
+              ${java.security.manager.configuration}
+            </jvmArgs>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
@@ -670,8 +691,9 @@
               for more Java documentation, including quick starts, tutorials, and code samples.
             </bottom>
             <linksource>false</linksource>
-            <excludePackageNames>
+            <excludePackageNames combine.children="append">
               *.impl*:
+              *.implementation:
               *.implementation*:
               *.samples:
               com.azure.tools.checkstyle*:
@@ -679,7 +701,8 @@
               com.azure.endtoend*:
               com.azure.perf*:
               com.azure.storage.internal.avro*:
-              com.azure.cosmos.encryption.implementation.mdesrc*
+              com.azure.cosmos.encryption.implementation.mdesrc*:
+              ${javadoc.excludePackageNames}
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -690,6 +713,9 @@
               <sourceFileExclude>com/azure/cosmos/encryption/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
+            <sourcepath>
+              ${javadoc.sourcepath}
+            </sourcepath>
             <links combine.children="append">
               <!-- JDK APIs -->
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -1148,6 +1174,7 @@
                 <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
                 --add-opens java.base/java.lang.invoke=com.azure.core
                 ${additionalFailsafeArgLine}
+                ${java.security.manager.configuration}
               </argLine>
             </configuration>
           </plugin>
@@ -1503,7 +1530,7 @@
         <dependency>
           <groupId>org.graalvm.buildtools</groupId>
           <artifactId>junit-platform-native</artifactId>
-          <version>0.9.10</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+          <version>0.9.19</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -1512,7 +1539,7 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.10</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <version>0.9.19</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
               <skip>${graalvm.enable}</skip>
               <buildArgs>--no-fallback ${nativeImage.buildArgs}</buildArgs>
@@ -1531,33 +1558,36 @@
       </build>
     </profile>
 
-    <profile>
-      <id>external-dependency-version-overrides</id>
-      <activation>
-        <property>
-          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
-        </property>
-      </activation>
-      <repositories>
-        <repository>
-          <id>repository.spring.milestone</id>
-          <name>Spring Milestone Repository</name>
-          <url>https://repo.spring.io/milestone</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </repository>
-      </repositories>
-    </profile>
+    <!-- Used when Reactor had milestone releases to the Spring Milestone repository. -->
+    <!-- If Reactor milestones are needed again in the future, and they're being released -->
+    <!-- to the Spring Milestone repository uncomment the XML below. -->
+<!--    <profile>-->
+<!--      <id>external-dependency-version-overrides</id>-->
+<!--      <activation>-->
+<!--        <property>-->
+<!--          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>-->
+<!--        </property>-->
+<!--      </activation>-->
+<!--      <repositories>-->
+<!--        <repository>-->
+<!--          <id>repository.spring.milestone</id>-->
+<!--          <name>Spring Milestone Repository</name>-->
+<!--          <url>https://repo.spring.io/milestone</url>-->
+<!--          <releases>-->
+<!--            <enabled>true</enabled>-->
+<!--          </releases>-->
+<!--          <snapshots>-->
+<!--            <enabled>true</enabled>-->
+<!--          </snapshots>-->
+<!--        </repository>-->
+<!--      </repositories>-->
+<!--    </profile>-->
 
     <profile>
       <id>test-module-base-compile</id>
       <activation>
         <file>
-          <exists>${build.testSourceDirectory}/module-info.java</exists>
+          <exists>${projectTestSourceDirectory}/module-info.java</exists>
         </file>
       </activation>
 
@@ -1589,6 +1619,17 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>java-18-plus-allow-securitymanager</id>
+      <activation>
+        <jdk>[18,)</jdk>
+      </activation>
+
+      <properties>
+        <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
+      </properties>
     </profile>
   </profiles>
 </project>

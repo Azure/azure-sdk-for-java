@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGateways ListAvailableServerVariables. */
 public final class ApplicationGatewaysListAvailableServerVariablesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
      */
     /**
      * Sample code: Get Available Server Variables.

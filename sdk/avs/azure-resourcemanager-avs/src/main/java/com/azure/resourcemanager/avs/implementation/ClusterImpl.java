@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.avs.models.Cluster;
 import com.azure.resourcemanager.avs.models.ClusterUpdate;
+import com.azure.resourcemanager.avs.models.ClusterZoneList;
 import com.azure.resourcemanager.avs.models.Sku;
 import java.util.List;
 
@@ -30,6 +32,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public Sku sku() {
         return this.innerModel().sku();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ClusterInner innerModel() {
@@ -127,6 +133,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
                 .getWithResponse(resourceGroupName, privateCloudName, clusterName, context)
                 .getValue();
         return this;
+    }
+
+    public Response<ClusterZoneList> listZonesWithResponse(Context context) {
+        return serviceManager
+            .clusters()
+            .listZonesWithResponse(resourceGroupName, privateCloudName, clusterName, context);
+    }
+
+    public ClusterZoneList listZones() {
+        return serviceManager.clusters().listZones(resourceGroupName, privateCloudName, clusterName);
     }
 
     public ClusterImpl withSku(Sku sku) {

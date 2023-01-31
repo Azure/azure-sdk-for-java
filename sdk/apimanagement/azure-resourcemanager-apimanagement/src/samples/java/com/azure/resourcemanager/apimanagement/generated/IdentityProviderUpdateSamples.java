@@ -28,7 +28,7 @@ public final class IdentityProviderUpdateSamples {
         resource
             .update()
             .withClientId("updatedfacebookid")
-            .withClientSecret("updatedfacebooksecret")
+            .withClientSecret("fakeUpdatedSecretPlaceholder")
             .withIfMatch("*")
             .apply();
     }

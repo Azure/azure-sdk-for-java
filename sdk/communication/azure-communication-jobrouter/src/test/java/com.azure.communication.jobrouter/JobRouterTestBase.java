@@ -3,8 +3,8 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.implementation.authentication.CommunicationConnectionString;
-import com.azure.communication.jobrouter.implementation.authentication.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelOperator;

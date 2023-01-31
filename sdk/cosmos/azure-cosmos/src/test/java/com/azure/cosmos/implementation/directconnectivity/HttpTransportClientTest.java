@@ -151,7 +151,8 @@ public class HttpTransportClientTest {
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.CACHE_CONTROL)).isEqualTo("no-cache");
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.ACCEPT)).isEqualTo("application/json");
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
-
+        assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES))
+            .isEqualTo(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
     }
 
     @DataProvider(name = "fromMockedHttpResponseToExpectedDocumentClientException")
@@ -402,7 +403,7 @@ public class HttpTransportClientTest {
                                 .withContent("").withStatus(410)
                                 .withHeaderLSN(lsn)
                                 .withHeaderPartitionKeyRangeId(partitionKeyRangeId)
-                                .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.COMPLETING_SPLIT),
+                                .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE),
 
                         FailureValidator.builder()
                                 .instanceOf(PartitionKeyRangeIsSplittingException.class)

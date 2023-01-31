@@ -13,10 +13,9 @@ import com.azure.resourcemanager.maintenance.fluent.ApplyUpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdate;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplyUpdatesImpl implements ApplyUpdates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplyUpdatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplyUpdatesImpl.class);
 
     private final ApplyUpdatesClient innerClient;
 
@@ -26,32 +25,6 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         ApplyUpdatesClient innerClient, com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ApplyUpdate getParent(
-        String resourceGroupName,
-        String resourceParentType,
-        String resourceParentName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName) {
-        ApplyUpdateInner inner =
-            this
-                .serviceClient()
-                .getParent(
-                    resourceGroupName,
-                    resourceParentType,
-                    resourceParentName,
-                    providerName,
-                    resourceType,
-                    resourceName,
-                    applyUpdateName);
-        if (inner != null) {
-            return new ApplyUpdateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ApplyUpdate> getParentWithResponse(
@@ -86,14 +59,25 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         }
     }
 
-    public ApplyUpdate get(
+    public ApplyUpdate getParent(
         String resourceGroupName,
+        String resourceParentType,
+        String resourceParentName,
         String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
         ApplyUpdateInner inner =
-            this.serviceClient().get(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName);
+            this
+                .serviceClient()
+                .getParent(
+                    resourceGroupName,
+                    resourceParentType,
+                    resourceParentName,
+                    providerName,
+                    resourceType,
+                    resourceName,
+                    applyUpdateName);
         if (inner != null) {
             return new ApplyUpdateImpl(inner, this.manager());
         } else {
@@ -123,23 +107,14 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         }
     }
 
-    public ApplyUpdate createOrUpdateParent(
+    public ApplyUpdate get(
         String resourceGroupName,
         String providerName,
-        String resourceParentType,
-        String resourceParentName,
         String resourceType,
-        String resourceName) {
+        String resourceName,
+        String applyUpdateName) {
         ApplyUpdateInner inner =
-            this
-                .serviceClient()
-                .createOrUpdateParent(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName);
+            this.serviceClient().get(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName);
         if (inner != null) {
             return new ApplyUpdateImpl(inner, this.manager());
         } else {
@@ -177,10 +152,23 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         }
     }
 
-    public ApplyUpdate createOrUpdate(
-        String resourceGroupName, String providerName, String resourceType, String resourceName) {
+    public ApplyUpdate createOrUpdateParent(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName) {
         ApplyUpdateInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, providerName, resourceType, resourceName);
+            this
+                .serviceClient()
+                .createOrUpdateParent(
+                    resourceGroupName,
+                    providerName,
+                    resourceParentType,
+                    resourceParentName,
+                    resourceType,
+                    resourceName);
         if (inner != null) {
             return new ApplyUpdateImpl(inner, this.manager());
         } else {
@@ -200,6 +188,17 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplyUpdateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplyUpdate createOrUpdate(
+        String resourceGroupName, String providerName, String resourceType, String resourceName) {
+        ApplyUpdateInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, providerName, resourceType, resourceName);
+        if (inner != null) {
+            return new ApplyUpdateImpl(inner, this.manager());
         } else {
             return null;
         }

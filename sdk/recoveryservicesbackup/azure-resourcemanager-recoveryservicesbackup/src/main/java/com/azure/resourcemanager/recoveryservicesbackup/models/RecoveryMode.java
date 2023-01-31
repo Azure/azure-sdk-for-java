@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecoveryMode. */
+/** Defines whether the current recovery mode is file restore or database restore. */
 public final class RecoveryMode extends ExpandableStringEnum<RecoveryMode> {
     /** Static value Invalid for RecoveryMode. */
     public static final RecoveryMode INVALID = fromString("Invalid");
@@ -18,6 +18,15 @@ public final class RecoveryMode extends ExpandableStringEnum<RecoveryMode> {
 
     /** Static value WorkloadRecovery for RecoveryMode. */
     public static final RecoveryMode WORKLOAD_RECOVERY = fromString("WorkloadRecovery");
+
+    /**
+     * Creates a new instance of RecoveryMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryMode() {
+    }
 
     /**
      * Creates or finds a RecoveryMode from its string representation.

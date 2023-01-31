@@ -44,6 +44,10 @@ public final class SqlServerLinkedServiceTypeProperties {
     @JsonProperty(value = "alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
+    /** Creates an instance of SqlServerLinkedServiceTypeProperties class. */
+    public SqlServerLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

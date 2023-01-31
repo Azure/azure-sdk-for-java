@@ -14,19 +14,6 @@ public interface ManagedEnvironmentsStorages {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all storages for a managedEnvironment.
-     */
-    ManagedEnvironmentStoragesCollection list(String resourceGroupName, String environmentName);
-
-    /**
-     * Get all storages for a managedEnvironment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -38,18 +25,17 @@ public interface ManagedEnvironmentsStorages {
         String resourceGroupName, String environmentName, Context context);
 
     /**
-     * Get storage for a managedEnvironment.
+     * Get all storages for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage for a managedEnvironment.
+     * @return all storages for a managedEnvironment.
      */
-    ManagedEnvironmentStorage get(String resourceGroupName, String environmentName, String storageName);
+    ManagedEnvironmentStoragesCollection list(String resourceGroupName, String environmentName);
 
     /**
      * Get storage for a managedEnvironment.
@@ -68,7 +54,7 @@ public interface ManagedEnvironmentsStorages {
         String resourceGroupName, String environmentName, String storageName, Context context);
 
     /**
-     * Delete storage for a managedEnvironment.
+     * Get storage for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
@@ -77,8 +63,9 @@ public interface ManagedEnvironmentsStorages {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage for a managedEnvironment.
      */
-    void delete(String resourceGroupName, String environmentName, String storageName);
+    ManagedEnvironmentStorage get(String resourceGroupName, String environmentName, String storageName);
 
     /**
      * Delete storage for a managedEnvironment.
@@ -95,6 +82,19 @@ public interface ManagedEnvironmentsStorages {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String storageName, Context context);
+
+    /**
+     * Delete storage for a managedEnvironment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String environmentName, String storageName);
 
     /**
      * Get storage for a managedEnvironment.

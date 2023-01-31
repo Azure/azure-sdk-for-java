@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AuthenticationMode. */
+/** The authentication mode for the Batch account. */
 public enum AuthenticationMode {
     /** Enum value SharedKey. */
     SHARED_KEY("SharedKey"),
@@ -33,6 +33,9 @@ public enum AuthenticationMode {
      */
     @JsonCreator
     public static AuthenticationMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AuthenticationMode[] items = AuthenticationMode.values();
         for (AuthenticationMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AuthenticationMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

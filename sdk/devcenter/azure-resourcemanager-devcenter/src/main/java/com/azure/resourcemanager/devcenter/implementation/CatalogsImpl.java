@@ -39,15 +39,6 @@ public final class CatalogsImpl implements Catalogs {
         return Utils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
     }
 
-    public Catalog get(String resourceGroupName, String devCenterName, String catalogName) {
-        CatalogInner inner = this.serviceClient().get(resourceGroupName, devCenterName, catalogName);
-        if (inner != null) {
-            return new CatalogImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Catalog> getWithResponse(
         String resourceGroupName, String devCenterName, String catalogName, Context context) {
         Response<CatalogInner> inner =
@@ -58,6 +49,15 @@ public final class CatalogsImpl implements Catalogs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CatalogImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Catalog get(String resourceGroupName, String devCenterName, String catalogName) {
+        CatalogInner inner = this.serviceClient().get(resourceGroupName, devCenterName, catalogName);
+        if (inner != null) {
+            return new CatalogImpl(inner, this.manager());
         } else {
             return null;
         }

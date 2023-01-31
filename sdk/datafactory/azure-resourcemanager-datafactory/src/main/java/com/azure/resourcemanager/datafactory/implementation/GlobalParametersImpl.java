@@ -40,16 +40,6 @@ public final class GlobalParametersImpl implements GlobalParameters {
         return Utils.mapPage(inner, inner1 -> new GlobalParameterResourceImpl(inner1, this.manager()));
     }
 
-    public GlobalParameterResource get(String resourceGroupName, String factoryName, String globalParameterName) {
-        GlobalParameterResourceInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, globalParameterName);
-        if (inner != null) {
-            return new GlobalParameterResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GlobalParameterResource> getWithResponse(
         String resourceGroupName, String factoryName, String globalParameterName, Context context) {
         Response<GlobalParameterResourceInner> inner =
@@ -65,13 +55,23 @@ public final class GlobalParametersImpl implements GlobalParameters {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String globalParameterName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, globalParameterName);
+    public GlobalParameterResource get(String resourceGroupName, String factoryName, String globalParameterName) {
+        GlobalParameterResourceInner inner =
+            this.serviceClient().get(resourceGroupName, factoryName, globalParameterName);
+        if (inner != null) {
+            return new GlobalParameterResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String globalParameterName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, globalParameterName, context);
+    }
+
+    public void delete(String resourceGroupName, String factoryName, String globalParameterName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, globalParameterName);
     }
 
     public GlobalParameterResource getById(String id) {

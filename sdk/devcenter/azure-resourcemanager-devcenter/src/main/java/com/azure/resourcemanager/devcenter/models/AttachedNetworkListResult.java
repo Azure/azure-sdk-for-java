@@ -24,6 +24,10 @@ public final class AttachedNetworkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AttachedNetworkListResult class. */
+    public AttachedNetworkListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

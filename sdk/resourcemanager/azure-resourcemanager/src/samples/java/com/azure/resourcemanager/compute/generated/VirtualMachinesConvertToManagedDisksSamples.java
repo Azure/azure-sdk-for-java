@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines ConvertToManagedDisks. */
 public final class VirtualMachinesConvertToManagedDisksSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_ConvertToManagedDisks_MinimumSet_Gen.
@@ -23,11 +21,11 @@ public final class VirtualMachinesConvertToManagedDisksSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .convertToManagedDisks("rgcompute", "aaaaaaaaaaa", Context.NONE);
+            .convertToManagedDisks("rgcompute", "aaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.
@@ -41,6 +39,6 @@ public final class VirtualMachinesConvertToManagedDisksSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .convertToManagedDisks("rgcompute", "aaaaaaa", Context.NONE);
+            .convertToManagedDisks("rgcompute", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

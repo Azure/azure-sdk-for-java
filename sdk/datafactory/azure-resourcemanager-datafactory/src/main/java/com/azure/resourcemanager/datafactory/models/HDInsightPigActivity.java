@@ -24,6 +24,10 @@ public final class HDInsightPigActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightPigActivityTypeProperties innerTypeProperties = new HDInsightPigActivityTypeProperties();
 
+    /** Creates an instance of HDInsightPigActivity class. */
+    public HDInsightPigActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight Pig activity properties.
      *

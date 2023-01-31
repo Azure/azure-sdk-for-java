@@ -31,6 +31,10 @@ public final class OpenShiftManagedClusterInner extends Resource {
     @JsonProperty(value = "properties")
     private OpenShiftManagedClusterProperties innerProperties;
 
+    /** Creates an instance of OpenShiftManagedClusterInner class. */
+    public OpenShiftManagedClusterInner() {
+    }
+
     /**
      * Get the plan property: Define the resource plan as required by ARM for billing purposes.
      *

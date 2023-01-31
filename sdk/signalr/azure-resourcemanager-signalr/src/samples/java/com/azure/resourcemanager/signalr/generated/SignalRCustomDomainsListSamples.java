@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SignalRCustomDomains List. */
 public final class SignalRCustomDomainsListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRCustomDomains_List.json
      */
     /**
      * Sample code: SignalRCustomDomains_List.

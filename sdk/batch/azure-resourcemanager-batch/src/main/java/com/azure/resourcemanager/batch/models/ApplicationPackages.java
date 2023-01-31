@@ -19,27 +19,6 @@ public interface ApplicationPackages {
      * @param applicationName The name of the application. This must be unique within the account.
      * @param versionName The version of the application.
      * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application.
-     */
-    ApplicationPackage activate(
-        String resourceGroupName,
-        String accountName,
-        String applicationName,
-        String versionName,
-        ActivateApplicationPackageParameters parameters);
-
-    /**
-     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
-     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param versionName The version of the application.
-     * @param parameters The parameters for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,17 +35,25 @@ public interface ApplicationPackages {
         Context context);
 
     /**
-     * Deletes an application package record and its associated binary file.
+     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
+     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
      * @param versionName The version of the application.
+     * @param parameters The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application package which represents a particular version of an application.
      */
-    void delete(String resourceGroupName, String accountName, String applicationName, String versionName);
+    ApplicationPackage activate(
+        String resourceGroupName,
+        String accountName,
+        String applicationName,
+        String versionName,
+        ActivateApplicationPackageParameters parameters);
 
     /**
      * Deletes an application package record and its associated binary file.
@@ -85,7 +72,7 @@ public interface ApplicationPackages {
         String resourceGroupName, String accountName, String applicationName, String versionName, Context context);
 
     /**
-     * Gets information about the specified application package.
+     * Deletes an application package record and its associated binary file.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -94,9 +81,8 @@ public interface ApplicationPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application package.
      */
-    ApplicationPackage get(String resourceGroupName, String accountName, String applicationName, String versionName);
+    void delete(String resourceGroupName, String accountName, String applicationName, String versionName);
 
     /**
      * Gets information about the specified application package.
@@ -113,6 +99,20 @@ public interface ApplicationPackages {
      */
     Response<ApplicationPackage> getWithResponse(
         String resourceGroupName, String accountName, String applicationName, String versionName, Context context);
+
+    /**
+     * Gets information about the specified application package.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @param versionName The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified application package.
+     */
+    ApplicationPackage get(String resourceGroupName, String accountName, String applicationName, String versionName);
 
     /**
      * Lists all of the application packages in the specified application.

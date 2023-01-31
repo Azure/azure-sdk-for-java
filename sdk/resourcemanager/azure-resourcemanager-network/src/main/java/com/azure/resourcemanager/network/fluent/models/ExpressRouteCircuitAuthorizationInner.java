@@ -37,6 +37,10 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ExpressRouteCircuitAuthorizationInner class. */
+    public ExpressRouteCircuitAuthorizationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the express route circuit authorization.
      *

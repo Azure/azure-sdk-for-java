@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The billing meters. */
 @Fluent
 public final class BillingMeters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingMeters.class);
-
     /*
      * The virtual machine sizes.
      */
@@ -31,6 +27,10 @@ public final class BillingMeters {
      */
     @JsonProperty(value = "unit")
     private String unit;
+
+    /** Creates an instance of BillingMeters class. */
+    public BillingMeters() {
+    }
 
     /**
      * Get the meterParameter property: The virtual machine sizes.

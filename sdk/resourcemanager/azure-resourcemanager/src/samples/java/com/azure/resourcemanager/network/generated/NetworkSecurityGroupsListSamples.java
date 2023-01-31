@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkSecurityGroups List. */
 public final class NetworkSecurityGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkSecurityGroupListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkSecurityGroupListAll.json
      */
     /**
      * Sample code: List all network security groups.

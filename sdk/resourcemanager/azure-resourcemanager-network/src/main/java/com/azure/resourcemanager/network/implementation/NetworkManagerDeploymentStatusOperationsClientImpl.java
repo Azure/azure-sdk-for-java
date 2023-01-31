@@ -60,7 +60,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkManagerDeploymentStatusOperationsService {
+    public interface NetworkManagerDeploymentStatusOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -73,6 +73,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top,
             @BodyParam("application/json") NetworkManagerDeploymentStatusParameter parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -84,6 +85,8 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network deployment status is.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,7 +95,10 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkManagerDeploymentStatusListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String networkManagerName, NetworkManagerDeploymentStatusParameter parameters) {
+        String resourceGroupName,
+        String networkManagerName,
+        NetworkManagerDeploymentStatusParameter parameters,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -118,7 +124,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -130,6 +136,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
                             resourceGroupName,
                             networkManagerName,
                             apiVersion,
+                            top,
                             parameters,
                             accept,
                             context))
@@ -142,6 +149,8 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network deployment status is.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,6 +163,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
         String resourceGroupName,
         String networkManagerName,
         NetworkManagerDeploymentStatusParameter parameters,
+        Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -180,7 +190,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -190,6 +200,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
                 resourceGroupName,
                 networkManagerName,
                 apiVersion,
+                top,
                 parameters,
                 accept,
                 context);
@@ -209,8 +220,33 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkManagerDeploymentStatusListResultInner> listAsync(
         String resourceGroupName, String networkManagerName, NetworkManagerDeploymentStatusParameter parameters) {
-        return listWithResponseAsync(resourceGroupName, networkManagerName, parameters)
+        final Integer top = null;
+        return listWithResponseAsync(resourceGroupName, networkManagerName, parameters, top)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Post to List of Network Manager Deployment Status.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Parameters supplied to specify which Managed Network deployment status is.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Network Manager Deployment Status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkManagerDeploymentStatusListResultInner> listWithResponse(
+        String resourceGroupName,
+        String networkManagerName,
+        NetworkManagerDeploymentStatusParameter parameters,
+        Integer top,
+        Context context) {
+        return listWithResponseAsync(resourceGroupName, networkManagerName, parameters, top, context).block();
     }
 
     /**
@@ -227,27 +263,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkManagerDeploymentStatusListResultInner list(
         String resourceGroupName, String networkManagerName, NetworkManagerDeploymentStatusParameter parameters) {
-        return listAsync(resourceGroupName, networkManagerName, parameters).block();
-    }
-
-    /**
-     * Post to List of Network Manager Deployment Status.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which Managed Network deployment status is.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkManagerDeploymentStatusListResultInner> listWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        NetworkManagerDeploymentStatusParameter parameters,
-        Context context) {
-        return listWithResponseAsync(resourceGroupName, networkManagerName, parameters, context).block();
+        final Integer top = null;
+        return listWithResponse(resourceGroupName, networkManagerName, parameters, top, Context.NONE).getValue();
     }
 }

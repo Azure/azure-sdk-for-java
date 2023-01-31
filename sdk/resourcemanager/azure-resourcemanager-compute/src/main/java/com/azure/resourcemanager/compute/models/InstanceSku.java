@@ -22,6 +22,10 @@ public final class InstanceSku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
+    /** Creates an instance of InstanceSku class. */
+    public InstanceSku() {
+    }
+
     /**
      * Get the name property: The sku name.
      *

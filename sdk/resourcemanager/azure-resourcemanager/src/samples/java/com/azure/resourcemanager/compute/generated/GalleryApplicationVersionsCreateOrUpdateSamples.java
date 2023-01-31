@@ -4,9 +4,12 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersionInner;
+import com.azure.resourcemanager.compute.models.GalleryApplicationCustomAction;
+import com.azure.resourcemanager.compute.models.GalleryApplicationCustomActionParameter;
+import com.azure.resourcemanager.compute.models.GalleryApplicationCustomActionParameterType;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryApplicationVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.StorageAccountType;
 import com.azure.resourcemanager.compute.models.TargetRegion;
 import com.azure.resourcemanager.compute.models.UserArtifactManage;
@@ -17,7 +20,7 @@ import java.util.Arrays;
 /** Samples for GalleryApplicationVersions CreateOrUpdate. */
 public final class GalleryApplicationVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryApplicationVersion_Create.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Create.json
      */
     /**
      * Sample code: Create or update a simple gallery Application Version.
@@ -46,7 +49,8 @@ public final class GalleryApplicationVersionsCreateOrUpdateSamples {
                                         new TargetRegion()
                                             .withName("West US")
                                             .withRegionalReplicaCount(1)
-                                            .withStorageAccountType(StorageAccountType.STANDARD_LRS)))
+                                            .withStorageAccountType(StorageAccountType.STANDARD_LRS)
+                                            .withExcludeFromLatest(false)))
                             .withReplicaCount(1)
                             .withEndOfLifeDate(OffsetDateTime.parse("2019-07-01T07:00:00Z"))
                             .withStorageAccountType(StorageAccountType.STANDARD_LRS)
@@ -59,7 +63,27 @@ public final class GalleryApplicationVersionsCreateOrUpdateSamples {
                                     .withInstall(
                                         "powershell -command \"Expand-Archive -Path package.zip -DestinationPath"
                                             + " C:\\package\"")
-                                    .withRemove("del C:\\package "))),
-                Context.NONE);
+                                    .withRemove("del C:\\package "))
+                            .withCustomActions(
+                                Arrays
+                                    .asList(
+                                        new GalleryApplicationCustomAction()
+                                            .withName("myCustomAction")
+                                            .withScript("myCustomActionScript")
+                                            .withDescription("This is the custom action description.")
+                                            .withParameters(
+                                                Arrays
+                                                    .asList(
+                                                        new GalleryApplicationCustomActionParameter()
+                                                            .withName("myCustomActionParameter")
+                                                            .withRequired(false)
+                                                            .withType(
+                                                                GalleryApplicationCustomActionParameterType.STRING)
+                                                            .withDefaultValue("default value of parameter.")
+                                                            .withDescription(
+                                                                "This is the description of the parameter"))))))
+                    .withSafetyProfile(
+                        new GalleryApplicationVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
+                com.azure.core.util.Context.NONE);
     }
 }

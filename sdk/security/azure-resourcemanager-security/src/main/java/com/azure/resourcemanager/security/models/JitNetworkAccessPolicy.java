@@ -34,6 +34,20 @@ public interface JitNetworkAccessPolicy {
     String type();
 
     /**
+     * Gets the kind property: Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
+     * Gets the location property: Location where the resource is stored.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
      *
      * @return the virtualMachines value.
@@ -55,20 +69,6 @@ public interface JitNetworkAccessPolicy {
     String provisioningState();
 
     /**
-     * Gets the kind property: Kind of the resource.
-     *
-     * @return the kind value.
-     */
-    String kind();
-
-    /**
-     * Gets the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    String location();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -81,6 +81,13 @@ public interface JitNetworkAccessPolicy {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.JitNetworkAccessPolicyInner object.
@@ -129,7 +136,7 @@ public interface JitNetworkAccessPolicy {
          * The stage of the JitNetworkAccessPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithRequests, DefinitionStages.WithKind {
+        interface WithCreate extends DefinitionStages.WithKind, DefinitionStages.WithRequests {
             /**
              * Executes the create request.
              *
@@ -145,16 +152,6 @@ public interface JitNetworkAccessPolicy {
              */
             JitNetworkAccessPolicy create(Context context);
         }
-        /** The stage of the JitNetworkAccessPolicy definition allowing to specify requests. */
-        interface WithRequests {
-            /**
-             * Specifies the requests property: The requests property..
-             *
-             * @param requests The requests property.
-             * @return the next definition stage.
-             */
-            WithCreate withRequests(List<JitNetworkAccessRequestInner> requests);
-        }
         /** The stage of the JitNetworkAccessPolicy definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -165,6 +162,16 @@ public interface JitNetworkAccessPolicy {
              */
             WithCreate withKind(String kind);
         }
+        /** The stage of the JitNetworkAccessPolicy definition allowing to specify requests. */
+        interface WithRequests {
+            /**
+             * Specifies the requests property: The requests property..
+             *
+             * @param requests The requests property.
+             * @return the next definition stage.
+             */
+            WithCreate withRequests(List<JitNetworkAccessRequestInner> requests);
+        }
     }
     /**
      * Begins update for the JitNetworkAccessPolicy resource.
@@ -174,7 +181,7 @@ public interface JitNetworkAccessPolicy {
     JitNetworkAccessPolicy.Update update();
 
     /** The template for JitNetworkAccessPolicy update. */
-    interface Update extends UpdateStages.WithVirtualMachines, UpdateStages.WithRequests, UpdateStages.WithKind {
+    interface Update extends UpdateStages.WithKind, UpdateStages.WithVirtualMachines, UpdateStages.WithRequests {
         /**
          * Executes the update request.
          *
@@ -192,6 +199,16 @@ public interface JitNetworkAccessPolicy {
     }
     /** The JitNetworkAccessPolicy update stages. */
     interface UpdateStages {
+        /** The stage of the JitNetworkAccessPolicy update allowing to specify kind. */
+        interface WithKind {
+            /**
+             * Specifies the kind property: Kind of the resource.
+             *
+             * @param kind Kind of the resource.
+             * @return the next definition stage.
+             */
+            Update withKind(String kind);
+        }
         /** The stage of the JitNetworkAccessPolicy update allowing to specify virtualMachines. */
         interface WithVirtualMachines {
             /**
@@ -212,16 +229,6 @@ public interface JitNetworkAccessPolicy {
              * @return the next definition stage.
              */
             Update withRequests(List<JitNetworkAccessRequestInner> requests);
-        }
-        /** The stage of the JitNetworkAccessPolicy update allowing to specify kind. */
-        interface WithKind {
-            /**
-             * Specifies the kind property: Kind of the resource.
-             *
-             * @param kind Kind of the resource.
-             * @return the next definition stage.
-             */
-            Update withKind(String kind);
         }
     }
     /**

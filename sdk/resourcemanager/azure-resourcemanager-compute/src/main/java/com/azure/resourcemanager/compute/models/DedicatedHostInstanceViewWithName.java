@@ -20,6 +20,10 @@ public final class DedicatedHostInstanceViewWithName extends DedicatedHostInstan
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
+    /** Creates an instance of DedicatedHostInstanceViewWithName class. */
+    public DedicatedHostInstanceViewWithName() {
+    }
+
     /**
      * Get the name property: The name of the dedicated host.
      *

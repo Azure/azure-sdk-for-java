@@ -27,6 +27,10 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
     @JsonProperty(value = "rules")
     private List<FirewallPolicyRule> rules;
 
+    /** Creates an instance of FirewallPolicyNatRuleCollection class. */
+    public FirewallPolicyNatRuleCollection() {
+    }
+
     /**
      * Get the action property: The action type of a Nat rule collection.
      *

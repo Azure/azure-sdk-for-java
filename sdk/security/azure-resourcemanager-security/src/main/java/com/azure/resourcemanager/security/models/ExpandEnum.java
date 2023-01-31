@@ -27,7 +27,11 @@ public final class ExpandEnum extends ExpandableStringEnum<ExpandEnum> {
         return fromString(name, ExpandEnum.class);
     }
 
-    /** @return known ExpandEnum values. */
+    /**
+     * Gets known ExpandEnum values.
+     *
+     * @return known ExpandEnum values.
+     */
     public static Collection<ExpandEnum> values() {
         return values(ExpandEnum.class);
     }

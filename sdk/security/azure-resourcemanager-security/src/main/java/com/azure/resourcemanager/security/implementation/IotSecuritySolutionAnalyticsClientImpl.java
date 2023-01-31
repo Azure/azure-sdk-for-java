@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionAnalyticsClient;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionAnalyticsModelInner;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionAnalyticsModelListInner;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IotSecuritySolutionAnalyticsClient. */
 public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecuritySolutionAnalyticsClient {
-    private final ClientLogger logger = new ClientLogger(IotSecuritySolutionAnalyticsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IotSecuritySolutionAnalyticsService service;
 
@@ -56,7 +53,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIotSec")
-    private interface IotSecuritySolutionAnalyticsService {
+    public interface IotSecuritySolutionAnalyticsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
@@ -97,7 +94,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelListInner>> listWithResponseAsync(
@@ -148,7 +146,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelListInner>> listWithResponseAsync(
@@ -195,19 +194,29 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
+     * @return list of Security analytics of your IoT Security solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecuritySolutionAnalyticsModelListInner> listAsync(String resourceGroupName, String solutionName) {
-        return listWithResponseAsync(resourceGroupName, solutionName)
-            .flatMap(
-                (Response<IoTSecuritySolutionAnalyticsModelListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, solutionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use this method to get IoT security Analytics metrics in an array.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Security analytics of your IoT Security solution along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IoTSecuritySolutionAnalyticsModelListInner> listWithResponse(
+        String resourceGroupName, String solutionName, Context context) {
+        return listWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
     /**
@@ -223,25 +232,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecuritySolutionAnalyticsModelListInner list(String resourceGroupName, String solutionName) {
-        return listAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * Use this method to get IoT security Analytics metrics in an array.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Security analytics of your IoT Security solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionAnalyticsModelListInner> listWithResponse(
-        String resourceGroupName, String solutionName, Context context) {
-        return listWithResponseAsync(resourceGroupName, solutionName, context).block();
+        return listWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
     }
 
     /**
@@ -253,7 +244,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelInner>> getWithResponseAsync(
@@ -304,7 +296,8 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionAnalyticsModelInner>> getWithResponseAsync(
@@ -351,19 +344,29 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
+     * @return security analytics of your IoT Security solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecuritySolutionAnalyticsModelInner> getAsync(String resourceGroupName, String solutionName) {
-        return getWithResponseAsync(resourceGroupName, solutionName)
-            .flatMap(
-                (Response<IoTSecuritySolutionAnalyticsModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, solutionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use this method to get IoT Security Analytics metrics.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security analytics of your IoT Security solution along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IoTSecuritySolutionAnalyticsModelInner> getWithResponse(
+        String resourceGroupName, String solutionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
     /**
@@ -379,24 +382,6 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecuritySolutionAnalyticsModelInner get(String resourceGroupName, String solutionName) {
-        return getAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * Use this method to get IoT Security Analytics metrics.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security analytics of your IoT Security solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionAnalyticsModelInner> getWithResponse(
-        String resourceGroupName, String solutionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, solutionName, context).block();
+        return getWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
     }
 }

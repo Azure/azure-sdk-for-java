@@ -31,32 +31,34 @@ public interface SecurityContact {
     String type();
 
     /**
-     * Gets the email property: The email of this security contact.
+     * Gets the emails property: List of email addresses which will get notifications from Microsoft Defender for Cloud
+     * by the configurations defined in this security contact.
      *
-     * @return the email value.
+     * @return the emails value.
      */
-    String email();
+    String emails();
 
     /**
-     * Gets the phone property: The phone number of this security contact.
+     * Gets the phone property: The security contact's phone number.
      *
      * @return the phone value.
      */
     String phone();
 
     /**
-     * Gets the alertNotifications property: Whether to send security alerts notifications to the security contact.
+     * Gets the alertNotifications property: Defines whether to send email notifications about new security alerts.
      *
      * @return the alertNotifications value.
      */
-    AlertNotifications alertNotifications();
+    SecurityContactPropertiesAlertNotifications alertNotifications();
 
     /**
-     * Gets the alertsToAdmins property: Whether to send security alerts notifications to subscription admins.
+     * Gets the notificationsByRole property: Defines whether to send email notifications from Microsoft Defender for
+     * Cloud to persons with specific RBAC roles on the subscription.
      *
-     * @return the alertsToAdmins value.
+     * @return the notificationsByRole value.
      */
-    AlertsToAdmins alertsToAdmins();
+    SecurityContactPropertiesNotificationsByRole notificationsByRole();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SecurityContactInner object.
@@ -78,10 +80,10 @@ public interface SecurityContact {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithEmail,
+            extends DefinitionStages.WithEmails,
                 DefinitionStages.WithPhone,
                 DefinitionStages.WithAlertNotifications,
-                DefinitionStages.WithAlertsToAdmins {
+                DefinitionStages.WithNotificationsByRole {
             /**
              * Executes the create request.
              *
@@ -97,22 +99,24 @@ public interface SecurityContact {
              */
             SecurityContact create(Context context);
         }
-        /** The stage of the SecurityContact definition allowing to specify email. */
-        interface WithEmail {
+        /** The stage of the SecurityContact definition allowing to specify emails. */
+        interface WithEmails {
             /**
-             * Specifies the email property: The email of this security contact.
+             * Specifies the emails property: List of email addresses which will get notifications from Microsoft
+             * Defender for Cloud by the configurations defined in this security contact..
              *
-             * @param email The email of this security contact.
+             * @param emails List of email addresses which will get notifications from Microsoft Defender for Cloud by
+             *     the configurations defined in this security contact.
              * @return the next definition stage.
              */
-            WithCreate withEmail(String email);
+            WithCreate withEmails(String emails);
         }
         /** The stage of the SecurityContact definition allowing to specify phone. */
         interface WithPhone {
             /**
-             * Specifies the phone property: The phone number of this security contact.
+             * Specifies the phone property: The security contact's phone number.
              *
-             * @param phone The phone number of this security contact.
+             * @param phone The security contact's phone number.
              * @return the next definition stage.
              */
             WithCreate withPhone(String phone);
@@ -120,97 +124,25 @@ public interface SecurityContact {
         /** The stage of the SecurityContact definition allowing to specify alertNotifications. */
         interface WithAlertNotifications {
             /**
-             * Specifies the alertNotifications property: Whether to send security alerts notifications to the security
-             * contact.
+             * Specifies the alertNotifications property: Defines whether to send email notifications about new security
+             * alerts.
              *
-             * @param alertNotifications Whether to send security alerts notifications to the security contact.
+             * @param alertNotifications Defines whether to send email notifications about new security alerts.
              * @return the next definition stage.
              */
-            WithCreate withAlertNotifications(AlertNotifications alertNotifications);
+            WithCreate withAlertNotifications(SecurityContactPropertiesAlertNotifications alertNotifications);
         }
-        /** The stage of the SecurityContact definition allowing to specify alertsToAdmins. */
-        interface WithAlertsToAdmins {
+        /** The stage of the SecurityContact definition allowing to specify notificationsByRole. */
+        interface WithNotificationsByRole {
             /**
-             * Specifies the alertsToAdmins property: Whether to send security alerts notifications to subscription
-             * admins.
+             * Specifies the notificationsByRole property: Defines whether to send email notifications from Microsoft
+             * Defender for Cloud to persons with specific RBAC roles on the subscription..
              *
-             * @param alertsToAdmins Whether to send security alerts notifications to subscription admins.
+             * @param notificationsByRole Defines whether to send email notifications from Microsoft Defender for Cloud
+             *     to persons with specific RBAC roles on the subscription.
              * @return the next definition stage.
              */
-            WithCreate withAlertsToAdmins(AlertsToAdmins alertsToAdmins);
-        }
-    }
-    /**
-     * Begins update for the SecurityContact resource.
-     *
-     * @return the stage of resource update.
-     */
-    SecurityContact.Update update();
-
-    /** The template for SecurityContact update. */
-    interface Update
-        extends UpdateStages.WithEmail,
-            UpdateStages.WithPhone,
-            UpdateStages.WithAlertNotifications,
-            UpdateStages.WithAlertsToAdmins {
-        /**
-         * Executes the update request.
-         *
-         * @return the updated resource.
-         */
-        SecurityContact apply();
-
-        /**
-         * Executes the update request.
-         *
-         * @param context The context to associate with this operation.
-         * @return the updated resource.
-         */
-        SecurityContact apply(Context context);
-    }
-    /** The SecurityContact update stages. */
-    interface UpdateStages {
-        /** The stage of the SecurityContact update allowing to specify email. */
-        interface WithEmail {
-            /**
-             * Specifies the email property: The email of this security contact.
-             *
-             * @param email The email of this security contact.
-             * @return the next definition stage.
-             */
-            Update withEmail(String email);
-        }
-        /** The stage of the SecurityContact update allowing to specify phone. */
-        interface WithPhone {
-            /**
-             * Specifies the phone property: The phone number of this security contact.
-             *
-             * @param phone The phone number of this security contact.
-             * @return the next definition stage.
-             */
-            Update withPhone(String phone);
-        }
-        /** The stage of the SecurityContact update allowing to specify alertNotifications. */
-        interface WithAlertNotifications {
-            /**
-             * Specifies the alertNotifications property: Whether to send security alerts notifications to the security
-             * contact.
-             *
-             * @param alertNotifications Whether to send security alerts notifications to the security contact.
-             * @return the next definition stage.
-             */
-            Update withAlertNotifications(AlertNotifications alertNotifications);
-        }
-        /** The stage of the SecurityContact update allowing to specify alertsToAdmins. */
-        interface WithAlertsToAdmins {
-            /**
-             * Specifies the alertsToAdmins property: Whether to send security alerts notifications to subscription
-             * admins.
-             *
-             * @param alertsToAdmins Whether to send security alerts notifications to subscription admins.
-             * @return the next definition stage.
-             */
-            Update withAlertsToAdmins(AlertsToAdmins alertsToAdmins);
+            WithCreate withNotificationsByRole(SecurityContactPropertiesNotificationsByRole notificationsByRole);
         }
     }
     /**

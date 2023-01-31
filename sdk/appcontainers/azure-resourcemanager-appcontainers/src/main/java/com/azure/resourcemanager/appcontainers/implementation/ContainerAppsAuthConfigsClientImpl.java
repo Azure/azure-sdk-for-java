@@ -448,22 +448,6 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param authConfigName Name of the Container App AuthConfig.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AuthConfig of a Container App.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthConfigInner get(String resourceGroupName, String containerAppName, String authConfigName) {
-        return getAsync(resourceGroupName, containerAppName, authConfigName).block();
-    }
-
-    /**
-     * Get a AuthConfig of a Container App.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -474,6 +458,22 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
     public Response<AuthConfigInner> getWithResponse(
         String resourceGroupName, String containerAppName, String authConfigName, Context context) {
         return getWithResponseAsync(resourceGroupName, containerAppName, authConfigName, context).block();
+    }
+
+    /**
+     * Get a AuthConfig of a Container App.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param authConfigName Name of the Container App AuthConfig.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a AuthConfig of a Container App.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AuthConfigInner get(String resourceGroupName, String containerAppName, String authConfigName) {
+        return getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE).getValue();
     }
 
     /**
@@ -631,24 +631,6 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      * @param containerAppName Name of the Container App.
      * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration settings for the Azure ContainerApp Service Authentication / Authorization feature.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthConfigInner createOrUpdate(
-        String resourceGroupName, String containerAppName, String authConfigName, AuthConfigInner authConfigEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, containerAppName, authConfigName, authConfigEnvelope).block();
-    }
-
-    /**
-     * Create or update the AuthConfig for a Container App.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
-     * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -666,6 +648,26 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, containerAppName, authConfigName, authConfigEnvelope, context)
             .block();
+    }
+
+    /**
+     * Create or update the AuthConfig for a Container App.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param authConfigName Name of the Container App AuthConfig.
+     * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure ContainerApp Service Authentication / Authorization feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AuthConfigInner createOrUpdate(
+        String resourceGroupName, String containerAppName, String authConfigName, AuthConfigInner authConfigEnvelope) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, containerAppName, authConfigName, authConfigEnvelope, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -797,21 +799,6 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param authConfigName Name of the Container App AuthConfig.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String containerAppName, String authConfigName) {
-        deleteAsync(resourceGroupName, containerAppName, authConfigName).block();
-    }
-
-    /**
-     * Delete a Container App AuthConfig.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -825,9 +812,25 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
     }
 
     /**
+     * Delete a Container App AuthConfig.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param authConfigName Name of the Container App AuthConfig.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String containerAppName, String authConfigName) {
+        deleteWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -864,7 +867,8 @@ public final class ContainerAppsAuthConfigsClientImpl implements ContainerAppsAu
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

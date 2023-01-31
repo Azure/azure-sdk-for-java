@@ -23,6 +23,10 @@ public final class SalesforceObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SalesforceObjectDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SalesforceObjectDataset class. */
+    public SalesforceObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Salesforce object dataset properties.
      *

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for CapacityReservationGroups CreateOrUpdate. */
 public final class CapacityReservationGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity reservation group.
@@ -33,7 +32,7 @@ public final class CapacityReservationGroupsCreateOrUpdateSamples {
                     .withLocation("westus")
                     .withTags(mapOf("department", "finance"))
                     .withZones(Arrays.asList("1", "2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

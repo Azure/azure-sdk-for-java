@@ -35,6 +35,10 @@ public final class ConnectivityGroupItem {
     @JsonProperty(value = "groupConnectivity", required = true)
     private GroupConnectivity groupConnectivity;
 
+    /** Creates an instance of ConnectivityGroupItem class. */
+    public ConnectivityGroupItem() {
+    }
+
     /**
      * Get the networkGroupId property: Network group Id.
      *

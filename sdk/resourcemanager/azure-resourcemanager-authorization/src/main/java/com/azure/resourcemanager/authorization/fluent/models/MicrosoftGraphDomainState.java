@@ -17,24 +17,21 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphDomainState {
     /*
-     * Timestamp for when the last activity occurred. The value is updated when
-     * an operation is scheduled, the asynchronous task starts, and when the
-     * operation completes.
+     * Timestamp for when the last activity occurred. The value is updated when an operation is scheduled, the
+     * asynchronous task starts, and when the operation completes.
      */
     @JsonProperty(value = "lastActionDateTime")
     private OffsetDateTime lastActionDateTime;
 
     /*
-     * Type of asynchronous operation. The values can be ForceDelete or
-     * Verification
+     * Type of asynchronous operation. The values can be ForceDelete or Verification
      */
     @JsonProperty(value = "operation")
     private String operation;
 
     /*
-     * Current status of the operation.  Scheduled - Operation has been
-     * scheduled but has not started.  InProgress - Task has started and is in
-     * progress.  Failed - Operation has failed.
+     * Current status of the operation.  Scheduled - Operation has been scheduled but has not started.  InProgress -
+     * Task has started and is in progress.  Failed - Operation has failed.
      */
     @JsonProperty(value = "status")
     private String status;
@@ -43,6 +40,10 @@ public final class MicrosoftGraphDomainState {
      * domainState
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDomainState class. */
+    public MicrosoftGraphDomainState() {
+    }
 
     /**
      * Get the lastActionDateTime property: Timestamp for when the last activity occurred. The value is updated when an

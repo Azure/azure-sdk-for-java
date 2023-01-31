@@ -43,7 +43,7 @@ public interface AttachedNetworkConnection {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.
@@ -103,7 +103,7 @@ public interface AttachedNetworkConnection {
             /**
              * Specifies resourceGroupName, devCenterName.
              *
-             * @param resourceGroupName Name of the resource group within the Azure subscription.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param devCenterName The name of the devcenter.
              * @return the next definition stage.
              */

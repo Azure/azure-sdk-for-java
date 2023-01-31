@@ -23,6 +23,10 @@ public final class WebActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private WebActivityTypeProperties innerTypeProperties = new WebActivityTypeProperties();
 
+    /** Creates an instance of WebActivity class. */
+    public WebActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Web activity properties.
      *

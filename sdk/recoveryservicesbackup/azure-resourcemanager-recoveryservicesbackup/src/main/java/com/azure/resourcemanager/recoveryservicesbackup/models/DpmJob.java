@@ -65,6 +65,10 @@ public final class DpmJob extends Job {
     @JsonProperty(value = "extendedInfo")
     private DpmJobExtendedInfo extendedInfo;
 
+    /** Creates an instance of DpmJob class. */
+    public DpmJob() {
+    }
+
     /**
      * Get the duration property: Time elapsed for job.
      *

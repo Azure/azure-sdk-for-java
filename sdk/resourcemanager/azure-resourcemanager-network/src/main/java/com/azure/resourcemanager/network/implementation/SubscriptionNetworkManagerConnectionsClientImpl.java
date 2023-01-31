@@ -66,7 +66,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface SubscriptionNetworkManagerConnectionsService {
+    public interface SubscriptionNetworkManagerConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections"
@@ -171,7 +171,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -226,7 +226,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -262,22 +262,6 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
      *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Manager Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkManagerConnectionInner createOrUpdate(
-        String networkManagerConnectionName, NetworkManagerConnectionInner parameters) {
-        return createOrUpdateAsync(networkManagerConnectionName, parameters).block();
-    }
-
-    /**
-     * Create a network manager connection on this subscription.
-     *
-     * @param networkManagerConnectionName Name for the network manager connection.
-     * @param parameters Network manager connection to be created/updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -288,6 +272,22 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
     public Response<NetworkManagerConnectionInner> createOrUpdateWithResponse(
         String networkManagerConnectionName, NetworkManagerConnectionInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(networkManagerConnectionName, parameters, context).block();
+    }
+
+    /**
+     * Create a network manager connection on this subscription.
+     *
+     * @param networkManagerConnectionName Name for the network manager connection.
+     * @param parameters Network manager connection to be created/updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network Manager Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerConnectionInner createOrUpdate(
+        String networkManagerConnectionName, NetworkManagerConnectionInner parameters) {
+        return createOrUpdateWithResponse(networkManagerConnectionName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -320,7 +320,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -368,7 +368,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -399,20 +399,6 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
      * Get a specified connection created by this subscription.
      *
      * @param networkManagerConnectionName Name for the network manager connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specified connection created by this subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkManagerConnectionInner get(String networkManagerConnectionName) {
-        return getAsync(networkManagerConnectionName).block();
-    }
-
-    /**
-     * Get a specified connection created by this subscription.
-     *
-     * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -423,6 +409,20 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
     public Response<NetworkManagerConnectionInner> getWithResponse(
         String networkManagerConnectionName, Context context) {
         return getWithResponseAsync(networkManagerConnectionName, context).block();
+    }
+
+    /**
+     * Get a specified connection created by this subscription.
+     *
+     * @param networkManagerConnectionName Name for the network manager connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specified connection created by this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerConnectionInner get(String networkManagerConnectionName) {
+        return getWithResponse(networkManagerConnectionName, Context.NONE).getValue();
     }
 
     /**
@@ -454,7 +454,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +500,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -531,19 +531,6 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
      * Delete specified connection created by this subscription.
      *
      * @param networkManagerConnectionName Name for the network manager connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String networkManagerConnectionName) {
-        deleteAsync(networkManagerConnectionName).block();
-    }
-
-    /**
-     * Delete specified connection created by this subscription.
-     *
-     * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -553,6 +540,19 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String networkManagerConnectionName, Context context) {
         return deleteWithResponseAsync(networkManagerConnectionName, context).block();
+    }
+
+    /**
+     * Delete specified connection created by this subscription.
+     *
+     * @param networkManagerConnectionName Name for the network manager connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String networkManagerConnectionName) {
+        deleteWithResponse(networkManagerConnectionName, Context.NONE);
     }
 
     /**
@@ -583,7 +583,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -639,7 +639,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

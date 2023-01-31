@@ -11,16 +11,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.adapter.JdkFlowAdapter;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -37,6 +33,8 @@ import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
  */
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
+    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
+    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
 
     private final java.net.http.HttpClient jdkHttpClient;
 
@@ -61,37 +59,49 @@ class JdkHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
 
-        return Mono.fromCallable(() -> toJdkHttpRequest(request, context))
-            .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher()))
-                .flatMap(jdKResponse -> {
-                    if (eagerlyReadResponse) {
-                        HttpHeaders headers = fromJdkHttpHeaders(jdKResponse.headers());
-                        int statusCode = jdKResponse.statusCode();
+        Mono<java.net.http.HttpRequest> jdkRequestMono = Mono.fromCallable(() -> toJdkHttpRequest(request, context));
 
-                        return FluxUtil.collectBytesFromNetworkResponse(JdkFlowAdapter
-                            .flowPublisherToFlux(jdKResponse.body())
-                            .flatMapSequential(Flux::fromIterable), headers)
-                            .map(bytes -> new JdkHttpResponseSync(request, statusCode, headers, bytes));
-                    }
+        if (eagerlyReadResponse || ignoreResponseBody) {
+            return jdkRequestMono
+                .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofByteArray())))
+                .map(jdkResponse -> {
+                    // For now, eagerlyReadResponse and ignoreResponseBody works the same.
+                    HttpHeaders headers = fromJdkHttpHeaders(jdkResponse.headers());
+                    int statusCode = jdkResponse.statusCode();
 
-                    return Mono.just(new JdkHttpResponseAsync(request, jdKResponse));
-                }));
+                    return new JdkHttpResponseSync(request, statusCode, headers, jdkResponse.body());
+                });
+        } else {
+            return jdkRequestMono
+                .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher())))
+                .map(jdkResponse -> new JdkHttpResponseAsync(request, jdkResponse));
+        }
     }
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
 
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {
-            if (eagerlyReadResponse) {
+            // For now, eagerlyReadResponse and ignoreResponseBody works the same.
+//            if (ignoreResponseBody) {
+//                java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest,
+//                    responseInfo -> new BodyIgnoringSubscriber(LOGGER));
+//                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
+//                    fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
+//            }
+
+            if (eagerlyReadResponse || ignoreResponseBody) {
                 java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, ofByteArray());
-                return new JdkHttpResponseSync(request, jdKResponse.statusCode(), fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
+                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
+                    fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
             } else {
-                java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, ofInputStream());
-                return new JdkHttpResponseSync(request, jdKResponse);
+                return new JdkHttpResponseSync(request, jdkHttpClient.send(jdkRequest, ofInputStream()));
             }
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));

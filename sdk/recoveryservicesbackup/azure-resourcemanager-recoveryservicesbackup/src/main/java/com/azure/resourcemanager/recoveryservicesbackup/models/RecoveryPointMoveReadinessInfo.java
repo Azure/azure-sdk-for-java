@@ -22,6 +22,10 @@ public final class RecoveryPointMoveReadinessInfo {
     @JsonProperty(value = "additionalInfo")
     private String additionalInfo;
 
+    /** Creates an instance of RecoveryPointMoveReadinessInfo class. */
+    public RecoveryPointMoveReadinessInfo() {
+    }
+
     /**
      * Get the isReadyForMove property: The isReadyForMove property.
      *

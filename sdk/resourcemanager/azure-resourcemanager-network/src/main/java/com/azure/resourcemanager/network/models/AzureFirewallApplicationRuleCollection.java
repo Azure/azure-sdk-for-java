@@ -31,6 +31,10 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of AzureFirewallApplicationRuleCollection class. */
+    public AzureFirewallApplicationRuleCollection() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the azure firewall application rule collection.
      *

@@ -19,11 +19,8 @@ spring:
         servicebus-1:
           type: servicebus
           default-candidate: true
-          inherit-environment: true
           environment:
             spring:
-              main:
-                sources: com.azure.spring.cloud.integration.tests.AzureCloudTypeConfiguration
               cloud:
                 azure:
                   servicebus:
@@ -33,8 +30,6 @@ spring:
           default-candidate: false
           environment:
             spring:
-              main:
-                sources: com.azure.spring.cloud.integration.tests.AzureCloudTypeConfiguration
               cloud:
                 azure:
                   servicebus:

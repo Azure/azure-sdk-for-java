@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("GeoRestore")
 @Fluent
 public final class ServerPropertiesForGeoRestore extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForGeoRestore.class);
-
     /*
      * The source server id to restore from.
      */
     @JsonProperty(value = "sourceServerId", required = true)
     private String sourceServerId;
+
+    /** Creates an instance of ServerPropertiesForGeoRestore class. */
+    public ServerPropertiesForGeoRestore() {
+    }
 
     /**
      * Get the sourceServerId property: The source server id to restore from.
@@ -88,10 +89,12 @@ public final class ServerPropertiesForGeoRestore extends ServerPropertiesForCrea
     public void validate() {
         super.validate();
         if (sourceServerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceServerId in model ServerPropertiesForGeoRestore"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerPropertiesForGeoRestore.class);
 }

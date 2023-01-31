@@ -34,15 +34,6 @@ public final class SignalRsImpl implements SignalRs {
         this.serviceManager = serviceManager;
     }
 
-    public NameAvailability checkNameAvailability(String location, NameAvailabilityParameters parameters) {
-        NameAvailabilityInner inner = this.serviceClient().checkNameAvailability(location, parameters);
-        if (inner != null) {
-            return new NameAvailabilityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NameAvailability> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityParameters parameters, Context context) {
         Response<NameAvailabilityInner> inner =
@@ -53,6 +44,15 @@ public final class SignalRsImpl implements SignalRs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailability checkNameAvailability(String location, NameAvailabilityParameters parameters) {
+        NameAvailabilityInner inner = this.serviceClient().checkNameAvailability(location, parameters);
+        if (inner != null) {
+            return new NameAvailabilityImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -79,15 +79,6 @@ public final class SignalRsImpl implements SignalRs {
         return Utils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
     }
 
-    public SignalRResource getByResourceGroup(String resourceGroupName, String resourceName) {
-        SignalRResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new SignalRResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SignalRResource> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<SignalRResourceInner> inner =
@@ -103,21 +94,21 @@ public final class SignalRsImpl implements SignalRs {
         }
     }
 
+    public SignalRResource getByResourceGroup(String resourceGroupName, String resourceName) {
+        SignalRResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SignalRResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
         this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
     public void delete(String resourceGroupName, String resourceName, Context context) {
         this.serviceClient().delete(resourceGroupName, resourceName, context);
-    }
-
-    public SignalRKeys listKeys(String resourceGroupName, String resourceName) {
-        SignalRKeysInner inner = this.serviceClient().listKeys(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new SignalRKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SignalRKeys> listKeysWithResponse(String resourceGroupName, String resourceName, Context context) {
@@ -129,6 +120,15 @@ public final class SignalRsImpl implements SignalRs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SignalRKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SignalRKeys listKeys(String resourceGroupName, String resourceName) {
+        SignalRKeysInner inner = this.serviceClient().listKeys(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SignalRKeysImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -163,15 +163,6 @@ public final class SignalRsImpl implements SignalRs {
         this.serviceClient().restart(resourceGroupName, resourceName, context);
     }
 
-    public SkuList listSkus(String resourceGroupName, String resourceName) {
-        SkuListInner inner = this.serviceClient().listSkus(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new SkuListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SkuList> listSkusWithResponse(String resourceGroupName, String resourceName, Context context) {
         Response<SkuListInner> inner =
             this.serviceClient().listSkusWithResponse(resourceGroupName, resourceName, context);
@@ -181,6 +172,15 @@ public final class SignalRsImpl implements SignalRs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SkuListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SkuList listSkus(String resourceGroupName, String resourceName) {
+        SkuListInner inner = this.serviceClient().listSkus(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SkuListImpl(inner, this.manager());
         } else {
             return null;
         }

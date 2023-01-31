@@ -12,18 +12,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SkuSetting {
     /*
-     * [Required] The name of the SKU. Ex - P3. It is typically a letter+number
-     * code.
+     * [Required] The name of the SKU. Ex - P3. It is typically a letter+number code.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * This field is required to be implemented by the Resource Provider if the
-     * service has more than one tier, but is not required on a PUT.
+     * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is
+     * not required on a PUT.
      */
     @JsonProperty(value = "tier")
     private SkuTier tier;
+
+    /** Creates an instance of SkuSetting class. */
+    public SkuSetting() {
+    }
 
     /**
      * Get the name property: [Required] The name of the SKU. Ex - P3. It is typically a letter+number code.

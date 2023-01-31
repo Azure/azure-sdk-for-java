@@ -13,10 +13,9 @@ import com.azure.resourcemanager.frontdoor.fluent.NetworkExperimentProfilesClien
 import com.azure.resourcemanager.frontdoor.fluent.models.ProfileInner;
 import com.azure.resourcemanager.frontdoor.models.NetworkExperimentProfiles;
 import com.azure.resourcemanager.frontdoor.models.Profile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetworkExperimentProfilesImpl implements NetworkExperimentProfiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkExperimentProfilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkExperimentProfilesImpl.class);
 
     private final NetworkExperimentProfilesClient innerClient;
 
@@ -49,15 +48,6 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
         return Utils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
     }
 
-    public Profile getByResourceGroup(String resourceGroupName, String profileName) {
-        ProfileInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, profileName);
-        if (inner != null) {
-            return new ProfileImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Profile> getByResourceGroupWithResponse(
         String resourceGroupName, String profileName, Context context) {
         Response<ProfileInner> inner =
@@ -68,6 +58,15 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Profile getByResourceGroup(String resourceGroupName, String profileName) {
+        ProfileInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, profileName);
+        if (inner != null) {
+            return new ProfileImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -84,7 +83,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
     public Profile getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +91,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
     public Response<Profile> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +149,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +157,7 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
         }
         String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

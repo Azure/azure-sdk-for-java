@@ -36,8 +36,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
     private MicrosoftGraphChoiceColumn choice;
 
     /*
-     * For site columns, the name of the group this column belongs to. Helps
-     * organize related columns.
+     * For site columns, the name of the group this column belongs to. Helps organize related columns.
      */
     @JsonProperty(value = "columnGroup")
     private String columnGroup;
@@ -104,8 +103,8 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
     private MicrosoftGraphLookupColumn lookup;
 
     /*
-     * The API-facing name of the column as it appears in the [fields][] on a
-     * [listItem][]. For the user-facing name, see displayName.
+     * The API-facing name of the column as it appears in the [fields][] on a [listItem][]. For the user-facing name,
+     * see displayName.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -144,6 +143,10 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
      * columnDefinition
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphColumnDefinition class. */
+    public MicrosoftGraphColumnDefinition() {
+    }
 
     /**
      * Get the booleanProperty property: booleanColumn.

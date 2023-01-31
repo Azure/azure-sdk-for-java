@@ -31,6 +31,10 @@ public final class SecurityAdminConfigurationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of SecurityAdminConfigurationPropertiesFormat class. */
+    public SecurityAdminConfigurationPropertiesFormat() {
+    }
+
     /**
      * Get the description property: A description of the security configuration.
      *

@@ -57,7 +57,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkManagerCommitsService {
+    public interface NetworkManagerCommitsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -114,7 +114,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -172,7 +172,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

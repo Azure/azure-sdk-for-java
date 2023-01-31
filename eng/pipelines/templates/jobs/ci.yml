@@ -28,9 +28,6 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
-  - name: SkipAggregateReports
-    type: boolean
-    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -154,7 +151,7 @@ jobs:
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
       - script: |
-          pip install markdown2 BeautifulSoup4
+          pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
@@ -280,6 +277,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:
           CspellConfigPath: .vscode/cspell.json
+          ContinueOnError: false
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
@@ -325,6 +323,14 @@ jobs:
         parameters:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
+      - task: PowerShell@2
+        displayName: Verify Code Generation
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/pipelines/scripts/Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -Directory sdk/${{ parameters.ServiceDirectory }}
+
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
         displayName: 'Build and Install'
@@ -339,10 +345,43 @@ jobs:
           publishJUnitResults: false
 
       - task: Maven@3
-        displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+        displayName: 'Run SpotBugs, Checkstyle, and RevApi'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -Dcodesnippet.skip -Dmaven.javadoc.skip -DskipTests -Dgpg.skip -DskipCompile=true -DskipTestCompile=true -pl $(ProjectList)'
+          mavenOptions: '$(MemoryOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'verify'
+
+      - task: PowerShell@2
+        inputs:
+          filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Reports.ps1
+          arguments: -OutputDirectory $(Build.ArtifactStagingDirectory)/linting-reports
+          pwsh: true
+          workingDirectory: $(Pipeline.Workspace)
+        displayName: 'Generate Linting Reports'
+        condition: always()
+
+      - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
+        displayName: 'Publish Linting Reports'
+        artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+        condition: always()
+
+      - pwsh: |
+          if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
+            Write-Host "Linting errors have been found, download the 'linting-reports.zip' artifact to see what was found."
+            exit 1
+          }
+        displayName: 'Fail Pipeline if Linting Reports Exist'
+
+      - task: Maven@3
+        displayName: 'Run Javadoc'
+        inputs:
+          mavenPomFile: pom.xml
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -359,8 +398,8 @@ jobs:
     - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-win-2019-general
-      vmImage: MMS2019
+      name: azsdk-pool-mms-win-2022-general
+      vmImage: MMS2022
     steps:
       - template: /eng/common/pipelines/templates/steps/credscan.yml
         parameters:
@@ -382,7 +421,6 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}
         TestOptions: ${{ parameters.TestOptions }}

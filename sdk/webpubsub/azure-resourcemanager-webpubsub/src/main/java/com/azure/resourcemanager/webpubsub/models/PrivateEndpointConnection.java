@@ -39,14 +39,14 @@ public interface PrivateEndpointConnection {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: Provisioning state of the private endpoint connection.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
-     * Gets the privateEndpoint property: Private endpoint associated with the private endpoint connection.
+     * Gets the privateEndpoint property: Private endpoint.
      *
      * @return the privateEndpoint value.
      */
@@ -60,7 +60,7 @@ public interface PrivateEndpointConnection {
     List<String> groupIds();
 
     /**
-     * Gets the privateLinkServiceConnectionState property: Connection state.
+     * Gets the privateLinkServiceConnectionState property: Connection state of the private endpoint connection.
      *
      * @return the privateLinkServiceConnectionState value.
      */

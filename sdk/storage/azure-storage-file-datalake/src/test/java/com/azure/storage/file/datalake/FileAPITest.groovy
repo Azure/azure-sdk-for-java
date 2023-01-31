@@ -20,6 +20,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
+import com.azure.storage.file.datalake.models.LeaseAction
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -270,6 +271,7 @@ class FileAPITest extends APISpec {
         fc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
@@ -284,6 +286,7 @@ class FileAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with owner and group"() {
         when:
         def ownerName = namer.getRandomUuid()
@@ -374,6 +377,7 @@ class FileAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with lease id"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -395,6 +399,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with lease duration"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -410,6 +415,7 @@ class FileAPITest extends APISpec {
         fileProps.getLeaseDuration() == LeaseDurationType.FIXED
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with time expires on"() {
         when:
         def options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions)
@@ -425,6 +431,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with time to expire relative to now"() {
         when:
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
@@ -553,7 +560,7 @@ class FileAPITest extends APISpec {
             Context.NONE).getStatusCode() == 201
     }
 
-
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with ACL"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -569,6 +576,7 @@ class FileAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with owner and group"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -664,6 +672,7 @@ class FileAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with lease id"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -687,6 +696,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with lease duration"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -704,6 +714,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with time expires on"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -721,6 +732,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with time to expire relative to now"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -2567,6 +2579,110 @@ class FileAPITest extends APISpec {
         e.getResponse().getStatusCode() == 412
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease acquire"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        def proposedLeaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseAction = LeaseAction.ACQUIRE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setProposedLeaseId(proposedLeaseId)
+            .setLeaseDuration(duration)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProperties.getLeaseState() == LeaseStateType.LEASED
+        fileProperties.getLeaseDuration() == LeaseDurationType.FIXED
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease auto renew"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def leaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseClient = createLeaseClient(fc, leaseId)
+
+        leaseClient.acquireLease(duration)
+
+        def leaseAction = LeaseAction.AUTO_RENEW
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setLeaseId(leaseId)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProperties.getLeaseState() == LeaseStateType.LEASED
+        fileProperties.getLeaseDuration() == LeaseDurationType.FIXED
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease release"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def leaseId = UUID.randomUUID().toString()
+        def duration = 15
+        def leaseClient = createLeaseClient(fc, leaseId)
+
+        leaseClient.acquireLease(duration)
+
+        def leaseAction = LeaseAction.RELEASE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setLeaseId(leaseId)
+            .setFlush(true)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        fileProperties.getLeaseState() == LeaseStateType.AVAILABLE
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_08_04")
+    def "Append data lease acquire release"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+        def proposedLeaseId = UUID.randomUUID().toString()
+        def duration = 15
+
+        def leaseAction = LeaseAction.ACQUIRE_RELEASE
+        def appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseAction(leaseAction)
+            .setProposedLeaseId(proposedLeaseId)
+            .setLeaseDuration(duration)
+            .setFlush(true)
+
+        when:
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def fileProperties = fc.getProperties()
+
+        then:
+        response.getStatusCode() == 202
+        fileProperties.getLeaseStatus() == LeaseStatusType.UNLOCKED
+        fileProperties.getLeaseState() == LeaseStateType.AVAILABLE
+    }
+
     def "Append data error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -2597,6 +2713,7 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Append data flush"() {
         setup:
         def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
@@ -2634,6 +2751,7 @@ class FileAPITest extends APISpec {
         Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Append binary data flush"() {
         setup:
         def appendOptions = new DataLakeFileAppendOptions().setFlush(true)

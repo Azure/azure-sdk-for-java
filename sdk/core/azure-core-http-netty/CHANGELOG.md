@@ -10,6 +10,43 @@
 
 ### Other Changes
 
+## 1.12.8 (2023-01-05)
+
+### Bugs Fixed
+
+- Fixed a bug where an exception would be logged during the first attempt to connect to an authenticated
+  proxy without using credentials (done to prevent any potential credential leaking). ([#30274](https://github.com/Azure/azure-sdk-for-java/pull/30274))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+- - Upgraded Netty from `4.1.82.Final` to `4.1.86.Final`.
+- Upgraded Reactor Netty from `1.0.23` to `1.0.26`.
+
+## 1.12.7 (2022-11-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+
+## 1.12.6 (2022-10-07)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpClientOptions.connectTimeout` wasn't being passed when using `HttpClientProvider(ClientOptions)`. ([#31079](https://github.com/Azure/azure-sdk-for-java/pull/31079))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded Netty from `4.1.79.Final` to `4.1.82.Final`.
+- Upgraded Reactor Netty from `1.0.22` to `1.0.23`.
+
 ## 1.12.5 (2022-09-01)
 
 ### Bugs Fixed

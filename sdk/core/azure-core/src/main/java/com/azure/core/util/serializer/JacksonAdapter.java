@@ -4,9 +4,12 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,18 +19,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.BiConsumer;
-import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
-    private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
     private static final ClientLogger LOGGER = new ClientLogger(JacksonAdapter.class);
 
     private static boolean useAccessHelper;
@@ -37,13 +45,40 @@ public class JacksonAdapter implements SerializerAdapter {
             .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
     }
 
+    // Enum Singleton Pattern
+    private enum GlobalXmlMapper {
+        XML_MAPPER(ObjectMapperShim.createXmlMapper());
+
+        private final ObjectMapperShim xmlMapper;
+
+        GlobalXmlMapper(ObjectMapperShim xmlMapper) {
+            this.xmlMapper = xmlMapper;
+        }
+
+        private ObjectMapperShim getXmlMapper() {
+            return xmlMapper;
+        }
+    }
+
+    private enum GlobalSerializerAdapter {
+        SERIALIZER_ADAPTER(new JacksonAdapter());
+
+        private final SerializerAdapter serializerAdapter;
+
+        GlobalSerializerAdapter(SerializerAdapter serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+        }
+
+        private SerializerAdapter getSerializerAdapter() {
+            return serializerAdapter;
+        }
+    }
+
     /**
      * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
      */
     private final ObjectMapperShim mapper;
     private final ObjectMapperShim headerMapper;
-
-    private volatile ObjectMapperShim xmlMapper;
 
     /**
      * Raw mappers are needed only to support deprecated simpleMapper() and serializer().
@@ -86,7 +121,8 @@ public class JacksonAdapter implements SerializerAdapter {
      * Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper() and
      * serializer()
      */
-    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper,
+        BiConsumer<ObjectMapper, ObjectMapper> configure) {
         this.rawOuterMapper = outerMapper;
         this.rawInnerMapper = innerMapper;
 
@@ -105,20 +141,13 @@ public class JacksonAdapter implements SerializerAdapter {
         return rawInnerMapper;
     }
 
-    private static final class SerializerAdapterHolder {
-        /*
-         * The lazily-created serializer for this ServiceClient.
-         */
-        private static final SerializerAdapter SERIALIZER_ADAPTER = new JacksonAdapter();
-    }
-
     /**
      * maintain singleton instance of the default serializer adapter.
      *
      * @return the default serializer
      */
     public static SerializerAdapter createDefaultSerializerAdapter() {
-        return SerializerAdapterHolder.SERIALIZER_ADAPTER;
+        return GlobalSerializerAdapter.SERIALIZER_ADAPTER.getSerializerAdapter();
     }
 
     /**
@@ -137,9 +166,15 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (String) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().writeValueAsString(object)
-            : mapper.writeValueAsString(object));
+        return (String) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                return getXmlMapper().writeValueAsString(object);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return object.toString();
+            } else {
+                return mapper.writeValueAsString(object);
+            }
+        });
     }
 
     @Override
@@ -148,9 +183,15 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (byte[]) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().writeValueAsBytes(object)
-            : mapper.writeValueAsBytes(object));
+        return (byte[]) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                return getXmlMapper().writeValueAsBytes(object);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return object.toString().getBytes(StandardCharsets.UTF_8);
+            } else {
+                return mapper.writeValueAsBytes(object);
+            }
+        });
     }
 
     @Override
@@ -162,6 +203,8 @@ public class JacksonAdapter implements SerializerAdapter {
         useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
                 getXmlMapper().writeValue(outputStream, object);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                outputStream.write(object.toString().getBytes(StandardCharsets.UTF_8));
             } else {
                 mapper.writeValue(outputStream, object);
             }
@@ -179,7 +222,7 @@ public class JacksonAdapter implements SerializerAdapter {
         try {
             return (String) useAccessHelper(() -> {
                 try {
-                    return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
+                    return removeLeadingAndTrailingQuotes(serialize(object, SerializerEncoding.JSON));
                 } catch (IOException ex) {
                     LOGGER.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
                     return null;
@@ -188,6 +231,42 @@ public class JacksonAdapter implements SerializerAdapter {
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    /*
+     * Used by 'serializeRaw' to removal all leading and trailing quotes (").
+     */
+    static String removeLeadingAndTrailingQuotes(String str) {
+        int strLength = str.length();
+
+        // Continue incrementing the start offset until a non-quote character is found.
+        int startOffset = 0;
+        while (startOffset < strLength) {
+            if (str.charAt(startOffset) != '"') {
+                break;
+            }
+
+            startOffset++;
+        }
+
+        // All characters were quotes, early out return an empty string.
+        if (startOffset == strLength) {
+            return "";
+        }
+
+        // Continue decrementing the end offset until a non-quote character is found.
+        int endOffset = strLength - 1;
+        while (endOffset >= 0) {
+            if (str.charAt(endOffset) != '"') {
+                break;
+            }
+
+            endOffset--;
+        }
+
+        // Return the substring range.
+        // Remember to add one to the end offset as it's exclusive.
+        return str.substring(startOffset, endOffset + 1);
     }
 
     @Override
@@ -206,9 +285,15 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().readValue(value, type)
-            : mapper.readValue(value, type));
+        return (T) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                return getXmlMapper().readValue(value, type);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return deserializeText(value, type);
+            } else {
+                return mapper.readValue(value, type);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -218,9 +303,15 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().readValue(bytes, type)
-            : mapper.readValue(bytes, type));
+        return (T) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                return getXmlMapper().readValue(bytes, type);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return deserializeText(CoreUtils.bomAwareToString(bytes, null), type);
+            } else {
+                return mapper.readValue(bytes, type);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -231,9 +322,73 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().readValue(inputStream, type)
-            : mapper.readValue(inputStream, type));
+        return (T) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                return getXmlMapper().readValue(inputStream, type);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+                byte[] buffer = new byte[8192];
+                int readCount;
+                while ((readCount = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, readCount);
+                }
+
+                return deserializeText(outputStream.bomAwareToString(null), type);
+            } else {
+                return mapper.readValue(inputStream, type);
+            }
+        });
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static Object deserializeText(String value, Type type) throws IOException {
+        if (type == String.class || type == CharSequence.class) {
+            return value;
+        } else if (type == int.class || type == Integer.class) {
+            return Integer.parseInt(value);
+        } else if (type == char.class || type == Character.class) {
+            return CoreUtils.isNullOrEmpty(value) ? null : value.charAt(0);
+        } else if (type == byte.class || type == Byte.class) {
+            return CoreUtils.isNullOrEmpty(value) ? null : (byte) value.charAt(0);
+        } else if (type == byte[].class) {
+            return CoreUtils.isNullOrEmpty(value) ? null : value.getBytes(StandardCharsets.UTF_8);
+        } else if (type == long.class || type == Long.class) {
+            return Long.parseLong(value);
+        } else if (type == short.class || type == Short.class) {
+            return Short.parseShort(value);
+        } else if (type == float.class || type == Float.class) {
+            return Float.parseFloat(value);
+        } else if (type == double.class || type == Double.class) {
+            return Double.parseDouble(value);
+        } else if (type == boolean.class || type == Boolean.class) {
+            return Boolean.parseBoolean(value);
+        } else if (type == OffsetDateTime.class) {
+            return OffsetDateTime.parse(value);
+        } else if (type == DateTimeRfc1123.class) {
+            return new DateTimeRfc1123(value);
+        } else if (type == URL.class) {
+            try {
+                return new URL(value);
+            } catch (MalformedURLException ex) {
+                throw new IOException(ex);
+            }
+        } else if (type == URI.class) {
+            return URI.create(value);
+        } else if (type == UUID.class) {
+            return UUID.fromString(value);
+        } else if (type == LocalDate.class) {
+            return LocalDate.parse(value);
+        } else if (Enum.class.isAssignableFrom((Class<?>) type)) {
+            return Enum.valueOf((Class) type, value);
+        } else if (ExpandableStringEnum.class.isAssignableFrom((Class<?>) type)) {
+            try {
+                return ((Class<?>) type).getDeclaredMethod("fromString", String.class).invoke(null, value);
+            } catch (ReflectiveOperationException ex) {
+                throw new IOException(ex);
+            }
+        } else {
+            throw new IllegalStateException("Unsupported text Content-Type Type: " + type);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -249,15 +404,7 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     private ObjectMapperShim getXmlMapper() {
-        if (xmlMapper == null) {
-            synchronized (mapper) {
-                if (xmlMapper == null) {
-                    xmlMapper = ObjectMapperShim.createXmlMapper();
-                }
-            }
-        }
-
-        return xmlMapper;
+        return GlobalXmlMapper.XML_MAPPER.getXmlMapper();
     }
 
     @SuppressWarnings("removal")

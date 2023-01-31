@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
+import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
@@ -125,11 +126,27 @@ public final class VirtualMachineScaleSetProperties {
     private SpotRestorePolicy spotRestorePolicy;
 
     /*
+     * Specifies the desired targets for mixing Spot and Regular priority VMs within the same VMSS Flex instance.
+     */
+    @JsonProperty(value = "priorityMixPolicy")
+    private PriorityMixPolicy priorityMixPolicy;
+
+    /*
      * Specifies the time at which the Virtual Machine Scale Set resource was created.<br><br>Minimum api-version:
-     * 2022-03-01.
+     * 2021-11-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
+
+    /*
+     * Optional property which must either be set to True or omitted.
+     */
+    @JsonProperty(value = "constrainedMaximumCapacity")
+    private Boolean constrainedMaximumCapacity;
+
+    /** Creates an instance of VirtualMachineScaleSetProperties class. */
+    public VirtualMachineScaleSetProperties() {
+    }
 
     /**
      * Get the upgradePolicy property: The upgrade policy.
@@ -454,13 +471,55 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @return the priorityMixPolicy value.
+     */
+    public PriorityMixPolicy priorityMixPolicy() {
+        return this.priorityMixPolicy;
+    }
+
+    /**
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @param priorityMixPolicy the priorityMixPolicy value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withPriorityMixPolicy(PriorityMixPolicy priorityMixPolicy) {
+        this.priorityMixPolicy = priorityMixPolicy;
+        return this;
+    }
+
+    /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
+    }
+
+    /**
+     * Get the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @return the constrainedMaximumCapacity value.
+     */
+    public Boolean constrainedMaximumCapacity() {
+        return this.constrainedMaximumCapacity;
+    }
+
+    /**
+     * Set the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     *
+     * @param constrainedMaximumCapacity the constrainedMaximumCapacity value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withConstrainedMaximumCapacity(Boolean constrainedMaximumCapacity) {
+        this.constrainedMaximumCapacity = constrainedMaximumCapacity;
+        return this;
     }
 
     /**
@@ -486,6 +545,9 @@ public final class VirtualMachineScaleSetProperties {
         }
         if (spotRestorePolicy() != null) {
             spotRestorePolicy().validate();
+        }
+        if (priorityMixPolicy() != null) {
+            priorityMixPolicy().validate();
         }
     }
 }

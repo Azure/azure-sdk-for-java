@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SharedPrivateLinkResourceStatus. */
+/** Status of the shared private link resource. */
 public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<SharedPrivateLinkResourceStatus> {
     /** Static value Pending for SharedPrivateLinkResourceStatus. */
     public static final SharedPrivateLinkResourceStatus PENDING = fromString("Pending");
@@ -36,7 +36,11 @@ public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<
         return fromString(name, SharedPrivateLinkResourceStatus.class);
     }
 
-    /** @return known SharedPrivateLinkResourceStatus values. */
+    /**
+     * Gets known SharedPrivateLinkResourceStatus values.
+     *
+     * @return known SharedPrivateLinkResourceStatus values.
+     */
     public static Collection<SharedPrivateLinkResourceStatus> values() {
         return values(SharedPrivateLinkResourceStatus.class);
     }

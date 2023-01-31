@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.DataFlowResource;
 import com.azure.resourcemanager.datafactory.models.DataFlowSink;
 import com.azure.resourcemanager.datafactory.models.DataFlowSource;
@@ -50,19 +49,32 @@ public final class DataFlowsCreateOrUpdateSamples {
                                 new DataFlowSink()
                                     .withName("CADSink")
                                     .withDataset(new DatasetReference().withReferenceName("CADOutput"))))
-                    .withScript(
-                        "source(output(PreviousConversionRate as double,Country as string,DateTime1 as"
-                            + " string,CurrentConversionRate as double),allowSchemaDrift: false,validateSchema: false)"
-                            + " ~> USDCurrency\n"
-                            + "source(output(PreviousConversionRate as double,Country as string,DateTime1 as"
-                            + " string,CurrentConversionRate as double),allowSchemaDrift: true,validateSchema: false)"
-                            + " ~> CADSource\n"
-                            + "USDCurrency, CADSource union(byName: true)~> Union\n"
-                            + "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn\n"
-                            + "NewCurrencyColumn split(Country == 'USD',Country == 'CAD',disjoint: false) ~>"
-                            + " ConditionalSplit1@(USD, CAD)\n"
-                            + "ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink\n"
-                            + "ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink"))
+                    .withScriptLines(
+                        Arrays
+                            .asList(
+                                "source(output(",
+                                "PreviousConversionRate as double,",
+                                "Country as string,",
+                                "DateTime1 as string,",
+                                "CurrentConversionRate as double",
+                                "),",
+                                "allowSchemaDrift: false,",
+                                "validateSchema: false) ~> USDCurrency",
+                                "source(output(",
+                                "PreviousConversionRate as double,",
+                                "Country as string,",
+                                "DateTime1 as string,",
+                                "CurrentConversionRate as double",
+                                "),",
+                                "allowSchemaDrift: true,",
+                                "validateSchema: false) ~> CADSource",
+                                "USDCurrency, CADSource union(byName: true)~> Union",
+                                "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~>"
+                                    + " NewCurrencyColumn",
+                                "NewCurrencyColumn split(Country == 'USD',",
+                                "Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)",
+                                "ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink",
+                                "ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink")))
             .create();
     }
 
@@ -78,7 +90,12 @@ public final class DataFlowsCreateOrUpdateSamples {
         DataFlowResource resource =
             manager
                 .dataFlows()
-                .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null, Context.NONE)
+                .getWithResponse(
+                    "exampleResourceGroup",
+                    "exampleFactoryName",
+                    "exampleDataFlow",
+                    null,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -105,19 +122,32 @@ public final class DataFlowsCreateOrUpdateSamples {
                                 new DataFlowSink()
                                     .withName("CADSink")
                                     .withDataset(new DatasetReference().withReferenceName("CADOutput"))))
-                    .withScript(
-                        "source(output(PreviousConversionRate as double,Country as string,DateTime1 as"
-                            + " string,CurrentConversionRate as double),allowSchemaDrift: false,validateSchema: false)"
-                            + " ~> USDCurrency\n"
-                            + "source(output(PreviousConversionRate as double,Country as string,DateTime1 as"
-                            + " string,CurrentConversionRate as double),allowSchemaDrift: true,validateSchema: false)"
-                            + " ~> CADSource\n"
-                            + "USDCurrency, CADSource union(byName: true)~> Union\n"
-                            + "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn\n"
-                            + "NewCurrencyColumn split(Country == 'USD',Country == 'CAD',disjoint: false) ~>"
-                            + " ConditionalSplit1@(USD, CAD)\n"
-                            + "ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink\n"
-                            + "ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink"))
+                    .withScriptLines(
+                        Arrays
+                            .asList(
+                                "source(output(",
+                                "PreviousConversionRate as double,",
+                                "Country as string,",
+                                "DateTime1 as string,",
+                                "CurrentConversionRate as double",
+                                "),",
+                                "allowSchemaDrift: false,",
+                                "validateSchema: false) ~> USDCurrency",
+                                "source(output(",
+                                "PreviousConversionRate as double,",
+                                "Country as string,",
+                                "DateTime1 as string,",
+                                "CurrentConversionRate as double",
+                                "),",
+                                "allowSchemaDrift: true,",
+                                "validateSchema: false) ~> CADSource",
+                                "USDCurrency, CADSource union(byName: true)~> Union",
+                                "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~>"
+                                    + " NewCurrencyColumn",
+                                "NewCurrencyColumn split(Country == 'USD',",
+                                "Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)",
+                                "ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink",
+                                "ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink")))
             .apply();
     }
 }

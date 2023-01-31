@@ -17,6 +17,10 @@ public final class GroupIdInformationResponseInner {
     @JsonProperty(value = "value")
     private List<GroupIdInformationInner> value;
 
+    /** Creates an instance of GroupIdInformationResponseInner class. */
+    public GroupIdInformationResponseInner() {
+    }
+
     /**
      * Get the value property: The list of available private link resources for a Digital Twin.
      *

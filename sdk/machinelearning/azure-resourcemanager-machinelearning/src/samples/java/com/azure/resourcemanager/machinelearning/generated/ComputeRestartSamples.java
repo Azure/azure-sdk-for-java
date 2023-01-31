@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Compute Restart. */
 public final class ComputeRestartSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/restart.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/restart.json
      */
     /**
      * Sample code: Restart ComputeInstance Compute.
@@ -18,6 +16,6 @@ public final class ComputeRestartSamples {
      */
     public static void restartComputeInstanceCompute(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.computes().restart("testrg123", "workspaces123", "compute123", Context.NONE);
+        manager.computes().restart("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImageValidationStatus. */
+/** Image validation status. */
 public final class ImageValidationStatus extends ExpandableStringEnum<ImageValidationStatus> {
     /** Static value Unknown for ImageValidationStatus. */
     public static final ImageValidationStatus UNKNOWN = fromString("Unknown");

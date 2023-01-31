@@ -31,6 +31,10 @@ public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayBackendAddressPoolPropertiesFormat class. */
+    public ApplicationGatewayBackendAddressPoolPropertiesFormat() {
+    }
+
     /**
      * Get the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.
      *

@@ -20,6 +20,10 @@ public final class MicrosoftAccessSink extends CopySink {
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
+    /** Creates an instance of MicrosoftAccessSink class. */
+    public MicrosoftAccessSink() {
+    }
+
     /**
      * Get the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with
      * resultType string).

@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class OnlineScaleSettings {
+    /** Creates an instance of OnlineScaleSettings class. */
+    public OnlineScaleSettings() {
+    }
+
     /**
      * Validates the instance.
      *

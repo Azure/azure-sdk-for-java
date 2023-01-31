@@ -66,6 +66,10 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     @JsonProperty(value = "continueOnStepFailure")
     private Object continueOnStepFailure;
 
+    /** Creates an instance of AzureMLExecutePipelineActivityTypeProperties class. */
+    public AzureMLExecutePipelineActivityTypeProperties() {
+    }
+
     /**
      * Get the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with resultType
      * string).

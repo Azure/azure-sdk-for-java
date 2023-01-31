@@ -22,6 +22,10 @@ public final class ImageValidationErrorDetails {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of ImageValidationErrorDetails class. */
+    public ImageValidationErrorDetails() {
+    }
+
     /**
      * Get the code property: An identifier for the error.
      *

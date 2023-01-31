@@ -22,6 +22,10 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     @JsonProperty(value = "typeProperties")
     private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SelfHostedIntegrationRuntime class. */
+    public SelfHostedIntegrationRuntime() {
+    }
+
     /**
      * Get the innerTypeProperties property: When this property is not null, means this is a linked integration runtime.
      * The property is used to access original integration runtime.

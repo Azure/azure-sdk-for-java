@@ -16,16 +16,15 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphDateTimeColumn {
     /*
-     * How the value should be presented in the UX. Must be one of default,
-     * friendly, or standard. See below for more details. If unspecified,
-     * treated as default.
+     * How the value should be presented in the UX. Must be one of default, friendly, or standard. See below for more
+     * details. If unspecified, treated as default.
      */
     @JsonProperty(value = "displayAs")
     private String displayAs;
 
     /*
-     * Indicates whether the value should be presented as a date only or a date
-     * and time. Must be one of dateOnly or dateTime
+     * Indicates whether the value should be presented as a date only or a date and time. Must be one of dateOnly or
+     * dateTime
      */
     @JsonProperty(value = "format")
     private String format;
@@ -34,6 +33,10 @@ public final class MicrosoftGraphDateTimeColumn {
      * dateTimeColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDateTimeColumn class. */
+    public MicrosoftGraphDateTimeColumn() {
+    }
 
     /**
      * Get the displayAs property: How the value should be presented in the UX. Must be one of default, friendly, or

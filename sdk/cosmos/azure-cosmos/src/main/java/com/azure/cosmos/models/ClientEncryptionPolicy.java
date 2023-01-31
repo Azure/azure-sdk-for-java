@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -19,7 +18,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Client encryption policy.
  */
-@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ClientEncryptionPolicy {
 
     private JsonSerializable jsonSerializable;
@@ -38,7 +36,6 @@ public final class ClientEncryptionPolicy {
      *
      * @param paths list of path of the item that need encryption along with path-specific settings.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
         this.validateIncludedPaths(paths);
         this.includedPaths = paths;
@@ -74,7 +71,6 @@ public final class ClientEncryptionPolicy {
      * Gets the list of path of the item that need encryption along with path-specific settings.
      * @return includedPaths
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<ClientEncryptionIncludedPath> getIncludedPaths() {
         return this.includedPaths;
     }
@@ -83,7 +79,6 @@ public final class ClientEncryptionPolicy {
      * Version of the client encryption policy definition.
      * @return policyFormatVersion
      */
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getPolicyFormatVersion() {
         return policyFormatVersion;
     }

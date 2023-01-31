@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg23957?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg85116?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "07d575b6-aa0a-42b1-8115-2267925d3549",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "90bec9fc-f2e0-4a28-b655-3177695a2b02",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "225",
       "X-Content-Type-Options" : "nosniff",
       "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-correlation-request-id" : "3a8ca12b-33c0-4fdb-938e-10535d87a2bd",
-      "Date" : "Thu, 25 Aug 2022 02:03:37 GMT",
+      "Date" : "Fri, 13 Jan 2023 08:11:04 GMT",
+      "x-ms-correlation-request-id" : "70f92885-cb1e-4953-a3c3-fb4eac64e9f1",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020338Z:3a8ca12b-33c0-4fdb-938e-10535d87a2bd",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230113T081105Z:70f92885-cb1e-4953-a3c3-fb4eac64e9f1",
       "Expires" : "-1",
-      "x-ms-request-id" : "3a8ca12b-33c0-4fdb-938e-10535d87a2bd",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg23957\",\"name\":\"javaacsrg23957\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Length" : "225",
+      "x-ms-request-id" : "70f92885-cb1e-4953-a3c3-fb4eac64e9f1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javaacsrg85116\",\"name\":\"javaacsrg85116\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -29,54 +29,54 @@
     "Method" : "GET",
     "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/orchestrators?api-version=2019-08-01&resource-type=managedClusters",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1af9247e-c05d-486e-877a-65ac6b63a0bd",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "c96b1660-adf9-41e6-98b5-dde8a62950cf",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "2024",
       "Server" : "nginx",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11999",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "d6962043-be20-425f-af2a-f9c51b770578",
-      "Date" : "Thu, 25 Aug 2022 02:03:38 GMT",
+      "Date" : "Fri, 13 Jan 2023 08:11:05 GMT",
+      "x-ms-correlation-request-id" : "0f669859-9f0d-457f-817b-bc3bd7593850",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020339Z:d6962043-be20-425f-af2a-f9c51b770578",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230113T081106Z:0f669859-9f0d-457f-817b-bc3bd7593850",
       "Expires" : "-1",
-      "x-ms-request-id" : "7fdfd73c-1e63-4ca0-9531-de4482464e41",
-      "Body" : "{\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/orchestrators\",\n  \"name\": \"default\",\n  \"type\": \"Microsoft.ContainerService/locations/orchestrators\",\n  \"properties\": {\n   \"orchestrators\": [\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.22.6\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.22.11\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.23.5\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.23.8\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.22.11\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.23.5\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.23.8\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.23.5\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.23.8\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.0\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.3\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.23.8\",\n     \"default\": true,\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.0\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.3\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.24.0\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.3\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.24.3\"\n    }\n   ]\n  }\n }",
+      "Content-Length" : "2024",
+      "x-ms-request-id" : "3d2af7d4-2b32-41d8-a18b-bbf1e9715fe6",
+      "Body" : "{\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/westus3/orchestrators\",\n  \"name\": \"default\",\n  \"type\": \"Microsoft.ContainerService/locations/orchestrators\",\n  \"properties\": {\n   \"orchestrators\": [\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.23.8\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.23.12\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.3\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.6\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.23.12\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.3\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.6\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.24.3\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.24.6\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.25.2\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.25.4\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.24.6\",\n     \"default\": true,\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.25.2\"\n      },\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.25.4\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.25.2\",\n     \"upgrades\": [\n      {\n       \"orchestratorType\": \"Kubernetes\",\n       \"orchestratorVersion\": \"1.25.4\"\n      }\n     ]\n    },\n    {\n     \"orchestratorType\": \"Kubernetes\",\n     \"orchestratorVersion\": \"1.25.4\"\n    }\n   ]\n  }\n }",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg23957?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaacsrg85116?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.18.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4864dda0-9dd1-4731-b857-dc0bc8cb0961",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "b052c578-bd1b-4e0a-9803-b852f5f76bd8",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "0",
       "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "529a545b-4543-47ae-8016-92a7a9477700",
-      "Date" : "Thu, 25 Aug 2022 02:03:41 GMT",
+      "Date" : "Fri, 13 Jan 2023 08:11:08 GMT",
+      "x-ms-correlation-request-id" : "0a482173-276d-46a4-a8eb-d9b93dae2be1",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
       "Retry-After" : "0",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220825T020342Z:529a545b-4543-47ae-8016-92a7a9477700",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230113T081109Z:0a482173-276d-46a4-a8eb-d9b93dae2be1",
       "Expires" : "-1",
-      "x-ms-request-id" : "529a545b-4543-47ae-8016-92a7a9477700",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQUNTUkcyMzk1Ny1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2021-01-01"
+      "Content-Length" : "0",
+      "x-ms-request-id" : "0a482173-276d-46a4-a8eb-d9b93dae2be1",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQUNTUkc4NTExNi1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2021-01-01"
     },
     "Exception" : null
   } ],
-  "variables" : [ "javaacsrg23957" ]
+  "variables" : [ "javaacsrg85116" ]
 }

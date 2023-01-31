@@ -24,6 +24,10 @@ public final class SubnetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SubnetListResult class. */
+    public SubnetListResult() {
+    }
+
     /**
      * Get the value property: The subnets in a virtual network.
      *

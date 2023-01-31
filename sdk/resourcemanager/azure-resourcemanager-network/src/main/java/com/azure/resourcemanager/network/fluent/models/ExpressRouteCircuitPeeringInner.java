@@ -42,6 +42,10 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ExpressRouteCircuitPeeringInner class. */
+    public ExpressRouteCircuitPeeringInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the express route circuit peering.
      *

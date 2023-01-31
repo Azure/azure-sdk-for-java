@@ -35,6 +35,10 @@ public final class ManagedClusterPodIdentityProvisioningErrorBody {
     @JsonProperty(value = "details")
     private List<ManagedClusterPodIdentityProvisioningErrorBody> details;
 
+    /** Creates an instance of ManagedClusterPodIdentityProvisioningErrorBody class. */
+    public ManagedClusterPodIdentityProvisioningErrorBody() {
+    }
+
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.

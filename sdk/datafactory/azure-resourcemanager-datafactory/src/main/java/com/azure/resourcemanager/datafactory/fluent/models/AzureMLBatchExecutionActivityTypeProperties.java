@@ -40,6 +40,10 @@ public final class AzureMLBatchExecutionActivityTypeProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AzureMLWebServiceFile> webServiceInputs;
 
+    /** Creates an instance of AzureMLBatchExecutionActivityTypeProperties class. */
+    public AzureMLBatchExecutionActivityTypeProperties() {
+    }
+
     /**
      * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
      * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be

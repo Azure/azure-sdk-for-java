@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterResource;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
 import java.util.Map;
@@ -40,7 +39,8 @@ public final class GlobalParametersCreateOrUpdateSamples {
         GlobalParameterResource resource =
             manager
                 .globalParameters()
-                .getWithResponse("exampleResourceGroup", "exampleFactoryName", "default", Context.NONE)
+                .getWithResponse(
+                    "exampleResourceGroup", "exampleFactoryName", "default", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().apply();
     }

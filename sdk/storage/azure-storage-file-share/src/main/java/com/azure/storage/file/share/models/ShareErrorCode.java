@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ShareErrorCode. */
+/** Error codes returned by the service. */
 public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /** Static value AccountAlreadyExists for ShareErrorCode. */
     public static final ShareErrorCode ACCOUNT_ALREADY_EXISTS = fromString("AccountAlreadyExists");

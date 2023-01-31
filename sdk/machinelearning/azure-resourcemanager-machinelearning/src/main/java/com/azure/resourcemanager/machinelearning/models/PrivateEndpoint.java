@@ -22,6 +22,10 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "subnetArmId", access = JsonProperty.Access.WRITE_ONLY)
     private String subnetArmId;
 
+    /** Creates an instance of PrivateEndpoint class. */
+    public PrivateEndpoint() {
+    }
+
     /**
      * Get the id property: The ARM identifier for Private Endpoint.
      *

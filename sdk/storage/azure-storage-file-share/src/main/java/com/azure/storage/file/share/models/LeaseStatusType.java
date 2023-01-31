@@ -7,7 +7,7 @@ package com.azure.storage.file.share.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for LeaseStatusType. */
+/** The current lease status of the share. */
 public enum LeaseStatusType {
     /** Enum value locked. */
     LOCKED("locked"),
@@ -30,6 +30,9 @@ public enum LeaseStatusType {
      */
     @JsonCreator
     public static LeaseStatusType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LeaseStatusType[] items = LeaseStatusType.values();
         for (LeaseStatusType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum LeaseStatusType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -16,6 +16,10 @@ public final class PolicyProperties {
     @JsonProperty(value = "scope", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyPropertiesScope scope;
 
+    /** Creates an instance of PolicyProperties class. */
+    public PolicyProperties() {
+    }
+
     /**
      * Get the scope property: Details of the resource scope.
      *

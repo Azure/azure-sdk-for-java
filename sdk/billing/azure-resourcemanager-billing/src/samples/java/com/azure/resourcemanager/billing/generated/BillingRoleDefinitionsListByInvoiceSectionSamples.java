@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions ListByInvoiceSection. */
 public final class BillingRoleDefinitionsListByInvoiceSectionSamples {
     /*
@@ -19,6 +17,10 @@ public final class BillingRoleDefinitionsListByInvoiceSectionSamples {
     public static void invoiceSectionRoleDefinitionsList(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleDefinitions()
-            .listByInvoiceSection("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+            .listByInvoiceSection(
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }

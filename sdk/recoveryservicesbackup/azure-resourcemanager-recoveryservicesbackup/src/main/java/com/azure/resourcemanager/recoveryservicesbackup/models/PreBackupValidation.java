@@ -28,6 +28,10 @@ public final class PreBackupValidation {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of PreBackupValidation class. */
+    public PreBackupValidation() {
+    }
+
     /**
      * Get the status property: Status of protectable item, i.e. InProgress,Succeeded,Failed.
      *

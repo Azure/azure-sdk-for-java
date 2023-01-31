@@ -29,6 +29,10 @@ public final class AzurePostgreSqlTableDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of AzurePostgreSqlTableDatasetTypeProperties class. */
+    public AzurePostgreSqlTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The table name of the Azure PostgreSQL database which includes both schema and table.
      * Type: string (or Expression with resultType string).

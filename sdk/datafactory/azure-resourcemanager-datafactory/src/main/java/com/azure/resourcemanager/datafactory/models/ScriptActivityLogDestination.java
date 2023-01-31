@@ -17,6 +17,15 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
     public static final ScriptActivityLogDestination EXTERNAL_STORE = fromString("ExternalStore");
 
     /**
+     * Creates a new instance of ScriptActivityLogDestination value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptActivityLogDestination() {
+    }
+
+    /**
      * Creates or finds a ScriptActivityLogDestination from its string representation.
      *
      * @param name a name to look for.

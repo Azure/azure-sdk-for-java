@@ -16,7 +16,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
   </dependency>
 </dependencies>
 ```
@@ -47,7 +47,7 @@ HttpClient client = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.of
 
 ### Create a Client with Proxy
 
-Create an Vert.x client that is using a proxy.
+Create a Vert.x client that is using a proxy.
 
 ```java readme-sample-createProxyClient
 HttpClient client = new VertxAsyncHttpClientBuilder()

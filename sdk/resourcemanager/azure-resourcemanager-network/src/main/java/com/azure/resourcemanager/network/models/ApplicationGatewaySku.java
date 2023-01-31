@@ -28,6 +28,10 @@ public final class ApplicationGatewaySku {
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
+    /** Creates an instance of ApplicationGatewaySku class. */
+    public ApplicationGatewaySku() {
+    }
+
     /**
      * Get the name property: Name of an application gateway SKU.
      *

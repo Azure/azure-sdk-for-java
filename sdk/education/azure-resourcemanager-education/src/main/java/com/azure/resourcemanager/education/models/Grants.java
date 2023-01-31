@@ -65,18 +65,6 @@ public interface Grants {
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details for a specific grant linked to the provided billing account and billing profile.
-     */
-    GrantDetails get(String billingAccountName, String billingProfileName);
-
-    /**
-     * Get details for a specific grant linked to the provided billing account and billing profile.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
      * @param includeAllocatedBudget May be used to include information about budget that has been allocated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,4 +75,16 @@ public interface Grants {
      */
     Response<GrantDetails> getWithResponse(
         String billingAccountName, String billingProfileName, Boolean includeAllocatedBudget, Context context);
+
+    /**
+     * Get details for a specific grant linked to the provided billing account and billing profile.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details for a specific grant linked to the provided billing account and billing profile.
+     */
+    GrantDetails get(String billingAccountName, String billingProfileName);
 }

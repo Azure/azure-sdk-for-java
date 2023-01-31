@@ -76,7 +76,7 @@ public class SearchDocumentConverterTests {
     @Test
     public void canReadPrimitiveTypes() {
         Map<String, Object> values = new HashMap<>();
-        values.put("123", 123);
+        values.put("132", 132);
         values.put("9999999999999", 9_999_999_999_999L);
         values.put("3.25", 3.25);
         values.put("\"hello\"", "hello");
@@ -264,9 +264,9 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void dateTimeStringsInArraysAreReadAsDateTime() {
-        String json = "{ \"field\": [ \"hello\", \"".concat(TEST_DATE_STRING).concat("\", \"123\" ] }}");
+        String json = "{ \"field\": [ \"hello\", \"".concat(TEST_DATE_STRING).concat("\", \"132\" ] }}");
         SearchDocument expectedDoc = new SearchDocument(
-            Collections.singletonMap("field", Arrays.asList("hello", TEST_DATE, "123")));
+            Collections.singletonMap("field", Arrays.asList("hello", TEST_DATE, "132")));
 
         SearchDocument actualDoc = deserialize(json);
         assertMapEquals(expectedDoc, actualDoc, false);

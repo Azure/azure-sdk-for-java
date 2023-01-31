@@ -17,44 +17,39 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntity {
     /*
-     * Optional. The duration of active user engagement. if not supplied, this
-     * is calculated from the startedDateTime and lastActiveDateTime.
+     * Optional. The duration of active user engagement. if not supplied, this is calculated from the startedDateTime
+     * and lastActiveDateTime.
      */
     @JsonProperty(value = "activeDurationSeconds")
     private Integer activeDurationSeconds;
 
     /*
-     * Set by the server. DateTime in UTC when the object was created on the
-     * server.
+     * Set by the server. DateTime in UTC when the object was created on the server.
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
-     * Optional. UTC DateTime when the historyItem will undergo hard-delete.
-     * Can be set by the client.
+     * Optional. UTC DateTime when the historyItem will undergo hard-delete. Can be set by the client.
      */
     @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
-     * Optional. UTC DateTime when the historyItem (activity session) was last
-     * understood as active or finished - if null, historyItem status should be
-     * Ongoing.
+     * Optional. UTC DateTime when the historyItem (activity session) was last understood as active or finished - if
+     * null, historyItem status should be Ongoing.
      */
     @JsonProperty(value = "lastActiveDateTime")
     private OffsetDateTime lastActiveDateTime;
 
     /*
-     * Set by the server. DateTime in UTC when the object was modified on the
-     * server.
+     * Set by the server. DateTime in UTC when the object was modified on the server.
      */
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
-     * Required. UTC DateTime when the historyItem (activity session) was
-     * started. Required for timeline history.
+     * Required. UTC DateTime when the historyItem (activity session) was started. Required for timeline history.
      */
     @JsonProperty(value = "startedDateTime")
     private OffsetDateTime startedDateTime;
@@ -66,9 +61,8 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
     private MicrosoftGraphStatus status;
 
     /*
-     * Optional. The timezone in which the user's device used to generate the
-     * activity was located at activity creation time. Values supplied as Olson
-     * IDs in order to support cross-platform representation.
+     * Optional. The timezone in which the user's device used to generate the activity was located at activity creation
+     * time. Values supplied as Olson IDs in order to support cross-platform representation.
      */
     @JsonProperty(value = "userTimezone")
     private String userTimezone;
@@ -83,6 +77,10 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
      * activityHistoryItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphActivityHistoryItem class. */
+    public MicrosoftGraphActivityHistoryItem() {
+    }
 
     /**
      * Get the activeDurationSeconds property: Optional. The duration of active user engagement. if not supplied, this

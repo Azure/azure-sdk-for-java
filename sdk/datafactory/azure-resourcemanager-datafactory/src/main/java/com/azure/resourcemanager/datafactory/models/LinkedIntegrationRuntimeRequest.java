@@ -17,6 +17,10 @@ public final class LinkedIntegrationRuntimeRequest {
     @JsonProperty(value = "factoryName", required = true)
     private String linkedFactoryName;
 
+    /** Creates an instance of LinkedIntegrationRuntimeRequest class. */
+    public LinkedIntegrationRuntimeRequest() {
+    }
+
     /**
      * Get the linkedFactoryName property: The data factory name for linked integration runtime.
      *

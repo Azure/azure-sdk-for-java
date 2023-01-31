@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportStatus. */
+/** Support status of feature. */
 public final class SupportStatus extends ExpandableStringEnum<SupportStatus> {
     /** Static value Invalid for SupportStatus. */
     public static final SupportStatus INVALID = fromString("Invalid");
@@ -24,6 +24,15 @@ public final class SupportStatus extends ExpandableStringEnum<SupportStatus> {
 
     /** Static value NotSupported for SupportStatus. */
     public static final SupportStatus NOT_SUPPORTED = fromString("NotSupported");
+
+    /**
+     * Creates a new instance of SupportStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SupportStatus() {
+    }
 
     /**
      * Creates or finds a SupportStatus from its string representation.

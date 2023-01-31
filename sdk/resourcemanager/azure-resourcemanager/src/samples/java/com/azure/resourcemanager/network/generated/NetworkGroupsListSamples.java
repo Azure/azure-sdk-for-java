@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkGroups List. */
 public final class NetworkGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerGroupList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerGroupList.json
      */
     /**
      * Sample code: NetworkGroupsList.

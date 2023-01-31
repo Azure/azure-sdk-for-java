@@ -17,6 +17,10 @@ public final class DynamicsAXResourceDatasetTypeProperties {
     @JsonProperty(value = "path", required = true)
     private Object path;
 
+    /** Creates an instance of DynamicsAXResourceDatasetTypeProperties class. */
+    public DynamicsAXResourceDatasetTypeProperties() {
+    }
+
     /**
      * Get the path property: The path of the Dynamics AX OData entity. Type: string (or Expression with resultType
      * string).

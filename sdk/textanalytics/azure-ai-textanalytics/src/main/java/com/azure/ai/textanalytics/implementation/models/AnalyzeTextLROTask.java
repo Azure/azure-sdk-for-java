@@ -25,10 +25,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "EntityRecognition", value = EntitiesLROTask.class),
     @JsonSubTypes.Type(name = "EntityLinking", value = EntityLinkingLROTask.class),
     @JsonSubTypes.Type(name = "PiiEntityRecognition", value = PiiLROTask.class),
-    @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = KeyPhraseLROTask.class)
+    @JsonSubTypes.Type(name = "ExtractiveSummarization", value = ExtractiveSummarizationLROTask.class),
+    @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = KeyPhraseLROTask.class),
+    @JsonSubTypes.Type(name = "AbstractiveSummarization", value = AbstractiveSummarizationLROTask.class)
 })
 @Fluent
 public class AnalyzeTextLROTask extends TaskIdentifier {
+    /** Creates an instance of AnalyzeTextLROTask class. */
+    public AnalyzeTextLROTask() {}
+
     /** {@inheritDoc} */
     @Override
     public AnalyzeTextLROTask setTaskName(String taskName) {

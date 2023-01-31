@@ -114,7 +114,7 @@ class AppConfigurationReplicaClient {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
-            settings.forEach(setting -> configurationSettings.add(setting));
+            settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             this.failedAttempts = 0;
             return configurationSettings;
         } catch (HttpResponseException e) {

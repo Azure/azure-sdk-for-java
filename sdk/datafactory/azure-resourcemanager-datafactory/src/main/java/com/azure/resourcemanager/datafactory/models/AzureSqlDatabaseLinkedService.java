@@ -25,6 +25,10 @@ public final class AzureSqlDatabaseLinkedService extends LinkedService {
     private AzureSqlDatabaseLinkedServiceTypeProperties innerTypeProperties =
         new AzureSqlDatabaseLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureSqlDatabaseLinkedService class. */
+    public AzureSqlDatabaseLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure SQL Database linked service properties.
      *

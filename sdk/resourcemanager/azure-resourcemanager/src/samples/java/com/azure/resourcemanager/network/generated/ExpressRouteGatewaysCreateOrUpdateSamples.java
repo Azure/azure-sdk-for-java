@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.VirtualHubId;
 /** Samples for ExpressRouteGateways CreateOrUpdate. */
 public final class ExpressRouteGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ExpressRouteGatewayCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteGatewayCreate.json
      */
     /**
      * Sample code: ExpressRouteGatewayCreate.
@@ -37,7 +37,8 @@ public final class ExpressRouteGatewaysCreateOrUpdateSamples {
                     .withVirtualHub(
                         new VirtualHubId()
                             .withId(
-                                "/subscriptions/subid/resourceGroups/resourceGroupId/providers/Microsoft.Network/virtualHubs/virtualHubName")),
+                                "/subscriptions/subid/resourceGroups/resourceGroupId/providers/Microsoft.Network/virtualHubs/virtualHubName"))
+                    .withAllowNonVirtualWanTraffic(false),
                 Context.NONE);
     }
 }

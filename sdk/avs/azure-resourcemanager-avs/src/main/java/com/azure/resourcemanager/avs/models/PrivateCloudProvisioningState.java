@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateCloudProvisioningState. */
+/** The provisioning state. */
 public final class PrivateCloudProvisioningState extends ExpandableStringEnum<PrivateCloudProvisioningState> {
     /** Static value Succeeded for PrivateCloudProvisioningState. */
     public static final PrivateCloudProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -31,6 +31,9 @@ public final class PrivateCloudProvisioningState extends ExpandableStringEnum<Pr
     /** Static value Updating for PrivateCloudProvisioningState. */
     public static final PrivateCloudProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for PrivateCloudProvisioningState. */
+    public static final PrivateCloudProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a PrivateCloudProvisioningState from its string representation.
      *
@@ -42,7 +45,11 @@ public final class PrivateCloudProvisioningState extends ExpandableStringEnum<Pr
         return fromString(name, PrivateCloudProvisioningState.class);
     }
 
-    /** @return known PrivateCloudProvisioningState values. */
+    /**
+     * Gets known PrivateCloudProvisioningState values.
+     *
+     * @return known PrivateCloudProvisioningState values.
+     */
     public static Collection<PrivateCloudProvisioningState> values() {
         return values(PrivateCloudProvisioningState.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PacketCaptures List. */
 public final class PacketCapturesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkWatcherPacketCapturesList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkWatcherPacketCapturesList.json
      */
     /**
      * Sample code: List packet captures.

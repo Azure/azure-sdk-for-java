@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationName. */
+/**
+ * OperationName
+ *
+ * <p>Operation to be performed on the given vm resource id.
+ */
 public final class OperationName extends ExpandableStringEnum<OperationName> {
     /** Static value Add for OperationName. */
     public static final OperationName ADD = fromString("Add");
@@ -27,7 +31,11 @@ public final class OperationName extends ExpandableStringEnum<OperationName> {
         return fromString(name, OperationName.class);
     }
 
-    /** @return known OperationName values. */
+    /**
+     * Gets known OperationName values.
+     *
+     * @return known OperationName values.
+     */
     public static Collection<OperationName> values() {
         return values(OperationName.class);
     }

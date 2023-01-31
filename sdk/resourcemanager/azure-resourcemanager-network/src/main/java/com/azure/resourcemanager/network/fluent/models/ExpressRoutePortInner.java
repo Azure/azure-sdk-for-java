@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.ExpressRoutePortsBillingType;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -46,6 +47,10 @@ public final class ExpressRoutePortInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ExpressRoutePortInner class. */
+    public ExpressRoutePortInner() {
+    }
 
     /**
      * Get the innerProperties property: ExpressRoutePort Properties
@@ -281,6 +286,29 @@ public final class ExpressRoutePortInner extends Resource {
      */
     public String resourceGuid() {
         return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
+     * Get the billingType property: The billing type of the ExpressRoutePort resource.
+     *
+     * @return the billingType value.
+     */
+    public ExpressRoutePortsBillingType billingType() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingType();
+    }
+
+    /**
+     * Set the billingType property: The billing type of the ExpressRoutePort resource.
+     *
+     * @param billingType the billingType value to set.
+     * @return the ExpressRoutePortInner object itself.
+     */
+    public ExpressRoutePortInner withBillingType(ExpressRoutePortsBillingType billingType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRoutePortPropertiesFormat();
+        }
+        this.innerProperties().withBillingType(billingType);
+        return this;
     }
 
     /**

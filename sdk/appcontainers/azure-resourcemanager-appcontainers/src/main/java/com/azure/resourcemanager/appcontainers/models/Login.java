@@ -12,24 +12,22 @@ import java.util.List;
 @Fluent
 public final class Login {
     /*
-     * The routes that specify the endpoints used for login and logout
-     * requests.
+     * The routes that specify the endpoints used for login and logout requests.
      */
     @JsonProperty(value = "routes")
     private LoginRoutes routes;
 
     /*
-     * <code>true</code> if the fragments from the request are preserved after
-     * the login request is made; otherwise, <code>false</code>.
+     * <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise,
+     * <code>false</code>.
      */
     @JsonProperty(value = "preserveUrlFragmentsForLogins")
     private Boolean preserveUrlFragmentsForLogins;
 
     /*
-     * External URLs that can be redirected to as part of logging in or logging
-     * out of the app. Note that the query string part of the URL is ignored.
-     * This is an advanced setting typically only needed by Windows Store
-     * application backends.
+     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query
+     * string part of the URL is ignored.
+     * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
     @JsonProperty(value = "allowedExternalRedirectUrls")
@@ -46,6 +44,10 @@ public final class Login {
      */
     @JsonProperty(value = "nonce")
     private Nonce nonce;
+
+    /** Creates an instance of Login class. */
+    public Login() {
+    }
 
     /**
      * Get the routes property: The routes that specify the endpoints used for login and logout requests.

@@ -99,6 +99,10 @@ public final class OSProfile {
     @JsonProperty(value = "requireGuestProvisionSignal")
     private Boolean requireGuestProvisionSignal;
 
+    /** Creates an instance of OSProfile class. */
+    public OSProfile() {
+    }
+
     /**
      * Get the computerName property: Specifies the host OS name of the virtual machine. &lt;br&gt;&lt;br&gt; This name
      * cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters

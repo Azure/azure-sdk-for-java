@@ -28,7 +28,7 @@ import java.util.Arrays;
 /** Samples for VirtualNetworkGateways CreateOrUpdate. */
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkGatewayUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayUpdate.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGateway.
@@ -80,7 +80,7 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
                                         new RadiusServer()
                                             .withRadiusServerAddress("10.2.0.0")
                                             .withRadiusServerScore(20L)
-                                            .withRadiusServerSecret("radiusServerSecret"))))
+                                            .withRadiusServerSecret("fakeTokenPlaceholder"))))
                     .withBgpSettings(
                         new BgpSettings().withAsn(65515L).withBgpPeeringAddress("10.0.1.30").withPeerWeight(0))
                     .withCustomRoutes(new AddressSpace().withAddressPrefixes(Arrays.asList("101.168.0.6/32")))
@@ -110,7 +110,9 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
                                     .withExternalMappings(
                                         Arrays.asList(new VpnNatRuleMapping().withAddressSpace("30.0.0.0/24")))
                                     .withIpConfigurationId("")))
-                    .withEnableBgpRouteTranslationForNat(false),
+                    .withEnableBgpRouteTranslationForNat(false)
+                    .withAllowVirtualWanTraffic(false)
+                    .withAllowRemoteVnetTraffic(false),
                 Context.NONE);
     }
 }

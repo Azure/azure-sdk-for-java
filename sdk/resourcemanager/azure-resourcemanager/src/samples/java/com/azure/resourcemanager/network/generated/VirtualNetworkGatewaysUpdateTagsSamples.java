@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkGateways UpdateTags. */
 public final class VirtualNetworkGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkGatewayUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayUpdateTags.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGatewayTags.

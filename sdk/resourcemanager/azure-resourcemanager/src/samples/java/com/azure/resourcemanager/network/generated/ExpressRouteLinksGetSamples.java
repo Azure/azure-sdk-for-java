@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRouteLinks Get. */
 public final class ExpressRouteLinksGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ExpressRouteLinkGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteLinkGet.json
      */
     /**
      * Sample code: ExpressRouteLinkGet.

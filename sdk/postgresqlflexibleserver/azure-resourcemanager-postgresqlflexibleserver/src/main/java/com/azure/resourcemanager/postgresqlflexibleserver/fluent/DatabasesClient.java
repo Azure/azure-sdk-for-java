@@ -25,7 +25,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database.
+     * @return the {@link SyncPoller} for polling of represents a Database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
@@ -42,7 +42,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Database.
+     * @return the {@link SyncPoller} for polling of represents a Database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
@@ -89,7 +89,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName);
@@ -104,7 +104,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -143,6 +143,22 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a database along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseInner> getWithResponse(
+        String resourceGroupName, String serverName, String databaseName, Context context);
+
+    /**
+     * Gets information about a database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,22 +168,6 @@ public interface DatabasesClient {
     DatabaseInner get(String resourceGroupName, String serverName, String databaseName);
 
     /**
-     * Gets information about a database.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
-
-    /**
      * List all the databases in a given server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -175,7 +175,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases.
+     * @return a List of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName);
@@ -189,7 +189,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of databases.
+     * @return a List of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Context context);

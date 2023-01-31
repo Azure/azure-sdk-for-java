@@ -9,8 +9,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /** An Access policy. */
-@Fluent
 @JacksonXmlRootElement(localName = "AccessPolicy")
+@Fluent
 public final class ShareAccessPolicy {
 
     /*
@@ -30,6 +30,9 @@ public final class ShareAccessPolicy {
      */
     @JsonProperty(value = "Permission")
     private String permissions;
+
+    /** Creates an instance of ShareAccessPolicy class. */
+    public ShareAccessPolicy() {}
 
     /**
      * Get the startsOn property: The date-time the policy is active.

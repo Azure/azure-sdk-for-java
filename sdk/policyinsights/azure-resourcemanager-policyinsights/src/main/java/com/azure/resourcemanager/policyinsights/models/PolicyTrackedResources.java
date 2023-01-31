@@ -13,99 +13,133 @@ public interface PolicyTrackedResources {
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyTrackedResource> listQueryResultsForManagementGroup(String managementGroupName);
+    PagedIterable<PolicyTrackedResource> listQueryResultsForManagementGroup(
+        String managementGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource);
 
     /**
      * Queries policy tracked resources under the management group.
      *
      * @param managementGroupName Management group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyTrackedResource> listQueryResultsForManagementGroup(
-        String managementGroupName, Integer top, String filter, Context context);
+        String managementGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context);
 
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyTrackedResource> listQueryResultsForSubscription();
+    PagedIterable<PolicyTrackedResource> listQueryResultsForSubscription(
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource);
 
     /**
      * Queries policy tracked resources under the subscription.
      *
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyTrackedResource> listQueryResultsForSubscription(Integer top, String filter, Context context);
+    PagedIterable<PolicyTrackedResource> listQueryResultsForSubscription(
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource, Integer top, String filter, Context context);
 
     /**
      * Queries policy tracked resources under the resource group.
      *
      * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    PagedIterable<PolicyTrackedResource> listQueryResultsForResourceGroup(String resourceGroupName);
-
-    /**
-     * Queries policy tracked resources under the resource group.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param top Maximum number of records to return.
-     * @param filter OData filter expression.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyTrackedResource> listQueryResultsForResourceGroup(
-        String resourceGroupName, Integer top, String filter, Context context);
+        String resourceGroupName, PolicyTrackedResourcesResourceType policyTrackedResourcesResource);
 
     /**
-     * Queries policy tracked resources under the resource.
+     * Queries policy tracked resources under the resource group.
      *
-     * @param resourceId Resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    PagedIterable<PolicyTrackedResource> listQueryResultsForResource(String resourceId);
-
-    /**
-     * Queries policy tracked resources under the resource.
-     *
-     * @param resourceId Resource ID.
+     * @param resourceGroupName Resource group name.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<PolicyTrackedResource> listQueryResultsForResourceGroup(
+        String resourceGroupName,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context);
+
+    /**
+     * Queries policy tracked resources under the resource.
+     *
+     * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyTrackedResource> listQueryResultsForResource(
-        String resourceId, Integer top, String filter, Context context);
+        String resourceId, PolicyTrackedResourcesResourceType policyTrackedResourcesResource);
+
+    /**
+     * Queries policy tracked resources under the resource.
+     *
+     * @param resourceId Resource ID.
+     * @param policyTrackedResourcesResource The name of the virtual resource under PolicyTrackedResources resource
+     *     type; only "default" is allowed.
+     * @param top Maximum number of records to return.
+     * @param filter OData filter expression.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query results as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<PolicyTrackedResource> listQueryResultsForResource(
+        String resourceId,
+        PolicyTrackedResourcesResourceType policyTrackedResourcesResource,
+        Integer top,
+        String filter,
+        Context context);
 }

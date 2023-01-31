@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LearningRateScheduler. */
+/** Learning rate scheduler enum. */
 public final class LearningRateScheduler extends ExpandableStringEnum<LearningRateScheduler> {
     /** Static value None for LearningRateScheduler. */
     public static final LearningRateScheduler NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class LearningRateScheduler extends ExpandableStringEnum<LearningRa
 
     /** Static value Step for LearningRateScheduler. */
     public static final LearningRateScheduler STEP = fromString("Step");
+
+    /**
+     * Creates a new instance of LearningRateScheduler value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LearningRateScheduler() {
+    }
 
     /**
      * Creates or finds a LearningRateScheduler from its string representation.

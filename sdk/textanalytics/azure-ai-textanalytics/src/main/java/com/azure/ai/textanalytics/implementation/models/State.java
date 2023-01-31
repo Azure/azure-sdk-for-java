@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for State. */
+/** The status of the task at the mentioned last update time. */
 public final class State extends ExpandableStringEnum<State> {
     /** Static value notStarted for State. */
     public static final State NOT_STARTED = fromString("notStarted");
@@ -19,9 +19,6 @@ public final class State extends ExpandableStringEnum<State> {
     /** Static value succeeded for State. */
     public static final State SUCCEEDED = fromString("succeeded");
 
-    /** Static value partiallyCompleted for State. */
-    public static final State PARTIALLY_COMPLETED = fromString("partiallyCompleted");
-
     /** Static value failed for State. */
     public static final State FAILED = fromString("failed");
 
@@ -30,6 +27,9 @@ public final class State extends ExpandableStringEnum<State> {
 
     /** Static value cancelling for State. */
     public static final State CANCELLING = fromString("cancelling");
+
+    /** Static value partiallyCompleted for State. */
+    public static final State PARTIALLY_COMPLETED = fromString("partiallyCompleted");
 
     /**
      * Creates or finds a State from its string representation.

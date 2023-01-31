@@ -27,15 +27,6 @@ public final class CertificatesImpl implements Certificates {
         this.serviceManager = serviceManager;
     }
 
-    public NginxCertificate get(String resourceGroupName, String deploymentName, String certificateName) {
-        NginxCertificateInner inner = this.serviceClient().get(resourceGroupName, deploymentName, certificateName);
-        if (inner != null) {
-            return new NginxCertificateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NginxCertificate> getWithResponse(
         String resourceGroupName, String deploymentName, String certificateName, Context context) {
         Response<NginxCertificateInner> inner =
@@ -46,6 +37,15 @@ public final class CertificatesImpl implements Certificates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NginxCertificateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NginxCertificate get(String resourceGroupName, String deploymentName, String certificateName) {
+        NginxCertificateInner inner = this.serviceClient().get(resourceGroupName, deploymentName, certificateName);
+        if (inner != null) {
+            return new NginxCertificateImpl(inner, this.manager());
         } else {
             return null;
         }

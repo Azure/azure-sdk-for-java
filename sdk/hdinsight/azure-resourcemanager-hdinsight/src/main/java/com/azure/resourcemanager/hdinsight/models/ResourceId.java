@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The azure resource id. */
 @Fluent
 public final class ResourceId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceId.class);
-
     /*
      * The azure resource id.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ResourceId class. */
+    public ResourceId() {
+    }
 
     /**
      * Get the id property: The azure resource id.

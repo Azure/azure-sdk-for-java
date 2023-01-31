@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ShortSeriesHandlingConfiguration. */
+/** The parameter defining how if AutoML should handle short time series. */
 public final class ShortSeriesHandlingConfiguration extends ExpandableStringEnum<ShortSeriesHandlingConfiguration> {
     /** Static value None for ShortSeriesHandlingConfiguration. */
     public static final ShortSeriesHandlingConfiguration NONE = fromString("None");
@@ -21,6 +21,15 @@ public final class ShortSeriesHandlingConfiguration extends ExpandableStringEnum
 
     /** Static value Drop for ShortSeriesHandlingConfiguration. */
     public static final ShortSeriesHandlingConfiguration DROP = fromString("Drop");
+
+    /**
+     * Creates a new instance of ShortSeriesHandlingConfiguration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShortSeriesHandlingConfiguration() {
+    }
 
     /**
      * Creates or finds a ShortSeriesHandlingConfiguration from its string representation.

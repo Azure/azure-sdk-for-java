@@ -36,16 +36,16 @@ public final class ConfigurationAssignmentImpl implements ConfigurationAssignmen
         return this.innerModel().location();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String maintenanceConfigurationId() {
         return this.innerModel().maintenanceConfigurationId();
     }
 
     public String resourceId() {
         return this.innerModel().resourceId();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public ConfigurationAssignmentInner innerModel() {

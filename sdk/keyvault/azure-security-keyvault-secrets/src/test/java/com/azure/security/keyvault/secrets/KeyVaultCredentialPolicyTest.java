@@ -98,7 +98,7 @@ public class KeyVaultCredentialPolicyTest {
         this.unauthorizedHttpResponseWithoutHeader = unauthorizedResponseWithoutHeader;
         this.callContext = plainContext;
         this.differentScopeContext = differentScopeContext;
-        this.credential = new BasicAuthenticationCredential("user", "pass");
+        this.credential = new BasicAuthenticationCredential("user", "fakePasswordPlaceholder");
         this.testContext = testContext;
         this.bodyContext = bodyContext;
         this.bodyFluxContext = bodyFluxContext;

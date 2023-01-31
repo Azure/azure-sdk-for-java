@@ -14,22 +14,22 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class PathHttpHeaders {
     /*
-     * Optional. Sets the blob's cache control. If specified, this property is
-     * stored with the blob and returned with a read request.
+     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     @JsonProperty(value = "cacheControl")
     private String cacheControl;
 
     /*
-     * Optional. Sets the blob's content encoding. If specified, this property
-     * is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned
+     * with a read request.
      */
     @JsonProperty(value = "contentEncoding")
     private String contentEncoding;
 
     /*
-     * Optional. Set the blob's content language. If specified, this property
-     * is stored with the blob and returned with a read request.
+     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
     @JsonProperty(value = "contentLanguage")
     private String contentLanguage;
@@ -41,25 +41,26 @@ public final class PathHttpHeaders {
     private String contentDisposition;
 
     /*
-     * Optional. Sets the blob's content type. If specified, this property is
-     * stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
-     * Specify the transactional md5 for the body, to be validated by the
-     * service.
+     * Specify the transactional md5 for the body, to be validated by the service.
      */
     @JsonProperty(value = "contentMd5")
     private byte[] contentMd5;
 
     /*
-     * Specify the transactional md5 for the body, to be validated by the
-     * service.
+     * Specify the transactional md5 for the body, to be validated by the service.
      */
     @JsonProperty(value = "transactionalContentHash")
     private byte[] transactionalContentHash;
+
+    /** Creates an instance of PathHttpHeaders class. */
+    public PathHttpHeaders() {}
 
     /**
      * Get the cacheControl property: Optional. Sets the blob's cache control. If specified, this property is stored

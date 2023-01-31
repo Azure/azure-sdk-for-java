@@ -24,6 +24,10 @@ public final class ParquetDatasetTypeProperties {
     @JsonProperty(value = "compressionCodec")
     private Object compressionCodec;
 
+    /** Creates an instance of ParquetDatasetTypeProperties class. */
+    public ParquetDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the parquet storage.
      *

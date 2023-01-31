@@ -23,6 +23,10 @@ public final class ConnectionMonitorEndpointScope {
     @JsonProperty(value = "exclude")
     private List<ConnectionMonitorEndpointScopeItem> exclude;
 
+    /** Creates an instance of ConnectionMonitorEndpointScope class. */
+    public ConnectionMonitorEndpointScope() {
+    }
+
     /**
      * Get the include property: List of items which needs to be included to the endpoint scope.
      *

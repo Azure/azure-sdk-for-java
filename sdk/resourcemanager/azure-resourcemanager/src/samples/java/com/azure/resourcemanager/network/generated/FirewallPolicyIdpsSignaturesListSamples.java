@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for FirewallPolicyIdpsSignatures List. */
 public final class FirewallPolicyIdpsSignaturesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/FirewallPolicyQuerySignatureOverrides.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/FirewallPolicyQuerySignatureOverrides.json
      */
     /**
      * Sample code: query signature overrides.

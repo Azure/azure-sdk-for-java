@@ -30,6 +30,10 @@ public final class DrillLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of DrillLinkedServiceTypeProperties class. */
+    public DrillLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

@@ -52,6 +52,10 @@ public final class PeerRoute {
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Integer weight;
 
+    /** Creates an instance of PeerRoute class. */
+    public PeerRoute() {
+    }
+
     /**
      * Get the localAddress property: The peer's local address.
      *

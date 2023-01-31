@@ -199,7 +199,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -215,7 +215,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -521,7 +521,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosContainerProperties getCollectionDefinitionWithFullFidelity() {
         CosmosContainerProperties cosmosContainerProperties = getCollectionDefinition(UUID.randomUUID().toString());
-        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(5)));
         return cosmosContainerProperties;
     }
 

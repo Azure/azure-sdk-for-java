@@ -31,6 +31,10 @@ public final class InquiryInfo {
     @JsonProperty(value = "inquiryDetails")
     private List<WorkloadInquiryDetails> inquiryDetails;
 
+    /** Creates an instance of InquiryInfo class. */
+    public InquiryInfo() {
+    }
+
     /**
      * Get the status property: Inquiry Status for this container such as InProgress | Failed | Succeeded.
      *

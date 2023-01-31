@@ -16,6 +16,10 @@ public final class ManagedClusterStorageProfileFileCsiDriver {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of ManagedClusterStorageProfileFileCsiDriver class. */
+    public ManagedClusterStorageProfileFileCsiDriver() {
+    }
+
     /**
      * Get the enabled property: Whether to enable AzureFile CSI Driver. The default value is true.
      *

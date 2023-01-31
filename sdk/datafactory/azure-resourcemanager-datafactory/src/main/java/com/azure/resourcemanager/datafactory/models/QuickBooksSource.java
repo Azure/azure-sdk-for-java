@@ -20,6 +20,10 @@ public final class QuickBooksSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of QuickBooksSource class. */
+    public QuickBooksSource() {
+    }
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

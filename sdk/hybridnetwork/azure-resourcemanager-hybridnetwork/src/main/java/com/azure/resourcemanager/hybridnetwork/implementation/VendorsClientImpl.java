@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridnetwork.fluent.VendorsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VendorsClient. */
 public final class VendorsClientImpl implements VendorsClient {
-    private final ClientLogger logger = new ClientLogger(VendorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VendorsService service;
 
@@ -132,7 +129,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String vendorName) {
@@ -174,7 +171,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String vendorName, Context context) {
@@ -212,14 +209,15 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String vendorName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(vendorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -230,9 +228,9 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String vendorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(vendorName, context);
@@ -248,9 +246,9 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String vendorName) {
         return beginDeleteAsync(vendorName).getSyncPoller();
     }
@@ -263,9 +261,9 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String vendorName, Context context) {
         return beginDeleteAsync(vendorName, context).getSyncPoller();
     }
@@ -277,7 +275,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vendorName) {
@@ -292,7 +290,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vendorName, Context context) {
@@ -333,7 +331,8 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor.
+     * @return information about the specified vendor along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VendorInner>> getWithResponseAsync(String vendorName) {
@@ -375,7 +374,8 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor.
+     * @return information about the specified vendor along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VendorInner>> getWithResponseAsync(String vendorName, Context context) {
@@ -413,19 +413,26 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor.
+     * @return information about the specified vendor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VendorInner> getAsync(String vendorName) {
-        return getWithResponseAsync(vendorName)
-            .flatMap(
-                (Response<VendorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(vendorName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets information about the specified vendor.
+     *
+     * @param vendorName The name of the vendor.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified vendor along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VendorInner> getWithResponse(String vendorName, Context context) {
+        return getWithResponseAsync(vendorName, context).block();
     }
 
     /**
@@ -439,22 +446,7 @@ public final class VendorsClientImpl implements VendorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VendorInner get(String vendorName) {
-        return getAsync(vendorName).block();
-    }
-
-    /**
-     * Gets information about the specified vendor.
-     *
-     * @param vendorName The name of the vendor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VendorInner> getWithResponse(String vendorName, Context context) {
-        return getWithResponseAsync(vendorName, context).block();
+        return getWithResponse(vendorName, Context.NONE).getValue();
     }
 
     /**
@@ -465,7 +457,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return vendor resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -513,7 +505,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return vendor resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -557,16 +549,35 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return the {@link PollerFlux} for polling of vendor resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VendorInner>, VendorInner> beginCreateOrUpdateAsync(
         String vendorName, VendorInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(vendorName, parameters);
         return this
             .client
             .<VendorInner, VendorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VendorInner.class, VendorInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), VendorInner.class, VendorInner.class, this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a vendor.
+     *
+     * @param vendorName The name of the vendor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of vendor resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VendorInner>, VendorInner> beginCreateOrUpdateAsync(String vendorName) {
+        final VendorInner parameters = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(vendorName, parameters);
+        return this
+            .client
+            .<VendorInner, VendorInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VendorInner.class, VendorInner.class, this.client.getContext());
     }
 
     /**
@@ -578,9 +589,9 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return the {@link PollerFlux} for polling of vendor resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VendorInner>, VendorInner> beginCreateOrUpdateAsync(
         String vendorName, VendorInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -595,15 +606,14 @@ public final class VendorsClientImpl implements VendorsClient {
      * Creates or updates a vendor.
      *
      * @param vendorName The name of the vendor.
-     * @param parameters Parameters supplied to the create vendor operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return the {@link SyncPoller} for polling of vendor resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VendorInner>, VendorInner> beginCreateOrUpdate(
-        String vendorName, VendorInner parameters) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VendorInner>, VendorInner> beginCreateOrUpdate(String vendorName) {
+        final VendorInner parameters = null;
         return beginCreateOrUpdateAsync(vendorName, parameters).getSyncPoller();
     }
 
@@ -616,9 +626,9 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return the {@link SyncPoller} for polling of vendor resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VendorInner>, VendorInner> beginCreateOrUpdate(
         String vendorName, VendorInner parameters, Context context) {
         return beginCreateOrUpdateAsync(vendorName, parameters, context).getSyncPoller();
@@ -632,7 +642,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return vendor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VendorInner> createOrUpdateAsync(String vendorName, VendorInner parameters) {
@@ -646,7 +656,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return vendor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VendorInner> createOrUpdateAsync(String vendorName) {
@@ -663,28 +673,13 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
+     * @return vendor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VendorInner> createOrUpdateAsync(String vendorName, VendorInner parameters, Context context) {
         return beginCreateOrUpdateAsync(vendorName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a vendor.
-     *
-     * @param vendorName The name of the vendor.
-     * @param parameters Parameters supplied to the create vendor operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VendorInner createOrUpdate(String vendorName, VendorInner parameters) {
-        return createOrUpdateAsync(vendorName, parameters).block();
     }
 
     /**
@@ -723,7 +718,8 @@ public final class VendorsClientImpl implements VendorsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VendorInner>> listSinglePageAsync() {
@@ -769,7 +765,8 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VendorInner>> listSinglePageAsync(Context context) {
@@ -810,7 +807,7 @@ public final class VendorsClientImpl implements VendorsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VendorInner> listAsync() {
@@ -825,7 +822,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VendorInner> listAsync(Context context) {
@@ -838,7 +835,7 @@ public final class VendorsClientImpl implements VendorsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VendorInner> list() {
@@ -852,7 +849,7 @@ public final class VendorsClientImpl implements VendorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VendorInner> list(Context context) {
@@ -862,11 +859,13 @@ public final class VendorsClientImpl implements VendorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VendorInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -898,12 +897,14 @@ public final class VendorsClientImpl implements VendorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VendorInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {

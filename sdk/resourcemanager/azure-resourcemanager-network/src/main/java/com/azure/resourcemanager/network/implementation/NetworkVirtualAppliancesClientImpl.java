@@ -73,7 +73,7 @@ public final class NetworkVirtualAppliancesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkVirtualAppliancesService {
+    public interface NetworkVirtualAppliancesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -218,7 +218,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -271,7 +271,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -461,7 +461,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -517,7 +517,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -537,24 +537,6 @@ public final class NetworkVirtualAppliancesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Virtual Appliance on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkVirtualApplianceInner> getByResourceGroupAsync(
-        String resourceGroupName, String networkVirtualApplianceName, String expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, networkVirtualApplianceName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the specified Network Virtual Appliance.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -566,23 +548,6 @@ public final class NetworkVirtualAppliancesClientImpl
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkVirtualApplianceName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the specified Network Virtual Appliance.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Virtual Appliance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkVirtualApplianceInner getByResourceGroup(
-        String resourceGroupName, String networkVirtualApplianceName) {
-        final String expand = null;
-        return getByResourceGroupAsync(resourceGroupName, networkVirtualApplianceName, expand).block();
     }
 
     /**
@@ -602,6 +567,24 @@ public final class NetworkVirtualAppliancesClientImpl
         String resourceGroupName, String networkVirtualApplianceName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkVirtualApplianceName, expand, context)
             .block();
+    }
+
+    /**
+     * Gets the specified Network Virtual Appliance.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Network Virtual Appliance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkVirtualApplianceInner getByResourceGroup(
+        String resourceGroupName, String networkVirtualApplianceName) {
+        final String expand = null;
+        return getByResourceGroupWithResponse(resourceGroupName, networkVirtualApplianceName, expand, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -645,7 +628,7 @@ public final class NetworkVirtualAppliancesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -705,7 +688,7 @@ public final class NetworkVirtualAppliancesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -744,23 +727,6 @@ public final class NetworkVirtualAppliancesClientImpl
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkVirtualAppliance Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkVirtualApplianceInner updateTags(
-        String resourceGroupName, String networkVirtualApplianceName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, networkVirtualApplianceName, parameters).block();
-    }
-
-    /**
-     * Updates a Network Virtual Appliance.
-     *
-     * @param resourceGroupName The resource group name of Network Virtual Appliance.
-     * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
-     * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -771,6 +737,24 @@ public final class NetworkVirtualAppliancesClientImpl
     public Response<NetworkVirtualApplianceInner> updateTagsWithResponse(
         String resourceGroupName, String networkVirtualApplianceName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, networkVirtualApplianceName, parameters, context).block();
+    }
+
+    /**
+     * Updates a Network Virtual Appliance.
+     *
+     * @param resourceGroupName The resource group name of Network Virtual Appliance.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
+     * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return networkVirtualAppliance Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkVirtualApplianceInner updateTags(
+        String resourceGroupName, String networkVirtualApplianceName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, networkVirtualApplianceName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -814,7 +798,7 @@ public final class NetworkVirtualAppliancesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -877,7 +861,7 @@ public final class NetworkVirtualAppliancesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1097,7 +1081,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1152,7 +1136,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1261,7 +1245,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1304,7 +1288,7 @@ public final class NetworkVirtualAppliancesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

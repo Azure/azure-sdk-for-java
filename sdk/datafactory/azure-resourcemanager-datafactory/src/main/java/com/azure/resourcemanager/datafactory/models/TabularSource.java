@@ -94,6 +94,10 @@ public class TabularSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of TabularSource class. */
+    public TabularSource() {
+    }
+
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).

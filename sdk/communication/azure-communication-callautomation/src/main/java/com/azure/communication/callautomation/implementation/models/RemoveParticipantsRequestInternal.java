@@ -12,19 +12,20 @@ import java.util.List;
 @Fluent
 public final class RemoveParticipantsRequestInternal {
     /*
-     * The participants to invite.
+     * The participants to be removed from the call.
      */
     @JsonProperty(value = "participantsToRemove", required = true)
     private List<CommunicationIdentifierModel> participantsToRemove;
 
     /*
-     * The operation context.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
-     * Get the participantsToRemove property: The participants to invite.
+     * Get the participantsToRemove property: The participants to be removed from the call.
      *
      * @return the participantsToRemove value.
      */
@@ -33,7 +34,7 @@ public final class RemoveParticipantsRequestInternal {
     }
 
     /**
-     * Set the participantsToRemove property: The participants to invite.
+     * Set the participantsToRemove property: The participants to be removed from the call.
      *
      * @param participantsToRemove the participantsToRemove value to set.
      * @return the RemoveParticipantsRequestInternal object itself.
@@ -45,7 +46,8 @@ public final class RemoveParticipantsRequestInternal {
     }
 
     /**
-     * Get the operationContext property: The operation context.
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @return the operationContext value.
      */
@@ -54,7 +56,8 @@ public final class RemoveParticipantsRequestInternal {
     }
 
     /**
-     * Set the operationContext property: The operation context.
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantsRequestInternal object itself.

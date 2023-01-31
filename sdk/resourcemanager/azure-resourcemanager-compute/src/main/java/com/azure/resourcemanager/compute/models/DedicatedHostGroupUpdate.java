@@ -30,6 +30,10 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of DedicatedHostGroupUpdate class. */
+    public DedicatedHostGroupUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Dedicated Host Group Properties.
      *

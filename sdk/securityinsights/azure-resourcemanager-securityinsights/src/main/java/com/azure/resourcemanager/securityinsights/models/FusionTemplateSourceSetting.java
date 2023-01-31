@@ -19,8 +19,7 @@ public final class FusionTemplateSourceSetting {
     private String sourceName;
 
     /*
-     * All supported source subtypes under this source signal consumed in
-     * fusion detection.
+     * All supported source subtypes under this source signal consumed in fusion detection.
      */
     @JsonProperty(value = "sourceSubTypes")
     private List<FusionTemplateSourceSubType> sourceSubTypes;

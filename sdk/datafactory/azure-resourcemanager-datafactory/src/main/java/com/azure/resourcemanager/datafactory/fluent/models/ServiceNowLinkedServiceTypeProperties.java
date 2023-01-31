@@ -75,6 +75,10 @@ public final class ServiceNowLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ServiceNowLinkedServiceTypeProperties class. */
+    public ServiceNowLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the endpoint property: The endpoint of the ServiceNow server. (i.e. &lt;instance&gt;.service-now.com).
      *

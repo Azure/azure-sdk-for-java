@@ -49,6 +49,10 @@ public final class GrantDetailProperties {
     @JsonProperty(value = "allocatedBudget", access = JsonProperty.Access.WRITE_ONLY)
     private Amount allocatedBudget;
 
+    /** Creates an instance of GrantDetailProperties class. */
+    public GrantDetailProperties() {
+    }
+
     /**
      * Get the offerCap property: Offer Cap.
      *

@@ -4,40 +4,11 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.CustomHostnameAnalysisResultInner;
 import java.util.List;
 
 /** An immutable client-side representation of CustomHostnameAnalysisResult. */
 public interface CustomHostnameAnalysisResult {
-    /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     *
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
     /**
      * Gets the hostname property: Host name that was analyzed.
      *
@@ -65,7 +36,7 @@ public interface CustomHostnameAnalysisResult {
      *
      * @return the customDomainVerificationFailureInfo value.
      */
-    DefaultErrorResponseError customDomainVerificationFailureInfo();
+    CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo customDomainVerificationFailureInfo();
 
     /**
      * Gets the hasConflictOnManagedEnvironment property: &lt;code&gt;true&lt;/code&gt; if there is a conflict on the
@@ -74,6 +45,14 @@ public interface CustomHostnameAnalysisResult {
      * @return the hasConflictOnManagedEnvironment value.
      */
     Boolean hasConflictOnManagedEnvironment();
+
+    /**
+     * Gets the conflictWithEnvironmentCustomDomain property: &lt;code&gt;true&lt;/code&gt; if there is a conflict on
+     * the Container App's managed environment level custom domain; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @return the conflictWithEnvironmentCustomDomain value.
+     */
+    Boolean conflictWithEnvironmentCustomDomain();
 
     /**
      * Gets the conflictingContainerAppResourceId property: Name of the conflicting Container App on the Managed

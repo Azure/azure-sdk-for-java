@@ -8,13 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SshPublicAccess. */
+/**
+ * Access policy for SSH
+ *
+ * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this
+ * instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet policy if
+ * applicable.
+ */
 public final class SshPublicAccess extends ExpandableStringEnum<SshPublicAccess> {
     /** Static value Enabled for SshPublicAccess. */
     public static final SshPublicAccess ENABLED = fromString("Enabled");
 
     /** Static value Disabled for SshPublicAccess. */
     public static final SshPublicAccess DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of SshPublicAccess value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SshPublicAccess() {
+    }
 
     /**
      * Creates or finds a SshPublicAccess from its string representation.

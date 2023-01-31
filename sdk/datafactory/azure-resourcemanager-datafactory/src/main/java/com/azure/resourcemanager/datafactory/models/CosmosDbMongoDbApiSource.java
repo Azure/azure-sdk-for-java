@@ -49,6 +49,10 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of CosmosDbMongoDbApiSource class. */
+    public CosmosDbMongoDbApiSource() {
+    }
+
     /**
      * Get the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType

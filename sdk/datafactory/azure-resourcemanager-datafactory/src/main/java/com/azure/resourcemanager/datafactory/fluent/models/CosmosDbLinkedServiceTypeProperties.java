@@ -95,6 +95,10 @@ public final class CosmosDbLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of CosmosDbLinkedServiceTypeProperties class. */
+    public CosmosDbLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

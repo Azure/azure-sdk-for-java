@@ -38,6 +38,17 @@ public class EnvironmentCredentialTests {
             }))
             .expectNextMatches(token -> "token".equals(token.getToken()))
             .verifyComplete();
+
+
+
+        // Validate Sync flow.
+        try {
+            credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default"));
+            fail();
+        } catch (Exception e) {
+            String message = e.getMessage();
+            Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+        }
     }
 
     @Test
@@ -60,6 +71,15 @@ public class EnvironmentCredentialTests {
             }))
             .expectNextMatches(token -> "token".equals(token.getToken()))
             .verifyComplete();
+
+        // Validate Sync flow.
+        try {
+            credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default"));
+            fail();
+        } catch (Exception e) {
+            String message = e.getMessage();
+            Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+        }
     }
 
     @Test
@@ -81,6 +101,15 @@ public class EnvironmentCredentialTests {
             }))
             .expectNextMatches(token -> "token".equals(token.getToken()))
             .verifyComplete();
+
+        // Validate Sync flow.
+        try {
+            credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default"));
+            fail();
+        } catch (Exception e) {
+            String message = e.getMessage();
+            Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+        }
     }
 
     @Test

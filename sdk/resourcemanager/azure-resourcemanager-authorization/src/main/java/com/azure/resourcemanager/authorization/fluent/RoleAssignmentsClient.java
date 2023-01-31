@@ -20,217 +20,278 @@ import reactor.core.publisher.Mono;
 public interface RoleAssignmentsClient
     extends InnerSupportsListing<RoleAssignmentInner>, InnerSupportsDelete<RoleAssignmentInner> {
     /**
-     * Gets role assignments for a resource.
+     * List all role assignments that apply to a subscription.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get role assignments for.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RoleAssignmentInner> listForResourceAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String filter);
+    PagedFlux<RoleAssignmentInner> listAsync(String filter, String tenantId);
 
     /**
-     * Gets role assignments for a resource.
+     * List all role assignments that apply to a subscription.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get role assignments for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RoleAssignmentInner> listForResourceAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName);
+    PagedFlux<RoleAssignmentInner> listAsync();
 
     /**
-     * Gets role assignments for a resource.
+     * List all role assignments that apply to a subscription.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get role assignments for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listForResource(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName);
+    PagedIterable<RoleAssignmentInner> list();
 
     /**
-     * Gets role assignments for a resource.
+     * List all role assignments that apply to a subscription.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get role assignments for.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listForResource(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String filter,
-        Context context);
+    PagedIterable<RoleAssignmentInner> list(String filter, String tenantId, Context context);
 
     /**
-     * Gets role assignments for a resource group.
+     * List all role assignments that apply to a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource group as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter);
+    PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter, String tenantId);
 
     /**
-     * Gets role assignments for a resource group.
+     * List all role assignments that apply to a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource group as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Gets role assignments for a resource group.
+     * List all role assignments that apply to a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource group as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets role assignments for a resource group.
+     * List all role assignments that apply to a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource group as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName, String filter, Context context);
+    PagedIterable<RoleAssignmentInner> listByResourceGroup(
+        String resourceGroupName, String filter, String tenantId, Context context);
 
     /**
-     * Deletes a role assignment.
+     * List all role assignments that apply to a resource.
      *
-     * @param scope The scope of the role assignment to delete.
-     * @param roleAssignmentName The name of the role assignment to delete.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from
+     *     Microsoft.Web/sites).
+     * @param resourceName The resource name.
+     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleAssignmentInner>> deleteWithResponseAsync(String scope, String roleAssignmentName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RoleAssignmentInner> listForResourceAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String resourceType,
+        String resourceName,
+        String filter,
+        String tenantId);
 
     /**
-     * Deletes a role assignment.
+     * List all role assignments that apply to a resource.
      *
-     * @param scope The scope of the role assignment to delete.
-     * @param roleAssignmentName The name of the role assignment to delete.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from
+     *     Microsoft.Web/sites).
+     * @param resourceName The resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments on successful completion of {@link Mono}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoleAssignmentInner> deleteAsync(String scope, String roleAssignmentName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RoleAssignmentInner> listForResourceAsync(
+        String resourceGroupName, String resourceProviderNamespace, String resourceType, String resourceName);
 
     /**
-     * Deletes a role assignment.
+     * List all role assignments that apply to a resource.
      *
-     * @param scope The scope of the role assignment to delete.
-     * @param roleAssignmentName The name of the role assignment to delete.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from
+     *     Microsoft.Web/sites).
+     * @param resourceName The resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentInner delete(String scope, String roleAssignmentName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> listForResource(
+        String resourceGroupName, String resourceProviderNamespace, String resourceType, String resourceName);
 
     /**
-     * Deletes a role assignment.
+     * List all role assignments that apply to a resource.
      *
-     * @param scope The scope of the role assignment to delete.
-     * @param roleAssignmentName The name of the role assignment to delete.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from
+     *     Microsoft.Web/sites).
+     * @param resourceName The resource name.
+     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments along with {@link Response}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleAssignmentInner> deleteWithResponse(String scope, String roleAssignmentName, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> listForResource(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String resourceType,
+        String resourceName,
+        String filter,
+        String tenantId,
+        Context context);
 
     /**
-     * Creates a role assignment.
+     * Get a role assignment by scope and name.
      *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For
-     *     example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
-     * @param roleAssignmentName A GUID for the role assignment to create. The name must be unique and different for
-     *     each role assignment.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @param tenantId Tenant ID for cross-tenant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by scope and name along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RoleAssignmentInner>> getWithResponseAsync(String scope, String roleAssignmentName, String tenantId);
+
+    /**
+     * Get a role assignment by scope and name.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by scope and name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RoleAssignmentInner> getAsync(String scope, String roleAssignmentName);
+
+    /**
+     * Get a role assignment by scope and name.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @param tenantId Tenant ID for cross-tenant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by scope and name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RoleAssignmentInner> getWithResponse(
+        String scope, String roleAssignmentName, String tenantId, Context context);
+
+    /**
+     * Get a role assignment by scope and name.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by scope and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentInner get(String scope, String roleAssignmentName);
+
+    /**
+     * Create or update a role assignment by scope and name.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
      * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -242,15 +303,13 @@ public interface RoleAssignmentsClient
         String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters);
 
     /**
-     * Creates a role assignment.
+     * Create or update a role assignment by scope and name.
      *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For
-     *     example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
-     * @param roleAssignmentName A GUID for the role assignment to create. The name must be unique and different for
-     *     each role assignment.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
      * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -262,34 +321,13 @@ public interface RoleAssignmentsClient
         String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters);
 
     /**
-     * Creates a role assignment.
+     * Create or update a role assignment by scope and name.
      *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For
-     *     example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
-     * @param roleAssignmentName A GUID for the role assignment to create. The name must be unique and different for
-     *     each role assignment.
-     * @param parameters Parameters for the role assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentInner create(String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters);
-
-    /**
-     * Creates a role assignment.
-     *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For
-     *     example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
-     * @param roleAssignmentName A GUID for the role assignment to create. The name must be unique and different for
-     *     each role assignment.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
      * @param parameters Parameters for the role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -302,110 +340,65 @@ public interface RoleAssignmentsClient
         String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters, Context context);
 
     /**
-     * Get the specified role assignment.
+     * Create or update a role assignment by scope and name.
      *
-     * @param scope The scope of the role assignment.
-     * @param roleAssignmentName The name of the role assignment to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleAssignmentInner>> getWithResponseAsync(String scope, String roleAssignmentName);
-
-    /**
-     * Get the specified role assignment.
-     *
-     * @param scope The scope of the role assignment.
-     * @param roleAssignmentName The name of the role assignment to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoleAssignmentInner> getAsync(String scope, String roleAssignmentName);
-
-    /**
-     * Get the specified role assignment.
-     *
-     * @param scope The scope of the role assignment.
-     * @param roleAssignmentName The name of the role assignment to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentInner get(String scope, String roleAssignmentName);
-
-    /**
-     * Get the specified role assignment.
-     *
-     * @param scope The scope of the role assignment.
-     * @param roleAssignmentName The name of the role assignment to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleAssignmentInner> getWithResponse(String scope, String roleAssignmentName, Context context);
-
-    /**
-     * Deletes a role assignment.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleAssignmentInner>> deleteByIdWithResponseAsync(String roleAssignmentId);
-
-    /**
-     * Deletes a role assignment.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoleAssignmentInner> deleteByIdAsync(String roleAssignmentId);
-
-    /**
-     * Deletes a role assignment.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentInner deleteById(String roleAssignmentId);
+    RoleAssignmentInner create(String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters);
 
     /**
-     * Deletes a role assignment.
+     * Delete a role assignment by scope and name.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @param tenantId Tenant ID for cross-tenant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RoleAssignmentInner>> deleteWithResponseAsync(
+        String scope, String roleAssignmentName, String tenantId);
+
+    /**
+     * Delete a role assignment by scope and name.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RoleAssignmentInner> deleteAsync(String scope, String roleAssignmentName);
+
+    /**
+     * Delete a role assignment by scope and name.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -413,15 +406,169 @@ public interface RoleAssignmentsClient
      * @return role Assignments along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleAssignmentInner> deleteByIdWithResponse(String roleAssignmentId, Context context);
+    Response<RoleAssignmentInner> deleteWithResponse(
+        String scope, String roleAssignmentName, String tenantId, Context context);
 
     /**
-     * Creates a role assignment by ID.
+     * Delete a role assignment by scope and name.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param roleAssignmentName The name of the role assignment. It can be any valid GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentInner delete(String scope, String roleAssignmentName);
+
+    /**
+     * List all role assignments that apply to a scope.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
+     * @param skipToken The skipToken to apply on the operation. Use $skipToken={skiptoken} to return paged role
+     *     assignments following the skipToken passed. Only supported on provider level calls.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope, String filter, String tenantId, String skipToken);
+
+    /**
+     * List all role assignments that apply to a scope.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope);
+
+    /**
+     * List all role assignments that apply to a scope.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> listForScope(String scope);
+
+    /**
+     * List all role assignments that apply to a scope.
+     *
+     * @param scope The scope of the operation or resource. Valid scopes are: subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
+     * @param tenantId Tenant ID for cross-tenant request.
+     * @param skipToken The skipToken to apply on the operation. Use $skipToken={skiptoken} to return paged role
+     *     assignments following the skipToken passed. Only supported on provider level calls.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> listForScope(
+        String scope, String filter, String tenantId, String skipToken, Context context);
+
+    /**
+     * Get a role assignment by ID.
+     *
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
+     * @param tenantId Tenant ID for cross-tenant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by ID along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RoleAssignmentInner>> getByIdWithResponseAsync(String roleAssignmentId, String tenantId);
+
+    /**
+     * Get a role assignment by ID.
+     *
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by ID on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RoleAssignmentInner> getByIdAsync(String roleAssignmentId);
+
+    /**
+     * Get a role assignment by ID.
+     *
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
+     * @param tenantId Tenant ID for cross-tenant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RoleAssignmentInner> getByIdWithResponse(String roleAssignmentId, String tenantId, Context context);
+
+    /**
+     * Get a role assignment by ID.
+     *
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentInner getById(String roleAssignmentId);
+
+    /**
+     * Create or update a role assignment by ID.
+     *
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
      * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -433,12 +580,12 @@ public interface RoleAssignmentsClient
         String roleAssignmentId, RoleAssignmentCreateParameters parameters);
 
     /**
-     * Creates a role assignment by ID.
+     * Create or update a role assignment by ID.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
      * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -449,28 +596,12 @@ public interface RoleAssignmentsClient
     Mono<RoleAssignmentInner> createByIdAsync(String roleAssignmentId, RoleAssignmentCreateParameters parameters);
 
     /**
-     * Creates a role assignment by ID.
+     * Create or update a role assignment by ID.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-     * @param parameters Parameters for the role assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentInner createById(String roleAssignmentId, RoleAssignmentCreateParameters parameters);
-
-    /**
-     * Creates a role assignment by ID.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
      * @param parameters Parameters for the role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,167 +614,81 @@ public interface RoleAssignmentsClient
         String roleAssignmentId, RoleAssignmentCreateParameters parameters, Context context);
 
     /**
-     * Gets a role assignment by ID.
+     * Create or update a role assignment by ID.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment by ID along with {@link Response} on successful completion of {@link Mono}.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleAssignmentInner>> getByIdWithResponseAsync(String roleAssignmentId);
+    RoleAssignmentInner createById(String roleAssignmentId, RoleAssignmentCreateParameters parameters);
 
     /**
-     * Gets a role assignment by ID.
+     * Delete a role assignment by ID.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment by ID on successful completion of {@link Mono}.
+     * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoleAssignmentInner> getByIdAsync(String roleAssignmentId);
+    Mono<Response<RoleAssignmentInner>> deleteByIdWithResponseAsync(String roleAssignmentId, String tenantId);
 
     /**
-     * Gets a role assignment by ID.
+     * Delete a role assignment by ID.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment by ID.
+     * @return role Assignments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentInner getById(String roleAssignmentId);
+    Mono<RoleAssignmentInner> deleteByIdAsync(String roleAssignmentId);
 
     /**
-     * Gets a role assignment by ID.
+     * Delete a role assignment by ID.
      *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
-     *     resource type. Use the format,
-     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
-     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
+     * @param tenantId Tenant ID for cross-tenant request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment by ID along with {@link Response}.
+     * @return role Assignments along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleAssignmentInner> getByIdWithResponse(String roleAssignmentId, Context context);
+    Response<RoleAssignmentInner> deleteByIdWithResponse(String roleAssignmentId, String tenantId, Context context);
 
     /**
-     * Gets all role assignments for the subscription.
+     * Delete a role assignment by ID.
      *
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
-     *     for the specified principal.
+     * @param roleAssignmentId The fully qualified ID of the role assignment including scope, resource name, and
+     *     resource type. Format: /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     *     Example:
+     *     /subscriptions/&lt;SUB_ID&gt;/resourcegroups/&lt;RESOURCE_GROUP&gt;/providers/Microsoft.Authorization/roleAssignments/&lt;ROLE_ASSIGNMENT_NAME&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role assignments for the subscription as paginated response with {@link PagedFlux}.
+     * @return role Assignments.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RoleAssignmentInner> listAsync(String filter);
-
-    /**
-     * Gets all role assignments for the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role assignments for the subscription as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RoleAssignmentInner> listAsync();
-
-    /**
-     * Gets all role assignments for the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role assignments for the subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> list();
-
-    /**
-     * Gets all role assignments for the subscription.
-     *
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
-     *     for the specified principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role assignments for the subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> list(String filter, Context context);
-
-    /**
-     * Gets role assignments for a scope.
-     *
-     * @param scope The scope of the role assignments.
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
-     *     for the specified principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a scope as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope, String filter);
-
-    /**
-     * Gets role assignments for a scope.
-     *
-     * @param scope The scope of the role assignments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a scope as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope);
-
-    /**
-     * Gets role assignments for a scope.
-     *
-     * @param scope The scope of the role assignments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a scope as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listForScope(String scope);
-
-    /**
-     * Gets role assignments for a scope.
-     *
-     * @param scope The scope of the role assignments.
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
-     *     for the specified principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a scope as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listForScope(String scope, String filter, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentInner deleteById(String roleAssignmentId);
 }

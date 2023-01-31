@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Security analytics of your IoT Security solution. */
 @Fluent
 public final class IoTSecuritySolutionAnalyticsModelListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecuritySolutionAnalyticsModelListInner.class);
-
     /*
      * List of Security analytics of your IoT Security solution
      */
@@ -22,11 +19,14 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
     private List<IoTSecuritySolutionAnalyticsModelInner> value;
 
     /*
-     * When there is too much alert data for one page, use this URI to fetch
-     * the next page.
+     * When there is too much alert data for one page, use this URI to fetch the next page.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of IoTSecuritySolutionAnalyticsModelListInner class. */
+    public IoTSecuritySolutionAnalyticsModelListInner() {
+    }
 
     /**
      * Get the value property: List of Security analytics of your IoT Security solution.
@@ -64,7 +64,7 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model IoTSecuritySolutionAnalyticsModelListInner"));
@@ -72,4 +72,6 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IoTSecuritySolutionAnalyticsModelListInner.class);
 }

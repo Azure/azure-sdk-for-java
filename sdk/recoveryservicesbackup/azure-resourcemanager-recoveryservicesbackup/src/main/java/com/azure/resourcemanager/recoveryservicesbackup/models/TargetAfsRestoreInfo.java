@@ -22,6 +22,10 @@ public final class TargetAfsRestoreInfo {
     @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
+    /** Creates an instance of TargetAfsRestoreInfo class. */
+    public TargetAfsRestoreInfo() {
+    }
+
     /**
      * Get the name property: File share name.
      *

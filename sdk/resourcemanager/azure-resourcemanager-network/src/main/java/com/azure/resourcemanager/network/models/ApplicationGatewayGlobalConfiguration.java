@@ -22,6 +22,10 @@ public final class ApplicationGatewayGlobalConfiguration {
     @JsonProperty(value = "enableResponseBuffering")
     private Boolean enableResponseBuffering;
 
+    /** Creates an instance of ApplicationGatewayGlobalConfiguration class. */
+    public ApplicationGatewayGlobalConfiguration() {
+    }
+
     /**
      * Get the enableRequestBuffering property: Enable request buffering.
      *

@@ -24,8 +24,7 @@ public final class DocumentTypeDetails {
     private DocumentBuildMode buildMode;
 
     /*
-     * Description of the document semantic schema using a JSON Schema style
-     * syntax.
+     * Description of the document semantic schema using a JSON Schema style syntax.
      */
     @JsonProperty(value = "fieldSchema", required = true)
     private Map<String, DocumentFieldSchema> fieldSchema;
@@ -35,6 +34,9 @@ public final class DocumentTypeDetails {
      */
     @JsonProperty(value = "fieldConfidence")
     private Map<String, Float> fieldConfidence;
+
+    /** Creates an instance of DocumentTypeDetails class. */
+    public DocumentTypeDetails() {}
 
     /**
      * Get the description property: Document model description.

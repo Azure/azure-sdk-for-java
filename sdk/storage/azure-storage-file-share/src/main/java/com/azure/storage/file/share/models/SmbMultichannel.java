@@ -18,6 +18,9 @@ public final class SmbMultichannel {
     @JsonProperty(value = "Enabled")
     private Boolean enabled;
 
+    /** Creates an instance of SmbMultichannel class. */
+    public SmbMultichannel() {}
+
     /**
      * Get the enabled property: If SMB multichannel is enabled.
      *

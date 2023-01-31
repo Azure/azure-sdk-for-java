@@ -58,6 +58,10 @@ public final class OutboundRulePropertiesFormat {
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
+    /** Creates an instance of OutboundRulePropertiesFormat class. */
+    public OutboundRulePropertiesFormat() {
+    }
+
     /**
      * Get the allocatedOutboundPorts property: The number of outbound ports to be used for NAT.
      *

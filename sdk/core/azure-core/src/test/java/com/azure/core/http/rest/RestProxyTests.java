@@ -12,6 +12,7 @@ import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -23,13 +24,11 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.Header;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -127,7 +126,7 @@ public class RestProxyTests {
         StreamResponse streamResponse = testInterface.testDownload();
         streamResponse.close();
         // This indirectly tests that StreamResponse has HttpResponse reference
-        Mockito.verify(client.getLastResponseSpy()).close();
+        assertTrue(client.closeCalledOnResponse);
     }
 
     @Test
@@ -144,7 +143,7 @@ public class RestProxyTests {
             .expectNextCount(1)
             .verifyComplete();
         // This indirectly tests that StreamResponse has HttpResponse reference
-        Mockito.verify(client.lastResponseSpy).close();
+        assertTrue(client.closeCalledOnResponse);
     }
 
     @ParameterizedTest
@@ -156,9 +155,7 @@ public class RestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        Response<Void> response = testInterface.testMethod(data,
-                "application/json", contentLength)
-            .block();
+        Response<Void> response = testInterface.testMethod(data, "application/json", contentLength).block();
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBodyAsBinaryData());
     }
@@ -173,8 +170,6 @@ public class RestProxyTests {
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("flux with length",
-                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
             Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
                 BinaryData.fromObject(bytes).getLength())
         );
@@ -209,11 +204,10 @@ public class RestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(
-                testInterface.testMethodReturnsMonoVoid())
+        StepVerifier.create(testInterface.testMethodReturnsMonoVoid())
             .verifyComplete();
 
-        Mockito.verify(client.lastResponseSpy).close();
+        assertTrue(client.closeCalledOnResponse);
     }
 
     @Test
@@ -227,11 +221,11 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        Mockito.verify(client.lastResponseSpy).close();
+        assertTrue(client.closeCalledOnResponse);
     }
 
     @Test
-    public void voidReturningApiEagerlyReadsResponse() {
+    public void voidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -241,12 +235,13 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
-    public void monoVoidReturningApiEagerlyReadsResponse() {
+    public void monoVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -257,12 +252,13 @@ public class RestProxyTests {
                 testInterface.testMethodReturnsMonoVoid())
             .verifyComplete();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
-    public void monoResponseVoidReturningApiEagerlyReadsResponse() {
+    public void monoResponseVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -274,12 +270,13 @@ public class RestProxyTests {
             .expectNextCount(1)
             .verifyComplete();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
-    public void responseVoidReturningApiEagerlyReadsResponse() {
+    public void responseVoidReturningApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -289,8 +286,9 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testMethodReturnsResponseVoid();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue(client.lastContext.getData("azure-ignore-response-body").isPresent());
+        assertTrue((boolean) client.lastContext.getData("azure-ignore-response-body").get());
     }
 
     @Test
@@ -304,8 +302,7 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testDownload();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
     }
 
     @Test
@@ -317,14 +314,11 @@ public class RestProxyTests {
 
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(
-                testInterface.testDownloadAsync()
-                    .doOnNext(StreamResponse::close))
+        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
             .expectNextCount(1)
             .verifyComplete();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
@@ -353,8 +347,8 @@ public class RestProxyTests {
     private static final class LocalHttpClient implements HttpClient {
 
         private volatile HttpRequest lastHttpRequest;
-        private volatile HttpResponse lastResponseSpy;
         private volatile Context lastContext;
+        private volatile boolean closeCalledOnResponse;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
@@ -367,37 +361,29 @@ public class RestProxyTests {
             lastContext = context;
             boolean success = request.getUrl().getPath().equals("/my/url/path");
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
-                success = success && request.getHeaders()
-                    .stream()
-                    .filter(header -> header.getName().equals("Content-Type"))
-                    .map(Header::getValue)
-                    .anyMatch(contentType -> contentType.equals("application/json"));
+                success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
             } else {
-                success = success && request.getHttpMethod().equals(HttpMethod.GET);
+                success &= request.getHttpMethod().equals(HttpMethod.GET);
             }
-            int statusCode = success ? 200 : 400;
-            MockHttpResponse response = Mockito.spy(new MockHttpResponse(request, statusCode));
-            lastResponseSpy = response;
-            return Mono.just(response);
+
+            return Mono.just(new MockHttpResponse(request, success ? 200 : 400) {
+                @Override
+                public void close() {
+                    closeCalledOnResponse = true;
+                    super.close();
+                }
+            });
         }
 
         public HttpRequest getLastHttpRequest() {
             return lastHttpRequest;
-        }
-
-        public HttpResponse getLastResponseSpy() {
-            return lastResponseSpy;
-        }
-
-        public Context getLastContext() {
-            return lastContext;
         }
     }
 
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
-                                           Map<Object, Object> expectedContextValues) {
+        Map<Object, Object> expectedContextValues) {
         Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());

@@ -17,6 +17,9 @@ public final class BatchRequest {
     @JsonProperty(value = "batchItems")
     private List<BatchRequestItem> batchItems;
 
+    /** Creates an instance of BatchRequest class. */
+    public BatchRequest() {}
+
     /**
      * Get the batchItems property: The list of queries to process.
      *

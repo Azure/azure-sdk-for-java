@@ -35,6 +35,10 @@ public final class IfConditionActivityTypeProperties {
     @JsonProperty(value = "ifFalseActivities")
     private List<Activity> ifFalseActivities;
 
+    /** Creates an instance of IfConditionActivityTypeProperties class. */
+    public IfConditionActivityTypeProperties() {
+    }
+
     /**
      * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
      * activities (ifTrueActivities or ifFalseActivities) that will be executed.

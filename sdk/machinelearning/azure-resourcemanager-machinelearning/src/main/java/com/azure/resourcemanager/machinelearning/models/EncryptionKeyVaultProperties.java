@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EncryptionKeyVaultProperties {
     /*
-     * The ArmId of the keyVault where the customer owned encryption key is
-     * present.
+     * The ArmId of the keyVault where the customer owned encryption key is present.
      */
     @JsonProperty(value = "keyVaultArmId", required = true)
     private String keyVaultArmId;
@@ -25,11 +24,14 @@ public final class EncryptionKeyVaultProperties {
     private String keyIdentifier;
 
     /*
-     * For future use - The client id of the identity which will be used to
-     * access key vault.
+     * For future use - The client id of the identity which will be used to access key vault.
      */
     @JsonProperty(value = "identityClientId")
     private String identityClientId;
+
+    /** Creates an instance of EncryptionKeyVaultProperties class. */
+    public EncryptionKeyVaultProperties() {
+    }
 
     /**
      * Get the keyVaultArmId property: The ArmId of the keyVault where the customer owned encryption key is present.

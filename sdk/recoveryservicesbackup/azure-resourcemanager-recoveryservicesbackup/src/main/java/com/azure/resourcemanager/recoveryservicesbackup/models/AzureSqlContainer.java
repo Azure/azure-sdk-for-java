@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureSqlContainer")
 @Fluent
 public final class AzureSqlContainer extends ProtectionContainer {
+    /** Creates an instance of AzureSqlContainer class. */
+    public AzureSqlContainer() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureSqlContainer withFriendlyName(String friendlyName) {

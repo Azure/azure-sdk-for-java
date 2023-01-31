@@ -14,6 +14,10 @@ import java.time.OffsetDateTime;
 @JsonTypeName("SQLAGWorkLoadContainer")
 @Fluent
 public final class AzureSqlagWorkloadContainerProtectionContainer extends AzureWorkloadContainer {
+    /** Creates an instance of AzureSqlagWorkloadContainerProtectionContainer class. */
+    public AzureSqlagWorkloadContainerProtectionContainer() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withSourceResourceId(String sourceResourceId) {

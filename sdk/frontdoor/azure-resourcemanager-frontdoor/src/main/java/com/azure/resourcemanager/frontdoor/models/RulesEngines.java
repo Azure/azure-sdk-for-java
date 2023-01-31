@@ -18,7 +18,8 @@ public interface RulesEngines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<RulesEngine> listByFrontDoor(String resourceGroupName, String frontDoorName);
 
@@ -31,9 +32,26 @@ public interface RulesEngines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<RulesEngine> listByFrontDoor(String resourceGroupName, String frontDoorName, Context context);
+
+    /**
+     * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param frontDoorName Name of the Front Door which is globally unique.
+     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
+     *     Response}.
+     */
+    Response<RulesEngine> getWithResponse(
+        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context);
 
     /**
      * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
@@ -47,21 +65,6 @@ public interface RulesEngines {
      * @return a Rules Engine Configuration with the specified name within the specified Front Door.
      */
     RulesEngine get(String resourceGroupName, String frontDoorName, String rulesEngineName);
-
-    /**
-     * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
-     */
-    Response<RulesEngine> getWithResponse(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context);
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
@@ -95,7 +98,8 @@ public interface RulesEngines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
+     *     Response}.
      */
     RulesEngine getById(String id);
 
@@ -107,7 +111,8 @@ public interface RulesEngines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
+     *     Response}.
      */
     Response<RulesEngine> getByIdWithResponse(String id, Context context);
 

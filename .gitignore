@@ -1,3 +1,6 @@
+# Default Assets restore directory
+.assets
+
 *.class
 
 #Javadoc files
@@ -106,3 +109,10 @@ scalastyle-output.xml
 .flattened-pom.xml
 flatter.pom
 /.vs/
+
+
+# stress-tests
+Chart.lock
+generatedValues.yaml
+stress-test-resources.json
+stress-test-addons*

@@ -23,6 +23,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.RunCommandResult
 import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClustersGetCommandResultResponse;
 import com.azure.resourcemanager.containerservice.models.RunCommandRequest;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -55,19 +56,6 @@ public interface ManagedClustersClient
      * Gets supported OS options in the specified subscription.
      *
      * @param location The name of Azure region.
-     * @param resourceType The resource type for which the OS options needs to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OSOptionProfileInner> getOSOptionsAsync(String location, String resourceType);
-
-    /**
-     * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -75,18 +63,6 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OSOptionProfileInner> getOSOptionsAsync(String location);
-
-    /**
-     * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OSOptionProfileInner getOSOptions(String location);
 
     /**
      * Gets supported OS options in the specified subscription.
@@ -101,6 +77,18 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OSOptionProfileInner> getOSOptionsWithResponse(String location, String resourceType, Context context);
+
+    /**
+     * Gets supported OS options in the specified subscription.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported OS options in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OSOptionProfileInner getOSOptions(String location);
 
     /**
      * Gets a list of managed clusters in the specified subscription.
@@ -206,19 +194,6 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile of a managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedClusterUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName);
-
-    /**
-     * Gets the upgrade profile of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,6 +203,19 @@ public interface ManagedClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedClusterUpgradeProfileInner> getUpgradeProfileWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets the upgrade profile of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedClusterUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName);
 
     /**
      * Gets an access profile of a managed cluster.
@@ -283,13 +271,15 @@ public interface ManagedClustersClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed cluster Access Profile.
+     * @return managed cluster Access Profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedClusterAccessProfileInner getAccessProfile(String resourceGroupName, String resourceName, String roleName);
+    Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(
+        String resourceGroupName, String resourceName, String roleName, Context context);
 
     /**
      * Gets an access profile of a managed cluster.
@@ -303,15 +293,13 @@ public interface ManagedClustersClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed cluster Access Profile along with {@link Response}.
+     * @return managed cluster Access Profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(
-        String resourceGroupName, String resourceName, String roleName, Context context);
+    ManagedClusterAccessProfileInner getAccessProfile(String resourceGroupName, String resourceName, String roleName);
 
     /**
      * Lists the admin credentials of a managed cluster.
@@ -333,21 +321,6 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param serverFqdn server fqdn type for credentials to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CredentialResultsInner> listClusterAdminCredentialsAsync(
-        String resourceGroupName, String resourceName, String serverFqdn);
-
-    /**
-     * Lists the admin credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,19 +328,6 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CredentialResultsInner> listClusterAdminCredentialsAsync(String resourceGroupName, String resourceName);
-
-    /**
-     * Lists the admin credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialResultsInner listClusterAdminCredentials(String resourceGroupName, String resourceName);
 
     /**
      * Lists the admin credentials of a managed cluster.
@@ -384,6 +344,19 @@ public interface ManagedClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CredentialResultsInner> listClusterAdminCredentialsWithResponse(
         String resourceGroupName, String resourceName, String serverFqdn, Context context);
+
+    /**
+     * Lists the admin credentials of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list credential result response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CredentialResultsInner listClusterAdminCredentials(String resourceGroupName, String resourceName);
 
     /**
      * Lists the user credentials of a managed cluster.
@@ -408,24 +381,6 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param serverFqdn server fqdn type for credentials to be returned.
-     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
-     *     azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin
-     *     binary in the path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CredentialResultsInner> listClusterUserCredentialsAsync(
-        String resourceGroupName, String resourceName, String serverFqdn, Format format);
-
-    /**
-     * Lists the user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -433,19 +388,6 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CredentialResultsInner> listClusterUserCredentialsAsync(String resourceGroupName, String resourceName);
-
-    /**
-     * Lists the user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialResultsInner listClusterUserCredentials(String resourceGroupName, String resourceName);
 
     /**
      * Lists the user credentials of a managed cluster.
@@ -467,6 +409,19 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, String serverFqdn, Format format, Context context);
 
     /**
+     * Lists the user credentials of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list credential result response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CredentialResultsInner listClusterUserCredentials(String resourceGroupName, String resourceName);
+
+    /**
      * Lists the cluster monitoring user credentials of a managed cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -479,21 +434,6 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CredentialResultsInner>> listClusterMonitoringUserCredentialsWithResponseAsync(
-        String resourceGroupName, String resourceName, String serverFqdn);
-
-    /**
-     * Lists the cluster monitoring user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param serverFqdn server fqdn type for credentials to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CredentialResultsInner> listClusterMonitoringUserCredentialsAsync(
         String resourceGroupName, String resourceName, String serverFqdn);
 
     /**
@@ -515,19 +455,6 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialResultsInner listClusterMonitoringUserCredentials(String resourceGroupName, String resourceName);
-
-    /**
-     * Lists the cluster monitoring user credentials of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -538,6 +465,19 @@ public interface ManagedClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CredentialResultsInner> listClusterMonitoringUserCredentialsWithResponse(
         String resourceGroupName, String resourceName, String serverFqdn, Context context);
+
+    /**
+     * Lists the cluster monitoring user credentials of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list credential result response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CredentialResultsInner listClusterMonitoringUserCredentials(String resourceGroupName, String resourceName);
 
     /**
      * Gets a managed cluster.
@@ -571,19 +511,6 @@ public interface ManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Gets a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -593,6 +520,19 @@ public interface ManagedClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedClusterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Creates or updates a managed cluster.
@@ -1240,6 +1180,101 @@ public interface ManagedClustersClient
     void rotateClusterCertificates(String resourceGroupName, String resourceName, Context context);
 
     /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> rotateServiceAccountSigningKeysWithResponseAsync(
+        String resourceGroupName, String resourceName);
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginRotateServiceAccountSigningKeysAsync(
+        String resourceGroupName, String resourceName);
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(
+        String resourceGroupName, String resourceName);
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> rotateServiceAccountSigningKeysAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rotateServiceAccountSigningKeys(String resourceGroupName, String resourceName);
+
+    /**
+     * Rotates the service account signing keys of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rotateServiceAccountSigningKeys(String resourceGroupName, String resourceName, Context context);
+
+    /**
      * Stops a Managed Cluster
      *
      * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
@@ -1613,11 +1648,11 @@ public interface ManagedClustersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the results of a command which has been run on the Managed Cluster on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RunCommandResultInner>> getCommandResultWithResponseAsync(
+    Mono<ManagedClustersGetCommandResultResponse> getCommandResultWithResponseAsync(
         String resourceGroupName, String resourceName, String commandId);
 
     /**
@@ -1641,13 +1676,15 @@ public interface ManagedClustersClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the results of a command which has been run on the Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunCommandResultInner getCommandResult(String resourceGroupName, String resourceName, String commandId);
+    ManagedClustersGetCommandResultResponse getCommandResultWithResponse(
+        String resourceGroupName, String resourceName, String commandId, Context context);
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
@@ -1655,15 +1692,13 @@ public interface ManagedClustersClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster along with {@link Response}.
+     * @return the results of a command which has been run on the Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RunCommandResultInner> getCommandResultWithResponse(
-        String resourceGroupName, String resourceName, String commandId, Context context);
+    RunCommandResultInner getCommandResult(String resourceGroupName, String resourceName, String commandId);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed

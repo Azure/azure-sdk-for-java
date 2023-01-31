@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ForecastingPrimaryMetrics. */
+/** Primary metrics for Forecasting task. */
 public final class ForecastingPrimaryMetrics extends ExpandableStringEnum<ForecastingPrimaryMetrics> {
     /** Static value SpearmanCorrelation for ForecastingPrimaryMetrics. */
     public static final ForecastingPrimaryMetrics SPEARMAN_CORRELATION = fromString("SpearmanCorrelation");
@@ -23,6 +23,15 @@ public final class ForecastingPrimaryMetrics extends ExpandableStringEnum<Foreca
     /** Static value NormalizedMeanAbsoluteError for ForecastingPrimaryMetrics. */
     public static final ForecastingPrimaryMetrics NORMALIZED_MEAN_ABSOLUTE_ERROR =
         fromString("NormalizedMeanAbsoluteError");
+
+    /**
+     * Creates a new instance of ForecastingPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForecastingPrimaryMetrics() {
+    }
 
     /**
      * Creates or finds a ForecastingPrimaryMetrics from its string representation.

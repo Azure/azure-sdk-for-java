@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskRestorePoint RevokeAccess. */
 public final class DiskRestorePointRevokeAccessSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/diskRestorePointExamples/DiskRestorePoint_EndGetAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskRestorePointExamples/DiskRestorePoint_EndGetAccess.json
      */
     /**
      * Sample code: Revokes access to a diskRestorePoint.
@@ -27,6 +25,6 @@ public final class DiskRestorePointRevokeAccessSamples {
                 "rpc",
                 "vmrp",
                 "TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -47,6 +47,10 @@ public final class BlobEventsTriggerTypeProperties {
     @JsonProperty(value = "scope", required = true)
     private String scope;
 
+    /** Creates an instance of BlobEventsTriggerTypeProperties class. */
+    public BlobEventsTriggerTypeProperties() {
+    }
+
     /**
      * Get the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For
      * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records

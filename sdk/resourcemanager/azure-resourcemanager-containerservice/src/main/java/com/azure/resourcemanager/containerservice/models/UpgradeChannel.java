@@ -31,6 +31,15 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     public static final UpgradeChannel NONE = fromString("none");
 
     /**
+     * Creates a new instance of UpgradeChannel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpgradeChannel() {
+    }
+
+    /**
      * Creates or finds a UpgradeChannel from its string representation.
      *
      * @param name a name to look for.

@@ -28,6 +28,10 @@ public final class ActiveConnectivityConfigurationsListResultInner {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
+    /** Creates an instance of ActiveConnectivityConfigurationsListResultInner class. */
+    public ActiveConnectivityConfigurationsListResultInner() {
+    }
+
     /**
      * Get the value property: Gets a page of active connectivity configurations.
      *

@@ -57,7 +57,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRoutePortsLocationsService {
+    public interface ExpressRoutePortsLocationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePortsLocations")
         @ExpectedResponses({200})
@@ -115,7 +115,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -159,7 +159,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -259,7 +259,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -303,7 +303,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -330,21 +330,6 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
      * said peering location.
      *
      * @param locationName Name of the requested ExpressRoutePort peering location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Peering Location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRoutePortsLocationInner get(String locationName) {
-        return getAsync(locationName).block();
-    }
-
-    /**
-     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
-     * said peering location.
-     *
-     * @param locationName Name of the requested ExpressRoutePort peering location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -354,6 +339,21 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRoutePortsLocationInner> getWithResponse(String locationName, Context context) {
         return getWithResponseAsync(locationName, context).block();
+    }
+
+    /**
+     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
+     * said peering location.
+     *
+     * @param locationName Name of the requested ExpressRoutePort peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoutePorts Peering Location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRoutePortsLocationInner get(String locationName) {
+        return getWithResponse(locationName, Context.NONE).getValue();
     }
 
     /**

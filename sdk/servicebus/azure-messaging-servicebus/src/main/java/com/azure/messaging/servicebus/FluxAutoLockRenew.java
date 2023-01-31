@@ -41,7 +41,7 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
      * @throws NullPointerException If {@code onRenewLock}, {@code messageLockContainer},
      * {@code ReceiverOptions} or {@code maxAutoLockRenewDuration} is null.
      *
-     * @throws IllegalArgumentException If eceiverOptions.maxLockRenewalDuration is zero or negative.
+     * @throws IllegalArgumentException If receiverOptions.maxLockRenewalDuration is zero or negative.
      */
     FluxAutoLockRenew(
             Flux<? extends ServiceBusMessageContext> source, ReceiverOptions receiverOptions,

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Attestations DeleteAtResource. */
 public final class AttestationsDeleteAtResourceSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteResourceScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_DeleteResourceScope.json
      */
     /**
      * Sample code: Delete attestation at individual resource scope.

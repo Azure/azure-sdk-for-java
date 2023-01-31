@@ -24,6 +24,10 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SynapseNotebookActivityTypeProperties innerTypeProperties = new SynapseNotebookActivityTypeProperties();
 
+    /** Creates an instance of SynapseNotebookActivity class. */
+    public SynapseNotebookActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute Synapse notebook activity properties.
      *

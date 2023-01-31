@@ -336,9 +336,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- The @Immutable class should have the following rules:
-    1) All fields must be final -->
-    <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
+    <!-- The @Immutable class should have the following rules: -->
+    <!-- 1) All public and protected fields must be final -->
+    <!-- 2) No public or protected setters -->
+    <module name="com.azure.tools.checkstyle.checks.ImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Verify the whenever a field is assigned just once in constructor to be final -->

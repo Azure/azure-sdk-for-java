@@ -52,6 +52,10 @@ public final class GlobalReachConnectionImpl
         return this.innerModel().expressRouteId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public GlobalReachConnectionInner innerModel() {
         return this.innerObject;
     }

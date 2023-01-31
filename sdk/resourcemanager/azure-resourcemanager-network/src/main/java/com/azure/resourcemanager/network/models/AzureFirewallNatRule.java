@@ -71,6 +71,10 @@ public final class AzureFirewallNatRule {
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
+    /** Creates an instance of AzureFirewallNatRule class. */
+    public AzureFirewallNatRule() {
+    }
+
     /**
      * Get the name property: Name of the NAT rule.
      *

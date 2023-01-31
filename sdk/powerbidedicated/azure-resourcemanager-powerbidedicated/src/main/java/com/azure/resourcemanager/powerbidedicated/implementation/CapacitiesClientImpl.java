@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.powerbidedicated.fluent.CapacitiesClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CapacitiesClient. */
 public final class CapacitiesClientImpl implements CapacitiesClient {
-    private final ClientLogger logger = new ClientLogger(CapacitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CapacitiesService service;
 
@@ -73,7 +70,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PowerBIDedicatedCapa")
-    private interface CapacitiesService {
+    public interface CapacitiesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
@@ -243,7 +240,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity.
+     * @return details about the specified dedicated capacity along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedCapacityInner>> getByResourceGroupWithResponseAsync(
@@ -295,7 +293,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity.
+     * @return details about the specified dedicated capacity along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedCapacityInner>> getByResourceGroupWithResponseAsync(
@@ -343,20 +342,32 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity.
+     * @return details about the specified dedicated capacity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCapacityInner> getByResourceGroupAsync(
         String resourceGroupName, String dedicatedCapacityName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCapacityName)
-            .flatMap(
-                (Response<DedicatedCapacityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets details about the specified dedicated capacity.
+     *
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     *     This name must be at least 1 character in length, and no more than 90.
+     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
+     *     maximum of 63.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified dedicated capacity along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DedicatedCapacityInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String dedicatedCapacityName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCapacityName, context).block();
     }
 
     /**
@@ -373,26 +384,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCapacityInner getByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
-        return getByResourceGroupAsync(resourceGroupName, dedicatedCapacityName).block();
-    }
-
-    /**
-     * Gets details about the specified dedicated capacity.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DedicatedCapacityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, dedicatedCapacityName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE).getValue();
     }
 
     /**
@@ -406,7 +398,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -466,7 +459,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -525,9 +519,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link PollerFlux} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreateAsync(
         String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -539,7 +533,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 this.client.getHttpPipeline(),
                 DedicatedCapacityInner.class,
                 DedicatedCapacityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -554,9 +548,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link PollerFlux} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreateAsync(
         String resourceGroupName,
         String dedicatedCapacityName,
@@ -586,12 +580,12 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
         String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
-        return beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters).getSyncPoller();
     }
 
     /**
@@ -606,15 +600,17 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
         String resourceGroupName,
         String dedicatedCapacityName,
         DedicatedCapacityInner capacityParameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, dedicatedCapacityName, capacityParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -628,7 +624,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCapacityInner> createAsync(
@@ -650,7 +646,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCapacityInner> createAsync(
@@ -715,7 +711,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -767,7 +763,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -815,15 +811,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, dedicatedCapacityName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -837,9 +834,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String dedicatedCapacityName, Context context) {
         context = this.client.mergeContext(context);
@@ -860,11 +857,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dedicatedCapacityName) {
-        return beginDeleteAsync(resourceGroupName, dedicatedCapacityName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, dedicatedCapacityName).getSyncPoller();
     }
 
     /**
@@ -878,12 +875,12 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginDeleteAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
     }
 
     /**
@@ -896,7 +893,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String dedicatedCapacityName) {
@@ -916,7 +913,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String dedicatedCapacityName, Context context) {
@@ -969,7 +966,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1032,7 +1030,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1092,9 +1091,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link PollerFlux} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdateAsync(
         String resourceGroupName,
         String dedicatedCapacityName,
@@ -1108,7 +1107,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
                 this.client.getHttpPipeline(),
                 DedicatedCapacityInner.class,
                 DedicatedCapacityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1123,9 +1122,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link PollerFlux} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdateAsync(
         String resourceGroupName,
         String dedicatedCapacityName,
@@ -1155,14 +1154,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
         String resourceGroupName,
         String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1177,15 +1178,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
         String resourceGroupName,
         String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context)
             .getSyncPoller();
     }
 
@@ -1200,7 +1202,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCapacityInner> updateAsync(
@@ -1224,7 +1226,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return represents an instance of a Dedicated Capacity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedCapacityInner> updateAsync(
@@ -1291,7 +1293,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(
@@ -1343,7 +1345,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(
@@ -1391,15 +1393,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(
         String resourceGroupName, String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = suspendWithResponseAsync(resourceGroupName, dedicatedCapacityName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1413,9 +1416,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(
         String resourceGroupName, String dedicatedCapacityName, Context context) {
         context = this.client.mergeContext(context);
@@ -1436,11 +1439,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName) {
-        return beginSuspendAsync(resourceGroupName, dedicatedCapacityName).getSyncPoller();
+        return this.beginSuspendAsync(resourceGroupName, dedicatedCapacityName).getSyncPoller();
     }
 
     /**
@@ -1454,12 +1457,12 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginSuspendAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
+        return this.beginSuspendAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
     }
 
     /**
@@ -1472,7 +1475,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendAsync(String resourceGroupName, String dedicatedCapacityName) {
@@ -1492,7 +1495,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendAsync(String resourceGroupName, String dedicatedCapacityName, Context context) {
@@ -1544,7 +1547,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
@@ -1596,7 +1599,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
@@ -1644,15 +1647,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResumeAsync(
         String resourceGroupName, String dedicatedCapacityName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, dedicatedCapacityName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1666,9 +1670,9 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResumeAsync(
         String resourceGroupName, String dedicatedCapacityName, Context context) {
         context = this.client.mergeContext(context);
@@ -1689,11 +1693,11 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName) {
-        return beginResumeAsync(resourceGroupName, dedicatedCapacityName).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, dedicatedCapacityName).getSyncPoller();
     }
 
     /**
@@ -1707,12 +1711,12 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return beginResumeAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, dedicatedCapacityName, context).getSyncPoller();
     }
 
     /**
@@ -1725,7 +1729,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeAsync(String resourceGroupName, String dedicatedCapacityName) {
@@ -1745,7 +1749,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeAsync(String resourceGroupName, String dedicatedCapacityName, Context context) {
@@ -1795,7 +1799,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCapacityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1843,7 +1848,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCapacityInner>> listByResourceGroupSinglePageAsync(
@@ -1888,7 +1894,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCapacityInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1904,7 +1910,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCapacityInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1919,7 +1925,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName) {
@@ -1935,7 +1942,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1947,7 +1955,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCapacityInner>> listSinglePageAsync() {
@@ -1988,7 +1997,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedCapacityInner>> listSinglePageAsync(Context context) {
@@ -2024,7 +2034,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCapacityInner> listAsync() {
@@ -2038,7 +2048,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedCapacityInner> listAsync(Context context) {
@@ -2050,7 +2060,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> list() {
@@ -2064,7 +2074,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> list(Context context) {
@@ -2076,7 +2086,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources.
+     * @return an object that represents enumerating SKUs for new resources along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuEnumerationForNewResourceResultInner>> listSkusWithResponseAsync() {
@@ -2113,7 +2124,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources.
+     * @return an object that represents enumerating SKUs for new resources along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuEnumerationForNewResourceResultInner>> listSkusWithResponseAsync(Context context) {
@@ -2145,19 +2157,25 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources.
+     * @return an object that represents enumerating SKUs for new resources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SkuEnumerationForNewResourceResultInner> listSkusAsync() {
-        return listSkusWithResponseAsync()
-            .flatMap(
-                (Response<SkuEnumerationForNewResourceResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listSkusWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists eligible SKUs for PowerBI Dedicated resource provider.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents enumerating SKUs for new resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuEnumerationForNewResourceResultInner> listSkusWithResponse(Context context) {
+        return listSkusWithResponseAsync(context).block();
     }
 
     /**
@@ -2169,21 +2187,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuEnumerationForNewResourceResultInner listSkus() {
-        return listSkusAsync().block();
-    }
-
-    /**
-     * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuEnumerationForNewResourceResultInner> listSkusWithResponse(Context context) {
-        return listSkusWithResponseAsync(context).block();
+        return listSkusWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -2196,7 +2200,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources.
+     * @return an object that represents enumerating SKUs for existing resources along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuEnumerationForExistingResourceResultInner>> listSkusForCapacityWithResponseAsync(
@@ -2248,7 +2253,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources.
+     * @return an object that represents enumerating SKUs for existing resources along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuEnumerationForExistingResourceResultInner>> listSkusForCapacityWithResponseAsync(
@@ -2296,20 +2302,33 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources.
+     * @return an object that represents enumerating SKUs for existing resources on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityAsync(
         String resourceGroupName, String dedicatedCapacityName) {
         return listSkusForCapacityWithResponseAsync(resourceGroupName, dedicatedCapacityName)
-            .flatMap(
-                (Response<SkuEnumerationForExistingResourceResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists eligible SKUs for a PowerBI Dedicated resource.
+     *
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     *     This name must be at least 1 character in length, and no more than 90.
+     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
+     *     no more than 63.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents enumerating SKUs for existing resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityWithResponse(
+        String resourceGroupName, String dedicatedCapacityName, Context context) {
+        return listSkusForCapacityWithResponseAsync(resourceGroupName, dedicatedCapacityName, context).block();
     }
 
     /**
@@ -2327,26 +2346,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuEnumerationForExistingResourceResultInner listSkusForCapacity(
         String resourceGroupName, String dedicatedCapacityName) {
-        return listSkusForCapacityAsync(resourceGroupName, dedicatedCapacityName).block();
-    }
-
-    /**
-     * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
-        return listSkusForCapacityWithResponseAsync(resourceGroupName, dedicatedCapacityName, context).block();
+        return listSkusForCapacityWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE).getValue();
     }
 
     /**
@@ -2357,7 +2357,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability.
+     * @return the checking result of capacity name availability along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckCapacityNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -2408,7 +2409,8 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability.
+     * @return the checking result of capacity name availability along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckCapacityNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -2455,20 +2457,30 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability.
+     * @return the checking result of capacity name availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityAsync(
         String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
         return checkNameAvailabilityWithResponseAsync(location, capacityParameters)
-            .flatMap(
-                (Response<CheckCapacityNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check the name availability in the target location.
+     *
+     * @param location The region name which the operation will lookup into.
+     * @param capacityParameters The name of the capacity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the checking result of capacity name availability along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
+        return checkNameAvailabilityWithResponseAsync(location, capacityParameters, context).block();
     }
 
     /**
@@ -2484,23 +2496,6 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckCapacityNameAvailabilityResultInner checkNameAvailability(
         String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
-        return checkNameAvailabilityAsync(location, capacityParameters).block();
-    }
-
-    /**
-     * Check the name availability in the target location.
-     *
-     * @param location The region name which the operation will lookup into.
-     * @param capacityParameters The name of the capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
-        return checkNameAvailabilityWithResponseAsync(location, capacityParameters, context).block();
+        return checkNameAvailabilityWithResponse(location, capacityParameters, Context.NONE).getValue();
     }
 }

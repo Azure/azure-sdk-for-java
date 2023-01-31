@@ -37,6 +37,10 @@ public final class SalesforceServiceCloudSink extends CopySink {
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
+    /** Creates an instance of SalesforceServiceCloudSink class. */
+    public SalesforceServiceCloudSink() {
+    }
+
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is Insert.
      *

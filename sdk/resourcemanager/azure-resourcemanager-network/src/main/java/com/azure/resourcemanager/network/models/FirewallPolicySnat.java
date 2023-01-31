@@ -23,6 +23,10 @@ public final class FirewallPolicySnat {
     @JsonProperty(value = "autoLearnPrivateRanges")
     private AutoLearnPrivateRangesMode autoLearnPrivateRanges;
 
+    /** Creates an instance of FirewallPolicySnat class. */
+    public FirewallPolicySnat() {
+    }
+
     /**
      * Get the privateRanges property: List of private IP addresses/IP address ranges to not be SNAT.
      *

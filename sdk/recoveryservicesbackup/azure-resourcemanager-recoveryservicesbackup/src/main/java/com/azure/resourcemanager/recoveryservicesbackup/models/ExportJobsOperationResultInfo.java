@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ExportJobsOperationResultInfo extends OperationResultInfoBase {
     /*
-     * URL of the blob into which the serialized string of list of jobs is
-     * exported.
+     * URL of the blob into which the serialized string of list of jobs is exported.
      */
     @JsonProperty(value = "blobUrl")
     private String blobUrl;
@@ -38,6 +37,10 @@ public final class ExportJobsOperationResultInfo extends OperationResultInfoBase
      */
     @JsonProperty(value = "excelFileBlobSasKey")
     private String excelFileBlobSasKey;
+
+    /** Creates an instance of ExportJobsOperationResultInfo class. */
+    public ExportJobsOperationResultInfo() {
+    }
 
     /**
      * Get the blobUrl property: URL of the blob into which the serialized string of list of jobs is exported.

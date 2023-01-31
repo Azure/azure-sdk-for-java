@@ -151,8 +151,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     @SuppressWarnings("unchecked")
     public DefaultAzureCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil
-            .resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        this.additionallyAllowedTenants = IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants));
         return this;
     }
 
@@ -165,7 +164,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     @SuppressWarnings("unchecked")
     public DefaultAzureCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        this.additionallyAllowedTenants = IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants);
         return this;
     }
 
@@ -180,19 +179,22 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
         }
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
+            identityClientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);
+        }
         return new DefaultAzureCredential(getCredentialsChain());
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
-        output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(7);
+        output.add(new EnvironmentCredential(identityClientOptions.clone()));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
+        output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
-            tenantId, identityClientOptions));
-        output.add(new IntelliJCredential(tenantId, identityClientOptions));
-        output.add(new AzureCliCredential(tenantId, identityClientOptions));
-        output.add(new AzurePowerShellCredential(tenantId, identityClientOptions));
+            tenantId, identityClientOptions.clone()));
+        output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
+        output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
+        output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
         return output;
     }
 }

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import com.azure.resourcemanager.devtestlabs.models.Schedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SchedulesImpl implements Schedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SchedulesImpl.class);
 
     private final SchedulesClient innerClient;
 
@@ -47,15 +46,6 @@ public final class SchedulesImpl implements Schedules {
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public Schedule get(String resourceGroupName, String labName, String name) {
-        ScheduleInner inner = this.serviceClient().get(resourceGroupName, labName, name);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Schedule> getWithResponse(
         String resourceGroupName, String labName, String name, String expand, Context context) {
         Response<ScheduleInner> inner =
@@ -71,8 +61,8 @@ public final class SchedulesImpl implements Schedules {
         }
     }
 
-    public Schedule createOrUpdate(String resourceGroupName, String labName, String name, ScheduleInner schedule) {
-        ScheduleInner inner = this.serviceClient().createOrUpdate(resourceGroupName, labName, name, schedule);
+    public Schedule get(String resourceGroupName, String labName, String name) {
+        ScheduleInner inner = this.serviceClient().get(resourceGroupName, labName, name);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
         } else {
@@ -95,21 +85,21 @@ public final class SchedulesImpl implements Schedules {
         }
     }
 
-    public void delete(String resourceGroupName, String labName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, name);
+    public Schedule createOrUpdate(String resourceGroupName, String labName, String name, ScheduleInner schedule) {
+        ScheduleInner inner = this.serviceClient().createOrUpdate(resourceGroupName, labName, name, schedule);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, labName, name, context);
     }
 
-    public Schedule update(String resourceGroupName, String labName, String name, ScheduleFragment schedule) {
-        ScheduleInner inner = this.serviceClient().update(resourceGroupName, labName, name, schedule);
-        if (inner != null) {
-            return new ScheduleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String labName, String name) {
+        this.serviceClient().delete(resourceGroupName, labName, name);
     }
 
     public Response<Schedule> updateWithResponse(
@@ -122,6 +112,15 @@ public final class SchedulesImpl implements Schedules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Schedule update(String resourceGroupName, String labName, String name, ScheduleFragment schedule) {
+        ScheduleInner inner = this.serviceClient().update(resourceGroupName, labName, name, schedule);
+        if (inner != null) {
+            return new ScheduleImpl(inner, this.manager());
         } else {
             return null;
         }

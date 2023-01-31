@@ -14,10 +14,9 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ServerKeyInner extends ProxyResource {
     /*
-     * Kind of encryption protector. This is metadata used for the Azure portal
-     * experience.
+     * Kind of encryption protector. This is metadata used for the Azure portal experience.
      */
-    @JsonProperty(value = "kind")
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
@@ -32,6 +31,10 @@ public final class ServerKeyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerKeyProperties innerProperties;
 
+    /** Creates an instance of ServerKeyInner class. */
+    public ServerKeyInner() {
+    }
+
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
      *
@@ -39,17 +42,6 @@ public final class ServerKeyInner extends ProxyResource {
      */
     public String kind() {
         return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
-     *
-     * @param kind the kind value to set.
-     * @return the ServerKeyInner object itself.
-     */
-    public ServerKeyInner withKind(String kind) {
-        this.kind = kind;
-        return this;
     }
 
     /**
@@ -103,7 +95,9 @@ public final class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Get the uri property: The URI of the server key.
+     * Get the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     * The AKV URI is required to be in this format:
+     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      *
      * @return the uri value.
      */
@@ -112,7 +106,9 @@ public final class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the uri property: The URI of the server key.
+     * Set the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     * The AKV URI is required to be in this format:
+     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      *
      * @param uri the uri value to set.
      * @return the ServerKeyInner object itself.
@@ -135,20 +131,6 @@ public final class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the thumbprint property: Thumbprint of the server key.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @return the ServerKeyInner object itself.
-     */
-    public ServerKeyInner withThumbprint(String thumbprint) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerKeyProperties();
-        }
-        this.innerProperties().withThumbprint(thumbprint);
-        return this;
-    }
-
-    /**
      * Get the creationDate property: The server key creation date.
      *
      * @return the creationDate value.
@@ -158,17 +140,12 @@ public final class ServerKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the creationDate property: The server key creation date.
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
      *
-     * @param creationDate the creationDate value to set.
-     * @return the ServerKeyInner object itself.
+     * @return the autoRotationEnabled value.
      */
-    public ServerKeyInner withCreationDate(OffsetDateTime creationDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerKeyProperties();
-        }
-        this.innerProperties().withCreationDate(creationDate);
-        return this;
+    public Boolean autoRotationEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoRotationEnabled();
     }
 
     /**

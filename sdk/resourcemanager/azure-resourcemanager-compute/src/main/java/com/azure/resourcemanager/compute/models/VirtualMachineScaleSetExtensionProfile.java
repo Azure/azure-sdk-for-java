@@ -26,6 +26,10 @@ public final class VirtualMachineScaleSetExtensionProfile {
     @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
 
+    /** Creates an instance of VirtualMachineScaleSetExtensionProfile class. */
+    public VirtualMachineScaleSetExtensionProfile() {
+    }
+
     /**
      * Get the extensions property: The virtual machine scale set child extension resources.
      *

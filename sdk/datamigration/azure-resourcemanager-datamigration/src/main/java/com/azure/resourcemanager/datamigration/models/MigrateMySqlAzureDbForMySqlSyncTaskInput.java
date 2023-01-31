@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that migrates MySQL databases to Azure Database for MySQL for online migrations. */
 @Fluent
 public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateMySqlAzureDbForMySqlSyncTaskInput.class);
-
     /*
      * Connection information for source MySQL
      */
@@ -32,6 +29,10 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
      */
     @JsonProperty(value = "selectedDatabases", required = true)
     private List<MigrateMySqlAzureDbForMySqlSyncDatabaseInput> selectedDatabases;
+
+    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskInput class. */
+    public MigrateMySqlAzureDbForMySqlSyncTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for source MySQL.
@@ -101,7 +102,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model"
@@ -110,7 +111,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model"
@@ -119,7 +120,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
             targetConnectionInfo().validate();
         }
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model"
@@ -128,4 +129,6 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskInput {
             selectedDatabases().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateMySqlAzureDbForMySqlSyncTaskInput.class);
 }

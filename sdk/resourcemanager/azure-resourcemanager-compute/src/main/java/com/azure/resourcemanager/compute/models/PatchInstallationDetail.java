@@ -47,6 +47,10 @@ public final class PatchInstallationDetail {
     @JsonProperty(value = "installationState", access = JsonProperty.Access.WRITE_ONLY)
     private PatchInstallationState installationState;
 
+    /** Creates an instance of PatchInstallationDetail class. */
+    public PatchInstallationDetail() {
+    }
+
     /**
      * Get the patchId property: A unique identifier for the patch.
      *

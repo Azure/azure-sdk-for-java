@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Execute spark job activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -22,6 +23,10 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SynapseSparkJobActivityTypeProperties innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+
+    /** Creates an instance of SynapseSparkJobDefinitionActivity class. */
+    public SynapseSparkJobDefinitionActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Execute spark job activity properties.
@@ -146,6 +151,33 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
+     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the scanFolder value.
+     */
+    public Object scanFolder() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scanFolder();
+    }
+
+    /**
+     * Set the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
+     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param scanFolder the scanFolder value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withScanFolder(Object scanFolder) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withScanFolder(scanFolder);
+        return this;
+    }
+
+    /**
      * Get the className property: The fully-qualified identifier or the main class that is in the main definition file,
      * which will override the 'className' of the spark job definition you provide. Type: string (or Expression with
      * resultType string).
@@ -173,8 +205,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the files property: Additional files used for reference in the main definition file, which will override the
-     * 'files' of the spark job definition you provide.
+     * Get the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
+     * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
      *
      * @return the files value.
      */
@@ -183,8 +215,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the files property: Additional files used for reference in the main definition file, which will override the
-     * 'files' of the spark job definition you provide.
+     * Set the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
+     * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
      *
      * @param files the files value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
@@ -194,6 +226,56 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
             this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
         }
         this.innerTypeProperties().withFiles(files);
+        return this;
+    }
+
+    /**
+     * Get the pythonCodeReference property: Additional python code files used for reference in the main definition
+     * file, which will override the 'pyFiles' of the spark job definition you provide.
+     *
+     * @return the pythonCodeReference value.
+     */
+    public List<Object> pythonCodeReference() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().pythonCodeReference();
+    }
+
+    /**
+     * Set the pythonCodeReference property: Additional python code files used for reference in the main definition
+     * file, which will override the 'pyFiles' of the spark job definition you provide.
+     *
+     * @param pythonCodeReference the pythonCodeReference value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withPythonCodeReference(List<Object> pythonCodeReference) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withPythonCodeReference(pythonCodeReference);
+        return this;
+    }
+
+    /**
+     * Get the filesV2 property: Additional files used for reference in the main definition file, which will override
+     * the 'jars' and 'files' of the spark job definition you provide.
+     *
+     * @return the filesV2 value.
+     */
+    public List<Object> filesV2() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().filesV2();
+    }
+
+    /**
+     * Set the filesV2 property: Additional files used for reference in the main definition file, which will override
+     * the 'jars' and 'files' of the spark job definition you provide.
+     *
+     * @param filesV2 the filesV2 value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withFilesV2(List<Object> filesV2) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withFilesV2(filesV2);
         return this;
     }
 
@@ -304,26 +386,96 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
-     * of the spark job definition you provide.
+     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
      *
      * @return the numExecutors value.
      */
-    public Integer numExecutors() {
+    public Object numExecutors() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().numExecutors();
     }
 
     /**
      * Set the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
-     * of the spark job definition you provide.
+     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
      *
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
-    public SynapseSparkJobDefinitionActivity withNumExecutors(Integer numExecutors) {
+    public SynapseSparkJobDefinitionActivity withNumExecutors(Object numExecutors) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
         }
         this.innerTypeProperties().withNumExecutors(numExecutors);
+        return this;
+    }
+
+    /**
+     * Get the configurationType property: The type of the spark config.
+     *
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().configurationType();
+    }
+
+    /**
+     * Set the configurationType property: The type of the spark config.
+     *
+     * @param configurationType the configurationType value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withConfigurationType(ConfigurationType configurationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withConfigurationType(configurationType);
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationParametrizationReference targetSparkConfiguration() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().targetSparkConfiguration();
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withTargetSparkConfiguration(
+        SparkConfigurationParametrizationReference targetSparkConfiguration) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTargetSparkConfiguration(targetSparkConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the sparkConfig property: Spark configuration property.
+     *
+     * @return the sparkConfig value.
+     */
+    public Map<String, Object> sparkConfig() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sparkConfig();
+    }
+
+    /**
+     * Set the sparkConfig property: Spark configuration property.
+     *
+     * @param sparkConfig the sparkConfig value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity withSparkConfig(Map<String, Object> sparkConfig) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSparkConfig(sparkConfig);
         return this;
     }
 

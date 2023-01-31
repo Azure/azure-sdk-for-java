@@ -5,19 +5,20 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.InputStream;
 import java.util.Base64;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
@@ -277,5 +278,42 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         Assertions.assertNotNull(accessExtension.publisherName());
         Assertions.assertNotNull(accessExtension.typeName());
         Assertions.assertNotNull(accessExtension.versionName());
+    }
+
+    @Test
+    public void canGetInstanceViewInDeallocatedState() {
+        // Create a Linux VM
+        String vmName = generateRandomResourceName("javavm", 15);
+        VirtualMachine vm =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withRootUsername("Foo12")
+                .withSsh(sshPublicKey())
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .defineNewExtension("VMAccessForLinux")
+                .withPublisher("Microsoft.OSTCExtensions")
+                .withType("VMAccessForLinux")
+                .withVersion("1.4")
+                .withProtectedSetting("username", "Foo12")
+                .withProtectedSetting("password", "B12a6@12xyz!")
+                .withProtectedSetting("reset_ssh", "true")
+                .attach()
+                .create();
+
+        Assertions.assertTrue(vm.listExtensions().size() > 0);
+        Assertions.assertTrue(vm.listExtensions().values().stream().noneMatch(extension -> extension.getInstanceView() == null));
+
+        vm.deallocate();
+
+        // In deallocated state, we can get VM's extensions but not their instance views.
+        Assertions.assertTrue(vm.listExtensions().size() > 0);
+        Assertions.assertTrue(vm.listExtensions().values().stream().allMatch(extension -> extension.getInstanceView() == null));
     }
 }

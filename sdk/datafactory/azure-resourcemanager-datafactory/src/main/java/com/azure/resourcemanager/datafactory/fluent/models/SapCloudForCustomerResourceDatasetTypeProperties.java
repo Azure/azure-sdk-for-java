@@ -17,6 +17,10 @@ public final class SapCloudForCustomerResourceDatasetTypeProperties {
     @JsonProperty(value = "path", required = true)
     private Object path;
 
+    /** Creates an instance of SapCloudForCustomerResourceDatasetTypeProperties class. */
+    public SapCloudForCustomerResourceDatasetTypeProperties() {
+    }
+
     /**
      * Get the path property: The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with
      * resultType string).

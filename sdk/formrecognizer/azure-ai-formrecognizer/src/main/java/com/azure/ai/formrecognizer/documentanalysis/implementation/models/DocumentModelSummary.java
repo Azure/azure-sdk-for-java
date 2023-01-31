@@ -42,6 +42,9 @@ public final class DocumentModelSummary {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
+    /** Creates an instance of DocumentModelSummary class. */
+    public DocumentModelSummary() {}
+
     /**
      * Get the modelId property: Unique document model name.
      *

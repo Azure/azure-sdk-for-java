@@ -24,6 +24,10 @@ public final class MySqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MySqlLinkedServiceTypeProperties innerTypeProperties = new MySqlLinkedServiceTypeProperties();
 
+    /** Creates an instance of MySqlLinkedService class. */
+    public MySqlLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: MySQL linked service properties.
      *

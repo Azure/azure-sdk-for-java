@@ -35,6 +35,10 @@ public final class ScopeConnectionProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ScopeConnectionProperties class. */
+    public ScopeConnectionProperties() {
+    }
+
     /**
      * Get the tenantId property: Tenant ID.
      *

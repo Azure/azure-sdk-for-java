@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApprovalMode. */
+/** The type of rule. */
 public final class ApprovalMode extends ExpandableStringEnum<ApprovalMode> {
     /** Static value SingleStage for ApprovalMode. */
     public static final ApprovalMode SINGLE_STAGE = fromString("SingleStage");
@@ -33,7 +33,11 @@ public final class ApprovalMode extends ExpandableStringEnum<ApprovalMode> {
         return fromString(name, ApprovalMode.class);
     }
 
-    /** @return known ApprovalMode values. */
+    /**
+     * Gets known ApprovalMode values.
+     *
+     * @return known ApprovalMode values.
+     */
     public static Collection<ApprovalMode> values() {
         return values(ApprovalMode.class);
     }

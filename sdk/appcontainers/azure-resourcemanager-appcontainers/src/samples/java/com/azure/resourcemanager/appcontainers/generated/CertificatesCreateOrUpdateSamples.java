@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appcontainers.models.CertificateProperties;
 /** Samples for Certificates CreateOrUpdate. */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/Certificate_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Certificate_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Certificate.

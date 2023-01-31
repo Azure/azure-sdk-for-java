@@ -23,6 +23,10 @@ public final class CredentialResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] value;
 
+    /** Creates an instance of CredentialResult class. */
+    public CredentialResult() {
+    }
+
     /**
      * Get the name property: The name of the credential.
      *

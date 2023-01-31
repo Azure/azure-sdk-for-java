@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AgentPools Delete. */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/AgentPoolsDelete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsDelete.json
      */
     /**
      * Sample code: Delete Agent Pool.
@@ -22,6 +20,6 @@ public final class AgentPoolsDeleteSamples {
             .manager()
             .serviceClient()
             .getAgentPools()
-            .delete("rg1", "clustername1", "agentpool1", Context.NONE);
+            .delete("rg1", "clustername1", "agentpool1", com.azure.core.util.Context.NONE);
     }
 }

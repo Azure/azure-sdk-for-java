@@ -32,6 +32,10 @@ public final class DedicatedHostInner extends Resource {
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
+    /** Creates an instance of DedicatedHostInner class. */
+    public DedicatedHostInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the dedicated host.
      *
@@ -202,7 +206,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

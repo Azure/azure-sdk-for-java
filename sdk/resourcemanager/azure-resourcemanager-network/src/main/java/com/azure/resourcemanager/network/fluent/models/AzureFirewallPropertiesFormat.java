@@ -102,6 +102,10 @@ public final class AzureFirewallPropertiesFormat {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalProperties;
 
+    /** Creates an instance of AzureFirewallPropertiesFormat class. */
+    public AzureFirewallPropertiesFormat() {
+    }
+
     /**
      * Get the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
      *

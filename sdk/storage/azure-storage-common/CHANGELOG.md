@@ -1,14 +1,45 @@
 # Release History
 
-## 12.19.0-beta.2 (Unreleased)
+## 12.20.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2021-12-02 service version.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.19.2 (2023-01-10)
+
+### Features Added
+- Updated RequestRetryPolicy to inspect causal exceptions when determining if an error should be retried.
+- Updated exception message when generating SharedKey authorization to indicate if the account or SAS key isn't properly base64 encoded.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+
+## 12.19.1 (2022-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 12.19.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 
 ## 12.18.1 (2022-09-12)
 
@@ -233,7 +264,7 @@
 
 ## 12.0.0 (2019-10-31)
 - Removed BaseClientBuilder
-- Renamed RequestRetryOptions maxTries, tryTimeout, secondaryHost, retryDelayInMs, maxRetryDelayInMs to getMaxTries, getTryTimeout, getSecondaryHosy, getRetryDelayInMs, getMaxRetryDelayInMs
+- Renamed RequestRetryOptions maxTries, tryTimeout, secondaryHost, retryDelayInMs, maxRetryDelayInMs to getMaxTries, getTryTimeout, getSecondaryHost, getRetryDelayInMs, getMaxRetryDelayInMs
 - Renamed IpRange to SasIpRange
 - Moved AccountSasQueryParameters, AccountSasSignatureValues, BaseSasQueryParameters, SasIpRange into Sas package
 - Removed SR class from public API

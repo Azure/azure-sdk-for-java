@@ -39,15 +39,6 @@ public final class GalleriesImpl implements Galleries {
         return Utils.mapPage(inner, inner1 -> new GalleryImpl(inner1, this.manager()));
     }
 
-    public Gallery get(String resourceGroupName, String devCenterName, String galleryName) {
-        GalleryInner inner = this.serviceClient().get(resourceGroupName, devCenterName, galleryName);
-        if (inner != null) {
-            return new GalleryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Gallery> getWithResponse(
         String resourceGroupName, String devCenterName, String galleryName, Context context) {
         Response<GalleryInner> inner =
@@ -58,6 +49,15 @@ public final class GalleriesImpl implements Galleries {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new GalleryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Gallery get(String resourceGroupName, String devCenterName, String galleryName) {
+        GalleryInner inner = this.serviceClient().get(resourceGroupName, devCenterName, galleryName);
+        if (inner != null) {
+            return new GalleryImpl(inner, this.manager());
         } else {
             return null;
         }

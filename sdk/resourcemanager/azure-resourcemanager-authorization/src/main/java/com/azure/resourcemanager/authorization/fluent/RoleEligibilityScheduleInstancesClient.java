@@ -116,20 +116,6 @@ public interface RoleEligibilityScheduleInstancesClient {
      * @param scope The scope of the role eligibility schedules.
      * @param roleEligibilityScheduleInstanceName The name (hash of schedule name + time) of the role eligibility
      *     schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleEligibilityScheduleInstanceInner get(String scope, String roleEligibilityScheduleInstanceName);
-
-    /**
-     * Gets the specified role eligibility schedule instance.
-     *
-     * @param scope The scope of the role eligibility schedules.
-     * @param roleEligibilityScheduleInstanceName The name (hash of schedule name + time) of the role eligibility
-     *     schedule to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,4 +125,18 @@ public interface RoleEligibilityScheduleInstancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleEligibilityScheduleInstanceInner> getWithResponse(
         String scope, String roleEligibilityScheduleInstanceName, Context context);
+
+    /**
+     * Gets the specified role eligibility schedule instance.
+     *
+     * @param scope The scope of the role eligibility schedules.
+     * @param roleEligibilityScheduleInstanceName The name (hash of schedule name + time) of the role eligibility
+     *     schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role eligibility schedule instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleEligibilityScheduleInstanceInner get(String scope, String roleEligibilityScheduleInstanceName);
 }

@@ -42,8 +42,7 @@ public final class AzureStorageJob extends Job {
     private String storageAccountName;
 
     /*
-     * Specifies whether the Storage account is a Classic or an Azure Resource
-     * Manager Storage account.
+     * Specifies whether the Storage account is a Classic or an Azure Resource Manager Storage account.
      */
     @JsonProperty(value = "storageAccountVersion")
     private String storageAccountVersion;
@@ -59,6 +58,10 @@ public final class AzureStorageJob extends Job {
      */
     @JsonProperty(value = "isUserTriggered")
     private Boolean isUserTriggered;
+
+    /** Creates an instance of AzureStorageJob class. */
+    public AzureStorageJob() {
+    }
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.

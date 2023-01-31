@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LinkedServer List. */
 public final class LinkedServerListSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheLinkedServer_List.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheLinkedServer_List.json
      */
     /**
      * Sample code: LinkedServer_List.

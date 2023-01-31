@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CommitmentPlans Get. */
 public final class CommitmentPlansGetSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/GetCommitmentPlan.json
      */
     /**
      * Sample code: GetCommitmentPlan.

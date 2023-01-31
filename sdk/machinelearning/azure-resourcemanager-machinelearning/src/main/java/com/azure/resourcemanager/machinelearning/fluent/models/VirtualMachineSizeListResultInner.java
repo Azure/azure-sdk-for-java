@@ -18,6 +18,10 @@ public final class VirtualMachineSizeListResultInner {
     @JsonProperty(value = "value")
     private List<VirtualMachineSize> value;
 
+    /** Creates an instance of VirtualMachineSizeListResultInner class. */
+    public VirtualMachineSizeListResultInner() {
+    }
+
     /**
      * Get the value property: The list of virtual machine sizes supported by AmlCompute.
      *

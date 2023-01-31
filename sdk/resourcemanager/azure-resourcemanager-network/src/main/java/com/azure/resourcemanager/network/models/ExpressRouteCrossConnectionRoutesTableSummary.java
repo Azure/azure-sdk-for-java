@@ -36,6 +36,10 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     @JsonProperty(value = "stateOrPrefixesReceived")
     private String stateOrPrefixesReceived;
 
+    /** Creates an instance of ExpressRouteCrossConnectionRoutesTableSummary class. */
+    public ExpressRouteCrossConnectionRoutesTableSummary() {
+    }
+
     /**
      * Get the neighbor property: IP address of Neighbor router.
      *

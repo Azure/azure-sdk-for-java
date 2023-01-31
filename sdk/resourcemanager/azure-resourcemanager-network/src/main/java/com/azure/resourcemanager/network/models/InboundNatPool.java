@@ -37,6 +37,10 @@ public final class InboundNatPool extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of InboundNatPool class. */
+    public InboundNatPool() {
+    }
+
     /**
      * Get the innerProperties property: Properties of load balancer inbound nat pool.
      *

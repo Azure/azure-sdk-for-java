@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AutomaticTuningOptionModeDesired. */
+/** Automatic tuning option desired state. */
 public enum AutomaticTuningOptionModeDesired {
     /** Enum value Off. */
     OFF("Off"),
@@ -33,6 +33,9 @@ public enum AutomaticTuningOptionModeDesired {
      */
     @JsonCreator
     public static AutomaticTuningOptionModeDesired fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AutomaticTuningOptionModeDesired[] items = AutomaticTuningOptionModeDesired.values();
         for (AutomaticTuningOptionModeDesired item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AutomaticTuningOptionModeDesired {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

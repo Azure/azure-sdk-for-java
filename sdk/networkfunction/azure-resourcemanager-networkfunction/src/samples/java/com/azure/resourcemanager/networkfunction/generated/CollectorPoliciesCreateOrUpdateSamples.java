@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for CollectorPolicies CreateOrUpdate. */
 public final class CollectorPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/CollectorPolicyCreate.json
+     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyCreate.json
      */
     /**
      * Sample code: Create a collection policy.
@@ -29,6 +29,7 @@ public final class CollectorPoliciesCreateOrUpdateSamples {
         manager
             .collectorPolicies()
             .define("cp1")
+            .withRegion("West US")
             .withExistingAzureTrafficCollector("rg1", "atc")
             .withIngestionPolicy(
                 new IngestionPolicyPropertiesFormat()

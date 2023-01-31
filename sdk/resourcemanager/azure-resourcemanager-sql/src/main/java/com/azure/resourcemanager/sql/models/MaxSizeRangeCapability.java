@@ -23,8 +23,7 @@ public final class MaxSizeRangeCapability {
     private MaxSizeCapability maxValue;
 
     /*
-     * Scale/step size for discrete values between the minimum value and the
-     * maximum value.
+     * Scale/step size for discrete values between the minimum value and the maximum value.
      */
     @JsonProperty(value = "scaleSize", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability scaleSize;
@@ -46,6 +45,10 @@ public final class MaxSizeRangeCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of MaxSizeRangeCapability class. */
+    public MaxSizeRangeCapability() {
+    }
 
     /**
      * Get the minValue property: Minimum value.

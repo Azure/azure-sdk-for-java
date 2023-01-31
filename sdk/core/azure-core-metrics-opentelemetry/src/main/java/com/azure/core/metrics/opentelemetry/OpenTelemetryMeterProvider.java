@@ -20,8 +20,8 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * <!-- src_embed com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default -->
      * <pre>
      *
-     * &#47;&#47; configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
-     * AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
+     * &#47;&#47; configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
+     * &#47;&#47; AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
      *
      * &#47;&#47; configure Azure Client, no metric configuration needed
      * AzureClient sampleClient = new AzureClientBuilder&#40;&#41;

@@ -21,7 +21,8 @@ public interface SecureScoreControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDetailsInner> listBySecureScore(String secureScoreName);
@@ -36,7 +37,8 @@ public interface SecureScoreControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls for a specific initiative within a scope.
+     * @return all security controls for a specific initiative within a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDetailsInner> listBySecureScore(
@@ -47,7 +49,7 @@ public interface SecureScoreControlsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDetailsInner> list();
@@ -60,7 +62,7 @@ public interface SecureScoreControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security controls within a scope.
+     * @return all security controls within a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDetailsInner> list(ExpandControlsEnum expand, Context context);

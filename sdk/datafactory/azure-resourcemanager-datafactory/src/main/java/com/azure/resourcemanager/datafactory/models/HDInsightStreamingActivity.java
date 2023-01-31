@@ -25,6 +25,10 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
     private HDInsightStreamingActivityTypeProperties innerTypeProperties =
         new HDInsightStreamingActivityTypeProperties();
 
+    /** Creates an instance of HDInsightStreamingActivity class. */
+    public HDInsightStreamingActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight streaming activity properties.
      *

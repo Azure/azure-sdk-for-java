@@ -20,6 +20,10 @@ public final class ComputeInstance extends Compute {
     @JsonProperty(value = "properties")
     private ComputeInstanceProperties properties;
 
+    /** Creates an instance of ComputeInstance class. */
+    public ComputeInstance() {
+    }
+
     /**
      * Get the properties property: Properties of ComputeInstance.
      *
@@ -37,6 +41,13 @@ public final class ComputeInstance extends Compute {
      */
     public ComputeInstance withProperties(ComputeInstanceProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ComputeInstance withComputeLocation(String computeLocation) {
+        super.withComputeLocation(computeLocation);
         return this;
     }
 

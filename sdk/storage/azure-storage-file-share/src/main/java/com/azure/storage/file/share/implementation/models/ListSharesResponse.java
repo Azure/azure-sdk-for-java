@@ -62,6 +62,9 @@ public final class ListSharesResponse {
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    /** Creates an instance of ListSharesResponse class. */
+    public ListSharesResponse() {}
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *

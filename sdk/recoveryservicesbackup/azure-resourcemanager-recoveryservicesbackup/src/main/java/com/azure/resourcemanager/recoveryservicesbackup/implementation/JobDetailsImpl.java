@@ -27,15 +27,6 @@ public final class JobDetailsImpl implements JobDetails {
         this.serviceManager = serviceManager;
     }
 
-    public JobResource get(String vaultName, String resourceGroupName, String jobName) {
-        JobResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, jobName);
-        if (inner != null) {
-            return new JobResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobResource> getWithResponse(
         String vaultName, String resourceGroupName, String jobName, Context context) {
         Response<JobResourceInner> inner =
@@ -46,6 +37,15 @@ public final class JobDetailsImpl implements JobDetails {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobResource get(String vaultName, String resourceGroupName, String jobName) {
+        JobResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobResourceImpl(inner, this.manager());
         } else {
             return null;
         }

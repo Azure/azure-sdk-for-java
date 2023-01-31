@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
@@ -83,7 +82,7 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSets Update. */
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MinimumSet_Gen.
@@ -97,11 +96,12 @@ public final class VirtualMachineScaleSetsUpdateSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .update("rgcompute", "aaaaaaaaaaaaaa", new VirtualMachineScaleSetUpdate(), Context.NONE);
+            .update(
+                "rgcompute", "aaaaaaaaaaaaaa", new VirtualMachineScaleSetUpdate(), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MaximumSet_Gen.
@@ -126,7 +126,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                             .withName("windows2016")
                             .withPublisher("microsoft-ads")
                             .withProduct("windows-data-science-vm")
-                            .withPromotionCode("aaaaaaaaaa"))
+                            .withPromotionCode("fakeTokenPlaceholder"))
                     .withIdentity(
                         new VirtualMachineScaleSetIdentity()
                             .withType(ResourceIdentityType.SYSTEM_ASSIGNED)
@@ -142,7 +142,9 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                     .withMaxUnhealthyUpgradedInstancePercent(98)
                                     .withPauseTimeBetweenBatches("aaaaaaaaaaaaaaa")
                                     .withEnableCrossZoneUpgrade(true)
-                                    .withPrioritizeUnhealthyInstances(true))
+                                    .withPrioritizeUnhealthyInstances(true)
+                                    .withRollbackFailedInstancesOnPolicyBreach(true)
+                                    .withMaxSurge(true))
                             .withAutomaticOSUpgradePolicy(
                                 new AutomaticOSUpgradePolicy()
                                     .withEnableAutomaticOSUpgrade(true)
@@ -196,9 +198,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                                 new SshPublicKey()
                                                                     .withPath(
                                                                         "/home/{your-username}/.ssh/authorized_keys")
-                                                                    .withKeyData(
-                                                                        "ssh-rsa"
-                                                                            + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1"))))
+                                                                    .withKeyData("fakeTokenPlaceholder"))))
                                             .withProvisionVMAgent(true)
                                             .withPatchSettings(
                                                 new LinuxPatchSettings()
@@ -391,7 +391,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                         new SubResource()
                             .withId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

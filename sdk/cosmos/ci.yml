@@ -17,6 +17,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/      -
       - sdk/cosmos/azure-spring-data-cosmos/
       - sdk/cosmos/azure-spring-data-cosmos-test/
       - sdk/cosmos/faq/
@@ -29,6 +30,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml      -
       - sdk/cosmos/azure-spring-data-cosmos/pom.xml
       - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
 
@@ -51,6 +53,7 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/      -
       - sdk/cosmos/azure-spring-data-cosmos/
       - sdk/cosmos/azure-spring-data-cosmos-test/
       - sdk/cosmos/faq/
@@ -63,6 +66,7 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml      -
       - sdk/cosmos/azure-spring-data-cosmos/pom.xml
       - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
 
@@ -85,6 +89,10 @@ parameters:
   default: true
 - name: release_azurecosmosspark32
   displayName: 'azure-cosmos-spark_3-2_2-12'
+  type: boolean
+  default: true
+- name: release_azurecosmosspark33
+  displayName: 'azure-cosmos-spark_3-3_2-12'
   type: boolean
   default: true
 
@@ -121,6 +129,13 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark32 }}
+      - name: azure-cosmos-spark_3-3_2-12
+        groupId: com.azure.cosmos.spark
+        safeName: azurecosmosspark33
+        uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azurecosmosspark33 }}
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure

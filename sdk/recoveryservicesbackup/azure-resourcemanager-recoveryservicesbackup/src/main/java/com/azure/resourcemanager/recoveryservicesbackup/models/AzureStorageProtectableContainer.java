@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("StorageContainer")
 @Fluent
 public final class AzureStorageProtectableContainer extends ProtectableContainer {
+    /** Creates an instance of AzureStorageProtectableContainer class. */
+    public AzureStorageProtectableContainer() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureStorageProtectableContainer withFriendlyName(String friendlyName) {

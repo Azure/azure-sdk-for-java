@@ -24,6 +24,10 @@ public final class SapOdpLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SapOdpLinkedServiceTypeProperties innerTypeProperties = new SapOdpLinkedServiceTypeProperties();
 
+    /** Creates an instance of SapOdpLinkedService class. */
+    public SapOdpLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to SAP ODP linked service type.
      *

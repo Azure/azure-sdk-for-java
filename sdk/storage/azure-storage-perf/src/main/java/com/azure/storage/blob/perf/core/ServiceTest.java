@@ -15,12 +15,11 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     protected final BlobServiceClient blobServiceClient;
     protected final BlobServiceAsyncClient blobServiceAsyncClient;
-    private final Configuration configuration;
     protected String connectionString;
 
     public ServiceTest(TOptions options) {
         super(options);
-        configuration = Configuration.getGlobalConfiguration().clone();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
         connectionString = configuration.get("STORAGE_CONNECTION_STRING");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {

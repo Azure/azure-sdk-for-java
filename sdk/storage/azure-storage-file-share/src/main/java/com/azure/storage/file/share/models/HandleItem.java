@@ -51,8 +51,7 @@ public final class HandleItem {
     private String clientIp;
 
     /*
-     * Time when the session that previously opened the handle has last been
-     * reconnected. (UTC)
+     * Time when the session that previously opened the handle has last been reconnected. (UTC)
      */
     @JsonProperty(value = "OpenTime", required = true)
     private DateTimeRfc1123 openTime;
@@ -62,6 +61,9 @@ public final class HandleItem {
      */
     @JsonProperty(value = "LastReconnectTime")
     private DateTimeRfc1123 lastReconnectTime;
+
+    /** Creates an instance of HandleItem class. */
+    public HandleItem() {}
 
     /**
      * Get the handleId property: XSMB service handle ID.

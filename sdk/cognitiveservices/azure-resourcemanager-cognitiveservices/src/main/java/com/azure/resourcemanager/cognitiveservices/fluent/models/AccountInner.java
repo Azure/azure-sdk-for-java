@@ -62,6 +62,10 @@ public final class AccountInner extends AzureEntityResource {
     @JsonProperty(value = "properties")
     private AccountProperties properties;
 
+    /** Creates an instance of AccountInner class. */
+    public AccountInner() {
+    }
+
     /**
      * Get the kind property: The Kind of the resource.
      *

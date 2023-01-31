@@ -38,6 +38,10 @@ public final class ManagedClusterPodIdentityException {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> podLabels;
 
+    /** Creates an instance of ManagedClusterPodIdentityException class. */
+    public ManagedClusterPodIdentityException() {
+    }
+
     /**
      * Get the name property: The name of the pod identity exception.
      *

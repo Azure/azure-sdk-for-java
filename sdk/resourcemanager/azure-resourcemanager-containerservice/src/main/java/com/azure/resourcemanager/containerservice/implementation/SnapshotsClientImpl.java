@@ -67,7 +67,7 @@ public final class SnapshotsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface SnapshotsService {
+    public interface SnapshotsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots")
         @ExpectedResponses({200})
@@ -198,7 +198,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -241,7 +241,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -338,7 +338,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -393,7 +393,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -509,7 +509,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -559,7 +559,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -594,21 +594,6 @@ public final class SnapshotsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Gets a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -619,6 +604,21 @@ public final class SnapshotsClientImpl
     public Response<SnapshotInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a snapshot.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -659,7 +659,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -716,7 +716,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -755,22 +755,6 @@ public final class SnapshotsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node pool snapshot resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotInner createOrUpdate(String resourceGroupName, String resourceName, SnapshotInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, resourceName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param parameters The snapshot to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -781,6 +765,22 @@ public final class SnapshotsClientImpl
     public Response<SnapshotInner> createOrUpdateWithResponse(
         String resourceGroupName, String resourceName, SnapshotInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters, context).block();
+    }
+
+    /**
+     * Creates or updates a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The snapshot to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner createOrUpdate(String resourceGroupName, String resourceName, SnapshotInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -821,7 +821,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -878,7 +878,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -916,22 +916,6 @@ public final class SnapshotsClientImpl
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a node pool snapshot resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, resourceName, parameters).block();
-    }
-
-    /**
-     * Updates tags on a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -942,6 +926,22 @@ public final class SnapshotsClientImpl
     public Response<SnapshotInner> updateTagsWithResponse(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters, context).block();
+    }
+
+    /**
+     * Updates tags on a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update snapshot Tags operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, resourceName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -975,7 +975,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1025,7 +1025,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1059,20 +1059,6 @@ public final class SnapshotsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName) {
-        deleteAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Deletes a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1082,6 +1068,20 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Deletes a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName) {
+        deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**

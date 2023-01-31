@@ -34,6 +34,10 @@ public final class ComputeOperationValueDisplay {
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
+    /** Creates an instance of ComputeOperationValueDisplay class. */
+    public ComputeOperationValueDisplay() {
+    }
+
     /**
      * Get the operation property: The display name of the compute operation.
      *

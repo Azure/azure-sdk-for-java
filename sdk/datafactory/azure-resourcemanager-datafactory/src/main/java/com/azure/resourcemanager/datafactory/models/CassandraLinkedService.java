@@ -24,6 +24,10 @@ public final class CassandraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private CassandraLinkedServiceTypeProperties innerTypeProperties = new CassandraLinkedServiceTypeProperties();
 
+    /** Creates an instance of CassandraLinkedService class. */
+    public CassandraLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Cassandra linked service properties.
      *

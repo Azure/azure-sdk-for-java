@@ -6,21 +6,21 @@ package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcemover.models.MoveResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the move resource. */
 @Fluent
 public final class MoveResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveResourceInner.class);
-
     /*
      * Defines the move resource properties.
      */
     @JsonProperty(value = "properties")
     private MoveResourceProperties properties;
+
+    /** Creates an instance of MoveResourceInner class. */
+    public MoveResourceInner() {
+    }
 
     /**
      * Get the properties property: Defines the move resource properties.

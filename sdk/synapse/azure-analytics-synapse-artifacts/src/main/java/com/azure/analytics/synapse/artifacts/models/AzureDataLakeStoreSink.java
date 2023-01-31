@@ -26,6 +26,9 @@ public final class AzureDataLakeStoreSink extends CopySink {
     @JsonProperty(value = "enableAdlsSingleFileParallel")
     private Object enableAdlsSingleFileParallel;
 
+    /** Creates an instance of AzureDataLakeStoreSink class. */
+    public AzureDataLakeStoreSink() {}
+
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
      *

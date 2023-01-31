@@ -41,6 +41,10 @@ public final class ResourceSkuLocationInfo {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private ExtendedLocationType type;
 
+    /** Creates an instance of ResourceSkuLocationInfo class. */
+    public ResourceSkuLocationInfo() {
+    }
+
     /**
      * Get the location property: Location of the SKU.
      *

@@ -24,12 +24,16 @@ import com.azure.monitor.query.implementation.metrics.models.ResultType;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.LocalizableString;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
+import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricAvailability;
+import com.azure.monitor.query.models.MetricClass;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricNamespace;
+import com.azure.monitor.query.models.MetricUnit;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
+import com.azure.monitor.query.models.NamespaceClassification;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import com.azure.monitor.query.models.TimeSeriesElement;
 import com.azure.monitor.query.models.MetricValue;
@@ -124,7 +128,7 @@ public final class MetricsQueryAsyncClient {
     public PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
         return metricsNamespaceClient
                 .getMetricNamespaces()
-                .listAsync(resourceUri, startTime.toString())
+                .listAsync(resourceUri, startTime == null ? null : startTime.toString())
                 .mapPage(this::mapMetricNamespace);
     }
 
@@ -160,11 +164,22 @@ public final class MetricsQueryAsyncClient {
             dimensions = definition.getDimensions().stream().map(LocalizableString::getValue)
                     .collect(Collectors.toList());
         }
+        MetricClass metricClass = definition.getMetricClass() == null ? null : MetricClass.fromString(definition.getMetricClass().toString());
+        MetricUnit metricUnit = definition.getUnit() == null ? null : MetricUnit.fromString(definition.getUnit().toString());
+        AggregationType primaryAggregationType = definition.getPrimaryAggregationType() == null
+                ? null
+                : AggregationType.fromString(definition.getPrimaryAggregationType().toString());
+        List<AggregationType> supportedAggregationTypes = null;
+        if (CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
+            supportedAggregationTypes = definition.getSupportedAggregationTypes()
+                    .stream()
+                    .map(aggregationType -> AggregationType.fromString(aggregationType.toString()))
+                    .collect(Collectors.toList());
+        }
         MetricsHelper.setMetricDefinitionProperties(metricDefinition,
                 definition.isDimensionRequired(), definition.getResourceId(), definition.getNamespace(),
                 definition.getName().getValue(), definition.getDisplayDescription(), definition.getCategory(),
-                definition.getMetricClass(), definition.getUnit(), definition.getPrimaryAggregationType(),
-                definition.getSupportedAggregationTypes(),
+                metricClass, metricUnit, primaryAggregationType, supportedAggregationTypes,
                 mapMetricAvailabilities(definition.getMetricAvailabilities()), definition.getId(),
                 dimensions);
         return metricDefinition;
@@ -190,8 +205,11 @@ public final class MetricsQueryAsyncClient {
 
     private MetricNamespace mapMetricNamespace(com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace namespaceImpl) {
         MetricNamespace metricNamespace = new MetricNamespace();
-        MetricsHelper.setMetricNamespaceProperties(metricNamespace, namespaceImpl.getClassification(),
-                namespaceImpl.getId(), namespaceImpl.getName(),
+        NamespaceClassification classification = namespaceImpl.getClassification() == null
+                ? null
+                : NamespaceClassification.fromString(namespaceImpl.getClassification().toString());
+        MetricsHelper.setMetricNamespaceProperties(metricNamespace,
+                classification, namespaceImpl.getId(), namespaceImpl.getName(),
                 namespaceImpl.getProperties() == null ? null : namespaceImpl.getProperties().getMetricNamespaceName(),
                 namespaceImpl.getType());
 
@@ -241,9 +259,14 @@ public final class MetricsQueryAsyncClient {
 
     private List<MetricResult> mapMetrics(List<Metric> value) {
         return value.stream()
-                .map(metric -> new MetricResult(metric.getId(), metric.getType(), metric.getUnit(), metric.getName().getValue(),
-                        mapTimeSeries(metric.getTimeseries()), metric.getDisplayDescription(),
-                        new ResponseError(metric.getErrorCode(), metric.getErrorMessage())))
+                .map(metric -> {
+                    MetricUnit metricUnit = metric.getUnit() == null ? null : MetricUnit.fromString(metric.getUnit().toString());
+                    return new MetricResult(metric.getId(), metric.getType(),
+                            metricUnit,
+                            metric.getName().getValue(),
+                            mapTimeSeries(metric.getTimeseries()), metric.getDisplayDescription(),
+                            new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
+                })
                 .collect(Collectors.toList());
     }
 

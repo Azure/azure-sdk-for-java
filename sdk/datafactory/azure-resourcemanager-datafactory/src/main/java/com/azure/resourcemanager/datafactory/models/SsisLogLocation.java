@@ -30,6 +30,10 @@ public final class SsisLogLocation {
     @JsonProperty(value = "typeProperties", required = true)
     private SsisLogLocationTypeProperties innerTypeProperties = new SsisLogLocationTypeProperties();
 
+    /** Creates an instance of SsisLogLocation class. */
+    public SsisLogLocation() {
+    }
+
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).

@@ -16,6 +16,10 @@ public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
     @JsonProperty(value = "entityName")
     private Object entityName;
 
+    /** Creates an instance of CommonDataServiceForAppsEntityDatasetTypeProperties class. */
+    public CommonDataServiceForAppsEntityDatasetTypeProperties() {
+    }
+
     /**
      * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      *

@@ -13,7 +13,11 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** managedAppPolicy The ManagedAppPolicy resource represents a base type for platform specific policies. */
+/**
+ * managedAppPolicy
+ *
+ * <p>The ManagedAppPolicy resource represents a base type for platform specific policies.
+ */
 @Fluent
 public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
     /*
@@ -47,10 +51,13 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
     private String version;
 
     /*
-     * The ManagedAppPolicy resource represents a base type for platform
-     * specific policies.
+     * The ManagedAppPolicy resource represents a base type for platform specific policies.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphManagedAppPolicy class. */
+    public MicrosoftGraphManagedAppPolicy() {
+    }
 
     /**
      * Get the createdDateTime property: The date and time the policy was created.

@@ -23,7 +23,7 @@ public interface AuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of ExpressRoute Circuit Authorizations.
+     * @return a paged list of ExpressRoute Circuit Authorizations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteAuthorizationInner> list(String resourceGroupName, String privateCloudName);
@@ -37,11 +37,27 @@ public interface AuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of ExpressRoute Circuit Authorizations.
+     * @return a paged list of ExpressRoute Circuit Authorizations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteAuthorizationInner> list(
         String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * Get an ExpressRoute Circuit Authorization by name in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ExpressRoute Circuit Authorization by name in a private cloud along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteAuthorizationInner> getWithResponse(
+        String resourceGroupName, String privateCloudName, String authorizationName, Context context);
 
     /**
      * Get an ExpressRoute Circuit Authorization by name in a private cloud.
@@ -58,22 +74,6 @@ public interface AuthorizationsClient {
     ExpressRouteAuthorizationInner get(String resourceGroupName, String privateCloudName, String authorizationName);
 
     /**
-     * Get an ExpressRoute Circuit Authorization by name in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ExpressRoute Circuit Authorization by name in a private cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteAuthorizationInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String authorizationName, Context context);
-
-    /**
      * Create or update an ExpressRoute Circuit Authorization in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -83,7 +83,7 @@ public interface AuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Circuit Authorization.
+     * @return the {@link SyncPoller} for polling of expressRoute Circuit Authorization.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
@@ -103,7 +103,7 @@ public interface AuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Circuit Authorization.
+     * @return the {@link SyncPoller} for polling of expressRoute Circuit Authorization.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
@@ -162,7 +162,7 @@ public interface AuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -178,7 +178,7 @@ public interface AuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.compute.models.DiskCreateOption;
 /** Samples for Snapshots CreateOrUpdate. */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/snapshotExamples/Snapshot_Create_FromAnExistingSnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Create_FromAnExistingSnapshot.json
      */
     /**
      * Sample code: Create a snapshot from an existing snapshot in the same or a different subscription.
@@ -36,11 +35,11 @@ public final class SnapshotsCreateOrUpdateSamples {
                             .withCreateOption(DiskCreateOption.COPY)
                             .withSourceResourceId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/snapshotExamples/Snapshot_Create_FromAnExistingSnapshotInDifferentRegion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Create_FromAnExistingSnapshotInDifferentRegion.json
      */
     /**
      * Sample code: Create a snapshot from an existing snapshot in the same or a different subscription in a different
@@ -65,11 +64,11 @@ public final class SnapshotsCreateOrUpdateSamples {
                             .withCreateOption(DiskCreateOption.COPY_START)
                             .withSourceResourceId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromTheSameSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromTheSameSubscription.json
      */
     /**
      * Sample code: Create a snapshot by importing an unmanaged blob from the same subscription.
@@ -92,11 +91,11 @@ public final class SnapshotsCreateOrUpdateSamples {
                         new CreationData()
                             .withCreateOption(DiskCreateOption.IMPORT)
                             .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromADifferentSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromADifferentSubscription.json
      */
     /**
      * Sample code: Create a snapshot by importing an unmanaged blob from a different subscription.
@@ -121,6 +120,6 @@ public final class SnapshotsCreateOrUpdateSamples {
                             .withStorageAccountId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")
                             .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

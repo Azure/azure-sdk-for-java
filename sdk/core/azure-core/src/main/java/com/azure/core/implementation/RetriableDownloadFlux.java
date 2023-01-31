@@ -3,6 +3,8 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
@@ -15,6 +17,8 @@ import java.util.function.Supplier;
  * operation if an error occurs during the download.
  */
 public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
+    private static final ClientLogger LOGGER = new ClientLogger(RetriableDownloadFlux.class);
+
     private final Supplier<Flux<ByteBuffer>> downloadSupplier;
     private final BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume;
     private final int maxRetries;
@@ -58,9 +62,14 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {
+                    LOGGER.log(LogLevel.ERROR, () -> "Exhausted all retry attempts while downloading, "
+                        + maxRetries + " of " + maxRetries + ".", exception);
                     return Flux.error(exception);
                 }
 
+                LOGGER.log(LogLevel.INFORMATIONAL,
+                    () -> "Using retry attempt " + updatedRetryCount + " of " + maxRetries + " while downloading.",
+                    exception);
                 return new RetriableDownloadFlux(() -> onDownloadErrorResume.apply(exception, currentPosition[0]),
                     onDownloadErrorResume, maxRetries, currentPosition[0], updatedRetryCount);
             })

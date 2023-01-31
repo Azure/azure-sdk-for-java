@@ -42,6 +42,10 @@ public final class AzureKeyVaultKms {
     @JsonProperty(value = "keyVaultResourceId")
     private String keyVaultResourceId;
 
+    /** Creates an instance of AzureKeyVaultKms class. */
+    public AzureKeyVaultKms() {
+    }
+
     /**
      * Get the enabled property: Whether to enable Azure Key Vault key management service. The default is false.
      *

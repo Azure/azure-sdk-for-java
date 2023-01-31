@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Auto")
 @Immutable
 public final class AutoNCrossValidations extends NCrossValidations {
+    /** Creates an instance of AutoNCrossValidations class. */
+    public AutoNCrossValidations() {
+    }
+
     /**
      * Validates the instance.
      *

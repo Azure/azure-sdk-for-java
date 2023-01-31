@@ -17,7 +17,7 @@ public abstract class CommonProperties extends AzureAmqpSdkProperties implements
     private String domainName;
 
     /**
-     * The namespace of a event hub, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
+     * The namespace of an event hub, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      */
     private String namespace;
     private String eventHubName;
@@ -49,15 +49,15 @@ public abstract class CommonProperties extends AzureAmqpSdkProperties implements
     }
 
     private String buildFqdnFromNamespace() {
-        if (namespace == null || domainName == null) {
+        if (namespace == null || getDomainName() == null) {
             return null;
         }
-        return this.namespace + "." + domainName;
+        return this.namespace + "." + getDomainName();
     }
 
     @Override
     public String getDomainName() {
-        return domainName;
+        return domainName == null ? getProfile().getEnvironment().getServiceBusDomainName() : domainName;
     }
 
     /**

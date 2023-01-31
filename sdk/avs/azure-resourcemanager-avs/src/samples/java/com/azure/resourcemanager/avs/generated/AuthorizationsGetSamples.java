@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Authorizations Get. */
 public final class AuthorizationsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Authorizations_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Authorizations_Get.json
      */
     /**
      * Sample code: Authorizations_Get.

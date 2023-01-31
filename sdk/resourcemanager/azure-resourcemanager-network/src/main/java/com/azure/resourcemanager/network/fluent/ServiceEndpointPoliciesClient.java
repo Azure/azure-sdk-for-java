@@ -141,22 +141,6 @@ public interface ServiceEndpointPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceEndpointPolicyInner> getByResourceGroupAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, String expand);
-
-    /**
-     * Gets the specified service Endpoint Policies in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,19 +150,6 @@ public interface ServiceEndpointPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServiceEndpointPolicyInner> getByResourceGroupAsync(
         String resourceGroupName, String serviceEndpointPolicyName);
-
-    /**
-     * Gets the specified service Endpoint Policies in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceEndpointPolicyInner getByResourceGroup(String resourceGroupName, String serviceEndpointPolicyName);
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
@@ -195,6 +166,19 @@ public interface ServiceEndpointPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceEndpointPolicyInner> getByResourceGroupWithResponse(
         String resourceGroupName, String serviceEndpointPolicyName, String expand, Context context);
+
+    /**
+     * Gets the specified service Endpoint Policies in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the service endpoint policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified service Endpoint Policies in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceEndpointPolicyInner getByResourceGroup(String resourceGroupName, String serviceEndpointPolicyName);
 
     /**
      * Creates or updates a service Endpoint Policies.
@@ -345,21 +329,6 @@ public interface ServiceEndpointPoliciesClient
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service End point policy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceEndpointPolicyInner updateTags(
-        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
-
-    /**
-     * Updates tags of a service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy.
-     * @param parameters Parameters supplied to update service endpoint policy tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -369,6 +338,21 @@ public interface ServiceEndpointPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceEndpointPolicyInner> updateTagsWithResponse(
         String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters, Context context);
+
+    /**
+     * Updates tags of a service endpoint policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the service endpoint policy.
+     * @param parameters Parameters supplied to update service endpoint policy tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service End point policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceEndpointPolicyInner updateTags(
+        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
 
     /**
      * Gets all the service endpoint policies in a subscription.

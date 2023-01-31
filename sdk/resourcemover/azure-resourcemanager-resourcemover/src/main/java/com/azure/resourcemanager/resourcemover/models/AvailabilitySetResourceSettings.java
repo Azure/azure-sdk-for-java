@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Microsoft.Compute/availabilitySets")
 @Fluent
 public final class AvailabilitySetResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilitySetResourceSettings.class);
-
     /*
      * Gets or sets the target fault domain.
      */
@@ -29,6 +25,10 @@ public final class AvailabilitySetResourceSettings extends ResourceSettings {
      */
     @JsonProperty(value = "updateDomain")
     private Integer updateDomain;
+
+    /** Creates an instance of AvailabilitySetResourceSettings class. */
+    public AvailabilitySetResourceSettings() {
+    }
 
     /**
      * Get the faultDomain property: Gets or sets the target fault domain.

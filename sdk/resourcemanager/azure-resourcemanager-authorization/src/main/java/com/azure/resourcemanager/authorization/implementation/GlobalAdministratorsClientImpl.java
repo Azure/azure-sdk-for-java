@@ -49,7 +49,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
      */
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
-    private interface GlobalAdministratorsService {
+    public interface GlobalAdministratorsService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Authorization/elevateAccess")
         @ExpectedResponses({200})
@@ -115,18 +115,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> elevateAccessAsync() {
-        return elevateAccessWithResponseAsync().flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Elevates access for a Global Administrator.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void elevateAccess() {
-        elevateAccessAsync().block();
+        return elevateAccessWithResponseAsync().flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -141,5 +130,16 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> elevateAccessWithResponse(Context context) {
         return elevateAccessWithResponseAsync(context).block();
+    }
+
+    /**
+     * Elevates access for a Global Administrator.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void elevateAccess() {
+        elevateAccessWithResponse(Context.NONE);
     }
 }

@@ -71,6 +71,10 @@ public final class PrivateEndpointPropertiesInner {
     @JsonProperty(value = "customNetworkInterfaceName")
     private String customNetworkInterfaceName;
 
+    /** Creates an instance of PrivateEndpointPropertiesInner class. */
+    public PrivateEndpointPropertiesInner() {
+    }
+
     /**
      * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
      *

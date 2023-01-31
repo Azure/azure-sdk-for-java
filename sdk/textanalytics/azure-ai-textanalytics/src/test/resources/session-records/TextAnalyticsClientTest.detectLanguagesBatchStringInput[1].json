@@ -1,23 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4d51937f-621e-41fc-82a5-278fbb5ec098",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cb040a41-68c1-4e22-9d26-6d41fee1ab9c",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "413",
-      "x-envoy-upstream-service-time" : "8",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=3,CognitiveServices.TextAnalytics.TextRecords=3",
-      "apim-request-id" : "c37dd9f3-62f1-41bd-9aad-0ee17434a3a0",
+      "x-ms-region" : "West US 2",
+      "content-length" : "310",
+      "x-envoy-upstream-service-time" : "7",
+      "apim-request-id" : "f5306b9e-0ba2-4b2a-948a-9f84fdc08d11",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":0.84},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"Dari\",\"iso6391Name\":\"prs\",\"confidenceScore\":0.58},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-11-20\"}}",
-      "Date" : "Fri, 05 Aug 2022 20:35:16 GMT",
+      "Date" : "Fri, 04 Nov 2022 18:10:54 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
+      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+      "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":0.84},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-11-20\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

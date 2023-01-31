@@ -22,6 +22,10 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of PacketCaptureResultProperties class. */
+    public PacketCaptureResultProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the packet capture session.
      *

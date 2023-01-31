@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The managed resources in customer subscription. */
 @Immutable
 public class ManagedResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedResources.class);
-
     /*
      * Gets the managed event hub namespace resource identifier.
      */
@@ -21,8 +17,8 @@ public class ManagedResources {
     private String eventHubNamespace;
 
     /*
-     * Gets the managed resource group resource identifier. This resource group
-     * will host resource dependencies for the account.
+     * Gets the managed resource group resource identifier. This resource group will host resource dependencies for the
+     * account.
      */
     @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
@@ -32,6 +28,10 @@ public class ManagedResources {
      */
     @JsonProperty(value = "storageAccount", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccount;
+
+    /** Creates an instance of ManagedResources class. */
+    public ManagedResources() {
+    }
 
     /**
      * Get the eventHubNamespace property: Gets the managed event hub namespace resource identifier.

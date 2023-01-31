@@ -5,18 +5,20 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.jwt;
 
 import com.nimbusds.jose.util.Resource;
 import com.nimbusds.jose.util.ResourceRetriever;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.client.RestOperations;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
  * A ResourceRetriever that accepts an RestOperations as a constructor parameter.
@@ -28,9 +30,8 @@ public class RestOperationsResourceRetriever implements ResourceRetriever {
 
     private final RestOperations restOperations;
 
-    public RestOperationsResourceRetriever(RestOperations restOperations) {
-        Assert.notNull(restOperations, "restOperations cannot be null");
-        this.restOperations = restOperations;
+    public RestOperationsResourceRetriever(RestTemplateBuilder restTemplateBuilder) {
+        this.restOperations = createRestTemplate(restTemplateBuilder);
     }
 
     @Override

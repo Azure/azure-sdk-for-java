@@ -23,6 +23,10 @@ public final class RestorePointSourceVMStorageProfile {
     @JsonProperty(value = "dataDisks")
     private List<RestorePointSourceVMDataDisk> dataDisks;
 
+    /** Creates an instance of RestorePointSourceVMStorageProfile class. */
+    public RestorePointSourceVMStorageProfile() {
+    }
+
     /**
      * Get the osDisk property: Gets the OS disk of the VM captured at the time of the restore point creation.
      *

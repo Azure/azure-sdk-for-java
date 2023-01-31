@@ -35,6 +35,15 @@ public final class LastUpdateStatus extends ExpandableStringEnum<LastUpdateStatu
     public static final LastUpdateStatus FIRST_INITIALIZATION = fromString("FirstInitialization");
 
     /**
+     * Creates a new instance of LastUpdateStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LastUpdateStatus() {
+    }
+
+    /**
      * Creates or finds a LastUpdateStatus from its string representation.
      *
      * @param name a name to look for.

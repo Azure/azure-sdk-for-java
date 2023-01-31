@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskEncryptionSets ListByResourceGroup. */
 public final class DiskEncryptionSetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListByResourceGroup.json
      */
     /**
      * Sample code: List all disk encryption sets in a resource group.
@@ -22,6 +20,6 @@ public final class DiskEncryptionSetsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDiskEncryptionSets()
-            .listByResourceGroup("myResourceGroup", Context.NONE);
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

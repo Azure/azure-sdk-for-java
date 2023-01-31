@@ -20,6 +20,10 @@ public final class AzureSearchIndexSink extends CopySink {
     @JsonProperty(value = "writeBehavior")
     private AzureSearchIndexWriteBehaviorType writeBehavior;
 
+    /** Creates an instance of AzureSearchIndexSink class. */
+    public AzureSearchIndexSink() {
+    }
+
     /**
      * Get the writeBehavior property: Specify the write behavior when upserting documents into Azure Search Index.
      *

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.OperationDisplay;
 import com.azure.resourcemanager.avs.models.OperationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A REST API operation. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Name of the operation being performed on this object
      */
@@ -29,8 +25,7 @@ public final class OperationInner {
     private OperationDisplay display;
 
     /*
-     * Gets or sets a value indicating whether the operation is a data action
-     * or not
+     * Gets or sets a value indicating whether the operation is a data action or not
      */
     @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
@@ -46,6 +41,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "properties")
     private OperationProperties properties;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Name of the operation being performed on this object.

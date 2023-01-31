@@ -41,7 +41,6 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeRequestFunc,
-            PartitionKeyRange targetRange,
             FeedRangeEpkImpl feedRange,
             String collectionLink,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
@@ -52,14 +51,14 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             int top,
             Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
             Supplier<String> operationContextTextProvider) {
-        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange,
+        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc,
               collectionLink, createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize,
               initialContinuationToken,top, feedRange, operationContextTextProvider);
         this.consumeComparer = consumeComparer;
         this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
     }
 
-    protected Flux<DocumentProducerFeedResponse> produceOnSplit(Flux<DocumentProducer<Document>> replacementProducers) {
+    protected Flux<DocumentProducerFeedResponse> produceOnFeedRangeGone(Flux<DocumentProducer<Document>> replacementProducers) {
         return replacementProducers.collectList().flux().flatMap(documentProducers -> {
             RequestChargeTracker tracker = new RequestChargeTracker();
             Map<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
@@ -89,7 +88,6 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             cosmosQueryRequestOptions,
             createRequestFunc,
             executeRequestFuncWithRetries,
-            targetRange,
             new FeedRangeEpkImpl(targetRange.toRange()),
             collectionLink,
             createRetryPolicyFunc,

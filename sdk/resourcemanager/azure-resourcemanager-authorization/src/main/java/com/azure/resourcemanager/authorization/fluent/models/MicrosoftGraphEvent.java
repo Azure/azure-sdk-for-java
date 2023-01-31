@@ -18,8 +18,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /*
-     * True if the meeting organizer allows invitees to propose a new time when
-     * responding, false otherwise. Optional. Default is true.
+     * True if the meeting organizer allows invitees to propose a new time when responding, false otherwise. Optional.
+     * Default is true.
      */
     @JsonProperty(value = "allowNewTimeProposals")
     private Boolean allowNewTimeProposals;
@@ -37,8 +37,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphItemBody body;
 
     /*
-     * The preview of the message associated with the event. It is in text
-     * format.
+     * The preview of the message associated with the event. It is in text format.
      */
     @JsonProperty(value = "bodyPreview")
     private String bodyPreview;
@@ -62,8 +61,8 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private Boolean hideAttendees;
 
     /*
-     * A unique identifier for an event across calendars. This ID is different
-     * for each occurrence in a recurring series. Read-only.
+     * A unique identifier for an event across calendars. This ID is different for each occurrence in a recurring
+     * series. Read-only.
      */
     @JsonProperty(value = "iCalUId")
     private String iCalUId;
@@ -93,17 +92,15 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private Boolean isDraft;
 
     /*
-     * True if this event has online meeting information, false otherwise.
-     * Default is false. Optional.
+     * True if this event has online meeting information, false otherwise. Default is false. Optional.
      */
     @JsonProperty(value = "isOnlineMeeting")
     private Boolean isOnlineMeeting;
 
     /*
-     * Set to true if the calendar owner (specified by the owner property of
-     * the calendar) is the organizer of the event (specified by the organizer
-     * property of the event). This also applies if a delegate organized the
-     * event on behalf of the owner.
+     * Set to true if the calendar owner (specified by the owner property of the calendar) is the organizer of the
+     * event (specified by the organizer property of the event). This also applies if a delegate organized the event on
+     * behalf of the owner.
      */
     @JsonProperty(value = "isOrganizer")
     private Boolean isOrganizer;
@@ -121,10 +118,9 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphLocation location;
 
     /*
-     * The locations where the event is held or attended from. The location and
-     * locations properties always correspond with each other. If you update
-     * the location property, any prior locations in the locations collection
-     * would be removed and replaced by the new location value.
+     * The locations where the event is held or attended from. The location and locations properties always correspond
+     * with each other. If you update the location property, any prior locations in the locations collection would be
+     * removed and replaced by the new location value.
      */
     @JsonProperty(value = "locations")
     private List<MicrosoftGraphLocation> locations;
@@ -142,9 +138,8 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphOnlineMeetingProviderType onlineMeetingProvider;
 
     /*
-     * A URL for an online meeting. The property is set only when an organizer
-     * specifies an event as an online meeting such as a Skype meeting.
-     * Read-only.
+     * A URL for an online meeting. The property is set only when an organizer specifies an event as an online meeting
+     * such as a Skype meeting. Read-only.
      */
     @JsonProperty(value = "onlineMeetingUrl")
     private String onlineMeetingUrl;
@@ -156,25 +151,22 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphRecipient organizer;
 
     /*
-     * The end time zone that was set when the event was created. A value of
-     * tzone://Microsoft/Custom indicates that a legacy custom time zone was
-     * set in desktop Outlook.
+     * The end time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that a
+     * legacy custom time zone was set in desktop Outlook.
      */
     @JsonProperty(value = "originalEndTimeZone")
     private String originalEndTimeZone;
 
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "originalStart")
     private OffsetDateTime originalStart;
 
     /*
-     * The start time zone that was set when the event was created. A value of
-     * tzone://Microsoft/Custom indicates that a legacy custom time zone was
-     * set in desktop Outlook.
+     * The start time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that
+     * a legacy custom time zone was set in desktop Outlook.
      */
     @JsonProperty(value = "originalStartTimeZone")
     private String originalStartTimeZone;
@@ -186,15 +178,13 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphPatternedRecurrence recurrence;
 
     /*
-     * The number of minutes before the event start time that the reminder
-     * alert occurs.
+     * The number of minutes before the event start time that the reminder alert occurs.
      */
     @JsonProperty(value = "reminderMinutesBeforeStart")
     private Integer reminderMinutesBeforeStart;
 
     /*
-     * Default is true, which represents the organizer would like an invitee to
-     * send a response to the event.
+     * Default is true, which represents the organizer would like an invitee to send a response to the event.
      */
     @JsonProperty(value = "responseRequested")
     private Boolean responseRequested;
@@ -212,8 +202,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphSensitivity sensitivity;
 
     /*
-     * The ID for the recurring series master item, if this event is part of a
-     * recurring series.
+     * The ID for the recurring series master item, if this event is part of a recurring series.
      */
     @JsonProperty(value = "seriesMasterId")
     private String seriesMasterId;
@@ -237,14 +226,11 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private String subject;
 
     /*
-     * A custom identifier specified by a client app for the server to avoid
-     * redundant POST operations in case of client retries to create the same
-     * event. This is useful when low network connectivity causes the client to
-     * time out before receiving a response from the server for the client's
-     * prior create-event request. After you set transactionId when creating an
-     * event, you cannot change transactionId in a subsequent update. This
-     * property is only returned in a response payload if an app has set it.
-     * Optional.
+     * A custom identifier specified by a client app for the server to avoid redundant POST operations in case of
+     * client retries to create the same event. This is useful when low network connectivity causes the client to time
+     * out before receiving a response from the server for the client's prior create-event request. After you set
+     * transactionId when creating an event, you cannot change transactionId in a subsequent update. This property is
+     * only returned in a response payload if an app has set it. Optional.
      */
     @JsonProperty(value = "transactionId")
     private String transactionId;
@@ -256,17 +242,16 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphEventType type;
 
     /*
-     * The URL to open the event in Outlook on the web.Outlook on the web opens
-     * the event in the browser if you are signed in to your mailbox.
-     * Otherwise, Outlook on the web prompts you to sign in.This URL cannot be
-     * accessed from within an iFrame.
+     * The URL to open the event in Outlook on the web.Outlook on the web opens the event in the browser if you are
+     * signed in to your mailbox. Otherwise, Outlook on the web prompts you to sign in.This URL cannot be accessed from
+     * within an iFrame.
      */
     @JsonProperty(value = "webLink")
     private String webLink;
 
     /*
-     * The collection of fileAttachment and itemAttachment attachments for the
-     * event. Navigation property. Read-only. Nullable.
+     * The collection of fileAttachment and itemAttachment attachments for the event. Navigation property. Read-only.
+     * Nullable.
      */
     @JsonProperty(value = "attachments")
     private List<MicrosoftGraphAttachment> attachments;
@@ -278,8 +263,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private MicrosoftGraphCalendar calendar;
 
     /*
-     * The collection of open extensions defined for the event. Read-only.
-     * Nullable.
+     * The collection of open extensions defined for the event. Read-only. Nullable.
      */
     @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
@@ -291,15 +275,13 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     private List<MicrosoftGraphEvent> instances;
 
     /*
-     * The collection of multi-value extended properties defined for the event.
-     * Read-only. Nullable.
+     * The collection of multi-value extended properties defined for the event. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
-     * The collection of single-value extended properties defined for the
-     * event. Read-only. Nullable.
+     * The collection of single-value extended properties defined for the event. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
@@ -308,6 +290,10 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * event
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphEvent class. */
+    public MicrosoftGraphEvent() {
+    }
 
     /**
      * Get the allowNewTimeProposals property: True if the meeting organizer allows invitees to propose a new time when

@@ -24,6 +24,10 @@ public final class MobileNetworkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of MobileNetworkListResult class. */
+    public MobileNetworkListResult() {
+    }
+
     /**
      * Get the value property: A list of mobile networks in a resource group.
      *

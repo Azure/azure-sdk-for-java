@@ -34,6 +34,10 @@ public final class ProjectEnvironmentTypeUpdate {
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
+    /** Creates an instance of ProjectEnvironmentTypeUpdate class. */
+    public ProjectEnvironmentTypeUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties to configure an environment type.
      *

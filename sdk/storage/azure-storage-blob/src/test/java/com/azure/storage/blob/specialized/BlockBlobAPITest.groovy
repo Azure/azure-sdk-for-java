@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
@@ -22,6 +23,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
+import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
@@ -29,6 +31,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlockBlobItem
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -767,6 +770,23 @@ class BlockBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Commit block list cold tier"() {
+        setup:
+        blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def blockID = getBlockID()
+        blockBlobClient.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
+        def ids = [blockID] as List
+        def commitOptions = new BlockBlobCommitBlockListOptions(ids).setTier(AccessTier.COLD)
+
+        when:
+        blockBlobClient.commitBlockListWithResponse(commitOptions, null, null)
+        def properties = blockBlobClient.getProperties()
+
+        then:
+        properties.getAccessTier() == AccessTier.COLD
+    }
+
     def "Get block list"() {
         setup:
         def committedBlocks = [getBlockID(), getBlockID()]
@@ -1477,6 +1497,19 @@ class BlockBlobAPITest extends APISpec {
         bc.getProperties().getAccessTier() == AccessTier.COOL
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Upload with access tier cold"() {
+        setup:
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        bc.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, AccessTier.COLD, null, null, null,
+            null)
+
+        then:
+        bc.getProperties().getAccessTier() == AccessTier.COLD
+    }
+
     def "Upload overwrite false"() {
         when:
         blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
@@ -2042,6 +2075,28 @@ class BlockBlobAPITest extends APISpec {
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with length"() {
+        setup:
+        def data = Flux.just(getRandomData(dataSize))
+        def binaryData = BinaryData.fromFlux(data, dataSize).block()
+        def parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize))
+
+        when:
+        blobAsyncClient.uploadWithResponse(parallelUploadOptions).block()
+
+        then:
+        blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() == expectedBlockCount
+
+        where:
+        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
+        100                                            | 100              | null      || 0 // Test that singleUploadSize is respected
+        100                                            | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @LiveOnly
@@ -2248,6 +2303,17 @@ class BlockBlobAPITest extends APISpec {
             })
         cleanup:
         smallFile.delete()
+    }
+
+    @LiveOnly
+    def "Buffered upload with specified length"() {
+        setup:
+        def fluxData = Flux.just(getRandomData(data.getDefaultDataSizeLong() as int))
+        def binaryData = BinaryData.fromFlux(fluxData, data.getDefaultDataSizeLong()).block()
+        def parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
+        expect:
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(parallelUploadOptions))
+            .assertNext({ assert it.getValue().getETag() != null }).verifyComplete()
     }
 
     @LiveOnly
@@ -2573,5 +2639,51 @@ class BlockBlobAPITest extends APISpec {
         mode                           | _
         BlobCopySourceTagsMode.COPY    | _
         BlobCopySourceTagsMode.REPLACE | _
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Upload from Url access tier cold"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        if (blockBlobClient.exists()) {
+            blockBlobClient.delete()
+        }
+
+        def uploadOptions = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setTier(AccessTier.COLD)
+
+        when:
+        blockBlobClient.uploadFromUrlWithResponse(uploadOptions, null, null)
+        def properties = blockBlobClient.getProperties()
+
+        then:
+        properties.getAccessTier() == AccessTier.COLD
+    }
+
+    def "BlockBlobItem null headers"() {
+        setup:
+        def headers = new HttpHeaders()
+        def hd = new BlockBlobsPutBlobFromUrlHeaders(headers)
+
+        when:
+        def blockBlobItem = new BlockBlobItem(hd.getETag(),
+            hd.getLastModified(),
+            hd.getContentMD5(),
+            hd.isXMsRequestServerEncrypted(),
+            hd.getXMsEncryptionKeySha256(),
+            hd.getXMsEncryptionScope(),
+            hd.getXMsVersionId())
+
+        then:
+        blockBlobItem.getETag() == null
+        blockBlobItem.getLastModified() == null
+        blockBlobItem.getContentMd5() == null
+        blockBlobItem.isServerEncrypted() == null
+        blockBlobItem.getEncryptionKeySha256() == null
+        blockBlobItem.getEncryptionScope() == null
+        blockBlobItem.getVersionId() == null
     }
 }

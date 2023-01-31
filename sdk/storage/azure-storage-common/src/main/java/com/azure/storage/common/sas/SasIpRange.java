@@ -24,11 +24,11 @@ public final class SasIpRange {
      * @return The {@code SasIpRange} generated from the {@code String}.
      */
     public static SasIpRange parse(String rangeStr) {
-        String[] addrs = rangeStr.split("-");
+        String[] address = rangeStr.split("-");
 
-        SasIpRange range = new SasIpRange().setIpMin(addrs[0]);
-        if (addrs.length > 1) {
-            range.setIpMax(addrs[1]);
+        SasIpRange range = new SasIpRange().setIpMin(address[0]);
+        if (address.length > 1) {
+            range.setIpMax(address[1]);
         }
 
         return range;

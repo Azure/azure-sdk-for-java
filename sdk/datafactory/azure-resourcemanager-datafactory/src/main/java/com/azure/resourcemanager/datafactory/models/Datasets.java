@@ -41,19 +41,6 @@ public interface Datasets {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param datasetName The dataset name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
-     */
-    DatasetResource get(String resourceGroupName, String factoryName, String datasetName);
-
-    /**
-     * Gets a dataset.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
      * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
      *     entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
@@ -66,7 +53,7 @@ public interface Datasets {
         String resourceGroupName, String factoryName, String datasetName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a dataset.
+     * Gets a dataset.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -74,8 +61,9 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dataset.
      */
-    void delete(String resourceGroupName, String factoryName, String datasetName);
+    DatasetResource get(String resourceGroupName, String factoryName, String datasetName);
 
     /**
      * Deletes a dataset.
@@ -91,6 +79,18 @@ public interface Datasets {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String datasetName, Context context);
+
+    /**
+     * Deletes a dataset.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param datasetName The dataset name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String factoryName, String datasetName);
 
     /**
      * Gets a dataset.

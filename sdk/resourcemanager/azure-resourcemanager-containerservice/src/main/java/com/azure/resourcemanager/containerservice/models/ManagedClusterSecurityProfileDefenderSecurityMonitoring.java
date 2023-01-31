@@ -16,6 +16,10 @@ public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of ManagedClusterSecurityProfileDefenderSecurityMonitoring class. */
+    public ManagedClusterSecurityProfileDefenderSecurityMonitoring() {
+    }
+
     /**
      * Get the enabled property: Whether to enable Defender threat detection.
      *

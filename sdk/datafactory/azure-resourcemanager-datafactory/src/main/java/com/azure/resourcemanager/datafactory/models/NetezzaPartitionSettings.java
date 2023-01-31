@@ -31,6 +31,10 @@ public final class NetezzaPartitionSettings {
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
+    /** Creates an instance of NetezzaPartitionSettings class. */
+    public NetezzaPartitionSettings() {
+    }
+
     /**
      * Get the partitionColumnName property: The name of the column in integer type that will be used for proceeding
      * range partitioning. Type: string (or Expression with resultType string).

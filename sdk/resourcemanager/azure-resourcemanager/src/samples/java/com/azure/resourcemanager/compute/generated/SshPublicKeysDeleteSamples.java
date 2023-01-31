@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SshPublicKeys Delete. */
 public final class SshPublicKeysDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Delete_MaximumSet_Gen.
@@ -22,11 +20,11 @@ public final class SshPublicKeysDeleteSamples {
             .manager()
             .serviceClient()
             .getSshPublicKeys()
-            .deleteWithResponse("rgcompute", "aaaaaaaaaa", Context.NONE);
+            .deleteWithResponse("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Delete_MinimumSet_Gen.
@@ -39,6 +37,6 @@ public final class SshPublicKeysDeleteSamples {
             .manager()
             .serviceClient()
             .getSshPublicKeys()
-            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

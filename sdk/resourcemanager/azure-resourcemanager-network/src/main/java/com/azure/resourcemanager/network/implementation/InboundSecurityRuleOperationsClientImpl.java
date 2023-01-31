@@ -60,7 +60,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface InboundSecurityRuleOperationsService {
+    public interface InboundSecurityRuleOperationsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -129,7 +129,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -200,7 +200,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

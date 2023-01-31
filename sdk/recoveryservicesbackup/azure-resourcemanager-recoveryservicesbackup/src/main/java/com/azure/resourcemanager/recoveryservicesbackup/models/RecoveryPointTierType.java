@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RecoveryPointTierType. */
+/** Recovery point tier type. */
 public enum RecoveryPointTierType {
     /** Enum value Invalid. */
     INVALID("Invalid"),
@@ -36,6 +36,9 @@ public enum RecoveryPointTierType {
      */
     @JsonCreator
     public static RecoveryPointTierType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RecoveryPointTierType[] items = RecoveryPointTierType.values();
         for (RecoveryPointTierType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum RecoveryPointTierType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

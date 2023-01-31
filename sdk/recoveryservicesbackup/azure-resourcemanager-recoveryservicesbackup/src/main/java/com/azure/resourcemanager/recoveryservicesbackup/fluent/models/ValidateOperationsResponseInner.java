@@ -17,6 +17,10 @@ public final class ValidateOperationsResponseInner {
     @JsonProperty(value = "validateOperationResponse")
     private ValidateOperationResponse validateOperationResponse;
 
+    /** Creates an instance of ValidateOperationsResponseInner class. */
+    public ValidateOperationsResponseInner() {
+    }
+
     /**
      * Get the validateOperationResponse property: Base class for validate operation response.
      *

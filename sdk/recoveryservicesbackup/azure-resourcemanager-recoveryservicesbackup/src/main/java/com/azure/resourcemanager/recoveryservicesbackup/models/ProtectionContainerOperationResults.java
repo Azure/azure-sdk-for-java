@@ -17,22 +17,6 @@ public interface ProtectionContainerOperationResults {
      * @param fabricName Fabric name associated with the container.
      * @param containerName Container name whose information should be fetched.
      * @param operationId Operation ID which represents the operation whose result needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items.
-     */
-    ProtectionContainerResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId);
-
-    /**
-     * Fetches the result of any operation on the container.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Container name whose information should be fetched.
-     * @param operationId Operation ID which represents the operation whose result needs to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,4 +30,20 @@ public interface ProtectionContainerOperationResults {
         String containerName,
         String operationId,
         Context context);
+
+    /**
+     * Fetches the result of any operation on the container.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Container name whose information should be fetched.
+     * @param operationId Operation ID which represents the operation whose result needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for container with backup items.
+     */
+    ProtectionContainerResource get(
+        String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId);
 }

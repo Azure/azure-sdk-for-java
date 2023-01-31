@@ -10,12 +10,17 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -23,21 +28,27 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
+    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
+
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
     private Scheduler scheduler;
@@ -47,13 +58,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * @param cosmosContainer existing client.
      */
     public ChangeFeedContextClientImpl(CosmosAsyncContainer cosmosContainer) {
-        if (cosmosContainer == null) {
-            throw new IllegalArgumentException("cosmosContainer");
-        }
-
-        this.cosmosContainer = cosmosContainer;
-        this.documentClient = getContextClient(cosmosContainer);
-        this.scheduler = Schedulers.boundedElastic();
+        this(cosmosContainer, Schedulers.boundedElastic());
     }
 
     /**
@@ -62,9 +67,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * @param scheduler the RX Java scheduler to observe on.
      */
     public ChangeFeedContextClientImpl(CosmosAsyncContainer cosmosContainer, Scheduler scheduler) {
-        if (cosmosContainer == null) {
-            throw new IllegalArgumentException("cosmosContainer");
-        }
+        checkNotNull(cosmosContainer, "Argument 'cosmosContainer' can not be null");
 
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);
@@ -80,6 +83,33 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
+    }
+
+    @Override
+    public Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range) {
+        AsyncDocumentClient clientWrapper =
+                CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosContainer.getDatabase());
+
+        return clientWrapper
+                .getCollectionCache()
+                .resolveByNameAsync(null, BridgeInternal.extractContainerSelfLink(this.cosmosContainer), null)
+                .flatMap(collection -> {
+                    return clientWrapper.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
+                            null,
+                            collection.getResourceId(),
+                            range,
+                            true,
+                            null);
+                })
+                .flatMap(pkRangesValueHolder -> {
+                    if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {
+                        logger.warn("There are no overlapping ranges found for range {}", range);
+                        return Mono.just(new ArrayList<PartitionKeyRange>());
+                    }
+
+                    return Mono.just(pkRangesValueHolder.v);
+                })
+                .publishOn(this.scheduler);
     }
 
     @Override
@@ -126,7 +156,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                             return BridgeInternal.toFeedResponsePage(
                                 results,
                                 response.getResponseHeaders(),
-                                false);
+                                false,
+                                response.getCosmosDiagnostics());
                         });
                 });
         return feedResponseFlux.publishOn(this.scheduler);
@@ -160,6 +191,17 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     public Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
                                                        CosmosItemRequestOptions options) {
         return cosmosContainer.deleteItem(itemId, partitionKey, options)
+            .publishOn(this.scheduler);
+    }
+
+    @Override
+    public Flux<CosmosBulkOperationResponse<Object>> deleteAllItems(List<CosmosItemIdentity> cosmosItemIdentities) {
+        List<CosmosItemOperation> operations = new ArrayList<>();
+        for (CosmosItemIdentity cosmosItemIdentity : cosmosItemIdentities) {
+            operations.add(CosmosBulkOperations.getDeleteItemOperation(cosmosItemIdentity.getId(), cosmosItemIdentity.getPartitionKey()));
+        }
+
+        return cosmosContainer.executeBulkOperations(Flux.fromIterable(operations))
             .publishOn(this.scheduler);
     }
 

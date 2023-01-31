@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/timezone/byCoordinates/json?api-version=1.0&options=all&query=47.0%2C-122.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaTimezoneSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "1130",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: DC41CC1EDAFE451D9C1E05C68F58B9A1 Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:54Z",
+      "Body" : "{\"Version\":\"2022d\",\"ReferenceUtcTimestamp\":\"2022-09-29T21:00:54.2527913Z\",\"TimeZones\":[{\"Id\":\"America/Los_Angeles\",\"Aliases\":[\"US/Pacific\"],\"Countries\":[{\"Name\":\"United States\",\"Code\":\"US\"}],\"Names\":{\"ISO6391LanguageCode\":\"en\",\"Generic\":\"Pacific Time\",\"Standard\":\"Pacific Standard Time\",\"Daylight\":\"Pacific Daylight Time\"},\"ReferenceTime\":{\"Tag\":\"PDT\",\"StandardOffset\":\"-08:00:00\",\"DaylightSavings\":\"01:00:00\",\"WallTime\":\"2022-09-29T14:00:54.2527913-07:00\",\"PosixTzValidYear\":2022,\"PosixTz\":\"PST+8PDT,M3.2.0,M11.1.0\",\"Sunrise\":\"2022-09-29T07:03:57.2608812-07:00\",\"Sunset\":\"2022-09-29T18:52:51.5508123-07:00\"},\"RepresentativePoint\":{\"Latitude\":34.05222222222222,\"Longitude\":-118.24277777777777},\"TimeTransitions\":[{\"Tag\":\"PDT\",\"StandardOffset\":\"-08:00:00\",\"DaylightSavings\":\"01:00:00\",\"UtcStart\":\"2022-03-13T10:00:00Z\",\"UtcEnd\":\"2022-11-06T09:00:00Z\"},{\"Tag\":\"PST\",\"StandardOffset\":\"-08:00:00\",\"DaylightSavings\":\"00:00:00\",\"UtcStart\":\"2022-11-06T09:00:00Z\",\"UtcEnd\":\"2023-03-12T10:00:00Z\"},{\"Tag\":\"PDT\",\"StandardOffset\":\"-08:00:00\",\"DaylightSavings\":\"01:00:00\",\"UtcStart\":\"2023-03-12T10:00:00Z\",\"UtcEnd\":\"2023-11-05T09:00:00Z\"}]}]}",
+      "Date" : "Thu, 29 Sep 2022 21:00:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

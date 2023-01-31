@@ -26,6 +26,10 @@ public final class OrcSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private OrcWriteSettings formatSettings;
 
+    /** Creates an instance of OrcSink class. */
+    public OrcSink() {
+    }
+
     /**
      * Get the storeSettings property: ORC store settings.
      *

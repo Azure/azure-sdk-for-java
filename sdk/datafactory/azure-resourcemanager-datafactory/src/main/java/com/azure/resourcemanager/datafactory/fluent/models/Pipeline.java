@@ -75,6 +75,10 @@ public final class Pipeline {
     @JsonProperty(value = "policy")
     private PipelinePolicy policy;
 
+    /** Creates an instance of Pipeline class. */
+    public Pipeline() {
+    }
+
     /**
      * Get the description property: The description of the pipeline.
      *

@@ -56,7 +56,7 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ServiceTagInformationsService {
+    public interface ServiceTagInformationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/serviceTagDetails")
         @ExpectedResponses({200})
@@ -114,7 +114,7 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -174,7 +174,7 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMs Redeploy. */
 public final class VirtualMachineScaleSetVMsRedeploySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Redeploy_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Redeploy_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Redeploy_MaximumSet_Gen.
@@ -23,11 +21,15 @@ public final class VirtualMachineScaleSetVMsRedeploySamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .redeploy("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .redeploy(
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Redeploy_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Redeploy_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Redeploy_MinimumSet_Gen.
@@ -41,6 +43,6 @@ public final class VirtualMachineScaleSetVMsRedeploySamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .redeploy("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .redeploy("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

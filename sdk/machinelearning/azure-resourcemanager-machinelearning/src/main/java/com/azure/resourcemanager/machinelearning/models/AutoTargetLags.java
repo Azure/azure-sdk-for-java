@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Auto")
 @Immutable
 public final class AutoTargetLags extends TargetLags {
+    /** Creates an instance of AutoTargetLags class. */
+    public AutoTargetLags() {
+    }
+
     /**
      * Validates the instance.
      *

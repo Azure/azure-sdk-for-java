@@ -73,7 +73,7 @@ public final class DiskEncryptionSetsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface DiskEncryptionSetsService {
+    public interface DiskEncryptionSetsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -250,7 +250,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -315,7 +315,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -410,7 +410,9 @@ public final class DiskEncryptionSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
+            .getSyncPoller();
     }
 
     /**
@@ -434,7 +436,8 @@ public final class DiskEncryptionSetsClientImpl
         String diskEncryptionSetName,
         DiskEncryptionSetInner diskEncryptionSet,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
             .getSyncPoller();
     }
 
@@ -573,7 +576,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -638,7 +641,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -733,7 +736,7 @@ public final class DiskEncryptionSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
-        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).getSyncPoller();
     }
 
     /**
@@ -757,7 +760,9 @@ public final class DiskEncryptionSetsClientImpl
         String diskEncryptionSetName,
         DiskEncryptionSetUpdate diskEncryptionSet,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet, context)
+            .getSyncPoller();
     }
 
     /**
@@ -888,7 +893,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -942,7 +947,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -982,23 +987,6 @@ public final class DiskEncryptionSetsClientImpl
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
      *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk encryption set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskEncryptionSetInner getByResourceGroup(String resourceGroupName, String diskEncryptionSetName) {
-        return getByResourceGroupAsync(resourceGroupName, diskEncryptionSetName).block();
-    }
-
-    /**
-     * Gets information about a disk encryption set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
-     *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1009,6 +997,23 @@ public final class DiskEncryptionSetsClientImpl
     public Response<DiskEncryptionSetInner> getByResourceGroupWithResponse(
         String resourceGroupName, String diskEncryptionSetName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, diskEncryptionSetName, context).block();
+    }
+
+    /**
+     * Gets information about a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
+     *     maximum name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a disk encryption set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DiskEncryptionSetInner getByResourceGroup(String resourceGroupName, String diskEncryptionSetName) {
+        return getByResourceGroupWithResponse(resourceGroupName, diskEncryptionSetName, Context.NONE).getValue();
     }
 
     /**
@@ -1046,7 +1051,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1099,7 +1104,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1172,7 +1177,7 @@ public final class DiskEncryptionSetsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName) {
-        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskEncryptionSetName).getSyncPoller();
     }
 
     /**
@@ -1191,7 +1196,7 @@ public final class DiskEncryptionSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskEncryptionSetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskEncryptionSetName, context).getSyncPoller();
     }
 
     /**
@@ -1294,7 +1299,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1349,7 +1354,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1455,7 +1460,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1498,7 +1503,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1603,7 +1608,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1666,7 +1671,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-02";
+        final String apiVersion = "2022-07-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

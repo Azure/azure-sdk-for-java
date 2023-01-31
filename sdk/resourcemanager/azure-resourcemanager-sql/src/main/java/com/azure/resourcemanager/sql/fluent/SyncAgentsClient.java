@@ -23,6 +23,49 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in SyncAgentsClient. */
 public interface SyncAgentsClient {
     /**
+     * Lists sync agents in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server on which the sync agent is hosted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sync agents as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SyncAgentInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Lists sync agents in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server on which the sync agent is hosted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sync agents as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName);
+
+    /**
+     * Lists sync agents in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server on which the sync agent is hosted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sync agents as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName, Context context);
+
+    /**
      * Gets a sync agent.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -60,21 +103,6 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncAgentInner get(String resourceGroupName, String serverName, String syncAgentName);
-
-    /**
-     * Gets a sync agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server on which the sync agent is hosted.
-     * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,6 +112,21 @@ public interface SyncAgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SyncAgentInner> getWithResponse(
         String resourceGroupName, String serverName, String syncAgentName, Context context);
+
+    /**
+     * Gets a sync agent.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server on which the sync agent is hosted.
+     * @param syncAgentName The name of the sync agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sync agent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncAgentInner get(String resourceGroupName, String serverName, String syncAgentName);
 
     /**
      * Creates or updates a sync agent.
@@ -315,49 +358,6 @@ public interface SyncAgentsClient {
     void delete(String resourceGroupName, String serverName, String syncAgentName, Context context);
 
     /**
-     * Lists sync agents in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server on which the sync agent is hosted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agents as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SyncAgentInner> listByServerAsync(String resourceGroupName, String serverName);
-
-    /**
-     * Lists sync agents in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server on which the sync agent is hosted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agents as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * Lists sync agents in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server on which the sync agent is hosted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync agents as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SyncAgentInner> listByServer(String resourceGroupName, String serverName, Context context);
-
-    /**
      * Generates a sync agent key.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -397,21 +397,6 @@ public interface SyncAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server on which the sync agent is hosted.
      * @param syncAgentName The name of the sync agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an Azure SQL Database sync agent key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncAgentKeyPropertiesInner generateKey(String resourceGroupName, String serverName, String syncAgentName);
-
-    /**
-     * Generates a sync agent key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server on which the sync agent is hosted.
-     * @param syncAgentName The name of the sync agent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -421,6 +406,21 @@ public interface SyncAgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SyncAgentKeyPropertiesInner> generateKeyWithResponse(
         String resourceGroupName, String serverName, String syncAgentName, Context context);
+
+    /**
+     * Generates a sync agent key.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server on which the sync agent is hosted.
+     * @param syncAgentName The name of the sync agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an Azure SQL Database sync agent key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncAgentKeyPropertiesInner generateKey(String resourceGroupName, String serverName, String syncAgentName);
 
     /**
      * Lists databases linked to a sync agent.

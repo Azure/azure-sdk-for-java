@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedClusters GetUpgradeProfile. */
 public final class ManagedClustersGetUpgradeProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-07-01/examples/ManagedClustersGetUpgradeProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/ManagedClustersGetUpgradeProfile.json
      */
     /**
      * Sample code: Get Upgrade Profile for Managed Cluster.
@@ -22,6 +20,6 @@ public final class ManagedClustersGetUpgradeProfileSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .getUpgradeProfileWithResponse("rg1", "clustername1", Context.NONE);
+            .getUpgradeProfileWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

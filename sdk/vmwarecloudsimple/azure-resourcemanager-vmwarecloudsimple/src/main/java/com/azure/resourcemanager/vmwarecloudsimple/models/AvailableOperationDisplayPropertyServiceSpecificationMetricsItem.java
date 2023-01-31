@@ -6,16 +6,11 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Available operation display property service specification metrics item. */
 @Fluent
 public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsItem {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
-
     /*
      * Metric's aggregation type for e.g. (Average, Total)
      */
@@ -45,6 +40,10 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
      */
     @JsonProperty(value = "unit", required = true)
     private String unit;
+
+    /** Creates an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsItem class. */
+    public AvailableOperationDisplayPropertyServiceSpecificationMetricsItem() {
+    }
 
     /**
      * Get the aggregationType property: Metric's aggregation type for e.g. (Average, Total).
@@ -155,39 +154,42 @@ public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsI
      */
     public void validate() {
         if (aggregationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aggregationType in model"
                             + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (displayDescription() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayDescription in model"
                             + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model"
                             + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model"
                             + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
         if (unit() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property unit in model"
                             + " AvailableOperationDisplayPropertyServiceSpecificationMetricsItem"));
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
 }

@@ -15,9 +15,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -1263,18 +1263,22 @@ public class BlobAsyncClientBase {
             requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context)
+        // The first range should eagerly convert headers as they'll be used to create response types.
+        Context firstRangeContext = context == null ? new Context("azure-eagerly-convert-headers", true)
+            : context.addData("azure-eagerly-convert-headers", true);
+
+        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
+            firstRangeContext)
             .map(response -> {
-                String eTag = ModelHelper.getETag(response.getHeaders());
-                BlobsDownloadHeaders blobsDownloadHeaders =
-                    ModelHelper.transformBlobDownloadHeaders(response.getHeaders());
+                BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
+                String eTag = blobsDownloadHeaders.getETag();
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
                     blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
 
                 /*
-                    If the customer did not specify a count, they are reading to the end of the blob. Extract this value
-                    from the response for better book-keeping towards the end.
-                */
+                 * If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+                 * from the response for better book-keeping towards the end.
+                 */
                 long finalCount;
                 long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
@@ -1293,14 +1297,14 @@ public class BlobAsyncClientBase {
 
                     long newCount = finalCount - offset;
 
-                        /*
-                         It is possible that the network stream will throw an error after emitting all data but before
-                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
-                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
-                         of the stream.
-                         */
+                    /*
+                     * It's possible that the network stream will throw an error after emitting all data but before
+                     * completing. Issuing a retry at this stage would leave the download in a bad state with
+                     * incorrect count and offset values. Because we have read the intended amount of data, we can
+                     * ignore the error at the end of the stream.
+                     */
                     if (newCount == 0) {
-                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network "
                             + "but before stream signaled completion. Returning success as all data was downloaded. "
                             + "Exception message: " + throwable.getMessage());
                         return Mono.empty();
@@ -1313,16 +1317,16 @@ public class BlobAsyncClientBase {
                         return Mono.error(e);
                     }
                 };
-                return BlobDownloadAsyncResponseConstructorProxy.create(
-                    response, onDownloadErrorResume, finalOptions);
+
+                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
             });
     }
 
-    private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions,
-        String eTag, Boolean getMD5, Context context) {
-        return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), eTag,
+    private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,
+        Boolean getMD5, Context context) {
+        return azureBlobStorage.getBlobs().downloadNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot,
+            versionId, null, range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null,
+            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             customerProvidedKey, context);
     }
@@ -2628,7 +2632,7 @@ public class BlobAsyncClientBase {
                 new BlobQueryReader(response.getValue(), queryOptions.getProgressConsumer(),
                     queryOptions.getErrorConsumer())
                     .read(),
-                ModelHelper.transformQueryHeaders(response.getHeaders())));
+                ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders())));
     }
 
     /**

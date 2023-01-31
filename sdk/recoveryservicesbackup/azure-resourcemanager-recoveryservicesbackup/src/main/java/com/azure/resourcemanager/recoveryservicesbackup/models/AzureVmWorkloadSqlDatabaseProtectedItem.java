@@ -16,11 +16,8 @@ import java.util.Map;
 @JsonTypeName("AzureVmWorkloadSQLDatabase")
 @Fluent
 public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorkloadProtectedItem {
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withFriendlyName(String friendlyName) {
-        super.withFriendlyName(friendlyName);
-        return this;
+    /** Creates an instance of AzureVmWorkloadSqlDatabaseProtectedItem class. */
+    public AzureVmWorkloadSqlDatabaseProtectedItem() {
     }
 
     /** {@inheritDoc} */
@@ -41,13 +38,6 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     @Override
     public AzureVmWorkloadSqlDatabaseProtectedItem withParentType(String parentType) {
         super.withParentType(parentType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withProtectionStatus(String protectionStatus) {
-        super.withProtectionStatus(protectionStatus);
         return this;
     }
 
@@ -106,20 +96,6 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     @Override
     public AzureVmWorkloadSqlDatabaseProtectedItem withKpisHealths(Map<String, KpiResourceHealthDetails> kpisHealths) {
         super.withKpisHealths(kpisHealths);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
         return this;
     }
 
@@ -221,6 +197,13 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     @Override
     public AzureVmWorkloadSqlDatabaseProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSqlDatabaseProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

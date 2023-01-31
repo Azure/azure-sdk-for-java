@@ -40,6 +40,10 @@ public final class AzureFunctionActivityTypeProperties {
     @JsonProperty(value = "body")
     private Object body;
 
+    /** Creates an instance of AzureFunctionActivityTypeProperties class. */
+    public AzureFunctionActivityTypeProperties() {
+    }
+
     /**
      * Get the method property: Rest API method for target endpoint.
      *

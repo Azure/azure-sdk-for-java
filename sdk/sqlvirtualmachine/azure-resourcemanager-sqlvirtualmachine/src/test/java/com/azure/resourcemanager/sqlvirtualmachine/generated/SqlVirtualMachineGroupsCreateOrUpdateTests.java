@@ -36,7 +36,7 @@ public final class SqlVirtualMachineGroupsCreateOrUpdateTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"sqlImageOffer\":\"aboekqv\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"jsflhhcaalnjix\",\"ouPath\":\"xyawj\",\"clusterBootstrapAccount\":\"aq\",\"clusterOperatorAccount\":\"lyjpk\",\"sqlServiceAccount\":\"dzyexznelixh\",\"fileShareWitnessPath\":\"ztfolhbnxk\",\"storageAccountUrl\":\"laulppg\",\"storageAccountPrimaryKey\":\"tpnapnyiropuhpig\",\"clusterSubnetType\":\"MultiSubnet\"}},\"location\":\"lgqg\",\"tags\":{\"zhxgktrmgucn\":\"medjvcslynqwwncw\",\"llwptfdy\":\"pkteo\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"sqlImageOffer\":\"aboekqv\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"jsflhhcaalnjix\",\"ouPath\":\"xyawj\",\"clusterBootstrapAccount\":\"aq\",\"clusterOperatorAccount\":\"lyjpk\",\"sqlServiceAccount\":\"dzyexznelixh\",\"fileShareWitnessPath\":\"ztfolhbnxk\",\"storageAccountUrl\":\"laulppg\",\"storageAccountPrimaryKey\":\"fakeStorageAccountPrimaryKeyPlaceholder\",\"clusterSubnetType\":\"MultiSubnet\"}},\"location\":\"lgqg\",\"tags\":{\"zhxgktrmgucn\":\"medjvcslynqwwncw\",\"llwptfdy\":\"pkteo\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -82,7 +82,7 @@ public final class SqlVirtualMachineGroupsCreateOrUpdateTests {
                         .withSqlServiceAccount("jcbpwxqpsrknft")
                         .withFileShareWitnessPath("vriuhprwmdyvx")
                         .withStorageAccountUrl("ayriwwroyqbexrm")
-                        .withStorageAccountPrimaryKey("ibycno")
+                        .withStorageAccountPrimaryKey("fakeStorageAccountPrimaryKeyPlaceholder")
                         .withClusterSubnetType(ClusterSubnetType.SINGLE_SUBNET))
                 .create();
 
@@ -97,7 +97,7 @@ public final class SqlVirtualMachineGroupsCreateOrUpdateTests {
         Assertions.assertEquals("dzyexznelixh", response.wsfcDomainProfile().sqlServiceAccount());
         Assertions.assertEquals("ztfolhbnxk", response.wsfcDomainProfile().fileShareWitnessPath());
         Assertions.assertEquals("laulppg", response.wsfcDomainProfile().storageAccountUrl());
-        Assertions.assertEquals("tpnapnyiropuhpig", response.wsfcDomainProfile().storageAccountPrimaryKey());
+        Assertions.assertEquals("fakeStorageAccountPrimaryKeyPlaceholder", response.wsfcDomainProfile().storageAccountPrimaryKey());
         Assertions.assertEquals(ClusterSubnetType.MULTI_SUBNET, response.wsfcDomainProfile().clusterSubnetType());
     }
 

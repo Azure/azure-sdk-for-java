@@ -23,6 +23,10 @@ public final class RunCommandInputParameter {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of RunCommandInputParameter class. */
+    public RunCommandInputParameter() {
+    }
+
     /**
      * Get the name property: The run command parameter name.
      *

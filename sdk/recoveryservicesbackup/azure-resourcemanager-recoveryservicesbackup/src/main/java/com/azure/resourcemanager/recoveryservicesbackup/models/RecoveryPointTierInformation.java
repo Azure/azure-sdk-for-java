@@ -31,6 +31,10 @@ public class RecoveryPointTierInformation {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedInfo;
 
+    /** Creates an instance of RecoveryPointTierInformation class. */
+    public RecoveryPointTierInformation() {
+    }
+
     /**
      * Get the type property: Recovery point tier type.
      *

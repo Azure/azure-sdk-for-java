@@ -23,12 +23,12 @@ public final class ServerConfigurationsManagementSettingsTests {
         ServerConfigurationsManagementSettings model =
             BinaryData
                 .fromString(
-                    "{\"sqlConnectivityUpdateSettings\":{\"connectivityType\":\"PRIVATE\",\"port\":731084227,\"sqlAuthUpdateUserName\":\"pewr\",\"sqlAuthUpdatePassword\":\"mwvvjektcxsenhw\"},\"sqlWorkloadTypeUpdateSettings\":{\"sqlWorkloadType\":\"DW\"},\"sqlStorageUpdateSettings\":{\"diskCount\":842863771,\"startingDeviceId\":2007426179,\"diskConfigurationType\":\"ADD\"},\"additionalFeaturesServerConfigurations\":{\"isRServicesEnabled\":false},\"sqlInstanceSettings\":{\"collation\":\"iqylihkaetck\",\"maxDop\":385263599,\"isOptimizeForAdHocWorkloadsEnabled\":false,\"minServerMemoryMB\":533172139,\"maxServerMemoryMB\":1960016252,\"isLpimEnabled\":true,\"isIfiEnabled\":true}}")
+                    "{\"sqlConnectivityUpdateSettings\":{\"connectivityType\":\"PRIVATE\",\"port\":731084227,\"sqlAuthUpdateUserName\":\"fakeSqlAuthUpdateUsernamePlaceholder\",\"sqlAuthUpdatePassword\":\"fakeSqlAuthUpdatePasswordPlaceholder\"},\"sqlWorkloadTypeUpdateSettings\":{\"sqlWorkloadType\":\"DW\"},\"sqlStorageUpdateSettings\":{\"diskCount\":842863771,\"startingDeviceId\":2007426179,\"diskConfigurationType\":\"ADD\"},\"additionalFeaturesServerConfigurations\":{\"isRServicesEnabled\":false},\"sqlInstanceSettings\":{\"collation\":\"iqylihkaetck\",\"maxDop\":385263599,\"isOptimizeForAdHocWorkloadsEnabled\":false,\"minServerMemoryMB\":533172139,\"maxServerMemoryMB\":1960016252,\"isLpimEnabled\":true,\"isIfiEnabled\":true}}")
                 .toObject(ServerConfigurationsManagementSettings.class);
         Assertions.assertEquals(ConnectivityType.PRIVATE, model.sqlConnectivityUpdateSettings().connectivityType());
         Assertions.assertEquals(731084227, model.sqlConnectivityUpdateSettings().port());
-        Assertions.assertEquals("pewr", model.sqlConnectivityUpdateSettings().sqlAuthUpdateUsername());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.sqlConnectivityUpdateSettings().sqlAuthUpdatePassword());
+        Assertions.assertEquals("fakeSqlAuthUpdateUsernamePlaceholder", model.sqlConnectivityUpdateSettings().sqlAuthUpdateUsername());
+        Assertions.assertEquals("fakeSqlAuthUpdatePasswordPlaceholder", model.sqlConnectivityUpdateSettings().sqlAuthUpdatePassword());
         Assertions.assertEquals(SqlWorkloadType.DW, model.sqlWorkloadTypeUpdateSettings().sqlWorkloadType());
         Assertions.assertEquals(842863771, model.sqlStorageUpdateSettings().diskCount());
         Assertions.assertEquals(2007426179, model.sqlStorageUpdateSettings().startingDeviceId());
@@ -51,8 +51,8 @@ public final class ServerConfigurationsManagementSettingsTests {
                     new SqlConnectivityUpdateSettings()
                         .withConnectivityType(ConnectivityType.PRIVATE)
                         .withPort(731084227)
-                        .withSqlAuthUpdateUsername("pewr")
-                        .withSqlAuthUpdatePassword("mwvvjektcxsenhw"))
+                        .withSqlAuthUpdateUsername("fakeSqlAuthUpdateUsernamePlaceholder")
+                        .withSqlAuthUpdatePassword("fakeSqlAuthUpdatePasswordPlaceholder"))
                 .withSqlWorkloadTypeUpdateSettings(
                     new SqlWorkloadTypeUpdateSettings().withSqlWorkloadType(SqlWorkloadType.DW))
                 .withSqlStorageUpdateSettings(
@@ -74,8 +74,8 @@ public final class ServerConfigurationsManagementSettingsTests {
         model = BinaryData.fromObject(model).toObject(ServerConfigurationsManagementSettings.class);
         Assertions.assertEquals(ConnectivityType.PRIVATE, model.sqlConnectivityUpdateSettings().connectivityType());
         Assertions.assertEquals(731084227, model.sqlConnectivityUpdateSettings().port());
-        Assertions.assertEquals("pewr", model.sqlConnectivityUpdateSettings().sqlAuthUpdateUsername());
-        Assertions.assertEquals("mwvvjektcxsenhw", model.sqlConnectivityUpdateSettings().sqlAuthUpdatePassword());
+        Assertions.assertEquals("fakeSqlAuthUpdateUsernamePlaceholder", model.sqlConnectivityUpdateSettings().sqlAuthUpdateUsername());
+        Assertions.assertEquals("fakeSqlAuthUpdatePasswordPlaceholder", model.sqlConnectivityUpdateSettings().sqlAuthUpdatePassword());
         Assertions.assertEquals(SqlWorkloadType.DW, model.sqlWorkloadTypeUpdateSettings().sqlWorkloadType());
         Assertions.assertEquals(842863771, model.sqlStorageUpdateSettings().diskCount());
         Assertions.assertEquals(2007426179, model.sqlStorageUpdateSettings().startingDeviceId());

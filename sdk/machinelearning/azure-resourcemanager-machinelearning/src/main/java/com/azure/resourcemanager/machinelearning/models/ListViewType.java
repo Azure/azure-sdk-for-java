@@ -20,6 +20,15 @@ public final class ListViewType extends ExpandableStringEnum<ListViewType> {
     public static final ListViewType ALL = fromString("All");
 
     /**
+     * Creates a new instance of ListViewType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ListViewType() {
+    }
+
+    /**
      * Creates or finds a ListViewType from its string representation.
      *
      * @param name a name to look for.

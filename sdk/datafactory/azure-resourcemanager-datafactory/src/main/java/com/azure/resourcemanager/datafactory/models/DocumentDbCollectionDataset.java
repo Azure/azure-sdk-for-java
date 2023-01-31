@@ -25,6 +25,10 @@ public final class DocumentDbCollectionDataset extends Dataset {
     private DocumentDbCollectionDatasetTypeProperties innerTypeProperties =
         new DocumentDbCollectionDatasetTypeProperties();
 
+    /** Creates an instance of DocumentDbCollectionDataset class. */
+    public DocumentDbCollectionDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: DocumentDB Collection dataset properties.
      *

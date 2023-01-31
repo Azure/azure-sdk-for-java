@@ -22,8 +22,7 @@ public final class MicrosoftGraphFreeBusyError {
     private String message;
 
     /*
-     * The response code from querying for the availability of the user,
-     * distribution list, or resource.
+     * The response code from querying for the availability of the user, distribution list, or resource.
      */
     @JsonProperty(value = "responseCode")
     private String responseCode;
@@ -32,6 +31,10 @@ public final class MicrosoftGraphFreeBusyError {
      * freeBusyError
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFreeBusyError class. */
+    public MicrosoftGraphFreeBusyError() {
+    }
 
     /**
      * Get the message property: Describes the error.

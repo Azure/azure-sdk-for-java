@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AdminRules Get. */
 public final class AdminRulesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerDefaultAdminRuleGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerDefaultAdminRuleGet.json
      */
     /**
      * Sample code: Gets security default admin rule.
@@ -32,7 +32,7 @@ public final class AdminRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerAdminRuleGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerAdminRuleGet.json
      */
     /**
      * Sample code: Gets security admin rule.

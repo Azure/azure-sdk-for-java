@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGateways ListAvailableSslOptions. */
 public final class ApplicationGatewaysListAvailableSslOptionsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ApplicationGatewayAvailableSslOptionsGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationGatewayAvailableSslOptionsGet.json
      */
     /**
      * Sample code: Get Available Ssl Options.

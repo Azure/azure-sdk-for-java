@@ -3,14 +3,13 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.ContentsImpl;
-import com.azure.communication.callautomation.implementation.ServerCallsImpl;
+import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
-import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
@@ -22,6 +21,7 @@ import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -64,17 +64,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  * CallRecordingAsync.
  */
 public class CallRecordingAsync {
-    private final ServerCallsImpl serverCallsInternal;
-    private final ContentsImpl contentsInternal;
+    private final CallRecordingsImpl callRecordingsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
 
-    CallRecordingAsync(ServerCallsImpl serverCallsInternal, ContentsImpl contentsInternal,
-                       ContentDownloader contentDownloader, HttpPipeline httpPipelineInternal, String resourceEndpoint) {
-        this.serverCallsInternal = serverCallsInternal;
-        this.contentsInternal = contentsInternal;
+    CallRecordingAsync(CallRecordingsImpl callRecordingsInternal, ContentDownloader contentDownloader,
+                       HttpPipeline httpPipelineInternal, String resourceEndpoint) {
+        this.callRecordingsInternal = callRecordingsInternal;
         this.contentDownloader = contentDownloader;
         this.httpPipelineInternal = httpPipelineInternal;
         this.resourceEndpoint = resourceEndpoint;
@@ -120,10 +118,16 @@ public class CallRecordingAsync {
             }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
+            options.setRepeatabilityHeaders(handleApiIdempotency(options.getRepeatabilityHeaders()));
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return contentsInternal
-                    .recordingWithResponseAsync(request, null, null, contextValue)
+                return callRecordingsInternal
+                    .startRecordingWithResponseAsync(
+                        request,
+                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                        contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
@@ -164,14 +168,11 @@ public class CallRecordingAsync {
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }
-        if (options.getChannelAffinity() != null) {
-            List<ChannelAffinityInternal> channelAffinityInternal = options.getChannelAffinity()
-                .stream()
-                .map(c -> new ChannelAffinityInternal()
-                    .setChannel(c.getChannel())
-                    .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())))
+        if (options.getAudioChannelParticipantOrdering() != null) {
+            List<CommunicationIdentifierModel> audioChannelParticipantOrdering = options.getAudioChannelParticipantOrdering()
+                .stream().map(CommunicationIdentifierConverter::convert)
                 .collect(Collectors.toList());
-            request.setChannelAffinity(channelAffinityInternal);
+            request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
         }
 
         return request;
@@ -207,7 +208,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .stopRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -246,7 +247,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .pauseRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -285,7 +286,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .resumeRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -324,7 +325,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
@@ -568,4 +569,15 @@ public class CallRecordingAsync {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
     }
+
+    //region helper functions
+    /***
+     * Make sure repeatability headers of the request are correctly set.
+     *
+     * @return a verified RepeatabilityHeaders object.
+     */
+    private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
+        return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
+    }
+    //endregion
 }

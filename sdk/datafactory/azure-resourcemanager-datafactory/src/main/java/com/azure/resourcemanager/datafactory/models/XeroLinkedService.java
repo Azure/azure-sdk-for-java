@@ -24,6 +24,10 @@ public final class XeroLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private XeroLinkedServiceTypeProperties innerTypeProperties = new XeroLinkedServiceTypeProperties();
 
+    /** Creates an instance of XeroLinkedService class. */
+    public XeroLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Xero Service linked service properties.
      *

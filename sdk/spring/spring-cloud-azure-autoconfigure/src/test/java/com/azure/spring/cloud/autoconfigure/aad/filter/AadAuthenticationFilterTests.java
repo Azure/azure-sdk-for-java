@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadCredentialProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadProfileProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -61,7 +62,8 @@ public class AadAuthenticationFilterTests {
         filter = new AadAuthenticationFilter(
             properties,
             mock(AadAuthorizationServerEndpoints.class),
-            userPrincipalManager
+            userPrincipalManager,
+            new RestTemplateBuilder()
         );
     }
 

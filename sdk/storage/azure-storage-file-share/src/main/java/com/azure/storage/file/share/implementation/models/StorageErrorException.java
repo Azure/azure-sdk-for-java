@@ -30,6 +30,7 @@ public final class StorageErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public StorageError getValue() {
         return (StorageError) super.getValue();

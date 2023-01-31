@@ -36,6 +36,10 @@ public final class AzureBlobFSDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of AzureBlobFSDatasetTypeProperties class. */
+    public AzureBlobFSDatasetTypeProperties() {
+    }
+
     /**
      * Get the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
      * with resultType string).

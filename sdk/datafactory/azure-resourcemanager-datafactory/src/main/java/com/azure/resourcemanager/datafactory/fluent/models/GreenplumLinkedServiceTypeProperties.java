@@ -30,6 +30,10 @@ public final class GreenplumLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of GreenplumLinkedServiceTypeProperties class. */
+    public GreenplumLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

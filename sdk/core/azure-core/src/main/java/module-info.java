@@ -11,6 +11,7 @@ module com.azure.core {
     requires transitive com.fasterxml.jackson.databind;
 
     requires com.fasterxml.jackson.dataformat.xml;
+    requires java.xml;
     requires transitive com.fasterxml.jackson.datatype.jsr310;
 
     // public API surface area
@@ -47,6 +48,7 @@ module com.azure.core {
     opens com.azure.core.util to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.util.polling to com.fasterxml.jackson.databind;
+    opens com.azure.core.util.polling.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
@@ -64,4 +66,5 @@ module com.azure.core {
     uses com.azure.core.util.serializer.MemberNameConverterProvider;
     uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.util.metrics.MeterProvider;
+    uses com.azure.core.util.tracing.TracerProvider;
 }

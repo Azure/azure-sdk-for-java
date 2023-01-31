@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Factories Delete. */
 public final class FactoriesDeleteSamples {
     /*
@@ -17,6 +15,9 @@ public final class FactoriesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+        manager
+            .factories()
+            .deleteByResourceGroupWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

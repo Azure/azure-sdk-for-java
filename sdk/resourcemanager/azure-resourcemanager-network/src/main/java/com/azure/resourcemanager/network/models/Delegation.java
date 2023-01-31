@@ -37,6 +37,10 @@ public final class Delegation extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of Delegation class. */
+    public Delegation() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the subnet.
      *

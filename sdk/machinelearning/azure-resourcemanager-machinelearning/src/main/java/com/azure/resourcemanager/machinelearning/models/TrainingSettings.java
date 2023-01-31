@@ -10,7 +10,7 @@ import java.time.Duration;
 
 /** Training related configuration. */
 @Fluent
-public final class TrainingSettings {
+public class TrainingSettings {
     /*
      * Enable recommendation of DNN models.
      */
@@ -42,10 +42,9 @@ public final class TrainingSettings {
     private Boolean enableVoteEnsemble;
 
     /*
-     * During VotingEnsemble and StackEnsemble model generation, multiple
-     * fitted models from the previous child runs are downloaded.
-     * Configure this parameter with a higher value than 300 secs, if more time
-     * is needed.
+     * During VotingEnsemble and StackEnsemble model generation, multiple fitted models from the previous child runs
+     * are downloaded.
+     * Configure this parameter with a higher value than 300 secs, if more time is needed.
      */
     @JsonProperty(value = "ensembleModelDownloadTimeout")
     private Duration ensembleModelDownloadTimeout;
@@ -55,6 +54,10 @@ public final class TrainingSettings {
      */
     @JsonProperty(value = "stackEnsembleSettings")
     private StackEnsembleSettings stackEnsembleSettings;
+
+    /** Creates an instance of TrainingSettings class. */
+    public TrainingSettings() {
+    }
 
     /**
      * Get the enableDnnTraining property: Enable recommendation of DNN models.

@@ -65,7 +65,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ConnectivityConfigurationsService {
+    public interface ConnectivityConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -184,7 +184,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -243,7 +243,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -285,25 +285,6 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Network Connectivity Configuration, specified by the resource group, network manager name, and
-     *     connectivity Configuration name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectivityConfigurationInner get(
-        String resourceGroupName, String networkManagerName, String configurationName) {
-        return getAsync(resourceGroupName, networkManagerName, configurationName).block();
-    }
-
-    /**
-     * Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and
-     * connectivity Configuration name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager connectivity configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -315,6 +296,25 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     public Response<ConnectivityConfigurationInner> getWithResponse(
         String resourceGroupName, String networkManagerName, String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, configurationName, context).block();
+    }
+
+    /**
+     * Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and
+     * connectivity Configuration name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager connectivity configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Network Connectivity Configuration, specified by the resource group, network manager name, and
+     *     connectivity Configuration name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectivityConfigurationInner get(
+        String resourceGroupName, String networkManagerName, String configurationName) {
+        return getWithResponse(resourceGroupName, networkManagerName, configurationName, Context.NONE).getValue();
     }
 
     /**
@@ -369,7 +369,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
         } else {
             connectivityConfiguration.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -442,7 +442,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
         } else {
             connectivityConfiguration.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -490,29 +490,6 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      * @param configurationName The name of the network manager connectivity configuration.
      * @param connectivityConfiguration Parameters supplied to create/update a network manager connectivity
      *     configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network manager connectivity configuration resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectivityConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        ConnectivityConfigurationInner connectivityConfiguration) {
-        return createOrUpdateAsync(resourceGroupName, networkManagerName, configurationName, connectivityConfiguration)
-            .block();
-    }
-
-    /**
-     * Creates/Updates a new network manager connectivity configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager connectivity configuration.
-     * @param connectivityConfiguration Parameters supplied to create/update a network manager connectivity
-     *     configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -529,6 +506,30 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, networkManagerName, configurationName, connectivityConfiguration, context)
             .block();
+    }
+
+    /**
+     * Creates/Updates a new network manager connectivity configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager connectivity configuration.
+     * @param connectivityConfiguration Parameters supplied to create/update a network manager connectivity
+     *     configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the network manager connectivity configuration resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectivityConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String networkManagerName,
+        String configurationName,
+        ConnectivityConfigurationInner connectivityConfiguration) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, networkManagerName, configurationName, connectivityConfiguration, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -572,7 +573,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -633,7 +634,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -681,6 +682,30 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkManagerName, String configurationName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, networkManagerName, configurationName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
+     * connectivity configuration name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager connectivity configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
      *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
@@ -707,8 +732,6 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -716,7 +739,8 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force) {
+        String resourceGroupName, String networkManagerName, String configurationName) {
+        final Boolean force = null;
         return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force).getSyncPoller();
     }
 
@@ -814,24 +838,6 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String networkManagerName, String configurationName, Boolean force) {
-        deleteAsync(resourceGroupName, networkManagerName, configurationName, force).block();
-    }
-
-    /**
-     * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
-     * connectivity configuration name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager connectivity configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,7 +907,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -969,7 +975,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

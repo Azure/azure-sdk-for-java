@@ -11,6 +11,10 @@ import java.util.Map;
 /** The Resource model definition with location property as optional. */
 @Fluent
 public class ResourceWithOptionalLocation extends Resource {
+    /** Creates an instance of ResourceWithOptionalLocation class. */
+    public ResourceWithOptionalLocation() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ResourceWithOptionalLocation withLocation(String location) {

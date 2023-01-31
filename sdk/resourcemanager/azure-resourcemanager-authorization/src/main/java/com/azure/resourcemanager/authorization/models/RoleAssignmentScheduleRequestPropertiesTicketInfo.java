@@ -22,6 +22,10 @@ public final class RoleAssignmentScheduleRequestPropertiesTicketInfo {
     @JsonProperty(value = "ticketSystem")
     private String ticketSystem;
 
+    /** Creates an instance of RoleAssignmentScheduleRequestPropertiesTicketInfo class. */
+    public RoleAssignmentScheduleRequestPropertiesTicketInfo() {
+    }
+
     /**
      * Get the ticketNumber property: Ticket number for the role assignment.
      *

@@ -17,6 +17,10 @@ public final class CloudServiceRoleProfile {
     @JsonProperty(value = "roles")
     private List<CloudServiceRoleProfileProperties> roles;
 
+    /** Creates an instance of CloudServiceRoleProfile class. */
+    public CloudServiceRoleProfile() {
+    }
+
     /**
      * Get the roles property: List of roles for the cloud service.
      *

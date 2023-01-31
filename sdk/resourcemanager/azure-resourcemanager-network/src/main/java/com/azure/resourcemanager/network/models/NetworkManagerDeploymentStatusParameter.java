@@ -29,6 +29,10 @@ public final class NetworkManagerDeploymentStatusParameter {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
+    /** Creates an instance of NetworkManagerDeploymentStatusParameter class. */
+    public NetworkManagerDeploymentStatusParameter() {
+    }
+
     /**
      * Get the regions property: List of locations.
      *

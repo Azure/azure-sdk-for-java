@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.resourcemanager.machinelearning.models.EnvironmentContainerDetails;
+import com.azure.resourcemanager.machinelearning.models.EnvironmentContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for EnvironmentContainers CreateOrUpdate. */
 public final class EnvironmentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/EnvironmentContainer/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/EnvironmentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Environment Container.
@@ -25,7 +25,7 @@ public final class EnvironmentContainersCreateOrUpdateSamples {
             .define("testEnvironment")
             .withExistingWorkspace("testrg123", "testworkspace")
             .withProperties(
-                new EnvironmentContainerDetails()
+                new EnvironmentContainerProperties()
                     .withDescription("string")
                     .withProperties(
                         mapOf("additionalProp1", "string", "additionalProp2", "string", "additionalProp3", "string"))

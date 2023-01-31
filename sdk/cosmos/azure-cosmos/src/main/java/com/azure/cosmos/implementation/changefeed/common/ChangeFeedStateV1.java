@@ -114,6 +114,23 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 new FeedRangeEpkImpl(continuationToken.getRange()));
         }
 
+        this.populateStartFrom(this.startFromSettings, effectiveStartFrom, request);
+    }
+
+    private void populateStartFrom(
+        ChangeFeedStartFromInternal initialStartFrom,
+        ChangeFeedStartFromInternal effectiveStartFrom,
+        RxDocumentServiceRequest request) {
+
+        checkNotNull(initialStartFrom, "Argument 'initialStartFrom' should not be null");
+        checkNotNull(effectiveStartFrom, "Argument 'effectiveStartFromSettings' should not be null");
+        checkNotNull(request, "Argument 'request' should not be null");
+
+        // When a merge happens, the child partition will contain documents ordered by LSN but the _ts/creation time
+        // of the documents may not be sequential. So when reading the changeFeed by LSN, it is possible to encounter documents with lower _ts.
+        // In order to guarantee we always get the documents after customer's point start time, we will need to always pass the start time in the header.
+        // NOTE: the sequence of calling populate request order matters here, as both can try to populate the same header, effective ones will win
+        initialStartFrom.populateRequest(request, this.mode);
         effectiveStartFrom.populateRequest(request, this.mode);
     }
 
@@ -169,11 +186,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             case FULL_FIDELITY:
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.A_IM,
-                    HttpConstants.A_IMHeaderValues.FullFidelityFeed);
-                //  This is the new wire format, which only gets passed for Full Fidelity Change Feed
-                request.getHeaders().put(
-                    HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
-                    HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+                    HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED);
                 request.useGatewayMode = true;
                 // Above, defaulting to Gateway is necessary for Full-Fidelity Change Feed since the Split-handling logic resides within Compute Gateway.
                 // TODO: If and when, this changes, it will be necessary to remove this.

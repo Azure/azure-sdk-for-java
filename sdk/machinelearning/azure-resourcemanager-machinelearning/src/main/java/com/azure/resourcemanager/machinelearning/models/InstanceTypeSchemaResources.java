@@ -26,6 +26,10 @@ public final class InstanceTypeSchemaResources {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> limits;
 
+    /** Creates an instance of InstanceTypeSchemaResources class. */
+    public InstanceTypeSchemaResources() {
+    }
+
     /**
      * Get the requests property: Resource requests for this instance type.
      *

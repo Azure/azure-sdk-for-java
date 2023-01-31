@@ -43,6 +43,10 @@ public final class RunFilterParameters {
     @JsonProperty(value = "orderBy")
     private List<RunQueryOrderBy> orderBy;
 
+    /** Creates an instance of RunFilterParameters class. */
+    public RunFilterParameters() {
+    }
+
     /**
      * Get the continuationToken property: The continuation token for getting the next page of results. Null for first
      * page.

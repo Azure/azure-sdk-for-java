@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class ReverseSearchAddressBatchItemPrivate extends BatchResultItem {
     /*
-     * The result of the query. SearchAddressReverseResponse if the query
-     * completed successfully, ErrorResponse otherwise.
+     * The result of the query. SearchAddressReverseResponse if the query completed successfully, ErrorResponse
+     * otherwise.
      */
     @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private ReverseSearchAddressBatchItemPrivateResponse response;
+
+    /** Creates an instance of ReverseSearchAddressBatchItemPrivate class. */
+    public ReverseSearchAddressBatchItemPrivate() {}
 
     /**
      * Get the response property: The result of the query. SearchAddressReverseResponse if the query completed

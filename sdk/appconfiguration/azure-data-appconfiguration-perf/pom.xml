@@ -32,18 +32,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.32.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.35.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 
@@ -55,7 +55,7 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.10</version> <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <version>0.9.19</version> <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
               <mainClass>${perf.test.mainClass}</mainClass>
               <imageName>${perf.test.imageName}</imageName>
@@ -91,23 +91,13 @@
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-support-netty</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-perf</artifactId>
           <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-perf;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.6.0</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.7.3</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
       </dependencies>
     </profile>

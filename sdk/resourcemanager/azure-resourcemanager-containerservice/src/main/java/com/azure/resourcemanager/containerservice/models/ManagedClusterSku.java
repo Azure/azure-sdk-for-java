@@ -25,6 +25,10 @@ public final class ManagedClusterSku {
     @JsonProperty(value = "tier")
     private ManagedClusterSkuTier tier;
 
+    /** Creates an instance of ManagedClusterSku class. */
+    public ManagedClusterSku() {
+    }
+
     /**
      * Get the name property: The name of a managed cluster SKU.
      *

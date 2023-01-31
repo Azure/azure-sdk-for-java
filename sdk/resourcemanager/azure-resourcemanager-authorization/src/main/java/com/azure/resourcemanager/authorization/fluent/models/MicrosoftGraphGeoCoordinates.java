@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphGeoCoordinates {
     /*
-     * Optional. The altitude (height), in feet,  above sea level for the item.
-     * Read-only.
+     * Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
      */
     @JsonProperty(value = "altitude")
     private Double altitude;
@@ -38,6 +37,10 @@ public final class MicrosoftGraphGeoCoordinates {
      * geoCoordinates
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphGeoCoordinates class. */
+    public MicrosoftGraphGeoCoordinates() {
+    }
 
     /**
      * Get the altitude property: Optional. The altitude (height), in feet, above sea level for the item. Read-only.

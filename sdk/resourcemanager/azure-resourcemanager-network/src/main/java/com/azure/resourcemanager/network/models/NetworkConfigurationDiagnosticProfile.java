@@ -41,6 +41,10 @@ public final class NetworkConfigurationDiagnosticProfile {
     @JsonProperty(value = "destinationPort", required = true)
     private String destinationPort;
 
+    /** Creates an instance of NetworkConfigurationDiagnosticProfile class. */
+    public NetworkConfigurationDiagnosticProfile() {
+    }
+
     /**
      * Get the direction property: The direction of the traffic.
      *

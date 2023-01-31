@@ -18,9 +18,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     /*
-     * A format of yyyy-MM-ddTHH:mm:ssZ of DateTimeOffset indicates the
-     * expiration time of the permission. DateTime.MinValue indicates there is
-     * no expiration set for this permission. Optional.
+     * A format of yyyy-MM-ddTHH:mm:ssZ of DateTimeOffset indicates the expiration time of the permission.
+     * DateTime.MinValue indicates there is no expiration set for this permission. Optional.
      */
     @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
@@ -32,16 +31,14 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     private MicrosoftGraphIdentitySet grantedTo;
 
     /*
-     * For link type permissions, the details of the users to whom permission
-     * was granted. Read-only.
+     * For link type permissions, the details of the users to whom permission was granted. Read-only.
      */
     @JsonProperty(value = "grantedToIdentities")
     private List<MicrosoftGraphIdentitySet> grantedToIdentities;
 
     /*
-     * This indicates whether password is set for this permission, it's only
-     * showing in response. Optional and Read-only and for OneDrive Personal
-     * only.
+     * This indicates whether password is set for this permission, it's only showing in response. Optional and
+     * Read-only and for OneDrive Personal only.
      */
     @JsonProperty(value = "hasPassword")
     private Boolean hasPassword;
@@ -65,15 +62,13 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
     private MicrosoftGraphSharingLink link;
 
     /*
-     * The type of permission, e.g. read. See below for the full list of roles.
-     * Read-only.
+     * The type of permission, e.g. read. See below for the full list of roles. Read-only.
      */
     @JsonProperty(value = "roles")
     private List<String> roles;
 
     /*
-     * A unique token that can be used to access this shared item via the
-     * **shares** API. Read-only.
+     * A unique token that can be used to access this shared item via the **shares** API. Read-only.
      */
     @JsonProperty(value = "shareId")
     private String shareId;
@@ -82,6 +77,10 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
      * permission
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPermission class. */
+    public MicrosoftGraphPermission() {
+    }
 
     /**
      * Get the expirationDateTime property: A format of yyyy-MM-ddTHH:mm:ssZ of DateTimeOffset indicates the expiration

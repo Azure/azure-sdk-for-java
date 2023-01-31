@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOnlineMeetingPresenters. */
+/** onlineMeetingPresenters. */
 public final class MicrosoftGraphOnlineMeetingPresenters
     extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingPresenters> {
     /** Static value everyone for MicrosoftGraphOnlineMeetingPresenters. */
@@ -37,7 +37,11 @@ public final class MicrosoftGraphOnlineMeetingPresenters
         return fromString(name, MicrosoftGraphOnlineMeetingPresenters.class);
     }
 
-    /** @return known MicrosoftGraphOnlineMeetingPresenters values. */
+    /**
+     * Gets known MicrosoftGraphOnlineMeetingPresenters values.
+     *
+     * @return known MicrosoftGraphOnlineMeetingPresenters values.
+     */
     public static Collection<MicrosoftGraphOnlineMeetingPresenters> values() {
         return values(MicrosoftGraphOnlineMeetingPresenters.class);
     }

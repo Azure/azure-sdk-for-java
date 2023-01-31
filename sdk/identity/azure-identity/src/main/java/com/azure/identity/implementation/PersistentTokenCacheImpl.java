@@ -11,7 +11,6 @@ import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
 import com.sun.jna.Platform;
-import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,17 +50,15 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
         return this;
     }
 
-    Mono<Boolean> registerCache() {
-        return Mono.defer(() -> {
-            try {
-                PersistenceSettings persistenceSettings = getPersistenceSettings();
-                cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
-                return Mono.just(true);
-            } catch (Throwable t) {
-                return Mono.error(LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", null, t)));
-            }
-        });
+    boolean registerCache() {
+        try {
+            PersistenceSettings persistenceSettings = getPersistenceSettings();
+            cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
+            return true;
+        } catch (Throwable t) {
+            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                "Shared token cache is unavailable in this environment.", null, t));
+        }
     }
 
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {

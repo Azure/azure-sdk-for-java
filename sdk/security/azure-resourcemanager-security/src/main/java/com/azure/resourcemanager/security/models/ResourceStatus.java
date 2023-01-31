@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceStatus. */
+/** The status of the resource regarding a single assessment. */
 public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
     /** Static value Healthy for ResourceStatus. */
     public static final ResourceStatus HEALTHY = fromString("Healthy");
@@ -33,7 +33,11 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
         return fromString(name, ResourceStatus.class);
     }
 
-    /** @return known ResourceStatus values. */
+    /**
+     * Gets known ResourceStatus values.
+     *
+     * @return known ResourceStatus values.
+     */
     public static Collection<ResourceStatus> values() {
         return values(ResourceStatus.class);
     }

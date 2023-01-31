@@ -23,6 +23,10 @@ public final class DelimitedTextDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private DelimitedTextDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of DelimitedTextDataset class. */
+    public DelimitedTextDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Delimited text dataset properties.
      *

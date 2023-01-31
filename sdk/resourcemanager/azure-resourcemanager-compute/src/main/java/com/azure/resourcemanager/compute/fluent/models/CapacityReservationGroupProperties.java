@@ -32,6 +32,10 @@ public final class CapacityReservationGroupProperties {
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private CapacityReservationGroupInstanceView instanceView;
 
+    /** Creates an instance of CapacityReservationGroupProperties class. */
+    public CapacityReservationGroupProperties() {
+    }
+
     /**
      * Get the capacityReservations property: A list of all capacity reservation resource ids that belong to capacity
      * reservation group.

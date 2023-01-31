@@ -64,7 +64,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkGroupsService {
+    public interface NetworkGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -182,7 +182,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -239,7 +239,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -278,22 +278,6 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkGroupInner get(String resourceGroupName, String networkManagerName, String networkGroupName) {
-        return getAsync(resourceGroupName, networkManagerName, networkGroupName).block();
-    }
-
-    /**
-     * Gets the specified network group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param networkGroupName The name of the network group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -304,6 +288,22 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
     public Response<NetworkGroupInner> getWithResponse(
         String resourceGroupName, String networkManagerName, String networkGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, context).block();
+    }
+
+    /**
+     * Gets the specified network group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param networkGroupName The name of the network group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkGroupInner get(String resourceGroupName, String networkManagerName, String networkGroupName) {
+        return getWithResponse(resourceGroupName, networkManagerName, networkGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -356,7 +356,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -428,7 +428,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -452,32 +452,6 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param parameters Parameters supplied to the specify which network group need to create.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network group resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        NetworkGroupInner parameters,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a network group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param networkGroupName The name of the network group.
-     * @param parameters Parameters supplied to the specify which network group need to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,26 +464,6 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a network group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param networkGroupName The name of the network group.
-     * @param parameters Parameters supplied to the specify which network group need to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkGroupInner createOrUpdate(
-        String resourceGroupName, String networkManagerName, String networkGroupName, NetworkGroupInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch)
-            .block();
     }
 
     /**
@@ -538,6 +492,27 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a network group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param networkGroupName The name of the network group.
+     * @param parameters Parameters supplied to the specify which network group need to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the network group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkGroupInner createOrUpdate(
+        String resourceGroupName, String networkManagerName, String networkGroupName, NetworkGroupInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -580,7 +555,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -640,7 +615,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -686,6 +661,29 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkManagerName, String networkGroupName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a network group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
      *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
@@ -711,8 +709,6 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -720,7 +716,8 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force) {
+        String resourceGroupName, String networkManagerName, String networkGroupName) {
+        final Boolean force = null;
         return beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force).getSyncPoller();
     }
 
@@ -813,23 +810,6 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force) {
-        deleteAsync(resourceGroupName, networkManagerName, networkGroupName, force).block();
-    }
-
-    /**
-     * Deletes a network group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param networkGroupName The name of the network group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -898,7 +878,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -966,7 +946,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

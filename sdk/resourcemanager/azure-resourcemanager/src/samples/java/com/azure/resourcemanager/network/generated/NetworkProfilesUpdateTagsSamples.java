@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for NetworkProfiles UpdateTags. */
 public final class NetworkProfilesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkProfileUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkProfileUpdateTags.json
      */
     /**
      * Sample code: Update network profile tags.

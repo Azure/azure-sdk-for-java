@@ -105,6 +105,10 @@ public final class DynamicsLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of DynamicsLinkedServiceTypeProperties class. */
+    public DynamicsLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the deploymentType property: The deployment type of the Dynamics instance. 'Online' for Dynamics Online and
      * 'OnPremisesWithIfd' for Dynamics on-premises with Ifd. Type: string (or Expression with resultType string).

@@ -28,6 +28,10 @@ public final class AzureSqlDWTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of AzureSqlDWTableDatasetTypeProperties class. */
+    public AzureSqlDWTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

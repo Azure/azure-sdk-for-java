@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkInterfaceTapConfigurations Delete. */
 public final class NetworkInterfaceTapConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkInterfaceTapConfigurationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkInterfaceTapConfigurationDelete.json
      */
     /**
      * Sample code: Delete tap configuration.

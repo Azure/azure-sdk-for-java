@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionKeyStatus. */
+/** The state of key provided. */
 public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKeyStatus> {
     /** Static value Connected for EncryptionKeyStatus. */
     public static final EncryptionKeyStatus CONNECTED = fromString("Connected");
@@ -27,7 +27,11 @@ public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKe
         return fromString(name, EncryptionKeyStatus.class);
     }
 
-    /** @return known EncryptionKeyStatus values. */
+    /**
+     * Gets known EncryptionKeyStatus values.
+     *
+     * @return known EncryptionKeyStatus values.
+     */
     public static Collection<EncryptionKeyStatus> values() {
         return values(EncryptionKeyStatus.class);
     }

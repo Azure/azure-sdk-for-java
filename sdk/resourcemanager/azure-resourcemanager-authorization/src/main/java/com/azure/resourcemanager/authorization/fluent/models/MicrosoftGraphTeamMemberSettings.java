@@ -56,6 +56,10 @@ public final class MicrosoftGraphTeamMemberSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamMemberSettings class. */
+    public MicrosoftGraphTeamMemberSettings() {
+    }
+
     /**
      * Get the allowAddRemoveApps property: If set to true, members can add and remove apps.
      *

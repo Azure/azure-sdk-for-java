@@ -51,6 +51,10 @@ public final class ManagedClusterApiServerAccessProfile {
     @JsonProperty(value = "disableRunCommand")
     private Boolean disableRunCommand;
 
+    /** Creates an instance of ManagedClusterApiServerAccessProfile class. */
+    public ManagedClusterApiServerAccessProfile() {
+    }
+
     /**
      * Get the authorizedIpRanges property: The IP ranges authorized to access the Kubernetes API server.
      *

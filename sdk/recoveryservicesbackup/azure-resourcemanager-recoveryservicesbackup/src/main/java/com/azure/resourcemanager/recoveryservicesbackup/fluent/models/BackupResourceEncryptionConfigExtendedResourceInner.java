@@ -25,6 +25,10 @@ public final class BackupResourceEncryptionConfigExtendedResourceInner extends R
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of BackupResourceEncryptionConfigExtendedResourceInner class. */
+    public BackupResourceEncryptionConfigExtendedResourceInner() {
+    }
+
     /**
      * Get the properties property: BackupResourceEncryptionConfigExtendedResource properties.
      *

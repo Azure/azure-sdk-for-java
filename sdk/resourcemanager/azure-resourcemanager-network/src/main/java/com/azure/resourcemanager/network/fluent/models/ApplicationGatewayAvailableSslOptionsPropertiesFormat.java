@@ -39,6 +39,10 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
     @JsonProperty(value = "availableProtocols")
     private List<ApplicationGatewaySslProtocol> availableProtocols;
 
+    /** Creates an instance of ApplicationGatewayAvailableSslOptionsPropertiesFormat class. */
+    public ApplicationGatewayAvailableSslOptionsPropertiesFormat() {
+    }
+
     /**
      * Get the predefinedPolicies property: List of available Ssl predefined policy.
      *

@@ -59,6 +59,10 @@ public final class BackupEngineExtendedInfo {
     @JsonProperty(value = "azureProtectedInstances")
     private Integer azureProtectedInstances;
 
+    /** Creates an instance of BackupEngineExtendedInfo class. */
+    public BackupEngineExtendedInfo() {
+    }
+
     /**
      * Get the databaseName property: Database name of backup engine.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphExternalAudienceScope. */
+/** externalAudienceScope. */
 public final class MicrosoftGraphExternalAudienceScope
     extends ExpandableStringEnum<MicrosoftGraphExternalAudienceScope> {
     /** Static value none for MicrosoftGraphExternalAudienceScope. */
@@ -31,7 +31,11 @@ public final class MicrosoftGraphExternalAudienceScope
         return fromString(name, MicrosoftGraphExternalAudienceScope.class);
     }
 
-    /** @return known MicrosoftGraphExternalAudienceScope values. */
+    /**
+     * Gets known MicrosoftGraphExternalAudienceScope values.
+     *
+     * @return known MicrosoftGraphExternalAudienceScope values.
+     */
     public static Collection<MicrosoftGraphExternalAudienceScope> values() {
         return values(MicrosoftGraphExternalAudienceScope.class);
     }

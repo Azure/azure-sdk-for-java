@@ -26,6 +26,13 @@ public class ClientOptions {
     private String applicationId;
 
     private MetricsOptions metricsOptions;
+    private TracingOptions tracingOptions;
+
+    /**
+     * Creates a new instance of {@link ClientOptions}.
+     */
+    public ClientOptions() {
+    }
 
     /**
      * Gets the application ID.
@@ -132,5 +139,25 @@ public class ClientOptions {
      */
     public MetricsOptions getMetricsOptions() {
         return metricsOptions;
+    }
+
+    /**
+     * Sets {@link TracingOptions} that are applied to each tracing reported by the client.
+     * Use tracing options to enable and disable tracing or pass implementation-specific configuration.
+     *
+     * @param tracingOptions instance of {@link TracingOptions} to set.
+     * @return The updated {@link ClientOptions} object.
+     */
+    public ClientOptions setTracingOptions(TracingOptions tracingOptions) {
+        this.tracingOptions = tracingOptions;
+        return this;
+    }
+
+    /**
+     * Gets {@link MetricsOptions}
+     * @return The {@link MetricsOptions} instance, if metric options weren't set previously, {@code null} is returned.
+     */
+    public TracingOptions getTracingOptions() {
+        return tracingOptions;
     }
 }

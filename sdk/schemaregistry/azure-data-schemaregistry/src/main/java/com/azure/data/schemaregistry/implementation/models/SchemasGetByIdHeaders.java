@@ -5,6 +5,7 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SchemasGetByIdHeaders model. */
@@ -50,7 +51,26 @@ public final class SchemasGetByIdHeaders {
      * The Content-Type property.
      */
     @JsonProperty(value = "Content-Type")
-    private String contentType;
+    private SchemaFormatImpl contentType;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of SchemasGetByIdHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public SchemasGetByIdHeaders(HttpHeaders rawHeaders) {
+        this.schemaVersion = Integer.parseInt(rawHeaders.getValue("Schema-Version"));
+        this.schemaId = rawHeaders.getValue("Schema-Id");
+        this.schemaGroupName = rawHeaders.getValue("Schema-Group-Name");
+        this.schemaName = rawHeaders.getValue("Schema-Name");
+        this.schemaIdLocation = rawHeaders.getValue("Schema-Id-Location");
+        this.location = rawHeaders.getValue("Location");
+        String contentType = rawHeaders.getValue("Content-Type");
+        if (contentType != null) {
+            this.contentType = SchemaFormatImpl.fromString(contentType);
+        }
+    }
 
     /**
      * Get the schemaVersion property: The Schema-Version property.
@@ -177,7 +197,7 @@ public final class SchemasGetByIdHeaders {
      *
      * @return the contentType value.
      */
-    public String getContentType() {
+    public SchemaFormatImpl getContentType() {
         return this.contentType;
     }
 
@@ -187,7 +207,7 @@ public final class SchemasGetByIdHeaders {
      * @param contentType the contentType value to set.
      * @return the SchemasGetByIdHeaders object itself.
      */
-    public SchemasGetByIdHeaders setContentType(String contentType) {
+    public SchemasGetByIdHeaders setContentType(SchemaFormatImpl contentType) {
         this.contentType = contentType;
         return this;
     }

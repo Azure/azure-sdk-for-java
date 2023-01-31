@@ -24,6 +24,10 @@ public final class VirtualMachineScaleSetVMProtectionPolicy {
     @JsonProperty(value = "protectFromScaleSetActions")
     private Boolean protectFromScaleSetActions;
 
+    /** Creates an instance of VirtualMachineScaleSetVMProtectionPolicy class. */
+    public VirtualMachineScaleSetVMProtectionPolicy() {
+    }
+
     /**
      * Get the protectFromScaleIn property: Indicates that the virtual machine scale set VM shouldn't be considered for
      * deletion during a scale-in operation.

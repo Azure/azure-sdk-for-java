@@ -29,6 +29,10 @@ public final class ApplicationGatewayPrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
+    /** Creates an instance of ApplicationGatewayPrivateLinkResourceProperties class. */
+    public ApplicationGatewayPrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the groupId property: Group identifier of private link resource.
      *

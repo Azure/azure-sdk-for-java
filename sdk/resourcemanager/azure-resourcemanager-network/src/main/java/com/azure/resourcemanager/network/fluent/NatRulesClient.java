@@ -55,20 +55,6 @@ public interface NatRulesClient {
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGatewayNatRule Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnGatewayNatRuleInner get(String resourceGroupName, String gatewayName, String natRuleName);
-
-    /**
-     * Retrieves the details of a nat ruleGet.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param natRuleName The name of the nat rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,6 +64,20 @@ public interface NatRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VpnGatewayNatRuleInner> getWithResponse(
         String resourceGroupName, String gatewayName, String natRuleName, Context context);
+
+    /**
+     * Retrieves the details of a nat ruleGet.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param natRuleName The name of the nat rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnGatewayNatRule Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnGatewayNatRuleInner get(String resourceGroupName, String gatewayName, String natRuleName);
 
     /**
      * Creates a nat rule to a scalable vpn gateway if it doesn't exist else updates the existing nat rules.

@@ -36,6 +36,10 @@ public final class NextHopParameters {
     @JsonProperty(value = "targetNicResourceId")
     private String targetNicResourceId;
 
+    /** Creates an instance of NextHopParameters class. */
+    public NextHopParameters() {
+    }
+
     /**
      * Get the targetResourceId property: The resource identifier of the target resource against which the action is to
      * be performed.

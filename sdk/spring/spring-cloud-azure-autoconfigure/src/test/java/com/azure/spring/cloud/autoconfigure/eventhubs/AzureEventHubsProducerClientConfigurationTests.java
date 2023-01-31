@@ -9,11 +9,13 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
-import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,13 +86,14 @@ class AzureEventHubsProducerClientConfigurationTests {
                 "spring.cloud.azure.eventhubs.producer.event-hub-name=test-event-hub",
                 "spring.cloud.azure.eventhubs.namespace=test-namespace"
                 )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
             .run(
                 context -> {
                     assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.SharedProducerConnectionConfiguration.class);
                     assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
-                    assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
-                    assertThat(context).hasSingleBean(EventHubClientBuilder.class);
+                    assertThat(context).hasBean(EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME);
+                    assertThat(context).hasBean(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME);
                     assertThat(context).hasSingleBean(EventHubProducerClient.class);
                     assertThat(context).hasSingleBean(EventHubProducerAsyncClient.class);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME);

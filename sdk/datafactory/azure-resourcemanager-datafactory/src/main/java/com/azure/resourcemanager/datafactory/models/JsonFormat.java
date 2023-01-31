@@ -53,6 +53,10 @@ public final class JsonFormat extends DatasetStorageFormat {
     @JsonProperty(value = "jsonPathDefinition")
     private Object jsonPathDefinition;
 
+    /** Creates an instance of JsonFormat class. */
+    public JsonFormat() {
+    }
+
     /**
      * Get the filePattern property: File pattern of JSON. To be more specific, the way of separating a collection of
      * JSON objects. The default value is 'setOfObjects'. It is case-sensitive.

@@ -7,10 +7,8 @@ package com.azure.resourcemanager.hdinsight.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.ClusterGetProperties;
 import com.azure.resourcemanager.hdinsight.models.ClusterIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** The HDInsight cluster. */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * The ETag for the resource
      */
@@ -49,6 +45,10 @@ public final class ClusterInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ClusterInner class. */
+    public ClusterInner() {
+    }
 
     /**
      * Get the etag property: The ETag for the resource.

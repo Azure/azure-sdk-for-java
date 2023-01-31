@@ -17,6 +17,10 @@ public final class IpPrefixesListInner {
     @JsonProperty(value = "ipPrefixes")
     private List<String> ipPrefixes;
 
+    /** Creates an instance of IpPrefixesListInner class. */
+    public IpPrefixesListInner() {
+    }
+
     /**
      * Get the ipPrefixes property: IP Prefix value.
      *

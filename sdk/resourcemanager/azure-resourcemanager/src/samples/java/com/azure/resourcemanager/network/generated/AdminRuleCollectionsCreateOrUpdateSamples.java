@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for AdminRuleCollections CreateOrUpdate. */
 public final class AdminRuleCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerAdminRuleCollectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerAdminRuleCollectionPut.json
      */
     /**
      * Sample code: Create or Update an admin rule collection.
@@ -37,7 +37,7 @@ public final class AdminRuleCollectionsCreateOrUpdateSamples {
                             .asList(
                                 new NetworkManagerSecurityGroupItem()
                                     .withNetworkGroupId(
-                                        "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testGroup"))),
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/testGroup"))),
                 Context.NONE);
     }
 }

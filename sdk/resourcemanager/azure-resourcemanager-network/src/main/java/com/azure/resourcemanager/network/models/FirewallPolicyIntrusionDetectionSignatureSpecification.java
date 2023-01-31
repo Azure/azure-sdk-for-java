@@ -22,6 +22,10 @@ public final class FirewallPolicyIntrusionDetectionSignatureSpecification {
     @JsonProperty(value = "mode")
     private FirewallPolicyIntrusionDetectionStateType mode;
 
+    /** Creates an instance of FirewallPolicyIntrusionDetectionSignatureSpecification class. */
+    public FirewallPolicyIntrusionDetectionSignatureSpecification() {
+    }
+
     /**
      * Get the id property: Signature id.
      *

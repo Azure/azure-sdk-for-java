@@ -51,6 +51,10 @@ public final class AzureIaaSvmJobExtendedInfo {
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
+    /** Creates an instance of AzureIaaSvmJobExtendedInfo class. */
+    public AzureIaaSvmJobExtendedInfo() {
+    }
+
     /**
      * Get the tasksList property: List of tasks associated with this job.
      *

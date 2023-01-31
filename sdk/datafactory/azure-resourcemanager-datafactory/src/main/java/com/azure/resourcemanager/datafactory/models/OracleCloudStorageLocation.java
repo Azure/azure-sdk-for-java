@@ -26,6 +26,10 @@ public final class OracleCloudStorageLocation extends DatasetLocation {
     @JsonProperty(value = "version")
     private Object version;
 
+    /** Creates an instance of OracleCloudStorageLocation class. */
+    public OracleCloudStorageLocation() {
+    }
+
     /**
      * Get the bucketName property: Specify the bucketName of Oracle Cloud Storage. Type: string (or Expression with
      * resultType string).

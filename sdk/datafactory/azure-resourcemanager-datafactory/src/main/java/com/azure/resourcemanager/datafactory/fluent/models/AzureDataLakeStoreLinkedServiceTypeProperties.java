@@ -80,6 +80,10 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of AzureDataLakeStoreLinkedServiceTypeProperties class. */
+    public AzureDataLakeStoreLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the dataLakeStoreUri property: Data Lake Store service URI. Type: string (or Expression with resultType
      * string).

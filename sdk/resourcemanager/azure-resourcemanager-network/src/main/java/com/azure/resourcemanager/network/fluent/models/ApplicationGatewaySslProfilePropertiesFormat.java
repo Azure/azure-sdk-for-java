@@ -39,6 +39,10 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewaySslProfilePropertiesFormat class. */
+    public ApplicationGatewaySslProfilePropertiesFormat() {
+    }
+
     /**
      * Get the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.

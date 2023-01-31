@@ -13,10 +13,9 @@ import com.azure.resourcemanager.elastic.fluent.MonitorsClient;
 import com.azure.resourcemanager.elastic.fluent.models.ElasticMonitorResourceInner;
 import com.azure.resourcemanager.elastic.models.ElasticMonitorResource;
 import com.azure.resourcemanager.elastic.models.Monitors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MonitorsImpl implements Monitors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MonitorsImpl.class);
 
     private final MonitorsClient innerClient;
 
@@ -48,15 +47,6 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new ElasticMonitorResourceImpl(inner1, this.manager()));
     }
 
-    public ElasticMonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {
-        ElasticMonitorResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new ElasticMonitorResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ElasticMonitorResource> getByResourceGroupWithResponse(
         String resourceGroupName, String monitorName, Context context) {
         Response<ElasticMonitorResourceInner> inner =
@@ -67,6 +57,15 @@ public final class MonitorsImpl implements Monitors {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ElasticMonitorResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ElasticMonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {
+        ElasticMonitorResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new ElasticMonitorResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -83,7 +82,7 @@ public final class MonitorsImpl implements Monitors {
     public ElasticMonitorResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,7 +90,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -102,7 +101,7 @@ public final class MonitorsImpl implements Monitors {
     public Response<ElasticMonitorResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,7 +109,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -121,7 +120,7 @@ public final class MonitorsImpl implements Monitors {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +128,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -140,7 +139,7 @@ public final class MonitorsImpl implements Monitors {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));

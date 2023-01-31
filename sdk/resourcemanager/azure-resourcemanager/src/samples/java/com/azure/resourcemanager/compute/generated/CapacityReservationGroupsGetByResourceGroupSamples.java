@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceViewTypes;
 
 /** Samples for CapacityReservationGroups GetByResourceGroup. */
 public final class CapacityReservationGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/capacityReservationExamples/CapacityReservationGroup_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservationGroup_Get.json
      */
     /**
      * Sample code: Get a capacity reservation Group.
@@ -22,6 +22,10 @@ public final class CapacityReservationGroupsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getCapacityReservationGroups()
-            .getByResourceGroupWithResponse("myResourceGroup", "myCapacityReservationGroup", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup",
+                "myCapacityReservationGroup",
+                CapacityReservationGroupInstanceViewTypes.INSTANCE_VIEW,
+                com.azure.core.util.Context.NONE);
     }
 }

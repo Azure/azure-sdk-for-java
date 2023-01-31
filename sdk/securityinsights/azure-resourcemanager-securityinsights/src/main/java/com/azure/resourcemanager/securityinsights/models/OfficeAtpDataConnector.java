@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class OfficeAtpDataConnector extends DataConnectorInner {
     /*
-     * OfficeATP (Office 365 Advanced Threat Protection) data connector
-     * properties.
+     * OfficeATP (Office 365 Advanced Threat Protection) data connector properties.
      */
     @JsonProperty(value = "properties")
     private OfficeAtpDataConnectorProperties innerProperties;

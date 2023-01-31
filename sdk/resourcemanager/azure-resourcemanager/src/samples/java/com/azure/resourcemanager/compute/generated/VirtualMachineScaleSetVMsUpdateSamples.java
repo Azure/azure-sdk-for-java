@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AdditionalUnattendContent;
@@ -86,7 +85,7 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSetVMs Update. */
 public final class VirtualMachineScaleSetVMsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Update_MinimumSet_Gen.
@@ -105,11 +104,11 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                 "aaaaaaaaaaaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaaa",
                 new VirtualMachineScaleSetVMInner().withLocation("westus"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.
@@ -135,7 +134,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             .withName("aaaaaaaaaa")
                             .withPublisher("aaaaaaaaaaaaaaaaaaaaaa")
                             .withProduct("aaaaaaaaaaaaaaaaaaaa")
-                            .withPromotionCode("aaaaaaaaaaaaaaaaaaaa"))
+                            .withPromotionCode("fakeTokenPlaceholder"))
                     .withHardwareProfile(
                         new HardwareProfile()
                             .withVmSize(VirtualMachineSizeTypes.BASIC_A0)
@@ -157,14 +156,14 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                         new DiskEncryptionSettings()
                                             .withDiskEncryptionKey(
                                                 new KeyVaultSecretReference()
-                                                    .withSecretUrl("aaaaaaaa")
+                                                    .withSecretUrl("fakeTokenPlaceholder")
                                                     .withSourceVault(
                                                         new SubResource()
                                                             .withId(
                                                                 "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
                                             .withKeyEncryptionKey(
                                                 new KeyVaultKeyReference()
-                                                    .withKeyUrl("aaaaaaaaaaaaaa")
+                                                    .withKeyUrl("fakeTokenPlaceholder")
                                                     .withSourceVault(
                                                         new SubResource()
                                                             .withId(
@@ -229,7 +228,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                         new OSProfile()
                             .withComputerName("test000000")
                             .withAdminUsername("Foo12")
-                            .withAdminPassword("aaaaaaaaaaaaaaaa")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withCustomData("aaaa")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
@@ -264,7 +263,10 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                         new SshConfiguration()
                                             .withPublicKeys(
                                                 Arrays
-                                                    .asList(new SshPublicKey().withPath("aaa").withKeyData("aaaaaa"))))
+                                                    .asList(
+                                                        new SshPublicKey()
+                                                            .withPath("aaa")
+                                                            .withKeyData("fakeTokenPlaceholder"))))
                                     .withProvisionVMAgent(true)
                                     .withPatchSettings(
                                         new LinuxPatchSettings()
@@ -460,7 +462,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             .withProtectFromScaleIn(true)
                             .withProtectFromScaleSetActions(true))
                     .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

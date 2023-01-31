@@ -16,7 +16,7 @@ public interface AlertsSuppressionRules {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AlertsSuppressionRule> list();
 
@@ -28,9 +28,22 @@ public interface AlertsSuppressionRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AlertsSuppressionRule> list(String alertType, Context context);
+
+    /**
+     * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     *
+     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with {@link
+     *     Response}.
+     */
+    Response<AlertsSuppressionRule> getWithResponse(String alertsSuppressionRuleName, Context context);
 
     /**
      * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
@@ -44,16 +57,18 @@ public interface AlertsSuppressionRules {
     AlertsSuppressionRule get(String alertsSuppressionRuleName);
 
     /**
-     * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     * Update existing rule or create new rule if it doesn't exist.
      *
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @param alertsSuppressionRule Suppression rule object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     * @return describes the suppression rule along with {@link Response}.
      */
-    Response<AlertsSuppressionRule> getWithResponse(String alertsSuppressionRuleName, Context context);
+    Response<AlertsSuppressionRule> updateWithResponse(
+        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context);
 
     /**
      * Update existing rule or create new rule if it doesn't exist.
@@ -68,18 +83,16 @@ public interface AlertsSuppressionRules {
     AlertsSuppressionRule update(String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule);
 
     /**
-     * Update existing rule or create new rule if it doesn't exist.
+     * Delete dismiss alert rule for this subscription.
      *
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @param alertsSuppressionRule Suppression rule object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the suppression rule.
+     * @return the {@link Response}.
      */
-    Response<AlertsSuppressionRule> updateWithResponse(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context);
+    Response<Void> deleteWithResponse(String alertsSuppressionRuleName, Context context);
 
     /**
      * Delete dismiss alert rule for this subscription.
@@ -90,16 +103,4 @@ public interface AlertsSuppressionRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String alertsSuppressionRuleName);
-
-    /**
-     * Delete dismiss alert rule for this subscription.
-     *
-     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String alertsSuppressionRuleName, Context context);
 }

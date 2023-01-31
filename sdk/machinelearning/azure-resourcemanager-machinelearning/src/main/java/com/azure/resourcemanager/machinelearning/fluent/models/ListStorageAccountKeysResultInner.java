@@ -16,6 +16,10 @@ public final class ListStorageAccountKeysResultInner {
     @JsonProperty(value = "userStorageKey", access = JsonProperty.Access.WRITE_ONLY)
     private String userStorageKey;
 
+    /** Creates an instance of ListStorageAccountKeysResultInner class. */
+    public ListStorageAccountKeysResultInner() {
+    }
+
     /**
      * Get the userStorageKey property: The userStorageKey property.
      *

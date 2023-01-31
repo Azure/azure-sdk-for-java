@@ -22,6 +22,10 @@ public final class AccountSku {
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /** Creates an instance of AccountSku class. */
+    public AccountSku() {
+    }
+
     /**
      * Get the resourceType property: Resource Namespace and Type.
      *

@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20220920.1
+      ref: refs/tags/azure-sdk-build-tools_20230112.1
 
 parameters:
 - name: Artifacts
@@ -41,9 +41,6 @@ parameters:
 - name: MatrixReplace
   type: object
   default: []
-- name: SkipAggregateReports
-  type: boolean
-  default: false
 - name: PreBuildSteps
   type: object
   default: []
@@ -79,7 +76,6 @@ stages:
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         MatrixConfigs:
           - ${{ each config in parameters.MatrixConfigs }}:
             -  ${{ config }}
@@ -97,7 +93,7 @@ stages:
 
           - AZURE_TEST.*=.*/
           - ${{ if eq(parameters.SDKType, 'data') }}:
-            - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
+            - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         ${{ if eq(parameters.SDKType, 'data') }}:

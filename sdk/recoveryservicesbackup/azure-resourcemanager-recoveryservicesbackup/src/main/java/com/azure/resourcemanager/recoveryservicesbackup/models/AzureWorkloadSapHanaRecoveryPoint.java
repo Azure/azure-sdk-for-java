@@ -16,6 +16,10 @@ import java.util.Map;
 @JsonTypeName("AzureWorkloadSAPHanaRecoveryPoint")
 @Fluent
 public final class AzureWorkloadSapHanaRecoveryPoint extends AzureWorkloadRecoveryPoint {
+    /** Creates an instance of AzureWorkloadSapHanaRecoveryPoint class. */
+    public AzureWorkloadSapHanaRecoveryPoint() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaRecoveryPoint withRecoveryPointTimeInUtc(OffsetDateTime recoveryPointTimeInUtc) {
@@ -43,6 +47,14 @@ public final class AzureWorkloadSapHanaRecoveryPoint extends AzureWorkloadRecove
     public AzureWorkloadSapHanaRecoveryPoint withRecoveryPointMoveReadinessInfo(
         Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         super.withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSapHanaRecoveryPoint withRecoveryPointProperties(
+        RecoveryPointProperties recoveryPointProperties) {
+        super.withRecoveryPointProperties(recoveryPointProperties);
         return this;
     }
 

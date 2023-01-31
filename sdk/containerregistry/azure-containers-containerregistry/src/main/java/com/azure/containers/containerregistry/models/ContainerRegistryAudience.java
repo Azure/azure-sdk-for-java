@@ -13,7 +13,11 @@ public final class ContainerRegistryAudience extends ExpandableStringEnum<Contai
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for ContainerRegistryAudience. */
     public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://management.chinacloudapi.cn");
 
-    /** Static value AZURE_RESOURCE_MANAGER_GERMANY for ContainerRegistryAudience. */
+    /**
+     * Static value AZURE_RESOURCE_MANAGER_GERMANY for ContainerRegistryAudience.
+     * @deprecated Germany government cloud is no longer supported.
+     */
+    @Deprecated
     public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_GERMANY = fromString("https://management.microsoftazure.de");
 
     /** Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for ContainerRegistryAudience. */

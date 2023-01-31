@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class IlrRequest {
+    /** Creates an instance of IlrRequest class. */
+    public IlrRequest() {
+    }
+
     /**
      * Validates the instance.
      *

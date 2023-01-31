@@ -16,8 +16,8 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphWorkbookApplication extends MicrosoftGraphEntity {
     /*
-     * Returns the calculation mode used in the workbook. Possible values are:
-     * Automatic, AutomaticExceptTables, Manual.
+     * Returns the calculation mode used in the workbook. Possible values are: Automatic, AutomaticExceptTables,
+     * Manual.
      */
     @JsonProperty(value = "calculationMode")
     private String calculationMode;
@@ -26,6 +26,10 @@ public final class MicrosoftGraphWorkbookApplication extends MicrosoftGraphEntit
      * workbookApplication
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookApplication class. */
+    public MicrosoftGraphWorkbookApplication() {
+    }
 
     /**
      * Get the calculationMode property: Returns the calculation mode used in the workbook. Possible values are:

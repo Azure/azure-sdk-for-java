@@ -27,13 +27,15 @@ public interface CapacitiesClient {
      *     This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
      *     maximum of 63.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity.
+     * @return details about the specified dedicated capacity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedCapacityInner getByResourceGroup(String resourceGroupName, String dedicatedCapacityName);
+    Response<DedicatedCapacityInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Gets details about the specified dedicated capacity.
@@ -42,15 +44,13 @@ public interface CapacitiesClient {
      *     This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
      *     maximum of 63.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dedicated capacity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DedicatedCapacityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    DedicatedCapacityInner getByResourceGroup(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
@@ -63,9 +63,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
         String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters);
 
@@ -81,9 +81,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
         String resourceGroupName,
         String dedicatedCapacityName,
@@ -138,9 +138,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dedicatedCapacityName);
 
     /**
@@ -154,9 +154,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String dedicatedCapacityName, Context context);
 
@@ -200,9 +200,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
         String resourceGroupName,
         String dedicatedCapacityName,
@@ -220,9 +220,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
         String resourceGroupName,
         String dedicatedCapacityName,
@@ -279,9 +279,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName);
 
     /**
@@ -295,9 +295,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String dedicatedCapacityName, Context context);
 
@@ -340,9 +340,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName);
 
     /**
@@ -356,9 +356,9 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String dedicatedCapacityName, Context context);
 
@@ -399,7 +399,8 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName);
@@ -413,7 +414,8 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -423,7 +425,7 @@ public interface CapacitiesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> list();
@@ -435,10 +437,22 @@ public interface CapacitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> list(Context context);
+
+    /**
+     * Lists eligible SKUs for PowerBI Dedicated resource provider.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents enumerating SKUs for new resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SkuEnumerationForNewResourceResultInner> listSkusWithResponse(Context context);
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
@@ -451,16 +465,21 @@ public interface CapacitiesClient {
     SkuEnumerationForNewResourceResultInner listSkus();
 
     /**
-     * Lists eligible SKUs for PowerBI Dedicated resource provider.
+     * Lists eligible SKUs for a PowerBI Dedicated resource.
      *
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     *     This name must be at least 1 character in length, and no more than 90.
+     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
+     *     no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources.
+     * @return an object that represents enumerating SKUs for existing resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuEnumerationForNewResourceResultInner> listSkusWithResponse(Context context);
+    Response<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityWithResponse(
+        String resourceGroupName, String dedicatedCapacityName, Context context);
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
@@ -479,21 +498,19 @@ public interface CapacitiesClient {
         String resourceGroupName, String dedicatedCapacityName);
 
     /**
-     * Lists eligible SKUs for a PowerBI Dedicated resource.
+     * Check the name availability in the target location.
      *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * @param location The region name which the operation will lookup into.
+     * @param capacityParameters The name of the capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources.
+     * @return the checking result of capacity name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context);
 
     /**
      * Check the name availability in the target location.
@@ -508,19 +525,4 @@ public interface CapacitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     CheckCapacityNameAvailabilityResultInner checkNameAvailability(
         String location, CheckCapacityNameAvailabilityParameters capacityParameters);
-
-    /**
-     * Check the name availability in the target location.
-     *
-     * @param location The region name which the operation will lookup into.
-     * @param capacityParameters The name of the capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context);
 }
